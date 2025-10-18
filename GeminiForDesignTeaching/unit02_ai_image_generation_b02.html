@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>unit02_ai_image_generation_b02</title>
+    
+    <!-- CSS 框架 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/dark.min.css">
+    
+    <!-- 代碼高亮 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/base16/darcula.min.css">
+    
+    <!-- 自定義樣式 -->
+    <style>
+        
+                body {
+                    max-width: 900px;
+                    margin: 0 auto;
+                    padding: 20px;
+                }
+                /* 提升代码块对比度 */
+                pre {
+                    background: #1e1e1e !important;
+                    border: 1px solid #3e3e3e;
+                }
+                pre code {
+                    background: #1e1e1e !important;
+                }
+                code {
+                    background: #2d2d2d !important;
+                }
+                /* 引用块对比度 */
+                blockquote {
+                    background: #2d2d2d;
+                    border-left: 4px solid #4a9eff;
+                }
+            
+        
+        /* 通用代碼塊樣式 */
+        pre code {
+            display: block;
+            padding: 1.5em;
+            border-radius: 8px;
+            overflow-x: auto;
+            line-height: 1.6;
+        }
+
+        /* Mermaid 圖表樣式 */
+        
+        .mermaid {
+            margin: 2em 0;
+            padding: 1.5em;
+            text-align: center;
+            border-radius: 8px;
+        }
+        
+        .mermaid {
+            background: #2c3034;
+            border: 1px solid #444;
+        }
+            
+        
+        /* 響應式調整 */
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            .container, .markdown-body, .latex-body, .window-body, .nes-container {
+                padding: 15px;
+            }
+            pre code {
+                padding: 1em;
+            }
+        }
+        
+        
+    </style>
+</head>
+<body>
+    <div class="container"><!-- Path: AI_in_Education | Timestamp: 2025-10-15 15:25:00 | Version: b02 -->
+<h1>單元二補充教材：讓教材更生動 - AI 圖片詠唱師</h1>
+<h2>單元目標</h2>
+<ul>
+<li>理解 AI 圖片生成的基本原理</li>
+<li>學會撰寫圖片生成提示詞 (Image Prompt)</li>
+<li>能夠使用 AI Studio 生成教學用圖片</li>
+<li>掌握不同類型圖片的描述技巧</li>
+</ul>
+<hr />
+<h2>核心概念詳解</h2>
+<h3>1. AI 如何「畫圖」？</h3>
+<p><strong>核心比喻</strong>：AI 就像一位「看過數百萬張圖片的畫家」，它學習了各種物體的外觀、風格、構圖方式。當您用文字描述一個畫面，AI 會根據它的「視覺記憶」，重新組合出符合您描述的圖片。</p>
+<p><strong>重要觀念</strong>：<br />
+- AI 圖片生成是「文字 → 圖像」的轉換過程<br />
+- 提示詞越具體，圖片越符合預期<br />
+- AI 擅長具體物件，抽象概念需要更多引導<br />
+- 可能需要多次嘗試才能得到理想結果</p>
+<h3>2. 圖片提示詞的五大要素</h3>
+<h4>📋 完整的圖片提示詞結構</h4>
+<pre class="codehilite"><code>[主體] + [動作/狀態] + [環境/背景] + [風格] + [細節要求]
+</code></pre>
+
+<p><strong>範例解析</strong>：</p>
+<pre class="codehilite"><code>一隻可愛的橘貓 (主體)
+正在睡覺 (動作)
+在溫暖的陽光下 (環境)
+水彩畫風格 (風格)
+柔和的色調，簡約背景 (細節)
+</code></pre>
+
+<h3>3. 教學圖片的三大類型</h3>
+<table>
+<thead>
+<tr>
+<th>類型</th>
+<th>用途</th>
+<th>特點</th>
+<th>適用學科</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>說明型圖片</strong></td>
+<td>解釋概念、展示結構</td>
+<td>清晰、簡潔、標示明確</td>
+<td>自然、數學、社會</td>
+</tr>
+<tr>
+<td><strong>情境型圖片</strong></td>
+<td>創造情境、引發討論</td>
+<td>生動、有故事性</td>
+<td>國語、英語、社會</td>
+</tr>
+<tr>
+<td><strong>裝飾型圖片</strong></td>
+<td>美化教材、吸引注意</td>
+<td>美觀、風格統一</td>
+<td>所有學科</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>詳細操作步驟</h2>
+<h3>步驟一：在 AI Studio 中使用圖片生成</h3>
+<ol>
+<li>登入 <a href="https://aistudio.google.com/">Google AI Studio</a></li>
+<li>選擇支援圖片生成的模型（新版 Imagen 3，代號 <strong>nano banana</strong>）</li>
+<li>在提示詞輸入框中輸入圖片描述</li>
+<li>點選「生成」(Generate)</li>
+<li>等待 10-30 秒</li>
+<li>查看結果，必要時調整提示詞重新生成</li>
+</ol>
+<p><strong>模型說明</strong>：<br />
+- <strong>nano banana</strong> 是 Google 最新的圖片生成模型代號<br />
+- 相較前代，生成速度更快、圖片品質更佳<br />
+- 支援繁體中文提示詞，但英文提示詞仍較精準</p>
+<h3>步驟二：優化提示詞的流程</h3>
+<div class="mermaid">
+graph TD
+    A[撰寫基礎描述] --> B[生成第一版]
+    B --> C{符合需求?}
+    C -->|不符合| D[分析問題]
+    D --> E[調整提示詞]
+    E --> B
+    C -->|符合| F[下載使用]
+
+    D --> G[物件不對 → 加強主體描述]
+    D --> H[風格不對 → 明確指定風格]
+    D --> I[細節不對 → 增加細節要求]
+
+</div>
+
+<h3>步驟三：下載與使用</h3>
+<ol>
+<li>點選滿意的圖片</li>
+<li>點選下載按鈕</li>
+<li>儲存到您的教材資料夾</li>
+<li>插入 Word、PPT 或學習單中</li>
+</ol>
+<hr />
+<h2>跨學科圖片 Prompt 範例庫</h2>
+<h3>📐 數學科</h3>
+<h4>範例 1：幾何圖形教學</h4>
+<pre class="codehilite"><code>A simple, clean diagram of a right-angled triangle on white background.
+Clearly labeled with sides a, b, c and the 90-degree angle marked with a small square.
+Educational style, minimalist, high contrast black lines.
+
+(一個簡潔的直角三角形圖示,白色背景。清楚標示邊長 a、b、c 及用小正方形標示的 90 度角。教學風格,極簡,高對比黑色線條。)
+</code></pre>
+
+<p><strong>使用情境</strong>：教學簡報、學習單插圖</p>
+<h4>範例 2：數學概念視覺化</h4>
+<pre class="codehilite"><code>A colorful, cartoon-style illustration showing the concept of fractions.
+A pizza divided into 8 slices, with 3 slices highlighted in red.
+Clean, simple style suitable for elementary school students.
+
+(一個色彩豐富的卡通風格插圖,展示分數概念。一個披薩切成 8 片,其中 3 片用紅色標示。簡潔明瞭的風格,適合小學生。)
+</code></pre>
+
+<p><strong>使用情境</strong>：課堂投影片、概念說明</p>
+<h4>範例 3：生活情境應用</h4>
+<pre class="codehilite"><code>A warm, friendly illustration of a fruit market stall.
+Display shows apples (¥50 per kg), oranges (¥40 per kg), and bananas (¥30 per kg).
+Cartoon style, bright colors, suitable for math word problems.
+
+(一個溫馨友善的水果攤插圖。展示蘋果(每公斤 50 元)、柳橙(每公斤 40 元)、香蕉(每公斤 30 元)。卡通風格,明亮色彩,適合數學應用題。)
+</code></pre>
+
+<hr />
+<h3>🌱 自然科</h3>
+<h4>範例 1：科學過程圖解</h4>
+<pre class="codehilite"><code>A clear, educational diagram showing the water cycle.
+Include labeled arrows showing evaporation, condensation, precipitation, and collection.
+Simple shapes: sun, clouds, rain, ocean, and land.
+Pastel colors, easy to understand for grade 4 students.
+
+(一個清晰的教學圖解,展示水循環。包含標示的箭頭,顯示蒸發、凝結、降雨和蓄積。簡單形狀:太陽、雲、雨、海洋和陸地。柔和色彩,適合四年級學生理解。)
+</code></pre>
+
+<h4>範例 2：生物結構圖</h4>
+<pre class="codehilite"><code>A clean, detailed illustration of a butterfly's body parts.
+Clearly labeled: head, thorax, abdomen, antennae, and wings.
+Side view, bright colors, educational poster style, white background.
+
+(一個清晰詳細的蝴蝶身體結構插圖。清楚標示:頭、胸、腹、觸角、翅膀。側面視角,明亮色彩,教學海報風格,白色背景。)
+</code></pre>
+
+<h4>範例 3：自然現象觀察</h4>
+<pre class="codehilite"><code>A realistic but gentle illustration of plant photosynthesis.
+Show a green leaf with sun rays, water droplets, CO2 bubbles, and O2 bubbles.
+Use arrows to show the process. Soft, natural colors, scientific illustration style.
+
+(一個寫實但柔和的植物光合作用插圖。展示綠色葉片、陽光、水滴、二氧化碳氣泡和氧氣氣泡。用箭頭顯示過程。柔和自然色彩,科學插畫風格。)
+</code></pre>
+
+<hr />
+<h3>🌍 社會科</h3>
+<h4>範例 1：歷史場景重現</h4>
+<pre class="codehilite"><code>A warm, historical illustration of a traditional Taiwanese market in the 1960s.
+Show vendors selling vegetables, fish, and daily goods.
+People wearing clothing from that era. Nostalgic, warm colors, slightly faded look.
+
+(一個溫暖的歷史插圖,呈現 1960 年代台灣傳統市場。展示攤販販售蔬菜、魚類和日用品。人們穿著那個年代的服裝。懷舊感、溫暖色調、略微褪色效果。)
+</code></pre>
+
+<h4>範例 2：地理景觀</h4>
+<pre class="codehilite"><code>A clean, educational illustration of Taiwan's five major landform types.
+Show mountains, hills, plateaus, basins, and plains in one simple cross-section view.
+Label each type clearly. Textbook style, clear colors, easy to understand.
+
+(一個清晰的教學插圖,展示台灣五大地形類型。在一個簡單的剖面視圖中展示山地、丘陵、台地、盆地和平原。清楚標示每種類型。教科書風格,清晰色彩,易於理解。)
+</code></pre>
+
+<h4>範例 3：文化主題圖</h4>
+<pre class="codehilite"><code>A vibrant, respectful illustration showing traditional festivals around the world.
+Include Chinese New Year lanterns, Japanese cherry blossoms, Indian Diwali lamps.
+Arranged in a circular composition, colorful, celebratory mood.
+
+(一個生動且尊重的插圖,展示世界各地的傳統節日。包含中國新年燈籠、日本櫻花、印度排燈節燈飾。圓形構圖,色彩豐富,慶祝氛圍。)
+</code></pre>
+
+<hr />
+<h3>📖 國語科</h3>
+<h4>範例 1：情境故事配圖</h4>
+<pre class="codehilite"><code>A warm, children's book style illustration of a child reading under a big tree.
+Golden afternoon sunlight, peaceful atmosphere, soft watercolor style.
+Suitable for elementary school Chinese textbook.
+
+(一個溫暖的兒童繪本風格插圖,一個孩子在大樹下閱讀。金色午後陽光,寧靜氛圍,柔和水彩風格。適合小學國語課本。)
+</code></pre>
+
+<h4>範例 2：成語視覺化</h4>
+<pre class="codehilite"><code>A creative illustration for the idiom &quot;井底之蛙&quot; (frog in a well).
+Show a small frog at the bottom of a deep well, looking up at a tiny circle of sky.
+Metaphorical, thought-provoking, suitable for teaching Chinese idioms.
+
+(一個創意插圖,表現成語「井底之蛙」。展示一隻小青蛙在深井底部,向上看著一小圈天空。隱喻性、發人深省,適合教授中文成語。)
+</code></pre>
+
+<h4>範例 3：寫作情境啟發</h4>
+<pre class="codehilite"><code>A inspiring illustration of &quot;My Dream&quot;.
+Show a child looking at a starry night sky with thought bubbles containing various dreams:
+scientist, teacher, artist, astronaut. Dreamy, hopeful mood, soft colors.
+
+(一個啟發性的插圖,主題「我的夢想」。展示一個孩子望著星空,思考氣泡中包含各種夢想:科學家、教師、藝術家、太空人。夢幻、充滿希望的氛圍,柔和色彩。)
+</code></pre>
+
+<hr />
+<h3>🌐 英語科</h3>
+<h4>範例 1：單字主題圖</h4>
+<pre class="codehilite"><code>A colorful, educational illustration showing &quot;Family Members&quot;.
+Include cartoon-style characters: father, mother, brother, sister, grandfather, grandmother.
+Each character labeled in English. Friendly, clear, suitable for elementary ESL teaching.
+
+(一個色彩豐富的教學插圖,展示「家庭成員」。包含卡通風格角色:父親、母親、兄弟、姊妹、祖父、祖母。每個角色用英文標示。友善、清晰,適合小學英語教學。)
+</code></pre>
+
+<h4>範例 2：情境對話場景</h4>
+<pre class="codehilite"><code>A friendly illustration of a school cafeteria scene.
+Two students talking at lunch. Speech bubbles showing: &quot;What would you like?&quot; &quot;I'd like a sandwich, please.&quot;
+Bright, cheerful, cartoon style, suitable for English conversation practice.
+
+(一個友善的學校餐廳場景插圖。兩個學生在午餐時對話。對話框顯示:「你想要什麼?」「我想要一個三明治,謝謝。」明亮、歡樂、卡通風格,適合英語會話練習。)
+</code></pre>
+
+<h4>範例 3：節慶主題</h4>
+<pre class="codehilite"><code>A festive illustration of Halloween decorations.
+Include pumpkins, ghosts, bats, candy, and a haunted house.
+Fun, not scary, suitable for children. Label each item in English.
+
+(一個節慶插圖,展示萬聖節裝飾。包含南瓜、幽靈、蝙蝠、糖果和鬼屋。有趣但不嚇人,適合兒童。每個物品用英文標示。)
+</code></pre>
+
+<hr />
+<h3>🎨 藝術與綜合活動</h3>
+<h4>範例 1：情緒表達</h4>
+<pre class="codehilite"><code>A series of 6 cartoon faces showing different emotions:
+happy, sad, angry, surprised, scared, excited.
+Simple, clear expressions, colorful, suitable for emotional education.
+
+(一系列 6 個卡通臉孔,展示不同情緒:開心、悲傷、生氣、驚訝、害怕、興奮。簡單清晰的表情,色彩豐富,適合情緒教育。)
+</code></pre>
+
+<h4>範例 2：環境教育</h4>
+<pre class="codehilite"><code>A meaningful illustration showing &quot;Reduce, Reuse, Recycle&quot;.
+Three sections: reducing waste, reusing items, recycling bins.
+Green and blue tones, eco-friendly style, inspiring and educational.
+
+(一個有意義的插圖,展示「減少、重複使用、回收」。三個部分:減少浪費、物品再利用、回收桶。綠色和藍色調,環保風格,啟發性和教育性。)
+</code></pre>
+
+<hr />
+<h2>進階技巧</h2>
+<h3>技巧 1：風格關鍵字大全</h3>
+<table>
+<thead>
+<tr>
+<th>風格類型</th>
+<th>英文關鍵字</th>
+<th>適用情境</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>卡通風格</strong></td>
+<td>cartoon style, cute, child-friendly</td>
+<td>國小教材、活潑主題</td>
+</tr>
+<tr>
+<td><strong>水彩風格</strong></td>
+<td>watercolor, soft, gentle</td>
+<td>國語、藝術課程</td>
+</tr>
+<tr>
+<td><strong>極簡風格</strong></td>
+<td>minimalist, clean, simple lines</td>
+<td>數學、圖表說明</td>
+</tr>
+<tr>
+<td><strong>寫實風格</strong></td>
+<td>realistic, detailed, photographic</td>
+<td>自然觀察、歷史場景</td>
+</tr>
+<tr>
+<td><strong>科學插圖</strong></td>
+<td>scientific illustration, educational diagram</td>
+<td>自然科、生物結構</td>
+</tr>
+<tr>
+<td><strong>復古風格</strong></td>
+<td>vintage, retro, nostalgic</td>
+<td>歷史課程、懷舊主題</td>
+</tr>
+<tr>
+<td><strong>扁平設計</strong></td>
+<td>flat design, modern, geometric</td>
+<td>資訊圖表、現代主題</td>
+</tr>
+</tbody>
+</table>
+<h3>技巧 2：避免常見錯誤</h3>
+<h4>❌ 錯誤範例 1：描述太籠統</h4>
+<pre class="codehilite"><code>一張關於數學的圖
+</code></pre>
+
+<p><strong>問題</strong>：AI 不知道要畫什麼數學概念</p>
+<h4>✅ 改進版本</h4>
+<pre class="codehilite"><code>A clear diagram showing the concept of area.
+A rectangle with width and height labeled, and the formula Area = width × height displayed.
+Educational style, simple colors.
+</code></pre>
+
+<hr />
+<h4>❌ 錯誤範例 2：要求太複雜</h4>
+<pre class="codehilite"><code>一張圖包含完整的台灣歷史,從史前時代到現代,所有重要事件都要有,還要有人物和地圖
+</code></pre>
+
+<p><strong>問題</strong>：一張圖無法承載這麼多資訊</p>
+<h4>✅ 改進版本</h4>
+<pre class="codehilite"><code>A simple timeline illustration showing 5 major periods in Taiwan's history.
+Use icons and simple labels for each period. Horizontal layout, clear and organized.
+</code></pre>
+
+<hr />
+<h3>技巧 3：中英文提示詞對比</h3>
+<p><strong>重要提醒</strong>：目前多數 AI 圖片生成模型對英文提示詞的理解更精準。建議：<br />
+- 使用英文撰寫提示詞(可搭配翻譯工具)<br />
+- 或使用「中文描述 + 英文關鍵字」混合模式</p>
+<p><strong>範例對比</strong>：</p>
+<table>
+<thead>
+<tr>
+<th>中文提示詞</th>
+<th>英文提示詞</th>
+<th>效果差異</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>一隻可愛的貓</td>
+<td>A cute cat, fluffy, orange fur, cartoon style</td>
+<td>英文版更精準</td>
+</tr>
+<tr>
+<td>數學圖表</td>
+<td>Mathematical diagram, clean, minimalist, white background</td>
+<td>英文版風格更明確</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>實用技巧與注意事項</h2>
+<h3>✅ 圖片生成最佳實踐</h3>
+<ol>
+<li><strong>從簡單開始</strong>：先生成基本版本,再逐步加入細節</li>
+<li><strong>善用風格關鍵字</strong>：明確指定風格,避免風格混亂</li>
+<li><strong>設定背景</strong>：指定白色或透明背景,方便後續使用</li>
+<li><strong>檢查版權</strong>：確認 AI 生成圖片的使用授權</li>
+<li><strong>多次嘗試</strong>：不滿意就重新生成,每次結果都會不同</li>
+</ol>
+<h3>⚠️ 使用限制與注意事項</h3>
+<ol>
+<li><strong>文字內容</strong>：AI 圖片中的文字可能錯誤或亂碼,建議後製加入文字</li>
+<li><strong>精確度</strong>：複雜的圖表或精確的科學圖示,可能需要專業軟體</li>
+<li><strong>人物相似度</strong>：無法生成特定真實人物(如歷史名人的真實樣貌)</li>
+<li><strong>文化敏感度</strong>：注意文化適當性,避免刻板印象</li>
+<li><strong>學生隱私</strong>：不要生成可辨識特定學生的圖片</li>
+</ol>
+<h3>🎯 圖片後製建議</h3>
+<p>生成後可用簡單工具優化：<br />
+- <strong>去背景</strong>：使用 remove.bg 等線上工具<br />
+- <strong>加入文字</strong>：用 Canva、PowerPoint 加入標示<br />
+- <strong>調整尺寸</strong>：裁切或縮放至適當大小<br />
+- <strong>組合多張</strong>：用簡報軟體組合成教學海報</p>
+<hr />
+<h2>延伸應用</h2>
+<h3>應用 1：製作視覺化學習單</h3>
+<p><strong>情境</strong>：為國小學生製作「認識蔬菜」學習單</p>
+<p><strong>步驟</strong>：<br />
+1. 用 AI 分別生成：高麗菜、紅蘿蔔、番茄、青椒等圖片<br />
+2. 每張圖片風格統一(例如:全部用 cartoon style)<br />
+3. 在 Word 中排版,加上名稱與填空欄位<br />
+4. 形成完整學習單</p>
+<p><strong>Prompt 範本</strong>：</p>
+<pre class="codehilite"><code>A cute, simple illustration of [蔬菜名稱].
+Cartoon style, bright colors, white background, suitable for children's educational materials.
+</code></pre>
+
+<hr />
+<h3>應用 2：打造主題式簡報背景</h3>
+<p><strong>情境</strong>：製作「海洋保育」主題簡報</p>
+<p><strong>Prompt 範例</strong>：</p>
+<pre class="codehilite"><code>A gentle, inspiring background image for ocean conservation presentation.
+Show clean ocean water, marine life silhouettes, and rays of sunlight from above.
+Soft blue and green tones, peaceful mood, suitable as PowerPoint background.
+</code></pre>
+
+<hr />
+<h3>應用 3：設計班級活動海報</h3>
+<p><strong>情境</strong>：製作校慶活動宣傳海報</p>
+<p><strong>Prompt 範例</strong>：</p>
+<pre class="codehilite"><code>A cheerful, festive illustration for school anniversary celebration.
+Include balloons, confetti, students celebrating, school building in background.
+Bright, energetic colors, positive mood, suitable for poster design.
+</code></pre>
+
+<hr />
+<h2>練習任務</h2>
+<h3>初階任務</h3>
+<ol>
+<li>生成一張適合您學科的「概念說明圖」</li>
+<li>生成三張不同風格的「同一主題圖片」,比較差異</li>
+<li>為您的下一份講義生成一張封面圖</li>
+</ol>
+<h3>進階任務</h3>
+<ol>
+<li>製作一套「視覺化單字卡」(5-10 張)</li>
+<li>設計一份完整的「圖文並茂學習單」</li>
+<li>生成一系列風格統一的「課程插圖包」(至少 5 張)</li>
+</ol>
+<hr />
+<h2>常見問題 Q&amp;A</h2>
+<p><strong>Q1：為什麼生成的圖片跟我想的不一樣？</strong><br />
+A1：嘗試更具體的描述,加入風格關鍵字,或提供參考範例的描述。</p>
+<p><strong>Q2：圖片中的文字都是亂碼怎麼辦？</strong><br />
+A2：這是目前 AI 的限制。建議生成圖片後,用其他工具加入文字標籤。</p>
+<p><strong>Q3：可以生成真實人物的圖片嗎？</strong><br />
+A3：AI 可生成「一般性的人物」,但不應生成可辨識的特定真人,也不建議生成學生肖像。</p>
+<p><strong>Q4：生成的圖片可以商用嗎？</strong><br />
+A4：需查看各 AI 工具的授權條款。教學用途通常可以,但商業用途需確認。</p>
+<p><strong>Q5：圖片解析度不夠清晰？</strong><br />
+A5：部分 AI 工具支援高解析度選項。或使用 AI 放大工具(如 waifu2x)提升解析度。</p>
+<p><strong>Q6：如何讓多張圖片風格一致？</strong><br />
+A6：在每個提示詞中使用相同的風格關鍵字(例如都加上 "cartoon style, pastel colors")。</p>
+<hr />
+<p><strong>小結</strong>：AI 圖片生成能大幅提升教材的視覺吸引力。掌握提示詞技巧後,您將能快速產出符合需求的教學插圖,讓課堂更加生動有趣!</p></div>
+    
+    <!-- Highlight.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    
+    <!-- Mermaid -->
+    <script type="module">
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+        mermaid.initialize({
+            "startOnLoad": true,
+            "theme": "dark",
+            "securityLevel": "loose"
+});
+    </script>
+</body>
+</html>

@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>unit04_local_ai_setup_b02</title>
+    
+    <!-- CSS 框架 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/dark.min.css">
+    
+    <!-- 代碼高亮 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/base16/darcula.min.css">
+    
+    <!-- 自定義樣式 -->
+    <style>
+        
+                body {
+                    max-width: 900px;
+                    margin: 0 auto;
+                    padding: 20px;
+                }
+                /* 提升代码块对比度 */
+                pre {
+                    background: #1e1e1e !important;
+                    border: 1px solid #3e3e3e;
+                }
+                pre code {
+                    background: #1e1e1e !important;
+                }
+                code {
+                    background: #2d2d2d !important;
+                }
+                /* 引用块对比度 */
+                blockquote {
+                    background: #2d2d2d;
+                    border-left: 4px solid #4a9eff;
+                }
+            
+        
+        /* 通用代碼塊樣式 */
+        pre code {
+            display: block;
+            padding: 1.5em;
+            border-radius: 8px;
+            overflow-x: auto;
+            line-height: 1.6;
+        }
+
+        /* Mermaid 圖表樣式 */
+        
+        .mermaid {
+            margin: 2em 0;
+            padding: 1.5em;
+            text-align: center;
+            border-radius: 8px;
+        }
+        
+        .mermaid {
+            background: #2c3034;
+            border: 1px solid #444;
+        }
+            
+        
+        /* 響應式調整 */
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            .container, .markdown-body, .latex-body, .window-body, .nes-container {
+                padding: 15px;
+            }
+            pre code {
+                padding: 1em;
+            }
+        }
+        
+        
+    </style>
+</head>
+<body>
+    <div class="container"><!-- Path: AI_in_Education | Timestamp: 2025-10-15 15:45:00 | Version: b02 -->
+<h1>單元四補充教材：觀念升級 - 當 AI 遇上你的電腦</h1>
+<h2>單元目標</h2>
+<ul>
+<li>理解「雲端 AI」與「本機 AI」的差異</li>
+<li>學會使用 VSCode 作為工作環境</li>
+<li>能夠在終端機中執行基本 AI 指令</li>
+<li>掌握本機 AI 工作流程的優勢與應用</li>
+</ul>
+<hr />
+<h2>核心概念詳解</h2>
+<h3>1. 從「雲端問診」到「AI 家庭醫生到府服務」</h3>
+<h4>雲端 AI (如 AI Studio、NotebookLM)</h4>
+<p><strong>比喻</strong>：就像到醫院看病,您需要攜帶病歷,醫生根據您的描述給建議。</p>
+<p><strong>特點</strong>：<br />
+- ✅ 操作簡單,打開瀏覽器就能用<br />
+- ✅ 不需安裝,任何電腦都可以<br />
+- ⚠️ 需要網路連線<br />
+- ⚠️ 無法直接讀取電腦檔案<br />
+- ⚠️ 資料會經過網路傳輸</p>
+<h4>本機 AI (如 Gemini CLI + VSCode)</h4>
+<p><strong>比喻</strong>：就像家庭醫生到府服務,醫生來到您家,可以直接查看您的生活環境、飲食記錄,給出更精準的建議。</p>
+<p><strong>特點</strong>：<br />
+- ✅ 可直接讀取本機檔案<br />
+- ✅ 整合工作流程,效率更高<br />
+- ✅ 個人化設定 (gemini.md)<br />
+- ⚠️ 需要安裝設定(初次較複雜)<br />
+- ⚠️ 需要基本的電腦操作能力</p>
+<hr />
+<h3>2. 為什麼要讓 AI 「到府服務」？</h3>
+<h4>情境 1：備課資料分散在多個檔案</h4>
+<p><strong>雲端方式</strong>：<br />
+- 找到檔案 A → 複製內容 → 貼到 AI Studio<br />
+- 找到檔案 B → 複製內容 → 貼到 AI Studio<br />
+- 找到檔案 C → ...<br />
+- ❌ 繁瑣、容易遺漏</p>
+<p><strong>本機方式</strong>：<br />
+- 在包含所有檔案的資料夾中開啟 VSCode<br />
+- 告訴 AI:「根據這個資料夾中的所有檔案,整理重點」<br />
+- ✅ 一次處理,省時省力</p>
+<h4>情境 2：需要重複使用的指令</h4>
+<p><strong>雲端方式</strong>：<br />
+- 每次都要重新輸入完整的提示詞<br />
+- 容易遺忘之前好用的指令</p>
+<p><strong>本機方式</strong>：<br />
+- 在 <code>gemini.md</code> 中設定好「角色」與「預設指令」<br />
+- AI 會自動遵循,不需重複設定</p>
+<hr />
+<h3>3. 本機 AI 工作環境的三個核心工具</h3>
+<div class="mermaid">
+graph LR
+    A[VSCode<br/>工作環境] --> B[Terminal<br/>終端機]
+    B --> C[Gemini CLI<br/>AI 指令工具]
+    C --> D[讀取本機檔案]
+    D --> E[生成結果]
+
+</div>
+
+<table>
+<thead>
+<tr>
+<th>工具</th>
+<th>功能</th>
+<th>比喻</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>VSCode</strong></td>
+<td>整合式編輯器,可檢視檔案、執行指令</td>
+<td>您的工作桌,所有工具都在這裡</td>
+</tr>
+<tr>
+<td><strong>Terminal (終端機)</strong></td>
+<td>輸入文字指令的地方</td>
+<td>對電腦下達命令的「對講機」</td>
+</tr>
+<tr>
+<td><strong>Gemini CLI</strong></td>
+<td>在終端機中與 AI 對話的工具</td>
+<td>與 AI 溝通的「魔法棒」</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>詳細操作步驟</h2>
+<h3>步驟一：認識 VSCode 介面</h3>
+<h4>開啟 VSCode</h4>
+<ul>
+<li>Windows: 從開始選單找到 Visual Studio Code</li>
+<li>Mac: 從應用程式資料夾或 Spotlight 搜尋</li>
+</ul>
+<h4>介面導覽</h4>
+<pre class="codehilite"><code>┌─────────────────────────────────────────┐
+│  檔案 編輯 檢視 ...                      │ ← 選單列
+├──────┬──────────────────────────────────┤
+│      │                                  │
+│ 📁   │  這裡是編輯區域                    │
+│ 📄   │  可以檢視與編輯檔案內容              │
+│ 📄   │                                  │
+│ 📄   │                                  │
+│      │                                  │
+│檔案  │                                  │
+│總管  │                                  │
+│      │                                  │
+├──────┴──────────────────────────────────┤
+│ TERMINAL (終端機)                        │ ← 在這裡輸入指令
+│ $ gemini &quot;你好&quot;                         │
+│                                         │
+└─────────────────────────────────────────┘
+</code></pre>
+
+<p><strong>重要區域</strong>：<br />
+1. <strong>檔案總管 (左側)</strong>：顯示資料夾中的所有檔案<br />
+2. <strong>編輯區 (中央)</strong>：查看與編輯檔案內容<br />
+3. <strong>終端機 (下方)</strong>：輸入指令與 AI 對話</p>
+<hr />
+<h3>步驟二：開啟終端機 (Terminal)</h3>
+<p><strong>方法一：選單開啟</strong><br />
+- 點選上方選單：<code>終端機</code> → <code>新增終端機</code></p>
+<p><strong>方法二：快捷鍵</strong><br />
+- Mac: <code>Control + ~</code><br />
+- Windows: <code>Ctrl + ~</code></p>
+<p><strong>確認終端機已開啟</strong>：<br />
+- 下方會出現黑色或白色的視窗<br />
+- 顯示游標閃爍,可以輸入文字</p>
+<hr />
+<h3>步驟三：執行第一個 AI 指令</h3>
+<h4>基本指令格式</h4>
+<pre class="codehilite"><code class="language-bash">gemini &quot;您的問題或指令&quot;
+</code></pre>
+
+<h4>範例 1：破冰指令</h4>
+<pre class="codehilite"><code class="language-bash">gemini &quot;你好,請自我介紹&quot;
+</code></pre>
+
+<p><strong>預期輸出</strong>：</p>
+<pre class="codehilite"><code>您好！我是 Gemini,Google 的大型語言模型。
+我可以協助您進行文字創作、回答問題、摘要資訊等任務。
+很高興為您服務！
+</code></pre>
+
+<p>✅ <strong>如果成功看到回應,代表環境設定正確！</strong></p>
+<hr />
+<h4>範例 2：讓 AI 執行簡單任務</h4>
+<pre class="codehilite"><code class="language-bash">gemini &quot;請列出 3 個適合國小的數學遊戲&quot;
+</code></pre>
+
+<hr />
+<h4>範例 3：讓 AI 讀取檔案 (進階)</h4>
+<p><strong>前提</strong>：資料夾中有一個 <code>lesson.txt</code> 檔案</p>
+<pre class="codehilite"><code class="language-bash">gemini &quot;請摘要 lesson.txt 這個檔案的內容&quot;
+</code></pre>
+
+<p>✅ AI 會自動找到檔案並分析內容</p>
+<hr />
+<h3>步驟四：理解工作流程</h3>
+<div class="mermaid">
+graph TD
+    A[在 VSCode 開啟專案資料夾] --> B[檢視檔案內容]
+    B --> C[在終端機輸入指令]
+    C --> D[Gemini 讀取檔案]
+    D --> E[生成回應]
+    E --> F{滿意嗎?}
+    F -->|不滿意| C
+    F -->|滿意| G[複製結果或儲存]
+
+</div>
+
+<hr />
+<h2>跨學科應用範例</h2>
+<h3>📐 數學科</h3>
+<h4>情境：整理一週的教學檔案</h4>
+<p><strong>資料夾結構</strong>：</p>
+<pre class="codehilite"><code>math_week1/
+  ├── monday_lesson.txt
+  ├── wednesday_lesson.txt
+  ├── friday_test.txt
+  └── student_errors.txt
+</code></pre>
+
+<p><strong>指令 1 - 全週摘要</strong>：</p>
+<pre class="codehilite"><code class="language-bash">gemini &quot;請摘要這個資料夾中所有檔案,整理出本週數學課的教學重點&quot;
+</code></pre>
+
+<p><strong>指令 2 - 學生錯誤分析</strong>：</p>
+<pre class="codehilite"><code class="language-bash">gemini &quot;根據 student_errors.txt,分析學生最常犯的 3 個錯誤,並建議補救教學策略&quot;
+</code></pre>
+
+<p><strong>指令 3 - 下週規劃</strong>：</p>
+<pre class="codehilite"><code class="language-bash">gemini &quot;根據本週教學內容與學生錯誤,建議下週的教學重點與活動&quot;
+</code></pre>
+
+<hr />
+<h3>🌱 自然科</h3>
+<h4>情境：實驗報告批改</h4>
+<p><strong>資料夾結構</strong>：</p>
+<pre class="codehilite"><code>science_experiment/
+  ├── experiment_guide.txt (實驗說明)
+  ├── student_report_1.txt
+  ├── student_report_2.txt
+  └── rubric.txt (評分標準)
+</code></pre>
+
+<p><strong>指令 1 - 對照檢查</strong>：</p>
+<pre class="codehilite"><code class="language-bash">gemini &quot;根據 experiment_guide.txt 和 rubric.txt,檢查 student_report_1.txt 是否符合要求,列出優點與需改進之處&quot;
+</code></pre>
+
+<p><strong>指令 2 - 批次分析</strong> (如果有多份報告)：</p>
+<pre class="codehilite"><code class="language-bash">gemini &quot;分析所有 student_report 檔案,歸納出學生普遍做得好的地方,以及共同的問題&quot;
+</code></pre>
+
+<hr />
+<h3>🌍 社會科</h3>
+<h4>情境：教材資料整合</h4>
+<p><strong>資料夾結構</strong>：</p>
+<pre class="codehilite"><code>history_unit/
+  ├── textbook_chapter.txt (課本內容)
+  ├── reference_article.txt (參考文章)
+  ├── timeline.txt (時間軸)
+  └── my_notes.txt (個人筆記)
+</code></pre>
+
+<p><strong>指令 - 整合摘要</strong>：</p>
+<pre class="codehilite"><code class="language-bash">gemini &quot;整合這個資料夾中的所有資料,製作一份完整的教學重點摘要,包含：1. 時間軸 2. 重要事件 3. 關鍵人物 4. 教學重點&quot;
+</code></pre>
+
+<hr />
+<h3>📖 國語科</h3>
+<h4>情境：作文批改輔助</h4>
+<p><strong>資料夾結構</strong>：</p>
+<pre class="codehilite"><code>writing_class/
+  ├── topic.txt (作文題目與要求)
+  ├── essay_A.txt
+  ├── essay_B.txt
+  └── scoring_guide.txt (評分標準)
+</code></pre>
+
+<p><strong>指令</strong>：</p>
+<pre class="codehilite"><code class="language-bash">gemini &quot;根據 topic.txt 和 scoring_guide.txt,評析 essay_A.txt,提供具體的優點與改進建議,語氣要鼓勵而非批評&quot;
+</code></pre>
+
+<hr />
+<h3>🌐 英語科</h3>
+<h4>情境：課程資料準備</h4>
+<p><strong>資料夾結構</strong>：</p>
+<pre class="codehilite"><code>english_unit3/
+  ├── vocabulary.txt (單字表)
+  ├── dialogue.txt (課文對話)
+  └── grammar_points.txt (文法重點)
+</code></pre>
+
+<p><strong>指令 1 - 學習單生成</strong>：</p>
+<pre class="codehilite"><code class="language-bash">gemini &quot;根據這個資料夾的資料,設計一份學習單：包含 5 題單字填空、3 題文法選擇題、1 段對話填空&quot;
+</code></pre>
+
+<p><strong>指令 2 - 課堂活動</strong>：</p>
+<pre class="codehilite"><code class="language-bash">gemini &quot;根據 dialogue.txt,設計一個 15 分鐘的角色扮演活動,包含角色分配、台詞提示、延伸問題&quot;
+</code></pre>
+
+<hr />
+<h2>進階技巧</h2>
+<h3>技巧 1：使用相對路徑指定檔案</h3>
+<p><strong>情境</strong>：資料夾中檔案很多,只想讓 AI 看特定檔案</p>
+<p><strong>指令格式</strong>：</p>
+<pre class="codehilite"><code class="language-bash">gemini &quot;請根據 ./folder_name/file.txt 檔案,進行分析&quot;
+</code></pre>
+
+<p><strong>範例</strong>：</p>
+<pre class="codehilite"><code class="language-bash">gemini &quot;請根據 ./lessons/week1.txt,摘要本週教學重點&quot;
+</code></pre>
+
+<hr />
+<h3>技巧 2：輸出結果存檔</h3>
+<p><strong>方法 1：複製貼上</strong><br />
+- 選取終端機中 AI 的回應<br />
+- 複製 (Ctrl+C / Cmd+C)<br />
+- 貼到 Word 或其他文件</p>
+<p><strong>方法 2：重新導向輸出 (進階)</strong></p>
+<pre class="codehilite"><code class="language-bash">gemini &quot;摘要內容&quot; &gt; output.txt
+</code></pre>
+
+<p>這會將 AI 的回應直接儲存到 <code>output.txt</code> 檔案</p>
+<hr />
+<h3>技巧 3：多輪對話</h3>
+<p>Gemini CLI 支援多輪對話，您可以持續追問：</p>
+<p><strong>第一輪</strong>：</p>
+<pre class="codehilite"><code class="language-bash">gemini &quot;請摘要 lesson.txt&quot;
+</code></pre>
+
+<p><strong>第二輪</strong> (承接上文)：</p>
+<pre class="codehilite"><code class="language-bash">gemini &quot;根據剛才的摘要,設計 3 道題目&quot;
+</code></pre>
+
+<p><strong>第三輪</strong>：</p>
+<pre class="codehilite"><code class="language-bash">gemini &quot;將這些題目改寫成選擇題格式&quot;
+</code></pre>
+
+<hr />
+<h2>實用技巧與注意事項</h2>
+<h3>✅ 本機 AI 最佳實踐</h3>
+<ol>
+<li><strong>資料夾組織清楚</strong>：用有意義的資料夾名稱與檔案名稱</li>
+<li><strong>善用純文字檔</strong>：<code>.txt</code> 或 <code>.md</code> 檔案,AI 最容易讀取</li>
+<li><strong>一次處理一個專案</strong>：在 VSCode 中開啟該專案資料夾</li>
+<li><strong>檔案不要太大</strong>：單一檔案建議不超過 1 萬字</li>
+<li><strong>確認檔案路徑</strong>：檔案要在開啟的資料夾中,AI 才找得到</li>
+</ol>
+<hr />
+<h3>⚠️ 常見問題與排除</h3>
+<table>
+<thead>
+<tr>
+<th>問題</th>
+<th>可能原因</th>
+<th>解決方式</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>輸入 <code>gemini</code> 指令無反應</td>
+<td>CLI 未安裝或未設定</td>
+<td>請檢查安裝步驟,確認指令可用</td>
+</tr>
+<tr>
+<td>AI 說找不到檔案</td>
+<td>檔案不在當前資料夾</td>
+<td>確認 VSCode 開啟的是正確的資料夾</td>
+</tr>
+<tr>
+<td>回應速度很慢</td>
+<td>網路問題或檔案太大</td>
+<td>檢查網路連線,或拆分檔案</td>
+</tr>
+<tr>
+<td>終端機無法輸入中文</td>
+<td>編碼問題</td>
+<td>用引號包住中文內容 <code>gemini "中文指令"</code></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3>🎯 隱私與安全提醒</h3>
+<ol>
+<li><strong>避免上傳敏感資料</strong>：不要讓 AI 讀取包含學生個資、成績的檔案</li>
+<li><strong>檔案備份</strong>：重要檔案先備份再操作</li>
+<li><strong>檢查輸出內容</strong>：AI 生成的內容仍需人工審核</li>
+<li><strong>了解資料流向</strong>：Gemini CLI 會將指令與檔案內容送到 Google 伺服器處理</li>
+</ol>
+<hr />
+<h2>延伸應用</h2>
+<h3>應用 1：建立個人教材庫</h3>
+<p><strong>長期規劃</strong>：<br />
+1. 建立清晰的資料夾結構<br />
+2. 將教材轉成文字檔存放<br />
+3. 使用 AI 快速查找與摘要<br />
+4. 定期更新與整理</p>
+<p><strong>範例結構</strong>：</p>
+<pre class="codehilite"><code>teaching_materials/
+  ├── math/
+  │   ├── grade5/
+  │   │   ├── unit1/
+  │   │   └── unit2/
+  │   └── grade6/
+  ├── science/
+  └── social/
+</code></pre>
+
+<hr />
+<h3>應用 2：學生作品分析</h3>
+<p><strong>情境</strong>：收集學生反思日記,分析學習狀況</p>
+<p><strong>步驟</strong>：<br />
+1. 將學生日記存成獨立文字檔 (去識別化)<br />
+2. 放入同一資料夾<br />
+3. 用 AI 分析整體趨勢</p>
+<p><strong>指令</strong>：</p>
+<pre class="codehilite"><code class="language-bash">gemini &quot;分析這個資料夾中所有學生的反思日記,歸納出：1. 學生覺得最困難的部分 2. 最有成就感的部分 3. 共同的疑問&quot;
+</code></pre>
+
+<hr />
+<h3>應用 3：快速產生變化版本</h3>
+<p><strong>情境</strong>：同一份教材,需要不同難度版本</p>
+<p><strong>步驟</strong>：<br />
+1. 原始教材存成 <code>original.txt</code><br />
+2. 下指令生成不同版本</p>
+<p><strong>指令範例</strong>：</p>
+<pre class="codehilite"><code class="language-bash">gemini &quot;將 original.txt 改寫成三個版本：1. 簡化版(國小三年級) 2. 標準版(國小五年級) 3. 進階版(國中程度),分別輸出&quot;
+</code></pre>
+
+<hr />
+<h2>與雲端 AI 的比較</h2>
+<table>
+<thead>
+<tr>
+<th>比較項目</th>
+<th>雲端 AI</th>
+<th>本機 AI (CLI)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>操作簡易度</strong></td>
+<td>⭐⭐⭐⭐⭐ 開瀏覽器即可</td>
+<td>⭐⭐⭐ 需學習指令</td>
+</tr>
+<tr>
+<td><strong>讀取本機檔案</strong></td>
+<td>❌ 需手動複製貼上</td>
+<td>✅ 直接讀取</td>
+</tr>
+<tr>
+<td><strong>批次處理</strong></td>
+<td>❌ 一次一個</td>
+<td>✅ 可處理整個資料夾</td>
+</tr>
+<tr>
+<td><strong>個人化設定</strong></td>
+<td>❌ 每次重新設定</td>
+<td>✅ 透過 gemini.md</td>
+</tr>
+<tr>
+<td><strong>工作流程整合</strong></td>
+<td>⭐⭐ 需切換視窗</td>
+<td>⭐⭐⭐⭐⭐ 一站式操作</td>
+</tr>
+<tr>
+<td><strong>適用對象</strong></td>
+<td>初學者、偶爾使用</td>
+<td>經常使用、效率需求高</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>練習任務</h2>
+<h3>初階任務</h3>
+<ol>
+<li>成功開啟 VSCode 與終端機</li>
+<li>執行第一個 <code>gemini "你好"</code> 指令</li>
+<li>建立一個簡單的 <code>.txt</code> 檔案,請 AI 摘要內容</li>
+</ol>
+<h3>進階任務</h3>
+<ol>
+<li>建立一個教學專案資料夾,包含 3-5 個檔案</li>
+<li>用指令讓 AI 分析整個資料夾</li>
+<li>將 AI 的回應複製並整理成教案</li>
+</ol>
+<hr />
+<h2>常見問題 Q&amp;A</h2>
+<p><strong>Q1：我不懂程式設計,可以學會這個嗎？</strong><br />
+A1：可以！這個工具不需要寫程式,只需要輸入文字指令即可。就像用 Google 搜尋一樣簡單。</p>
+<p><strong>Q2：VSCode 會不會很難學？</strong><br />
+A2：我們只用到最基本的功能：檢視檔案 + 開啟終端機。不需要學習複雜的編輯功能。</p>
+<p><strong>Q3：如果指令打錯怎麼辦？</strong><br />
+A3：沒關係！只會出現錯誤訊息,不會損壞檔案。重新輸入正確指令即可。</p>
+<p><strong>Q4：一定要用 VSCode 嗎？可以用其他工具嗎？</strong><br />
+A4：VSCode 是建議工具,因為它整合了編輯器與終端機。如果熟悉其他工具 (如 Terminal app),也可以使用。</p>
+<p><strong>Q5：這樣使用需要付費嗎？</strong><br />
+A5：VSCode 是免費軟體。Gemini API 有免費額度,一般教學使用足夠,超過才需付費。</p>
+<p><strong>Q6：我的檔案是 Word 或 PDF,AI 可以讀取嗎？</strong><br />
+A6：Gemini CLI 主要讀取文字檔。建議將 Word 內容複製到 <code>.txt</code> 檔,或使用轉換工具。</p>
+<p><strong>Q7：跟第一天學的 AI Studio 有什麼不同？</strong><br />
+A7：AI Studio 像是「線上工具」,本機 AI 像是「整合在您工作環境的助理」。各有優勢,可搭配使用。</p>
+<hr />
+<p><strong>小結</strong>：將 AI 帶到本機,讓它成為真正整合在您工作流程中的助理。透過 VSCode + Gemini CLI,您可以更高效地處理教學資料、分析學生作品、準備教材。初期需要一點學習,但熟悉後會發現效率大幅提升！</p></div>
+    
+    <!-- Highlight.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    
+    <!-- Mermaid -->
+    <script type="module">
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+        mermaid.initialize({
+            "startOnLoad": true,
+            "theme": "dark",
+            "securityLevel": "loose"
+});
+    </script>
+</body>
+</html>

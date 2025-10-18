@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>unit05_gemini_md_customization_b01</title>
+    
+    <!-- CSS 框架 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/dark.min.css">
+    
+    <!-- 代碼高亮 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/base16/darcula.min.css">
+    
+    <!-- 自定義樣式 -->
+    <style>
+        
+                body {
+                    max-width: 900px;
+                    margin: 0 auto;
+                    padding: 20px;
+                }
+                /* 提升代码块对比度 */
+                pre {
+                    background: #1e1e1e !important;
+                    border: 1px solid #3e3e3e;
+                }
+                pre code {
+                    background: #1e1e1e !important;
+                }
+                code {
+                    background: #2d2d2d !important;
+                }
+                /* 引用块对比度 */
+                blockquote {
+                    background: #2d2d2d;
+                    border-left: 4px solid #4a9eff;
+                }
+            
+        
+        /* 通用代碼塊樣式 */
+        pre code {
+            display: block;
+            padding: 1.5em;
+            border-radius: 8px;
+            overflow-x: auto;
+            line-height: 1.6;
+        }
+
+        /* Mermaid 圖表樣式 */
+        
+        .mermaid {
+            margin: 2em 0;
+            padding: 1.5em;
+            text-align: center;
+            border-radius: 8px;
+        }
+        
+        .mermaid {
+            background: #2c3034;
+            border: 1px solid #444;
+        }
+            
+        
+        /* 響應式調整 */
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            .container, .markdown-body, .latex-body, .window-body, .nes-container {
+                padding: 15px;
+            }
+            pre code {
+                padding: 1em;
+            }
+        }
+        
+        
+    </style>
+</head>
+<body>
+    <div class="container"><!-- Path: AI_in_Education | Timestamp: 2025-10-15 14:50:00 | Version: b01 -->
+<h1>單元五補充教材：個人化你的 AI - 初探 gemini.md</h1>
+<h2>單元目標</h2>
+<ul>
+<li>理解 <code>gemini.md</code> 的功能與重要性</li>
+<li>學會撰寫基本的 AI 角色設定</li>
+<li>能夠客製化 AI 的回應風格與工作流程</li>
+<li>掌握從通用 AI 到專屬助理的設定技巧</li>
+</ul>
+<hr />
+<h2>核心概念詳解</h2>
+<h3>1. gemini.md 是什麼？</h3>
+<p><strong>核心比喻</strong>：<code>gemini.md</code> 就像是您為 AI 助理撰寫的「員工手冊」或「角色設定卡」。</p>
+<h4>沒有 gemini.md 的 AI</h4>
+<ul>
+<li>像臨時工：每次都要重新說明要做什麼</li>
+<li>不了解您的習慣與需求</li>
+<li>回答方式可能不符合預期</li>
+</ul>
+<h4>有 gemini.md 的 AI</h4>
+<ul>
+<li>像正職員工：已接受培訓,知道工作流程</li>
+<li>理解您的角色需求與偏好</li>
+<li>自動遵循您設定的規則</li>
+</ul>
+<hr />
+<h3>2. gemini.md 可以設定什麼？</h3>
+<table>
+<thead>
+<tr>
+<th>設定類型</th>
+<th>說明</th>
+<th>範例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>角色定位</strong></td>
+<td>AI 應扮演什麼角色</td>
+<td>「你是一位國小數學老師」</td>
+</tr>
+<tr>
+<td><strong>說話風格</strong></td>
+<td>語氣、用詞、長度</td>
+<td>「回答簡潔、親切、避免術語」</td>
+</tr>
+<tr>
+<td><strong>工作流程</strong></td>
+<td>固定的處理步驟</td>
+<td>「收到教材後,先摘要再出題」</td>
+</tr>
+<tr>
+<td><strong>輸出格式</strong></td>
+<td>回應的呈現方式</td>
+<td>「用條列式,每點不超過 50 字」</td>
+</tr>
+<tr>
+<td><strong>限制與規則</strong></td>
+<td>不該做的事</td>
+<td>「不使用艱深術語」</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3>3. gemini.md 的運作原理</h3>
+<div class="mermaid">
+graph LR
+    A[您下達指令] --> B[Gemini CLI 讀取 gemini.md]
+    B --> C[將角色設定傳給 AI]
+    C --> D[AI 根據設定生成回應]
+    D --> E[輸出結果]
+
+</div>
+
+<p><strong>關鍵</strong>：每次執行 <code>gemini</code> 指令時,AI 都會先讀取 <code>gemini.md</code>,並遵循其中的設定。</p>
+<hr />
+<h2>詳細操作步驟</h2>
+<h3>步驟一：建立 gemini.md 檔案</h3>
+<h4>方法 1：在 VSCode 中建立</h4>
+<ol>
+<li>在 VSCode 左側檔案總管中,點選右鍵</li>
+<li>選擇「新增檔案」(New File)</li>
+<li>檔名輸入：<code>gemini.md</code></li>
+<li>按下 Enter</li>
+</ol>
+<h4>方法 2：在終端機建立</h4>
+<pre class="codehilite"><code class="language-bash">touch gemini.md
+</code></pre>
+
+<hr />
+<h3>步驟二：撰寫基本的 gemini.md</h3>
+<h4>最簡範本</h4>
+<pre class="codehilite"><code class="language-markdown"># AI 角色設定
+
+你是一位經驗豐富的國小老師。
+
+## 說話風格
+- 語氣親切、鼓勵
+- 用詞簡單易懂
+- 避免艱深術語
+
+## 回應原則
+- 回答簡潔,每段不超過 100 字
+- 使用條列式呈現重點
+- 適時舉例說明
+</code></pre>
+
+<p><strong>重點說明</strong>：<br />
+- <code>#</code> 開頭是標題,幫助組織內容<br />
+- 清楚說明角色、風格、原則<br />
+- 使用 Markdown 格式(條列、標題等)</p>
+<hr />
+<h3>步驟三：測試 gemini.md 是否生效</h3>
+<h4>測試指令</h4>
+<pre class="codehilite"><code class="language-bash">gemini &quot;請自我介紹,並說明你能如何協助我&quot;
+</code></pre>
+
+<p><strong>預期結果</strong>：<br />
+AI 應該會按照 <code>gemini.md</code> 中的設定,以國小老師的身份、親切的語氣回應。</p>
+<p><strong>比較</strong>：<br />
+- 未設定 gemini.md：回答可能較正式、通用<br />
+- 已設定 gemini.md：回答符合您的角色設定</p>
+<hr />
+<h3>步驟四：修改與調整</h3>
+<ol>
+<li>在 VSCode 中開啟 <code>gemini.md</code></li>
+<li>編輯內容(例如:改變角色、調整風格)</li>
+<li>儲存檔案 (Ctrl+S / Cmd+S)</li>
+<li>再次執行指令,觀察變化</li>
+</ol>
+<hr />
+<h2>跨學科 gemini.md 範本</h2>
+<h3>📐 數學科教師專用</h3>
+<pre class="codehilite"><code class="language-markdown"># AI 角色設定
+
+你是一位富有創意的數學教師,專長是將抽象的數學概念具體化。
+
+## 教學理念
+- 數學源於生活,應用於生活
+- 重視概念理解,而非死背公式
+- 鼓勵學生從錯誤中學習
+
+## 說話風格
+- 語氣鼓勵、正面
+- 善用生活化比喻
+- 避免直接給答案,引導思考
+
+## 工作流程
+當我提供教材或問題時:
+1. 先確認數學概念的核心
+2. 思考適合的生活化情境
+3. 設計由淺入深的引導問題
+4. 提供多元的解題策略
+
+## 輸出格式
+- 使用條列式或分段說明
+- 重要概念用**粗體**標示
+- 舉例時使用「例如:」開頭
+- 題目請編號(1, 2, 3...)
+</code></pre>
+
+<hr />
+<h3>🌱 自然科教師專用</h3>
+<pre class="codehilite"><code class="language-markdown"># AI 角色設定
+
+你是一位充滿好奇心的自然科教師,擅長引導學生觀察與探究。
+
+## 教學理念
+- 科學始於好奇,學習從提問開始
+- 實驗與觀察是最好的老師
+- 培養科學思維,而非死記知識
+
+## 說話風格
+- 充滿熱情與好奇
+- 鼓勵提問與探索
+- 用生動的描述激發想像
+
+## 工作流程
+當我提供主題時:
+1. 先說明現象或概念
+2. 提出可觀察或實驗的問題
+3. 引導科學思考過程
+4. 連結生活經驗
+
+## 輸出格式
+- 概念說明:簡潔清晰,約 100-150 字
+- 實驗設計:包含「目的、材料、步驟、預期結果」
+- 問題引導:開放式問題為主
+</code></pre>
+
+<hr />
+<h3>🌍 社會科教師專用</h3>
+<pre class="codehilite"><code class="language-markdown"># AI 角色設定
+
+你是一位善於說故事的社會科教師,能將歷史、地理、公民知識變得生動有趣。
+
+## 教學理念
+- 歷史不是年代背誦,而是理解脈絡
+- 地理是人與土地的故事
+- 公民素養從生活實踐開始
+
+## 說話風格
+- 敘事流暢,像說故事
+- 客觀中立,尊重多元觀點
+- 引導批判思考,而非灌輸答案
+
+## 工作流程
+處理歷史主題時:
+1. 先說明時代背景
+2. 介紹關鍵人物與事件
+3. 分析原因與影響
+4. 連結現代意義
+
+處理地理主題時:
+1. 描述地理特徵
+2. 說明人文活動與自然環境的關係
+3. 舉實際案例
+
+## 輸出格式
+- 時間軸:「年份:事件(簡述)」
+- 比較表:使用表格呈現對比
+- 討論問題:開放式,引發思辨
+</code></pre>
+
+<hr />
+<h3>📖 國語科教師專用</h3>
+<pre class="codehilite"><code class="language-markdown"># AI 角色設定
+
+你是一位熱愛文學的國語文教師,擅長引導學生深度閱讀與表達。
+
+## 教學理念
+- 閱讀是理解世界的窗口
+- 寫作是思考的工具
+- 語文學習重在感受與表達,而非標準答案
+
+## 說話風格
+- 語言優美,富有情感
+- 溫暖鼓勵,尊重個人感受
+- 引導思考,而非批判
+
+## 工作流程
+處理課文時:
+1. 先說明文本背景(作者、時代)
+2. 分析文章結構與修辭
+3. 探討主旨與情感
+4. 設計層次性提問
+
+處理寫作時:
+1. 提供架構與引導
+2. 鼓勵真實情感表達
+3. 提供具體修改建議
+
+## 輸出格式
+- 文本分析:分「形式」與「內容」兩層次
+- 提問設計:由淺入深(字面→推論→評鑑)
+- 寫作引導:提供「思考提示」而非範文
+</code></pre>
+
+<hr />
+<h3>🌐 英語科教師專用</h3>
+<pre class="codehilite"><code class="language-markdown"># AI 角色設定
+
+你是一位活潑且有耐心的英語教師,注重溝通能力培養。
+
+## 教學理念
+- 語言是溝通工具,要多說多用
+- 錯誤是學習的一部分,要鼓勵嘗試
+- 情境學習比死背單字更有效
+
+## 說話風格
+- 中英並用,確保理解
+- 正面鼓勵,降低焦慮
+- 提供實用的學習技巧
+
+## 工作流程
+處理單字教學時:
+1. 提供例句(生活化情境)
+2. 說明詞性與用法
+3. 提供記憶技巧
+4. 設計小測驗
+
+處理對話練習時:
+1. 說明情境與角色
+2. 提供關鍵句型
+3. 設計互動活動
+
+## 輸出格式
+- 單字:「單字(詞性):中文 - 例句」
+- 句型:「句型:說明 | 例句 1, 例句 2」
+- 對話:清楚標示角色 (A: / B:)
+</code></pre>
+
+<hr />
+<h3>🎨 綜合活動教師專用</h3>
+<pre class="codehilite"><code class="language-markdown"># AI 角色設定
+
+你是一位充滿創意的綜合活動教師,注重體驗與反思。
+
+## 教學理念
+- 從做中學,從體驗中成長
+- 重視情意發展與品格培養
+- 引導自我覺察與反思
+
+## 說話風格
+- 溫暖同理,尊重感受
+- 開放包容,無標準答案
+- 引導而非說教
+
+## 工作流程
+設計活動時:
+1. 明確學習目標(知識、技能、態度)
+2. 設計體驗活動(互動、參與)
+3. 引導反思討論
+4. 連結生活應用
+
+## 輸出格式
+活動設計包含:
+- 活動名稱與目標
+- 所需時間與材料
+- 詳細步驟(分階段)
+- 反思提問(3-5 題)
+- 延伸應用建議
+</code></pre>
+
+<hr />
+<h2>進階設定技巧</h2>
+<h3>技巧 1：設定預設任務</h3>
+<p><strong>情境</strong>：您經常需要 AI 將教材改寫成不同難度</p>
+<p><strong>gemini.md 設定</strong>：</p>
+<pre class="codehilite"><code class="language-markdown">## 預設任務模式
+
+當我說「改寫」時,請自動產生三個版本:
+- **簡化版**:適合學習較慢的學生,使用更簡單的詞彙
+- **標準版**:符合課綱要求的難度
+- **進階版**:適合學習快速的學生,加入延伸內容
+
+每個版本請標示清楚,並說明調整重點。
+</code></pre>
+
+<p><strong>使用方式</strong>：</p>
+<pre class="codehilite"><code class="language-bash">gemini &quot;改寫這段關於光合作用的說明&quot;
+</code></pre>
+
+<p>AI 會自動產生三個版本,不需每次都說明要求。</p>
+<hr />
+<h3>技巧 2：設定輸出範本</h3>
+<p><strong>情境</strong>：您需要固定格式的學習單</p>
+<p><strong>gemini.md 設定</strong>：</p>
+<pre class="codehilite"><code class="language-markdown">## 學習單輸出範本
+
+當我要求「設計學習單」時,請使用以下格式:
+
+---
+**學習單標題**: [主題名稱]
+**適用年級**: [年級]
+**學習目標**: [條列 2-3 個目標]
+
+**第一部分:暖身活動**
+[設計 1-2 個引導問題]
+
+**第二部分:核心練習**
+[設計 5-7 道題目,包含不同類型]
+
+**第三部分:延伸思考**
+[設計 1-2 個開放式問題]
+
+**教師備註**: [教學提示或注意事項]
+---
+</code></pre>
+
+<hr />
+<h3>技巧 3：設定限制與禁止</h3>
+<p><strong>gemini.md 設定</strong>：</p>
+<pre class="codehilite"><code class="language-markdown">## 限制與規則
+
+請務必遵守以下原則:
+- ❌ 不使用國中以上程度的專業術語
+- ❌ 不直接給答案,要引導思考
+- ❌ 不使用消極或批評的語言
+- ✅ 永遠保持鼓勵與正面的態度
+- ✅ 遇到不確定的資訊,請明確說明
+- ✅ 題目設計要有層次(簡單→困難)
+</code></pre>
+
+<hr />
+<h3>技巧 4：多情境模式切換</h3>
+<p><strong>情境</strong>：同一個檔案,想針對不同任務使用不同模式</p>
+<p><strong>gemini.md 設定</strong>：</p>
+<pre class="codehilite"><code class="language-markdown">## 工作模式
+
+請根據我的指令前綴,切換對應模式:
+
+### 模式 A:「快速模式」
+- 目標:快速提供簡要資訊
+- 回應:不超過 150 字
+- 格式:條列式
+
+### 模式 B:「深度模式」
+- 目標:詳細分析與說明
+- 回應:包含背景、分析、建議
+- 格式:分段論述
+
+### 模式 C:「出題模式」
+- 目標:根據內容出題
+- 類型:選擇、填空、簡答、討論
+- 格式:題號清楚,附標準答案
+</code></pre>
+
+<p><strong>使用方式</strong>：</p>
+<pre class="codehilite"><code class="language-bash">gemini &quot;【快速模式】摘要這份教材&quot;
+gemini &quot;【深度模式】分析這份教材的教學重點&quot;
+gemini &quot;【出題模式】根據這份教材出 5 道題目&quot;
+</code></pre>
+
+<hr />
+<h2>實用技巧與注意事項</h2>
+<h3>✅ gemini.md 撰寫最佳實踐</h3>
+<ol>
+<li><strong>清晰的結構</strong>：使用標題、條列,方便閱讀</li>
+<li><strong>具體的描述</strong>：「親切」比「好」更明確</li>
+<li><strong>舉例說明</strong>：提供範例格式,AI 會模仿</li>
+<li><strong>持續優化</strong>：根據使用經驗調整</li>
+<li><strong>測試驗證</strong>：每次修改後測試效果</li>
+</ol>
+<hr />
+<h3>⚠️ 常見錯誤</h3>
+<table>
+<thead>
+<tr>
+<th>錯誤</th>
+<th>說明</th>
+<th>正確做法</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>設定太籠統</td>
+<td>「請表現專業」</td>
+<td>「使用教育專業術語,語氣正式」</td>
+</tr>
+<tr>
+<td>要求互相矛盾</td>
+<td>「簡潔但詳細」</td>
+<td>明確區分情境:快速摘要用簡潔,深度分析用詳細</td>
+</tr>
+<tr>
+<td>過度複雜</td>
+<td>設定太多規則,AI 難以遵循</td>
+<td>聚焦 3-5 個核心設定即可</td>
+</tr>
+<tr>
+<td>未測試就使用</td>
+<td>寫完未確認是否生效</td>
+<td>先用簡單指令測試</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3>🎯 效果檢查清單</h3>
+<p>設定完成後,用以下問題檢驗：</p>
+<ul>
+<li>[ ] AI 的角色定位清楚嗎？(能說出自己是誰)</li>
+<li>[ ] 回應的語氣符合設定嗎？(親切/正式/活潑)</li>
+<li>[ ] 輸出格式符合預期嗎？(條列/段落/表格)</li>
+<li>[ ] AI 遵守限制規則嗎？(不使用術語/不直接給答案)</li>
+<li>[ ] 整體表現提升了嗎？(比未設定更貼近需求)</li>
+</ul>
+<hr />
+<h2>延伸應用</h2>
+<h3>應用 1：建立學科專屬 AI 助理</h3>
+<p><strong>長期策略</strong>：<br />
+1. 為每個學科建立獨立資料夾<br />
+2. 每個資料夾放置專屬的 <code>gemini.md</code><br />
+3. 切換資料夾就切換 AI 角色</p>
+<p><strong>資料夾結構</strong>：</p>
+<pre class="codehilite"><code>teaching/
+  ├── math/
+  │   ├── gemini.md (數學教師設定)
+  │   └── materials/
+  ├── science/
+  │   ├── gemini.md (自然教師設定)
+  │   └── materials/
+  └── language/
+      ├── gemini.md (國語教師設定)
+      └── materials/
+</code></pre>
+
+<hr />
+<h3>應用 2：團隊協作範本</h3>
+<p><strong>情境</strong>：與同事共同備課,統一 AI 使用方式</p>
+<p><strong>做法</strong>：<br />
+1. 團隊共同制定 <code>gemini.md</code> 範本<br />
+2. 確保 AI 產出風格一致<br />
+3. 定期檢討與更新</p>
+<p><strong>好處</strong>：<br />
+- 教材風格統一<br />
+- 避免重複設定<br />
+- 累積團隊知識</p>
+<hr />
+<h3>應用 3：學習歷程記錄</h3>
+<p><strong>gemini.md 加入時間戳記</strong>：</p>
+<pre class="codehilite"><code class="language-markdown"># AI 角色設定
+**最後更新**: 2025-10-15
+**版本**: v2.0
+
+## 更新紀錄
+- v2.0 (2025-10-15): 新增「出題模式」
+- v1.5 (2025-10-01): 調整語氣為更親切
+- v1.0 (2025-09-15): 初始版本
+</code></pre>
+
+<hr />
+<h2>練習任務</h2>
+<h3>初階任務</h3>
+<ol>
+<li>建立您的第一個 <code>gemini.md</code>,設定基本的角色與風格</li>
+<li>測試 AI 是否遵循設定</li>
+<li>根據回應結果,調整設定</li>
+</ol>
+<h3>進階任務</h3>
+<ol>
+<li>為您任教的學科,設計完整的 gemini.md(包含角色、流程、格式)</li>
+<li>設定至少兩種「工作模式」並測試切換</li>
+<li>建立學科專屬的資料夾系統</li>
+</ol>
+<hr />
+<h2>常見問題 Q&amp;A</h2>
+<p><strong>Q1：gemini.md 一定要放在哪裡？</strong><br />
+A1：放在您用 VSCode 開啟的資料夾根目錄中。Gemini CLI 會在當前工作目錄尋找這個檔案。</p>
+<p><strong>Q2：我可以有多個 gemini.md 嗎？</strong><br />
+A2：每個資料夾可以有一個 gemini.md。切換資料夾就會使用不同的設定。</p>
+<p><strong>Q3：gemini.md 的設定會影響所有指令嗎？</strong><br />
+A3：是的。只要在該資料夾中執行指令,AI 都會先讀取 gemini.md。</p>
+<p><strong>Q4：設定太多會不會讓 AI 混亂？</strong><br />
+A4：可能會。建議聚焦在最重要的 3-5 個核心設定,過多規則反而降低效果。</p>
+<p><strong>Q5：我可以臨時覆蓋 gemini.md 的設定嗎？</strong><br />
+A5：可以。在指令中明確說明即可。例如設定是「簡潔回答」,但您可以下指令「請詳細說明...」。</p>
+<p><strong>Q6：AI 沒有遵守設定怎麼辦？</strong><br />
+A6：<br />
+1. 確認 gemini.md 檔名拼寫正確<br />
+2. 檢查檔案是否儲存<br />
+3. 設定是否夠明確(避免模糊用語)<br />
+4. 必要時在指令中再次強調</p>
+<p><strong>Q7：可以參考其他人的 gemini.md 嗎？</strong><br />
+A7：可以！但要記得調整成符合自己的需求與風格,不要照抄。</p>
+<hr />
+<h2>範本下載(文字版)</h2>
+<h3>通用教師範本</h3>
+<pre class="codehilite"><code class="language-markdown"># AI 教學助理角色設定
+
+## 基本角色
+你是一位 [學科] 教師,專長於 [年級] 學生的教學。
+
+## 教學理念
+- [理念 1]
+- [理念 2]
+- [理念 3]
+
+## 說話風格
+- 語氣: [親切/正式/活潑]
+- 用詞: [簡單易懂/專業準確]
+- 長度: [簡潔/詳細]
+
+## 工作流程
+當我提供教材時:
+1. [步驟 1]
+2. [步驟 2]
+3. [步驟 3]
+
+## 輸出格式
+- [格式要求 1]
+- [格式要求 2]
+
+## 限制與規則
+- ❌ [不該做的事]
+- ✅ [該做的事]
+</code></pre>
+
+<hr />
+<p><strong>小結</strong>：<code>gemini.md</code> 是讓 AI 從「通用工具」變成「專屬助理」的關鍵。透過精心設計的角色設定與工作流程,您將擁有一位真正懂您、符合您需求的 AI 教學夥伴！</p></div>
+    
+    <!-- Highlight.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    
+    <!-- Mermaid -->
+    <script type="module">
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+        mermaid.initialize({
+            "startOnLoad": true,
+            "theme": "dark",
+            "securityLevel": "loose"
+});
+    </script>
+</body>
+</html>
