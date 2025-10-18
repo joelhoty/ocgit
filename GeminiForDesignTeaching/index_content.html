@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gemini 設計教學課程目錄</title>
+
+    <!-- CSS 框架 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/dark.min.css">
+
+    <style>
+        body {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 50px;
+            padding: 30px 0;
+            border-bottom: 2px solid #4a9eff;
+        }
+
+        .header h1 {
+            margin-bottom: 10px;
+            color: #4a9eff;
+        }
+
+        .header p {
+            color: #888;
+            font-size: 1.1em;
+        }
+
+        .course-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .course-card {
+            background: #1e1e1e;
+            border: 1px solid #3e3e3e;
+            border-radius: 12px;
+            padding: 25px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .course-card:hover {
+            transform: translateY(-5px);
+            border-color: #4a9eff;
+            box-shadow: 0 5px 20px rgba(74, 158, 255, 0.2);
+        }
+
+        .course-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 5px;
+            height: 100%;
+            background: linear-gradient(to bottom, #4a9eff, #2d7dd2);
+        }
+
+        .unit-badge {
+            display: inline-block;
+            background: #2d2d2d;
+            color: #4a9eff;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .course-card h3 {
+            margin: 15px 0;
+            color: #fff;
+            font-size: 1.3em;
+        }
+
+        .course-card p {
+            color: #aaa;
+            line-height: 1.6;
+            margin: 15px 0;
+        }
+
+        .course-card ul {
+            list-style: none;
+            padding: 0;
+            margin: 15px 0;
+        }
+
+        .course-card li {
+            color: #bbb;
+            padding: 5px 0;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .course-card li::before {
+            content: '▹';
+            position: absolute;
+            left: 0;
+            color: #4a9eff;
+            font-weight: bold;
+        }
+
+        .view-link {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 10px 20px;
+            background: #4a9eff;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 6px;
+            transition: background 0.3s ease;
+            font-weight: bold;
+        }
+
+        .view-link:hover {
+            background: #2d7dd2;
+            text-decoration: none;
+        }
+
+        .supplement-card {
+            background: #252525;
+            border-left: 3px solid #ff9f43;
+        }
+
+        .supplement-card .unit-badge {
+            background: #3d2d1f;
+            color: #ff9f43;
+        }
+
+        .supplement-card::before {
+            background: linear-gradient(to bottom, #ff9f43, #d17d2b);
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 50px;
+            padding: 20px;
+            color: #666;
+            border-top: 1px solid #3e3e3e;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Gemini 設計教學課程</h1>
+        <p>AI 工具應用於設計教學的完整學習路徑</p>
+    </div>
+
+    <div class="course-grid">
+        <!-- Unit 01 -->
+        <div class="course-card">
+            <span class="unit-badge">單元一</span>
+            <h3>觀念暖身與初體驗 - 我的第一個 AI 生成教材</h3>
+            <p>從零開始認識 AI，學習如何撰寫有效的提示詞，並使用 Google AI Studio 生成教學素材。</p>
+            <ul>
+                <li>理解 AI 的基本運作原理與定位</li>
+                <li>學會撰寫有效的提示詞 (Prompt)</li>
+                <li>使用 Google AI Studio 生成教學素材</li>
+                <li>掌握從模糊問題到精準指令的優化技巧</li>
+            </ul>
+            <a href="unit01_first_ai_material_b02.html" class="view-link">查看教材 →</a>
+        </div>
+
+        <!-- Unit 02 -->
+        <div class="course-card">
+            <span class="unit-badge">單元二</span>
+            <h3>讓教材更生動 - AI 圖片詠唱師</h3>
+            <p>深入學習 AI 圖片生成技術，掌握圖片生成的提示詞技巧，為教材增添視覺吸引力。</p>
+            <ul>
+                <li>掌握 AI 圖片生成的核心技術</li>
+                <li>學習有效的圖片提示詞技巧</li>
+                <li>運用多種 AI 圖片工具</li>
+                <li>為教學內容創作視覺素材</li>
+            </ul>
+            <a href="unit02_ai_image_generation_b02.html" class="view-link">查看教材 →</a>
+        </div>
+
+        <!-- Unit 03 -->
+        <div class="course-card">
+            <span class="unit-badge">單元三</span>
+            <h3>打造您的專屬知識庫 - 備課神器 NotebookLM</h3>
+            <p>學習使用 NotebookLM 建立個人化知識庫，提升備課效率，讓 AI 成為您的智能教學助理。</p>
+            <ul>
+                <li>建立個人化的 AI 知識庫</li>
+                <li>上傳與管理各類教學資料</li>
+                <li>快速檢索與整理教學內容</li>
+                <li>生成課程摘要與教學問答</li>
+            </ul>
+            <a href="unit03_notebooklm_b02.html" class="view-link">查看教材 →</a>
+        </div>
+
+        <!-- Unit 04 -->
+        <div class="course-card">
+            <span class="unit-badge">單元四</span>
+            <h3>觀念升級 - 當 AI 遇上你的電腦</h3>
+            <p>深入理解本地 AI 的概念與優勢，學習如何在自己的電腦上部署和使用 AI 模型。</p>
+            <ul>
+                <li>理解本地 AI 與雲端 AI 的差異</li>
+                <li>掌握本地 AI 的安裝與配置</li>
+                <li>學習離線使用 AI 工具</li>
+                <li>保護教學資料的隱私安全</li>
+            </ul>
+            <a href="unit04_local_ai_setup_b02.html" class="view-link">查看教材 →</a>
+        </div>
+
+        <!-- Unit 04 Supplement -->
+        <div class="course-card supplement-card">
+            <span class="unit-badge">單元四補充</span>
+            <h3>進階章節：本地 AI 深度應用</h3>
+            <p>單元四的進階內容，涵蓋更深入的本地 AI 技術應用與實作技巧。</p>
+            <ul>
+                <li>進階模型調校技術</li>
+                <li>客製化 AI 應用開發</li>
+                <li>效能優化與故障排除</li>
+                <li>整合多種 AI 工具</li>
+            </ul>
+            <a href="unit04_supplement_additions.html" class="view-link">查看補充教材 →</a>
+        </div>
+
+        <!-- Unit 05 -->
+        <div class="course-card">
+            <span class="unit-badge">單元五</span>
+            <h3>個人化你的 AI - 初探 gemini.md</h3>
+            <p>學習使用 gemini.md 客製化您的 AI 助理，讓 AI 更符合您的教學風格與需求。</p>
+            <ul>
+                <li>認識 gemini.md 的功能與應用</li>
+                <li>建立個人化的 AI 設定檔</li>
+                <li>調整 AI 的回應風格與行為</li>
+                <li>打造專屬的教學 AI 助理</li>
+            </ul>
+            <a href="unit05_gemini_md_customization_b01.html" class="view-link">查看教材 →</a>
+        </div>
+
+        <!-- Unit 06 -->
+        <div class="course-card">
+            <span class="unit-badge">單元六</span>
+            <h3>實戰演練 - AI 幫我讀檔案、寫教案</h3>
+            <p>綜合運用前面學到的技能，讓 AI 協助您處理教學文件、撰寫教案，提升整體教學效率。</p>
+            <ul>
+                <li>使用 AI 分析與整理教學文件</li>
+                <li>自動生成結構化教案內容</li>
+                <li>批次處理多個教學檔案</li>
+                <li>建立完整的教學工作流程</li>
+            </ul>
+            <a href="unit06_practical_lesson_plan_b02.html" class="view-link">查看教材 →</a>
+        </div>
+
+        <!-- Unit 06 Supplement -->
+        <div class="course-card supplement-card">
+            <span class="unit-badge">單元六補充</span>
+            <h3>進階應用：AI 教學實戰技巧</h3>
+            <p>單元六的進階內容，提供更多實用的 AI 教學應用案例與技巧。</p>
+            <ul>
+                <li>複雜教案的 AI 輔助設計</li>
+                <li>多媒體教材整合應用</li>
+                <li>教學評量的 AI 協助</li>
+                <li>課程管理自動化技巧</li>
+            </ul>
+            <a href="unit06_supplement_additions.html" class="view-link">查看補充教材 →</a>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>Gemini 設計教學課程 | AI 工具應用完整學習路徑</p>
+        <p>共 6 個單元 + 2 個補充教材 | 從基礎到進階的完整學習體驗</p>
+    </div>
+</body>
+</html>
