@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>literacy_b02</title>
+    
+    <!-- CSS 框架 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/dark.min.css">
+    
+    <!-- 代碼高亮 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/base16/darcula.min.css">
+    
+    <!-- 自定義樣式 -->
+    <style>
+        
+                body {
+                    max-width: 900px;
+                    margin: 0 auto;
+                    padding: 20px;
+                }
+                /* 提升代码块对比度 */
+                pre {
+                    background: #1e1e1e !important;
+                    border: 1px solid #3e3e3e;
+                }
+                pre code {
+                    background: #1e1e1e !important;
+                }
+                code {
+                    background: #2d2d2d !important;
+                }
+                /* 引用块对比度 */
+                blockquote {
+                    background: #2d2d2d;
+                    border-left: 4px solid #4a9eff;
+                }
+            
+        
+        /* 通用代碼塊樣式 */
+        pre code {
+            display: block;
+            padding: 1.5em;
+            border-radius: 8px;
+            overflow-x: auto;
+            line-height: 1.6;
+        }
+
+        /* Mermaid 圖表樣式 */
+        
+        .mermaid {
+            margin: 2em 0;
+            padding: 1.5em;
+            text-align: center;
+            border-radius: 8px;
+        }
+        
+        .mermaid {
+            background: #2c3034;
+            border: 1px solid #444;
+        }
+            
+        
+        /* 響應式調整 */
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            .container, .markdown-body, .latex-body, .window-body, .nes-container {
+                padding: 15px;
+            }
+            pre code {
+                padding: 1em;
+            }
+        }
+        
+        
+    </style>
+</head>
+<body>
+    <div class="container"><!-- Path: AI_in_Education/GeminiForDesignTeaching | Timestamp: 2025-10-20 11:50:00 | Version: b02 -->
+<h1>資訊科技素養與媒體素養：在生成式 AI 時代的挑戰、機會與實踐</h1>
+<h2>前言：當「眼見為憑」已成過去</h2>
+<p>在數位時代，資訊科技素養與媒體素養是每位公民的必備能力。前者強調有效尋找、評估與運用資訊的能力；後者則著重於批判性地解讀、分析媒體訊息。然而，生成式 AI (Generative AI) 的崛起，以前所未有的方式撼動了這兩大素養的根基。當文字、圖片、甚至影片都能在數秒內被「創造」出來時，我們賴以信任的「眼見為憑」已不再可靠，這不僅加劇了現有的假訊息挑戰，也對公眾信任造成侵蝕 (Ofcom, 2024)。</p>
+<p>本文件旨在深入探討生成式 AI 對資訊與媒體素養帶來的衝擊，並結合本課程所學，提出在教學現場中應對這些挑戰的具體策略與倫理考量，以培養學生具備駕馭此新興科技的數位公民意識。</p>
+<hr />
+<h2>第一部分：網路時代的資訊科技與媒體素養</h2>
+<p>在 AI 普及之前，我們早已面臨數位資訊環境的挑戰，這些挑戰是理解 AI 衝擊的基礎。</p>
+<h3>1.1 資訊科技素養的核心議題</h3>
+<p>傳統的資訊科技素養，核心在於<strong>尋找 (Find)、評估 (Evaluate) 與應用 (Apply)</strong> 資訊。然而，網路的普及帶來了幾項挑戰：</p>
+<ul>
+<li><strong>資訊過載 (Information Overload)</strong>：如何在海量資料中找到可信、相關的內容？</li>
+<li><strong>搜尋引擎的侷限</strong>：搜尋結果可能受到商業利益、演算法偏見的影響，排名第一的未必是最好的答案。</li>
+<li><strong>過濾氣泡 (Filter Bubbles) 與同溫層效應 (Echo Chambers)</strong>：個人化的演算法讓我們只看到自己認同的觀點，限縮了視野，加劇了觀點的極化。</li>
+</ul>
+<h3>1.2 媒體素養的核心議題</h3>
+<p>媒體素養的核心是<strong>批判性解讀 (Critical Analysis)</strong>。傳統挑戰包括：</p>
+<ul>
+<li><strong>假訊息 (Misinformation) 與惡意訊息 (Disinformation)</strong>：前者是無意間傳播的錯誤資訊，後者是刻意製造的謊言，兩者都嚴重影響公眾認知 (Al-Fanar Media, 2023)。</li>
+<li><strong>媒體再現 (Media Representation)</strong>：媒體如何呈現特定群體、事件，可能加深刻板印象。</li>
+<li><strong>守門人 (Gatekeeper) 的式微</strong>：傳統媒體的編輯審核功能被社群平台取代，人人皆可是媒體，但內容品質參差不齊。</li>
+</ul>
+<hr />
+<h2>第二部分：因應生成式 AI 的素養新挑戰</h2>
+<p>生成式 AI 不僅放大了上述挑戰，更創造了全新的議題。我們的素養能力需要「升級」，以應對這個由 AI 共同建構的新資訊世界。</p>
+<h3>2.1 生成式 AI 時代的資訊科技素養：從「搜尋」到「詠唱與驗證」</h3>
+<p>AI 改變了我們獲取資訊的模式。資訊素養的核心從「如何找到答案」轉變為「<strong>如何提出好問題，並驗證 AI 給出的答案</strong>」。</p>
+<ul>
+<li>
+<p><strong>提示詞工程 (Prompt Engineering) 的重要性</strong>：<br />
+  如同本課程單元一所學，向 AI 提問的品質，直接決定了答案的品質。一個好的提問者，需要具備<strong>明確定義問題、提供足夠脈絡、設定輸出限制</strong>的能力。這本身就是一種新的、需要策略性提問的資訊素養 (American Psychological Association, 2025; Lo, 2023)。</p>
+</li>
+<li>
+<p><strong>對「幻覺 (Hallucination)」的警覺</strong>：<br />
+  AI 可能會「一本正經地胡說八道」，捏造不存在的資訊、數據或來源。因此，<strong>交叉比對、事實查核 (Fact-checking)</strong> 變得比以往更加重要。我們不能將 AI 的回答直接當作最終事實，而應視其為需要驗證的起點 (Connections Academy, n.d.)。</p>
+</li>
+<li>
+<p><strong>理解 AI 的偏見 (Bias)</strong>：<br />
+  AI 模型是從大量的網路資料中學習的，這些資料本身就充滿了人類社會的偏見。因此，AI 的回答可能複製甚至放大這些偏見。我們需要具備<strong>識別潛在偏見、並批判性評估其觀點</strong>的能力，並主動提問：「這個系統是誰創建的？缺少了誰的觀點？」(EdWeek, 2023)。</p>
+</li>
+</ul>
+<h3>2.2 生成式 AI 時代的媒體素養：從「解讀」到「鑑識」</h3>
+<p>當媒體內容可以被輕易「生成」，媒體素養的核心從「解讀訊息意涵」擴展至「<strong>鑑識內容的真實性</strong>」。</p>
+<ul>
+<li>
+<p><strong>合成媒體 (Synthetic Media) 的挑戰</strong>：<br />
+  AI 生成的圖片、Deepfake 影片，其逼真程度已遠超傳統的影像處理軟體。這使得辨識真偽的難度大幅提升。學生需要學習新的「視覺識讀」技巧，以應對身分盜竊、網路霸凌和政治宣傳等風險 (AI for Education, 2024)。</p>
+</li>
+<li>
+<p><strong>內容來源的模糊化</strong>：<br />
+  一篇文章、一張圖片的創作者是誰？是人類、AI，還是人機協作？這使得評估訊息的可信度與作者意圖變得更加複雜。</p>
+</li>
+<li>
+<p><strong>從消費者到「負責任的創造者」</strong>：<br />
+  如同本課程單元二所學，學生也能輕易使用 AI 生成內容。媒體素養不再只是被動接收，更包含<strong>身為創造者的倫理責任</strong>：不製造假訊息、不侵害他人權益，並理解其創作可能帶來的社會影響。</p>
+</li>
+</ul>
+<hr />
+<h2>第三部分：本課程中的相關議題與實踐策略</h2>
+<p>在本課程中，我們不僅學習如何使用 AI，更要學習如何負責任地使用。以下針對三大核心議題，提出具體討論與實踐策略。</p>
+<h3>3.1 資料來源與版權 (Data Sources &amp; Copyright)</h3>
+<p><strong>議題核心</strong>：AI 的知識從何而來？我們使用 AI 生成的內容，是否侵犯了他人的版權？</p>
+<ul>
+<li>
+<p><strong>AI 的學習基礎與合理使用爭議</strong>：<br />
+  大型語言模型透過爬取巨量的網路公開資料（包含受版權保護的文本、圖片）進行訓練。這引發了關於此舉是否構成「合理使用 (Fair Use)」的激烈法律與倫理辯論，目前仍有多起相關訴訟正在進行中 (JDSupra, 2024)。</p>
+</li>
+<li>
+<p><strong>AI 生成內容的所有權</strong>：</p>
+</li>
+<li>根據美國著作權局 (U.S. Copyright Office) 的現行指導方針，完全由 AI 自動生成的內容<strong>不受版權保護</strong>。著作權的保護資格取決於人類作者是否提供了「足夠的創意輸入與控制」，而非僅僅下達提示詞 (U.S. Copyright Office, 2023)。</li>
+<li>
+<p>這意味著，若師生僅使用簡單提示詞生成的內容，可能不擁有其版權。</p>
+</li>
+<li>
+<p><strong>教學實踐策略</strong>：</p>
+</li>
+<li><strong>建立正確觀念</strong>：應告知學生，AI 生成的內容並非「憑空出現」，而是基於現有資料的重組與再創造。</li>
+<li><strong>強調「透明」與「註明」</strong>：當學術作業或報告允許使用 AI 時，應要求學生明確註明。根據 APA 指南，建議在方法論或附錄中描述使用了哪個 AI 工具及如何使用，並將完整的對話紀錄放在附錄中以求透明 (American Psychological Association, 2023)。</li>
+<li><strong>鼓勵轉化而非照單全收</strong>：引導學生將 AI 生成的內容視為「草稿」或「靈感來源」，並在此基礎上進行修改、擴充，加入自己的觀點與分析，最終產出屬於自己的原創作品。</li>
+<li><strong>遵守授權條款</strong>：提醒學生在使用特定 AI 工具前，應查閱其服務條款，了解生成內容的使用範圍（例如是否可用於商業用途）。</li>
+</ul>
+<h3>3.2 影像真假的識別 (Image Authenticity)</h3>
+<p><strong>議題核心</strong>：面對越來越逼真的 AI 生成圖片與 Deepfake 影片，我們如何培養學生的「火眼金睛」？</p>
+<ul>
+<li><strong>AI 影像的常見破綻</strong>：雖然 AI 進步神速，但在細節上仍常出錯。引導學生從以下幾個方面進行「慢思考」與觀察 (AI for Education, 2024; SchoolAI, 2025)：</li>
+<li><strong>物理與環境不一致</strong>：光影方向是否統一？背景中的物體或文字是否扭曲、模糊或不合 logique？</li>
+<li><strong>人體結構的異常</strong>：檢查手指和牙齒的數量與形狀、不自然的關節結構、不對稱的耳環或眼鏡。</li>
+<li><strong>臉部細節</strong>：皮膚是否過於光滑完美？眨眼頻率是否不正常？嘴唇運動是否與聲音完全同步？</li>
+<li>
+<p><strong>不自然的混合體</strong>：物體之間是否有不自然的融合或過渡？</p>
+</li>
+<li>
+<p><strong>教學實踐策略</strong>：</p>
+</li>
+<li><strong>舉辦「真假猜猜看」活動</strong>：定期在課堂上展示人類拍攝與 AI 生成的影像，讓學生分組討論、找出破綻，並說明判斷依據，培養觀察力。</li>
+<li><strong>教導使用查證工具</strong>：<ul>
+<li><strong>反向圖片搜尋 (Reverse Image Search)</strong>：將可疑圖片上傳至 Google Lens 或 TinEye，查找其原始來源與發布脈絡 (EdWeek, 2024)。</li>
+<li><strong>AI 檢測工具</strong>：介紹線上檢測工具，並同時說明其準確率並非 100%，只能作為參考，不能完全依賴。</li>
+</ul>
+</li>
+<li><strong>強調「情境」與「來源」的重要性 (SIFT 框架)</strong>：一張圖片的真實性，不只在於其本身。引導學生查證：<strong>S</strong>top (停止), <strong>I</strong>nvestigate the source (調查來源), <strong>F</strong>ind better coverage (尋找更好的報導), <strong>T</strong>race claims (追溯原始脈絡)。</li>
+<li><strong>建立健康心態</strong>：面對無法立即辨識的內容，應抱持「<strong>暫時懷疑，多方查證</strong>」的態度，而非輕易相信或轉發。</li>
+</ul>
+<h3>3.3 生成內容的使用倫理 (Ethics of Generated Content)</h3>
+<p><strong>議題核心</strong>：我們應該在何時、以何種方式使用 AI？學術誠信的界線在哪裡？</p>
+<ul>
+<li>
+<p><strong>學術誠信的挑戰</strong>：學生將 AI 生成的報告直接當成自己的作業繳交，這對學習的意義構成了根本性的挑戰，可能削弱學生的批判性思維與寫作能力 (Cornell University, n.d.)。</p>
+</li>
+<li>
+<p><strong>偏見與刻板印象的再製</strong>：若未經批判性思考，直接使用 AI 生成的內容，可能無意中傳播了模型本身存在的偏見（例如對特定職業、性別、種族的刻板印象）。</p>
+</li>
+<li>
+<p><strong>創造有害內容的風險</strong>：AI 可能被用於製造網路霸凌的言論、惡意的假訊息或歧視性內容。</p>
+</li>
+<li>
+<p><strong>教學實踐策略</strong>：</p>
+</li>
+<li><strong>制定清晰的 AI 使用規範</strong>：<ul>
+<li><strong>允許的範圍</strong>：例如，允許使用 AI 進行腦力激盪、文法潤飾、尋找初步資料、程式碼除錯。</li>
+<li><strong>禁止的範圍</strong>：例如，禁止將 AI 生成的完整文章作為個人作業提交。</li>
+<li><strong>必須註明的場合</strong>：在報告或作業中，必須明確標示 AI 的使用情況。</li>
+</ul>
+</li>
+<li><strong>重新設計評量方式</strong>：<ul>
+<li>減少純知識記憶性的作業，增加<strong>強調過程、思辨、實作與口頭報告</strong>的評量。</li>
+<li>要求學生不僅提交成果，更要提交一份「反思報告」，說明<strong>創作過程</strong>以及<strong>如何使用 AI 作為輔助工具</strong>。</li>
+</ul>
+</li>
+<li><strong>課堂倫理思辨</strong>：<ul>
+<li>舉辦討論會，探討「AI 寫詩，作者是誰？」、「使用 AI 繪圖參加比賽是否公平？」、「Deepfake 技術的應用界線？」等倫理議題。</li>
+<li>引導學生思考 AI 技術對社會的長遠影響，培養負責任的數位公民態度。</li>
+</ul>
+</li>
+<li><strong>善用本機 AI 工具</strong>：如本課程單元四、五所介紹的 VSCode + Gemini CLI 與 <code>gemini.md</code> 設定，可以將 AI 的使用限定在特定的資料範圍內，並透過角色設定引導 AI 產出更符合教育倫理的內容，降低風險。</li>
+</ul>
+<hr />
+<h2>結論：擁抱 AI，更要深化素養</h2>
+<p>生成式 AI 是一把雙面刃。與其禁止，不如積極引導。身為教育者，我們的任務是幫助下一代建立駕馭這項強大工具所需的<strong>批判性思維、倫理意識與數位韌性</strong> (UNESCO, 2023)。</p>
+<p>這意味著，資訊與媒體素養教育的重點，必須從過去的「防弊」思維，轉向更積極的「賦能」思維：不僅要教會學生如何分辨假象，更要教會他們如何與 AI 協作，成為一個更具創造力、更負責任的資訊創造者與傳播者。最終目標是培養出能夠明智地、合乎道德地使用 AI，並為社會做出積極貢獻的數位公民。</p>
+<hr />
+<h2>參考文獻 (APA 7th)</h2>
+<p>AI for Education. (2024, October 21). <em>Uncovering Deepfakes: Classroom Guide</em>. AI for Education. https://www.aiforeducation.io/resources/uncovering-deepfakes-classroom-guide</p>
+<p>Al-Fanar Media. (2023, May 22). <em>Media Literacy and Critical Thinking ‘Key to Countering Disinformation’</em>. https://www.al-fanarmedia.org/2023/05/media-literacy-and-critical-thinking-key-to-countering-disinformation/</p>
+<p>American Psychological Association. (2023). <em>How to cite ChatGPT</em>. APA Style. https://apastyle.apa.org/blog/how-to-cite-chatgpt</p>
+<p>American Psychological Association. (2025, June 3). <em>AI literacy: Why every teen needs to learn this essential skill</em>. https://www.apa.org/topics/artificial-intelligence/literacy-essential-skill</p>
+<p>Connections Academy. (n.d.). <em>Fact-Checking in the Age of AI: A New Frontier for Information Literacy</em>. https://www.connectionsacademy.com/support/resources/article/fact-checking-in-the-age-of-ai-a-new-frontier-for-information-literacy/</p>
+<p>Cornell University. (n.d.). <em>Generative Artificial Intelligence: Academic Integrity</em>. The Center for Teaching Innovation. https://teaching.cornell.edu/generative-artificial-intelligence/academic-integrity-generative-artificial-intelligence</p>
+<p>EdWeek. (2023, September 19). <em>How to Teach About AI and Algorithmic Bias</em>. https://www.edweek.org/technology/how-to-teach-about-ai-and-algorithmic-bias/2023/09</p>
+<p>EdWeek. (2024, June 24). <em>How to Teach Kids to Spot AI Manipulation</em>. https://www.edweek.org/technology/how-to-teach-kids-to-spot-ai-manipulation/2024/06</p>
+<p>JDSupra. (2024, March 12). <em>Generative AI and Copyright: Fair Use</em>. https://www.jdsupra.com/legalnews/generative-ai-and-copyright-fair-use-2720533/</p>
+<p>Lo, L. S. (2023). The CLEAR path: A framework for enhancing information literacy through prompt engineering. <em>Journal of Academic Librarianship</em>, <em>49</em>(4), 102720. https://doi.org/10.1016/j.acalib.2023.102720</p>
+<p>Ofcom. (2024, November 13). <em>Future Technology and Media Literacy: Applications of Generative AI</em>. https://www.ofcom.org.uk/research-and-data/media-literacy-research/reports/future-technology-and-media-literacy</p>
+<p>SchoolAI. (2025, July 15). <em>Teaching media literacy in the age of deepfakes and generative AI</em>. https://www.schoolai.com/post/teaching-media-literacy-in-the-age-of-deepfakes-and-generative-ai</p>
+<p>UNESCO. (2023). <em>Guidance for generative AI in education and research</em>. https://unesdoc.unesco.org/ark:/48223/pf0000386693</p>
+<p>U.S. Copyright Office. (2023). <em>Copyright Registration Guidance: Works Containing Material Generated by Artificial Intelligence</em>. Federal Register, 88(59), 16190-16194. https://www.federalregister.gov/documents/2023/03/16/2023-05321/copyright-registration-guidance-works-containing-material-generated-by-artificial-intelligence</p></div>
+    
+    <!-- Highlight.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    
+    <!-- Mermaid -->
+    <script type="module">
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+        mermaid.initialize({
+            "startOnLoad": true,
+            "theme": "dark",
+            "securityLevel": "loose"
+});
+    </script>
+</body>
+</html>

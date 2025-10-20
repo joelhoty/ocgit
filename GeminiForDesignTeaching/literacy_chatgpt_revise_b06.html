@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>literacy_chatgpt_revise_b06</title>
+    
+    <!-- CSS 框架 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/dark.min.css">
+    
+    <!-- 代碼高亮 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/base16/darcula.min.css">
+    
+    <!-- 自定義樣式 -->
+    <style>
+        
+                body {
+                    max-width: 900px;
+                    margin: 0 auto;
+                    padding: 20px;
+                }
+                /* 提升代码块对比度 */
+                pre {
+                    background: #1e1e1e !important;
+                    border: 1px solid #3e3e3e;
+                }
+                pre code {
+                    background: #1e1e1e !important;
+                }
+                code {
+                    background: #2d2d2d !important;
+                }
+                /* 引用块对比度 */
+                blockquote {
+                    background: #2d2d2d;
+                    border-left: 4px solid #4a9eff;
+                }
+            
+        
+        /* 通用代碼塊樣式 */
+        pre code {
+            display: block;
+            padding: 1.5em;
+            border-radius: 8px;
+            overflow-x: auto;
+            line-height: 1.6;
+        }
+
+        /* Mermaid 圖表樣式 */
+        
+        .mermaid {
+            margin: 2em 0;
+            padding: 1.5em;
+            text-align: center;
+            border-radius: 8px;
+        }
+        
+        .mermaid {
+            background: #2c3034;
+            border: 1px solid #444;
+        }
+            
+        
+        /* 響應式調整 */
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            .container, .markdown-body, .latex-body, .window-body, .nes-container {
+                padding: 15px;
+            }
+            pre code {
+                padding: 1em;
+            }
+        }
+        
+        
+    </style>
+</head>
+<body>
+    <div class="container"><!-- Path: AI_in_Education/GeminiForDesignTeaching | Timestamp: 2025-10-20 11:55:00 | Version: b06 -->
+<h1>資訊科技素養與媒體素養：在生成式 AI 時代的挑戰、機會與實踐</h1>
+<h2>前言</h2>
+<p>在生成式人工智慧 (Generative AI) 快速發展的時代，資訊科技素養與媒體素養被廣泛認為是數位時代公民應具備的核心能力 ¹。隨著 AI 技術能在數秒內生成文本、影像等內容，人們獲取與傳播資訊的方式產生劇變。同時，社群媒體與數位平台的普及導致虛假資訊和不實內容氾濫，對公眾的判斷力構成嚴峻挑戰 (American Psychological Association, 2024)。因此，培養資訊科技素養與媒體素養成為當前教育和社會的重要課題，旨在讓公民能批判性地思考資訊來源、內容及其意圖，以因應生成式 AI 帶來的挑戰與機會。</p>
+<blockquote>
+<p>According to international development trends, information literacy and media literacy are both regarded as core literacies that citizens should possess in the digital age ¹</p>
+</blockquote>
+<h2>資訊科技素養的意涵</h2>
+<p>「資訊科技素養」涵蓋了個人有效使用數位科技工具來搜尋、管理、分析及創造資訊的能力 (International ICT Literacy Panel, 2002)。美國國際資訊通信科技素養小組在《數位轉型：ICT 素養框架報告》中將資訊素養定義為：能夠「辨識何時需要資訊，並有效地搜尋、評估與運用所需資訊的能力」²。這一定義強調了在知識社會中，個人不僅要懂得運用科技工具，更要具備批判性思考以解決問題的能力 (Manuel, 2002)。此外，資訊科技素養還包含對資訊倫理的理解與實踐，確保在使用科技時遵循學術誠信與版權規範。</p>
+<blockquote>
+<p>Information literacy is defined as the ability “to recognize when information is needed and have the ability to locate, evaluate, and use effectively the needed information" ².</p>
+</blockquote>
+<h2>媒體素養的意涵</h2>
+<p>媒體素養通常指個人接觸、理解、評估以及創作各類媒體內容的能力。在國際媒體素養教育者協會 (NAMLE) 的定義中，媒體素養是「能夠使用各種傳播形式進行接取、分析、評估、創作和行動的能力」(NAMLE, 2007) ³。這意味著媒體素養不僅關乎閱讀理解媒體訊息，也涉及批判性地分析媒體背後的意識形態和商業意圖，以及積極參與媒體創作與分享。現階段媒體素養被視為與資訊素養和批判性思考密不可分 (Manuel, 2002)，因為在數位環境中，資訊與媒體的界線日漸模糊，個體需要同時具備判讀資訊與媒體內容真偽的能力。</p>
+<blockquote>
+<p>Media literacy is "the ability to access, analyze, evaluate, create, and act using all forms of communication" ³.</p>
+</blockquote>
+<h3>核心概念比較：資訊科技素養 vs. 媒體素養</h3>
+<p>雖然兩者在數位時代經常被視為一體，但其核心焦點與技能仍有區別。透過下表，我們可以更清晰地理解其異同：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">特徵 (Feature)</th>
+<th style="text-align: left;">資訊科技素養 (Information Technology Literacy)</th>
+<th style="text-align: left;">媒體素養 (Media Literacy)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>核心焦點 (Core Focus)</strong></td>
+<td style="text-align: left;">資訊的取用、評估與有效運用</td>
+<td style="text-align: left;">媒體訊息的解讀、批判與創作</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>主要問題 (Key Question)</strong></td>
+<td style="text-align: left;">"我如何找到並使用準確的資訊？"</td>
+<td style="text-align: left;">"這個訊息是誰製作的？為什麼？它想傳達什麼？"</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>關鍵技能 (Key Skills)</strong></td>
+<td style="text-align: left;">搜尋策略、資料庫使用、事實查核、引用與學術倫理</td>
+<td style="text-align: left;">批判性分析、意識形態辨識、符號解讀、影像敘事、內容創作</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>主要範疇 (Primary Scope)</strong></td>
+<td style="text-align: left;">學術研究、問題解決、數據管理</td>
+<td style="text-align: left;">新聞、廣告、社群媒體、影視娛樂</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>與AI的關係 (Relation to AI)</strong></td>
+<td style="text-align: left;">利用AI作為高效的資訊獲取與整理工具</td>
+<td style="text-align: left;">批判性檢視AI生成的內容、辨識深偽與演算法偏見</td>
+</tr>
+</tbody>
+</table>
+<h2>生成式 AI 時代的挑戰</h2>
+<p>生成式 AI 技術的崛起為資訊環境帶來諸多挑戰，其中最主要的是大量自動生成的內容可能加劇資訊真偽難辨的問題。例如，AI 模型生成之文本有時包含錯誤或虛構資訊 (所謂「幻覺」現象)，這使得讀者更難判斷資訊的可靠性。此外，人工智慧生成的深偽影像與影片，也讓假新聞與陰謀論更容易以假亂真地傳播。在此背景下，許多年輕族群在面對海量資訊時難以分辨真偽。美國心理學會的研究指出，84%的年輕成年人對自己能否區分社群媒體上的真實與虛假內容感到不確定 (APA, 2024)。同時，史丹佛大學的一項研究發現，高達82%的中學生無法區分新聞報導與廣告 ⁴。這些數據顯示，在生成式 AI 泛濫的網路環境下，欠缺資訊與媒體素養將導致公眾更容易受到誤導和操控。另外，演算法的偏見和回音室效應也因 AI 而被放大，人們可能只接觸到強化自身觀點的內容，進一步削弱了多元思考與理性對話的空間 (Hung, 2024)。因此，如何在教育中強化批判性思考，培養公民質疑與驗證資訊的能力，成為當前亟需解決的課題。</p>
+<blockquote>
+<p>In one survey of young adults in Canada, 84% were unsure they could distinguish fact from fiction on social media ⁵.</p>
+<p>Another study found that 82 percent of middle school students struggled to distinguish advertisements from news stories ⁴</p>
+<p>"People in general tend to believe what they see on the internet and you have to be able to [to] discern what is a credible source and what isn't," said Lisa Hunt... "And now with Al, they definitely need to be able to look for signs that may or may not be true." ⁶</p>
+</blockquote>
+<h2>生成式 AI 時代的機會</h2>
+<p>然而，生成式 AI 的興起也為資訊與媒體素養教育帶來新的機會。首先，AI 工具可用於輔助資訊搜尋與資料分析，例如利用大型語言模型快速彙整資料、摘要重點，協助學習者更有效率地獲取知識。同時，教育者也可善用 AI 平台模擬多元觀點，讓學生練習評估不同來源的可信度。在高等教育領域，一些大學已將數位素養課程納入必修，確保學生具備基本的媒體辨識與資訊處理技能 ⁷。例如，美國佛羅里達州立大學自2022年起要求新生修習數位素養課程，以取代傳統的電腦技能課程 (Coffey, 2024)。研究顯示，適當的媒體素養教育可以顯著提升學生辨別網路資訊真假的能力：高中生在接受六節數位素養課程後，辨識可疑網站的能力是未受訓練者的兩倍 ⁸。此外，生成式 AI 也為創新教學帶來契機，教師可以引入 AI 產生的內容作為教材，培養學生對 AI 產出內容的批判性檢視能力。例如，透過分析 ChatGPT 生成的文章，討論其中的偏誤與侷限，學生將更深入理解人工智慧的運作原理與影響 (Laupichler et al., 2022)。總而言之，生成式 AI 時代為資訊與媒體素養教育開啟了新的篇章，只要善加利用科技並強化教學設計，我們有機會培育出更具備數位智慧的公民。</p>
+<blockquote>
+<p>While most institutions call the requirement digital literacy, it is closer to what has often been termed media literacy with a focus on understanding and identifying accurate online news sources, misinformation, opinion and advertising ⁷.</p>
+<p>High school students who attended six 50-minute lessons in digital literacy were twice as likely to spot questionable websites ⁸</p>
+<p>Artificial intelligence literacy is the ability to understand, use, monitor and critically reflect on Al ⁹</p>
+</blockquote>
+<h2>實踐與教育策略</h2>
+<p>面對上述挑戰與機會，各國教育體系和政府機構紛紛採取行動，推動資訊及媒體素養教育的實踐。臺灣在2019年實施的 108 課綱中，已將「科技資訊與媒體素養」列為十二年國民基本教育的九大核心素養之一 (教育部, 2018)，強調培養學生善用科技與媒體並具備批判思考能力。更進一步地，教育部於2023年發布《數位時代媒體素養教育白皮書》，系統性規劃了強化全民媒體素養的策略 ¹⁰。此白皮書源自2018年的「防制假訊息危害專案」，結合了108課綱的精神，提出一系列措施以促進公民的媒體素養，包括：對各年齡層民眾進行識別錯誤資訊的教育、針對青少年提供正確使用短影音平台的指引，以及強調網路安全與個人資料保護的重要性 ¹⁰。白皮書的核心願景是在數位時代培育「知情、負責、利他」的數位公民，其中批判性思考被置於培養框架的中心，細分為近用、分析、創造、反思與行動五大面向 ¹¹。透過這五個面向，政府倡導跨領域融入媒體素養教育、公私部門協力推廣、強化人際連結，以及數位世界與現實生活的橋接 ¹¹。不僅臺灣，國際間也有類似的努力：例如，美國加州於2023年通過法案，要求K-12各年級在核心課程中融入媒體素養教育 (Merod, 2023)。這使加州成為繼德拉瓦、新澤西、德州之後，全面推行中小學媒體素養課程的州份之一。此類政策反映出政府層面對媒體素養的重視，期望藉由制度化的課程改革，提升年輕一代對抗線上虛假資訊的能力。同時，學術界與民間組織也積極投入，例如美國的新聞素養計畫 Checkology 提供免費的數位課程，中小學圖書館員在校內推動資訊素養教學等 (Hung, 2024)。這些實踐案例顯示，只要教育者、政府和社群協同合作，透過課程創新、資源投入與國際交流，媒體與資訊素養教育的成效將可持續提升。</p>
+<blockquote>
+<p>The Digital Era Media Literacy Education White Paper outlines crucial steps to encourage a media-literate populace. These include educating individuals of all ages on how to discern misinformation and disinformation, providing targeted guidance for teenagers on the proper use of short videos, and emphasizing the importance of cyber safety... ¹⁰</p>
+<p>At the heart of the new White Paper is the ambition to cultivate an informed and responsible population of digital citizens. Critical thinking is positioned as the central theme, unpacked into five key components: accessibility, analysis, creation, reflection, and activity ¹¹.</p>
+</blockquote>
+<div class="mermaid">
+mindmap
+  root((批判性思考 Critical Thinking))
+    ::icon(fa fa-brain)
+    近用 (accessibility)
+    分析 (analysis)
+    創造 (creation)
+    反思 (reflection)
+    行動 (activity)
+
+</div>
+
+<h2>結論</h2>
+<p>生成式 AI 時代的來臨，同時帶給我們前所未有的挑戰與契機。我們必須認清，資訊科技素養與媒體素養是現代公民不可或缺的能力，唯有透過教育使人們具備終身學習、批判思考與數位倫理意識，才能在瞬息萬變的資訊環境中站穩腳步。未來的教育政策與實踐應持續著重在強化這兩種素養的培養，例如將相關課程深耕到各級教育、提供師資培訓與資源，以及促進跨國經驗交流以共享最佳實務。最後，資訊科技素養與媒體素養的推廣不僅是教育議題，更是關乎民主韌性與社會永續的重要使命。面對 AI 所帶來的資訊衝擊，我們有責任引導下一代成為知情負責的數位公民，善用科技之利並減少其弊，積極參與並守護健全的資訊生態系統。在各界協力之下，我們有信心將這些挑戰轉化為促進教育創新的動力，迎向一個充滿機會的智慧媒體時代。</p>
+<h2>常見問題與解決方案 (Q&amp;A / Troubleshooting)</h2>
+<p><strong>Q1: 資訊這麼多，我該如何判斷一個新聞來源是否可信？</strong><br />
+- <strong>A1:</strong><br />
+    - <strong>檢查作者與機構</strong>：確認文章是否有明確的作者署名和負責的發布機構。對該機構的背景進行快速檢索，了解其聲譽和立場。<br />
+    - <strong>檢視引用來源</strong>：可信的報導通常會引用其消息來源，例如官方報告、專家訪談或學術研究。如果一篇文章缺乏任何可驗證的來源，應抱持懷疑態度。<br />
+    - <strong>注意報導風格</strong>：專業新聞報導通常語氣客觀、中立，避免使用過於情緒化或煽動性的詞彙。若內容充滿個人意見或強烈偏見，可能更接近評論而非客觀報導。<br />
+    - <strong>交叉比對</strong>：將同一事件與多家不同立場的主流媒體進行比對，觀察報導角度和事實呈現的差異。</p>
+<p><strong>Q2: 如果我發現家人或朋友在社群媒體上分享不實資訊，我該怎麼辦？</strong><br />
+- <strong>A2:</strong><br />
+    - <strong>私下溝通</strong>：避免在公開留言區直接指責，這可能引發對方防衛心理。建議透過私訊，用委婉、關心的語氣提醒對方。<br />
+    - <strong>提供證據</strong>：與其直接說「這是假的」，不如提供可靠的查核報告或來自權威機構的正確資訊連結，讓事實說話。<br />
+    - <strong>同理與引導</strong>：可以先表示理解對方分享的動機（例如：「我明白你很關心這個議題」），然後再引導他們思考資訊的來源和可能的疑點。例如：「我看到這則消息，但找不到可靠的來源，你覺得我們該怎麼確認它是不是真的？」</p>
+<p><strong>Q3: 學校老師如何將媒體素養融入現有課程中？</strong><br />
+- <strong>A3:</strong><br />
+    - <strong>跨學科整合</strong>：媒體素養並非獨立學科，可以輕易融入各科目。例如，國文課可以分析新聞報導的寫作手法與潛在立場；歷史課可以探討不同時代的政治宣傳；自然課可以評估科學報導的證據強度。<br />
+    - <strong>使用真實案例</strong>：利用當前社會上流傳的假訊息或爭議性媒體事件作為課堂討論的素材，能有效激發學生的學習動機。<br />
+    - <strong>專題式學習 (PBL)</strong>：設計一個專題任務，例如讓學生分組製作一個「假新聞破解報告」，從資訊搜集、查證、分析到成果發表，完整體驗媒體素養的實踐過程。</p>
+<h2>實作練習 (Practice)</h2>
+<p>為了將理論知識轉化為實際技能，請嘗試完成以下練習：</p>
+<ol>
+<li>
+<p><strong>AI 內容批判分析</strong></p>
+<ul>
+<li><strong>任務</strong>：使用任一生成式 AI 工具（如 ChatGPT, Gemini, Copilot），針對一個您感興趣的主題（例如：「臺灣的再生能源發展」）生成一段約 300 字的介紹。</li>
+<li><strong>分析</strong>：<ul>
+<li><strong>事實查核</strong>：找出文中的至少三個具體資訊（如：數據、年份、政策名稱），並透過可靠的資料來源（如：政府網站、學術報告、主流新聞媒體）進行查證，確認其準確性。</li>
+<li><strong>觀點評估</strong>：判斷 AI 生成的內容是否存在任何偏見或特定立場？它是否忽略了某些重要的觀點？</li>
+</ul>
+</li>
+<li><strong>反思</strong>：這次練習讓您對 AI 生成內容的可靠性有什麼新的認識？</li>
+</ul>
+</li>
+<li>
+<p><strong>深偽影像辨識挑戰</strong></p>
+<ul>
+<li><strong>任務</strong>：瀏覽如 <a href="https://www.whichfaceisreal.com/">Which Face Is Real?</a> 或 <a href="https://detectfakes.media.mit.edu/">Detect Fakes</a> 等網站，測試自己辨識 AI 生成人臉或深偽影像的能力。</li>
+<li><strong>分析</strong>：記錄您答對與答錯的次數。對於答錯的案例，試著找出是哪些細節（如：背景、光影、皮膚紋理、牙齒、飾品）讓您做出了錯誤的判斷。</li>
+<li><strong>反思</strong>：您認為目前有哪些方法或工具可以幫助一般人更有效地辨識深偽影像？</li>
+</ul>
+</li>
+<li>
+<p><strong>媒體訊息解構練習</strong></p>
+<ul>
+<li><strong>任務</strong>：選擇一則最近在社群媒體上廣泛流傳的新聞或貼文。</li>
+<li><strong>分析</strong>：運用媒體素養的五大核心概念（近用、分析、創造、反思、行動），對其進行解構：<ul>
+<li><strong>來源 (Access)</strong>：這個訊息是從哪裡來的？是個人帳號、新聞機構還是內容農場？</li>
+<li><strong>內容 (Analyze)</strong>：訊息的目的是什麼？是告知、娛樂還是說服？它使用了哪些技巧（如：情緒性語言、引人注目的圖片）來吸引您？</li>
+<li><strong>意圖 (Evaluate)</strong>：誰是這個訊息的目標受眾？創作者想從中獲得什麼（如：點閱率、政治支持、商業利益）？</li>
+<li><strong>影響 (Reflect)</strong>：這個訊息可能對您或社會產生什麼影響？</li>
+</ul>
+</li>
+<li><strong>行動 (Act)</strong>：根據您的分析，您會選擇如何應對這則訊息？（如：分享、留言澄清、忽略、或向平台檢舉）</li>
+</ul>
+</li>
+</ol>
+<h2>學習總結 (Summary)</h2>
+<p>在閱讀本文件後，學習者應能獲得以下知識與技能：</p>
+<h3>知識 (Knowledge)</h3>
+<ul>
+<li><strong>定義理解</strong>：能清楚說明「資訊科技素養」與「媒體素養」的定義及其重要性。</li>
+<li><strong>AI 時代的挑戰</strong>：了解生成式 AI（如：幻覺、深偽技術）對資訊環境帶來的具體挑戰。</li>
+<li><strong>AI 時代的機會</strong>：認識到 AI 在輔助資訊搜尋、創新教學方法等方面的潛在機遇。</li>
+<li><strong>國內外策略</strong>：知道臺灣《數位時代媒體素養教育白皮書》的核心架構，並了解國際間相關的教育政策趨勢。</li>
+</ul>
+<h3>技能 (Skills)</h3>
+<ul>
+<li><strong>批判性評估</strong>：能對資訊來源、內容及其背後意圖進行初步的批判性評估。</li>
+<li><strong>真偽辨識</strong>：提升對 AI 生成內容（文本、影像）的警覺性，並具備基礎的真偽辨識能力。</li>
+<li><strong>數位倫理應用</strong>：在學術與日常生活中，能更有意識地遵循數位倫理與版權規範。</li>
+</ul>
+<h2>參考文獻:</h2>
+<ol>
+<li>American Psychological Association. (2024, September). Teaching critical thinking skills to combat online misinformation. Monitor on Psychology. ¹² ⁵</li>
+<li>Association of College and Research Libraries. (2000). Information literacy competency standards for higher education. Chicago, IL: American Library Association. ²</li>
+<li>Coffey, L. (2024, March 26). Digital media literacy becoming a graduation requirement. Inside Higher Ed. ⁷</li>
+<li>Hung, W. (2024, March 6). Media literacy education: Taiwan’s key to combating disinformation. Global Taiwan Brief, 9(5). ¹⁰ ¹¹</li>
+<li>International ICT Literacy Panel. (2002). Digital transformation: A framework for ICT literacy. Princeton, NJ: Educational Testing Service. ²</li>
+<li>Laupichler, M., Aster, A., Schirch, J., &amp; Raupach, T. (2022). Artificial intelligence literacy in higher and adult education: A literature review. Pacific Journal of Technology Enhanced Learning, 4(1), 25-40. ⁹</li>
+<li>Manuel, K. (2002). Teaching information literacy to Generation Y. Journal of Library Administration, 36(1/2), 195-217.</li>
+<li>Merod, A. (2023, November 15). California joins small, growing number of states requiring K-12 media literacy. K-12 Dive. ¹³</li>
+<li>Ministry of Education (Taiwan). (2023). 數位時代媒體素養教育白皮書 [Digital era media literacy education white paper]. Taipei: Ministry of Education. ¹⁰ ¹¹</li>
+<li>National Association for Media Literacy Education. (2007). Core principles of media literacy education. NAMLE. ³</li>
+<li>Wineburg, S., McGrew, S., Breakstone, J., &amp; Ortega, T. (2016). Evaluating information: The cornerstone of civic online reasoning. Stanford, CA: Stanford University. ⁴</li>
+</ol>
+<hr />
+<h3>參考連結</h3>
+<ol>
+<li>[PDF] 資訊素養教育的特徵與重要性<br />
+<a href="https://toaj.stpi.niar.org.tw/file/article/download/4b1141f986ba19fc0186bad365fe00ff">https://toaj.stpi.niar.org.tw/file/article/download/4b1141f986ba19fc0186bad365fe00ff</a></li>
+<li>Information literacy - Wikipedia<br />
+<a href="https://en.wikipedia.org/wiki/Information_ literacy">https://en.wikipedia.org/wiki/Information_ literacy</a></li>
+<li>Media Literacy: Definitions - Respectful Conversation - UNC Charlotte<br />
+<a href="https://respectfulconversation.charlotte.edu/media-literacy-definitions/">https://respectfulconversation.charlotte.edu/media-literacy-definitions/</a></li>
+<li>California to Teach Media Literacy in Every Grade | Official Website - Assemblymember Marc Berman Representing the 23rd California Assembly District<br />
+<a href="https://a23.asmdc.org/press-releases/20231014-california-teach-media-literacy-every-grade">https://a23.asmdc.org/press-releases/20231014-california-teach-media-literacy-every-grade</a></li>
+<li>How to teach students critical thinking skills to combat ...<br />
+<a href="https://www.apa.org/monitor/2024/09/media-literacy-misinformation">https://www.apa.org/monitor/2024/09/media-literacy-misinformation</a></li>
+<li>Colleges adding digital literacy as graduation requirement<br />
+<a href="https://www.insidehighered.com/news/tech-innovation/teaching-learning/2024/03/26/colleges-adding-digital-literacy-graduation">https://www.insidehighered.com/news/tech-innovation/teaching-learning/2024/03/26/colleges-adding-digital-literacy-graduation</a></li>
+<li>California joins small, growing number of states requiring K-12 media literacy | K-12 Dive<br />
+<a href="https://www.k12dive.com/news/california-media-literacy-k12-law/699911/">https://www.k12dive.com/news/california-media-literacy-k12-law/699911/</a></li>
+<li>[PDF]数智时代人工智能素养研究的新趋势 - 北京师范大学新闻传播学院<br />
+<a href="https://sjc.bnu.edu.cn/docs//2025-03/0889ba0e648243b69ec73465525fb14f.pdf">https://sjc.bnu.edu.cn/docs//2025-03/0889ba0e648243b69ec73465525fb14f.pdf</a></li>
+<li>Media Literacy Education: Taiwan’s Key to Combating Disinformation | Global Taiwan Institute<br />
+<a href="https://globaltaiwan.org/2024/03/media-literacy-education-taiwans-key-to-combating-disinformation/">https://globaltaiwan.org/2024/03/media-literacy-education-taiwans-key-to-combating-disinformation/</a></li>
+<li>提升媒体素养教育的必要性与应对挑战:数字时代的新进展<br />
+<a href="https://www.forwardpathway.com/129748">https://www.forwardpathway.com/129748</a></li>
+</ol></div>
+    
+    <!-- Highlight.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    
+    <!-- Mermaid -->
+    <script type="module">
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+        mermaid.initialize({
+            "startOnLoad": true,
+            "theme": "dark",
+            "securityLevel": "loose"
+});
+    </script>
+</body>
+</html>
