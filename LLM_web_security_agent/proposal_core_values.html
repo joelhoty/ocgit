@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>proposal_core_values</title>
+    
+    <!-- CSS 框架 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/dark.min.css">
+    
+    <!-- 代碼高亮 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/base16/darcula.min.css">
+    
+    <!-- 自定義樣式 -->
+    <style>
+        
+                body {
+                    max-width: 900px;
+                    margin: 0 auto;
+                    padding: 20px;
+                }
+                /* 提升代码块对比度 */
+                pre {
+                    background: #1e1e1e !important;
+                    border: 1px solid #3e3e3e;
+                }
+                pre code {
+                    background: #1e1e1e !important;
+                }
+                code {
+                    background: #2d2d2d !important;
+                }
+                /* 引用块对比度 */
+                blockquote {
+                    background: #2d2d2d;
+                    border-left: 4px solid #4a9eff;
+                }
+            
+        
+        /* 通用代碼塊樣式 */
+        pre code {
+            display: block;
+            padding: 1.5em;
+            border-radius: 8px;
+            overflow-x: auto;
+            line-height: 1.6;
+        }
+
+        /* Mermaid 圖表樣式 */
+        
+        .mermaid {
+            margin: 2em 0;
+            padding: 1.5em;
+            text-align: center;
+            border-radius: 8px;
+        }
+        
+        .mermaid {
+            background: #2c3034;
+            border: 1px solid #444;
+        }
+            
+        
+        /* 響應式調整 */
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            .container, .markdown-body, .latex-body, .window-body, .nes-container {
+                padding: 15px;
+            }
+            pre code {
+                padding: 1em;
+            }
+        }
+        
+        
+    </style>
+</head>
+<body>
+    <div class="container"><h1>五大核心價值 - 詳述</h1>
+<blockquote>
+<p>返回 <a href="./proposal_all.html">主文件</a></p>
+</blockquote>
+<p>本文件詳細闡述 LLM 驅動 WEB 安全性健康報告生成系統的五大核心價值主張。這些價值不僅是系統設計的指導原則，更是衡量專案成功與否的關鍵指標。</p>
+<hr />
+<h2>核心價值一：資安學習與探究 (Learning &amp; Exploration)</h2>
+<h3>價值主張</h3>
+<p><strong>將每次掃描轉化為一次互動式學習體驗，而非僅僅是工具執行。</strong></p>
+<h3>實現方式</h3>
+<h4>1. 多層次的資訊呈現</h4>
+<p>系統在呈現掃描結果時，提供三個層次的資訊：</p>
+<pre class="codehilite"><code>[結果層] 發現 Apache 2.4.49 存在路徑穿越漏洞
+    ↓
+[原理層] 此漏洞源於 URL 正規化處理錯誤，攻擊者可繞過存取控制
+    ↓
+[修復層] 建議升級至 2.4.51 版本，或套用官方安全補丁
+</code></pre>
+
+<h4>2. 互動式問答機制</h4>
+<p>在對話模式（模式 C）中，LLM 會主動詢問使用者：</p>
+<ul>
+<li>"您是否了解 SQL Injection 的運作原理？"</li>
+<li>"您想先了解此漏洞的成因，還是直接進行檢測？"</li>
+<li>"執行此測試可能會產生大量請求，您確定要繼續嗎？"</li>
+</ul>
+<h4>3. 檢測過程的可視化</h4>
+<p>系統不僅顯示最終結果，更會記錄並展示：</p>
+<ul>
+<li><strong>執行的腳本</strong>：使用者可看到 LLM 生成的完整 Python 程式碼</li>
+<li><strong>工具參數</strong>：例如 <code>nmap -sV -p 80,443 target.com</code> 的每個參數意義</li>
+<li><strong>原始輸出</strong>：工具的未處理輸出，供進階使用者參考</li>
+</ul>
+<h3>衡量指標</h3>
+<ul>
+<li>使用者在檢視報告時的平均停留時間</li>
+<li>「原理解釋」區塊的點擊率</li>
+<li>使用者在對話模式中的提問頻率</li>
+</ul>
+<hr />
+<h2>核心價值二：目標、工具與結果的清晰對應 (Clear Correlation)</h2>
+<h3>價值主張</h3>
+<p><strong>建立從「安全目標」到「檢測工具」再到「結果解釋」的完整透明鏈。</strong></p>
+<h3>問題背景</h3>
+<p>傳統資安掃描工具的黑盒問題：<br />
+- 使用者不知道為何系統選擇某個工具<br />
+- 不清楚檢測結果與原始目標的關聯<br />
+- 難以判斷是否已達成檢測目標</p>
+<h3>解決方案：對應鏈可視化</h3>
+<h4>示例場景</h4>
+<p><strong>使用者目標</strong>：檢測網站是否存在已知的伺服器漏洞</p>
+<pre class="codehilite"><code>[步驟 1] 目標拆解
+├─ 子目標 1：識別伺服器類型與版本
+├─ 子目標 2：比對 CVE 資料庫
+└─ 子目標 3：驗證漏洞可利用性
+
+[步驟 2] 工具映射
+├─ 子目標 1 → 工具：nmap (版本探測) + curl (HTTP Header 分析)
+├─ 子目標 2 → 工具：CVE 知識庫查詢
+└─ 子目標 3 → 工具：LLM 生成的客製化漏洞驗證腳本
+
+[步驟 3] 結果回溯
+├─ nmap 結果：Apache/2.4.49 (Unix)
+├─ CVE 查詢：CVE-2021-41773 (路徑穿越)
+└─ 驗證結果：成功讀取 /etc/passwd → **漏洞確認存在**
+</code></pre>
+
+<h3>資料庫設計支援</h3>
+<p>在 <code>ScanResults</code> 資料表中，我們設計 <code>correlation_chain</code> 欄位（JSONB）：</p>
+<pre class="codehilite"><code class="language-json">{
+  &quot;userGoal&quot;: &quot;檢測伺服器已知漏洞&quot;,
+  &quot;decomposition&quot;: [
+    {
+      &quot;subGoal&quot;: &quot;識別伺服器版本&quot;,
+      &quot;tool&quot;: &quot;nmap&quot;,
+      &quot;reasoning&quot;: &quot;nmap 的 -sV 參數可準確探測服務版本&quot;,
+      &quot;result_ref&quot;: &quot;finding_id_001&quot;
+    },
+    {
+      &quot;subGoal&quot;: &quot;比對 CVE 資料庫&quot;,
+      &quot;tool&quot;: &quot;CVE_Search&quot;,
+      &quot;reasoning&quot;: &quot;基於探測到的 Apache 2.4.49 版本進行查詢&quot;,
+      &quot;result_ref&quot;: &quot;finding_id_002&quot;
+    }
+  ]
+}
+</code></pre>
+
+<h3>UI 呈現</h3>
+<p>在報告中提供「檢測邏輯圖」區塊，使用者可點擊每個節點查看：<br />
+- 為何執行此步驟<br />
+- 使用了哪個工具與參數<br />
+- 此步驟產出了什麼結果</p>
+<hr />
+<h2>核心價值三：自動化的資安掃描資料庫 (Automated Scan Database)</h2>
+<h3>價值主張</h3>
+<p><strong>系統性記錄每次掃描，將零散的檢測活動轉化為可分析的數據資產。</strong></p>
+<h3>資料庫設計</h3>
+<h4>核心資料表結構</h4>
+<p><strong>Scans 表</strong> - 掃描任務總覽</p>
+<pre class="codehilite"><code class="language-sql">CREATE TABLE scans (
+    scan_id UUID PRIMARY KEY,
+    user_id UUID REFERENCES users(user_id),
+    target VARCHAR(512) NOT NULL,
+    scan_mode VARCHAR(50), -- 'guided' | 'intelligence' | 'conversational' | 'automated'
+    status VARCHAR(20), -- 'pending' | 'running' | 'completed' | 'failed'
+    created_at TIMESTAMP DEFAULT NOW(),
+    completed_at TIMESTAMP,
+    total_findings INT,
+    critical_count INT,
+    high_count INT,
+    medium_count INT,
+    low_count INT
+);
+</code></pre>
+
+<p><strong>ScanResults 表</strong> - 每次工具執行的詳細記錄</p>
+<pre class="codehilite"><code class="language-sql">CREATE TABLE scan_results (
+    result_id UUID PRIMARY KEY,
+    scan_id UUID REFERENCES scans(scan_id),
+    tool_used VARCHAR(100),
+    generated_script TEXT, -- LLM 生成的腳本
+    raw_output TEXT, -- 工具原始輸出
+    structured_findings JSONB, -- 解析後的結構化資料
+    llm_analysis JSONB, -- LLM 的解釋與建議
+    execution_time_ms INT,
+    created_at TIMESTAMP DEFAULT NOW()
+);
+</code></pre>
+
+<p><strong>ScanHistory 表</strong> - 同一目標的歷史趨勢</p>
+<pre class="codehilite"><code class="language-sql">CREATE TABLE scan_history (
+    history_id UUID PRIMARY KEY,
+    target VARCHAR(512),
+    scan_dates JSONB, -- [{&quot;date&quot;: &quot;2025-01-01&quot;, &quot;scan_id&quot;: &quot;xxx&quot;}]
+    vulnerability_trend JSONB, -- 漏洞數量變化趨勢
+    risk_score_trend JSONB -- 風險分數變化
+);
+</code></pre>
+
+<h3>應用場景</h3>
+<h4>場景 1：趨勢分析</h4>
+<p>企業可查詢「過去 6 個月，我們的內部網站漏洞修復率是多少？」</p>
+<pre class="codehilite"><code class="language-sql">SELECT
+    DATE_TRUNC('month', created_at) AS month,
+    AVG(critical_count) AS avg_critical,
+    AVG(high_count) AS avg_high
+FROM scans
+WHERE target LIKE 'internal.company.com%'
+    AND created_at &gt;= NOW() - INTERVAL '6 months'
+GROUP BY month
+ORDER BY month;
+</code></pre>
+
+<h4>場景 2：工具效能評估</h4>
+<p>分析「哪個工具最常發現 Critical 等級的漏洞？」</p>
+<pre class="codehilite"><code class="language-sql">SELECT
+    tool_used,
+    COUNT(*) AS usage_count,
+    SUM(JSONB_ARRAY_LENGTH(structured_findings)) AS total_findings
+FROM scan_results
+WHERE structured_findings @&gt; '[{&quot;severity&quot;: &quot;Critical&quot;}]'
+GROUP BY tool_used
+ORDER BY total_findings DESC;
+</code></pre>
+
+<h4>場景 3：自動化報表</h4>
+<p>系統每週自動生成「資安健康週報」，比較本週與上週的掃描數據。</p>
+<hr />
+<h2>核心價值四：系統化的教學案例庫 (Systematic Educational Library)</h2>
+<h3>價值主張</h3>
+<p><strong>將具代表性的掃描結果結構化保存，轉化為持續增長的教學資源。</strong></p>
+<h3>教學案例的生命週期</h3>
+<pre class="codehilite"><code>[階段 1] 案例識別
+- 系統自動標記「具教學價值」的掃描結果
+- 標準：(1) 發現實際漏洞 (2) 使用多個工具聯合檢測 (3) 稀有或典型的攻擊向量
+
+[階段 2] 匿名化處理
+- 移除敏感的目標資訊（IP、Domain）
+- 保留技術細節與檢測邏輯
+
+[階段 3] 結構化保存
+- 儲存至 EducationalCases 資料表
+- 標記漏洞類型、使用工具、難度等級
+
+[階段 4] 知識提取
+- LLM 自動生成「學習重點」與「延伸問題」
+- 例如：「此案例展示了 XXX 攻擊手法，您可思考如何防禦？」
+
+[階段 5] 社群分享（可選）
+- 使用者同意後，可將案例貢獻至公開知識庫
+</code></pre>
+
+<h3>資料表設計</h3>
+<pre class="codehilite"><code class="language-sql">CREATE TABLE educational_cases (
+    case_id UUID PRIMARY KEY,
+    title VARCHAR(255), -- 例如：&quot;Apache 路徑穿越漏洞檢測實例&quot;
+    description TEXT,
+    vulnerability_type VARCHAR(100), -- 'Path Traversal' | 'SQL Injection' 等
+    related_cve VARCHAR(50),
+    severity VARCHAR(20),
+    difficulty_level VARCHAR(20), -- 'Beginner' | 'Intermediate' | 'Advanced'
+
+    -- 檢測過程記錄
+    scan_result_id UUID REFERENCES scan_results(result_id),
+    tools_used JSONB, -- [&quot;nmap&quot;, &quot;curl&quot;, &quot;custom_script&quot;]
+    detection_steps JSONB, -- 步驟化的檢測流程
+
+    -- 教學內容
+    learning_objectives JSONB, -- [&quot;理解路徑穿越原理&quot;, &quot;學習 nmap 版本探測&quot;]
+    extended_questions TEXT, -- LLM 生成的思考題
+
+    -- 元數據
+    is_public BOOLEAN DEFAULT FALSE,
+    views_count INT DEFAULT 0,
+    created_at TIMESTAMP DEFAULT NOW()
+);
+</code></pre>
+
+<h3>UI 功能：教學案例瀏覽器</h3>
+<p>使用者可透過以下方式搜尋案例：</p>
+<ol>
+<li><strong>依漏洞類型</strong>：例如查詢所有「SQL Injection」案例</li>
+<li><strong>依工具</strong>：查詢「使用 SQLMap 的案例」</li>
+<li><strong>依難度</strong>：初學者可篩選「Beginner」等級案例</li>
+<li><strong>依 CVE</strong>：查詢特定 CVE 的實際檢測案例</li>
+</ol>
+<h3>教育價值實現</h3>
+<h4>實例：從掃描到教材</h4>
+<p><strong>原始掃描記錄</strong>：<br />
+- 目標：某測試網站<br />
+- 檢測到：SQL Injection 漏洞<br />
+- 使用工具：SQLMap</p>
+<p><strong>系統自動轉化為教學案例</strong>：</p>
+<pre class="codehilite"><code class="language-markdown"># 案例：基於錯誤訊息的 SQL Injection 檢測
+
+## 學習目標
+- 理解 SQL Injection 的成因
+- 學習使用 SQLMap 進行自動化檢測
+- 認識基於錯誤訊息的漏洞識別技巧
+
+## 檢測步驟
+1. 使用 curl 手動測試，發現參數 `id=1'` 導致 MySQL 錯誤訊息
+2. 使用 SQLMap 自動化驗證：`sqlmap -u &quot;http://target.com?id=1&quot; --batch`
+3. SQLMap 確認漏洞並成功提取資料庫結構
+
+## 原始工具輸出（節錄）
+[!] legal disclaimer: ...
+Parameter: id (GET)
+    Type: error-based
+    Title: MySQL &gt;= 5.0 AND error-based
+
+## 風險分析
+嚴重性：Critical - 攻擊者可完全控制資料庫
+
+## 修復建議
+使用參數化查詢（Prepared Statements）
+
+## 延伸思考
+1. 如果網站沒有顯示錯誤訊息，還能檢測 SQL Injection 嗎？（提示：盲注）
+2. WAF 如何防禦此類攻擊？
+</code></pre>
+
+<hr />
+<h2>核心價值五：學習與實用並存 (Dual-Purpose Design)</h2>
+<h3>價值主張</h3>
+<p><strong>同時滿足初學者的學習需求與專業人員的實務需求，打破兩者的對立。</strong></p>
+<h3>設計哲學</h3>
+<p>傳統上，「教學工具」與「生產工具」往往是分離的：<br />
+- 教學工具：功能簡化，互動性強，但缺乏實戰能力<br />
+- 生產工具：功能強大，自動化高，但學習曲線陡峭</p>
+<p><strong>本系統的創新</strong>：透過「模式切換」與「資訊分層」，讓同一個系統同時服務兩種需求。</p>
+<h3>實現機制</h3>
+<h4>機制 1：可調節的資訊密度</h4>
+<p><strong>初學者模式（預設）</strong><br />
+- 顯示每個步驟的解釋<br />
+- 提供背景知識連結<br />
+- 互動式確認每個操作</p>
+<p><strong>專業模式</strong><br />
+- 摺疊解釋性文字<br />
+- 直接呈現技術數據<br />
+- 允許批次執行</p>
+<p>UI 示例：</p>
+<pre class="codehilite"><code>[切換] 🎓 學習模式 ⇄ 🚀 專業模式
+
+學習模式下：
+┌─────────────────────────────────┐
+│ 📘 什麼是連接埠掃描？            │
+│ 連接埠掃描用於探測目標主機開放的 │
+│ 網路服務...                      │
+│ [了解更多] [跳過說明]            │
+└─────────────────────────────────┘
+
+專業模式下：
+┌─────────────────────────────────┐
+│ nmap -sV -p 80,443,8080 target   │
+│ Scan Duration: 12.3s             │
+│ Open Ports: 2                    │
+└─────────────────────────────────┘
+</code></pre>
+
+<h4>機制 2：模式化的互動流程</h4>
+<table>
+<thead>
+<tr>
+<th>使用者類型</th>
+<th>推薦模式</th>
+<th>特色</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>初學者</td>
+<td>引導式掃描 (Mode 1) + 對話式 (Mode 3)</td>
+<td>選單導向 + LLM 導師</td>
+</tr>
+<tr>
+<td>開發人員</td>
+<td>情資驅動 (Mode 2)</td>
+<td>自動建議相關檢測</td>
+</tr>
+<tr>
+<td>資安專家</td>
+<td>全自動掃描 (Mode 4)</td>
+<td>一鍵執行完整套件</td>
+</tr>
+</tbody>
+</table>
+<h4>機制 3：報告的雙重輸出</h4>
+<p>系統生成兩種版本的報告：</p>
+<p><strong>教學版報告</strong>（適合學習者與非技術主管）<br />
+- 使用圖表與視覺化<br />
+- 白話文解釋<br />
+- 提供修復的逐步指南</p>
+<p><strong>技術版報告</strong>（適合開發人員與資安團隊）<br />
+- 原始掃描數據<br />
+- JSON 格式結構化結果<br />
+- 可直接整合至其他系統的 API 輸出</p>
+<h3>實際應用場景</h3>
+<h4>場景 A：資安課程講師</h4>
+<p><strong>需求</strong>：在課堂上演示真實的漏洞檢測</p>
+<p><strong>使用方式</strong>：<br />
+1. 選擇「對話式掃描」模式<br />
+2. 投影畫面，與 LLM 對話：「我們今天要學習 XSS，請問應該如何檢測？」<br />
+3. LLM 逐步解釋，並生成檢測腳本<br />
+4. 執行後，將結果加入「教學案例庫」供學生課後複習</p>
+<h4>場景 B：DevOps 工程師</h4>
+<p><strong>需求</strong>：每次部署前自動進行安全檢測</p>
+<p><strong>使用方式</strong>：<br />
+1. 在 CI/CD Pipeline 中調用系統 API<br />
+2. 使用「全自動掃描」模式，傳入目標 URL<br />
+3. 若發現 Critical 或 High 漏洞，自動阻擋部署<br />
+4. 將結果推送至 Slack 通知資安團隊</p>
+<h4>場景 C：中小企業老闆</h4>
+<p><strong>需求</strong>：定期檢測官網安全性，但無專職資安人員</p>
+<p><strong>使用方式</strong>：<br />
+1. 設定每週自動掃描<br />
+2. 收到「健康報告」Email，以交通燈號顯示風險等級<br />
+3. 報告使用非技術語言，並提供外包廠商的聯繫建議</p>
+<hr />
+<h2>五大價值的協同效應</h2>
+<p>這五個核心價值並非獨立存在，而是相互強化：</p>
+<pre class="codehilite"><code>┌─────────────────────────────────────────────┐
+│         資安學習與探究 (價值一)              │
+│                    ↓                         │
+│   目標、工具與結果對應 (價值二)              │
+│                    ↓                         │
+│   自動化掃描資料庫 (價值三) ← 持續累積       │
+│                    ↓                         │
+│   系統化教學案例庫 (價值四) ← 知識沉澱       │
+│                    ↓                         │
+│   學習與實用並存 (價值五) ← 價值迴圈         │
+└─────────────────────────────────────────────┘
+</code></pre>
+
+<p><strong>協同機制</strong>：<br />
+1. 每次掃描（價值三）都是一次學習機會（價值一）<br />
+2. 清晰的對應關係（價值二）使學習更有效<br />
+3. 累積的數據（價值三）轉化為教材（價值四）<br />
+4. 雙重價值（價值五）吸引更多使用者，產生更多數據，形成正向循環</p>
+<hr />
+<h2>衡量成功的指標</h2>
+<table>
+<thead>
+<tr>
+<th>核心價值</th>
+<th>量化指標</th>
+<th>目標（MVP 階段）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>價值一</td>
+<td>使用者在報告頁面的平均停留時間</td>
+<td>&gt; 5 分鐘</td>
+</tr>
+<tr>
+<td>價值二</td>
+<td>「檢測邏輯圖」的查看率</td>
+<td>&gt; 60%</td>
+</tr>
+<tr>
+<td>價值三</td>
+<td>每週新增掃描記錄數</td>
+<td>&gt; 100 筆</td>
+</tr>
+<tr>
+<td>價值四</td>
+<td>教學案例庫的成長速度</td>
+<td>每月新增 20+ 案例</td>
+</tr>
+<tr>
+<td>價值五</td>
+<td>專業模式與學習模式的使用比例</td>
+<td>接近 1:1</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<p><em>本文件最後更新：2025-10-21</em></p>
+<p>返回 <a href="./proposal_all.html">主文件</a></p></div>
+    
+    <!-- Highlight.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    
+    <!-- Mermaid -->
+    <script type="module">
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+        mermaid.initialize({
+            "startOnLoad": true,
+            "theme": "dark",
+            "securityLevel": "loose"
+});
+    </script>
+</body>
+</html>

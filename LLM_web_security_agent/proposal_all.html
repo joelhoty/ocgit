@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>proposal_all</title>
+    
+    <!-- CSS 框架 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/dark.min.css">
+    
+    <!-- 代碼高亮 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/base16/darcula.min.css">
+    
+    <!-- 自定義樣式 -->
+    <style>
+        
+                body {
+                    max-width: 900px;
+                    margin: 0 auto;
+                    padding: 20px;
+                }
+                /* 提升代码块对比度 */
+                pre {
+                    background: #1e1e1e !important;
+                    border: 1px solid #3e3e3e;
+                }
+                pre code {
+                    background: #1e1e1e !important;
+                }
+                code {
+                    background: #2d2d2d !important;
+                }
+                /* 引用块对比度 */
+                blockquote {
+                    background: #2d2d2d;
+                    border-left: 4px solid #4a9eff;
+                }
+            
+        
+        /* 通用代碼塊樣式 */
+        pre code {
+            display: block;
+            padding: 1.5em;
+            border-radius: 8px;
+            overflow-x: auto;
+            line-height: 1.6;
+        }
+
+        /* Mermaid 圖表樣式 */
+        
+        .mermaid {
+            margin: 2em 0;
+            padding: 1.5em;
+            text-align: center;
+            border-radius: 8px;
+        }
+        
+        .mermaid {
+            background: #2c3034;
+            border: 1px solid #444;
+        }
+            
+        
+        /* 響應式調整 */
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            .container, .markdown-body, .latex-body, .window-body, .nes-container {
+                padding: 15px;
+            }
+            pre code {
+                padding: 1em;
+            }
+        }
+        
+        
+    </style>
+</head>
+<body>
+    <div class="container"><h1>LLM 驅動之 WEB 安全性健康報告生成系統 - 完整研究計畫</h1>
+<h2>文件導覽</h2>
+<p>本研究計畫採用模塊化文件結構，請依據需求參閱各子文件：</p>
+<h3>📑 核心文件</h3>
+<ol>
+<li><strong><a href="./proposal_core_values.html">五大核心價值</a></strong> - 專案的核心價值主張與創新意涵</li>
+<li><strong><a href="./proposal_architecture.html">系統架構</a></strong> - 系統架構設計與核心組件</li>
+<li><strong><a href="./proposal_interaction_modes.html">互動模式</a></strong> - 四種使用者互動模式詳述</li>
+<li><strong><a href="./proposal_workflow.html">工作流程</a></strong> - 技術工作流程與工具整合</li>
+<li><strong><a href="./proposal_implementation.html">實作計畫</a></strong> - 開發時程與可行性評估</li>
+</ol>
+<hr />
+<h2>1. 專案概述</h2>
+<h3>1.1 願景與目標</h3>
+<p>本專案旨在打造一個由大型語言模型（LLM）驅動的智能化 WEB 安全性健康報告生成系統。系統核心目標是利用 LLM 的程式生成、資料解釋與邏輯推理能力，自動化執行網頁應用程式的安全性檢測，並將複雜的技術數據轉化為資安新手也能理解的健康報告與修補建議。</p>
+<h3>1.2 專案定位</h3>
+<p><strong>從工具到知識體系的演進</strong></p>
+<p>本專案不僅是一個自動化掃描工具，更是一個：<br />
+- <strong>互動式學習平台</strong>：每次掃描都是一次資安教育體驗<br />
+- <strong>知識累積系統</strong>：持續增長的資安案例資料庫<br />
+- <strong>實踐導向工具</strong>：將理論轉化為實際可執行的安全檢測<br />
+- <strong>雙向價值創造</strong>：學習者獲得知識，實務者獲得效率</p>
+<h3>1.3 創新意涵</h3>
+<p><strong>LLM 作為「資安專家大腦」與「自動化引擎」的結合體</strong></p>
+<h4>MVP 階段應用</h4>
+<ul>
+<li>資安教育工具</li>
+<li>開發人員的自我檢測輔助工具</li>
+<li>學習資源生成系統</li>
+</ul>
+<h4>成熟應用階段</h4>
+<ul>
+<li>整合至企業 CI/CD 流程（DevSecOps）</li>
+<li>中小企業的輕量級定期資安健檢服務</li>
+<li>持續性安全監控與趨勢分析平台</li>
+</ul>
+<hr />
+<h2>2. 專案核心特色</h2>
+<h3>2.1 四種檢測觸發模式</h3>
+<p>本系統提供四種智能化的檢測啟動方式：</p>
+<h4>模式 A：使用者主動輸入（引導式掃描）</h4>
+<ul>
+<li><strong>互動方式</strong>：使用者透過 UI 明確指定想要進行的檢測項目</li>
+<li><strong>適用場景</strong>：使用者已有明確的安全檢測需求</li>
+<li><strong>系統行為</strong>：直接執行對應的檢測腳本</li>
+</ul>
+<h4>模式 B：資安情資驅動建議（情資驅動掃描）</h4>
+<ul>
+<li><strong>互動方式</strong>：系統基於 CVE 資料庫或其他資安情資，主動建議相關檢測</li>
+<li><strong>適用場景</strong>：使用者輸入目標後，系統自動分析並推薦</li>
+<li><strong>系統行為</strong>：</li>
+<li>執行初步偵察（如版本探測）</li>
+<li>比對 CVE 知識庫</li>
+<li>列出相關已知漏洞供選擇</li>
+</ul>
+<h4>模式 C：對話式資安議題探索（對話式掃描）</h4>
+<ul>
+<li><strong>互動方式</strong>：使用者與 LLM 進行自然語言對話，討論 WEB 安全議題</li>
+<li><strong>適用場景</strong>：學習導向、探索性測試</li>
+<li><strong>系統行為</strong>：</li>
+<li>LLM 扮演「資安導師」角色</li>
+<li>逐步引導使用者理解安全議題</li>
+<li>討論後共同決定檢測方向</li>
+</ul>
+<h4>模式 D：預設策略執行（全自動化掃描）</h4>
+<ul>
+<li><strong>互動方式</strong>：一鍵執行預設的完整掃描策略</li>
+<li><strong>適用場景</strong>：定期資安健檢、CI/CD 整合、企業用戶</li>
+<li><strong>系統行為</strong>：</li>
+<li>使用者選擇掃描策略（快速/標準/深度掃描）</li>
+<li>系統自動依序執行多項檢測</li>
+<li>產出全面性的安全評估報告</li>
+</ul>
+<h3>2.2 階段性工作流程</h3>
+<pre class="codehilite"><code>階段一：檢測觸發與目標確認
+├─ 模式 A：使用者選擇檢測項目（引導式）
+├─ 模式 B：系統建議相關 CVE 檢測（情資驅動）
+├─ 模式 C：對話式議題探索（對話式）
+└─ 模式 D：選擇預設掃描策略（全自動化）
+
+階段二：工具與腳本生成
+├─ 系統提示可用工具（nmap, curl, Nikto, SQLMap...）
+├─ 使用者選擇工具或由 LLM 推薦
+└─ LLM 生成客製化 Python 測試腳本
+
+階段三：執行與結果呈現
+├─ 單次執行：執行當前生成的腳本
+├─ 批次執行：依序執行多個檢測任務（模式 D）
+└─ 生成報告：結構化結果 + LLM 解釋 + 修復建議
+</code></pre>
+
+<hr />
+<h2>3. 五大核心價值</h2>
+<p>本專案的價值體現在以下五個層面（詳見 <a href="./proposal_core_values.html">proposal_core_values.html</a>）：</p>
+<ol>
+<li><strong>資安學習與探究</strong> - 每次掃描都是互動式學習體驗</li>
+<li><strong>目標、工具與結果的清晰對應</strong> - 完整的檢測邏輯鏈</li>
+<li><strong>自動化的資安掃描資料庫</strong> - 可分析的數據資產</li>
+<li><strong>系統化的教學案例庫</strong> - 持續增長的知識庫</li>
+<li><strong>學習與實用並存</strong> - 雙重需求的滿足</li>
+</ol>
+<hr />
+<h2>4. 快速導覽</h2>
+<h3>想了解系統如何運作？</h3>
+<p>👉 閱讀 <a href="./proposal_architecture.html">系統架構</a> 與 <a href="./proposal_workflow.html">工作流程</a></p>
+<h3>想知道如何與系統互動？</h3>
+<p>👉 閱讀 <a href="./proposal_interaction_modes.html">互動模式</a></p>
+<h3>想了解專案的核心理念？</h3>
+<p>👉 閱讀 <a href="./proposal_core_values.html">五大核心價值</a></p>
+<h3>想知道如何實作？</h3>
+<p>👉 閱讀 <a href="./proposal_implementation.html">實作計畫</a></p>
+<hr />
+<h2>5. 技術摘要</h2>
+<h3>5.1 核心技術棧</h3>
+<table>
+<thead>
+<tr>
+<th>層級</th>
+<th>技術選型</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>前端</strong></td>
+<td>React / Next.js + TypeScript</td>
+</tr>
+<tr>
+<td><strong>後端</strong></td>
+<td>Python 3.11+ (FastAPI / Django)</td>
+</tr>
+<tr>
+<td><strong>資料庫</strong></td>
+<td>PostgreSQL (支援 JSONB)</td>
+</tr>
+<tr>
+<td><strong>沙箱</strong></td>
+<td>Docker 容器隔離</td>
+</tr>
+<tr>
+<td><strong>LLM</strong></td>
+<td>OpenAI API / Claude API</td>
+</tr>
+<tr>
+<td><strong>安全工具</strong></td>
+<td>nmap, curl, Nikto, SQLMap, WPScan 等</td>
+</tr>
+</tbody>
+</table>
+<h3>5.2 安全與道德框架</h3>
+<p>本系統基於<strong>防禦性資安</strong>理念設計，所有功能必須遵守：</p>
+<ol>
+<li><strong>授權驗證</strong>：僅允許掃描合法擁有或獲得授權的目標</li>
+<li><strong>輸入驗證</strong>：嚴格的輸入清理與命令注入防護</li>
+<li><strong>沙箱隔離</strong>：網路隔離、資源限制、唯讀檔案系統</li>
+<li><strong>稽核日誌</strong>：所有掃描活動可追溯至使用者帳號</li>
+<li><strong>速率限制</strong>：防止濫用與資源耗盡攻擊</li>
+</ol>
+<hr />
+<h2>6. 預期成果</h2>
+<h3>6.1 學術貢獻</h3>
+<ul>
+<li>探索 LLM 在資安自動化領域的應用模式</li>
+<li>建立「對話式安全測試」的新型互動範式</li>
+<li>累積結構化的資安教學案例資料集</li>
+</ul>
+<h3>6.2 實務價值</h3>
+<ul>
+<li>降低中小企業進行資安檢測的技術門檻</li>
+<li>為開發人員提供自助式安全檢測工具</li>
+<li>加速 DevSecOps 流程的落地實施</li>
+</ul>
+<h3>6.3 教育價值</h3>
+<ul>
+<li>將抽象的資安知識具象化為可執行的檢測</li>
+<li>透過實作與結果解釋，加深學習者的理解</li>
+<li>建立一個持續增長的開源資安教材庫</li>
+</ul>
+<hr />
+<h2>7. 專案時程概覽</h2>
+<table>
+<thead>
+<tr>
+<th>階段</th>
+<th>時程</th>
+<th>核心目標</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Phase 1: MVP</strong></td>
+<td>6 週</td>
+<td>驗證核心流程，整合 nmap 與 curl</td>
+</tr>
+<tr>
+<td><strong>Phase 2: 功能擴展</strong></td>
+<td>3 個月</td>
+<td>整合更多工具，實現三種觸發模式</td>
+</tr>
+<tr>
+<td><strong>Phase 3: 智能化</strong></td>
+<td>4 個月</td>
+<td>全自動模式，複雜測試鏈</td>
+</tr>
+<tr>
+<td><strong>Phase 4: 部署整合</strong></td>
+<td>持續</td>
+<td>API 整合、效能優化</td>
+</tr>
+</tbody>
+</table>
+<p>詳細時程請參閱 <a href="./proposal_implementation.html">實作計畫</a></p>
+<hr />
+<h2>8. 結語</h2>
+<p>本專案透過 LLM 的智能協調能力，將資安檢測從「專家專屬」轉化為「人人可及」，同時在過程中累積寶貴的知識資產。我們相信，一個好的資安工具不應只是執行掃描，更應該是一位耐心的導師、一個可靠的助手，以及一座持續成長的知識寶庫。</p>
+<p><strong>讓安全檢測不再是黑盒子，而是一場可理解、可學習、可複用的探索之旅。</strong></p>
+<hr />
+<p><em>最後更新：2025-10-21</em></p></div>
+    
+    <!-- Highlight.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    
+    <!-- Mermaid -->
+    <script type="module">
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+        mermaid.initialize({
+            "startOnLoad": true,
+            "theme": "dark",
+            "securityLevel": "loose"
+});
+    </script>
+</body>
+</html>

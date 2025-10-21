@@ -1,0 +1,1119 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>proposal_workflow</title>
+    
+    <!-- CSS 框架 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/dark.min.css">
+    
+    <!-- 代碼高亮 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/base16/darcula.min.css">
+    
+    <!-- 自定義樣式 -->
+    <style>
+        
+                body {
+                    max-width: 900px;
+                    margin: 0 auto;
+                    padding: 20px;
+                }
+                /* 提升代码块对比度 */
+                pre {
+                    background: #1e1e1e !important;
+                    border: 1px solid #3e3e3e;
+                }
+                pre code {
+                    background: #1e1e1e !important;
+                }
+                code {
+                    background: #2d2d2d !important;
+                }
+                /* 引用块对比度 */
+                blockquote {
+                    background: #2d2d2d;
+                    border-left: 4px solid #4a9eff;
+                }
+            
+        
+        /* 通用代碼塊樣式 */
+        pre code {
+            display: block;
+            padding: 1.5em;
+            border-radius: 8px;
+            overflow-x: auto;
+            line-height: 1.6;
+        }
+
+        /* Mermaid 圖表樣式 */
+        
+        .mermaid {
+            margin: 2em 0;
+            padding: 1.5em;
+            text-align: center;
+            border-radius: 8px;
+        }
+        
+        .mermaid {
+            background: #2c3034;
+            border: 1px solid #444;
+        }
+            
+        
+        /* 響應式調整 */
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            .container, .markdown-body, .latex-body, .window-body, .nes-container {
+                padding: 15px;
+            }
+            pre code {
+                padding: 1em;
+            }
+        }
+        
+        
+    </style>
+</head>
+<body>
+    <div class="container"><h1>工作流程與技術細節</h1>
+<blockquote>
+<p>返回 <a href="./proposal_all.html">主文件</a></p>
+</blockquote>
+<p>本文件詳細說明系統的核心工作流程、技術實作細節、Prompt 工程策略、以及資料處理流程。</p>
+<hr />
+<h2>1. 核心工作流程</h2>
+<h3>1.1 完整流程圖</h3>
+<pre class="codehilite"><code>┌─────────────────────────────────────────────────────────┐
+│  階段一：請求接收與驗證                                  │
+└─────────────┬───────────────────────────────────────────┘
+              │
+              ▼
+┌─────────────────────────────────────────────────────────┐
+│  1. 使用者提交掃描請求 (透過 UI 或 API)                  │
+│  2. API Gateway 進行：                                   │
+│     • 使用者認證 (JWT Token 驗證)                        │
+│     • 授權檢查 (是否有權限掃描此目標)                    │
+│     • 速率限制 (防止濫用)                                │
+│  3. 輸入驗證：                                           │
+│     • 目標 URL 格式驗證                                  │
+│     • 黑名單檢查 (RFC 1918 私有 IP、localhost 等)        │
+│     • 參數清理 (防止注入攻擊)                            │
+└─────────────┬───────────────────────────────────────────┘
+              │
+              ▼
+┌─────────────────────────────────────────────────────────┐
+│  階段二：任務規劃與準備                                  │
+└─────────────┬───────────────────────────────────────────┘
+              │
+              ▼
+┌─────────────────────────────────────────────────────────┐
+│  4. Backend Service 創建 Scan 記錄                       │
+│     • 生成 scan_id (UUID)                                │
+│     • 初始狀態：pending                                  │
+│     • 記錄請求參數與時間戳                               │
+│                                                          │
+│  5. 將任務加入 Redis 任務佇列                            │
+│     • 佇列名稱：scan_tasks                               │
+│     • 優先級：Critical &gt; High &gt; Normal                   │
+│                                                          │
+│  6. 返回 scan_id 給前端                                  │
+│     • 前端開始輪詢狀態 (每 3 秒)                         │
+└─────────────┬───────────────────────────────────────────┘
+              │
+              ▼
+┌─────────────────────────────────────────────────────────┐
+│  階段三：LLM 協調與腳本生成                              │
+└─────────────┬───────────────────────────────────────────┘
+              │
+              ▼
+┌─────────────────────────────────────────────────────────┐
+│  7. LLM Orchestrator Worker 從佇列取出任務               │
+│     • 更新掃描狀態：pending → running                    │
+│                                                          │
+│  8. 意圖理解與任務分解                                   │
+│     • 解析使用者選擇的模式與檢測項目                     │
+│     • 若為情資驅動模式：執行快速偵察 + CVE 查詢          │
+│     • 若為對話模式：基於對話歷史決定下一步               │
+│     • 若為自動化模式：載入預定義策略                     │
+│                                                          │
+│  9. 建構 LLM Prompt                                      │
+│     • 從 Prompt 模板庫載入對應模板                       │
+│     • 填充變數 (target, ports, cve_id 等)                │
+│     • 添加安全約束規則                                   │
+│                                                          │
+│  10. 調用 LLM API 生成腳本                               │
+│      • 模型：GPT-4 / Claude 3.5 Sonnet                   │
+│      • Temperature: 0.2 (追求穩定性)                     │
+│      • 重試機制：最多 3 次                               │
+│                                                          │
+│  11. 腳本安全驗證                                        │
+│      • 靜態分析：檢查是否包含危險函數                    │
+│      • 語法檢查：ast.parse() 驗證                        │
+│      • 黑名單檢查：禁止 eval, exec, __import__ 等        │
+└─────────────┬───────────────────────────────────────────┘
+              │
+              ▼
+┌─────────────────────────────────────────────────────────┐
+│  階段四：沙箱執行                                        │
+└─────────────┬───────────────────────────────────────────┘
+              │
+              ▼
+┌─────────────────────────────────────────────────────────┐
+│  12. Sandbox Manager 準備執行環境                        │
+│      • 將腳本寫入臨時檔案                                │
+│      • 配置 Docker 容器參數                              │
+│                                                          │
+│  13. 啟動隔離容器                                        │
+│      • 鏡像：scanner-sandbox:latest                      │
+│      • 資源限制：1 CPU, 512MB RAM                        │
+│      • 網路：scan_net (隔離網路)                         │
+│      • 超時：300 秒                                      │
+│                                                          │
+│  14. 執行腳本並收集輸出                                  │
+│      • 捕獲 stdout 和 stderr                             │
+│      • 記錄執行時間                                      │
+│      • 處理異常與超時                                    │
+│                                                          │
+│  15. 清理資源                                            │
+│      • 強制終止並刪除容器                                │
+│      • 清除臨時檔案                                      │
+└─────────────┬───────────────────────────────────────────┘
+              │
+              ▼
+┌─────────────────────────────────────────────────────────┐
+│  階段五：資料轉換與解析                                  │
+└─────────────┬───────────────────────────────────────────┘
+              │
+              ▼
+┌─────────────────────────────────────────────────────────┐
+│  16. Data Transformer 解析原始輸出                       │
+│      • 根據工具類型選擇對應解析器                        │
+│      • nmap: XML 解析                                    │
+│      • nikto: 正則表達式提取                             │
+│      • custom_script: JSON 直接解析                      │
+│                                                          │
+│  17. 轉換為標準化 JSON 結構                              │
+│      • 符合 ScanResult Schema                            │
+│      • 包含 findings 陣列                                │
+│      • 每個 finding 包含：severity, title, description   │
+│                                                          │
+│  18. 儲存結構化結果到資料庫                              │
+│      • 表格：scan_results                                │
+│      • 欄位：raw_output (原始輸出) + structured_findings │
+└─────────────┬───────────────────────────────────────────┘
+              │
+              ▼
+┌─────────────────────────────────────────────────────────┐
+│  階段六：LLM 解釋與報告生成                              │
+└─────────────┬───────────────────────────────────────────┘
+              │
+              ▼
+┌─────────────────────────────────────────────────────────┐
+│  19. 將結構化結果再次發送給 LLM                          │
+│      • Prompt: &quot;As a cybersecurity analyst, interpret...&quot; │
+│      • 提供上下文：目標、工具、原始目標                  │
+│                                                          │
+│  20. LLM 生成人類可讀的分析                              │
+│      • Executive Summary (執行摘要)                      │
+│      • Detailed Findings (詳細發現)                      │
+│      • Risk Assessment (風險評估)                        │
+│      • Remediation Steps (修復建議)                      │
+│      • Educational Insights (學習要點)                   │
+│                                                          │
+│  21. 儲存 LLM 分析到資料庫                               │
+│      • 欄位：llm_analysis (JSONB)                        │
+└─────────────┬───────────────────────────────────────────┘
+              │
+              ▼
+┌─────────────────────────────────────────────────────────┐
+│  階段七：完成與通知                                      │
+└─────────────┬───────────────────────────────────────────┘
+              │
+              ▼
+┌─────────────────────────────────────────────────────────┐
+│  22. 更新掃描狀態                                        │
+│      • 狀態：running → completed                         │
+│      • 記錄 completed_at 時間戳                          │
+│      • 統計 findings 數量與嚴重性分佈                    │
+│                                                          │
+│  23. 觸發通知 (如果啟用)                                 │
+│      • Email 通知 (Critical 漏洞)                        │
+│      • Webhook 調用 (整合第三方系統)                     │
+│      • Slack 訊息                                        │
+│                                                          │
+│  24. 前端獲取完整結果                                    │
+│      • API: GET /api/v1/scans/{scan_id}/results          │
+│      • 渲染報告頁面                                      │
+└─────────────┴───────────────────────────────────────────┘
+</code></pre>
+
+<hr />
+<h2>2. Prompt 工程策略</h2>
+<h3>2.1 Prompt 設計原則</h3>
+<p>本系統的 Prompt 設計遵循以下原則：</p>
+<ol>
+<li><strong>角色定義清晰</strong>：明確告知 LLM 扮演的角色（資深滲透測試專家）</li>
+<li><strong>任務具體化</strong>：詳細說明要生成的程式碼類型與格式</li>
+<li><strong>安全約束前置</strong>：將安全規則放在 Prompt 開頭，強調其重要性</li>
+<li><strong>範例導向</strong>：提供預期輸出格式的範例</li>
+<li><strong>上下文豐富</strong>：提供足夠的背景資訊（目標、工具能力、限制）</li>
+</ol>
+<h3>2.2 核心 Prompt 模板</h3>
+<h4>模板類型一：通用工具腳本生成</h4>
+<pre class="codehilite"><code class="language-python">GENERIC_TOOL_SCRIPT_PROMPT = &quot;&quot;&quot;
+ROLE: You are a senior penetration tester with 10+ years of experience in web application security testing.
+
+TASK: Write a Python script to {task_description} for the target {target}.
+
+SECURITY RULES (CRITICAL - MUST FOLLOW):
+1. This is authorized security testing with explicit permission
+2. Do NOT cause damage, disruption, or data corruption
+3. Use minimal payloads necessary for detection only
+4. Do NOT execute shell commands with shell=True
+5. Do NOT use eval(), exec(), or __import__()
+6. Implement proper error handling and timeouts
+7. Respect rate limits to avoid overwhelming the target
+
+TECHNICAL REQUIREMENTS:
+1. Use only the following approved libraries: {allowed_libraries}
+2. Use the tool binary at: {tool_path}
+3. Output format: {output_format}
+4. Timeout: {timeout} seconds
+5. Parse the tool output and convert to JSON structure
+6. Handle all exceptions gracefully
+
+TOOL-SPECIFIC PARAMETERS:
+{tool_parameters}
+
+EXPECTED OUTPUT STRUCTURE:
+```json
+{expected_output_schema}
+</code></pre>
+
+<p>IMPORTANT NOTES:<br />
+- Validate all inputs before use<br />
+- Log all actions for audit purposes<br />
+- If uncertain, fail safely and report the issue</p>
+<p>Now, generate the complete Python script. Only output the code, no additional explanation.<br />
+"""</p>
+<pre class="codehilite"><code>**使用範例**：
+
+```python
+prompt = GENERIC_TOOL_SCRIPT_PROMPT.format(
+    task_description=&quot;scan open ports and detect service versions&quot;,
+    target=&quot;example.com&quot;,
+    allowed_libraries=&quot;subprocess, json, sys&quot;,
+    tool_path=&quot;/usr/bin/nmap&quot;,
+    output_format=&quot;XML (using -oX - flag)&quot;,
+    timeout=300,
+    tool_parameters=&quot;&quot;&quot;
+    - Scan ports: 80, 443, 8080, 8443
+    - Enable version detection: -sV flag
+    - Set timing template: -T4
+    - Disable DNS resolution: -n flag
+    &quot;&quot;&quot;,
+    expected_output_schema=json.dumps({
+        &quot;scan_time&quot;: &quot;ISO-8601 timestamp&quot;,
+        &quot;target&quot;: &quot;string&quot;,
+        &quot;ports&quot;: [
+            {
+                &quot;port&quot;: &quot;integer&quot;,
+                &quot;protocol&quot;: &quot;string&quot;,
+                &quot;service&quot;: &quot;string&quot;,
+                &quot;version&quot;: &quot;string&quot;
+            }
+        ]
+    }, indent=2)
+)
+</code></pre>
+
+<h4>模板類型二：CVE 專用驗證腳本</h4>
+<pre class="codehilite"><code class="language-python">CVE_VERIFICATION_PROMPT = &quot;&quot;&quot;
+ROLE: You are a senior penetration tester specializing in vulnerability verification.
+
+OBJECTIVE: Write a Python script to safely verify if {target} is vulnerable to {cve_id}.
+
+CVE INFORMATION:
+- CVE ID: {cve_id}
+- Severity: {severity} (CVSS: {cvss_score})
+- Affected Component: {affected_component}
+- Vulnerability Type: {vulnerability_type}
+- Description: {cve_description}
+
+VERIFICATION METHODOLOGY:
+{detection_method}
+
+CRITICAL SAFETY RULES:
+1. This is DETECTION only, NOT exploitation
+2. Use the minimal payload necessary to confirm vulnerability
+3. Do NOT attempt to extract sensitive data
+4. Do NOT modify or delete any data on the target
+5. Implement request throttling (1 request per second)
+6. Set timeout to 5 seconds per request
+7. If target returns 429 or 503, stop immediately
+
+TECHNICAL REQUIREMENTS:
+1. Use the 'requests' library for HTTP interactions
+2. Implement User-Agent header: &quot;Security-Scanner/1.0&quot;
+3. Verify SSL certificates (verify=True)
+4. Follow redirects (allow_redirects=True)
+5. Maximum of 3 verification attempts
+
+OUTPUT FORMAT:
+Print a JSON object to stdout with exactly this structure:
+```json
+{{
+  &quot;status&quot;: &quot;VULNERABLE&quot; | &quot;NOT_VULNERABLE&quot; | &quot;UNCERTAIN&quot;,
+  &quot;confidence&quot;: 0.0 to 1.0,
+  &quot;evidence&quot;: {{
+    // Specific evidence data
+  }},
+  &quot;raw_response&quot;: {{
+    &quot;status_code&quot;: 200,
+    &quot;headers&quot;: {{}},
+    &quot;body_snippet&quot;: &quot;First 500 chars&quot;
+  }}
+}}
+</code></pre>
+
+<p>EXPECTED BEHAVIOR:<br />
+- Print "VULNERABLE" if the target exhibits the exact vulnerable behavior described<br />
+- Print "NOT_VULNERABLE" if the target is clearly patched or unaffected<br />
+- Print "UNCERTAIN" if the test is inconclusive</p>
+<p>Now, generate the complete Python script. Output code only, no explanations.<br />
+"""</p>
+<pre class="codehilite"><code>#### 模板類型三：結果解釋
+
+```python
+RESULT_INTERPRETATION_PROMPT = &quot;&quot;&quot;
+ROLE: You are a senior cybersecurity analyst and educator with expertise in translating technical security findings into actionable insights.
+
+CONTEXT:
+- Target: {target}
+- Scan Type: {scan_type}
+- Tool Used: {tool_name}
+- User Level: {user_level} (beginner / intermediate / advanced)
+
+RAW SCAN OUTPUT:
+</code></pre>
+
+<p>{raw_output}</p>
+<pre class="codehilite"><code>STRUCTURED FINDINGS:
+```json
+{structured_findings}
+</code></pre>
+
+<p>YOUR TASK:<br />
+Provide a comprehensive analysis with the following sections:</p>
+<ol>
+<li>EXECUTIVE SUMMARY (2-3 sentences)</li>
+<li>Overall security posture</li>
+<li>Number and severity of findings</li>
+<li>
+<p>Immediate actions required</p>
+</li>
+<li>
+<p>DETAILED FINDINGS<br />
+   For each finding:</p>
+</li>
+<li>What was discovered</li>
+<li>Why it matters (risk/impact)</li>
+<li>How it can be exploited (educational explanation)</li>
+<li>
+<p>Severity justification</p>
+</li>
+<li>
+<p>RISK ASSESSMENT</p>
+</li>
+<li>Priority ranking of issues</li>
+<li>Business impact analysis</li>
+<li>
+<p>Likelihood of exploitation</p>
+</li>
+<li>
+<p>REMEDIATION RECOMMENDATIONS<br />
+   For each finding, provide:</p>
+</li>
+<li>Specific fix steps</li>
+<li>Code examples (if applicable)</li>
+<li>Configuration changes</li>
+<li>
+<p>Testing procedures to verify fix</p>
+</li>
+<li>
+<p>EDUCATIONAL INSIGHTS (for {user_level} level)</p>
+</li>
+<li>Key concepts demonstrated</li>
+<li>Learning resources</li>
+<li>Related vulnerabilities to explore</li>
+</ol>
+<p>TONE AND STYLE:<br />
+- Clear and professional<br />
+- Educational but not condescending<br />
+- Use analogies for complex concepts<br />
+- Provide examples and references</p>
+<p>OUTPUT FORMAT: Markdown with clear section headers</p>
+<p>Begin your analysis:<br />
+"""</p>
+<pre class="codehilite"><code>### 2.3 對話模式的 System Prompt
+
+```python
+CONVERSATIONAL_SYSTEM_PROMPT = &quot;&quot;&quot;
+You are an experienced cybersecurity mentor and penetration testing expert. Your role is to guide users through web security testing in an interactive, educational manner.
+
+YOUR TEACHING PHILOSOPHY:
+- Ask questions to understand the user's current knowledge level
+- Explain concepts before diving into technical details
+- Use the Socratic method to encourage critical thinking
+- Provide context for why each step is important
+- Celebrate learning moments and progress
+
+YOUR CAPABILITIES:
+- Generate custom security testing scripts
+- Analyze scan results and explain findings
+- Recommend appropriate tools for different scenarios
+- Connect abstract security concepts to concrete tests
+- Adapt explanations to the user's level
+
+BEHAVIORAL GUIDELINES:
+1. ALWAYS explain the reasoning behind your suggestions
+2. NEVER execute a scan without the user's explicit confirmation
+3. When proposing a script, show the code and explain what it does
+4. If the user seems confused, ask clarifying questions
+5. Offer multiple paths: &quot;quick scan&quot; vs &quot;deep dive learning&quot;
+6. Point out learning opportunities in the results
+7. Connect findings back to theoretical concepts
+
+SAFETY PROTOCOLS:
+- Remind users that testing requires authorization
+- Warn about potentially disruptive tests before running them
+- Explain the ethical implications of security testing
+- Encourage responsible disclosure practices
+
+CONVERSATION STRUCTURE:
+- Greet users warmly and assess their goals
+- Break complex tasks into digestible steps
+- Provide progress updates during scans
+- Celebrate discoveries and learning moments
+- Summarize key takeaways at the end
+
+EXAMPLE INTERACTIONS:
+
+User: &quot;I want to test my website&quot;
+You: &quot;Great! Let's start by understanding what you're looking for. Are you concerned about specific vulnerabilities, or would you like a comprehensive assessment? Also, can you confirm you own this website or have explicit permission to test it?&quot;
+
+User: &quot;Just run a full scan&quot;
+You: &quot;I can definitely do that, but let me first explain what a 'full scan' involves so you know what to expect. It typically includes [list components]. This can take 30-60 minutes and may generate significant traffic. Sound good? Or would you prefer to start with something lighter while I explain each step?&quot;
+
+Now, engage with the user based on their messages. Be friendly, educational, and security-conscious.
+&quot;&quot;&quot;
+</code></pre>
+
+<hr />
+<h2>3. 工具整合實作細節</h2>
+<h3>3.1 nmap 整合</h3>
+<h4>包裝器實作</h4>
+<pre class="codehilite"><code class="language-python">from typing import Optional, Dict, List
+import subprocess
+import xml.etree.ElementTree as ET
+from dataclasses import dataclass
+
+@dataclass
+class NmapPort:
+    port: int
+    protocol: str
+    state: str
+    service_name: str
+    service_version: Optional[str]
+    service_product: Optional[str]
+
+class NmapWrapper:
+    BINARY_PATH = &quot;/usr/bin/nmap&quot;
+
+    def __init__(self):
+        self.default_timeout = 300  # 5 minutes
+
+    def build_command(
+        self,
+        target: str,
+        ports: str = &quot;80,443,8080,8443&quot;,
+        scan_type: str = &quot;version_detection&quot;,
+        timing: str = &quot;T4&quot;
+    ) -&gt; List[str]:
+        &quot;&quot;&quot;
+        建構 nmap 命令
+
+        scan_type 選項:
+        - port_scan: 基礎連接埠掃描
+        - version_detection: 服務版本探測 (-sV)
+        - os_detection: 作業系統探測 (-O)
+        &quot;&quot;&quot;
+        cmd = [self.BINARY_PATH]
+
+        # 掃描類型
+        if scan_type == &quot;version_detection&quot;:
+            cmd.append(&quot;-sV&quot;)
+        elif scan_type == &quot;os_detection&quot;:
+            cmd.extend([&quot;-O&quot;, &quot;--osscan-guess&quot;])
+
+        # 連接埠範圍
+        cmd.extend([&quot;-p&quot;, ports])
+
+        # 時序模板
+        cmd.append(f&quot;-{timing}&quot;)
+
+        # 停用反向 DNS 查詢（加速）
+        cmd.append(&quot;-n&quot;)
+
+        # XML 輸出到 stdout
+        cmd.extend([&quot;-oX&quot;, &quot;-&quot;])
+
+        # 目標
+        cmd.append(target)
+
+        return cmd
+
+    def execute(self, command: List[str]) -&gt; str:
+        &quot;&quot;&quot;執行 nmap 命令並返回 XML 輸出&quot;&quot;&quot;
+        try:
+            result = subprocess.run(
+                command,
+                capture_output=True,
+                text=True,
+                timeout=self.default_timeout,
+                check=True
+            )
+            return result.stdout
+
+        except subprocess.TimeoutExpired:
+            raise ToolExecutionError(f&quot;nmap scan exceeded {self.default_timeout}s timeout&quot;)
+        except subprocess.CalledProcessError as e:
+            raise ToolExecutionError(f&quot;nmap execution failed: {e.stderr}&quot;)
+
+    def parse_xml_output(self, xml_output: str) -&gt; Dict:
+        &quot;&quot;&quot;解析 nmap XML 輸出&quot;&quot;&quot;
+        try:
+            root = ET.fromstring(xml_output)
+
+            # 提取掃描資訊
+            scan_info = {
+                &quot;start_time&quot;: root.get(&quot;start&quot;),
+                &quot;version&quot;: root.get(&quot;version&quot;),
+                &quot;args&quot;: root.get(&quot;args&quot;)
+            }
+
+            # 提取主機資訊
+            hosts = []
+            for host in root.findall(&quot;.//host&quot;):
+                host_info = self._parse_host(host)
+                if host_info:
+                    hosts.append(host_info)
+
+            return {
+                &quot;scan_info&quot;: scan_info,
+                &quot;hosts&quot;: hosts
+            }
+
+        except ET.ParseError as e:
+            raise DataTransformError(f&quot;Failed to parse nmap XML: {e}&quot;)
+
+    def _parse_host(self, host_element) -&gt; Optional[Dict]:
+        &quot;&quot;&quot;解析單個主機的資訊&quot;&quot;&quot;
+        # 檢查主機是否在線
+        status = host_element.find(&quot;status&quot;)
+        if status is None or status.get(&quot;state&quot;) != &quot;up&quot;:
+            return None
+
+        # IP 地址
+        address_elem = host_element.find(&quot;address&quot;)
+        ip = address_elem.get(&quot;addr&quot;) if address_elem is not None else &quot;unknown&quot;
+
+        # 主機名稱（如果有）
+        hostname_elem = host_element.find(&quot;.//hostname&quot;)
+        hostname = hostname_elem.get(&quot;name&quot;) if hostname_elem is not None else None
+
+        # 解析連接埠
+        ports = []
+        for port_elem in host_element.findall(&quot;.//port&quot;):
+            port_info = self._parse_port(port_elem)
+            if port_info:
+                ports.append(port_info)
+
+        return {
+            &quot;ip&quot;: ip,
+            &quot;hostname&quot;: hostname,
+            &quot;ports&quot;: ports
+        }
+
+    def _parse_port(self, port_element) -&gt; Optional[Dict]:
+        &quot;&quot;&quot;解析單個連接埠的資訊&quot;&quot;&quot;
+        state_elem = port_element.find(&quot;state&quot;)
+        if state_elem is None or state_elem.get(&quot;state&quot;) != &quot;open&quot;:
+            return None
+
+        port_num = int(port_element.get(&quot;portid&quot;))
+        protocol = port_element.get(&quot;protocol&quot;)
+
+        # 服務資訊
+        service_elem = port_element.find(&quot;service&quot;)
+        if service_elem is not None:
+            service_name = service_elem.get(&quot;name&quot;, &quot;unknown&quot;)
+            service_product = service_elem.get(&quot;product&quot;)
+            service_version = service_elem.get(&quot;version&quot;)
+            service_extrainfo = service_elem.get(&quot;extrainfo&quot;)
+
+            # 組合完整版本字串
+            version_str = None
+            if service_product:
+                version_str = service_product
+                if service_version:
+                    version_str += f&quot; {service_version}&quot;
+                if service_extrainfo:
+                    version_str += f&quot; ({service_extrainfo})&quot;
+        else:
+            service_name = &quot;unknown&quot;
+            version_str = None
+
+        return {
+            &quot;port&quot;: port_num,
+            &quot;protocol&quot;: protocol,
+            &quot;service_name&quot;: service_name,
+            &quot;service_version&quot;: version_str
+        }
+
+    def convert_to_findings(self, parsed_data: Dict) -&gt; List[Finding]:
+        &quot;&quot;&quot;將解析後的數據轉換為標準 Finding 格式&quot;&quot;&quot;
+        findings = []
+
+        for host in parsed_data[&quot;hosts&quot;]:
+            for port in host[&quot;ports&quot;]:
+                # 根據服務與版本評估嚴重性
+                severity = self._assess_port_severity(port)
+
+                finding = Finding(
+                    severity=severity,
+                    title=f&quot;Open port detected: {port['port']}/{port['protocol']}&quot;,
+                    description=self._build_port_description(port),
+                    cve=None,  # 此階段還不知道 CVE
+                    evidence={
+                        &quot;ip&quot;: host[&quot;ip&quot;],
+                        &quot;hostname&quot;: host[&quot;hostname&quot;],
+                        &quot;port&quot;: port[&quot;port&quot;],
+                        &quot;protocol&quot;: port[&quot;protocol&quot;],
+                        &quot;service_name&quot;: port[&quot;service_name&quot;],
+                        &quot;service_version&quot;: port[&quot;service_version&quot;]
+                    }
+                )
+                findings.append(finding)
+
+        return findings
+
+    def _assess_port_severity(self, port: Dict) -&gt; str:
+        &quot;&quot;&quot;評估連接埠開放的嚴重性&quot;&quot;&quot;
+        # 常見高風險連接埠
+        high_risk_ports = [23, 21, 3389, 22]  # Telnet, FTP, RDP, SSH
+
+        if port[&quot;port&quot;] in high_risk_ports:
+            return &quot;High&quot;
+        elif port[&quot;service_name&quot;] in [&quot;http&quot;, &quot;https&quot;]:
+            return &quot;Medium&quot;
+        else:
+            return &quot;Low&quot;
+
+    def _build_port_description(self, port: Dict) -&gt; str:
+        &quot;&quot;&quot;建構連接埠發現的描述&quot;&quot;&quot;
+        desc = f&quot;Port {port['port']}/{port['protocol']} is open and running {port['service_name']}&quot;
+
+        if port[&quot;service_version&quot;]:
+            desc += f&quot; (version: {port['service_version']})&quot;
+
+        desc += &quot;. This port is accessible from the internet and may expose services to potential attackers.&quot;
+
+        return desc
+</code></pre>
+
+<h3>3.2 CVE 資料庫整合</h3>
+<h4>NVD API 同步</h4>
+<pre class="codehilite"><code class="language-python">import httpx
+import asyncio
+from datetime import datetime, timedelta
+from typing import AsyncIterator
+
+class NVDSyncService:
+    &quot;&quot;&quot;
+    National Vulnerability Database 同步服務
+    &quot;&quot;&quot;
+    BASE_URL = &quot;https://services.nvd.nist.gov/rest/json/cves/2.0&quot;
+
+    def __init__(self, api_key: Optional[str] = None):
+        self.api_key = api_key
+        self.rate_limit_delay = 0.6 if api_key else 6  # 有 API key 可加速
+
+    async def sync_recent_cves(self, days: int = 7) -&gt; int:
+        &quot;&quot;&quot;同步最近 N 天的 CVE&quot;&quot;&quot;
+        end_date = datetime.now()
+        start_date = end_date - timedelta(days=days)
+
+        count = 0
+        async for cve in self._fetch_cves_by_date_range(start_date, end_date):
+            await self._save_cve_to_database(cve)
+            count += 1
+
+        return count
+
+    async def _fetch_cves_by_date_range(
+        self,
+        start_date: datetime,
+        end_date: datetime
+    ) -&gt; AsyncIterator[Dict]:
+        &quot;&quot;&quot;依日期範圍獲取 CVE（分頁）&quot;&quot;&quot;
+        async with httpx.AsyncClient() as client:
+            start_index = 0
+            results_per_page = 2000
+
+            while True:
+                params = {
+                    &quot;pubStartDate&quot;: start_date.isoformat(),
+                    &quot;pubEndDate&quot;: end_date.isoformat(),
+                    &quot;startIndex&quot;: start_index,
+                    &quot;resultsPerPage&quot;: results_per_page
+                }
+
+                if self.api_key:
+                    headers = {&quot;apiKey&quot;: self.api_key}
+                else:
+                    headers = {}
+
+                response = await client.get(
+                    self.BASE_URL,
+                    params=params,
+                    headers=headers,
+                    timeout=30
+                )
+
+                response.raise_for_status()
+                data = response.json()
+
+                vulnerabilities = data.get(&quot;vulnerabilities&quot;, [])
+                if not vulnerabilities:
+                    break
+
+                for vuln_data in vulnerabilities:
+                    cve = self._parse_nvd_cve(vuln_data)
+                    yield cve
+
+                # 檢查是否還有更多結果
+                total_results = data.get(&quot;totalResults&quot;, 0)
+                if start_index + results_per_page &gt;= total_results:
+                    break
+
+                start_index += results_per_page
+
+                # 速率限制
+                await asyncio.sleep(self.rate_limit_delay)
+
+    def _parse_nvd_cve(self, vuln_data: Dict) -&gt; Dict:
+        &quot;&quot;&quot;解析 NVD API 回應為內部格式&quot;&quot;&quot;
+        cve_item = vuln_data[&quot;cve&quot;]
+
+        cve_id = cve_item[&quot;id&quot;]
+
+        # 描述
+        descriptions = cve_item.get(&quot;descriptions&quot;, [])
+        description = next(
+            (d[&quot;value&quot;] for d in descriptions if d[&quot;lang&quot;] == &quot;en&quot;),
+            &quot;No description available&quot;
+        )
+
+        # CVSS 評分
+        metrics = vuln_data.get(&quot;cve&quot;, {}).get(&quot;metrics&quot;, {})
+        cvss_data = (
+            metrics.get(&quot;cvssMetricV31&quot;, [{}])[0]
+            or metrics.get(&quot;cvssMetricV30&quot;, [{}])[0]
+            or metrics.get(&quot;cvssMetricV2&quot;, [{}])[0]
+        )
+
+        cvss_score = cvss_data.get(&quot;cvssData&quot;, {}).get(&quot;baseScore&quot;, 0.0)
+        severity = cvss_data.get(&quot;baseSeverity&quot;, &quot;Unknown&quot;)
+
+        # 受影響的 CPE（Common Platform Enumeration）
+        configurations = vuln_data.get(&quot;cve&quot;, {}).get(&quot;configurations&quot;, [])
+        affected_cpe = []
+        for config in configurations:
+            for node in config.get(&quot;nodes&quot;, []):
+                for cpe_match in node.get(&quot;cpeMatch&quot;, []):
+                    if cpe_match.get(&quot;vulnerable&quot;):
+                        affected_cpe.append(cpe_match.get(&quot;criteria&quot;))
+
+        # 發佈日期
+        published = cve_item.get(&quot;published&quot;)
+
+        # 參考連結
+        references = [
+            ref[&quot;url&quot;] for ref in cve_item.get(&quot;references&quot;, [])
+        ]
+
+        return {
+            &quot;cve_id&quot;: cve_id,
+            &quot;description&quot;: description,
+            &quot;cvss_score&quot;: cvss_score,
+            &quot;severity&quot;: severity,
+            &quot;affected_cpe&quot;: affected_cpe,
+            &quot;published_date&quot;: published,
+            &quot;references&quot;: references,
+            &quot;raw_data&quot;: vuln_data  # 保存原始資料供未來使用
+        }
+
+    async def _save_cve_to_database(self, cve: Dict):
+        &quot;&quot;&quot;儲存 CVE 到資料庫&quot;&quot;&quot;
+        query = &quot;&quot;&quot;
+        INSERT INTO cve_database (
+            cve_id, description, cvss_score, severity,
+            affected_cpe, published_date, references, raw_data
+        ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+        ON CONFLICT (cve_id) DO UPDATE SET
+            description = EXCLUDED.description,
+            cvss_score = EXCLUDED.cvss_score,
+            severity = EXCLUDED.severity,
+            affected_cpe = EXCLUDED.affected_cpe,
+            published_date = EXCLUDED.published_date,
+            references = EXCLUDED.references,
+            raw_data = EXCLUDED.raw_data,
+            updated_at = NOW()
+        &quot;&quot;&quot;
+
+        await db.execute(
+            query,
+            cve[&quot;cve_id&quot;],
+            cve[&quot;description&quot;],
+            cve[&quot;cvss_score&quot;],
+            cve[&quot;severity&quot;],
+            json.dumps(cve[&quot;affected_cpe&quot;]),
+            cve[&quot;published_date&quot;],
+            json.dumps(cve[&quot;references&quot;]),
+            json.dumps(cve[&quot;raw_data&quot;])
+        )
+</code></pre>
+
+<hr />
+<h2>4. 錯誤處理與重試機制</h2>
+<h3>4.1 分層錯誤處理</h3>
+<pre class="codehilite"><code class="language-python">class SecurityScannerError(Exception):
+    &quot;&quot;&quot;基礎異常類別&quot;&quot;&quot;
+    pass
+
+class ValidationError(SecurityScannerError):
+    &quot;&quot;&quot;輸入驗證錯誤&quot;&quot;&quot;
+    pass
+
+class AuthorizationError(SecurityScannerError):
+    &quot;&quot;&quot;授權檢查失敗&quot;&quot;&quot;
+    pass
+
+class LLMError(SecurityScannerError):
+    &quot;&quot;&quot;LLM API 相關錯誤&quot;&quot;&quot;
+    pass
+
+class ToolExecutionError(SecurityScannerError):
+    &quot;&quot;&quot;工具執行錯誤&quot;&quot;&quot;
+    pass
+
+class SandboxError(SecurityScannerError):
+    &quot;&quot;&quot;沙箱執行錯誤&quot;&quot;&quot;
+    pass
+
+class DataTransformError(SecurityScannerError):
+    &quot;&quot;&quot;數據轉換錯誤&quot;&quot;&quot;
+    pass
+</code></pre>
+
+<h3>4.2 重試裝飾器</h3>
+<pre class="codehilite"><code class="language-python">import functools
+import asyncio
+from typing import Callable, TypeVar, Any
+
+T = TypeVar('T')
+
+def retry_with_backoff(
+    max_attempts: int = 3,
+    initial_delay: float = 1.0,
+    backoff_factor: float = 2.0,
+    exceptions: tuple = (Exception,)
+):
+    &quot;&quot;&quot;
+    指數退避重試裝飾器
+
+    Args:
+        max_attempts: 最大嘗試次數
+        initial_delay: 初始延遲（秒）
+        backoff_factor: 退避倍數
+        exceptions: 需要重試的異常類型
+    &quot;&quot;&quot;
+    def decorator(func: Callable[..., T]) -&gt; Callable[..., T]:
+        @functools.wraps(func)
+        async def wrapper(*args, **kwargs) -&gt; T:
+            delay = initial_delay
+            last_exception = None
+
+            for attempt in range(1, max_attempts + 1):
+                try:
+                    return await func(*args, **kwargs)
+                except exceptions as e:
+                    last_exception = e
+
+                    if attempt == max_attempts:
+                        # 最後一次嘗試失敗，拋出異常
+                        raise
+
+                    # 記錄重試
+                    logger.warning(
+                        f&quot;{func.__name__} attempt {attempt}/{max_attempts} failed: {e}. &quot;
+                        f&quot;Retrying in {delay}s...&quot;
+                    )
+
+                    await asyncio.sleep(delay)
+                    delay *= backoff_factor
+
+            # 理論上不會執行到這裡
+            raise last_exception
+
+        return wrapper
+    return decorator
+
+# 使用範例
+@retry_with_backoff(
+    max_attempts=3,
+    initial_delay=1.0,
+    exceptions=(httpx.HTTPError, LLMError)
+)
+async def call_llm_api(prompt: str) -&gt; str:
+    &quot;&quot;&quot;調用 LLM API（含重試機制）&quot;&quot;&quot;
+    response = await llm_client.complete(prompt)
+    return response
+</code></pre>
+
+<hr />
+<h2>5. 監控與日誌</h2>
+<h3>5.1 結構化日誌</h3>
+<pre class="codehilite"><code class="language-python">import structlog
+from datetime import datetime
+
+# 配置 structlog
+structlog.configure(
+    processors=[
+        structlog.stdlib.add_log_level,
+        structlog.stdlib.add_logger_name,
+        structlog.processors.TimeStamper(fmt=&quot;iso&quot;),
+        structlog.processors.JSONRenderer()
+    ]
+)
+
+logger = structlog.get_logger()
+
+# 使用範例
+async def execute_scan(scan_id: str, target: str):
+    log = logger.bind(
+        scan_id=scan_id,
+        target=target,
+        component=&quot;scan_executor&quot;
+    )
+
+    log.info(&quot;scan_started&quot;)
+
+    try:
+        result = await perform_scan()
+        log.info(&quot;scan_completed&quot;,
+                 duration_ms=result.duration,
+                 findings_count=len(result.findings))
+    except Exception as e:
+        log.error(&quot;scan_failed&quot;,
+                  error_type=type(e).__name__,
+                  error_message=str(e))
+        raise
+</code></pre>
+
+<h3>5.2 性能指標收集</h3>
+<pre class="codehilite"><code class="language-python">from prometheus_client import Counter, Histogram, Gauge
+
+# 定義指標
+scan_requests_total = Counter(
+    'scan_requests_total',
+    'Total number of scan requests',
+    ['scan_mode', 'status']
+)
+
+scan_duration_seconds = Histogram(
+    'scan_duration_seconds',
+    'Scan execution duration in seconds',
+    ['scan_mode', 'tool']
+)
+
+active_scans = Gauge(
+    'active_scans',
+    'Number of currently running scans'
+)
+
+llm_api_calls_total = Counter(
+    'llm_api_calls_total',
+    'Total LLM API calls',
+    ['purpose', 'model']
+)
+
+# 使用範例
+async def execute_scan_with_metrics(scan_request: ScanRequest):
+    scan_requests_total.labels(
+        scan_mode=scan_request.mode,
+        status='started'
+    ).inc()
+
+    active_scans.inc()
+
+    start_time = time.time()
+
+    try:
+        result = await perform_scan(scan_request)
+
+        scan_requests_total.labels(
+            scan_mode=scan_request.mode,
+            status='completed'
+        ).inc()
+
+        return result
+    except Exception:
+        scan_requests_total.labels(
+            scan_mode=scan_request.mode,
+            status='failed'
+        ).inc()
+        raise
+    finally:
+        duration = time.time() - start_time
+        scan_duration_seconds.labels(
+            scan_mode=scan_request.mode,
+            tool='overall'
+        ).observe(duration)
+
+        active_scans.dec()
+</code></pre>
+
+<hr />
+<p><em>本文件最後更新：2025-10-21</em></p>
+<p>返回 <a href="./proposal_all.html">主文件</a></p></div>
+    
+    <!-- Highlight.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    
+    <!-- Mermaid -->
+    <script type="module">
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+        mermaid.initialize({
+            "startOnLoad": true,
+            "theme": "dark",
+            "securityLevel": "loose"
+});
+    </script>
+</body>
+</html>

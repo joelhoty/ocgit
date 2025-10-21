@@ -1,0 +1,1017 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>proposal_interaction_modes</title>
+    
+    <!-- CSS 框架 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/dark.min.css">
+    
+    <!-- 代碼高亮 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/base16/darcula.min.css">
+    
+    <!-- 自定義樣式 -->
+    <style>
+        
+                body {
+                    max-width: 900px;
+                    margin: 0 auto;
+                    padding: 20px;
+                }
+                /* 提升代码块对比度 */
+                pre {
+                    background: #1e1e1e !important;
+                    border: 1px solid #3e3e3e;
+                }
+                pre code {
+                    background: #1e1e1e !important;
+                }
+                code {
+                    background: #2d2d2d !important;
+                }
+                /* 引用块对比度 */
+                blockquote {
+                    background: #2d2d2d;
+                    border-left: 4px solid #4a9eff;
+                }
+            
+        
+        /* 通用代碼塊樣式 */
+        pre code {
+            display: block;
+            padding: 1.5em;
+            border-radius: 8px;
+            overflow-x: auto;
+            line-height: 1.6;
+        }
+
+        /* Mermaid 圖表樣式 */
+        
+        .mermaid {
+            margin: 2em 0;
+            padding: 1.5em;
+            text-align: center;
+            border-radius: 8px;
+        }
+        
+        .mermaid {
+            background: #2c3034;
+            border: 1px solid #444;
+        }
+            
+        
+        /* 響應式調整 */
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            .container, .markdown-body, .latex-body, .window-body, .nes-container {
+                padding: 15px;
+            }
+            pre code {
+                padding: 1em;
+            }
+        }
+        
+        
+    </style>
+</head>
+<body>
+    <div class="container"><h1>四種使用者互動模式</h1>
+<blockquote>
+<p>返回 <a href="./proposal_all.html">主文件</a></p>
+</blockquote>
+<p>本文件詳細說明系統提供的四種核心互動模式，每種模式針對不同的使用者需求與使用場景設計。</p>
+<hr />
+<h2>互動模式總覽</h2>
+<table>
+<thead>
+<tr>
+<th>模式</th>
+<th>目標使用者</th>
+<th>互動方式</th>
+<th>檢測觸發來源</th>
+<th>學習性</th>
+<th>自動化程度</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>模式一：引導式掃描</strong></td>
+<td>初學者、開發人員</td>
+<td>選單式選擇</td>
+<td>使用者主動選擇</td>
+<td>中</td>
+<td>低</td>
+</tr>
+<tr>
+<td><strong>模式二：情資驅動掃描</strong></td>
+<td>所有使用者</td>
+<td>智慧建議</td>
+<td>系統分析後推薦</td>
+<td>中高</td>
+<td>中</td>
+</tr>
+<tr>
+<td><strong>模式三：對話式掃描</strong></td>
+<td>學習導向使用者</td>
+<td>自然語言對話</td>
+<td>對話討論後決定</td>
+<td>高</td>
+<td>低</td>
+</tr>
+<tr>
+<td><strong>模式四：全自動化掃描</strong></td>
+<td>企業用戶、專業人士</td>
+<td>一鍵執行</td>
+<td>預設策略</td>
+<td>低</td>
+<td>高</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>模式一：引導式掃描 (Guided Scan)</h2>
+<h3>設計理念</h3>
+<p><strong>為不熟悉資安概念的使用者提供清晰的檢測選單，將複雜的技術概念轉化為直觀的選項。</strong></p>
+<h3>適用場景</h3>
+<ul>
+<li>開發人員想在部署前快速檢查常見安全問題</li>
+<li>資安初學者想嘗試實際的漏洞檢測</li>
+<li>需要針對特定議題（如 SQL Injection）進行測試</li>
+</ul>
+<h3>互動流程</h3>
+<pre class="codehilite"><code>[步驟 1] 使用者輸入目標 URL
+    ↓
+[步驟 2] 系統顯示檢測項目選單
+    ↓
+[步驟 3] 使用者選擇一個或多個項目
+    ↓
+[步驟 4] 系統執行對應的檢測腳本
+    ↓
+[步驟 5] 呈現結果與解釋
+</code></pre>
+
+<h3>UI 設計概念</h3>
+<h4>主畫面：檢測項目選單</h4>
+<pre class="codehilite"><code>┌─────────────────────────────────────────────────┐
+│  🎯 引導式掃描 - 請選擇檢測項目                  │
+├─────────────────────────────────────────────────┤
+│                                                 │
+│  📊 基礎資訊盤點                                │
+│  └─ 識別伺服器類型、開放連接埠、使用的技術      │
+│     工具：nmap, curl, WhatWeb                   │
+│     預估時間：2-3 分鐘                           │
+│     [ 選擇 ]                                     │
+│                                                 │
+│  🔒 SSL/TLS 安全性檢查                          │
+│  └─ 檢測憑證有效性、加密協定強度、已知弱點      │
+│     工具：SSLyze, testssl.sh                    │
+│     預估時間：3-5 分鐘                           │
+│     [ 選擇 ]                                     │
+│                                                 │
+│  🛡️ Web 伺服器已知漏洞掃描                      │
+│  └─ 掃描 CVE 資料庫中與目標版本相關的已知漏洞   │
+│     工具：Nikto, CVE Search                     │
+│     預估時間：5-10 分鐘                          │
+│     [ 選擇 ]                                     │
+│                                                 │
+│  💉 SQL Injection 檢測                          │
+│  └─ 自動測試輸入點是否存在 SQL 注入漏洞         │
+│     工具：SQLMap                                │
+│     預估時間：10-15 分鐘                         │
+│     [ 選擇 ]                                     │
+│                                                 │
+│  🔍 敏感資訊洩漏檢測                            │
+│  └─ 檢查是否暴露設定檔、備份檔、目錄列表等      │
+│     工具：GoBuster, 自訂腳本                    │
+│     預估時間：5-8 分鐘                           │
+│     [ 選擇 ]                                     │
+│                                                 │
+│  📁 CMS 專用掃描 (WordPress/Joomla/Drupal)      │
+│  └─ 針對常見 CMS 的專門檢測                     │
+│     工具：WPScan, JoomScan                      │
+│     預估時間：8-12 分鐘                          │
+│     [ 選擇 ]                                     │
+│                                                 │
+├─────────────────────────────────────────────────┤
+│  已選擇：3 項 | 預估總時間：10-18 分鐘          │
+│                              [ 取消 ] [ 開始掃描 ]│
+└─────────────────────────────────────────────────┘
+</code></pre>
+
+<h3>檢測項目資料結構</h3>
+<p>每個檢測項目在後端以結構化方式定義：</p>
+<pre class="codehilite"><code class="language-python">from pydantic import BaseModel
+
+class GuidedScanItem(BaseModel):
+    id: str  # 例如：&quot;basic_info_gathering&quot;
+    title: str  # &quot;基礎資訊盤點&quot;
+    description: str
+    icon: str  # Emoji 或圖示名稱
+    tools: list[str]  # [&quot;nmap&quot;, &quot;curl&quot;, &quot;whatweb&quot;]
+    estimated_duration_min: int
+    estimated_duration_max: int
+    difficulty: str  # &quot;beginner&quot; | &quot;intermediate&quot; | &quot;advanced&quot;
+    learning_goals: list[str]  # 學習目標
+    prompt_template: str  # LLM Prompt 模板
+
+# 範例實例
+BASIC_INFO_GATHERING = GuidedScanItem(
+    id=&quot;basic_info_gathering&quot;,
+    title=&quot;基礎資訊盤點&quot;,
+    description=&quot;識別伺服器類型、開放連接埠、使用的技術&quot;,
+    icon=&quot;📊&quot;,
+    tools=[&quot;nmap&quot;, &quot;curl&quot;, &quot;whatweb&quot;],
+    estimated_duration_min=2,
+    estimated_duration_max=3,
+    difficulty=&quot;beginner&quot;,
+    learning_goals=[
+        &quot;了解什麼是連接埠掃描&quot;,
+        &quot;學習如何識別 Web 伺服器版本&quot;,
+        &quot;理解資訊收集在滲透測試中的重要性&quot;
+    ],
+    prompt_template=&quot;&quot;&quot;
+    As a senior penetration tester, create a comprehensive information gathering script for {target}.
+
+    Tasks:
+    1. Use nmap to scan common web ports (80, 443, 8080, 8443)
+    2. Use curl to fetch HTTP headers and identify server software
+    3. Use WhatWeb to identify CMS and technologies
+
+    Output a JSON with:
+    - open_ports: list of dicts with port, protocol, service
+    - server_info: dict with server type, version
+    - technologies: list of identified technologies
+    &quot;&quot;&quot;
+)
+</code></pre>
+
+<h3>執行過程的即時反饋</h3>
+<pre class="codehilite"><code>┌─────────────────────────────────────────────────┐
+│  🔄 正在執行：基礎資訊盤點                       │
+├─────────────────────────────────────────────────┤
+│  ✅ [1/3] nmap 連接埠掃描                        │
+│     發現 2 個開放連接埠                         │
+│                                                 │
+│  🔄 [2/3] curl HTTP Header 分析                 │
+│     正在擷取伺服器資訊...                       │
+│                                                 │
+│  ⏳ [3/3] WhatWeb 技術識別                      │
+│     等待中...                                   │
+│                                                 │
+│  [████████████░░░░░░] 65%                       │
+└─────────────────────────────────────────────────┘
+</code></pre>
+
+<h3>結果呈現</h3>
+<p>結果頁面包含三個層次的資訊：</p>
+<p><strong>層次 1：執行摘要</strong>（適合快速瀏覽）</p>
+<pre class="codehilite"><code>📊 基礎資訊盤點 - 完成
+
+🔍 發現：
+- 開放連接埠：2 個 (80, 443)
+- 伺服器類型：Apache 2.4.49
+- 已識別技術：PHP 7.4, WordPress 5.8
+
+⚠️ 風險提示：
+- Apache 2.4.49 存在已知漏洞 (CVE-2021-41773)
+- 建議執行「Web 伺服器已知漏洞掃描」進行深入檢測
+</code></pre>
+
+<p><strong>層次 2：詳細發現</strong>（點擊展開）</p>
+<pre class="codehilite"><code class="language-json">{
+  &quot;open_ports&quot;: [
+    {
+      &quot;port&quot;: 80,
+      &quot;protocol&quot;: &quot;tcp&quot;,
+      &quot;service&quot;: &quot;http&quot;,
+      &quot;version&quot;: &quot;Apache httpd 2.4.49&quot;
+    },
+    {
+      &quot;port&quot;: 443,
+      &quot;protocol&quot;: &quot;tcp&quot;,
+      &quot;service&quot;: &quot;https&quot;,
+      &quot;version&quot;: &quot;Apache httpd 2.4.49&quot;
+    }
+  ],
+  &quot;server_info&quot;: {
+    &quot;type&quot;: &quot;Apache&quot;,
+    &quot;version&quot;: &quot;2.4.49&quot;,
+    &quot;os&quot;: &quot;Unix&quot;
+  },
+  &quot;technologies&quot;: [
+    &quot;PHP 7.4.3&quot;,
+    &quot;WordPress 5.8&quot;,
+    &quot;MySQL&quot;
+  ]
+}
+</code></pre>
+
+<p><strong>層次 3：原始工具輸出</strong>（供進階使用者參考）</p>
+<pre class="codehilite"><code>[nmap 原始輸出]
+Starting Nmap 7.92 ( https://nmap.org ) at 2025-01-15 14:30 UTC
+Nmap scan report for target.com (203.0.113.10)
+Host is up (0.050s latency).
+PORT    STATE SERVICE VERSION
+80/tcp  open  http    Apache httpd 2.4.49 ((Unix))
+443/tcp open  https   Apache httpd 2.4.49 ((Unix))
+...
+</code></pre>
+
+<hr />
+<h2>模式二：情資驅動掃描 (Intelligence-Driven Scan)</h2>
+<h3>設計理念</h3>
+<p><strong>利用 CVE 資料庫與資安情資，主動為使用者推薦相關的安全檢測，從「被動執行」到「主動建議」。</strong></p>
+<h3>適用場景</h3>
+<ul>
+<li>使用者不確定應該檢測什麼</li>
+<li>希望針對目標的實際環境進行優化檢測</li>
+<li>想了解「我的網站可能面臨哪些已知威脅」</li>
+</ul>
+<h3>互動流程</h3>
+<pre class="codehilite"><code>[步驟 1] 使用者輸入目標 URL
+    ↓
+[步驟 2] 系統執行快速偵察
+    - nmap 快速掃描
+    - HTTP Header 分析
+    - 技術棧識別
+    ↓
+[步驟 3] 比對 CVE 資料庫
+    - 根據識別的軟體版本查詢已知漏洞
+    ↓
+[步驟 4] 生成智慧建議清單
+    ↓
+[步驟 5] 使用者選擇要測試的 CVE
+    ↓
+[步驟 6] LLM 生成專用的漏洞驗證腳本
+    ↓
+[步驟 7] 執行並呈現結果
+</code></pre>
+
+<h3>UI 設計概念</h3>
+<h4>智慧建議畫面</h4>
+<pre class="codehilite"><code>┌─────────────────────────────────────────────────┐
+│  🧠 情資驅動掃描 - 智慧建議                      │
+├─────────────────────────────────────────────────┤
+│  目標：https://example.com                      │
+│  快速偵察完成 (3.2 秒)                          │
+├─────────────────────────────────────────────────┤
+│                                                 │
+│  📌 已識別技術棧：                              │
+│  ├─ Apache HTTP Server 2.4.49                  │
+│  ├─ PHP 7.4.3                                   │
+│  ├─ WordPress 5.8                               │
+│  └─ OpenSSL 1.1.1d                              │
+│                                                 │
+│  ⚠️ 發現 5 個相關的已知漏洞 (CVE)                │
+│                                                 │
+├─────────────────────────────────────────────────┤
+│                                                 │
+│  🔴 Critical - CVE-2021-41773                   │
+│  影響組件：Apache HTTP Server 2.4.49           │
+│  漏洞類型：路徑穿越 (Path Traversal)            │
+│  CVSS 評分：9.8 / 10.0                          │
+│                                                 │
+│  📝 漏洞說明：                                   │
+│  Apache 2.4.49 的 URL 正規化處理存在缺陷，攻擊者 │
+│  可透過特製的請求繞過存取控制，讀取伺服器上的任意 │
+│  檔案（如 /etc/passwd）。                        │
+│                                                 │
+│  🔬 檢測方法：                                   │
+│  發送包含 &quot;/.%2e/&quot; 路徑的 HTTP 請求，嘗試讀取    │
+│  敏感檔案。若成功返回檔案內容，則確認漏洞存在。 │
+│                                                 │
+│  [ 測試此漏洞 ]  [ 查看詳細資訊 ]                │
+│                                                 │
+├─────────────────────────────────────────────────┤
+│                                                 │
+│  🟠 High - CVE-2021-28041                       │
+│  影響組件：OpenSSL 1.1.1d                       │
+│  漏洞類型：X509 憑證驗證繞過                    │
+│  CVSS 評分：7.4 / 10.0                          │
+│  [ 測試此漏洞 ]                                  │
+│                                                 │
+├─────────────────────────────────────────────────┤
+│                                                 │
+│  🟡 Medium - 其他 3 個漏洞                      │
+│  [ 展開查看 ]                                    │
+│                                                 │
+└─────────────────────────────────────────────────┘
+</code></pre>
+
+<h3>後端處理流程</h3>
+<pre class="codehilite"><code class="language-python">class IntelligenceDrivenScanner:
+    async def analyze_target(self, target: str) -&gt; IntelligenceReport:
+        # 1. 快速偵察
+        recon_results = await self._quick_reconnaissance(target)
+
+        # 2. 提取技術棧
+        tech_stack = self._extract_tech_stack(recon_results)
+
+        # 3. 查詢 CVE 資料庫
+        related_cves = await self._query_cve_database(tech_stack)
+
+        # 4. 排序與優先級
+        prioritized_cves = self._prioritize_by_severity(related_cves)
+
+        # 5. 為每個 CVE 準備檢測資訊
+        suggestions = []
+        for cve in prioritized_cves:
+            suggestion = CVESuggestion(
+                cve_id=cve.id,
+                severity=cve.severity,
+                cvss_score=cve.cvss_score,
+                description=cve.description,
+                affected_component=cve.affected_component,
+                detection_method=await self._get_detection_method(cve),
+                exploit_available=cve.exploit_available
+            )
+            suggestions.append(suggestion)
+
+        return IntelligenceReport(
+            target=target,
+            tech_stack=tech_stack,
+            suggestions=suggestions,
+            scan_timestamp=datetime.now()
+        )
+
+    async def _query_cve_database(self, tech_stack: TechStack) -&gt; list[CVE]:
+        &quot;&quot;&quot;查詢相關 CVE&quot;&quot;&quot;
+        cves = []
+        for component in tech_stack.components:
+            # 使用 CPE (Common Platform Enumeration) 格式查詢
+            cpe = f&quot;cpe:2.3:a:{component.vendor}:{component.name}:{component.version}&quot;
+
+            query = &quot;&quot;&quot;
+            SELECT * FROM cve_database
+            WHERE affected_cpe @&gt; %s::jsonb
+            ORDER BY cvss_score DESC
+            LIMIT 10
+            &quot;&quot;&quot;
+            results = await self.db.fetch(query, json.dumps([cpe]))
+            cves.extend(results)
+
+        return cves
+
+    async def _get_detection_method(self, cve: CVE) -&gt; DetectionMethod:
+        &quot;&quot;&quot;從知識庫或 LLM 獲取檢測方法&quot;&quot;&quot;
+        # 先嘗試從知識庫取得預定義的檢測方法
+        method = await self.kb.get_detection_method(cve.id)
+
+        if method is None:
+            # 若無預定義方法，請 LLM 生成
+            prompt = f&quot;&quot;&quot;
+            Given the following CVE, describe a safe and effective method to detect if a target is vulnerable:
+
+            CVE ID: {cve.id}
+            Description: {cve.description}
+            Affected Component: {cve.affected_component}
+
+            Provide:
+            1. A brief explanation of how to test for this vulnerability
+            2. The expected behavior if vulnerable
+            3. The expected behavior if not vulnerable
+            &quot;&quot;&quot;
+            response = await self.llm.complete(prompt)
+            method = DetectionMethod.from_llm_response(response)
+
+        return method
+</code></pre>
+
+<h3>CVE 驗證腳本生成</h3>
+<p>當使用者選擇測試某個 CVE 時，系統生成專用腳本：</p>
+<pre class="codehilite"><code class="language-python">async def generate_cve_verification_script(cve_id: str, target: str) -&gt; str:
+    cve_details = await db.get_cve(cve_id)
+
+    prompt = f&quot;&quot;&quot;
+    As a senior penetration tester with expertise in {cve_details.affected_component},
+    write a Python script to safely verify if {target} is vulnerable to {cve_id}.
+
+    CVE Details:
+    - Description: {cve_details.description}
+    - Type: {cve_details.vulnerability_type}
+    - CVSS Score: {cve_details.cvss_score}
+
+    Verification Approach:
+    {cve_details.detection_method}
+
+    Requirements:
+    1. Use the 'requests' library for HTTP interactions
+    2. Implement EXACTLY the verification steps described above
+    3. Print JSON output with:
+       - &quot;status&quot;: &quot;VULNERABLE&quot; | &quot;NOT_VULNERABLE&quot; | &quot;UNCERTAIN&quot;
+       - &quot;confidence&quot;: float (0.0 to 1.0)
+       - &quot;evidence&quot;: dict with relevant details
+    4. Set reasonable timeouts (5 seconds)
+    5. Handle all exceptions gracefully
+    6. DO NOT cause damage or service disruption
+
+    CRITICAL SAFETY RULES:
+    - This is authorized security testing only
+    - Use minimal payloads necessary for verification
+    - Do not attempt exploitation beyond verification
+    &quot;&quot;&quot;
+
+    response = await llm_client.complete(prompt)
+    script = extract_code_from_response(response)
+
+    return script
+</code></pre>
+
+<hr />
+<h2>模式三：對話式掃描 (Conversational Scan)</h2>
+<h3>設計理念</h3>
+<p><strong>將 LLM 轉化為一位資安導師，透過蘇格拉底式對話引導使用者理解資安議題，共同決定檢測策略。</strong></p>
+<h3>適用場景</h3>
+<ul>
+<li>學習資安的學生，想深入理解每個步驟的意義</li>
+<li>探索性測試，不確定應該從何開始</li>
+<li>希望系統解釋「為什麼」而不只是「怎麼做」</li>
+</ul>
+<h3>互動流程</h3>
+<pre class="codehilite"><code>使用者：&quot;我想測試網站的安全性&quot;
+    ↓
+系統：&quot;很好！首先，您對這個網站有多少了解？您知道它使用什麼技術嗎？&quot;
+    ↓
+使用者：&quot;不太清楚，應該如何開始？&quot;
+    ↓
+系統：&quot;在資安測試中，我們通常從「資訊收集」開始。我建議使用 nmap
+      掃描開放連接埠，以及 curl 分析 HTTP Header。您想了解這些工具的
+      運作原理嗎？&quot;
+    ↓
+使用者：&quot;可以，請解釋一下 nmap&quot;
+    ↓
+系統：[提供 nmap 的解釋與原理]
+      &quot;我現在可以為您生成一個 nmap 掃描腳本，您確定要執行嗎？&quot;
+    ↓
+使用者：&quot;好的，執行吧&quot;
+    ↓
+系統：[執行腳本並返回結果]
+      &quot;掃描發現您的網站運行 Apache 2.4.49。根據 CVE 資料庫，這個版本
+      存在一個嚴重的路徑穿越漏洞 (CVE-2021-41773)。您想測試看看是否
+      真的存在這個漏洞嗎？&quot;
+</code></pre>
+
+<h3>UI 設計：聊天介面</h3>
+<pre class="codehilite"><code>┌─────────────────────────────────────────────────┐
+│  💬 對話式掃描                    [?] [⚙️] [✕]  │
+├─────────────────────────────────────────────────┤
+│                                                 │
+│  👤 我想測試 https://example.com 的安全性        │
+│                                        14:32    │
+│                                                 │
+│  🤖 很好！讓我先了解一下情況。請問您對這個網站  │
+│     有多少了解？例如：                          │
+│     • 您知道它使用什麼 Web 伺服器嗎？           │
+│     • 是否有特定的安全問題您想重點檢測？        │
+│     • 您進行過類似的測試嗎？                    │
+│                                        14:32    │
+│                                                 │
+│  👤 我不太清楚，應該從何開始？                   │
+│                                        14:33    │
+│                                                 │
+│  🤖 沒問題！這是很典型的情況。在資安測試中，我們 │
+│     遵循一個標準流程：                          │
+│                                                 │
+│     📊 階段一：資訊收集 (Reconnaissance)        │
+│     目標：了解目標的技術架構                    │
+│                                                 │
+│     我建議我們先執行基礎掃描：                  │
+│     🔹 nmap：掃描開放的網路連接埠               │
+│     🔹 curl：分析 HTTP 回應標頭                 │
+│                                                 │
+│     這兩個工具會幫助我們識別伺服器類型、版本等  │
+│     資訊。您想先了解這些工具如何運作，還是直接  │
+│     開始掃描？                                  │
+│                                        14:33    │
+│     [ 了解工具原理 ] [ 直接開始掃描 ]           │
+│                                                 │
+│  👤 [點選] 直接開始掃描                         │
+│                                        14:34    │
+│                                                 │
+│  🤖 好的！我現在會生成一個 Python 腳本來執行這   │
+│     個掃描。讓我展示給您看：                    │
+│                                                 │
+│     ```python                                   │
+│     import subprocess                           │
+│     import requests                             │
+│                                                 │
+│     # nmap 掃描常見 Web 連接埠                   │
+│     result = subprocess.run([                   │
+│         'nmap', '-sV', '-p', '80,443,8080',     │
+│         'example.com'                           │
+│     ], capture_output=True)                     │
+│     ...                                         │
+│     ```                                         │
+│                                                 │
+│     這個腳本會：                                │
+│     1️⃣ 掃描 80, 443, 8080 這三個常見 Web 連接埠 │
+│     2️⃣ 嘗試識別各連接埠運行的服務版本           │
+│     3️⃣ 使用 curl 獲取 HTTP 標頭                 │
+│                                                 │
+│     預估執行時間：2-3 分鐘                      │
+│     [ 執行腳本 ] [ 修改參數 ] [ 取消 ]           │
+│                                        14:34    │
+│                                                 │
+│  👤 [點選] 執行腳本                             │
+│                                        14:35    │
+│                                                 │
+│  🤖 ⏳ 正在執行掃描...                           │
+│     [████████████░░░░░] 70% - nmap 掃描中        │
+│                                        14:35    │
+│                                                 │
+│  🤖 ✅ 掃描完成！讓我分析結果...                 │
+│                                                 │
+│     📊 發現資訊：                                │
+│     • 開放連接埠：80 (HTTP), 443 (HTTPS)        │
+│     • Web 伺服器：Apache httpd 2.4.49           │
+│     • 作業系統：推測為 Unix/Linux               │
+│                                                 │
+│     ⚠️ 重要發現：                                │
+│     我在 CVE 資料庫中找到 Apache 2.4.49 有一個  │
+│     **Critical 等級的漏洞** (CVE-2021-41773)！  │
+│                                                 │
+│     📖 漏洞說明：                                │
+│     這是一個路徑穿越漏洞，攻擊者可能繞過存取控制│
+│     讀取伺服器上的任意檔案（例如 /etc/passwd）。│
+│                                                 │
+│     您想進一步測試這個漏洞是否真的存在嗎？      │
+│                                        14:36    │
+│     [ 是，測試漏洞 ] [ 先了解路徑穿越原理 ]      │
+│                                                 │
+└─────────────────────────────────────────────────┘
+│ 💬 輸入訊息...                          [📎] [🎤]│
+└─────────────────────────────────────────────────┘
+</code></pre>
+
+<h3>對話管理架構</h3>
+<pre class="codehilite"><code class="language-python">class ConversationalAgent:
+    def __init__(self, llm_client, knowledge_base, executor):
+        self.llm = llm_client
+        self.kb = knowledge_base
+        self.executor = executor
+        self.conversation_history = []
+        self.context = ConversationContext()
+
+    async def process_message(self, user_message: str) -&gt; AgentResponse:
+        # 1. 更新對話歷史
+        self.conversation_history.append({
+            &quot;role&quot;: &quot;user&quot;,
+            &quot;content&quot;: user_message
+        })
+
+        # 2. 意圖識別
+        intent = await self._classify_intent(user_message)
+
+        # 3. 根據意圖生成回應
+        if intent == &quot;ask_for_explanation&quot;:
+            response = await self._provide_explanation(user_message)
+
+        elif intent == &quot;request_scan&quot;:
+            response = await self._propose_scan_plan(user_message)
+
+        elif intent == &quot;confirm_action&quot;:
+            response = await self._execute_confirmed_action()
+
+        elif intent == &quot;explore_topic&quot;:
+            response = await self._guide_exploration(user_message)
+
+        # 4. 更新上下文
+        self.context.update(intent, response)
+
+        # 5. 更新對話歷史
+        self.conversation_history.append({
+            &quot;role&quot;: &quot;assistant&quot;,
+            &quot;content&quot;: response.text
+        })
+
+        return response
+
+    async def _propose_scan_plan(self, user_message: str) -&gt; AgentResponse:
+        &quot;&quot;&quot;提出掃描計畫並尋求確認&quot;&quot;&quot;
+        prompt = f&quot;&quot;&quot;
+        You are a cybersecurity mentor having a conversation with a learner.
+
+        Conversation history:
+        {self._format_conversation_history()}
+
+        User just said: &quot;{user_message}&quot;
+
+        Your task:
+        1. Acknowledge their request
+        2. Suggest appropriate tools and tests
+        3. Explain WHY these tools are suitable
+        4. Generate a Python script if appropriate
+        5. Ask for confirmation before execution
+
+        Response format:
+        - Use friendly, educational tone
+        - Provide context and reasoning
+        - Offer choices (e.g., &quot;learn more&quot; vs &quot;proceed&quot;)
+        &quot;&quot;&quot;
+
+        llm_response = await self.llm.complete(prompt)
+
+        # 解析 LLM 回應，提取腳本（如果有）
+        script = self._extract_script_from_response(llm_response)
+
+        return AgentResponse(
+            text=llm_response,
+            proposed_script=script,
+            requires_confirmation=True if script else False,
+            suggested_actions=[
+                {&quot;label&quot;: &quot;執行腳本&quot;, &quot;action&quot;: &quot;execute&quot;},
+                {&quot;label&quot;: &quot;修改參數&quot;, &quot;action&quot;: &quot;modify&quot;},
+                {&quot;label&quot;: &quot;了解更多&quot;, &quot;action&quot;: &quot;explain&quot;}
+            ]
+        )
+</code></pre>
+
+<h3>教學增強功能</h3>
+<p><strong>內建知識庫查詢</strong></p>
+<p>當使用者詢問概念性問題時，系統可查詢內部知識庫：</p>
+<pre class="codehilite"><code class="language-python">async def _provide_explanation(self, query: str) -&gt; AgentResponse:
+    # 查詢知識庫
+    kb_result = await self.kb.search(query)
+
+    if kb_result:
+        # 使用知識庫內容，但讓 LLM 用對話方式呈現
+        prompt = f&quot;&quot;&quot;
+        Explain the following concept in a conversational, educational manner:
+
+        Concept: {query}
+        Knowledge Base Info: {kb_result.content}
+
+        Adapt your explanation to the user's level based on conversation history:
+        {self._format_conversation_history()}
+        &quot;&quot;&quot;
+    else:
+        # 無知識庫資料，讓 LLM 自由回應
+        prompt = f&quot;&quot;&quot;
+        The user asked: &quot;{query}&quot;
+        Provide a clear, educational explanation suitable for someone learning cybersecurity.
+        &quot;&quot;&quot;
+
+    response = await self.llm.complete(prompt)
+    return AgentResponse(text=response)
+</code></pre>
+
+<hr />
+<h2>模式四：全自動化掃描 (Fully Automated Scan)</h2>
+<h3>設計理念</h3>
+<p><strong>提供一鍵執行的完整掃描策略，滿足企業用戶與專業人士的效率需求。</strong></p>
+<h3>適用場景</h3>
+<ul>
+<li>定期（每週/每月）的資安健檢</li>
+<li>CI/CD 流程中的自動化安全檢測</li>
+<li>快速獲得全面評估報告</li>
+</ul>
+<h3>預設掃描策略</h3>
+<p>系統提供多種預定義策略：</p>
+<h4>策略一：快速掃描 (Quick Scan)</h4>
+<ul>
+<li><strong>時間</strong>：5-10 分鐘</li>
+<li><strong>檢測項目</strong>：</li>
+<li>基礎資訊盤點</li>
+<li>SSL/TLS 檢查</li>
+<li>HTTP 安全標頭檢查</li>
+<li><strong>適用</strong>：日常快速檢查</li>
+</ul>
+<h4>策略二：標準掃描 (Standard Scan)</h4>
+<ul>
+<li><strong>時間</strong>：20-30 分鐘</li>
+<li><strong>檢測項目</strong>：</li>
+<li>快速掃描的所有項目</li>
+<li>Web 伺服器已知漏洞掃描</li>
+<li>常見目錄/檔案枚舉</li>
+<li>基礎輸入驗證測試</li>
+<li><strong>適用</strong>：定期健檢</li>
+</ul>
+<h4>策略三：深度掃描 (Comprehensive Scan)</h4>
+<ul>
+<li><strong>時間</strong>：1-2 小時</li>
+<li><strong>檢測項目</strong>：</li>
+<li>標準掃描的所有項目</li>
+<li>SQL Injection 完整測試</li>
+<li>XSS 檢測</li>
+<li>CSRF 檢測</li>
+<li>認證/授權測試</li>
+<li>敏感資訊洩漏深度檢測</li>
+<li><strong>適用</strong>：重要更新前的全面檢測</li>
+</ul>
+<h3>UI 設計</h3>
+<pre class="codehilite"><code>┌─────────────────────────────────────────────────┐
+│  🚀 全自動化掃描                                 │
+├─────────────────────────────────────────────────┤
+│  目標：https://example.com                      │
+│                                                 │
+│  選擇掃描策略：                                  │
+│                                                 │
+│  ○ ⚡ 快速掃描 (5-10 分鐘)                       │
+│    基礎安全檢查，適合日常監控                    │
+│                                                 │
+│  ● 🎯 標準掃描 (20-30 分鐘) [推薦]              │
+│    全面的安全評估，涵蓋常見漏洞                  │
+│                                                 │
+│  ○ 🔬 深度掃描 (1-2 小時)                       │
+│    徹底的滲透測試級別檢測                        │
+│                                                 │
+│  ○ 🛠️ 自訂策略                                  │
+│    [ 建立自訂掃描策略 ]                          │
+│                                                 │
+├─────────────────────────────────────────────────┤
+│  進階選項：                                      │
+│  ☑ 發現高風險漏洞時立即通知                     │
+│  ☑ 完成後自動生成 PDF 報告                      │
+│  ☐ 結果比對上次掃描（趨勢分析）                 │
+│  ☐ 同時掃描子網域                               │
+│                                                 │
+├─────────────────────────────────────────────────┤
+│  排程設定：                                      │
+│  ○ 立即執行                                     │
+│  ○ 排程執行：[每週一] [02:00] UTC               │
+│                                                 │
+│                              [ 取消 ] [ 開始掃描 ]│
+└─────────────────────────────────────────────────┘
+</code></pre>
+
+<h3>後端實作</h3>
+<pre class="codehilite"><code class="language-python">class AutomatedScanStrategy(BaseModel):
+    id: str
+    name: str
+    description: str
+    estimated_duration_min: int
+    tasks: list[ScanTask]
+
+# 標準掃描策略定義
+STANDARD_SCAN = AutomatedScanStrategy(
+    id=&quot;standard&quot;,
+    name=&quot;標準掃描&quot;,
+    description=&quot;全面的安全評估，涵蓋常見漏洞&quot;,
+    estimated_duration_min=25,
+    tasks=[
+        ScanTask(
+            name=&quot;資訊收集&quot;,
+            tool=&quot;nmap&quot;,
+            params={&quot;scan_type&quot;: &quot;version_detection&quot;, &quot;ports&quot;: &quot;80,443,8080,8443&quot;}
+        ),
+        ScanTask(
+            name=&quot;SSL/TLS 檢查&quot;,
+            tool=&quot;sslyze&quot;,
+            params={&quot;check_certificate&quot;: True, &quot;check_cipher_suites&quot;: True}
+        ),
+        ScanTask(
+            name=&quot;HTTP 安全標頭&quot;,
+            tool=&quot;custom_script&quot;,
+            script_template=&quot;http_headers_check&quot;
+        ),
+        ScanTask(
+            name=&quot;CVE 情資掃描&quot;,
+            tool=&quot;cve_check&quot;,
+            depends_on=&quot;資訊收集&quot;  # 依賴前面任務的結果
+        ),
+        ScanTask(
+            name=&quot;Web 伺服器漏洞掃描&quot;,
+            tool=&quot;nikto&quot;,
+            params={&quot;tuning&quot;: &quot;x6&quot;}  # 跳過 DoS 測試
+        ),
+        ScanTask(
+            name=&quot;目錄枚舉&quot;,
+            tool=&quot;gobuster&quot;,
+            params={&quot;wordlist&quot;: &quot;common.txt&quot;, &quot;threads&quot;: 10}
+        ),
+        ScanTask(
+            name=&quot;輸入驗證測試&quot;,
+            tool=&quot;custom_script&quot;,
+            script_template=&quot;basic_input_validation&quot;
+        )
+    ]
+)
+
+class AutomatedScanner:
+    async def execute_strategy(
+        self,
+        strategy: AutomatedScanStrategy,
+        target: str
+    ) -&gt; ScanReport:
+        scan_id = str(uuid.uuid4())
+        results = []
+
+        # 建立任務相依圖
+        task_graph = self._build_dependency_graph(strategy.tasks)
+
+        # 依序執行任務
+        for task in self._topological_sort(task_graph):
+            try:
+                # 如果任務依賴前面的結果，傳入上下文
+                context = self._build_task_context(task, results)
+
+                result = await self._execute_task(task, target, context)
+                results.append(result)
+
+                # 即時更新進度
+                await self._update_progress(scan_id, results)
+
+                # 高風險發現立即通知
+                if result.has_critical_findings():
+                    await self._send_alert(scan_id, result)
+
+            except TaskExecutionError as e:
+                # 記錄錯誤但繼續執行其他任務
+                await self._log_task_error(scan_id, task.name, e)
+                continue
+
+        # 彙整最終報告
+        report = await self._generate_comprehensive_report(
+            scan_id, target, strategy, results
+        )
+
+        return report
+</code></pre>
+
+<h3>進度追蹤與即時通知</h3>
+<pre class="codehilite"><code>┌─────────────────────────────────────────────────┐
+│  🔄 掃描進行中 - 標準掃描                        │
+├─────────────────────────────────────────────────┤
+│  目標：https://example.com                      │
+│  已運行：12 分鐘 / 預估：25 分鐘                 │
+│                                                 │
+│  [████████████████░░░░░░░░░] 65%                │
+│                                                 │
+│  ✅ 資訊收集 (完成 - 2.3 分鐘)                   │
+│  ✅ SSL/TLS 檢查 (完成 - 1.8 分鐘)               │
+│  ✅ HTTP 安全標頭 (完成 - 0.5 分鐘)              │
+│  ✅ CVE 情資掃描 (完成 - 3.1 分鐘)               │
+│     └─ ⚠️ 發現 2 個 Critical 等級 CVE            │
+│  🔄 Web 伺服器漏洞掃描 (進行中...)               │
+│  ⏳ 目錄枚舉 (等待中)                            │
+│  ⏳ 輸入驗證測試 (等待中)                        │
+│                                                 │
+│  [ 暫停 ] [ 停止 ] [ 查看即時日誌 ]              │
+└─────────────────────────────────────────────────┘
+</code></pre>
+
+<hr />
+<h2>模式比較與選擇建議</h2>
+<table>
+<thead>
+<tr>
+<th>需求情境</th>
+<th>推薦模式</th>
+<th>理由</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>我是資安初學者</td>
+<td>引導式 + 對話式</td>
+<td>學習曲線友善，有解釋</td>
+</tr>
+<tr>
+<td>我想快速檢查網站</td>
+<td>引導式 / 自動化</td>
+<td>明確選項，快速執行</td>
+</tr>
+<tr>
+<td>我想深入學習資安</td>
+<td>對話式</td>
+<td>互動式教學體驗</td>
+</tr>
+<tr>
+<td>我需要定期監控</td>
+<td>全自動化</td>
+<td>可排程，無需人工介入</td>
+</tr>
+<tr>
+<td>我不知道該測試什麼</td>
+<td>情資驅動</td>
+<td>系統主動建議</td>
+</tr>
+<tr>
+<td>整合至 CI/CD</td>
+<td>全自動化 (API)</td>
+<td>支援程式化調用</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<p><em>本文件最後更新：2025-10-21</em></p>
+<p>返回 <a href="./proposal_all.html">主文件</a></p></div>
+    
+    <!-- Highlight.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    
+    <!-- Mermaid -->
+    <script type="module">
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+        mermaid.initialize({
+            "startOnLoad": true,
+            "theme": "dark",
+            "securityLevel": "loose"
+});
+    </script>
+</body>
+</html>

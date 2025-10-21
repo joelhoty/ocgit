@@ -1,0 +1,883 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>proposal_architecture</title>
+    
+    <!-- CSS 框架 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/dark.min.css">
+    
+    <!-- 代碼高亮 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/base16/darcula.min.css">
+    
+    <!-- 自定義樣式 -->
+    <style>
+        
+                body {
+                    max-width: 900px;
+                    margin: 0 auto;
+                    padding: 20px;
+                }
+                /* 提升代码块对比度 */
+                pre {
+                    background: #1e1e1e !important;
+                    border: 1px solid #3e3e3e;
+                }
+                pre code {
+                    background: #1e1e1e !important;
+                }
+                code {
+                    background: #2d2d2d !important;
+                }
+                /* 引用块对比度 */
+                blockquote {
+                    background: #2d2d2d;
+                    border-left: 4px solid #4a9eff;
+                }
+            
+        
+        /* 通用代碼塊樣式 */
+        pre code {
+            display: block;
+            padding: 1.5em;
+            border-radius: 8px;
+            overflow-x: auto;
+            line-height: 1.6;
+        }
+
+        /* Mermaid 圖表樣式 */
+        
+        .mermaid {
+            margin: 2em 0;
+            padding: 1.5em;
+            text-align: center;
+            border-radius: 8px;
+        }
+        
+        .mermaid {
+            background: #2c3034;
+            border: 1px solid #444;
+        }
+            
+        
+        /* 響應式調整 */
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            .container, .markdown-body, .latex-body, .window-body, .nes-container {
+                padding: 15px;
+            }
+            pre code {
+                padding: 1em;
+            }
+        }
+        
+        
+    </style>
+</head>
+<body>
+    <div class="container"><h1>系統架構與核心組件</h1>
+<blockquote>
+<p>返回 <a href="./proposal_all.html">主文件</a></p>
+</blockquote>
+<p>本文件詳細說明 LLM 驅動 WEB 安全性健康報告生成系統的整體架構設計、核心組件與技術選型。</p>
+<hr />
+<h2>1. 整體架構概覽</h2>
+<h3>1.1 設計理念</h3>
+<p>本系統採用<strong>微服務導向的雲原生架構</strong>，核心設計原則包括：</p>
+<ul>
+<li><strong>模塊化</strong>：各組件職責清晰，可獨立開發與部署</li>
+<li><strong>可擴展性</strong>：支援橫向擴展以應對高併發需求</li>
+<li><strong>安全隔離</strong>：關鍵執行環境（沙箱）與核心系統嚴格隔離</li>
+<li><strong>可觀測性</strong>：完整的日誌、監控與追蹤機制</li>
+</ul>
+<h3>1.2 架構圖</h3>
+<pre class="codehilite"><code>┌─────────────────────────────────────────────────────────────────┐
+│                          使用者層                                │
+│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐          │
+│  │ Web Browser  │  │  Mobile App  │  │   CLI Tool   │          │
+│  └──────┬───────┘  └──────┬───────┘  └──────┬───────┘          │
+│         │                  │                  │                   │
+└─────────┼──────────────────┼──────────────────┼───────────────────┘
+          │                  │                  │
+          └──────────────────┴──────────────────┘
+                             │
+                             ▼
+┌─────────────────────────────────────────────────────────────────┐
+│                       API Gateway                                │
+│              (Nginx / Kong / AWS API Gateway)                    │
+│          [認證] [授權] [速率限制] [請求路由]                     │
+└─────────────────────────┬───────────────────────────────────────┘
+                          │
+          ┌───────────────┼───────────────┐
+          │               │               │
+          ▼               ▼               ▼
+┌──────────────┐  ┌──────────────┐  ┌──────────────┐
+│   Frontend   │  │   Backend    │  │   Auth       │
+│   Service    │  │   Service    │  │   Service    │
+│ (Next.js)    │  │  (FastAPI)   │  │  (Keycloak)  │
+└──────────────┘  └──────┬───────┘  └──────────────┘
+                         │
+                         ▼
+                  ┌──────────────────┐
+                  │  LLM Orchestrator │ ◄─── LLM API (OpenAI/Claude)
+                  │   協調核心         │
+                  └──────┬───────────┘
+                         │
+          ┌──────────────┼──────────────┐
+          │              │              │
+          ▼              ▼              ▼
+┌──────────────┐  ┌──────────────┐  ┌──────────────┐
+│  Knowledge   │  │   Task       │  │  Sandbox     │
+│  Base        │  │   Queue      │  │  Manager     │
+│ (PostgreSQL) │  │  (Redis)     │  │  (Docker)    │
+└──────────────┘  └──────────────┘  └──────┬───────┘
+                                            │
+                                            ▼
+                                    ┌──────────────────┐
+                                    │  Execution       │
+                                    │  Sandbox Pool    │
+                                    │ ┌────┐ ┌────┐   │
+                                    │ │ C1 │ │ C2 │   │ (Container)
+                                    │ └────┘ └────┘   │
+                                    └──────────────────┘
+                                            │
+                                            ▼
+                                    ┌──────────────────┐
+                                    │  Tool            │
+                                    │  Integration     │
+                                    │  Layer           │
+                                    │ (nmap, curl...)  │
+                                    └──────────────────┘
+</code></pre>
+
+<hr />
+<h2>2. 核心組件詳述</h2>
+<h3>2.1 使用者介面 (UI - Web Portal)</h3>
+<h4>技術棧</h4>
+<ul>
+<li><strong>框架</strong>：Next.js 14+ (React 18)</li>
+<li><strong>狀態管理</strong>：Zustand / Redux Toolkit</li>
+<li><strong>UI 庫</strong>：Tailwind CSS + shadcn/ui</li>
+<li><strong>圖表</strong>：Recharts / D3.js</li>
+<li><strong>Markdown 渲染</strong>：react-markdown</li>
+</ul>
+<h4>核心功能模組</h4>
+<p><strong>1. 儀表板 (Dashboard)</strong><br />
+- 最近掃描歷史<br />
+- 風險趨勢圖表<br />
+- 待處理漏洞統計</p>
+<p><strong>2. 掃描啟動介面</strong><br />
+- 四種模式的切換 UI<br />
+- 目標輸入與驗證<br />
+- 掃描參數設定</p>
+<p><strong>3. 對話介面 (Conversational UI)</strong><br />
+- 仿 ChatGPT 的對話視窗<br />
+- 支援 Markdown 渲染<br />
+- 腳本預覽與確認機制</p>
+<p><strong>4. 報告檢視器</strong><br />
+- 結構化結果展示<br />
+- 檢測邏輯圖視覺化<br />
+- 匯出功能（PDF / JSON）</p>
+<p><strong>5. 教學案例庫瀏覽器</strong><br />
+- 搜尋與篩選功能<br />
+- 案例詳情頁<br />
+- 標記與收藏功能</p>
+<h4>安全考量</h4>
+<ul>
+<li>所有使用者輸入進行前端驗證</li>
+<li>CSP (Content Security Policy) 設定</li>
+<li>HTTPS 強制使用</li>
+<li>XSS 防護（React 預設機制 + DOMPurify）</li>
+</ul>
+<hr />
+<h3>2.2 後端服務 (Backend Service)</h3>
+<h4>技術棧</h4>
+<ul>
+<li><strong>框架</strong>：FastAPI (Python 3.11+)</li>
+<li><strong>異步處理</strong>：asyncio + uvloop</li>
+<li><strong>序列化</strong>：Pydantic v2</li>
+<li><strong>HTTP 客戶端</strong>：httpx</li>
+</ul>
+<h4>核心 API 端點</h4>
+<pre class="codehilite"><code class="language-python"># 掃描管理
+POST   /api/v1/scans              # 創建新掃描任務
+GET    /api/v1/scans/{scan_id}    # 查詢掃描狀態
+DELETE /api/v1/scans/{scan_id}    # 取消/刪除掃描
+
+# 結果查詢
+GET    /api/v1/scans/{scan_id}/results      # 取得掃描結果
+GET    /api/v1/scans/{scan_id}/raw-output   # 取得原始輸出
+
+# 對話模式
+POST   /api/v1/conversations           # 開始對話
+POST   /api/v1/conversations/{id}/messages  # 發送訊息
+
+# 教學案例
+GET    /api/v1/educational-cases      # 瀏覽案例庫
+GET    /api/v1/educational-cases/{id} # 取得案例詳情
+
+# CVE 查詢
+GET    /api/v1/cve/search?q=apache    # 搜尋 CVE
+GET    /api/v1/cve/{cve_id}           # 取得 CVE 詳情
+
+# 系統管理
+GET    /api/v1/health                 # 健康檢查
+GET    /api/v1/metrics                # 系統指標
+</code></pre>
+
+<h4>Pydantic 模型示例</h4>
+<pre class="codehilite"><code class="language-python">from pydantic import BaseModel, HttpUrl, Field
+from typing import Literal, Optional
+from datetime import datetime
+
+class ScanCreateRequest(BaseModel):
+    target: HttpUrl
+    scan_mode: Literal[&quot;guided&quot;, &quot;intelligence&quot;, &quot;conversational&quot;, &quot;automated&quot;]
+    selected_tests: Optional[list[str]] = None
+    options: Optional[dict] = None
+
+class ScanStatusResponse(BaseModel):
+    scan_id: str
+    status: Literal[&quot;pending&quot;, &quot;running&quot;, &quot;completed&quot;, &quot;failed&quot;]
+    progress: int = Field(ge=0, le=100)
+    current_step: Optional[str] = None
+    created_at: datetime
+    estimated_completion: Optional[datetime] = None
+</code></pre>
+
+<hr />
+<h3>2.3 LLM 協調核心 (LLM Orchestration Core)</h3>
+<p>這是系統的「大腦」，負責智能決策與工作流調度。</p>
+<h4>核心職責</h4>
+<ol>
+<li><strong>Prompt 工程與生成</strong></li>
+<li><strong>腳本生成與驗證</strong></li>
+<li><strong>結果解釋與分析</strong></li>
+<li><strong>對話管理</strong></li>
+<li><strong>工具選擇邏輯</strong></li>
+</ol>
+<h4>架構設計</h4>
+<pre class="codehilite"><code class="language-python">class LLMOrchestrator:
+    &quot;&quot;&quot;
+    LLM 協調核心 - 系統智能的中樞
+    &quot;&quot;&quot;
+    def __init__(self, llm_client, knowledge_base, sandbox_manager):
+        self.llm_client = llm_client  # OpenAI / Anthropic 客戶端
+        self.kb = knowledge_base      # 知識庫存取
+        self.sandbox = sandbox_manager
+
+    async def process_scan_request(self, request: ScanRequest) -&gt; ScanPlan:
+        &quot;&quot;&quot;
+        根據掃描請求生成執行計畫
+        &quot;&quot;&quot;
+        # 1. 意圖理解
+        intent = await self._understand_intent(request)
+
+        # 2. CVE 情資查詢（模式 B）
+        if request.mode == &quot;intelligence&quot;:
+            cve_suggestions = await self._query_cve_database(request.target)
+            intent.enrich_with_cve(cve_suggestions)
+
+        # 3. 工具選擇
+        tools = await self._select_tools(intent)
+
+        # 4. 生成執行計畫
+        plan = ScanPlan(intent=intent, tools=tools)
+        return plan
+
+    async def generate_script(self, task: Task) -&gt; ScriptArtifact:
+        &quot;&quot;&quot;
+        針對特定任務生成 Python 腳本
+        &quot;&quot;&quot;
+        prompt = self._build_script_generation_prompt(task)
+        response = await self.llm_client.complete(prompt)
+
+        # 腳本驗證
+        script = self._extract_code_from_response(response)
+        if not self._validate_script_safety(script):
+            raise SecurityError(&quot;Generated script contains unsafe operations&quot;)
+
+        return ScriptArtifact(code=script, task=task)
+
+    async def interpret_results(self, raw_output: str, context: Context) -&gt; Analysis:
+        &quot;&quot;&quot;
+        解釋掃描結果
+        &quot;&quot;&quot;
+        prompt = f&quot;&quot;&quot;
+        As a senior cybersecurity analyst, interpret the following scan results:
+
+        Context:
+        - Target: {context.target}
+        - Tool used: {context.tool}
+        - Goal: {context.goal}
+
+        Raw Output:
+        {raw_output}
+
+        Provide:
+        1. Executive summary
+        2. Detailed findings with severity
+        3. Remediation recommendations
+        4. Educational explanation
+        &quot;&quot;&quot;
+
+        response = await self.llm_client.complete(prompt)
+        return Analysis.from_llm_response(response)
+</code></pre>
+
+<h4>Prompt 模板庫</h4>
+<p>系統維護一個 Prompt 模板庫，針對不同工具與任務：</p>
+<p><strong>模板範例：nmap 版本探測</strong></p>
+<pre class="codehilite"><code class="language-python">NMAP_VERSION_DETECTION_PROMPT = &quot;&quot;&quot;
+As a senior penetration tester, write a Python script to perform service version detection on the target {target}.
+
+Requirements:
+1. Use the 'subprocess' module to call nmap
+2. Scan ports: {ports}
+3. Use the -sV flag for version detection
+4. Output results in XML format using -oX -
+5. Parse the XML and print a JSON structure with:
+   - port (int)
+   - protocol (str)
+   - service_name (str)
+   - service_version (str)
+6. Handle errors gracefully
+7. Set a timeout of 300 seconds
+
+IMPORTANT SECURITY RULES:
+- Do NOT execute shell commands directly with shell=True
+- Do NOT accept user input without validation
+- Use only the nmap binary at /usr/bin/nmap
+
+Example output format:
+[
+  {{&quot;port&quot;: 80, &quot;protocol&quot;: &quot;tcp&quot;, &quot;service_name&quot;: &quot;http&quot;, &quot;service_version&quot;: &quot;Apache httpd 2.4.41&quot;}}
+]
+&quot;&quot;&quot;
+</code></pre>
+
+<p><strong>模板範例：CVE 專用漏洞驗證</strong></p>
+<pre class="codehilite"><code class="language-python">CVE_VERIFICATION_PROMPT = &quot;&quot;&quot;
+As a senior penetration tester, write a Python script to test if the target {target} is vulnerable to {cve_id}.
+
+CVE Details:
+{cve_description}
+
+Verification Method:
+{verification_method}
+
+Requirements:
+1. Use the 'requests' library for HTTP interactions
+2. Implement the exact verification steps described above
+3. Print &quot;VULNERABLE&quot; if the target is confirmed vulnerable
+4. Print &quot;NOT_VULNERABLE&quot; if the target appears patched
+5. Print &quot;UNCERTAIN&quot; if the test is inconclusive
+6. Include evidence in JSON format
+7. Set appropriate timeouts and error handling
+
+IMPORTANT:
+- This is authorized security testing
+- Do NOT cause damage or disruption
+- Use minimal payloads necessary for verification
+&quot;&quot;&quot;
+</code></pre>
+
+<hr />
+<h3>2.4 安全執行沙箱 (Secure Execution Sandbox)</h3>
+<h4>設計原則</h4>
+<p><strong>Zero-Trust 原則</strong>：假設生成的腳本可能包含惡意程式碼或錯誤。</p>
+<h4>Docker 容器配置</h4>
+<p><strong>Dockerfile</strong></p>
+<pre class="codehilite"><code class="language-dockerfile">FROM python:3.11-slim
+
+# 安裝安全工具
+RUN apt-get update &amp;&amp; apt-get install -y \
+    nmap \
+    curl \
+    dnsutils \
+    nikto \
+    &amp;&amp; rm -rf /var/lib/apt/lists/*
+
+# 安裝 Python 函式庫
+RUN pip install --no-cache-dir \
+    requests \
+    beautifulsoup4 \
+    python-nmap \
+    lxml
+
+# 建立非 root 使用者
+RUN useradd -m -u 1000 scanner
+USER scanner
+WORKDIR /workspace
+
+# 限制寫入權限
+RUN mkdir /workspace/output &amp;&amp; chmod 700 /workspace/output
+
+ENTRYPOINT [&quot;python&quot;, &quot;/workspace/script.py&quot;]
+</code></pre>
+
+<p><strong>Docker Run 參數</strong></p>
+<pre class="codehilite"><code class="language-bash">docker run \
+  --rm \                           # 執行後自動刪除
+  --network=scan_net \             # 隔離網路
+  --cpus=&quot;1.0&quot; \                   # CPU 限制
+  --memory=&quot;512m&quot; \                # 記憶體限制
+  --memory-swap=&quot;512m&quot; \
+  --pids-limit=100 \               # 行程數限制
+  --read-only \                    # 唯讀檔案系統
+  --tmpfs /tmp:rw,noexec,nosuid \  # 臨時檔案系統
+  --security-opt=no-new-privileges \
+  --cap-drop=ALL \                 # 移除所有能力
+  --cap-add=NET_RAW \              # 僅添加必要能力（nmap）
+  -v $(pwd)/script.py:/workspace/script.py:ro \
+  -v $(pwd)/output:/workspace/output:rw \
+  scanner-sandbox:latest
+</code></pre>
+
+<h4>沙箱管理器 (Python)</h4>
+<pre class="codehilite"><code class="language-python">import docker
+import asyncio
+from typing import Optional
+
+class SandboxManager:
+    def __init__(self):
+        self.client = docker.from_env()
+        self.max_concurrent = 5
+        self.semaphore = asyncio.Semaphore(self.max_concurrent)
+
+    async def execute_script(
+        self,
+        script: str,
+        timeout: int = 300
+    ) -&gt; ExecutionResult:
+        &quot;&quot;&quot;
+        在隔離沙箱中執行腳本
+        &quot;&quot;&quot;
+        async with self.semaphore:  # 限制並行數
+            container = None
+            try:
+                # 準備腳本檔案
+                script_path = self._prepare_script_file(script)
+
+                # 啟動容器
+                container = self.client.containers.run(
+                    image=&quot;scanner-sandbox:latest&quot;,
+                    volumes={
+                        script_path: {&quot;bind&quot;: &quot;/workspace/script.py&quot;, &quot;mode&quot;: &quot;ro&quot;}
+                    },
+                    network_mode=&quot;scan_net&quot;,
+                    mem_limit=&quot;512m&quot;,
+                    cpu_period=100000,
+                    cpu_quota=100000,  # 1 CPU
+                    detach=True,
+                    remove=False  # 手動刪除以捕獲日誌
+                )
+
+                # 等待執行完成（含 timeout）
+                result = await asyncio.wait_for(
+                    self._wait_container(container),
+                    timeout=timeout
+                )
+
+                # 收集輸出
+                logs = container.logs(stdout=True, stderr=True).decode('utf-8')
+
+                return ExecutionResult(
+                    exit_code=result,
+                    stdout=logs,
+                    stderr=&quot;&quot;,
+                    execution_time=self._get_execution_time(container)
+                )
+
+            except asyncio.TimeoutError:
+                if container:
+                    container.kill()
+                raise ExecutionTimeoutError(f&quot;Script execution exceeded {timeout}s&quot;)
+
+            finally:
+                if container:
+                    container.remove(force=True)
+                self._cleanup_script_file(script_path)
+
+    async def _wait_container(self, container):
+        &quot;&quot;&quot;異步等待容器完成&quot;&quot;&quot;
+        while True:
+            container.reload()
+            if container.status == &quot;exited&quot;:
+                return container.attrs[&quot;State&quot;][&quot;ExitCode&quot;]
+            await asyncio.sleep(1)
+</code></pre>
+
+<h4>網路隔離策略</h4>
+<p>使用 Docker 自訂網路，並透過 iptables 規則限制：</p>
+<pre class="codehilite"><code class="language-bash"># 建立隔離網路
+docker network create \
+  --driver bridge \
+  --subnet 172.20.0.0/16 \
+  --opt &quot;com.docker.network.bridge.enable_icc=false&quot; \
+  scan_net
+
+# iptables 規則（僅允許外部掃描，禁止存取內部網路）
+iptables -A DOCKER-USER -s 172.20.0.0/16 -d 10.0.0.0/8 -j DROP
+iptables -A DOCKER-USER -s 172.20.0.0/16 -d 172.16.0.0/12 -j DROP
+iptables -A DOCKER-USER -s 172.20.0.0/16 -d 192.168.0.0/16 -j DROP
+</code></pre>
+
+<hr />
+<h3>2.5 數據轉換器 (Data Transformer)</h3>
+<p>負責將各種工具的原始輸出解析為統一的 JSON 結構。</p>
+<h4>架構設計</h4>
+<pre class="codehilite"><code class="language-python">from abc import ABC, abstractmethod
+import json
+import xml.etree.ElementTree as ET
+
+class OutputParser(ABC):
+    &quot;&quot;&quot;解析器基類&quot;&quot;&quot;
+    @abstractmethod
+    def parse(self, raw_output: str) -&gt; list[Finding]:
+        pass
+
+class NmapXMLParser(OutputParser):
+    &quot;&quot;&quot;nmap XML 輸出解析器&quot;&quot;&quot;
+    def parse(self, raw_output: str) -&gt; list[Finding]:
+        root = ET.fromstring(raw_output)
+        findings = []
+
+        for host in root.findall('.//host'):
+            for port in host.findall('.//port'):
+                finding = Finding(
+                    severity=self._assess_severity(port),
+                    title=f&quot;Open port detected: {port.get('portid')}&quot;,
+                    description=self._build_description(port),
+                    evidence={
+                        &quot;port&quot;: int(port.get('portid')),
+                        &quot;protocol&quot;: port.get('protocol'),
+                        &quot;service_name&quot;: port.find('service').get('name'),
+                        &quot;service_version&quot;: port.find('service').get('version')
+                    }
+                )
+                findings.append(finding)
+
+        return findings
+
+class NiktoParser(OutputParser):
+    &quot;&quot;&quot;Nikto 輸出解析器&quot;&quot;&quot;
+    def parse(self, raw_output: str) -&gt; list[Finding]:
+        # Nikto 輸出為純文字，使用正則提取
+        import re
+        findings = []
+
+        pattern = r'\+ ([^:]+): (.+)'
+        for match in re.finditer(pattern, raw_output):
+            finding = Finding(
+                severity=&quot;Medium&quot;,  # Nikto 預設為 Medium
+                title=match.group(1),
+                description=match.group(2),
+                evidence={&quot;raw_line&quot;: match.group(0)}
+            )
+            findings.append(finding)
+
+        return findings
+
+class ParserFactory:
+    &quot;&quot;&quot;解析器工廠&quot;&quot;&quot;
+    _parsers = {
+        &quot;nmap&quot;: NmapXMLParser(),
+        &quot;nikto&quot;: NiktoParser(),
+        # ... 其他工具
+    }
+
+    @classmethod
+    def get_parser(cls, tool_name: str) -&gt; OutputParser:
+        return cls._parsers.get(tool_name.lower())
+</code></pre>
+
+<hr />
+<h3>2.6 知識庫與資料庫 (Knowledge Base &amp; Database)</h3>
+<h4>資料庫技術選型</h4>
+<p><strong>PostgreSQL 15+</strong> with JSONB support</p>
+<h4>Schema 設計</h4>
+<p>詳見 <a href="./proposal_core_values.html">proposal_core_values.html</a> 中的資料表結構。</p>
+<h4>CVE 知識庫整合</h4>
+<p><strong>資料來源</strong>：<br />
+- NVD (National Vulnerability Database)<br />
+- MITRE CVE List<br />
+- Exploit-DB</p>
+<p><strong>更新策略</strong>：<br />
+- 每日自動同步最新 CVE<br />
+- 使用 CVE JSON Feed API</p>
+<p><strong>查詢優化</strong>：</p>
+<pre class="codehilite"><code class="language-sql">-- 索引設計
+CREATE INDEX idx_cve_cpe ON cve_database USING GIN (affected_cpe jsonb_path_ops);
+CREATE INDEX idx_cve_severity ON cve_database (severity);
+CREATE INDEX idx_cve_published ON cve_database (published_date DESC);
+
+-- 查詢範例：找出影響 Apache 2.4.49 的 CVE
+SELECT cve_id, description, severity, cvss_score
+FROM cve_database
+WHERE affected_cpe @&gt; '[&quot;cpe:2.3:a:apache:http_server:2.4.49&quot;]'::jsonb
+ORDER BY cvss_score DESC;
+</code></pre>
+
+<hr />
+<h3>2.7 工具整合層 (Tool Integration Layer)</h3>
+<h4>預裝工具清單</h4>
+<table>
+<thead>
+<tr>
+<th>類別</th>
+<th>工具</th>
+<th>用途</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>資訊收集</strong></td>
+<td>nmap</td>
+<td>連接埠掃描、版本探測</td>
+</tr>
+<tr>
+<td></td>
+<td>curl</td>
+<td>HTTP 請求與 Header 分析</td>
+</tr>
+<tr>
+<td></td>
+<td>whois</td>
+<td>域名資訊查詢</td>
+</tr>
+<tr>
+<td></td>
+<td>dig</td>
+<td>DNS 記錄查詢</td>
+</tr>
+<tr>
+<td><strong>Web 掃描</strong></td>
+<td>Nikto</td>
+<td>Web 伺服器漏洞掃描</td>
+</tr>
+<tr>
+<td></td>
+<td>GoBuster</td>
+<td>目錄與檔案枚舉</td>
+</tr>
+<tr>
+<td></td>
+<td>WhatWeb</td>
+<td>CMS 識別</td>
+</tr>
+<tr>
+<td><strong>漏洞掃描</strong></td>
+<td>SQLMap</td>
+<td>SQL Injection 檢測</td>
+</tr>
+<tr>
+<td></td>
+<td>WPScan</td>
+<td>WordPress 專用掃描</td>
+</tr>
+<tr>
+<td></td>
+<td>SSLyze</td>
+<td>SSL/TLS 配置檢測</td>
+</tr>
+<tr>
+<td><strong>Python 庫</strong></td>
+<td>requests</td>
+<td>HTTP 客戶端</td>
+</tr>
+<tr>
+<td></td>
+<td>beautifulsoup4</td>
+<td>HTML 解析</td>
+</tr>
+<tr>
+<td></td>
+<td>python-nmap</td>
+<td>nmap Python 介面</td>
+</tr>
+</tbody>
+</table>
+<h4>工具包裝器設計</h4>
+<p>為每個工具建立標準化包裝器：</p>
+<pre class="codehilite"><code class="language-python">class ToolWrapper(ABC):
+    @abstractmethod
+    def build_command(self, params: dict) -&gt; list[str]:
+        &quot;&quot;&quot;建構命令列參數&quot;&quot;&quot;
+        pass
+
+    @abstractmethod
+    def parse_output(self, output: str) -&gt; dict:
+        &quot;&quot;&quot;解析工具輸出&quot;&quot;&quot;
+        pass
+
+class NmapWrapper(ToolWrapper):
+    def build_command(self, params: dict) -&gt; list[str]:
+        cmd = [&quot;/usr/bin/nmap&quot;]
+
+        if params.get(&quot;version_detection&quot;):
+            cmd.append(&quot;-sV&quot;)
+
+        if params.get(&quot;ports&quot;):
+            cmd.extend([&quot;-p&quot;, params[&quot;ports&quot;]])
+
+        cmd.extend([&quot;-oX&quot;, &quot;-&quot;])  # XML 輸出到 stdout
+        cmd.append(params[&quot;target&quot;])
+
+        return cmd
+
+    def parse_output(self, output: str) -&gt; dict:
+        parser = NmapXMLParser()
+        findings = parser.parse(output)
+        return {&quot;findings&quot;: [f.dict() for f in findings]}
+</code></pre>
+
+<hr />
+<h2>3. 系統整合流程</h2>
+<h3>3.1 完整請求流程</h3>
+<pre class="codehilite"><code>[使用者] 提交掃描請求
+    ↓
+[API Gateway] 驗證授權、速率限制
+    ↓
+[Backend Service] 創建 Scan 記錄 (status=pending)
+    ↓
+[Task Queue] 將任務加入 Redis 佇列
+    ↓
+[LLM Orchestrator] 從佇列取出任務
+    ↓
+[LLM API] 生成檢測腳本
+    ↓
+[LLM Orchestrator] 驗證腳本安全性
+    ↓
+[Sandbox Manager] 在 Docker 容器中執行腳本
+    ↓
+[Tool Integration Layer] 工具執行並返回原始輸出
+    ↓
+[Data Transformer] 解析為結構化 JSON
+    ↓
+[LLM Orchestrator] 再次調用 LLM 解釋結果
+    ↓
+[Backend Service] 更新 Scan 記錄 (status=completed)
+    ↓
+[Frontend] 輪詢獲取結果並展示
+</code></pre>
+
+<h3>3.2 錯誤處理與重試</h3>
+<pre class="codehilite"><code class="language-python">class ScanOrchestrator:
+    async def execute_scan(self, scan_id: str):
+        try:
+            # 更新狀態為 running
+            await self.db.update_scan_status(scan_id, &quot;running&quot;)
+
+            # 生成執行計畫
+            plan = await self.llm.process_scan_request(scan_id)
+
+            # 執行各個任務
+            for task in plan.tasks:
+                try:
+                    result = await self._execute_task(task)
+                    await self.db.save_task_result(scan_id, result)
+                except TaskExecutionError as e:
+                    # 單一任務失敗，記錄但繼續
+                    await self.db.log_task_error(scan_id, task.id, str(e))
+                    continue
+
+            # 生成最終報告
+            await self._generate_report(scan_id)
+
+            # 更新狀態為 completed
+            await self.db.update_scan_status(scan_id, &quot;completed&quot;)
+
+        except Exception as e:
+            await self.db.update_scan_status(scan_id, &quot;failed&quot;)
+            await self.db.log_error(scan_id, str(e))
+            raise
+</code></pre>
+
+<hr />
+<h2>4. 可擴展性與效能</h2>
+<h3>4.1 水平擴展策略</h3>
+<ul>
+<li><strong>無狀態服務</strong>：Backend Service 與 LLM Orchestrator 設計為無狀態，可透過 Load Balancer 水平擴展</li>
+<li><strong>沙箱池管理</strong>：使用 Docker Swarm 或 Kubernetes 管理容器集群</li>
+<li><strong>資料庫讀寫分離</strong>：使用 PostgreSQL 主從複寫</li>
+</ul>
+<h3>4.2 快取策略</h3>
+<pre class="codehilite"><code class="language-python"># Redis 快取層
+cache_config = {
+    &quot;cve_data&quot;: 3600,        # CVE 資料快取 1 小時
+    &quot;llm_prompts&quot;: 86400,    # Prompt 模板快取 24 小時
+    &quot;scan_results&quot;: 1800     # 掃描結果快取 30 分鐘
+}
+</code></pre>
+
+<h3>4.3 效能指標目標</h3>
+<table>
+<thead>
+<tr>
+<th>指標</th>
+<th>目標值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>API 回應時間 (P95)</td>
+<td>&lt; 200ms</td>
+</tr>
+<tr>
+<td>掃描啟動延遲</td>
+<td>&lt; 5s</td>
+</tr>
+<tr>
+<td>單次工具執行時間</td>
+<td>&lt; 5min</td>
+</tr>
+<tr>
+<td>完整自動化掃描時間</td>
+<td>&lt; 30min</td>
+</tr>
+<tr>
+<td>系統並行掃描數</td>
+<td>&gt; 50</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>5. 安全與合規</h2>
+<h3>5.1 安全檢查清單</h3>
+<ul>
+<li>[ ] 所有外部輸入進行驗證與清理</li>
+<li>[ ] API 端點實施授權檢查</li>
+<li>[ ] 沙箱容器具備網路隔離</li>
+<li>[ ] 敏感資料（如 API Key）使用加密儲存</li>
+<li>[ ] 實施完整的稽核日誌</li>
+<li>[ ] 定期進行安全性測試</li>
+</ul>
+<h3>5.2 合規考量</h3>
+<ul>
+<li><strong>GDPR</strong>：使用者資料可刪除、匯出</li>
+<li><strong>授權框架</strong>：強制要求使用者聲明目標所有權</li>
+<li><strong>道德使用條款</strong>：禁止未經授權的掃描行為</li>
+</ul>
+<hr />
+<p><em>本文件最後更新：2025-10-21</em></p>
+<p>返回 <a href="./proposal_all.html">主文件</a></p></div>
+    
+    <!-- Highlight.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    
+    <!-- Mermaid -->
+    <script type="module">
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+        mermaid.initialize({
+            "startOnLoad": true,
+            "theme": "dark",
+            "securityLevel": "loose"
+});
+    </script>
+</body>
+</html>
