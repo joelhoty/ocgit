@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arduino_IDE_01_b04</title>
+    
+    <!-- CSS 框架 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/dark.min.css">
+    
+    <!-- 代碼高亮 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/base16/darcula.min.css">
+    
+    <!-- 自定義樣式 -->
+    <style>
+        
+                body {
+                    max-width: 900px;
+                    margin: 0 auto;
+                    padding: 20px;
+                }
+                /* 提升代码块对比度 */
+                pre {
+                    background: #1e1e1e !important;
+                    border: 1px solid #3e3e3e;
+                }
+                pre code {
+                    background: #1e1e1e !important;
+                }
+                code {
+                    background: #2d2d2d !important;
+                }
+                /* 引用块对比度 */
+                blockquote {
+                    background: #2d2d2d;
+                    border-left: 4px solid #4a9eff;
+                }
+            
+        
+        /* 通用代碼塊樣式 */
+        pre code {
+            display: block;
+            padding: 1.5em;
+            border-radius: 8px;
+            overflow-x: auto;
+            line-height: 1.6;
+        }
+
+        /* Mermaid 圖表樣式 */
+        
+        .mermaid {
+            margin: 2em 0;
+            padding: 1.5em;
+            text-align: center;
+            border-radius: 8px;
+        }
+        
+        .mermaid {
+            background: #2c3034;
+            border: 1px solid #444;
+        }
+            
+        
+        /* 響應式調整 */
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            .container, .markdown-body, .latex-body, .window-body, .nes-container {
+                padding: 15px;
+            }
+            pre code {
+                padding: 1em;
+            }
+        }
+        
+        
+    </style>
+</head>
+<body>
+    <div class="container"><!-- Path: 114A_EngineerDesign | Timestamp: 2025-10-14 20:00:00 | Version: b04 -->
+
+<h1>Arduino IDE 第一次上手就精通：從安裝到感測器實作</h1>
+<p>本篇教學將引導您完成 Arduino IDE 的基本操作，從安裝軟體、上傳第一個程式，到連接真實世界的感測器，並在最後總結出一套標準的開發測試流程。</p>
+<hr />
+<h2>1. 目標：Arduino IDE 的基本操作</h2>
+<p>Arduino IDE (Integrated Development Environment) 是撰寫程式、上傳到 Arduino 控制板、並與之互動的核心工具。讓我們先來熟悉它的幾個關鍵功能。</p>
+<h3>1.1. 安裝 Arduino IDE</h3>
+<p>Arduino IDE 提供兩種主要版本：傳統的桌面應用程式 (IDE 1.8.x / 2.x) 和雲端的網頁編輯器 (Web Editor)。對於初學者，我們推薦安裝最新的桌面版 IDE 2.x，它擁有更現代的介面與更強大的功能。</p>
+<ol>
+<li><strong>前往官網下載</strong>：開啟瀏覽器，前往 <a href="https://www.arduino.cc/en/software">Arduino Software 官方頁面</a>。</li>
+<li><strong>選擇對應版本</strong>：根據您的作業系統 (Windows, macOS, Linux) 選擇對應的安裝檔。</li>
+<li><strong>安裝程式</strong>：下載後，執行安裝檔並依照畫面指示完成安裝。</li>
+</ol>
+<blockquote>
+<p><strong>小提示</strong>：Arduino Web Editor 是一個不錯的雲端替代方案，它能自動儲存您的專案，並在任何電腦上存取，但需要穩定的網路連線。</p>
+</blockquote>
+<h3>1.2. 控制板管理員 (Boards Manager)</h3>
+<p>Arduino IDE 原生支援官方的控制板（如 Uno, Mega, Nano）。但當您使用第三方廠商的控制板（如 ESP32, ESP8266）時，就需要透過「控制板管理員」來新增支援。</p>
+<ol>
+<li><strong>開啟管理員</strong>：在 IDE 選單中，點擊 <code>Tools</code> &gt; <code>Board</code> &gt; <code>Boards Manager...</code>。</li>
+<li><strong>搜尋與安裝</strong>：在開啟的視窗中，您可以搜尋特定控制板的名稱（例如 <code>esp32</code>）。找到後，選擇最新版本並點擊 <code>Install</code>。</li>
+</ol>
+<p><img alt="Boards Manager" src="https://i.imgur.com/example.png" /> <em>（此處為示意圖，非真實圖片）</em></p>
+<h3>1.3. 程式庫管理員 (Library Manager)</h3>
+<p>程式庫 (Library) 是他人預先寫好的程式碼集合，能讓您輕易地操作複雜的硬體（如感測器、螢幕）或實現特定功能（如網路連線）。</p>
+<ol>
+<li><strong>開啟管理員</strong>：點擊 <code>Tools</code> &gt; <code>Manage Libraries...</code>。</li>
+<li><strong>搜尋與安裝</strong>：在視窗中輸入您想找的程式庫關鍵字（例如 <code>DHT</code> 或 <code>Adafruit NeoPixel</code>）。找到目標後，點擊 <code>Install</code>。</li>
+</ol>
+<h3>1.4. 基本程式碼結構</h3>
+<p>每一個 Arduino 程式（稱為 "Sketch"）都包含兩個最核心的函式：<code>setup()</code> 和 <code>loop()</code>。</p>
+<ul>
+<li>
+<p><code>void setup()</code>: 當控制板啟動或重置時，這個函式內的程式碼<strong>只會執行一次</strong>。通常用於進行初始設定，例如設定腳位模式、啟動序列埠通訊等。</p>
+</li>
+<li>
+<p><code>void loop()</code>: 在 <code>setup()</code> 執行完畢後，<code>loop()</code> 函式內的程式碼會<strong>無限地重複執行</strong>，直到控制板斷電為止。這是您主要的程式邏輯所在之處。</p>
+</li>
+</ul>
+<pre class="codehilite"><code class="language-cpp">// setup() 函式：在開機或重置時僅執行一次
+void setup() {
+  // 在這裡進行初始設定
+  // 例如：將內建 LED 的腳位設定為「輸出」模式
+  pinMode(LED_BUILTIN, OUTPUT);
+}
+
+// loop() 函式：在 setup() 執行後，會週而復始地重複執行
+void loop() {
+  // 在這裡撰寫主要執行的程式邏輯
+  // 例如：讓 LED 亮一秒、暗一秒
+  digitalWrite(LED_BUILTIN, HIGH); // 點亮 LED
+  delay(1000);                     // 等待 1000 毫秒 (1秒)
+  digitalWrite(LED_BUILTIN, LOW);  // 熄滅 LED
+  delay(1000);                     // 等待 1 秒
+}
+</code></pre>
+
+<hr />
+<h2>2. 上傳第一個程式 ("Hello, World!" in Hardware)</h2>
+<p>讓 LED 閃爍是硬體世界的「Hello, World!」。我們將使用 IDE 內建的 <code>Blink</code> 範例來完成這個任務。</p>
+<h3>2.1. 開啟範例程式</h3>
+<ol>
+<li>在 IDE 選單中，點擊 <code>File</code> &gt; <code>Examples</code> &gt; <code>01.Basics</code> &gt; <code>Blink</code>。</li>
+<li>IDE 會開啟一個新的視窗，裡面已經寫好了讓內建 LED 閃爍的完整程式碼。</li>
+</ol>
+<h3>2.2. 選擇控制板 (Arduino Uno)</h3>
+<p>告訴 IDE 您正在使用哪一款控制板，它才能用正確的方式編譯程式。</p>
+<ol>
+<li>將您的 Arduino Uno 用 USB 線連接到電腦。</li>
+<li>在 IDE 選單中，點擊 <code>Tools</code> &gt; <code>Board</code> &gt; <code>Arduino AVR Boards</code> &gt; <code>Arduino Uno</code>。</li>
+</ol>
+<h3>2.3. 選擇連接埠 (Port)</h3>
+<p>連接埠是電腦與 Arduino 溝通的虛擬通道。</p>
+<ol>
+<li>點擊 <code>Tools</code> &gt; <code>Port</code>。</li>
+<li>您會看到一個或多個連接埠。請選擇標有您控制板名稱的那個。<ul>
+<li><strong>Windows</strong>: 通常顯示為 <code>COM</code> 開頭，例如 <code>COM3 (Arduino Uno)</code>。</li>
+<li><strong>macOS</strong>: 通常顯示為 <code>/dev/cu.usbmodem...</code> 開頭。</li>
+</ul>
+</li>
+</ol>
+<blockquote>
+<p><strong>補充：什麼是序列埠 (Serial Port)？</strong><br />
+序列埠是一種通訊方式，它將資料以「序列」的方式，一次一個位元 (bit) 地在單一線路上傳輸。在 Arduino 的世界裡，USB 線模擬了一個虛擬序列埠，讓您的電腦可以和 Arduino 交換程式碼與資料。</p>
+</blockquote>
+<h3>2.4. 序列埠監控視窗 (Serial Monitor)</h3>
+<p>這是一個極其重要的除錯工具，它能顯示從 Arduino 透過 <code>Serial.print()</code> 傳回來的文字或數據。</p>
+<ol>
+<li><strong>開啟方式</strong>：點擊 IDE 右上角的放大鏡圖示，或使用快捷鍵 <code>Ctrl+Shift+M</code> / <code>Cmd+Shift+M</code>。</li>
+<li><strong>設定鮑率 (Baud Rate)</strong>：請確保監控視窗右下角的鮑率與您程式中 <code>Serial.begin()</code> 設定的數值一致（例如 <code>9600</code>），否則會看到亂碼。</li>
+</ol>
+<h3>2.5. 上傳程式</h3>
+<ol>
+<li><strong>驗證 (Verify)</strong>：點擊 IDE 左上角的「打勾」圖示。IDE 會檢查您的程式碼是否有語法錯誤（編譯）。</li>
+<li><strong>上傳 (Upload)</strong>：點擊「向右箭頭」圖示。IDE 會先驗證程式碼，如果沒有錯誤，便會將其上傳到您的 Arduino 控制板中。</li>
+</ol>
+<p>上傳成功後，您應該會看到 Arduino Uno 板上標有「L」的橘色 LED 開始以一秒一次的頻率閃爍！</p>
+<hr />
+<h2>3. 連接溫濕度感應器 DHT11</h2>
+<p>接下來，我們來做一個更實用的專案：讀取環境的溫濕度。</p>
+<h3>3.1. 連接方式與 Pin 腳說明</h3>
+<p>DHT11 感測器通常有 3 或 4 個 Pin 腳。我們需要連接 VCC (電源)、GND (接地) 和 DATA (資料)。</p>
+<ul>
+<li><strong>VCC</strong> -&gt; Arduino <code>5V</code></li>
+<li><strong>GND</strong> -&gt; Arduino <code>GND</code></li>
+<li><strong>DATA</strong> -&gt; Arduino 任意一個數位腳位，例如 <code>Pin 2</code></li>
+</ul>
+<blockquote>
+<p><strong>注意</strong>：如果您使用的是獨立的 DHT11 元件而非模組，通常需要在 VCC 和 DATA 之間連接一個 10K 歐姆的上拉電阻，以確保訊號穩定。</p>
+</blockquote>
+<h3>3.2. 程式庫的選擇與安裝</h3>
+<p>要讀取 DHT11 的數據，我們需要一個對應的程式庫。最推薦的方式是使用程式庫管理員。</p>
+<ol>
+<li><strong>開啟程式庫管理員</strong>：<code>Tools</code> &gt; <code>Manage Libraries...</code>。</li>
+<li><strong>搜尋</strong>：在搜尋框中輸入 <code>DHT sensor library</code>。</li>
+<li><strong>安裝</strong>：找到由 <strong>Adafruit</strong> 發布的程式庫，點擊 <code>Install</code>。IDE 可能會提示您安裝其相依的其他程式庫（如 <code>Adafruit Unified Sensor</code>），請點擊 <code>Install All</code>。</li>
+</ol>
+<h3>3.3. 程式庫結構說明</h3>
+<p>安裝好的程式庫為我們做了所有複雜的工作。在程式中，我們只需要：<br />
+1.  用 <code>#include &lt;DHT.h&gt;</code> 來引入程式庫的功能。<br />
+2.  定義感測器連接的腳位和型號。<br />
+3.  建立一個 DHT 物件來操作感測器。</p>
+<h3>3.4. 開啟範例程式</h3>
+<p>最快的學習方式就是從範例開始。</p>
+<ol>
+<li>點擊 <code>File</code> &gt; <code>Examples</code> &gt; <code>DHT sensor library</code> &gt; <code>DHTtester</code>。</li>
+<li>IDE 會載入一個完整的溫濕度讀取程式。</li>
+</ol>
+<h3>3.5. 上傳並測試</h3>
+<ol>
+<li>檢查範例程式中的 <code>DHTPIN</code> 是否設定為您實際連接的腳位（例如 <code>2</code>）。</li>
+<li><strong>上傳</strong>程式到您的 Arduino。</li>
+<li>開啟<strong>序列埠監控視窗</strong> (記得將鮑率設為 <code>9600</code>)。</li>
+</ol>
+<p>您應該能看到監控視窗開始每隔幾秒鐘輸出一行當前的溫度和濕度讀數！</p>
+<hr />
+<h2>4. 總結：Arduino 開發的標準流程</h2>
+<p>經過以上練習，我們可以透過下方的流程圖來總結一個清晰、具迭代性的 Arduino 開發工作流程。</p>
+<p><strong>特別注意</strong>：在點擊「上傳」之前，務必再次確認 <code>Tools</code> 選單中的 <strong>控制板 (Board)</strong> 與 <strong>連接埠 (Port)</strong> 是否選擇正確。這是初學者最常遇到上傳失敗的原因！</p>
+<div class="mermaid">
+graph TD
+    A[開始] --> B(硬體連接);
+    B --> C(撰寫程式);
+    C --> D(引入程式庫);
+    D --> E(設定 IDE);
+    E --> F((檢查開發板與連接埠));
+    F --> G(編譯與上傳);
+    G --> H{測試與除錯};
+    H -- "運作正常" --> I[結束];
+    H -- "需要修改或優化" --> C;
+
+    style F fill:#f9f,stroke:#333,stroke-width:2px
+
+</div></div>
+    
+    <!-- Highlight.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    
+    <!-- Mermaid -->
+    <script type="module">
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+        mermaid.initialize({
+            "startOnLoad": true,
+            "theme": "dark",
+            "securityLevel": "loose"
+});
+    </script>
+</body>
+</html>
