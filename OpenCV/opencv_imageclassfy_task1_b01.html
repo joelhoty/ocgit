@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>opencv_imageclassfy_task1_b01</title>
+    
+    <!-- CSS 框架 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/dark.min.css">
+    
+    <!-- 代碼高亮 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/base16/darcula.min.css">
+    
+    <!-- 自定義樣式 -->
+    <style>
+        
+                body {
+                    max-width: 900px;
+                    margin: 0 auto;
+                    padding: 20px;
+                }
+                /* 提升代码块对比度 */
+                pre {
+                    background: #1e1e1e !important;
+                    border: 1px solid #3e3e3e;
+                }
+                pre code {
+                    background: #1e1e1e !important;
+                }
+                code {
+                    background: #2d2d2d !important;
+                }
+                /* 引用块对比度 */
+                blockquote {
+                    background: #2d2d2d;
+                    border-left: 4px solid #4a9eff;
+                }
+            
+        
+        /* 通用代碼塊樣式 */
+        pre code {
+            display: block;
+            padding: 1.5em;
+            border-radius: 8px;
+            overflow-x: auto;
+            line-height: 1.6;
+        }
+
+        /* Mermaid 圖表樣式 */
+        
+        .mermaid {
+            margin: 2em 0;
+            padding: 1.5em;
+            text-align: center;
+            border-radius: 8px;
+        }
+        
+        .mermaid {
+            background: #2c3034;
+            border: 1px solid #444;
+        }
+            
+        
+        /* 響應式調整 */
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            .container, .markdown-body, .latex-body, .window-body, .nes-container {
+                padding: 15px;
+            }
+            pre code {
+                padding: 1em;
+            }
+        }
+        
+        
+    </style>
+</head>
+<body>
+    <div class="container"><!-- Path: General_python/openCV/影像辨識-傳統方法 | Timestamp: 2025-10-06 16:00:00 | Version: b01 -->
+<h1>題目一：人臉計數與框選應用</h1>
+<h2>📋 任務說明</h2>
+<p>請撰寫一個 Python 程式，能夠自動偵測照片中的人臉數量，並在每張人臉上方顯示編號標籤（例如：「人臉 1」、「人臉 2」...）。</p>
+<hr />
+<h2>🖼️ 影像選擇指引</h2>
+<h3>適合的影像類型</h3>
+<h4>✅ 推薦使用的影像</h4>
+<ol>
+<li><strong>正面人臉照片</strong></li>
+<li>特徵：臉部完整朝向鏡頭，五官清晰可見</li>
+<li>範例：證件照、自拍照、團體照</li>
+<li>
+<p>偵測成功率：★★★★★（95%+）</p>
+</li>
+<li>
+<p><strong>光線充足的照片</strong></p>
+</li>
+<li>特徵：明亮均勻的光線，無強烈陰影</li>
+<li>拍攝環境：白天室內、戶外陰影處、柔和燈光下</li>
+<li>
+<p>偵測成功率：★★★★★（90%+）</p>
+</li>
+<li>
+<p><strong>中近距離拍攝</strong></p>
+</li>
+<li>特徵：人臉在畫面中佔比適中（至少 50×50 像素）</li>
+<li>距離：1-3 公尺內拍攝</li>
+<li>
+<p>偵測成功率：★★★★☆（85%+）</p>
+</li>
+<li>
+<p><strong>單一或多人清晰照片</strong></p>
+</li>
+<li>特徵：每張臉都清晰、不重疊</li>
+<li>範例：全家福、畢業照、會議合照</li>
+<li>偵測成功率：★★★★☆（80%+）</li>
+</ol>
+<h4>⚠️ 效果較差的影像</h4>
+<ol>
+<li><strong>側臉或低頭照片</strong></li>
+<li>問題：Haar Cascade 主要訓練於正面人臉</li>
+<li>偵測成功率：★★☆☆☆（30-50%）</li>
+<li>
+<p>改善方法：使用深度學習模型（如 MTCNN）</p>
+</li>
+<li>
+<p><strong>逆光或過暗照片</strong></p>
+</li>
+<li>問題：臉部特徵不清晰</li>
+<li>偵測成功率：★★☆☆☆（40-60%）</li>
+<li>
+<p>改善方法：調整圖片亮度或對比度</p>
+</li>
+<li>
+<p><strong>人臉過小的照片</strong></p>
+</li>
+<li>問題：人臉像素少於 30×30</li>
+<li>偵測成功率：★☆☆☆☆（10-30%）</li>
+<li>
+<p>改善方法：降低 <code>minSize</code> 參數或裁切放大</p>
+</li>
+<li>
+<p><strong>模糊或動態照片</strong></p>
+</li>
+<li>問題：五官輪廓不清晰</li>
+<li>偵測成功率：★★☆☆☆（30-50%）</li>
+<li>改善方法：使用清晰的靜態照片</li>
+</ol>
+<h4>❌ 不適合的影像</h4>
+<ul>
+<li>純側面照（臉部角度 &gt; 45°）</li>
+<li>戴口罩、墨鏡等大面積遮擋</li>
+<li>卡通或繪畫人臉（非真實人臉）</li>
+<li>極端光線（全黑、強光過曝）</li>
+</ul>
+<h3>測試影像建議</h3>
+<h4>初學者測試（難度：★☆☆☆☆）</h4>
+<pre class="codehilite"><code>建議影像：
+- girl.jpg（教學範例）
+- mona.jpg（蒙娜麗莎）
+- 自己的證件照或自拍照
+
+特點：單人、正面、光線良好
+預期結果：100% 偵測成功
+</code></pre>
+
+<h4>中級測試（難度：★★★☆☆）</h4>
+<pre class="codehilite"><code>建議影像：
+- 2-4 人的團體照
+- 全家福照片
+- 朋友聚會照片
+
+特點：多人、正面為主、部分側臉
+預期結果：80-90% 偵測成功
+</code></pre>
+
+<h4>進階測試（難度：★★★★☆）</h4>
+<pre class="codehilite"><code>建議影像：
+- 大型團體照（10 人以上）
+- 包含不同角度的人臉
+- 有部分遮擋或光線不均
+
+特點：複雜場景、多種角度
+預期結果：60-80% 偵測成功
+</code></pre>
+
+<h3>影像準備檢查清單</h3>
+<p>在測試前，請確認你的影像：<br />
+- [ ] 格式為 JPG、PNG 等常見圖片格式<br />
+- [ ] 解析度至少 640×480（建議 1024×768 以上）<br />
+- [ ] 檔案大小不超過 5MB（避免記憶體問題）<br />
+- [ ] 人臉清晰可見，無嚴重模糊<br />
+- [ ] 光線適中，非極端明暗<br />
+- [ ] 人臉大小至少 50×50 像素</p>
+<hr />
+<h2>✅ 詳細需求列表</h2>
+<h3>需求 1：環境準備與檔案下載</h3>
+<p><strong>說明</strong>：在 Google Colab 環境中下載所需的模型檔案和測試圖片。</p>
+<p><strong>程式碼提示</strong>：</p>
+<pre class="codehilite"><code class="language-python"># 在 Colab 第一個儲存格執行
+import urllib.request
+import os
+
+# 下載必要檔案
+files = {
+    'haarcascade_frontalface_default.xml': 'https://raw.githubusercontent.com/opencv/opencv/4.x/data/haarcascades/haarcascade_frontalface_default.xml',
+    'mona.jpg': 'https://steam.oxxostudio.tw/down/python/ai/mona.jpg',
+    'girl.jpg': 'https://steam.oxxostudio.tw/down/python/ai/girl.jpg'
+}
+
+for filename, url in files.items():
+    if not os.path.exists(filename):
+        print(f&quot;下載 {filename}...&quot;)
+        urllib.request.urlretrieve(url, filename)
+        print(f&quot;✓ {filename} 下載完成&quot;)
+    else:
+        print(f&quot;✓ {filename} 已存在&quot;)
+
+print(&quot;\n所有檔案準備完成！&quot;)
+</code></pre>
+
+<hr />
+<h3>需求 2：匯入必要套件</h3>
+<p><strong>說明</strong>：匯入 OpenCV、NumPy 和 Colab 顯示工具。</p>
+<p><strong>程式碼提示</strong>：</p>
+<pre class="codehilite"><code class="language-python"># 匯入必要的套件
+import cv2
+import numpy as np
+from google.colab.patches import cv2_imshow
+
+print(&quot;✓ 套件匯入完成&quot;)
+</code></pre>
+
+<hr />
+<h3>需求 3：讀取並檢查圖片</h3>
+<p><strong>說明</strong>：讀取圖片檔案，並檢查是否成功讀取。</p>
+<p><strong>程式碼提示</strong>：</p>
+<pre class="codehilite"><code class="language-python"># 讀取圖片
+img = cv2.imread('girl.jpg')  # 或使用其他包含人臉的圖片
+
+# 檢查圖片是否成功讀取
+if img is None:
+    print(&quot;錯誤: 無法讀取圖片，請確認檔案已正確下載&quot;)
+    print(&quot;請檢查：&quot;)
+    print(&quot;1. 檔案是否存在於當前目錄&quot;)
+    print(&quot;2. 檔案名稱是否正確&quot;)
+else:
+    print(&quot;✓ 圖片讀取成功&quot;)
+    # 顯示圖片尺寸
+    height, width, channels = img.shape
+    print(f&quot;圖片尺寸: {width} x {height} 像素&quot;)
+    print(f&quot;色彩通道: {channels}&quot;)
+</code></pre>
+
+<hr />
+<h3>需求 4：轉換為灰階影像</h3>
+<p><strong>說明</strong>：將彩色圖片轉換為灰階，以提高偵測效率。</p>
+<p><strong>程式碼提示</strong>：</p>
+<pre class="codehilite"><code class="language-python"># 將圖片轉換為灰階
+gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+print(&quot;✓ 圖片已轉換為灰階&quot;)
+</code></pre>
+
+<hr />
+<h3>需求 5：載入 Haar Cascade 人臉偵測模型</h3>
+<p><strong>說明</strong>：載入預訓練的人臉偵測模型。</p>
+<p><strong>程式碼提示</strong>：</p>
+<pre class="codehilite"><code class="language-python"># 載入人臉偵測模型
+face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
+
+# 檢查模型是否成功載入
+if face_cascade.empty():
+    print(&quot;錯誤: 無法載入人臉偵測模型&quot;)
+    print(&quot;請確認 haarcascade_frontalface_default.xml 檔案存在&quot;)
+else:
+    print(&quot;✓ 人臉偵測模型載入成功&quot;)
+</code></pre>
+
+<hr />
+<h3>需求 6：執行人臉偵測</h3>
+<p><strong>說明</strong>：使用 <code>detectMultiScale()</code> 方法偵測圖片中的所有人臉。</p>
+<p><strong>程式碼提示</strong>：</p>
+<pre class="codehilite"><code class="language-python"># 偵測人臉
+# scaleFactor: 影像縮放比例，1.1 表示每次縮小 10%
+# minNeighbors: 構成有效偵測所需的最少鄰居數量
+# minSize: 最小人臉尺寸
+faces = face_cascade.detectMultiScale(
+    gray,                # 輸入的灰階圖片
+    scaleFactor=1.1,     # 建議值：1.05-1.3
+    minNeighbors=5,      # 建議值：3-8
+    minSize=(30, 30)     # 最小人臉尺寸，避免偵測過小的區域
+)
+
+# 顯示偵測結果
+print(f&quot;✓ 偵測完成&quot;)
+print(f&quot;找到 {len(faces)} 張人臉&quot;)
+
+# 若沒有偵測到人臉
+if len(faces) == 0:
+    print(&quot;\n⚠️ 未偵測到人臉，可能原因：&quot;)
+    print(&quot;1. 圖片中沒有正面人臉&quot;)
+    print(&quot;2. 人臉過小或過大&quot;)
+    print(&quot;3. 光線條件不佳&quot;)
+    print(&quot;4. 建議調整 scaleFactor 或 minNeighbors 參數&quot;)
+</code></pre>
+
+<hr />
+<h3>需求 7：在每張人臉上繪製矩形框與編號</h3>
+<p><strong>說明</strong>：遍歷所有偵測到的人臉，繪製框線並加上編號標籤。</p>
+<p><strong>程式碼提示</strong>：</p>
+<pre class="codehilite"><code class="language-python"># 遍歷所有偵測到的人臉
+for i, (x, y, w, h) in enumerate(faces, start=1):
+    # 繪製矩形框
+    # 參數：圖片, 左上角座標, 右下角座標, 顏色 (BGR), 線條粗細
+    cv2.rectangle(img, (x, y), (x+w, y+h), (0, 255, 0), 2)
+
+    # 準備文字標籤
+    label = f&quot;人臉 {i}&quot;
+
+    # 計算文字位置（矩形框上方）
+    text_x = x
+    text_y = y - 10 if y - 10 &gt; 10 else y + h + 20  # 避免超出圖片範圍
+
+    # 繪製文字
+    cv2.putText(
+        img,                              # 目標圖片
+        label,                            # 文字內容
+        (text_x, text_y),                # 文字位置（左下角）
+        cv2.FONT_HERSHEY_SIMPLEX,        # 字體類型
+        0.9,                              # 字體大小
+        (0, 255, 0),                      # 文字顏色（綠色）
+        2                                 # 文字粗細
+    )
+
+    # 輸出每張人臉的座標資訊
+    print(f&quot;人臉 {i}: 位置({x}, {y}), 大小({w}x{h})&quot;)
+</code></pre>
+
+<hr />
+<h3>需求 8：統計並顯示總人數</h3>
+<p><strong>說明</strong>：在終端機輸出總人數，並在圖片左上角顯示統計資訊。</p>
+<p><strong>程式碼提示</strong>：</p>
+<pre class="codehilite"><code class="language-python"># 在終端機輸出總人數
+total_faces = len(faces)
+print(f&quot;\n{'='*40}&quot;)
+print(f&quot;偵測結果統計&quot;)
+print(f&quot;{'='*40}&quot;)
+print(f&quot;總共偵測到 {total_faces} 張人臉&quot;)
+print(f&quot;{'='*40}\n&quot;)
+
+# 可選：在圖片左上角顯示總人數
+summary_text = f&quot;Total: {total_faces} face(s)&quot;
+cv2.putText(
+    img,
+    summary_text,
+    (10, 30),                        # 左上角位置
+    cv2.FONT_HERSHEY_SIMPLEX,
+    1.0,                              # 較大的字體
+    (255, 0, 0),                      # 藍色
+    2
+)
+</code></pre>
+
+<hr />
+<h3>需求 9：顯示處理後的結果</h3>
+<p><strong>說明</strong>：使用 <code>cv2_imshow()</code> 顯示標記後的圖片。</p>
+<p><strong>程式碼提示</strong>：</p>
+<pre class="codehilite"><code class="language-python"># 顯示處理後的圖片
+print(&quot;處理後的圖片：&quot;)
+cv2_imshow(img)
+
+# 可選：儲存結果圖片
+output_filename = 'result_face_count.jpg'
+cv2.imwrite(output_filename, img)
+print(f&quot;\n✓ 結果已儲存為 {output_filename}&quot;)
+</code></pre>
+
+<hr />
+<h2>📝 完整可執行程式碼</h2>
+<pre class="codehilite"><code class="language-python"># ========================================
+# 題目一：人臉計數與框選應用
+# ========================================
+
+import cv2
+import numpy as np
+from google.colab.patches import cv2_imshow
+
+# 1. 讀取圖片
+img = cv2.imread('girl.jpg')
+
+if img is None:
+    print(&quot;錯誤: 無法讀取圖片&quot;)
+else:
+    print(&quot;✓ 圖片讀取成功&quot;)
+    height, width, channels = img.shape
+    print(f&quot;圖片尺寸: {width} x {height} 像素&quot;)
+
+    # 2. 轉換為灰階
+    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    print(&quot;✓ 圖片已轉換為灰階&quot;)
+
+    # 3. 載入人臉偵測模型
+    face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
+
+    if face_cascade.empty():
+        print(&quot;錯誤: 無法載入人臉偵測模型&quot;)
+    else:
+        print(&quot;✓ 人臉偵測模型載入成功&quot;)
+
+        # 4. 偵測人臉
+        faces = face_cascade.detectMultiScale(
+            gray,
+            scaleFactor=1.1,
+            minNeighbors=5,
+            minSize=(30, 30)
+        )
+
+        print(f&quot;✓ 偵測完成，找到 {len(faces)} 張人臉&quot;)
+
+        # 5. 繪製矩形框與編號
+        for i, (x, y, w, h) in enumerate(faces, start=1):
+            # 繪製矩形框
+            cv2.rectangle(img, (x, y), (x+w, y+h), (0, 255, 0), 2)
+
+            # 準備標籤
+            label = f&quot;人臉 {i}&quot;
+
+            # 計算文字位置
+            text_x = x
+            text_y = y - 10 if y - 10 &gt; 10 else y + h + 20
+
+            # 繪製文字
+            cv2.putText(
+                img,
+                label,
+                (text_x, text_y),
+                cv2.FONT_HERSHEY_SIMPLEX,
+                0.9,
+                (0, 255, 0),
+                2
+            )
+
+            print(f&quot;人臉 {i}: 位置({x}, {y}), 大小({w}x{h})&quot;)
+
+        # 6. 顯示總人數統計
+        total_faces = len(faces)
+        print(f&quot;\n{'='*40}&quot;)
+        print(f&quot;總共偵測到 {total_faces} 張人臉&quot;)
+        print(f&quot;{'='*40}\n&quot;)
+
+        # 在圖片上顯示統計
+        summary_text = f&quot;Total: {total_faces} face(s)&quot;
+        cv2.putText(
+            img,
+            summary_text,
+            (10, 30),
+            cv2.FONT_HERSHEY_SIMPLEX,
+            1.0,
+            (255, 0, 0),
+            2
+        )
+
+        # 7. 顯示結果
+        print(&quot;處理後的圖片：&quot;)
+        cv2_imshow(img)
+
+        # 儲存結果
+        cv2.imwrite('result_face_count.jpg', img)
+        print(&quot;\n✓ 結果已儲存為 result_face_count.jpg&quot;)
+</code></pre>
+
+<hr />
+<h2>🎯 測試建議</h2>
+<h3>基本測試流程</h3>
+<ol>
+<li><strong>單人照片測試</strong><br />
+<code>python
+   img = cv2.imread('girl.jpg')  # 使用教學範例</code></li>
+<li>預期結果：偵測到 1 張人臉</li>
+<li>
+<p>檢查：框線是否準確、標籤是否顯示</p>
+</li>
+<li>
+<p><strong>多人照片測試</strong><br />
+<code>python
+   # 上傳你自己的團體照
+   from google.colab import files
+   uploaded = files.upload()
+   img = cv2.imread('your_photo.jpg')</code></p>
+</li>
+<li>預期結果：偵測到大部分正面人臉</li>
+<li>檢查：是否有漏偵測或誤判</li>
+</ol>
+<h3>參數調整實驗</h3>
+<p><strong>實驗 1：調整 scaleFactor</strong></p>
+<pre class="codehilite"><code class="language-python"># 測試不同的 scaleFactor 值
+scale_factors = [1.05, 1.1, 1.2, 1.3]
+
+for sf in scale_factors:
+    faces = face_cascade.detectMultiScale(gray, scaleFactor=sf, minNeighbors=5)
+    print(f&quot;scaleFactor={sf}: 偵測到 {len(faces)} 張人臉&quot;)
+</code></pre>
+
+<p><strong>實驗 2：調整 minNeighbors</strong></p>
+<pre class="codehilite"><code class="language-python"># 測試不同的 minNeighbors 值
+min_neighbors = [3, 5, 7, 10]
+
+for mn in min_neighbors:
+    faces = face_cascade.detectMultiScale(gray, scaleFactor=1.1, minNeighbors=mn)
+    print(f&quot;minNeighbors={mn}: 偵測到 {len(faces)} 張人臉&quot;)
+</code></pre>
+
+<h3>效果評估</h3>
+<p>記錄測試結果：<br />
+- 使用圖片：<strong><em>_</em></strong><strong><em><br />
+- 實際人臉數量：</em></strong><strong><em>_</em></strong><br />
+- 偵測到的數量：<strong><em>_</em></strong><strong><em><br />
+- 準確率：</em></strong><strong><em>_</em></strong> %<br />
+- 最佳參數組合：scaleFactor=<strong><em>_</em>_, minNeighbors=</strong>____</p>
+<hr />
+<h2>🚀 延伸挑戰（選做）</h2>
+<h3>挑戰 1：使用不同顏色標示不同人臉</h3>
+<pre class="codehilite"><code class="language-python"># 定義顏色列表（BGR 格式）
+colors = [
+    (0, 255, 0),    # 綠色
+    (255, 0, 0),    # 藍色
+    (0, 0, 255),    # 紅色
+    (255, 255, 0),  # 青色
+    (255, 0, 255),  # 洋紅色
+    (0, 255, 255),  # 黃色
+]
+
+for i, (x, y, w, h) in enumerate(faces):
+    # 循環使用顏色
+    color = colors[i % len(colors)]
+
+    # 繪製彩色框線
+    cv2.rectangle(img, (x, y), (x+w, y+h), color, 2)
+
+    # 使用相同顏色繪製文字
+    label = f&quot;人臉 {i+1}&quot;
+    cv2.putText(img, label, (x, y-10),
+                cv2.FONT_HERSHEY_SIMPLEX, 0.9, color, 2)
+</code></pre>
+
+<h3>挑戰 2：顯示人臉大小資訊</h3>
+<pre class="codehilite"><code class="language-python">for i, (x, y, w, h) in enumerate(faces, start=1):
+    cv2.rectangle(img, (x, y), (x+w, y+h), (0, 255, 0), 2)
+
+    # 計算面積
+    area = w * h
+    label = f&quot;Face {i}: {w}x{h} ({area}px)&quot;
+
+    cv2.putText(img, label, (x, y-10),
+                cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 255, 0), 2)
+</code></pre>
+
+<h3>挑戰 3：標示最大和最小的人臉</h3>
+<pre class="codehilite"><code class="language-python">if len(faces) &gt; 0:
+    # 計算每張人臉的面積
+    face_areas = [(i, x, y, w, h, w*h) for i, (x, y, w, h) in enumerate(faces, start=1)]
+
+    # 找出最大和最小
+    largest = max(face_areas, key=lambda x: x[5])
+    smallest = min(face_areas, key=lambda x: x[5])
+
+    # 標示最大人臉
+    i, x, y, w, h, area = largest
+    cv2.rectangle(img, (x, y), (x+w, y+h), (0, 0, 255), 3)  # 紅色粗框
+    cv2.putText(img, &quot;LARGEST&quot;, (x, y-30),
+                cv2.FONT_HERSHEY_SIMPLEX, 1.0, (0, 0, 255), 2)
+
+    # 標示最小人臉
+    i, x, y, w, h, area = smallest
+    cv2.rectangle(img, (x, y), (x+w, y+h), (255, 0, 0), 3)  # 藍色粗框
+    cv2.putText(img, &quot;SMALLEST&quot;, (x, y-30),
+                cv2.FONT_HERSHEY_SIMPLEX, 1.0, (255, 0, 0), 2)
+</code></pre>
+
+<hr />
+<h2>🔧 除錯技巧</h2>
+<h3>問題 1：無法讀取圖片</h3>
+<p><strong>症狀</strong>：<code>img is None</code> 錯誤</p>
+<p><strong>解決方法</strong>：</p>
+<pre class="codehilite"><code class="language-python">import os
+
+# 檢查檔案是否存在
+if os.path.exists('girl.jpg'):
+    print(&quot;✓ 檔案存在&quot;)
+else:
+    print(&quot;✗ 檔案不存在&quot;)
+    # 列出當前目錄的所有檔案
+    print(&quot;當前目錄的檔案：&quot;)
+    for f in os.listdir('.'):
+        print(f&quot;  - {f}&quot;)
+</code></pre>
+
+<h3>問題 2：模型載入失敗</h3>
+<p><strong>症狀</strong>：<code>face_cascade.empty()</code> 返回 <code>True</code></p>
+<p><strong>解決方法</strong>：</p>
+<pre class="codehilite"><code class="language-python">import os
+
+# 檢查模型檔案
+model_file = 'haarcascade_frontalface_default.xml'
+
+if not os.path.exists(model_file):
+    print(f&quot;模型檔案不存在，正在下載...&quot;)
+    import urllib.request
+    url = 'https://raw.githubusercontent.com/opencv/opencv/4.x/data/haarcascades/haarcascade_frontalface_default.xml'
+    urllib.request.urlretrieve(url, model_file)
+    print(&quot;✓ 下載完成&quot;)
+</code></pre>
+
+<h3>問題 3：偵測不到人臉</h3>
+<p><strong>診斷工具</strong>：</p>
+<pre class="codehilite"><code class="language-python"># 顯示灰階圖片，檢查品質
+print(&quot;灰階圖片：&quot;)
+cv2_imshow(gray)
+
+# 嘗試不同參數組合
+param_combinations = [
+    (1.05, 3),
+    (1.1, 3),
+    (1.1, 5),
+    (1.2, 5),
+]
+
+print(&quot;\n參數測試：&quot;)
+for sf, mn in param_combinations:
+    faces = face_cascade.detectMultiScale(gray, scaleFactor=sf, minNeighbors=mn)
+    print(f&quot;scaleFactor={sf}, minNeighbors={mn}: {len(faces)} 張人臉&quot;)
+</code></pre>
+
+<h3>問題 4：中文標籤顯示為亂碼或方框</h3>
+<p><strong>原因</strong>：OpenCV 預設不支援中文字體</p>
+<p><strong>解決方法</strong>：</p>
+<pre class="codehilite"><code class="language-python"># 方法 1：使用英文標籤
+label = f&quot;Face {i}&quot;  # 不使用中文
+
+# 方法 2：使用 PIL 繪製中文（進階）
+from PIL import Image, ImageDraw, ImageFont
+
+# 將 OpenCV 圖片轉為 PIL 格式
+pil_img = Image.fromarray(cv2.cvtColor(img, cv2.COLOR_BGR2RGB))
+draw = ImageDraw.Draw(pil_img)
+
+# 載入中文字體（需要上傳字體檔）
+# font = ImageFont.truetype(&quot;NotoSansTC-Regular.ttf&quot;, 30)
+# draw.text((x, y-40), f&quot;人臉 {i}&quot;, font=font, fill=(0, 255, 0))
+
+# 轉回 OpenCV 格式
+img = cv2.cvtColor(np.array(pil_img), cv2.COLOR_RGB2BGR)
+</code></pre>
+
+<hr />
+<h2>💡 常見問題 FAQ</h2>
+<h3>Q1: 為什麼偵測到的人臉數量不正確？</h3>
+<p><strong>A:</strong> 可能原因：<br />
+1. <strong>人臉角度問題</strong>：Haar Cascade 對正面臉效果最好<br />
+2. <strong>光線問題</strong>：太暗或過曝會影響偵測<br />
+3. <strong>人臉大小</strong>：過小（&lt; 30×30px）會被忽略<br />
+4. <strong>參數設定</strong>：<code>minNeighbors</code> 過高會漏掉真實人臉</p>
+<p><strong>建議調整</strong>：<br />
+- 降低 <code>scaleFactor</code>：1.1 → 1.05<br />
+- 降低 <code>minNeighbors</code>：5 → 3<br />
+- 降低 <code>minSize</code>：(30,30) → (20,20)</p>
+<h3>Q2: 如何上傳自己的照片到 Colab？</h3>
+<p><strong>A:</strong> 使用以下程式碼：</p>
+<pre class="codehilite"><code class="language-python">from google.colab import files
+
+# 上傳檔案
+print(&quot;請選擇要上傳的圖片：&quot;)
+uploaded = files.upload()
+
+# 列出上傳的檔案
+for filename in uploaded.keys():
+    print(f&quot;已上傳: {filename}&quot;)
+
+# 讀取上傳的圖片
+img = cv2.imread(filename)
+</code></pre>
+
+<h3>Q3: 可以一次處理多張圖片嗎？</h3>
+<p><strong>A:</strong> 可以，使用迴圈處理：</p>
+<pre class="codehilite"><code class="language-python"># 圖片列表
+image_files = ['photo1.jpg', 'photo2.jpg', 'photo3.jpg']
+
+for img_file in image_files:
+    print(f&quot;\n處理圖片: {img_file}&quot;)
+    img = cv2.imread(img_file)
+
+    if img is None:
+        print(f&quot;  無法讀取 {img_file}&quot;)
+        continue
+
+    # 執行偵測（與原程式碼相同）
+    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    faces = face_cascade.detectMultiScale(gray, 1.1, 5)
+
+    print(f&quot;  偵測到 {len(faces)} 張人臉&quot;)
+
+    # 繪製結果並儲存
+    for i, (x, y, w, h) in enumerate(faces, start=1):
+        cv2.rectangle(img, (x, y), (x+w, y+h), (0, 255, 0), 2)
+
+    output_file = f&quot;result_{img_file}&quot;
+    cv2.imwrite(output_file, img)
+    print(f&quot;  結果已儲存為 {output_file}&quot;)
+</code></pre>
+
+<h3>Q4: 如何提高偵測準確率？</h3>
+<p><strong>A:</strong> 實用技巧：<br />
+1. <strong>影像預處理</strong>：<br />
+   ```python<br />
+   # 調整對比度和亮度<br />
+   img = cv2.convertScaleAbs(img, alpha=1.2, beta=20)</p>
+<p># 去除雜訊<br />
+   img = cv2.GaussianBlur(img, (5, 5), 0)<br />
+   ```</p>
+<ol>
+<li>
+<p><strong>多尺度偵測</strong>：<br />
+<code>python
+   # 使用更小的 scaleFactor
+   faces = face_cascade.detectMultiScale(
+       gray,
+       scaleFactor=1.05,  # 更精細的掃描
+       minNeighbors=3,
+       minSize=(20, 20)
+   )</code></p>
+</li>
+<li>
+<p><strong>後處理過濾</strong>：<br />
+<code>python
+   # 過濾面積過小的偵測框
+   valid_faces = []
+   for (x, y, w, h) in faces:
+       area = w * h
+       if area &gt; 1000:  # 只保留面積 &gt; 1000 的人臉
+           valid_faces.append((x, y, w, h))</code></p>
+</li>
+</ol>
+<h3>Q5: 程式執行很慢怎麼辦？</h3>
+<p><strong>A:</strong> 優化技巧：<br />
+1. <strong>縮小圖片</strong>：<br />
+<code>python
+   # 縮小到原來的 50%
+   img = cv2.resize(img, (0, 0), fx=0.5, fy=0.5)</code></p>
+<ol>
+<li>
+<p><strong>提高 scaleFactor</strong>：<br />
+<code>python
+   # 使用較大的 scaleFactor 加快速度
+   faces = face_cascade.detectMultiScale(gray, 1.3, 5)</code></p>
+</li>
+<li>
+<p><strong>限制偵測區域</strong>（如果知道人臉大概位置）：<br />
+   ```python<br />
+   # 只偵測圖片中央區域<br />
+   h, w = gray.shape<br />
+   roi = gray[h//4:3<em>h//4, w//4:3</em>w//4]<br />
+   faces = face_cascade.detectMultiScale(roi, 1.1, 5)</p>
+</li>
+</ol>
+<p># 記得將座標轉換回原圖<br />
+   for (x, y, w, h) in faces:<br />
+       actual_x = x + w//4<br />
+       actual_y = y + h//4<br />
+       # ...<br />
+   ```</p>
+<hr />
+<h2>📊 評分標準</h2>
+<table>
+<thead>
+<tr>
+<th>項目</th>
+<th>配分</th>
+<th>評分重點</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>功能完整性</strong></td>
+<td>40%</td>
+<td>所有 9 個需求都已實作並正常運作</td>
+</tr>
+<tr>
+<td><strong>程式碼品質</strong></td>
+<td>25%</td>
+<td>結構清晰、註解完整、變數命名規範</td>
+</tr>
+<tr>
+<td><strong>執行結果</strong></td>
+<td>20%</td>
+<td>能正確偵測人臉並顯示編號</td>
+</tr>
+<tr>
+<td><strong>測試報告</strong></td>
+<td>10%</td>
+<td>完整記錄測試過程與心得反思</td>
+</tr>
+<tr>
+<td><strong>延伸挑戰</strong></td>
+<td>5%</td>
+<td>完成至少一項延伸挑戰（加分項）</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>📚 學習資源</h2>
+<h3>參考文件</h3>
+<ul>
+<li>主要教學：<code>opencv_imageclassfy_b05.md</code></li>
+<li>OpenCV 官方：<a href="https://docs.opencv.org/4.x/db/d28/tutorial_cascade_classifier.html">Cascade Classifier Tutorial</a></li>
+</ul>
+<h3>相關函數說明</h3>
+<ul>
+<li><code>cv2.imread()</code>：讀取圖片</li>
+<li><code>cv2.cvtColor()</code>：轉換色彩空間</li>
+<li><code>cv2.CascadeClassifier()</code>：載入分類器</li>
+<li><code>detectMultiScale()</code>：多尺度偵測</li>
+<li><code>cv2.rectangle()</code>：繪製矩形</li>
+<li><code>cv2.putText()</code>：繪製文字</li>
+</ul>
+<hr />
+<p><strong>祝學習順利！完成後記得測試不同的影像，觀察參數對結果的影響。</strong> 🎓</p></div>
+    
+    <!-- Highlight.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    
+    <!-- Mermaid -->
+    <script type="module">
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+        mermaid.initialize({
+            "startOnLoad": true,
+            "theme": "dark",
+            "securityLevel": "loose"
+});
+    </script>
+</body>
+</html>

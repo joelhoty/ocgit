@@ -1,0 +1,1260 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>opencv_imageclassfy_task2_b02</title>
+    
+    <!-- CSS 框架 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/dark.min.css">
+    
+    <!-- 代碼高亮 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/base16/darcula.min.css">
+    
+    <!-- 自定義樣式 -->
+    <style>
+        
+                body {
+                    max-width: 900px;
+                    margin: 0 auto;
+                    padding: 20px;
+                }
+                /* 提升代码块对比度 */
+                pre {
+                    background: #1e1e1e !important;
+                    border: 1px solid #3e3e3e;
+                }
+                pre code {
+                    background: #1e1e1e !important;
+                }
+                code {
+                    background: #2d2d2d !important;
+                }
+                /* 引用块对比度 */
+                blockquote {
+                    background: #2d2d2d;
+                    border-left: 4px solid #4a9eff;
+                }
+            
+        
+        /* 通用代碼塊樣式 */
+        pre code {
+            display: block;
+            padding: 1.5em;
+            border-radius: 8px;
+            overflow-x: auto;
+            line-height: 1.6;
+        }
+
+        /* Mermaid 圖表樣式 */
+        
+        .mermaid {
+            margin: 2em 0;
+            padding: 1.5em;
+            text-align: center;
+            border-radius: 8px;
+        }
+        
+        .mermaid {
+            background: #2c3034;
+            border: 1px solid #444;
+        }
+            
+        
+        /* 響應式調整 */
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            .container, .markdown-body, .latex-body, .window-body, .nes-container {
+                padding: 15px;
+            }
+            pre code {
+                padding: 1em;
+            }
+        }
+        
+        
+    </style>
+</head>
+<body>
+    <div class="container"><!-- Path: General_python/openCV/影像辨識-傳統方法 | Timestamp: 2025-10-06 18:00:00 | Version: b02 -->
+<h1>題目二：紅綠燈辨識系統</h1>
+<h2>📋 任務說明</h2>
+<p>請撰寫一個 Python 程式，能夠辨識圖片中的紅綠燈，偵測紅、黃、綠三種燈號的狀態，並在畫面上標示出當前亮起的燈號（例如：「紅燈」、「綠燈」等）。</p>
+<hr />
+<h2>🖼️ 影像選擇指引</h2>
+<h3>適合的影像類型</h3>
+<h4>✅ 推薦使用的影像</h4>
+<ol>
+<li><strong>清晰的紅綠燈照片</strong></li>
+<li>特徵：紅綠燈清晰可見、燈號明亮</li>
+<li>距離：5-30 公尺內拍攝</li>
+<li>偵測成功率：★★★★★（95%+）</li>
+<li>
+<p>最佳範例：<br />
+<code>✅ 白天拍攝的紅綠燈（光線充足）
+     ✅ 燈號清晰發光（紅/黃/綠其中一個亮）
+     ✅ 紅綠燈在畫面中央、佔比適中
+     ✅ 背景相對簡單（天空、建築物）</code></p>
+</li>
+<li>
+<p><strong>直視角度拍攝</strong></p>
+</li>
+<li>特徵：鏡頭正對紅綠燈，非極端仰角或俯角</li>
+<li>角度建議：<br />
+<code>✅ 正面直視（0-15°）     → 最佳
+     ⚠️ 微側面（15-30°）      → 尚可
+     ❌ 大角度側面（&gt;45°）    → 效果差
+     ❌ 極端仰角/俯角（&gt;60°） → 燈號可能變形</code></li>
+<li>
+<p>偵測成功率：★★★★☆（85%+）</p>
+</li>
+<li>
+<p><strong>單一紅綠燈為主</strong></p>
+</li>
+<li>特徵：畫面中主要是一組紅綠燈</li>
+<li>偵測成功率：★★★★★（90%+）</li>
+<li>
+<p>範例：<br />
+<code>✅ 路口單一紅綠燈
+     ✅ 行人專用紅綠燈
+     ⚠️ 多組紅綠燈（可能混淆）
+     ❌ 遠處小型紅綠燈（像素不足）</code></p>
+</li>
+<li>
+<p><strong>光線充足的照片</strong></p>
+</li>
+<li>特徵：白天或傍晚、燈號清晰發光</li>
+<li>拍攝時間：<br />
+<code>✅ 白天晴天          → 最佳（對比清晰）
+     ✅ 陰天              → 良好
+     ✅ 傍晚/清晨         → 尚可（燈號較亮）
+     ⚠️ 夜間              → 需要調整參數
+     ❌ 逆光              → 燈號可能過曝</code></li>
+<li>偵測成功率：★★★★☆（85%+）</li>
+</ol>
+<h4>⚠️ 效果較差的影像</h4>
+<ol>
+<li><strong>背景複雜的照片</strong></li>
+<li>問題：<ul>
+<li>背景有紅色招牌、紅磚牆 → 誤判紅燈</li>
+<li>背景有綠色植物、草地 → 誤判綠燈</li>
+<li>廣告看板的彩色燈光 → 干擾偵測</li>
+</ul>
+</li>
+<li>偵測成功率：★★☆☆☆（50-70%）</li>
+<li>
+<p>改善方法：</p>
+<ul>
+<li>提高輪廓面積閾值</li>
+<li>加入圓形度檢測</li>
+<li>使用更精確的 HSV 範圍</li>
+</ul>
+</li>
+<li>
+<p><strong>燈號不亮或微弱</strong></p>
+</li>
+<li>問題：<ul>
+<li>白天燈號關閉 → 顏色不明顯</li>
+<li>燈號故障閃爍 → 可能偵測不到</li>
+<li>燈號被遮擋 → 部分可見</li>
+</ul>
+</li>
+<li>偵測成功率：★★☆☆☆（40-60%）</li>
+<li>
+<p>最佳狀態：至少一個燈號清晰發光</p>
+</li>
+<li>
+<p><strong>紅綠燈過小或過遠</strong></p>
+</li>
+<li>問題：燈號像素不足（&lt; 10×10 px）</li>
+<li>偵測成功率：★☆☆☆☆（20-40%）</li>
+<li>
+<p>最小尺寸建議：每個燈號至少 15×15 像素</p>
+</li>
+<li>
+<p><strong>天氣不佳的照片</strong></p>
+</li>
+<li>問題：<ul>
+<li>大雨、大霧 → 視線模糊</li>
+<li>雪天 → 紅綠燈被雪覆蓋</li>
+<li>強烈陽光反射 → 過曝</li>
+</ul>
+</li>
+<li>偵測成功率：★★☆☆☆（30-60%）</li>
+</ol>
+<h4>❌ 完全不適合的影像</h4>
+<ul>
+<li>黑白照片（無色彩資訊）</li>
+<li>極度模糊或晃動的照片</li>
+<li>紅綠燈完全熄滅的照片</li>
+<li>紅綠燈被完全遮擋</li>
+<li>極端逆光導致過曝</li>
+</ul>
+<h3>不同紅綠燈類型的影像需求</h3>
+<h4>標準直立式紅綠燈</h4>
+<pre class="codehilite"><code>構造：上紅、中黃、下綠（垂直排列）
+最佳拍攝：
+✅ 正面拍攝，三個燈都清晰可見
+✅ 其中一個燈明亮發光
+✅ 距離適中（5-20m）
+
+影像特徵：
+- 三個圓形燈號垂直排列
+- 燈號大小相似
+- 間距均勻
+</code></pre>
+
+<h4>橫式紅綠燈</h4>
+<pre class="codehilite"><code>構造：左紅、中黃、右綠（水平排列）
+最佳拍攝：
+✅ 平視角度
+✅ 避免極端側角
+
+影像特徵：
+- 三個圓形燈號水平排列
+- 燈號大小相似
+</code></pre>
+
+<h4>行人號誌</h4>
+<pre class="codehilite"><code>構造：上紅（站立人形）、下綠（行走人形）
+最佳拍攝：
+✅ 清晰可見人形符號
+✅ 燈號明亮
+
+注意：
+本題目主要針對圓形車輛紅綠燈
+行人號誌可作為進階挑戰
+</code></pre>
+
+<h3>測試影像建議</h3>
+<h4>初學者測試（難度：★☆☆☆☆）</h4>
+<p><strong>自行建立簡單測試圖</strong></p>
+<pre class="codehilite"><code class="language-python"># 建立模擬紅綠燈圖片
+import numpy as np
+import cv2
+
+# 建立 600x400 深灰色畫布（模擬天空/背景）
+img = np.ones((600, 400, 3), dtype=np.uint8) * 100
+
+# 繪製紅綠燈外框（黑色矩形）
+cv2.rectangle(img, (150, 100), (250, 450), (30, 30, 30), -1)
+
+# 繪製三個燈號位置（深灰色圓形 = 熄滅狀態）
+cv2.circle(img, (200, 180), 35, (60, 60, 60), -1)  # 紅燈位置
+cv2.circle(img, (200, 300), 35, (60, 60, 60), -1)  # 黃燈位置
+cv2.circle(img, (200, 420), 35, (60, 60, 60), -1)  # 綠燈位置
+
+# 讓其中一個燈亮起（例如：紅燈）
+cv2.circle(img, (200, 180), 35, (0, 0, 255), -1)  # 紅燈亮
+
+cv2.imwrite('test_traffic_light.jpg', img)
+</code></pre>
+
+<p><strong>特點</strong>：<br />
+- 背景簡單，無干擾<br />
+- 燈號清晰、顏色飽和<br />
+- 預期結果：100% 偵測成功</p>
+<h4>中級測試（難度：★★★☆☆）</h4>
+<p><strong>拍攝真實紅綠燈</strong></p>
+<pre class="codehilite"><code>建議場景：
+1. 路口紅綠燈（白天、晴天）
+2. 距離 10-15 公尺
+3. 使用手機相機拍攝
+4. 正面角度
+
+拍攝要點：
+- 確保至少一個燈號亮起
+- 背景盡量簡單（如天空）
+- 避免逆光
+- 紅綠燈佔畫面 1/4 到 1/2
+
+預期結果：80-90% 偵測成功
+</code></pre>
+
+<h4>進階測試（難度：★★★★☆）</h4>
+<p><strong>複雜場景</strong></p>
+<pre class="codehilite"><code>挑戰場景：
+1. 繁忙路口（多組紅綠燈）
+2. 夜間紅綠燈
+3. 有招牌干擾的街道
+4. 雨天或陰天拍攝
+
+挑戰點：
+- 背景複雜
+- 光線條件差
+- 可能有多個紅綠燈
+- 需要精確辨識是哪一個
+
+預期結果：60-75% 偵測成功
+需要：精細調整參數、加入額外篩選條件
+</code></pre>
+
+<h3>紅綠燈 HSV 顏色範圍</h3>
+<p>不同燈號的 HSV 範圍參考：</p>
+<table>
+<thead>
+<tr>
+<th>燈號</th>
+<th>H (色相)</th>
+<th>S (飽和度)</th>
+<th>V (亮度)</th>
+<th>備註</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>紅燈</td>
+<td>0-10 或 170-180</td>
+<td>150-255</td>
+<td>150-255</td>
+<td>亮起時飽和度和亮度高</td>
+</tr>
+<tr>
+<td>黃燈</td>
+<td>20-35</td>
+<td>150-255</td>
+<td>200-255</td>
+<td>偏黃橙色</td>
+</tr>
+<tr>
+<td>綠燈</td>
+<td>40-80</td>
+<td>100-255</td>
+<td>150-255</td>
+<td>範圍較寬</td>
+</tr>
+</tbody>
+</table>
+<p><strong>注意</strong>：<br />
+- 亮起的燈號：高 S（飽和度）、高 V（亮度）<br />
+- 熄滅的燈號：低 S、低 V（接近灰色）<br />
+- 需根據實際照片微調</p>
+<h3>影像品質檢查清單</h3>
+<p>測試前請確認：<br />
+- [ ] 影像格式：JPG、PNG<br />
+- [ ] 解析度：至少 640×480（建議 1024×768）<br />
+- [ ] 紅綠燈清晰可見<br />
+- [ ] 至少一個燈號明亮發光<br />
+- [ ] 拍攝角度：正面或微側面（&lt; 30°）<br />
+- [ ] 背景：盡量簡單（天空最佳）<br />
+- [ ] 光線：充足均勻<br />
+- [ ] 燈號大小：每個燈至少 15×15 像素</p>
+<hr />
+<h2>✅ 詳細需求列表</h2>
+<h3>需求 1：匯入套件與建立測試圖片</h3>
+<p><strong>說明</strong>：匯入必要套件，並建立模擬紅綠燈的測試圖片。</p>
+<p><strong>程式碼提示</strong>：</p>
+<pre class="codehilite"><code class="language-python">import cv2
+import numpy as np
+from google.colab.patches import cv2_imshow
+
+print(&quot;=&quot;*60)
+print(&quot;紅綠燈辨識系統&quot;)
+print(&quot;=&quot;*60)
+
+# 建立模擬紅綠燈測試圖片
+def create_traffic_light(light_on='red'):
+    &quot;&quot;&quot;
+    建立模擬紅綠燈圖片
+
+    參數:
+        light_on: 'red', 'yellow', 'green' 或 'none'
+    &quot;&quot;&quot;
+    # 建立 600x400 深灰色畫布
+    img = np.ones((600, 400, 3), dtype=np.uint8) * 100
+
+    # 繪製紅綠燈外框
+    cv2.rectangle(img, (150, 100), (250, 450), (30, 30, 30), -1)
+
+    # 定義三個燈的位置
+    red_pos = (200, 180)
+    yellow_pos = (200, 300)
+    green_pos = (200, 420)
+    radius = 35
+
+    # 繪製熄滅狀態的燈（深灰色）
+    cv2.circle(img, red_pos, radius, (60, 60, 60), -1)
+    cv2.circle(img, yellow_pos, radius, (60, 60, 60), -1)
+    cv2.circle(img, green_pos, radius, (60, 60, 60), -1)
+
+    # 根據參數點亮對應的燈
+    if light_on == 'red':
+        cv2.circle(img, red_pos, radius, (0, 0, 255), -1)      # BGR: 紅色
+    elif light_on == 'yellow':
+        cv2.circle(img, yellow_pos, radius, (0, 255, 255), -1)  # BGR: 黃色
+    elif light_on == 'green':
+        cv2.circle(img, green_pos, radius, (0, 255, 0), -1)    # BGR: 綠色
+
+    return img
+
+# 建立測試圖片（預設紅燈亮）
+img = create_traffic_light('red')  # 可改為 'yellow' 或 'green'
+
+print(&quot;✓ 測試圖片建立完成&quot;)
+print(f&quot;圖片尺寸: {img.shape[1]} x {img.shape[0]} 像素&quot;)
+
+# 顯示原始測試圖片
+print(&quot;\n原始測試圖片：&quot;)
+cv2_imshow(img)
+
+# 保存原圖副本
+img_result = img.copy()
+</code></pre>
+
+<hr />
+<h3>需求 2：設定紅綠燈顏色 HSV 範圍</h3>
+<p><strong>說明</strong>：定義紅、黃、綠三種燈號的 HSV 範圍。</p>
+<p><strong>程式碼提示</strong>：</p>
+<pre class="codehilite"><code class="language-python"># 定義紅綠燈顏色範圍字典
+traffic_light_colors = {
+    '紅燈': {
+        'lower': np.array([0, 150, 150]),      # HSV 下限
+        'upper': np.array([10, 255, 255]),     # HSV 上限
+        'display_color': (0, 0, 255),          # BGR 格式（繪製用）
+        'status': 'STOP'                       # 狀態
+    },
+    '黃燈': {
+        'lower': np.array([20, 150, 200]),
+        'upper': np.array([35, 255, 255]),
+        'display_color': (0, 255, 255),
+        'status': 'CAUTION'
+    },
+    '綠燈': {
+        'lower': np.array([40, 100, 150]),
+        'upper': np.array([80, 255, 255]),
+        'display_color': (0, 255, 0),
+        'status': 'GO'
+    }
+}
+
+print(&quot;✓ 紅綠燈顏色範圍設定完成&quot;)
+print(&quot;將偵測以下燈號：&quot;)
+for light_name, info in traffic_light_colors.items():
+    print(f&quot;  - {light_name} ({info['status']})&quot;)
+
+print(&quot;&quot;)
+</code></pre>
+
+<hr />
+<h3>需求 3：轉換色彩空間為 HSV</h3>
+<p><strong>說明</strong>：將 BGR 圖片轉換為 HSV 格式。</p>
+<p><strong>程式碼提示</strong>：</p>
+<pre class="codehilite"><code class="language-python"># 將圖片從 BGR 轉換為 HSV 色彩空間
+hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
+print(&quot;✓ 圖片已轉換為 HSV 色彩空間\n&quot;)
+</code></pre>
+
+<hr />
+<h3>需求 4：偵測並標記紅綠燈燈號</h3>
+<p><strong>說明</strong>：遍歷三種燈號，建立遮罩、尋找輪廓、並進行圓形度檢測。</p>
+<p><strong>程式碼提示</strong>：</p>
+<pre class="codehilite"><code class="language-python"># 統計變數
+detected_lights = []  # 儲存偵測到的燈號
+
+print(&quot;=&quot;*60)
+print(&quot;開始偵測紅綠燈&quot;)
+print(&quot;=&quot;*60)
+
+# 遍歷每種燈號
+for light_name, light_info in traffic_light_colors.items():
+    print(f&quot;\n偵測 {light_name}...&quot;)
+
+    # === 步驟 1: 建立顏色遮罩 ===
+    mask = cv2.inRange(
+        hsv,
+        light_info['lower'],
+        light_info['upper']
+    )
+
+    # 可選：形態學操作，去除雜訊
+    kernel = np.ones((5, 5), np.uint8)
+    mask = cv2.morphologyEx(mask, cv2.MORPH_CLOSE, kernel, iterations=2)
+    mask = cv2.morphologyEx(mask, cv2.MORPH_OPEN, kernel, iterations=1)
+
+    # 可選：顯示遮罩（除錯用）
+    # print(f&quot;{light_name} 遮罩：&quot;)
+    # cv2_imshow(mask)
+
+    # === 步驟 2: 尋找輪廓 ===
+    contours, _ = cv2.findContours(
+        mask,
+        cv2.RETR_EXTERNAL,
+        cv2.CHAIN_APPROX_SIMPLE
+    )
+
+    print(f&quot;  找到 {len(contours)} 個輪廓&quot;)
+
+    # === 步驟 3: 篩選有效輪廓（圓形度檢測）===
+    valid_count = 0
+    for contour in contours:
+        # 計算輪廓面積
+        area = cv2.contourArea(contour)
+
+        # 過濾太小的輪廓
+        if area &lt; 200:  # 面積閾值，可調整
+            continue
+
+        # 計算輪廓的周長
+        perimeter = cv2.arcLength(contour, True)
+
+        if perimeter == 0:
+            continue
+
+        # 計算圓形度：4π * 面積 / 周長^2
+        # 完美圓形的圓形度 = 1.0
+        # 一般接受範圍：0.7 ~ 1.3
+        circularity = 4 * np.pi * area / (perimeter * perimeter)
+
+        # 只接受接近圓形的輪廓
+        if 0.7 &lt; circularity &lt; 1.3:
+            valid_count += 1
+
+            # 取得邊界矩形（用於標記）
+            x, y, w, h = cv2.boundingRect(contour)
+
+            # 計算中心點
+            center_x = x + w // 2
+            center_y = y + h // 2
+
+            # 繪製圓形標記
+            radius = max(w, h) // 2 + 5
+            cv2.circle(
+                img_result,
+                (center_x, center_y),
+                radius,
+                light_info['display_color'],
+                3
+            )
+
+            # 加上文字標籤
+            label = f&quot;{light_name} ({light_info['status']})&quot;
+            cv2.putText(
+                img_result,
+                label,
+                (x, y - 10 if y &gt; 40 else y + h + 25),
+                cv2.FONT_HERSHEY_SIMPLEX,
+                0.7,
+                light_info['display_color'],
+                2
+            )
+
+            # 記錄偵測結果
+            detected_lights.append({
+                'name': light_name,
+                'status': light_info['status'],
+                'position': (center_x, center_y),
+                'area': area,
+                'circularity': circularity
+            })
+
+            print(f&quot;    ✓ {light_name}: 位置({center_x},{center_y}), &quot;
+                  f&quot;面積{area:.0f}px, 圓形度{circularity:.2f}&quot;)
+
+    if valid_count == 0:
+        print(f&quot;  ✗ 未偵測到有效的{light_name}&quot;)
+
+print(&quot;\n&quot; + &quot;=&quot;*60)
+</code></pre>
+
+<hr />
+<h3>需求 5：判斷紅綠燈狀態</h3>
+<p><strong>說明</strong>：根據偵測結果，判斷當前紅綠燈的狀態。</p>
+<p><strong>程式碼提示</strong>：</p>
+<pre class="codehilite"><code class="language-python"># 判斷紅綠燈狀態
+print(&quot;紅綠燈狀態判斷&quot;)
+print(&quot;=&quot;*60)
+
+if len(detected_lights) == 0:
+    current_status = &quot;未知（無燈號偵測）&quot;
+    print(&quot;⚠️ 未偵測到任何亮起的燈號&quot;)
+elif len(detected_lights) == 1:
+    # 只有一個燈亮
+    light = detected_lights[0]
+    current_status = f&quot;{light['name']} - {light['status']}&quot;
+    print(f&quot;✓ 當前狀態: {current_status}&quot;)
+else:
+    # 多個燈亮（異常情況或誤判）
+    print(f&quot;⚠️ 警告: 偵測到 {len(detected_lights)} 個亮燈&quot;)
+    print(&quot;可能原因：&quot;)
+    print(&quot;  1. 多組紅綠燈&quot;)
+    print(&quot;  2. 背景干擾（誤判）&quot;)
+    print(&quot;  3. 燈號切換瞬間&quot;)
+
+    # 列出所有偵測到的燈
+    for i, light in enumerate(detected_lights, 1):
+        print(f&quot;  {i}. {light['name']} - {light['status']}&quot;)
+
+    # 取面積最大的作為主要燈號
+    main_light = max(detected_lights, key=lambda x: x['area'])
+    current_status = f&quot;{main_light['name']} - {main_light['status']} (主要)&quot;
+    print(f&quot;\n推測主要狀態: {current_status}&quot;)
+
+print(&quot;=&quot;*60 + &quot;\n&quot;)
+</code></pre>
+
+<hr />
+<h3>需求 6：顯示結果與統計</h3>
+<p><strong>說明</strong>：顯示處理結果並輸出統計資訊。</p>
+<p><strong>程式碼提示</strong>：</p>
+<pre class="codehilite"><code class="language-python"># 在圖片上顯示狀態資訊
+info_y = 40
+cv2.putText(
+    img_result,
+    f&quot;Status: {current_status}&quot;,
+    (10, info_y),
+    cv2.FONT_HERSHEY_SIMPLEX,
+    0.8,
+    (255, 255, 255),
+    2
+)
+
+cv2.putText(
+    img_result,
+    f&quot;Detected: {len(detected_lights)} light(s)&quot;,
+    (10, info_y + 35),
+    cv2.FONT_HERSHEY_SIMPLEX,
+    0.6,
+    (255, 255, 255),
+    2
+)
+
+# 顯示統計
+print(&quot;偵測統計：&quot;)
+print(f&quot;  偵測到的燈號數量: {len(detected_lights)}&quot;)
+for light in detected_lights:
+    print(f&quot;  - {light['name']}: 位置{light['position']}&quot;)
+
+# 顯示原圖和結果
+print(&quot;\n原始圖片：&quot;)
+cv2_imshow(img)
+
+print(&quot;\n標記後的結果：&quot;)
+cv2_imshow(img_result)
+
+# 儲存結果
+output_filename = 'result_traffic_light.jpg'
+cv2.imwrite(output_filename, img_result)
+print(f&quot;\n✓ 結果已儲存為 {output_filename}&quot;)
+</code></pre>
+
+<hr />
+<h2>📝 完整可執行程式碼</h2>
+<pre class="codehilite"><code class="language-python"># ========================================
+# 題目二：紅綠燈辨識系統
+# ========================================
+
+import cv2
+import numpy as np
+from google.colab.patches import cv2_imshow
+
+print(&quot;=&quot;*60)
+print(&quot;紅綠燈辨識系統&quot;)
+print(&quot;=&quot;*60)
+
+# === 1. 建立測試圖片 ===
+def create_traffic_light(light_on='red'):
+    &quot;&quot;&quot;建立模擬紅綠燈圖片&quot;&quot;&quot;
+    img = np.ones((600, 400, 3), dtype=np.uint8) * 100
+    cv2.rectangle(img, (150, 100), (250, 450), (30, 30, 30), -1)
+
+    red_pos = (200, 180)
+    yellow_pos = (200, 300)
+    green_pos = (200, 420)
+    radius = 35
+
+    # 繪製熄滅狀態
+    cv2.circle(img, red_pos, radius, (60, 60, 60), -1)
+    cv2.circle(img, yellow_pos, radius, (60, 60, 60), -1)
+    cv2.circle(img, green_pos, radius, (60, 60, 60), -1)
+
+    # 點亮指定燈號
+    if light_on == 'red':
+        cv2.circle(img, red_pos, radius, (0, 0, 255), -1)
+    elif light_on == 'yellow':
+        cv2.circle(img, yellow_pos, radius, (0, 255, 255), -1)
+    elif light_on == 'green':
+        cv2.circle(img, green_pos, radius, (0, 255, 0), -1)
+
+    return img
+
+# 建立測試圖片
+img = create_traffic_light('red')  # 可改為 'yellow', 'green'
+img_result = img.copy()
+
+print(&quot;✓ 測試圖片建立完成\n&quot;)
+print(&quot;原始測試圖片：&quot;)
+cv2_imshow(img)
+
+# === 2. 設定顏色範圍 ===
+traffic_light_colors = {
+    '紅燈': {
+        'lower': np.array([0, 150, 150]),
+        'upper': np.array([10, 255, 255]),
+        'display_color': (0, 0, 255),
+        'status': 'STOP'
+    },
+    '黃燈': {
+        'lower': np.array([20, 150, 200]),
+        'upper': np.array([35, 255, 255]),
+        'display_color': (0, 255, 255),
+        'status': 'CAUTION'
+    },
+    '綠燈': {
+        'lower': np.array([40, 100, 150]),
+        'upper': np.array([80, 255, 255]),
+        'display_color': (0, 255, 0),
+        'status': 'GO'
+    }
+}
+
+print(&quot;\n✓ 顏色範圍設定完成&quot;)
+
+# === 3. 轉換色彩空間 ===
+hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
+
+# === 4. 偵測燈號 ===
+detected_lights = []
+
+print(&quot;\n&quot; + &quot;=&quot;*60)
+print(&quot;開始偵測紅綠燈&quot;)
+print(&quot;=&quot;*60)
+
+for light_name, light_info in traffic_light_colors.items():
+    print(f&quot;\n偵測 {light_name}...&quot;)
+
+    # 建立遮罩
+    mask = cv2.inRange(hsv, light_info['lower'], light_info['upper'])
+
+    # 形態學操作去除雜訊
+    kernel = np.ones((5, 5), np.uint8)
+    mask = cv2.morphologyEx(mask, cv2.MORPH_CLOSE, kernel, iterations=2)
+    mask = cv2.morphologyEx(mask, cv2.MORPH_OPEN, kernel, iterations=1)
+
+    # 尋找輪廓
+    contours, _ = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+    print(f&quot;  找到 {len(contours)} 個輪廓&quot;)
+
+    # 篩選圓形輪廓
+    for contour in contours:
+        area = cv2.contourArea(contour)
+
+        if area &lt; 200:
+            continue
+
+        perimeter = cv2.arcLength(contour, True)
+        if perimeter == 0:
+            continue
+
+        # 圓形度檢測
+        circularity = 4 * np.pi * area / (perimeter * perimeter)
+
+        if 0.7 &lt; circularity &lt; 1.3:
+            x, y, w, h = cv2.boundingRect(contour)
+            center_x = x + w // 2
+            center_y = y + h // 2
+            radius = max(w, h) // 2 + 5
+
+            # 繪製標記
+            cv2.circle(img_result, (center_x, center_y), radius,
+                      light_info['display_color'], 3)
+
+            label = f&quot;{light_name} ({light_info['status']})&quot;
+            cv2.putText(img_result, label, (x, y - 10 if y &gt; 40 else y + h + 25),
+                       cv2.FONT_HERSHEY_SIMPLEX, 0.7,
+                       light_info['display_color'], 2)
+
+            # 記錄結果
+            detected_lights.append({
+                'name': light_name,
+                'status': light_info['status'],
+                'position': (center_x, center_y),
+                'area': area,
+                'circularity': circularity
+            })
+
+            print(f&quot;    ✓ {light_name}: 位置({center_x},{center_y}), &quot;
+                  f&quot;面積{area:.0f}px, 圓形度{circularity:.2f}&quot;)
+
+# === 5. 判斷狀態 ===
+print(&quot;\n&quot; + &quot;=&quot;*60)
+print(&quot;紅綠燈狀態判斷&quot;)
+print(&quot;=&quot;*60)
+
+if len(detected_lights) == 0:
+    current_status = &quot;未知&quot;
+    print(&quot;⚠️ 未偵測到任何亮起的燈號&quot;)
+elif len(detected_lights) == 1:
+    light = detected_lights[0]
+    current_status = f&quot;{light['name']} - {light['status']}&quot;
+    print(f&quot;✓ 當前狀態: {current_status}&quot;)
+else:
+    print(f&quot;⚠️ 偵測到 {len(detected_lights)} 個亮燈&quot;)
+    main_light = max(detected_lights, key=lambda x: x['area'])
+    current_status = f&quot;{main_light['name']} - {main_light['status']}&quot;
+    print(f&quot;推測主要狀態: {current_status}&quot;)
+
+# === 6. 顯示結果 ===
+cv2.putText(img_result, f&quot;Status: {current_status}&quot;, (10, 40),
+           cv2.FONT_HERSHEY_SIMPLEX, 0.8, (255, 255, 255), 2)
+
+cv2.putText(img_result, f&quot;Detected: {len(detected_lights)} light(s)&quot;, (10, 75),
+           cv2.FONT_HERSHEY_SIMPLEX, 0.6, (255, 255, 255), 2)
+
+print(&quot;\n標記後的結果：&quot;)
+cv2_imshow(img_result)
+
+cv2.imwrite('result_traffic_light.jpg', img_result)
+print(&quot;\n✓ 結果已儲存為 result_traffic_light.jpg&quot;)
+</code></pre>
+
+<hr />
+<h2>🎯 測試建議</h2>
+<h3>測試 1：不同燈號測試</h3>
+<pre class="codehilite"><code class="language-python"># 測試三種燈號
+light_states = ['red', 'yellow', 'green']
+
+for state in light_states:
+    print(f&quot;\n{'='*60}&quot;)
+    print(f&quot;測試: {state.upper()} 燈&quot;)
+    print(f&quot;{'='*60}&quot;)
+
+    img = create_traffic_light(state)
+    # ... 執行完整偵測流程 ...
+
+    cv2.imwrite(f'test_{state}_light.jpg', img_result)
+</code></pre>
+
+<h3>測試 2：使用真實照片</h3>
+<pre class="codehilite"><code class="language-python"># 上傳真實紅綠燈照片
+from google.colab import files
+uploaded = files.upload()
+
+# 讀取照片
+img = cv2.imread('your_traffic_light.jpg')
+
+# 其餘程式碼相同...
+</code></pre>
+
+<h3>測試 3：調整 HSV 範圍</h3>
+<pre class="codehilite"><code class="language-python"># 針對實際照片調整紅燈的 HSV 範圍
+red_ranges = [
+    ([0, 150, 150], [10, 255, 255]),    # 嚴格
+    ([0, 120, 120], [10, 255, 255]),    # 寬鬆
+    ([0, 100, 100], [15, 255, 255]),    # 更寬鬆
+]
+
+for lower, upper in red_ranges:
+    mask = cv2.inRange(hsv, np.array(lower), np.array(upper))
+    contours, _ = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+
+    valid = sum(1 for c in contours if cv2.contourArea(c) &gt; 200)
+    print(f&quot;H:{lower[0]}-{upper[0]}, S:{lower[1]}+, V:{lower[2]}+: {valid} 個紅燈&quot;)
+</code></pre>
+
+<hr />
+<h2>🚀 延伸挑戰（選做）</h2>
+<h3>挑戰 1：偵測紅綠燈方向（直行/左轉/右轉）</h3>
+<pre class="codehilite"><code class="language-python"># 根據箭頭形狀判斷方向
+# 提示：使用模板匹配或更複雜的形狀分析
+
+# 定義箭頭類型
+arrow_types = {
+    '直行': 'straight',
+    '左轉': 'left',
+    '右轉': 'right'
+}
+
+# 可以使用輪廓的長寬比、方向等特徵
+for contour in contours:
+    x, y, w, h = cv2.boundingRect(contour)
+    aspect_ratio = w / h
+
+    if aspect_ratio &gt; 1.2:
+        arrow_type = '左轉或右轉'
+    else:
+        arrow_type = '直行'
+</code></pre>
+
+<h3>挑戰 2：計算紅綠燈剩餘時間</h3>
+<pre class="codehilite"><code class="language-python"># 如果紅綠燈有數字顯示，使用 OCR 辨識
+# 需要額外的 pytesseract 套件
+
+import pytesseract
+
+# 擷取數字顯示區域
+number_region = img[y:y+h, x:x+w]
+
+# 轉換為灰階
+gray_region = cv2.cvtColor(number_region, cv2.COLOR_BGR2GRAY)
+
+# OCR 辨識
+text = pytesseract.image_to_string(gray_region, config='--psm 6 digits')
+remaining_time = text.strip()
+
+print(f&quot;剩餘時間: {remaining_time} 秒&quot;)
+</code></pre>
+
+<h3>挑戰 3：影片即時辨識</h3>
+<pre class="codehilite"><code class="language-python"># 處理影片中的紅綠燈
+cap = cv2.VideoCapture('traffic_video.mp4')
+
+while cap.isOpened():
+    ret, frame = cap.read()
+    if not ret:
+        break
+
+    # 對每一幀進行紅綠燈偵測
+    hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
+
+    # ... 完整偵測流程 ...
+
+    # 顯示結果
+    cv2_imshow(frame)
+
+cap.release()
+</code></pre>
+
+<h3>挑戰 4：多組紅綠燈辨識</h3>
+<pre class="codehilite"><code class="language-python"># 在複雜場景中辨識多組紅綠燈
+# 並標註「我方」和「對向」
+
+# 根據位置判斷
+def classify_traffic_light(center_y, img_height):
+    &quot;&quot;&quot;根據垂直位置判斷紅綠燈是哪一方的&quot;&quot;&quot;
+    if center_y &lt; img_height * 0.4:
+        return &quot;對向&quot;
+    elif center_y &gt; img_height * 0.6:
+        return &quot;我方&quot;
+    else:
+        return &quot;側向&quot;
+
+# 為每個偵測到的燈加上分類
+for light in detected_lights:
+    classification = classify_traffic_light(light['position'][1], img.shape[0])
+    light['classification'] = classification
+    print(f&quot;{light['name']} - {classification}&quot;)
+</code></pre>
+
+<hr />
+<h2>🔧 除錯技巧</h2>
+<h3>問題 1：偵測不到紅綠燈</h3>
+<p><strong>診斷工具</strong>：</p>
+<pre class="codehilite"><code class="language-python"># 顯示 HSV 遮罩，檢查顏色範圍是否正確
+for light_name, light_info in traffic_light_colors.items():
+    mask = cv2.inRange(hsv, light_info['lower'], light_info['upper'])
+    print(f&quot;\n{light_name} 遮罩：&quot;)
+    cv2_imshow(mask)
+
+    # 檢查遮罩中的白色像素數量
+    white_pixels = cv2.countNonZero(mask)
+    total_pixels = mask.shape[0] * mask.shape[1]
+    percentage = (white_pixels / total_pixels) * 100
+
+    print(f&quot;{light_name} 遮罩覆蓋率: {percentage:.2f}%&quot;)
+
+    if percentage &lt; 0.1:
+        print(f&quot;⚠️ {light_name} 遮罩幾乎沒有內容，請調整 HSV 範圍&quot;)
+</code></pre>
+
+<h3>問題 2：背景干擾（誤判）</h3>
+<p><strong>解決方法</strong>：</p>
+<pre class="codehilite"><code class="language-python"># 方法 1：提高面積閾值
+min_area = 500  # 增加到 500 或 1000
+
+# 方法 2：加入圓形度檢測（已在程式中）
+if 0.7 &lt; circularity &lt; 1.3:  # 只接受接近圓形
+
+# 方法 3：限制偵測區域（如果知道紅綠燈大概位置）
+# 只在畫面上半部偵測
+roi_y_start = 0
+roi_y_end = img.shape[0] // 2
+roi = hsv[roi_y_start:roi_y_end, :]
+
+mask = cv2.inRange(roi, light_info['lower'], light_info['upper'])
+
+# 方法 4：加入位置關係檢測
+# 紅綠燈的三個燈應該垂直或水平排列
+def check_alignment(lights):
+    &quot;&quot;&quot;檢查燈號是否對齊（垂直或水平）&quot;&quot;&quot;
+    if len(lights) &lt; 2:
+        return True
+
+    positions = [light['position'] for light in lights]
+
+    # 檢查垂直對齊（x 座標相近）
+    x_coords = [pos[0] for pos in positions]
+    x_variance = np.var(x_coords)
+
+    # 檢查水平對齊（y 座標相近）
+    y_coords = [pos[1] for pos in positions]
+    y_variance = np.var(y_coords)
+
+    # 如果 x 或 y 座標的變異數很小，表示對齊
+    return x_variance &lt; 100 or y_variance &lt; 100
+</code></pre>
+
+<h3>問題 3：夜間或暗處偵測失敗</h3>
+<p><strong>解決方法</strong>：</p>
+<pre class="codehilite"><code class="language-python"># 方法 1：降低 V (亮度) 的下限
+'紅燈': {
+    'lower': np.array([0, 150, 100]),  # V 從 150 降到 100
+    'upper': np.array([10, 255, 255]),
+    ...
+}
+
+# 方法 2：影像預處理 - 提高亮度和對比度
+img_enhanced = cv2.convertScaleAbs(img, alpha=1.5, beta=30)
+
+# 方法 3：使用自適應處理
+# 根據影像的平均亮度動態調整 HSV 範圍
+mean_brightness = np.mean(cv2.cvtColor(img, cv2.COLOR_BGR2GRAY))
+
+if mean_brightness &lt; 100:  # 暗處
+    v_min = 80
+else:  # 亮處
+    v_min = 150
+</code></pre>
+
+<h3>問題 4：紅色偵測不完整</h3>
+<p><strong>原因</strong>：紅色在 HSV 橫跨 0-10 和 170-180</p>
+<p><strong>完整解決方法</strong>：</p>
+<pre class="codehilite"><code class="language-python"># 紅燈需要兩個 HSV 範圍
+red_lower1 = np.array([0, 150, 150])
+red_upper1 = np.array([10, 255, 255])
+
+red_lower2 = np.array([170, 150, 150])
+red_upper2 = np.array([180, 255, 255])
+
+# 建立兩個遮罩並合併
+mask_red1 = cv2.inRange(hsv, red_lower1, red_upper1)
+mask_red2 = cv2.inRange(hsv, red_lower2, red_upper2)
+mask_red = cv2.bitwise_or(mask_red1, mask_red2)
+
+# 使用合併後的遮罩
+contours, _ = cv2.findContours(mask_red, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+</code></pre>
+
+<hr />
+<h2>💡 常見問題 FAQ</h2>
+<h3>Q1: 為什麼要使用圓形度檢測？</h3>
+<p><strong>A:</strong> 紅綠燈的燈號是圓形的，圓形度檢測可以：<br />
+1. 過濾掉矩形的招牌、窗戶<br />
+2. 過濾掉不規則形狀的雜訊<br />
+3. 提高偵測準確度</p>
+<pre class="codehilite"><code class="language-python"># 圓形度公式：4π × 面積 / 周長²
+# 完美圓形 = 1.0
+# 正方形 ≈ 0.785
+# 長方形 &lt; 0.785
+
+circularity = 4 * np.pi * area / (perimeter ** 2)
+
+# 我們接受 0.7 ~ 1.3 的範圍
+# 考慮到實際拍攝角度、像素化等因素
+</code></pre>
+
+<h3>Q2: 如何區分紅綠燈和其他紅/綠色物體？</h3>
+<p><strong>A:</strong> 多重篩選條件：</p>
+<ol>
+<li><strong>顏色</strong> - HSV 範圍（亮起的燈高飽和度、高亮度）</li>
+<li><strong>形狀</strong> - 圓形度檢測</li>
+<li><strong>大小</strong> - 面積閾值</li>
+<li><strong>位置</strong> - 紅綠燈通常在畫面上方</li>
+<li><strong>數量</strong> - 三個燈（紅黃綠）</li>
+<li><strong>對齊</strong> - 垂直或水平排列</li>
+</ol>
+<pre class="codehilite"><code class="language-python"># 綜合判斷函數
+def is_traffic_light(contour, hsv, img_height):
+    area = cv2.contourArea(contour)
+
+    # 檢查 1: 大小
+    if area &lt; 200 or area &gt; 10000:
+        return False
+
+    # 檢查 2: 圓形度
+    perimeter = cv2.arcLength(contour, True)
+    circularity = 4 * np.pi * area / (perimeter ** 2)
+    if not (0.7 &lt; circularity &lt; 1.3):
+        return False
+
+    # 檢查 3: 位置（紅綠燈通常不在畫面底部）
+    x, y, w, h = cv2.boundingRect(contour)
+    if y &gt; img_height * 0.8:
+        return False
+
+    return True
+</code></pre>
+
+<h3>Q3: 為什麼有時候會同時偵測到多個燈？</h3>
+<p><strong>A:</strong> 可能原因：<br />
+1. <strong>切換瞬間</strong>：黃燈時紅燈剛熄滅、綠燈未亮<br />
+2. <strong>多組紅綠燈</strong>：路口有多個方向的紅綠燈<br />
+3. <strong>參數過於寬鬆</strong>：HSV 範圍太寬，誤判其他物體</p>
+<p><strong>處理方法</strong>：</p>
+<pre class="codehilite"><code class="language-python">if len(detected_lights) &gt; 1:
+    # 方法 1: 取面積最大的
+    main_light = max(detected_lights, key=lambda x: x['area'])
+
+    # 方法 2: 檢查是否為同一組紅綠燈
+    # 如果三個燈垂直排列且間距相似，則為同一組
+    def is_same_group(lights):
+        if len(lights) != 3:
+            return False
+
+        # 按 y 座標排序
+        lights_sorted = sorted(lights, key=lambda x: x['position'][1])
+
+        # 檢查 x 座標是否相近（垂直排列）
+        x_coords = [l['position'][0] for l in lights_sorted]
+        x_std = np.std(x_coords)
+
+        if x_std &gt; 20:  # x 座標差異太大
+            return False
+
+        # 檢查間距是否均勻
+        y1, y2, y3 = [l['position'][1] for l in lights_sorted]
+        gap1 = y2 - y1
+        gap2 = y3 - y2
+
+        if abs(gap1 - gap2) &lt; 20:  # 間距相似
+            return True
+
+        return False
+</code></pre>
+
+<h3>Q4: 如何處理傾斜拍攝的紅綠燈？</h3>
+<p><strong>A:</strong> 方法：</p>
+<ol>
+<li><strong>放寬圓形度範圍</strong>：</li>
+</ol>
+<pre class="codehilite"><code class="language-python"># 傾斜角度會讓圓形看起來像橢圓
+# 放寬圓形度範圍到 0.6 ~ 1.4
+if 0.6 &lt; circularity &lt; 1.4:
+    # 接受
+</code></pre>
+
+<ol>
+<li><strong>使用橢圓檢測</strong>：</li>
+</ol>
+<pre class="codehilite"><code class="language-python"># 使用 OpenCV 的橢圓擬合
+if len(contour) &gt;= 5:  # 至少需要 5 個點
+    ellipse = cv2.fitEllipse(contour)
+    (center, axes, angle) = ellipse
+
+    # 檢查長短軸比例
+    major_axis = max(axes)
+    minor_axis = min(axes)
+    ratio = major_axis / minor_axis
+
+    if ratio &lt; 2.0:  # 不是太扁的橢圓
+        # 這可能是傾斜的紅綠燈
+        pass
+</code></pre>
+
+<h3>Q5: 可以用在行車記錄器或自駕車嗎？</h3>
+<p><strong>A:</strong> 可以，但需要加強：</p>
+<p><strong>基礎版本（本題目）</strong>：<br />
+- 適合：靜態圖片、簡單場景<br />
+- 限制：速度、準確率、穩定性</p>
+<p><strong>進階版本（實際應用）</strong>：<br />
+1. <strong>使用深度學習</strong>：YOLO、Faster R-CNN<br />
+2. <strong>即時處理</strong>：優化演算法、使用 GPU<br />
+3. <strong>追蹤技術</strong>：卡爾曼濾波器、光流追蹤<br />
+4. <strong>多幀融合</strong>：結合前後幀資訊提高穩定性<br />
+5. <strong>距離估計</strong>：根據紅綠燈大小估計距離</p>
+<pre class="codehilite"><code class="language-python"># 進階：使用 YOLO 偵測紅綠燈（需要預訓練模型）
+import cv2
+import numpy as np
+
+# 載入 YOLO 模型（需要事先訓練或下載）
+net = cv2.dnn.readNet(&quot;yolo_traffic_light.weights&quot;, &quot;yolo_traffic_light.cfg&quot;)
+
+# 進行偵測
+blob = cv2.dnn.blobFromImage(img, 1/255.0, (416, 416), swapRB=True, crop=False)
+net.setInput(blob)
+outputs = net.forward(net.getUnconnectedOutLayersNames())
+
+# 處理輸出...
+</code></pre>
+
+<hr />
+<h2>📊 評分標準</h2>
+<table>
+<thead>
+<tr>
+<th>項目</th>
+<th>配分</th>
+<th>評分重點</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>功能完整性</strong></td>
+<td>40%</td>
+<td>正確偵測紅黃綠三種燈號、圓形度檢測、狀態判斷</td>
+</tr>
+<tr>
+<td><strong>程式碼品質</strong></td>
+<td>25%</td>
+<td>結構清晰、註解完整、變數命名規範</td>
+</tr>
+<tr>
+<td><strong>執行結果</strong></td>
+<td>20%</td>
+<td>能正確辨識紅綠燈狀態、標記清晰</td>
+</tr>
+<tr>
+<td><strong>測試報告</strong></td>
+<td>10%</td>
+<td>完整記錄測試過程與心得反思</td>
+</tr>
+<tr>
+<td><strong>延伸挑戰</strong></td>
+<td>5%</td>
+<td>完成至少一項延伸挑戰（加分項）</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>📚 學習資源</h2>
+<h3>參考文件</h3>
+<ul>
+<li>主要教學：<code>opencv_imageclassfy_b05.md</code></li>
+<li>OpenCV 官方：<a href="https://docs.opencv.org/4.x/df/d9d/tutorial_py_colorspaces.html">Color Spaces</a></li>
+<li>輪廓分析：<a href="https://docs.opencv.org/4.x/dd/d49/tutorial_py_contour_features.html">Contour Features</a></li>
+</ul>
+<h3>相關函數</h3>
+<ul>
+<li><code>cv2.cvtColor()</code>：色彩空間轉換</li>
+<li><code>cv2.inRange()</code>：建立顏色遮罩</li>
+<li><code>cv2.findContours()</code>：尋找輪廓</li>
+<li><code>cv2.contourArea()</code>：計算輪廓面積</li>
+<li><code>cv2.arcLength()</code>：計算輪廓周長</li>
+<li><code>cv2.morphologyEx()</code>：形態學操作</li>
+</ul>
+<h3>實際應用</h3>
+<ul>
+<li>自動駕駛系統</li>
+<li>交通監控系統</li>
+<li>行車輔助系統（ADAS）</li>
+<li>智慧城市交通管理</li>
+</ul>
+<hr />
+<p><strong>祝學習順利！紅綠燈辨識是電腦視覺的經典應用，掌握後可以應用到更多實際場景！</strong> 🚦</p></div>
+    
+    <!-- Highlight.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    
+    <!-- Mermaid -->
+    <script type="module">
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+        mermaid.initialize({
+            "startOnLoad": true,
+            "theme": "dark",
+            "securityLevel": "loose"
+});
+    </script>
+</body>
+</html>

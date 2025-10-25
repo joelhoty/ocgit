@@ -1,0 +1,1295 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>opencv_imageclassfy_task3_b01</title>
+    
+    <!-- CSS 框架 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/dark.min.css">
+    
+    <!-- 代碼高亮 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/base16/darcula.min.css">
+    
+    <!-- 自定義樣式 -->
+    <style>
+        
+                body {
+                    max-width: 900px;
+                    margin: 0 auto;
+                    padding: 20px;
+                }
+                /* 提升代码块对比度 */
+                pre {
+                    background: #1e1e1e !important;
+                    border: 1px solid #3e3e3e;
+                }
+                pre code {
+                    background: #1e1e1e !important;
+                }
+                code {
+                    background: #2d2d2d !important;
+                }
+                /* 引用块对比度 */
+                blockquote {
+                    background: #2d2d2d;
+                    border-left: 4px solid #4a9eff;
+                }
+            
+        
+        /* 通用代碼塊樣式 */
+        pre code {
+            display: block;
+            padding: 1.5em;
+            border-radius: 8px;
+            overflow-x: auto;
+            line-height: 1.6;
+        }
+
+        /* Mermaid 圖表樣式 */
+        
+        .mermaid {
+            margin: 2em 0;
+            padding: 1.5em;
+            text-align: center;
+            border-radius: 8px;
+        }
+        
+        .mermaid {
+            background: #2c3034;
+            border: 1px solid #444;
+        }
+            
+        
+        /* 響應式調整 */
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            .container, .markdown-body, .latex-body, .window-body, .nes-container {
+                padding: 15px;
+            }
+            pre code {
+                padding: 1em;
+            }
+        }
+        
+        
+    </style>
+</head>
+<body>
+    <div class="container"><!-- Path: General_python/openCV/影像辨識-傳統方法 | Timestamp: 2025-10-06 16:00:00 | Version: b01 -->
+<h1>題目三：智慧型隱私保護系統</h1>
+<h2>📋 任務說明</h2>
+<p>請撰寫一個 Python 程式，能夠偵測人臉並「選擇性」地對特定五官進行馬賽克處理，實現更精細的隱私保護功能。</p>
+<hr />
+<h2>🖼️ 影像選擇指引</h2>
+<h3>適合的影像類型</h3>
+<h4>✅ 推薦使用的影像</h4>
+<ol>
+<li><strong>清晰的正面人臉照片</strong></li>
+<li>特徵：臉部完全朝向鏡頭、五官清晰</li>
+<li>範例：證件照、自拍照、肖像照</li>
+<li>偵測成功率：★★★★★（95%+）</li>
+<li>
+<p>最佳範例：</p>
+<ul>
+<li>證件照等級的清晰度</li>
+<li>眼睛完全張開、直視鏡頭</li>
+<li>嘴巴閉合或微笑（避免大笑張嘴）</li>
+<li>無瀏海遮擋眼睛</li>
+</ul>
+</li>
+<li>
+<p><strong>光線充足且均勻的照片</strong></p>
+</li>
+<li>特徵：臉部明亮、無強烈陰影</li>
+<li>拍攝環境：白天室內、柔和燈光、陰天戶外</li>
+<li>偵測成功率：★★★★★（90%+）</li>
+<li>
+<p>光線建議：<br />
+<code>✅ 前方或側前方光源（45° 角）
+     ✅ 環境光均勻（如攝影棚打光）
+     ✅ 陰天的自然光（無陰影）
+     ⚠️ 避免正上方光源（眼窩陰影）
+     ⚠️ 避免逆光（臉部過暗）
+     ⚠️ 避免強烈側光（陰陽臉）</code></p>
+</li>
+<li>
+<p><strong>單人特寫照片</strong></p>
+</li>
+<li>特徵：臉部佔畫面 40% 以上</li>
+<li>距離：50cm - 1.5m</li>
+<li>偵測成功率：★★★★★（90%+）</li>
+<li>
+<p>構圖建議：</p>
+<ul>
+<li>半身照或大頭照</li>
+<li>人臉在畫面中央</li>
+<li>背景簡單不雜亂</li>
+</ul>
+</li>
+<li>
+<p><strong>五官無遮擋的照片</strong></p>
+</li>
+<li>特徵：眼睛、鼻子、嘴巴完整可見</li>
+<li>偵測成功率：★★★★☆（85%+）</li>
+<li>注意事項：<br />
+<code>✅ 無戴墨鏡（眼睛偵測需要）
+     ✅ 無口罩（嘴巴偵測需要）
+     ✅ 瀏海不遮眼（眼睛偵測需要）
+     ✅ 頭髮不遮臉（臉部完整）</code></li>
+</ol>
+<h4>⚠️ 效果較差的影像</h4>
+<ol>
+<li><strong>側臉或低頭照片</strong></li>
+<li>問題：五官偵測器主要訓練於正面角度</li>
+<li>影響：眼睛、嘴巴可能偵測不到</li>
+<li>偵測成功率：★★☆☆☆（30-50%）</li>
+<li>
+<p>臉部角度建議：<br />
+<code>✅ 正面（0°）      → 最佳
+     ⚠️ 微側面（&lt; 15°） → 尚可
+     ❌ 側臉（&gt; 30°）   → 效果差
+     ❌ 低頭/抬頭       → 效果差</code></p>
+</li>
+<li>
+<p><strong>五官部分遮擋</strong></p>
+</li>
+<li>問題：遮擋物干擾特徵偵測</li>
+<li>常見情況：<br />
+<code>⚠️ 戴一般眼鏡      → 尚可（可能誤判鏡框）
+     ❌ 戴墨鏡          → 無法偵測眼睛
+     ❌ 戴口罩          → 無法偵測嘴巴
+     ⚠️ 瀏海遮眼        → 可能漏偵測
+     ⚠️ 手遮臉          → 被遮擋部位無法偵測</code></li>
+<li>
+<p>偵測成功率：★★☆☆☆（20-60%）</p>
+</li>
+<li>
+<p><strong>解析度不足或模糊</strong></p>
+</li>
+<li>問題：五官細節不清晰</li>
+<li>影響：眼睛等小特徵難以偵測</li>
+<li>偵測成功率：★★☆☆☆（40-60%）</li>
+<li>
+<p>解析度需求：<br />
+     ```<br />
+     臉部像素建議：</p>
+<ul>
+<li>眼睛偵測：眼睛區域至少 20×20 px</li>
+<li>嘴巴偵測：嘴巴區域至少 30×20 px</li>
+<li>整體人臉：至少 100×100 px<br />
+ ```</li>
+</ul>
+</li>
+<li>
+<p><strong>表情誇張或動態照片</strong></p>
+</li>
+<li>問題：五官形狀變化大</li>
+<li>影響：<ul>
+<li>閉眼 → 眼睛偵測失敗</li>
+<li>大笑張嘴 → 嘴巴形狀異常，可能偵測失敗或偵測多個區域</li>
+<li>鬼臉 → 五官變形，偵測率下降</li>
+</ul>
+</li>
+<li>偵測成功率：★★☆☆☆（40-70%）</li>
+</ol>
+<h4>❌ 完全不適合的影像</h4>
+<ul>
+<li>卡通或繪畫人像（非真實人臉）</li>
+<li>純側面照（臉部角度 &gt; 60°）</li>
+<li>極度模糊或低解析度（&lt; 200×200 px）</li>
+<li>極端光線（全黑、強烈過曝）</li>
+<li>多重曝光或特效照片</li>
+</ul>
+<h3>測試影像建議</h3>
+<h4>初學者測試（難度：★☆☆☆☆）</h4>
+<p><strong>推薦影像</strong>：</p>
+<pre class="codehilite"><code>1. girl.jpg（教學範例）
+   - 特點：單人正面、光線良好、五官清晰
+   - 預期：人臉 100%、眼睛 90%、嘴巴 80%
+
+2. 自己的證件照或自拍照
+   - 拍攝建議：
+     * 正面直視鏡頭
+     * 白色或淺色背景
+     * 自然光或室內燈光
+     * 無瀏海、無眼鏡
+   - 預期：全部偵測成功
+
+3. mona.jpg（蒙娜麗莎）
+   - 特點：經典肖像畫（但 Haar Cascade 效果有限）
+   - 預期：人臉可能偵測到，五官較難
+</code></pre>
+
+<h4>中級測試（難度：★★★☆☆）</h4>
+<p><strong>挑戰場景</strong>：</p>
+<pre class="codehilite"><code>1. 戴眼鏡的照片
+   - 測試：眼睛偵測是否會誤判鏡框
+   - 調整：可能需要提高 minNeighbors 參數
+
+2. 不同表情的照片
+   - 正常表情 vs 微笑 vs 大笑
+   - 觀察：表情對嘴巴偵測的影響
+
+3. 不同光線的照片
+   - 明亮室內 vs 昏暗室內 vs 戶外陽光
+   - 觀察：光線對五官偵測的影響
+
+4. 輕微側臉（15° 內）
+   - 測試：演算法對角度的容忍度
+</code></pre>
+
+<h4>進階測試（難度：★★★★☆）</h4>
+<p><strong>高難度場景</strong>：</p>
+<pre class="codehilite"><code>1. 團體照
+   - 挑戰：多張人臉、不同大小、部分側臉
+   - 目標：對所有偵測到的人臉都進行處理
+
+2. 動態或表情誇張照片
+   - 挑戰：五官形狀變化大
+   - 觀察：哪些情況會導致偵測失敗
+
+3. 複雜背景照片
+   - 挑戰：背景雜亂可能影響偵測
+   - 測試：演算法的抗干擾能力
+</code></pre>
+
+<h3>不同偵測模式的影像需求</h3>
+<h4>模式 A：只模糊眼睛</h4>
+<pre class="codehilite"><code>影像需求：
+✅ 眼睛完全張開
+✅ 無瀏海遮擋
+✅ 正面或微側面（&lt; 15°）
+✅ 眼睛區域光線充足
+
+不適合：
+❌ 閉眼照片
+❌ 戴墨鏡
+❌ 厚重瀏海遮眼
+</code></pre>
+
+<h4>模式 B：只模糊嘴巴</h4>
+<pre class="codehilite"><code>影像需求：
+✅ 嘴巴清晰可見
+✅ 正常閉合或微笑
+✅ 無口罩或手遮擋
+✅ 下半臉光線充足
+
+不適合：
+❌ 大笑張嘴（嘴巴形狀差異大）
+❌ 戴口罩
+❌ 低頭（下巴遮擋嘴巴）
+</code></pre>
+
+<h4>模式 C：模糊眼睛和嘴巴</h4>
+<pre class="codehilite"><code>影像需求：
+綜合上述兩種模式的要求
+
+最佳照片特徵：
+✅ 證件照風格
+✅ 正面、眼睛張開、嘴巴自然閉合
+✅ 無遮擋、光線均勻
+✅ 背景簡單
+</code></pre>
+
+<h3>影像品質檢查清單</h3>
+<p>測試前請確認：<br />
+- [ ] 影像格式：JPG、PNG<br />
+- [ ] 解析度：至少 640×480（建議 1024×768）<br />
+- [ ] 人臉大小：至少 100×100 像素<br />
+- [ ] 臉部角度：正面或微側面（&lt; 15°）<br />
+- [ ] 五官清晰：眼睛、鼻子、嘴巴可見<br />
+- [ ] 光線條件：明亮均勻、無強烈陰影<br />
+- [ ] 無遮擋：不戴墨鏡、口罩<br />
+- [ ] 表情自然：眼睛張開、嘴巴閉合或微笑</p>
+<hr />
+<h2>✅ 詳細需求列表</h2>
+<h3>需求 1：環境準備</h3>
+<p><strong>說明</strong>：下載所需的模型檔案和測試圖片。</p>
+<p><strong>程式碼提示</strong>：</p>
+<pre class="codehilite"><code class="language-python">import urllib.request
+import os
+
+# 下載所需檔案
+files = {
+    'haarcascade_frontalface_default.xml': 'https://raw.githubusercontent.com/opencv/opencv/4.x/data/haarcascades/haarcascade_frontalface_default.xml',
+    'haarcascade_eye.xml': 'https://raw.githubusercontent.com/opencv/opencv/4.x/data/haarcascades/haarcascade_eye.xml',
+    'haarcascade_mcs_mouth.xml': 'https://raw.githubusercontent.com/atduskgreg/opencv-processing/master/lib/cascade-files/haarcascade_mcs_mouth.xml',
+    'girl.jpg': 'https://steam.oxxostudio.tw/down/python/ai/girl.jpg'
+}
+
+print(&quot;開始下載必要檔案...&quot;)
+for filename, url in files.items():
+    if not os.path.exists(filename):
+        print(f&quot;  下載 {filename}...&quot;)
+        try:
+            urllib.request.urlretrieve(url, filename)
+            print(f&quot;  ✓ {filename} 下載完成&quot;)
+        except Exception as e:
+            print(f&quot;  ✗ {filename} 下載失敗: {e}&quot;)
+    else:
+        print(f&quot;  ✓ {filename} 已存在&quot;)
+
+print(&quot;\n所有檔案準備完成！&quot;)
+</code></pre>
+
+<hr />
+<h3>需求 2：匯入套件與設定模式</h3>
+<p><strong>說明</strong>：匯入必要套件，並定義隱私保護模式。</p>
+<p><strong>程式碼提示</strong>：</p>
+<pre class="codehilite"><code class="language-python">import cv2
+import numpy as np
+from google.colab.patches import cv2_imshow
+
+# 設定隱私保護模式
+# 選項：&quot;eyes&quot;（只模糊眼睛）
+#       &quot;mouth&quot;（只模糊嘴巴）
+#       &quot;eyes_mouth&quot;（模糊眼睛和嘴巴）
+PRIVACY_MODE = &quot;eyes&quot;  # 可修改此變數來改變模式
+
+print(&quot;=&quot;*50)
+print(f&quot;隱私保護系統&quot;)
+print(&quot;=&quot;*50)
+print(f&quot;當前模式: {PRIVACY_MODE}&quot;)
+print(&quot;=&quot;*50 + &quot;\n&quot;)
+</code></pre>
+
+<hr />
+<h3>需求 3：讀取圖片與載入模型</h3>
+<p><strong>說明</strong>：讀取測試圖片並載入所需的 Haar Cascade 模型。</p>
+<p><strong>程式碼提示</strong>：</p>
+<pre class="codehilite"><code class="language-python"># 讀取圖片
+img = cv2.imread('girl.jpg')
+
+if img is None:
+    print(&quot;錯誤: 無法讀取圖片&quot;)
+else:
+    print(&quot;✓ 圖片讀取成功&quot;)
+    height, width, channels = img.shape
+    print(f&quot;圖片尺寸: {width} x {height} 像素\n&quot;)
+
+    # 保存原圖副本（用於對比）
+    img_original = img.copy()
+
+    # 轉換為灰階
+    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    print(&quot;✓ 圖片已轉換為灰階\n&quot;)
+
+    # 載入模型
+    print(&quot;載入 Haar Cascade 模型...&quot;)
+    face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
+    eye_cascade = cv2.CascadeClassifier('haarcascade_eye.xml')
+    mouth_cascade = cv2.CascadeClassifier('haarcascade_mcs_mouth.xml')
+
+    # 檢查模型是否載入成功
+    models_ok = True
+    if face_cascade.empty():
+        print(&quot;  ✗ 人臉模型載入失敗&quot;)
+        models_ok = False
+    else:
+        print(&quot;  ✓ 人臉模型載入成功&quot;)
+
+    if eye_cascade.empty():
+        print(&quot;  ✗ 眼睛模型載入失敗&quot;)
+        models_ok = False
+    else:
+        print(&quot;  ✓ 眼睛模型載入成功&quot;)
+
+    if mouth_cascade.empty():
+        print(&quot;  ✗ 嘴巴模型載入失敗&quot;)
+        models_ok = False
+    else:
+        print(&quot;  ✓ 嘴巴模型載入成功&quot;)
+
+    if models_ok:
+        print(&quot;\n✓ 所有模型載入完成\n&quot;)
+</code></pre>
+
+<hr />
+<h3>需求 4：定義馬賽克處理函數</h3>
+<p><strong>說明</strong>：建立一個可重複使用的馬賽克處理函數。</p>
+<p><strong>程式碼提示</strong>：</p>
+<pre class="codehilite"><code class="language-python">def apply_mosaic(image, x, y, w, h, level=15):
+    &quot;&quot;&quot;
+    對圖片的指定區域進行馬賽克處理
+
+    參數:
+        image: 輸入圖片（會直接修改）
+        x, y: 區域左上角座標
+        w, h: 區域寬度和高度
+        level: 馬賽克程度（數值越小越模糊，建議 5-30）
+
+    返回:
+        image: 處理後的圖片
+    &quot;&quot;&quot;
+    # 確保座標在圖片範圍內
+    img_h, img_w = image.shape[:2]
+    x = max(0, min(x, img_w - 1))
+    y = max(0, min(y, img_h - 1))
+    w = max(1, min(w, img_w - x))
+    h = max(1, min(h, img_h - y))
+
+    # 確保區域有效
+    if w &lt;= 0 or h &lt;= 0:
+        return image
+
+    # 擷取區域
+    region = image[y:y+h, x:x+w].copy()
+
+    # 確保區域不為空
+    if region.size == 0:
+        return image
+
+    # 計算縮小後的尺寸（至少為 1）
+    small_h = max(1, h // level)
+    small_w = max(1, w // level)
+
+    try:
+        # 縮小圖片（產生模糊效果）
+        region_small = cv2.resize(region, (small_w, small_h),
+                                  interpolation=cv2.INTER_LINEAR)
+
+        # 放大回原尺寸（產生馬賽克效果）
+        region_mosaic = cv2.resize(region_small, (w, h),
+                                   interpolation=cv2.INTER_NEAREST)
+
+        # 將馬賽克區域放回原圖
+        image[y:y+h, x:x+w] = region_mosaic
+    except Exception as e:
+        print(f&quot;  ⚠️ 馬賽克處理失敗 ({x},{y},{w},{h}): {e}&quot;)
+
+    return image
+
+# 測試函數定義
+print(&quot;✓ 馬賽克處理函數定義完成\n&quot;)
+</code></pre>
+
+<hr />
+<h3>需求 5：偵測人臉</h3>
+<p><strong>說明</strong>：偵測圖片中的所有人臉。</p>
+<p><strong>程式碼提示</strong>：</p>
+<pre class="codehilite"><code class="language-python"># 偵測人臉
+print(&quot;=&quot;*50)
+print(&quot;開始偵測人臉&quot;)
+print(&quot;=&quot;*50)
+
+faces = face_cascade.detectMultiScale(
+    gray,
+    scaleFactor=1.1,
+    minNeighbors=5,
+    minSize=(50, 50)
+)
+
+print(f&quot;偵測結果: 找到 {len(faces)} 張人臉&quot;)
+
+# 若沒有偵測到人臉，顯示警告
+if len(faces) == 0:
+    print(&quot;\n⚠️ 警告: 未偵測到人臉&quot;)
+    print(&quot;可能原因:&quot;)
+    print(&quot;  1. 圖片中沒有正面人臉&quot;)
+    print(&quot;  2. 人臉過小或過大&quot;)
+    print(&quot;  3. 光線條件不佳&quot;)
+    print(&quot;  4. 請嘗試調整參數或更換圖片&quot;)
+else:
+    # 顯示每張人臉的位置
+    for i, (x, y, w, h) in enumerate(faces, start=1):
+        print(f&quot;  人臉 {i}: 位置({x}, {y}), 大小({w}x{h})&quot;)
+
+print(&quot;&quot;)
+</code></pre>
+
+<hr />
+<h3>需求 6：在人臉區域內偵測五官並進行馬賽克處理</h3>
+<p><strong>說明</strong>：針對每張人臉，偵測五官並根據模式進行處理。</p>
+<p><strong>程式碼提示</strong>：</p>
+<pre class="codehilite"><code class="language-python"># 統計變數
+total_eyes_detected = 0
+total_mouths_detected = 0
+total_eyes_mosaicked = 0
+total_mouths_mosaicked = 0
+
+# 遍歷每張偵測到的人臉
+for face_idx, (fx, fy, fw, fh) in enumerate(faces, start=1):
+    print(&quot;=&quot;*50)
+    print(f&quot;處理人臉 {face_idx}/{len(faces)}&quot;)
+    print(&quot;=&quot;*50)
+
+    # 擷取人臉區域（ROI: Region of Interest）
+    face_roi_gray = gray[fy:fy+fh, fx:fx+fw]
+    face_roi_color = img[fy:fy+fh, fx:fx+fw]
+
+    # === 選項 1: 處理眼睛 ===
+    if PRIVACY_MODE in [&quot;eyes&quot;, &quot;eyes_mouth&quot;]:
+        print(&quot;偵測眼睛...&quot;)
+
+        # 在人臉區域內偵測眼睛
+        eyes = eye_cascade.detectMultiScale(
+            face_roi_gray,
+            scaleFactor=1.1,
+            minNeighbors=10,  # 較高的值以減少誤判
+            minSize=(20, 20)
+        )
+
+        print(f&quot;  找到 {len(eyes)} 個眼睛區域&quot;)
+        total_eyes_detected += len(eyes)
+
+        # 對每個眼睛區域進行馬賽克處理
+        for eye_idx, (ex, ey, ew, eh) in enumerate(eyes, start=1):
+            # 重要：轉換為原圖的絕對座標
+            # 公式：絕對座標 = 人臉座標 + ROI 內相對座標
+            abs_x = fx + ex
+            abs_y = fy + ey
+
+            # 進行馬賽克處理
+            apply_mosaic(img, abs_x, abs_y, ew, eh, level=10)
+            total_eyes_mosaicked += 1
+
+            print(f&quot;    眼睛 {eye_idx}: 位置({abs_x}, {abs_y}), 已馬賽克&quot;)
+
+    # === 選項 2: 處理嘴巴 ===
+    if PRIVACY_MODE in [&quot;mouth&quot;, &quot;eyes_mouth&quot;]:
+        print(&quot;偵測嘴巴...&quot;)
+
+        # 在人臉區域的下半部偵測嘴巴（提高準確度）
+        # 嘴巴通常位於人臉下半部
+        mouth_roi_start = fh // 2  # 從人臉中間開始
+        mouth_roi_gray = face_roi_gray[mouth_roi_start:, :]
+
+        mouths = mouth_cascade.detectMultiScale(
+            mouth_roi_gray,
+            scaleFactor=1.1,
+            minNeighbors=20,  # 嘴巴偵測需要更高的閾值
+            minSize=(30, 20)
+        )
+
+        print(f&quot;  找到 {len(mouths)} 個嘴巴區域&quot;)
+        total_mouths_detected += len(mouths)
+
+        # 對每個嘴巴區域進行馬賽克處理
+        for mouth_idx, (mx, my, mw, mh) in enumerate(mouths, start=1):
+            # 重要：轉換為原圖的絕對座標
+            # 注意：my 需要加上 mouth_roi_start（因為是在下半部偵測）
+            abs_x = fx + mx
+            abs_y = fy + mouth_roi_start + my
+
+            # 進行馬賽克處理
+            apply_mosaic(img, abs_x, abs_y, mw, mh, level=12)
+            total_mouths_mosaicked += 1
+
+            print(f&quot;    嘴巴 {mouth_idx}: 位置({abs_x}, {abs_y}), 已馬賽克&quot;)
+
+    print(f&quot;✓ 人臉 {face_idx} 處理完成\n&quot;)
+</code></pre>
+
+<p><strong>座標轉換說明</strong>：</p>
+<pre class="codehilite"><code>重要概念：ROI 相對座標 → 絕對座標
+
+假設：
+- 人臉位置：fx=100, fy=80, fw=200, fh=200
+- 在人臉 ROI 內偵測到眼睛：ex=50, ey=40
+
+則眼睛在原圖中的絕對座標為：
+- abs_x = fx + ex = 100 + 50 = 150
+- abs_y = fy + ey = 80 + 40 = 120
+
+若是在人臉下半部偵測嘴巴：
+- mouth_roi_start = fh // 2 = 100
+- 偵測到嘴巴：mx=60, my=50
+- abs_x = fx + mx = 100 + 60 = 160
+- abs_y = fy + mouth_roi_start + my = 80 + 100 + 50 = 230
+</code></pre>
+
+<hr />
+<h3>需求 7：顯示處理結果與統計</h3>
+<p><strong>說明</strong>：顯示處理前後對比，並輸出統計資訊。</p>
+<p><strong>程式碼提示</strong>：</p>
+<pre class="codehilite"><code class="language-python"># 顯示統計結果
+print(&quot;=&quot;*50)
+print(&quot;處理統計&quot;)
+print(&quot;=&quot;*50)
+print(f&quot;偵測到的人臉數量: {len(faces)}&quot;)
+if PRIVACY_MODE in [&quot;eyes&quot;, &quot;eyes_mouth&quot;]:
+    print(f&quot;偵測到的眼睛數量: {total_eyes_detected}&quot;)
+    print(f&quot;已馬賽克的眼睛: {total_eyes_mosaicked}&quot;)
+if PRIVACY_MODE in [&quot;mouth&quot;, &quot;eyes_mouth&quot;]:
+    print(f&quot;偵測到的嘴巴數量: {total_mouths_detected}&quot;)
+    print(f&quot;已馬賽克的嘴巴: {total_mouths_mosaicked}&quot;)
+print(&quot;=&quot;*50 + &quot;\n&quot;)
+
+# 顯示處理前後對比
+print(&quot;原始圖片：&quot;)
+cv2_imshow(img_original)
+
+print(f&quot;\n處理後圖片 (模式: {PRIVACY_MODE})：&quot;)
+cv2_imshow(img)
+
+# 儲存結果
+output_filename = f'result_privacy_{PRIVACY_MODE}.jpg'
+cv2.imwrite(output_filename, img)
+print(f&quot;\n✓ 結果已儲存為 {output_filename}&quot;)
+</code></pre>
+
+<hr />
+<h2>📝 完整可執行程式碼</h2>
+<pre class="codehilite"><code class="language-python"># ========================================
+# 題目三：智慧型隱私保護系統
+# ========================================
+
+import cv2
+import numpy as np
+from google.colab.patches import cv2_imshow
+
+# === 1. 設定模式 ===
+PRIVACY_MODE = &quot;eyes&quot;  # &quot;eyes&quot;, &quot;mouth&quot;, &quot;eyes_mouth&quot;
+
+print(&quot;=&quot;*50)
+print(&quot;智慧型隱私保護系統&quot;)
+print(&quot;=&quot;*50)
+print(f&quot;當前模式: {PRIVACY_MODE}&quot;)
+print(&quot;=&quot;*50 + &quot;\n&quot;)
+
+# === 2. 讀取圖片 ===
+img = cv2.imread('girl.jpg')
+
+if img is None:
+    print(&quot;錯誤: 無法讀取圖片&quot;)
+else:
+    print(&quot;✓ 圖片讀取成功&quot;)
+    height, width = img.shape[:2]
+    print(f&quot;圖片尺寸: {width} x {height} 像素\n&quot;)
+
+    # 保存原圖副本
+    img_original = img.copy()
+
+    # 轉換為灰階
+    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    print(&quot;✓ 圖片已轉換為灰階\n&quot;)
+
+    # === 3. 載入模型 ===
+    print(&quot;載入 Haar Cascade 模型...&quot;)
+    face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
+    eye_cascade = cv2.CascadeClassifier('haarcascade_eye.xml')
+    mouth_cascade = cv2.CascadeClassifier('haarcascade_mcs_mouth.xml')
+
+    if not face_cascade.empty() and not eye_cascade.empty() and not mouth_cascade.empty():
+        print(&quot;✓ 所有模型載入完成\n&quot;)
+    else:
+        print(&quot;✗ 部分模型載入失敗&quot;)
+
+    # === 4. 定義馬賽克函數 ===
+    def apply_mosaic(image, x, y, w, h, level=15):
+        &quot;&quot;&quot;對指定區域進行馬賽克處理&quot;&quot;&quot;
+        img_h, img_w = image.shape[:2]
+        x = max(0, min(x, img_w - 1))
+        y = max(0, min(y, img_h - 1))
+        w = max(1, min(w, img_w - x))
+        h = max(1, min(h, img_h - y))
+
+        if w &lt;= 0 or h &lt;= 0:
+            return image
+
+        region = image[y:y+h, x:x+w].copy()
+
+        if region.size == 0:
+            return image
+
+        small_h = max(1, h // level)
+        small_w = max(1, w // level)
+
+        try:
+            region_small = cv2.resize(region, (small_w, small_h),
+                                      interpolation=cv2.INTER_LINEAR)
+            region_mosaic = cv2.resize(region_small, (w, h),
+                                       interpolation=cv2.INTER_NEAREST)
+            image[y:y+h, x:x+w] = region_mosaic
+        except Exception as e:
+            print(f&quot;  ⚠️ 馬賽克處理失敗: {e}&quot;)
+
+        return image
+
+    print(&quot;✓ 馬賽克處理函數定義完成\n&quot;)
+
+    # === 5. 偵測人臉 ===
+    print(&quot;=&quot;*50)
+    print(&quot;開始偵測人臉&quot;)
+    print(&quot;=&quot;*50)
+
+    faces = face_cascade.detectMultiScale(
+        gray,
+        scaleFactor=1.1,
+        minNeighbors=5,
+        minSize=(50, 50)
+    )
+
+    print(f&quot;偵測結果: 找到 {len(faces)} 張人臉\n&quot;)
+
+    if len(faces) == 0:
+        print(&quot;⚠️ 未偵測到人臉，請檢查圖片或調整參數\n&quot;)
+
+    # === 6. 處理五官 ===
+    total_eyes_mosaicked = 0
+    total_mouths_mosaicked = 0
+
+    for face_idx, (fx, fy, fw, fh) in enumerate(faces, start=1):
+        print(f&quot;處理人臉 {face_idx}/{len(faces)}&quot;)
+
+        face_roi_gray = gray[fy:fy+fh, fx:fx+fw]
+
+        # 處理眼睛
+        if PRIVACY_MODE in [&quot;eyes&quot;, &quot;eyes_mouth&quot;]:
+            print(&quot;  偵測眼睛...&quot;)
+            eyes = eye_cascade.detectMultiScale(
+                face_roi_gray,
+                scaleFactor=1.1,
+                minNeighbors=10,
+                minSize=(20, 20)
+            )
+
+            print(f&quot;    找到 {len(eyes)} 個眼睛區域&quot;)
+
+            for (ex, ey, ew, eh) in eyes:
+                abs_x = fx + ex
+                abs_y = fy + ey
+                apply_mosaic(img, abs_x, abs_y, ew, eh, level=10)
+                total_eyes_mosaicked += 1
+
+        # 處理嘴巴
+        if PRIVACY_MODE in [&quot;mouth&quot;, &quot;eyes_mouth&quot;]:
+            print(&quot;  偵測嘴巴...&quot;)
+            mouth_roi_start = fh // 2
+            mouth_roi_gray = face_roi_gray[mouth_roi_start:, :]
+
+            mouths = mouth_cascade.detectMultiScale(
+                mouth_roi_gray,
+                scaleFactor=1.1,
+                minNeighbors=20,
+                minSize=(30, 20)
+            )
+
+            print(f&quot;    找到 {len(mouths)} 個嘴巴區域&quot;)
+
+            for (mx, my, mw, mh) in mouths:
+                abs_x = fx + mx
+                abs_y = fy + mouth_roi_start + my
+                apply_mosaic(img, abs_x, abs_y, mw, mh, level=12)
+                total_mouths_mosaicked += 1
+
+        print(f&quot;  ✓ 人臉 {face_idx} 處理完成\n&quot;)
+
+    # === 7. 顯示結果 ===
+    print(&quot;=&quot;*50)
+    print(&quot;處理統計&quot;)
+    print(&quot;=&quot;*50)
+    print(f&quot;偵測到的人臉數量: {len(faces)}&quot;)
+    if PRIVACY_MODE in [&quot;eyes&quot;, &quot;eyes_mouth&quot;]:
+        print(f&quot;已馬賽克的眼睛: {total_eyes_mosaicked}&quot;)
+    if PRIVACY_MODE in [&quot;mouth&quot;, &quot;eyes_mouth&quot;]:
+        print(f&quot;已馬賽克的嘴巴: {total_mouths_mosaicked}&quot;)
+    print(&quot;=&quot;*50 + &quot;\n&quot;)
+
+    print(&quot;原始圖片：&quot;)
+    cv2_imshow(img_original)
+
+    print(f&quot;\n處理後圖片 (模式: {PRIVACY_MODE})：&quot;)
+    cv2_imshow(img)
+
+    # 儲存結果
+    output_filename = f'result_privacy_{PRIVACY_MODE}.jpg'
+    cv2.imwrite(output_filename, img)
+    print(f&quot;\n✓ 結果已儲存為 {output_filename}&quot;)
+</code></pre>
+
+<hr />
+<h2>🎯 測試建議</h2>
+<h3>測試 1：不同模式測試</h3>
+<pre class="codehilite"><code class="language-python"># 分別測試三種模式
+modes = [&quot;eyes&quot;, &quot;mouth&quot;, &quot;eyes_mouth&quot;]
+
+for mode in modes:
+    print(f&quot;\n{'='*50}&quot;)
+    print(f&quot;測試模式: {mode}&quot;)
+    print(f&quot;{'='*50}&quot;)
+
+    PRIVACY_MODE = mode
+    img = cv2.imread('girl.jpg').copy()
+
+    # ... 執行完整處理流程 ...
+
+    cv2.imwrite(f'result_{mode}.jpg', img)
+    print(f&quot;✓ 模式 {mode} 測試完成&quot;)
+</code></pre>
+
+<h3>測試 2：調整馬賽克程度</h3>
+<pre class="codehilite"><code class="language-python"># 測試不同的 level 值
+levels = [5, 10, 15, 20, 30]
+
+for level in levels:
+    img = cv2.imread('girl.jpg').copy()
+
+    # ... 偵測流程 ...
+
+    # 使用不同的 level
+    apply_mosaic(img, abs_x, abs_y, ew, eh, level=level)
+
+    cv2.imwrite(f'result_level{level}.jpg', img)
+    print(f&quot;Level {level}: 馬賽克程度 {'粗' if level &lt; 10 else '細'}&quot;)
+</code></pre>
+
+<h3>測試 3：調整五官偵測參數</h3>
+<pre class="codehilite"><code class="language-python"># 測試眼睛偵測的不同 minNeighbors 值
+min_neighbors_values = [5, 10, 15, 20]
+
+for mn in min_neighbors_values:
+    eyes = eye_cascade.detectMultiScale(
+        face_roi_gray,
+        scaleFactor=1.1,
+        minNeighbors=mn,
+        minSize=(20, 20)
+    )
+
+    print(f&quot;minNeighbors={mn}: 偵測到 {len(eyes)} 個眼睛&quot;)
+</code></pre>
+
+<hr />
+<h2>🚀 延伸挑戰（選做）</h2>
+<h3>挑戰 1：加入使用者互動</h3>
+<pre class="codehilite"><code class="language-python"># 讓使用者選擇模式
+print(&quot;請選擇隱私保護模式：&quot;)
+print(&quot;1. 只模糊眼睛&quot;)
+print(&quot;2. 只模糊嘴巴&quot;)
+print(&quot;3. 模糊眼睛和嘴巴&quot;)
+
+choice = input(&quot;請輸入選項 (1/2/3): &quot;)
+
+mode_map = {
+    &quot;1&quot;: &quot;eyes&quot;,
+    &quot;2&quot;: &quot;mouth&quot;,
+    &quot;3&quot;: &quot;eyes_mouth&quot;
+}
+
+PRIVACY_MODE = mode_map.get(choice, &quot;eyes&quot;)
+print(f&quot;\n已選擇模式: {PRIVACY_MODE}\n&quot;)
+</code></pre>
+
+<h3>挑戰 2：支援高斯模糊效果</h3>
+<pre class="codehilite"><code class="language-python">def apply_blur(image, x, y, w, h, blur_level=21):
+    &quot;&quot;&quot;使用高斯模糊代替馬賽克&quot;&quot;&quot;
+    img_h, img_w = image.shape[:2]
+    x = max(0, min(x, img_w - 1))
+    y = max(0, min(y, img_h - 1))
+    w = max(1, min(w, img_w - x))
+    h = max(1, min(h, img_h - y))
+
+    if w &lt;= 0 or h &lt;= 0:
+        return image
+
+    region = image[y:y+h, x:x+w].copy()
+
+    # 確保 blur_level 為奇數
+    if blur_level % 2 == 0:
+        blur_level += 1
+
+    # 套用高斯模糊
+    blurred = cv2.GaussianBlur(region, (blur_level, blur_level), 0)
+    image[y:y+h, x:x+w] = blurred
+
+    return image
+
+# 使用方式
+apply_blur(img, abs_x, abs_y, ew, eh, blur_level=25)
+</code></pre>
+
+<h3>挑戰 3：加入黑色遮罩選項</h3>
+<pre class="codehilite"><code class="language-python">def apply_black_bar(image, x, y, w, h):
+    &quot;&quot;&quot;使用純黑矩形遮蓋（類似電視新聞效果）&quot;&quot;&quot;
+    img_h, img_w = image.shape[:2]
+    x = max(0, min(x, img_w - 1))
+    y = max(0, min(y, img_h - 1))
+    w = max(1, min(w, img_w - x))
+    h = max(1, min(h, img_h - y))
+
+    # 繪製黑色矩形
+    cv2.rectangle(image, (x, y), (x+w, y+h), (0, 0, 0), -1)
+
+    return image
+
+# 使用方式
+apply_black_bar(img, abs_x, abs_y, ew, eh)
+</code></pre>
+
+<h3>挑戰 4：處理多人照片並顯示統計</h3>
+<pre class="codehilite"><code class="language-python"># 在圖片上顯示處理資訊
+info_text = [
+    f&quot;Mode: {PRIVACY_MODE}&quot;,
+    f&quot;Faces: {len(faces)}&quot;,
+    f&quot;Eyes blurred: {total_eyes_mosaicked}&quot;,
+    f&quot;Mouths blurred: {total_mouths_mosaicked}&quot;
+]
+
+y_offset = 30
+for i, text in enumerate(info_text):
+    cv2.putText(
+        img,
+        text,
+        (10, y_offset + i*30),
+        cv2.FONT_HERSHEY_SIMPLEX,
+        0.7,
+        (0, 255, 0),
+        2
+    )
+</code></pre>
+
+<hr />
+<h2>🔧 除錯技巧</h2>
+<h3>問題 1：眼睛或嘴巴偵測不到</h3>
+<p><strong>診斷工具</strong>：</p>
+<pre class="codehilite"><code class="language-python"># 視覺化人臉 ROI，檢查是否正確
+face_roi_display = img[fy:fy+fh, fx:fx+fw].copy()
+print(&quot;人臉區域：&quot;)
+cv2_imshow(face_roi_display)
+
+# 顯示偵測參數
+print(f&quot;人臉大小: {fw}x{fh}&quot;)
+print(f&quot;眼睛最小尺寸: 20x20&quot;)
+print(f&quot;嘴巴最小尺寸: 30x20&quot;)
+
+# 如果人臉太小，五官可能也會太小
+if fw &lt; 100 or fh &lt; 100:
+    print(&quot;⚠️ 警告: 人臉過小，五官偵測可能失敗&quot;)
+</code></pre>
+
+<p><strong>解決方法</strong>：</p>
+<pre class="codehilite"><code class="language-python"># 方法 1：降低 minNeighbors
+eyes = eye_cascade.detectMultiScale(
+    face_roi_gray,
+    scaleFactor=1.1,
+    minNeighbors=5,  # 從 10 降低到 5
+    minSize=(20, 20)
+)
+
+# 方法 2：降低最小尺寸
+eyes = eye_cascade.detectMultiScale(
+    face_roi_gray,
+    scaleFactor=1.1,
+    minNeighbors=10,
+    minSize=(15, 15)  # 從 20x20 降低到 15x15
+)
+
+# 方法 3：調整 scaleFactor
+eyes = eye_cascade.detectMultiScale(
+    face_roi_gray,
+    scaleFactor=1.05,  # 從 1.1 降低到 1.05（更精細）
+    minNeighbors=10,
+    minSize=(20, 20)
+)
+</code></pre>
+
+<h3>問題 2：眼睛偵測到過多區域（誤判）</h3>
+<p><strong>原因</strong>：鼻子、眼鏡框等被誤判為眼睛</p>
+<p><strong>解決方法</strong>：</p>
+<pre class="codehilite"><code class="language-python"># 方法 1：提高 minNeighbors
+eyes = eye_cascade.detectMultiScale(
+    face_roi_gray,
+    scaleFactor=1.1,
+    minNeighbors=15,  # 提高到 15 或 20
+    minSize=(20, 20)
+)
+
+# 方法 2：過濾不合理的眼睛位置
+# 眼睛通常在人臉上半部
+valid_eyes = []
+for (ex, ey, ew, eh) in eyes:
+    # 只保留在人臉上半部的偵測結果
+    if ey &lt; fh * 0.6:  # 眼睛應該在人臉上方 60% 範圍內
+        valid_eyes.append((ex, ey, ew, eh))
+
+eyes = valid_eyes
+
+# 方法 3：過濾不合理的大小
+valid_eyes = []
+for (ex, ey, ew, eh) in eyes:
+    # 眼睛大小應該合理（不會太大或太小）
+    area = ew * eh
+    face_area = fw * fh
+    ratio = area / face_area
+
+    if 0.01 &lt; ratio &lt; 0.15:  # 眼睛佔人臉 1%-15%
+        valid_eyes.append((ex, ey, ew, eh))
+
+eyes = valid_eyes
+</code></pre>
+
+<h3>問題 3：嘴巴偵測失敗</h3>
+<p><strong>診斷</strong>：</p>
+<pre class="codehilite"><code class="language-python"># 檢查嘴巴搜尋區域
+mouth_roi_start = fh // 2
+mouth_roi_display = face_roi_gray[mouth_roi_start:, :]
+
+print(&quot;嘴巴搜尋區域（灰階）：&quot;)
+cv2_imshow(mouth_roi_display)
+
+print(f&quot;搜尋區域大小: {mouth_roi_display.shape[1]}x{mouth_roi_display.shape[0]}&quot;)
+</code></pre>
+
+<p><strong>解決方法</strong>：</p>
+<pre class="codehilite"><code class="language-python"># 方法 1：擴大搜尋範圍
+mouth_roi_start = fh // 3  # 從人臉 1/3 處開始（而非 1/2）
+
+# 方法 2：降低 minNeighbors
+mouths = mouth_cascade.detectMultiScale(
+    mouth_roi_gray,
+    scaleFactor=1.1,
+    minNeighbors=10,  # 從 20 降低到 10
+    minSize=(30, 20)
+)
+
+# 方法 3：調整最小尺寸
+mouths = mouth_cascade.detectMultiScale(
+    mouth_roi_gray,
+    scaleFactor=1.1,
+    minNeighbors=20,
+    minSize=(25, 15)  # 降低最小尺寸
+)
+</code></pre>
+
+<h3>問題 4：馬賽克位置不正確</h3>
+<p><strong>原因</strong>：座標轉換錯誤</p>
+<p><strong>檢查</strong>：</p>
+<pre class="codehilite"><code class="language-python"># 在套用馬賽克前，先繪製框線檢查位置
+for (ex, ey, ew, eh) in eyes:
+    abs_x = fx + ex
+    abs_y = fy + ey
+
+    # 先繪製紅色框線檢查位置
+    cv2.rectangle(img, (abs_x, abs_y), (abs_x+ew, abs_y+eh), (0, 0, 255), 2)
+
+print(&quot;檢查標記位置：&quot;)
+cv2_imshow(img)
+
+# 確認無誤後再套用馬賽克
+</code></pre>
+
+<p><strong>正確的座標轉換</strong>：</p>
+<pre class="codehilite"><code class="language-python"># ✅ 正確：眼睛
+abs_x = fx + ex
+abs_y = fy + ey
+
+# ✅ 正確：嘴巴（在下半部偵測）
+abs_x = fx + mx
+abs_y = fy + (fh // 2) + my
+
+# ❌ 錯誤：忘記加上人臉座標
+abs_x = ex  # 這只是 ROI 內的相對座標
+abs_y = ey
+
+# ❌ 錯誤：嘴巴忘記加上 offset
+abs_x = fx + mx
+abs_y = fy + my  # 忘記加上 (fh // 2)
+</code></pre>
+
+<hr />
+<h2>💡 常見問題 FAQ</h2>
+<h3>Q1: 為什麼要在人臉區域內偵測五官，而不是在整張圖？</h3>
+<p><strong>A:</strong> 優點：<br />
+1. <strong>提高準確度</strong>：縮小搜尋範圍，減少誤判<br />
+2. <strong>提高效率</strong>：只搜尋相關區域，速度更快<br />
+3. <strong>符合邏輯</strong>：五官一定在人臉內，不會在其他地方</p>
+<pre class="codehilite"><code class="language-python"># 比較：
+# 方法 A：在整張圖偵測（不推薦）
+eyes_all = eye_cascade.detectMultiScale(gray, 1.1, 10)
+# 問題：可能偵測到非人臉區域的類眼睛物體（如車燈、窗戶）
+
+# 方法 B：在人臉 ROI 內偵測（推薦）
+face_roi_gray = gray[fy:fy+fh, fx:fx+fw]
+eyes = eye_cascade.detectMultiScale(face_roi_gray, 1.1, 10)
+# 優點：只在人臉內搜尋，準確度高
+</code></pre>
+
+<h3>Q2: 為什麼嘴巴要在人臉下半部偵測？</h3>
+<p><strong>A:</strong> 因為嘴巴一定在人臉下半部，這樣可以：<br />
+1. 避免將鼻子誤判為嘴巴<br />
+2. 提高偵測效率<br />
+3. 降低誤判率</p>
+<pre class="codehilite"><code class="language-python"># 不限制區域：可能誤判鼻子為嘴巴
+mouths = mouth_cascade.detectMultiScale(face_roi_gray, 1.1, 20)
+
+# 限制在下半部：準確度提高
+mouth_roi_gray = face_roi_gray[fh//2:, :]  # 只搜尋下半部
+mouths = mouth_cascade.detectMultiScale(mouth_roi_gray, 1.1, 20)
+</code></pre>
+
+<h3>Q3: 可以偵測鼻子嗎？</h3>
+<p><strong>A:</strong> 可以，使用 <code>haarcascade_mcs_nose.xml</code>：</p>
+<pre class="codehilite"><code class="language-python"># 下載鼻子模型
+url = 'https://raw.githubusercontent.com/atduskgreg/opencv-processing/master/lib/cascade-files/haarcascade_mcs_nose.xml'
+urllib.request.urlretrieve(url, 'haarcascade_mcs_nose.xml')
+
+# 載入模型
+nose_cascade = cv2.CascadeClassifier('haarcascade_mcs_nose.xml')
+
+# 在人臉中間區域偵測鼻子
+nose_roi_start = fh // 3
+nose_roi_end = 2 * fh // 3
+nose_roi_gray = face_roi_gray[nose_roi_start:nose_roi_end, :]
+
+noses = nose_cascade.detectMultiScale(nose_roi_gray, 1.1, 15)
+
+for (nx, ny, nw, nh) in noses:
+    abs_x = fx + nx
+    abs_y = fy + nose_roi_start + ny
+    apply_mosaic(img, abs_x, abs_y, nw, nh, level=10)
+</code></pre>
+
+<h3>Q4: 馬賽克和高斯模糊哪個好？</h3>
+<p><strong>A:</strong> 各有優缺點：</p>
+<table>
+<thead>
+<tr>
+<th>特性</th>
+<th>馬賽克</th>
+<th>高斯模糊</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>隱私保護</strong></td>
+<td>強</td>
+<td>中等</td>
+</tr>
+<tr>
+<td><strong>視覺效果</strong></td>
+<td>明顯、突兀</td>
+<td>柔和、自然</td>
+</tr>
+<tr>
+<td><strong>處理速度</strong></td>
+<td>快</td>
+<td>較慢</td>
+</tr>
+<tr>
+<td><strong>可逆性</strong></td>
+<td>不可逆</td>
+<td>不可逆</td>
+</tr>
+<tr>
+<td><strong>適用場景</strong></td>
+<td>新聞、公開場合</td>
+<td>社交媒體、藝術照</td>
+</tr>
+</tbody>
+</table>
+<p><strong>選擇建議</strong>：<br />
+- 需要強隱私保護：使用馬賽克（level=5-10）<br />
+- 追求自然效果：使用高斯模糊（blur_level=21-31）<br />
+- 極致保護：使用黑色遮罩</p>
+<h3>Q5: 如何處理側臉照片？</h3>
+<p><strong>A:</strong> Haar Cascade 對側臉效果較差，但可以嘗試：</p>
+<ol>
+<li><strong>使用側臉模型</strong>：</li>
+</ol>
+<pre class="codehilite"><code class="language-python"># 下載側臉模型
+url = 'https://raw.githubusercontent.com/opencv/opencv/4.x/data/haarcascades/haarcascade_profileface.xml'
+urllib.request.urlretrieve(url, 'haarcascade_profileface.xml')
+
+# 載入並使用
+profile_cascade = cv2.CascadeClassifier('haarcascade_profileface.xml')
+profile_faces = profile_cascade.detectMultiScale(gray, 1.1, 5)
+</code></pre>
+
+<ol>
+<li><strong>同時偵測正面和側面</strong>：</li>
+</ol>
+<pre class="codehilite"><code class="language-python"># 正面人臉
+frontal_faces = face_cascade.detectMultiScale(gray, 1.1, 5)
+
+# 側面人臉
+profile_faces = profile_cascade.detectMultiScale(gray, 1.1, 5)
+
+# 合併結果
+all_faces = list(frontal_faces) + list(profile_faces)
+</code></pre>
+
+<ol>
+<li><strong>使用深度學習模型</strong>（進階）：</li>
+<li>MTCNN、RetinaFace 對各種角度都有較好效果</li>
+</ol>
+<hr />
+<h2>📊 評分標準</h2>
+<table>
+<thead>
+<tr>
+<th>項目</th>
+<th>配分</th>
+<th>評分重點</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>功能完整性</strong></td>
+<td>40%</td>
+<td>所有 7 個需求都已實作並正常運作</td>
+</tr>
+<tr>
+<td><strong>程式碼品質</strong></td>
+<td>25%</td>
+<td>結構清晰、註解完整、變數命名規範、錯誤處理</td>
+</tr>
+<tr>
+<td><strong>執行結果</strong></td>
+<td>20%</td>
+<td>能正確偵測並馬賽克處理五官</td>
+</tr>
+<tr>
+<td><strong>測試報告</strong></td>
+<td>10%</td>
+<td>完整記錄測試過程與心得反思</td>
+</tr>
+<tr>
+<td><strong>延伸挑戰</strong></td>
+<td>5%</td>
+<td>完成至少一項延伸挑戰（加分項）</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>📚 學習資源</h2>
+<h3>參考文件</h3>
+<ul>
+<li>主要教學：<code>opencv_imageclassfy_b05.md</code></li>
+<li>OpenCV 官方：<a href="https://docs.opencv.org/4.x/db/d28/tutorial_cascade_classifier.html">Face Detection</a></li>
+<li>Haar Cascade 原理：Viola-Jones 演算法</li>
+</ul>
+<h3>相關函數</h3>
+<ul>
+<li><code>cv2.CascadeClassifier()</code>：載入分類器</li>
+<li><code>detectMultiScale()</code>：多尺度偵測</li>
+<li><code>cv2.resize()</code>：圖片縮放（用於馬賽克）</li>
+<li><code>cv2.GaussianBlur()</code>：高斯模糊</li>
+<li>ROI 操作：<code>img[y:y+h, x:x+w]</code></li>
+</ul>
+<h3>進階學習</h3>
+<ul>
+<li>深度學習人臉偵測：MTCNN、RetinaFace</li>
+<li>人臉關鍵點偵測：Dlib、Face Alignment</li>
+<li>人臉辨識：FaceNet、ArcFace</li>
+</ul>
+<hr />
+<p><strong>祝學習順利！記得理解座標轉換的概念，這是本題的關鍵！</strong> 🔒</p></div>
+    
+    <!-- Highlight.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    
+    <!-- Mermaid -->
+    <script type="module">
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+        mermaid.initialize({
+            "startOnLoad": true,
+            "theme": "dark",
+            "securityLevel": "loose"
+});
+    </script>
+</body>
+</html>
