@@ -62,3 +62,4 @@ This file contains a list of all HTML files in the project, organized by folder.
 | File Name | Last Updated | Link |
 | --- | --- | --- |
 | taigiSpeaking.html | 2025-10-22 | [Link](https://joelhoty.github.io/ocgit/TaigiSpeaking/taigiSpeaking.html) |
+
