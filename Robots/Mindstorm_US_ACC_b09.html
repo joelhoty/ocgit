@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mindstorm_US_ACC_b09</title>
+    
+    <!-- CSS 框架 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/dark.min.css">
+    
+    <!-- 代碼高亮 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/base16/darcula.min.css">
+    
+    <!-- 自定義樣式 -->
+    <style>
+        
+                body {
+                    max-width: 900px;
+                    margin: 0 auto;
+                    padding: 20px;
+                }
+                /* 提升代码块对比度 */
+                pre {
+                    background: #1e1e1e !important;
+                    border: 1px solid #3e3e3e;
+                }
+                pre code {
+                    background: #1e1e1e !important;
+                }
+                code {
+                    background: #2d2d2d !important;
+                }
+                /* 引用块对比度 */
+                blockquote {
+                    background: #2d2d2d;
+                    border-left: 4px solid #4a9eff;
+                }
+            
+        
+        /* 通用代碼塊樣式 */
+        pre code {
+            display: block;
+            padding: 1.5em;
+            border-radius: 8px;
+            overflow-x: auto;
+            line-height: 1.6;
+        }
+
+        /* Mermaid 圖表樣式 */
+        
+        .mermaid {
+            margin: 2em 0;
+            padding: 1.5em;
+            text-align: center;
+            border-radius: 8px;
+        }
+        
+        .mermaid {
+            background: #2c3034;
+            border: 1px solid #444;
+        }
+            
+        
+        /* 響應式調整 */
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            .container, .markdown-body, .latex-body, .window-body, .nes-container {
+                padding: 15px;
+            }
+            pre code {
+                padding: 1em;
+            }
+        }
+        
+        
+    </style>
+</head>
+<body>
+    <div class="container"><!-- Timestamp: 2025-09-24 11:40:00 | Version: b09 -->
+<h1>單元主題：實作智慧定速巡航 (ACC)</h1>
+<h2>1. 單元學習目標</h2>
+<p>本單元旨在引導你完成一個進階的機器人專案。完成後，你將能：</p>
+<ol>
+<li><strong>分析</strong>「智慧定速巡航」的運作原理。</li>
+<li><strong>應用</strong> 狀態管理的概念，將複雜問題拆解為多個可執行的子任務。</li>
+<li><strong>建構</strong> 使用「巢狀 Switch」積木的複雜判斷邏輯。</li>
+<li><strong>學習</strong> 使用「變數」來提升程式碼的可維護性與可讀性。</li>
+<li><strong>實作</strong> 透過「資料線」傳遞感應器數值，達成動態的閉環控制 (Closed-Loop Control)。</li>
+</ol>
+<h2>2. 問題情境：從手動駕駛到自動控制</h2>
+<p>在交通情境中，駕駛者會根據路況持續調整車速：前方無車時維持定速，接近前車時減速跟隨，遇到緊急狀況則立刻煞車。這些判斷對人類是本能，但機器人需要明確的指令才能執行。</p>
+<p>本單元的挑戰，便是為樂高 Mindstorm 機器人設計一套程式，模擬真實車輛的「智慧定速巡航 (ACC)」功能。</p>
+<h2>3. 核心概念一：運作狀態管理</h2>
+<p>要實現 ACC 功能，機器人至少需要三種明確的運作狀態：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">狀態</th>
+<th style="text-align: left;">情境描述</th>
+<th style="text-align: left;">機器人行為</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>1. 安全巡航</strong></td>
+<td style="text-align: left;">前方 60cm 以上無障礙物。</td>
+<td style="text-align: left;">以預設的「巡航速度」穩定前進。</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>2. 減速跟隨</strong></td>
+<td style="text-align: left;">偵測到前方 15cm 至 60cm 內有障礙物。</td>
+<td style="text-align: left;">根據與障礙物的距離調整速度。</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>3. 緊急停止</strong></td>
+<td style="text-align: left;">障礙物進入 15cm 以內的危險區域。</td>
+<td style="text-align: left;">立刻停止馬達，避免碰撞。</td>
+</tr>
+</tbody>
+</table>
+<p>在設計自動化系統時，應優先處理最高風險的狀態，因此「緊急停止」的判斷應具有最高優先級。</p>
+<h2>4. 核心概念二：決策層級與巢狀 Switch</h2>
+<p>為了實現具有優先級的判斷，需要使用「巢狀 Switch (Nested Switch)」，也就是在一個 Switch 結構中，再嵌入另一個 Switch。</p>
+<p>其決策流程如下：</p>
+<ol>
+<li>
+<p><strong>第一層決策 (高優先級)</strong>：判斷是否進入危險區域。</p>
+<ul>
+<li><strong>條件</strong>：<code>距離 &lt; 15cm</code></li>
+<li><strong>結果為「是」(✔)</strong>：執行<strong>「緊急停止」</strong>。</li>
+<li><strong>結果為「否」(X)</strong>：進入<strong>第二層決策</strong>。</li>
+</ul>
+</li>
+<li>
+<p><strong>第二層決策 (次優先級)</strong>：判斷應巡航或跟隨。</p>
+<ul>
+<li><strong>條件</strong>：<code>距離 &lt; 60cm</code></li>
+<li><strong>結果為「是」(✔)</strong>：執行<strong>「減速跟隨」</strong>。</li>
+<li><strong>結果為「否」(X)</strong>：執行<strong>「安全巡航」</strong>。</li>
+</ul>
+</li>
+</ol>
+<p>此結構確保了高優先級的決策（安全）總是被優先執行。我們可以用一個 Mermaid 圖表來視覺化這個流程：</p>
+<div class="mermaid">
+graph TD
+    subgraph ACC 智慧巡航邏輯
+        A(迴圈 Loop) --> B{Switch: 距離 < 15cm ?};
+        B -- "是 ✔" --> C[移動轉向: 關閉];
+        B -- "否 ✘" --> D{Switch: 距離 < 60cm ?};
+        D -- "是 ✔" --> E[減速跟隨邏輯];
+        D -- "否 ✘" --> F[安全巡航邏輯];
+    end
+
+    style C fill:#f9f,stroke:#333,stroke-width:2px
+    style E fill:#ccf,stroke:#333,stroke-width:2px
+    style F fill:#cfc,stroke:#333,stroke-width:2px
+
+</div>
+
+<h2>5. 關鍵技巧：使用變數進行參數管理</h2>
+<p>在「安全巡航」狀態下，機器人需要一個基準速度值，例如 <code>50</code>。</p>
+<ul>
+<li><strong>方法一：直接寫入數值</strong><ul>
+<li>在馬達積木的動力參數中直接輸入 <code>50</code>。此方法在需要調整速度時，必須找到對應積木才能修改，缺乏效率。</li>
+</ul>
+</li>
+<li><strong>方法二：使用變數管理</strong><ul>
+<li>在程式開頭定義一個名為 <code>CruiseSpeed</code> 的變數並賦值 <code>50</code>。當馬達需要此速度時，再讀取此變數。</li>
+<li><strong>優點</strong>：此方法將參數集中管理，提升了程式的可維護性與可讀性。若要調整巡航速度，僅需修改初始的變數值即可。</li>
+</ul>
+</li>
+</ul>
+<h2>6. 程式實作步驟</h2>
+<ol>
+<li>
+<p><strong>定義巡航速度變數</strong></p>
+<ul>
+<li>於程式開頭，使用 <strong>變數 (Variable)</strong> 積木，以「寫入」模式定義 <code>CruiseSpeed</code>，數值為 <code>50</code>。</li>
+</ul>
+</li>
+<li>
+<p><strong>建立主迴圈</strong></p>
+<ul>
+<li>使用 <strong>迴圈 (Loop)</strong> 積木包裹後續所有邏輯，使機器人能持續偵測與反應。</li>
+</ul>
+</li>
+<li>
+<p><strong>建立巢狀決策結構</strong></p>
+<ul>
+<li><strong>A. 第一層決策 (緊急停止)</strong><ul>
+<li>於迴圈內，放入第一個 <strong>切換 (Switch)</strong> 積木，設定條件為「超音波感應器」-「比較」-「距離 &lt; 15cm」。</li>
+<li>在 <strong>「是」(✔) 分支</strong> 中，放置「移動轉向」積木，模式設為<strong>「關閉」</strong>。</li>
+<li>在 <strong>「否」(X) 分支</strong> 中，我們將建構次級決策，請將下一個積木放入此處。</li>
+</ul>
+</li>
+<li><strong>B. 第二層決策 (巡航/跟隨)</strong><ul>
+<li>拖曳第二個 <strong>切換 (Switch)</strong> 積木，<strong>放入第一個 Switch 的「否」(X) 分支內部</strong>。</li>
+<li>設定此新 Switch 的條件為「超音波感應器」-「比較」-「距離 &lt; 60cm」。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>設定巡航與跟隨狀態的馬達行為</strong></p>
+<ul>
+<li><strong>A. 減速跟隨 (第二層的「是」分支)</strong><ul>
+<li>使用「超音波感應器」(測量模式)積木，並透過 <strong>資料線</strong> 將其「測得距離」輸出，連接至「移動轉向」(開啟模式)積木的「動力」輸入。</li>
+</ul>
+</li>
+<li><strong>B. 安全巡航 (第二層的「否」分支)</strong><ul>
+<li>使用 <strong>變數 (Variable)</strong> 積木，以「讀取」模式取得 <code>CruiseSpeed</code> 的值。</li>
+<li>透過 <strong>資料線</strong> 將其「值」輸出，連接至「移動轉向」(開啟模式)積木的「動力」輸入。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<h2>7. 挑戰與延伸：進階功能實作</h2>
+<p>完成基礎的 ACC 功能後，一個優秀的工程師會思考如何讓系統更完善、更智慧。以下四個挑戰將引導你從不同面向，對你的智慧巡航車進行優化與升級。</p>
+<hr />
+<h3><strong>挑戰一：系統參數調校 (Parameter Tuning)</strong></h3>
+<h4><strong>目標</strong></h4>
+<p>學習調整程式中的關鍵參數，並分析參數變化對系統行為的影響，理解機器人「個性」的由來。</p>
+<h4><strong>核心概念</strong></h4>
+<p>在我們的 ACC 系統中，<code>15</code> (緊急停止距離) 和 <code>60</code> (警戒距離) 這兩個數字，是定義機器人行為模式的關鍵<strong>參數 (Parameters)</strong>。它們劃分了三個行為區域：</p>
+<ol>
+<li><strong>安全區</strong> (<code>&gt; 60cm</code>)</li>
+<li><strong>減速區</strong> (<code>15cm</code> - <code>60cm</code>)</li>
+<li><strong>危險區</strong> (<code>&lt; 15cm</code>)</li>
+</ol>
+<p>調整這兩個參數，就是在改變這三個區域的大小，這會直接影響機器人的反應靈敏度與決策模式。</p>
+<h4><strong>操作步驟</strong></h4>
+<ol>
+<li><strong>找到參數位置</strong>：<ul>
+<li><code>15</code>：位於第一層 Switch 積木的條件中。</li>
+<li><code>60</code>：位於第二層 Switch 積木的條件中。</li>
+</ul>
+</li>
+<li><strong>進行系統性測試</strong>：<ul>
+<li><strong>測試組合 A (膽小型)</strong>：將 <code>緊急停止距離</code> 提高到 <code>25</code>，<code>警戒距離</code> 提高到 <code>80</code>。</li>
+<li><strong>測試組合 B (激進型)</strong>：將 <code>緊急停止距離</code> 降低到 <code>10</code>，<code>警戒距離</code> 降低到 <code>40</code>。</li>
+<li><strong>測試組合 C (自訂組合)</strong>：自行設計一組你認為最理想的參數。</li>
+</ul>
+</li>
+</ol>
+<h4><strong>思考與觀察</strong></h4>
+<ul>
+<li>「膽小型」機器人開起來有什麼感覺？它的優點和缺點是什麼？</li>
+<li>「激進型」機器人開起來又有什麼感覺？在什麼情境下它可能會有危險？</li>
+<li>「減速區」的範圍大小（<code>警戒距離</code> - <code>緊急停止距離</code>）對機器人的駕駛體驗有什麼影響？範圍大比較好，還是小比較好？</li>
+</ul>
+<hr />
+<h3><strong>挑戰二：增加自動緩衝行為</strong></h3>
+<h4><strong>目標</strong></h4>
+<p>在緊急停止後，增加一個自動倒車的動作，為機器人創造更安全的反應空間。</p>
+<h4><strong>核心概念</strong></h4>
+<p>這個挑戰的核心是<strong>擴充狀態行為</strong>。原本「緊急停止」狀態的行為只有「停止馬達」，現在我們要將其擴充為一個<strong>動作序列 (Action Sequence)</strong>：「停止 -&gt; 短暫倒車 -&gt; 再次停止」。</p>
+<h4><strong>操作步驟</strong></h4>
+<ol>
+<li><strong>找到緊急停止分支</strong>：也就是第一層 Switch 的「是」(✔) 分支。</li>
+<li><strong>修改動作序列</strong>：<ul>
+<li>目前此分支中只有一個「移動轉向」積木，模式為「關閉」。</li>
+<li>在它<strong>後面</strong>，再增加一個「移動轉向」積木。</li>
+<li>設定這個新的積木：<ul>
+<li><strong>動力 (Power)</strong>：設為一個負值，例如 <code>-30</code> (代表倒車)。</li>
+<li><strong>模式</strong>：設為「開啟達秒數 (On for Seconds)」，並設定一個短暫的時間，例如 <code>0.5</code> 秒。</li>
+</ul>
+</li>
+<li><strong>（可選）</strong> 在倒車積木後，可以再加一個「移動轉向」設為「關閉」的積木，確保機器人倒車後會完全停穩。</li>
+</ul>
+</li>
+</ol>
+<h4><strong>思考與觀察</strong></h4>
+<ul>
+<li>增加倒車行為後，機器人的安全性是否提升了？</li>
+<li>如果倒車的動力或秒數設定不當（例如太大或太久），可能會發生什麼非預期的情況？</li>
+<li>這個自動緩衝行為，在什麼樣的真實情境中特別有用？</li>
+</ul>
+<hr />
+<h3><strong>挑戰三：系統狀態視覺化</strong></h3>
+<h4><strong>目標</strong></h4>
+<p>利用主機螢幕，即時顯示機器人目前的運作狀態，使其更易於除錯與理解。</p>
+<h4><strong>核心概念</strong></h4>
+<p><strong>視覺化回饋 (Visual Feedback)</strong> 是人機互動的關鍵一環。透過在程式的不同分支中加入「顯示 (Display)」積木，我們可以將內部的程式狀態，以文字或圖形的方式呈現在外部，這對於監控與除錯非常有幫助。</p>
+<h4><strong>操作步驟</strong></h4>
+<ol>
+<li><strong>找到三個最終狀態的分支</strong>：<ul>
+<li><strong>緊急停止</strong>：第一層 Switch 的「是」(✔) 分支。</li>
+<li><strong>減速跟隨</strong>：第二層 Switch 的「是」(✔) 分支。</li>
+<li><strong>安全巡航</strong>：第二層 Switch 的「否」(X) 分支。</li>
+</ul>
+</li>
+<li><strong>加入顯示積木</strong>：<ul>
+<li>在上述每一個分支的<strong>最前面</strong>，放入一個「顯示 (Display)」積木。</li>
+<li><strong>設定顯示內容</strong>：將模式設為「文字」-「網格」。<ul>
+<li>在「緊急停止」分支，顯示文字 <code>STOP!</code>。</li>
+<li>在「減速跟隨」分支，顯示文字 <code>Follow</code>。</li>
+<li>在「安全巡航」分支，顯示文字 <code>Cruise</code>。</li>
+</ul>
+</li>
+<li><strong>重要</strong>：記得勾選「清除螢幕 (Clear Screen)」選項，確保每次只顯示最新的狀態。</li>
+</ul>
+</li>
+</ol>
+<h4><strong>思考與觀察</strong></h4>
+<ul>
+<li>執行程式時，螢幕上的文字是否能準確地對應機器人的行為？</li>
+<li>如果機器人行為不符合預期，螢幕上的狀態文字能否幫助你更快地找到問題在哪個程式分支？</li>
+<li>除了文字，你還能用什麼圖形來代表這三種狀態，讓介面更直觀？</li>
+</ul>
+<hr />
+<h3><strong>挑戰四：非線性智慧調速</strong></h3>
+<h4><strong>目標</strong></h4>
+<p>透過數學運算，將線性的速度控制，升級為非線性的速度曲線，以實作更細膩、更多樣的駕駛「個性」。</p>
+<h4><strong>核心概念</strong></h4>
+<p>目前的「減速跟隨」模式是線性的 (<code>速度 = 距離</code>)，反應直接但略顯單一。非線性控制則是讓速度與距離的關係，變成一條曲線。這意味著在不同距離區間，速度的變化率是不同的，從而創造出更豐富的動態效果。</p>
+<h4><strong>技術提示：EV3 的隱藏數學超能力</strong></h4>
+<p>你可能不知道，EV3 的「數學運算」積木在切換到<strong>「進階 (Advanced)」</strong>模式後，其實是一個非常強大的工具。它不僅支援四則運算，還內建了許多高階函數，包含：<br />
+- <strong><code>sqrt(a)</code></strong>：計算 a 的平方根。<br />
+- <strong><code>log(a)</code></strong>：計算 a 的常用對數 (base 10)。<br />
+- <strong><code>ln(a)</code></strong>：計算 a 的自然對數。<br />
+- <strong><code>abs(a)</code></strong>：計算 a 的絕對值。<br />
+- <strong>三角函數</strong>：<code>sin(a)</code>, <code>cos(a)</code>, <code>tan(a)</code> 等。</p>
+<p>這為我們實現複雜的控制演算法，提供了堅實的基礎。</p>
+<h4><strong>操作步驟</strong></h4>
+<ol>
+<li><strong>找到減速跟隨分支</strong>：也就是第二層 Switch 的「是」(✔) 分支。</li>
+<li><strong>插入數學運算積木</strong>：<ul>
+<li>在「超音波感應器」和「移動轉向」積木之間，放入一個 <strong>數學運算 (Math)</strong> 積木。</li>
+<li>將感應器的「測得距離」資料線，連接到數學積木的 <code>a</code> 輸入。</li>
+<li>將數學積木的「結果」資料線，連接到移動轉向的「動力」輸入。</li>
+</ul>
+</li>
+<li><strong>設定非線性公式</strong>：將數學積木的模式設為「進階 (Advanced)」，並在公式框中輸入以下公式進行實驗。<ul>
+<li><strong>A. 漸進趨緩型 (平方根曲線)</strong><ul>
+<li><strong>公式</strong>：<code>sqrt(a) * 8</code></li>
+<li><strong>效果</strong>：起步和煞車都非常柔和，像一個<strong>沉穩、謹慎的駕駛</strong>。</li>
+</ul>
+</li>
+<li><strong>B. 積極趨近型 (平方曲線)</strong><ul>
+<li><strong>公式</strong>：<code>(a * a) / 60</code></li>
+<li><strong>效果</strong>：遠距離時加速快，近距離時減速也快，像一個<strong>充滿活力的年輕駕駛</strong>。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<h4><strong>思考與觀察</strong></h4>
+<ul>
+<li><code>sqrt(a) * 8</code> 公式中的 <code>8</code> 這個常數，如果把它變大或變小，對機器人的行為有什麼影響？（提示：這個常數被稱為「增益 (Gain)」）</li>
+<li><code>(a * a) / 60</code> 公式中的 <code>60</code> 這個常數，為什麼要用除法？如果把它變大或變小，又有什麼影響？</li>
+<li><strong>動手實作</strong>：請實作 <code>log(a)</code> 曲線，並描述它的駕駛個性。它與 <code>sqrt(a)</code> 有何不同？（提示：你可能需要一個放大係數，例如 <code>log(a) * 20</code>，因為 log 函數的增長非常緩慢。）</li>
+</ul></div>
+    
+    <!-- Highlight.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    
+    <!-- Mermaid -->
+    <script type="module">
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+        mermaid.initialize({
+            "startOnLoad": true,
+            "theme": "dark",
+            "securityLevel": "loose"
+});
+    </script>
+</body>
+</html>
