@@ -1,0 +1,1452 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mindstorm_ColorSensor_b03</title>
+    
+    <!-- CSS 框架 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/dark.min.css">
+    
+    <!-- 代碼高亮 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/base16/darcula.min.css">
+    
+    <!-- 自定義樣式 -->
+    <style>
+        
+                body {
+                    max-width: 900px;
+                    margin: 0 auto;
+                    padding: 20px;
+                }
+                /* 提升代码块对比度 */
+                pre {
+                    background: #1e1e1e !important;
+                    border: 1px solid #3e3e3e;
+                }
+                pre code {
+                    background: #1e1e1e !important;
+                }
+                code {
+                    background: #2d2d2d !important;
+                }
+                /* 引用块对比度 */
+                blockquote {
+                    background: #2d2d2d;
+                    border-left: 4px solid #4a9eff;
+                }
+            
+        
+        /* 通用代碼塊樣式 */
+        pre code {
+            display: block;
+            padding: 1.5em;
+            border-radius: 8px;
+            overflow-x: auto;
+            line-height: 1.6;
+        }
+
+        /* Mermaid 圖表樣式 */
+        
+        .mermaid {
+            margin: 2em 0;
+            padding: 1.5em;
+            text-align: center;
+            border-radius: 8px;
+        }
+        
+        .mermaid {
+            background: #2c3034;
+            border: 1px solid #444;
+        }
+            
+        
+        /* 響應式調整 */
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            .container, .markdown-body, .latex-body, .window-body, .nes-container {
+                padding: 15px;
+            }
+            pre code {
+                padding: 1em;
+            }
+        }
+        
+        
+    </style>
+</head>
+<body>
+    <div class="container"><!-- Path: 114A_Robot_Agent | Timestamp: 2025-10-19 02:00:00 | Version: b03 -->
+<h1>Mindstorms EV3 Color Sensor 顏色感應器教學</h1>
+<h2>課程目標</h2>
+<ul>
+<li>了解 EV3 顏色感應器的兩種主要感應模式</li>
+<li>學習如何使用顏色感應器進行黑線循跡</li>
+<li>掌握光線反射強度的判斷與應用</li>
+<li><strong>理解 Move Steering 與 Move Tank 兩種馬達控制方式</strong></li>
+<li>設計並實作完整的循跡機器人程式</li>
+</ul>
+<hr />
+<h2>一、感應功能介紹</h2>
+<p>EV3 顏色感應器是一個多功能的光學感應器，主要有兩種工作模式：</p>
+<h3>1.1 顏色感應與分辨 (Color Mode)</h3>
+<p><strong>工作原理：</strong><br />
+- 感應器內建 <strong>RGB 三色 LED 光源</strong>，可發出紅、綠、藍三色光線<br />
+- 通過偵測反射光的顏色組成，辨識物體的顏色<br />
+- 可辨識的顏色包括：黑色、藍色、綠色、黃色、紅色、白色、棕色</p>
+<p><strong>技術規格：</strong><br />
+- 辨識距離：約 1-2 公分<br />
+- 反應時間：約 1 毫秒<br />
+- 輸出格式：顏色代碼（0-7 的整數值）</p>
+<p><strong>顏色代碼對照表：</strong></p>
+<pre class="codehilite"><code>0 = 無顏色（No Color）
+1 = 黑色（Black）
+2 = 藍色（Blue）
+3 = 綠色（Green）
+4 = 黃色（Yellow）
+5 = 紅色（Red）
+6 = 白色（White）
+7 = 棕色（Brown）
+</code></pre>
+
+<p><strong>應用場景：</strong><br />
+- 顏色分類機器人（依顏色分揀物品）<br />
+- 顏色識別遊戲（找到特定顏色的物體）<br />
+- 顏色編碼路徑追蹤（不同顏色代表不同動作）</p>
+<p><strong>優點：</strong><br />
+- ✓ 直覺易懂，不需要設定臨界值<br />
+- ✓ 可辨識多種顏色，應用範圍廣<br />
+- ✓ 對環境光線適應性較好</p>
+<p><strong>缺點：</strong><br />
+- ✗ 辨識速度較慢（需要完整的顏色掃描週期）<br />
+- ✗ 對於相近顏色的區分能力有限<br />
+- ✗ 在高速移動時容易誤判</p>
+<hr />
+<h3>1.2 光線反射強度感應 (Reflected Light Intensity Mode)</h3>
+<p><strong>工作原理：</strong><br />
+- 感應器發出<strong>紅色 LED 光線</strong>照射物體表面<br />
+- 偵測反射回來的<strong>光線強度</strong><br />
+- 輸出 0-100 的數值（0 = 最暗/全黑，100 = 最亮/全白）</p>
+<p><strong>技術規格：</strong><br />
+- 測量範圍：0-100%<br />
+- 解析度：1%<br />
+- 取樣頻率：約 1000 Hz<br />
+- 最佳感應距離：0.5-1.5 公分</p>
+<p><strong>物體表面與反射強度關係：</strong></p>
+<pre class="codehilite"><code>黑色表面：  0-15   （幾乎不反射光線）
+深灰色：   16-35
+灰色：     36-55
+淺灰色：   56-75
+白色表面：  76-100 （強烈反射光線）
+</code></pre>
+
+<p><strong>應用場景：</strong><br />
+- <strong>黑線循跡</strong>（最常見應用）<br />
+- 邊緣偵測（桌面邊緣、競賽場地邊界）<br />
+- 距離粗估（反射強度與距離有關）</p>
+<p><strong>優點：</strong><br />
+- ✓ <strong>反應速度快</strong>（適合高速循跡）<br />
+- ✓ <strong>靈敏度高</strong>（可偵測細微的明暗變化）<br />
+- ✓ 數值連續，可設定精確的臨界值<br />
+- ✓ 取樣頻率高，適合即時控制</p>
+<p><strong>缺點：</strong><br />
+- ✗ 需要手動測試並設定黑白臨界值<br />
+- ✗ 受環境光線影響較大<br />
+- ✗ 只能偵測明暗，無法區分顏色</p>
+<hr />
+<h2>二、黑色線條軌跡偵測：使用顏色模式 vs 光線反射強度模式</h2>
+<p>在設計循跡機器人時，我們需要選擇合適的感應模式。以下是兩種模式的比較：</p>
+<h3>2.1 使用顏色感應模式</h3>
+<p><strong>程式邏輯：</strong></p>
+<pre class="codehilite"><code>如果 顏色 == 黑色（代碼 1）
+    → 在黑線上
+否則
+    → 不在黑線上
+</code></pre>
+
+<p><strong>優點：</strong><br />
+- 程式邏輯簡單，不需要設定臨界值<br />
+- 對環境光線變化較不敏感</p>
+<p><strong>缺點：</strong><br />
+- ⚠️ <strong>速度慢</strong>：顏色辨識需要較長的處理時間<br />
+- ⚠️ <strong>反應遲鈍</strong>：高速移動時容易偏離軌跡<br />
+- ⚠️ <strong>誤判率高</strong>：相近的深色可能被誤認為黑色</p>
+<p><strong>適用情境：</strong><br />
+- 低速巡線（速度 &lt; 30%）<br />
+- 顏色分類任務<br />
+- 教學示範（概念理解優先）</p>
+<hr />
+<h3>2.2 使用光線反射強度模式 ⭐ <strong>推薦</strong></h3>
+<p><strong>程式邏輯：</strong></p>
+<pre class="codehilite"><code>讀取光線反射強度 → 數值（0-100）
+
+如果 數值 &lt; 臨界值（例如 40）
+    → 在黑線上（反射弱）
+否則
+    → 在白色區域（反射強）
+</code></pre>
+
+<p><strong>優點：</strong><br />
+- ✅ <strong>反應速度極快</strong>（適合高速循跡）<br />
+- ✅ <strong>靈敏度高</strong>（可偵測黑線邊緣）<br />
+- ✅ <strong>控制精準</strong>（可根據數值微調動作）</p>
+<p><strong>缺點：</strong><br />
+- 需要事先測試黑白區域的反射值<br />
+- 環境光線變化會影響數值</p>
+<p><strong>適用情境：</strong><br />
+- <strong>高速循跡競賽</strong> ⭐<br />
+- 精確路徑追蹤<br />
+- 需要即時反應的應用</p>
+<hr />
+<h2>三、EV3 馬達控制方式：Move Steering vs Move Tank</h2>
+<p>在 LEGO EV3 軟體中，有兩種主要的馬達控制積木：<strong>Move Steering（轉向控制）</strong> 和 <strong>Move Tank（坦克控制）</strong>。理解這兩種控制方式的差異對於設計循跡程式非常重要。</p>
+<h3>3.1 馬達連接規範</h3>
+<p><strong>標準連接方式：</strong><br />
+- <strong>馬達 B (Port B)</strong>：連接<strong>左輪</strong><br />
+- <strong>馬達 C (Port C)</strong>：連接<strong>右輪</strong><br />
+- <strong>顏色感應器 (Port 3)</strong>：安裝在機器人前方中央</p>
+<blockquote>
+<p>💡 <strong>為什麼要固定連接位置？</strong><br />
+統一的馬達連接方式可以讓程式更容易分享和理解，也能減少除錯時間。</p>
+</blockquote>
+<hr />
+<h3>3.2 Move Steering（轉向控制）</h3>
+<h4><strong>概念說明</strong></h4>
+<p>Move Steering 採用<strong>汽車式轉向</strong>的控制邏輯，類似開車時的方向盤操作。</p>
+<p><strong>控制參數：</strong><br />
+1. <strong>Power（動力）</strong>：整體前進速度（-100 到 100）<br />
+2. <strong>Steering（轉向）</strong>：轉向方向與力道（-100 到 100）<br />
+   - <strong>0</strong> = 直行<br />
+   - <strong>負值（-1 到 -100）</strong> = 向左轉<br />
+   - <strong>正值（1 到 100）</strong> = 向右轉</p>
+<h4><strong>Steering 數值與轉向關係</strong></h4>
+<pre class="codehilite"><code>Steering 值    左輪速度     右輪速度     動作
+─────────────────────────────────────────
+    0           50%         50%       直行
+   +25          50%         38%       微右轉
+   +50          50%         25%       中度右轉
+   +75          50%         12%       大幅右轉
+  +100          50%          0%       原地右轉（右輪停止）
+   -25          38%         50%       微左轉
+   -50          25%         50%       中度左轉
+   -75          12%         50%       大幅左轉
+  -100           0%         50%       原地左轉（左輪停止）
+
+（以 Power = 50% 為例）
+</code></pre>
+
+<h4><strong>Move Steering 循跡程式範例</strong></h4>
+<p><strong>LEGO EV3 軟體積木配置：</strong></p>
+<pre class="codehilite"><code>[起始]
+  ↓
+[Loop 循環積木] (無限循環)
+  ↓
+  [Switch 開關積木]
+    條件：Color Sensor (Port 3)
+    模式：Reflected Light Intensity &lt; 45
+
+    ├─ TRUE (在黑線上，反射強度低)
+    │   └─ [Move Steering 積木]
+    │       - 馬達：B+C
+    │       - Power（動力）：50
+    │       - Steering（轉向）：+30  ← 向右轉
+    │       - 模式：On (持續運轉)
+    │
+    └─ FALSE (在白色區域，反射強度高)
+        └─ [Move Steering 積木]
+            - 馬達：B+C
+            - Power（動力）：50
+            - Steering（轉向）：-30  ← 向左轉
+            - 模式：On (持續運轉)
+</code></pre>
+
+<h4><strong>程式邏輯說明</strong></h4>
+<p><strong>情況 1：感應器偵測到黑線（反射強度 &lt; 45）</strong></p>
+<pre class="codehilite"><code>動作：Steering = +30（向右轉）
+原因：感應器在黑線上，需要向右轉讓感應器移到黑線邊緣
+
+實際馬達運作：
+- 左輪（馬達 B）：50% × (100%) = 50%
+- 右輪（馬達 C）：50% × (100% - 30%) = 35%
+- 結果：機器人向右轉
+</code></pre>
+
+<p><strong>情況 2：感應器偵測到白色區域（反射強度 ≥ 45）</strong></p>
+<pre class="codehilite"><code>動作：Steering = -30（向左轉）
+原因：感應器離開黑線，需要向左轉尋找黑線
+
+實際馬達運作：
+- 左輪（馬達 B）：50% × (100% - 30%) = 35%
+- 右輪（馬達 C）：50% × (100%) = 50%
+- 結果：機器人向左轉
+</code></pre>
+
+<h4><strong>Move Steering 的優缺點</strong></h4>
+<p><strong>優點：</strong><br />
+- ✅ <strong>直覺易懂</strong>：Steering 數值直接對應轉向方向<br />
+- ✅ <strong>參數調整簡單</strong>：只需調整一個 Steering 值<br />
+- ✅ <strong>適合初學者</strong>：概念清晰，容易理解<br />
+- ✅ <strong>速度一致</strong>：整體動力由 Power 統一控制</p>
+<p><strong>缺點：</strong><br />
+- ⚠️ <strong>彈性較低</strong>：無法精確控制兩輪的個別速度<br />
+- ⚠️ <strong>進階控制受限</strong>：實作 PID 控制時較不便</p>
+<p><strong>適用情境：</strong><br />
+- 初學者學習循跡概念<br />
+- 簡單的循跡任務<br />
+- 不需要極致性能的應用</p>
+<hr />
+<h3>3.3 Move Tank（坦克控制）</h3>
+<h4><strong>概念說明</strong></h4>
+<p>Move Tank 採用<strong>坦克式控制</strong>，分別控制左右履帶（輪子）的速度，提供更精確的控制能力。</p>
+<p><strong>控制參數：</strong><br />
+1. <strong>Left Power（左輪動力）</strong>：左輪速度（-100 到 100）<br />
+2. <strong>Right Power（右輪動力）</strong>：右輪速度（-100 到 100）</p>
+<h4><strong>左右輪速度與動作關係</strong></h4>
+<pre class="codehilite"><code>左輪速度   右輪速度    動作說明
+───────────────────────────────
+  50%       50%      直線前進
+  70%       30%      向右轉（左快右慢）
+  30%       70%      向左轉（右快左慢）
+  50%        0%      原地右轉（右輪停止）
+   0%       50%      原地左轉（左輪停止）
+  50%      -50%      原地快速右轉（反向驅動）
+ -50%       50%      原地快速左轉（反向驅動）
+  80%       80%      高速直行
+ -50%      -50%      後退
+</code></pre>
+
+<h4><strong>Move Tank 循跡程式範例</strong></h4>
+<p><strong>LEGO EV3 軟體積木配置：</strong></p>
+<pre class="codehilite"><code>[起始]
+  ↓
+[馬達設定積木]（如果馬達方向相反需要反轉）
+  - 馬達 B：可能需要設定為 Reverse
+  ↓
+[Loop 循環積木] (無限循環)
+  ↓
+  [Switch 開關積木]
+    條件：Color Sensor (Port 3)
+    模式：Reflected Light Intensity &lt; 45
+
+    ├─ TRUE (在黑線上)
+    │   └─ [Move Tank 積木]
+    │       - 馬達：B+C
+    │       - B Power（左輪）：50
+    │       - C Power（右輪）：20
+    │       - 模式：On (持續運轉)
+    │
+    └─ FALSE (在白色區域)
+        └─ [Move Tank 積木]
+            - 馬達：B+C
+            - B Power（左輪）：20
+            - C Power（右輪）：50
+            - 模式：On (持續運轉)
+</code></pre>
+
+<h4><strong>程式邏輯說明</strong></h4>
+<p><strong>情況 1：感應器偵測到黑線（反射強度 &lt; 45）</strong></p>
+<pre class="codehilite"><code>動作：左輪 50%，右輪 20%
+原因：感應器在黑線上，需要向右轉
+
+實際馬達運作：
+- 左輪（馬達 B）：50%（快速）
+- 右輪（馬達 C）：20%（慢速）
+- 結果：機器人向右轉，感應器移向黑線邊緣
+</code></pre>
+
+<p><strong>情況 2：感應器偵測到白色區域（反射強度 ≥ 45）</strong></p>
+<pre class="codehilite"><code>動作：左輪 20%，右輪 50%
+原因：感應器離開黑線，需要向左轉尋找黑線
+
+實際馬達運作：
+- 左輪（馬達 B）：20%（慢速）
+- 右輪（馬達 C）：50%（快速）
+- 結果：機器人向左轉，感應器回到黑線
+</code></pre>
+
+<h4><strong>Move Tank 的優缺點</strong></h4>
+<p><strong>優點：</strong><br />
+- ✅ <strong>精確控制</strong>：可獨立調整左右輪速度<br />
+- ✅ <strong>彈性高</strong>：適合實作進階演算法（如 PID）<br />
+- ✅ <strong>反應快</strong>：可設定極端速度差以快速轉向<br />
+- ✅ <strong>專業應用</strong>：競賽級程式多使用此模式</p>
+<p><strong>缺點：</strong><br />
+- ⚠️ <strong>較複雜</strong>：需要理解兩輪獨立控制的邏輯<br />
+- ⚠️ <strong>參數調整繁瑣</strong>：需要分別調整兩個數值<br />
+- ⚠️ <strong>容易出錯</strong>：左右輪速度設定錯誤會導致異常動作</p>
+<p><strong>適用情境：</strong><br />
+- 需要精確控制的循跡任務<br />
+- 實作 PID 或比例控制<br />
+- 競賽應用<br />
+- 複雜的路徑規劃</p>
+<hr />
+<h3>3.4 Move Steering vs Move Tank 比較表</h3>
+<table>
+<thead>
+<tr>
+<th>比較項目</th>
+<th>Move Steering</th>
+<th>Move Tank</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>控制方式</strong></td>
+<td>汽車式轉向（方向盤）</td>
+<td>坦克式（左右履帶）</td>
+</tr>
+<tr>
+<td><strong>參數數量</strong></td>
+<td>2 個（Power + Steering）</td>
+<td>2 個（Left Power + Right Power）</td>
+</tr>
+<tr>
+<td><strong>直覺性</strong></td>
+<td>⭐⭐⭐⭐⭐ 非常直覺</td>
+<td>⭐⭐⭐ 需要理解</td>
+</tr>
+<tr>
+<td><strong>控制精度</strong></td>
+<td>⭐⭐⭐ 中等</td>
+<td>⭐⭐⭐⭐⭐ 非常精確</td>
+</tr>
+<tr>
+<td><strong>適合初學者</strong></td>
+<td>✅ 是</td>
+<td>⚠️ 需要練習</td>
+</tr>
+<tr>
+<td><strong>進階應用</strong></td>
+<td>⚠️ 受限</td>
+<td>✅ 優秀</td>
+</tr>
+<tr>
+<td><strong>PID 控制</strong></td>
+<td>⚠️ 不便</td>
+<td>✅ 便利</td>
+</tr>
+<tr>
+<td><strong>參數調整</strong></td>
+<td>✅ 簡單（只調 Steering）</td>
+<td>⚠️ 較繁瑣（兩個數值）</td>
+</tr>
+<tr>
+<td><strong>競賽應用</strong></td>
+<td>⚠️ 較少</td>
+<td>✅ 常見</td>
+</tr>
+<tr>
+<td><strong>學習曲線</strong></td>
+<td>平緩</td>
+<td>稍陡</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3>3.5 Move Steering 與 Move Tank 轉換對照</h3>
+<p>以下是相同轉向效果下，兩種控制方式的參數對照：</p>
+<h4><strong>基礎速度 50% 的情況</strong></h4>
+<table>
+<thead>
+<tr>
+<th>動作</th>
+<th>Move Steering</th>
+<th>Move Tank</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>直行</td>
+<td>Power=50, Steering=0</td>
+<td>Left=50, Right=50</td>
+</tr>
+<tr>
+<td>微右轉</td>
+<td>Power=50, Steering=+20</td>
+<td>Left=50, Right=40</td>
+</tr>
+<tr>
+<td>中度右轉</td>
+<td>Power=50, Steering=+40</td>
+<td>Left=50, Right=30</td>
+</tr>
+<tr>
+<td>大幅右轉</td>
+<td>Power=50, Steering=+60</td>
+<td>Left=50, Right=20</td>
+</tr>
+<tr>
+<td>微左轉</td>
+<td>Power=50, Steering=-20</td>
+<td>Left=40, Right=50</td>
+</tr>
+<tr>
+<td>中度左轉</td>
+<td>Power=50, Steering=-40</td>
+<td>Left=30, Right=50</td>
+</tr>
+<tr>
+<td>大幅左轉</td>
+<td>Power=50, Steering=-60</td>
+<td>Left=20, Right=50</td>
+</tr>
+</tbody>
+</table>
+<h4><strong>Move Steering 轉換為 Move Tank 的計算公式</strong></h4>
+<pre class="codehilite"><code>假設：
+- Power = P（動力）
+- Steering = S（轉向，-100 到 +100）
+
+計算 Move Tank 的左右輪速度：
+
+如果 S ≥ 0（向右轉）：
+    Left Power  = P
+    Right Power = P × (1 - S/100)
+
+如果 S &lt; 0（向左轉）：
+    Left Power  = P × (1 + S/100)
+    Right Power = P
+</code></pre>
+
+<p><strong>範例計算：</strong></p>
+<pre class="codehilite"><code>Move Steering: Power=60, Steering=+30
+
+計算：
+Left Power  = 60
+Right Power = 60 × (1 - 30/100) = 60 × 0.7 = 42
+
+結果 Move Tank: Left=60, Right=42
+</code></pre>
+
+<hr />
+<h2>四、循跡偵測原理與實作</h2>
+<h3>4.1 光線反射強度偵測數值測試</h3>
+<p>在開始寫程式之前，我們需要先<strong>測試實際環境的反射強度數值</strong>。</p>
+<h4><strong>測試步驟：</strong></h4>
+<p><strong>步驟 1：建立測試程式</strong></p>
+<pre class="codehilite"><code>在 EV3 軟體中建立新專案
+拖曳以下積木：
+1. [Loop 循環] 積木（無限循環）
+2. 在循環內放入 [Color Sensor 顏色感應器] 積木
+   - 模式選擇：Measure → Reflected Light Intensity
+   - 輸出連接到 [Display 顯示] 積木
+3. [Display 顯示] 積木
+   - 顯示在螢幕上（Text - Pixels）
+   - 位置：X=0, Y=50
+</code></pre>
+
+<p><strong>步驟 2：執行測試</strong><br />
+1. 將程式下載到 EV3 主機<br />
+2. 將顏色感應器對準<strong>黑色線條</strong>，讀取數值（例如：15）<br />
+3. 將顏色感應器對準<strong>白色區域</strong>，讀取數值（例如：75）<br />
+4. 記錄這兩個數值</p>
+<p><strong>步驟 3：計算臨界值</strong></p>
+<pre class="codehilite"><code>臨界值 = (黑色數值 + 白色數值) ÷ 2
+
+範例：
+黑色數值 = 15
+白色數值 = 75
+臨界值 = (15 + 75) ÷ 2 = 45
+</code></pre>
+
+<blockquote>
+<p>💡 <strong>為什麼要取中間值？</strong><br />
+臨界值設在黑白之間，可以明確區分「在線上」和「不在線上」兩種狀態，減少誤判。</p>
+</blockquote>
+<hr />
+<h3>4.2 黑色線條與白色區域的臨界值設定</h3>
+<p><strong>判斷邏輯：</strong></p>
+<div class="mermaid">
+graph TD
+    A[讀取光線反射強度] --> B{數值 < 臨界值?}
+    B -->|是| C[在黑線上<br/>反射強度低]
+    B -->|否| D[在白色區域<br/>反射強度高]
+    C --> E[動作：向右轉<br/>離開黑線中心]
+    D --> F[動作：向左轉<br/>尋找黑線]
+
+</div>
+
+<p><strong>實際數值範例：</strong></p>
+<table>
+<thead>
+<tr>
+<th>表面類型</th>
+<th>反射強度</th>
+<th>判斷結果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>黑色線條</td>
+<td>10-20</td>
+<td>&lt; 45，在線上</td>
+</tr>
+<tr>
+<td>灰色邊界</td>
+<td>35-45</td>
+<td>接近臨界值（需注意）</td>
+</tr>
+<tr>
+<td>白色區域</td>
+<td>70-85</td>
+<td>&gt; 45，不在線上</td>
+</tr>
+</tbody>
+</table>
+<p><strong>臨界值調整建議：</strong><br />
+- 如果機器人容易偏離黑線 → <strong>降低臨界值</strong>（例如從 45 調到 40）<br />
+- 如果機器人太常誤判 → <strong>提高臨界值</strong>（例如從 45 調到 50）<br />
+- 建議測試多次，找到最穩定的臨界值</p>
+<hr />
+<h3>4.3 Switch 積木邏輯判斷</h3>
+<p>在 EV3 圖形化程式中，我們使用 <strong>Switch（開關）積木</strong> 來根據感應器數值做出決策。</p>
+<h4><strong>循跡原理說明</strong></h4>
+<p>循跡的核心概念是讓感應器<strong>持續在黑線邊緣來回擺動</strong>：</p>
+<pre class="codehilite"><code>     白色區域
+        ↓
+    ┌───────┐
+    │       │
+────┤黑線   ├──── ← 感應器理想位置：黑白交界處
+    │       │
+    └───────┘
+        ↑
+     白色區域
+
+循跡過程：
+1. 感應器偵測到黑色 → 向右轉 → 移向白色
+2. 感應器偵測到白色 → 向左轉 → 移向黑色
+3. 重複 1-2，形成「之」字形前進路徑
+</code></pre>
+
+<hr />
+<h3>4.4 完整循跡程式設計</h3>
+<h4><strong>方法 A：使用 Move Steering（推薦初學者）</strong></h4>
+<div class="mermaid">
+flowchart TD
+    Start([開始]) --> Init[初始化設定]
+    Init --> Loop{無限循環}
+    Loop --> Read[讀取光線反射強度]
+    Read --> Check{反射強度 < 45?}
+    Check -->|是<br/>在黑線上| Steer1[Move Steering<br/>Power=50, Steering=+30<br/>向右轉]
+    Check -->|否<br/>在白色區域| Steer2[Move Steering<br/>Power=50, Steering=-30<br/>向左轉]
+    Steer1 --> Loop
+    Steer2 --> Loop
+
+</div>
+
+<p><strong>完整程式（LEGO EV3 軟體積木配置）：</strong></p>
+<pre class="codehilite"><code>程式名稱：LineFollower_Steering
+
+[起始]
+  ↓
+[註解積木]「使用 Move Steering 進行循跡」
+  ↓
+[Loop 循環積木] (無限循環)
+  ↓
+  [Switch 開關積木]
+    ┌─ 條件：Color Sensor (Port 3)
+    │  模式：Measure - Reflected Light Intensity
+    │  比較：&lt; (小於)
+    │  臨界值：45
+    │
+    ├─ TRUE (在黑線上，需要向右轉)
+    │   └─ [Move Steering 積木]
+    │       - 馬達：B+C
+    │       - Power（動力）：50
+    │       - Steering（轉向）：+35
+    │       - 模式：On (持續運轉)
+    │
+    └─ FALSE (在白色區域，需要向左轉)
+        └─ [Move Steering 積木]
+            - 馬達：B+C
+            - Power（動力）：50
+            - Steering（轉向）：-35
+            - 模式：On (持續運轉)
+  ↓
+  [返回 Loop 開頭]
+</code></pre>
+
+<p><strong>參數調整建議：</strong><br />
+- <strong>Power（動力）</strong>：建議從 40-60 開始測試<br />
+- <strong>Steering（轉向）</strong>：建議從 ±30 到 ±40 之間調整<br />
+  - 數值太小（如 ±10）：轉向不足，容易衝出軌道<br />
+  - 數值太大（如 ±70）：過度轉向，路徑震盪嚴重</p>
+<hr />
+<h4><strong>方法 B：使用 Move Tank（推薦進階學習）</strong></h4>
+<div class="mermaid">
+flowchart TD
+    Start([開始]) --> Init[初始化<br/>設定馬達反向<br/>重置馬達編碼器]
+    Init --> Loop{無限循環}
+    Loop --> Read[讀取光線反射強度]
+    Read --> Check{反射強度 < 45?}
+    Check -->|是<br/>在黑線上| Tank1[Move Tank<br/>Left=50, Right=20<br/>向右轉]
+    Check -->|否<br/>在白色區域| Tank2[Move Tank<br/>Left=20, Right=50<br/>向左轉]
+    Tank1 --> Loop
+    Tank2 --> Loop
+
+</div>
+
+<p><strong>完整程式（LEGO EV3 軟體積木配置）：</strong></p>
+<pre class="codehilite"><code>程式名稱：LineFollower_Tank
+
+[起始]
+  ↓
+[註解積木]「設定馬達方向」
+  ↓
+[馬達設定積木]（視馬達安裝方向而定）
+  - 馬達 B：可能需要設定為 Reverse（反向）
+  ↓
+[註解積木]「使用 Move Tank 進行循跡」
+  ↓
+[Loop 循環積木] (無限循環)
+  ↓
+  [Switch 開關積木]
+    ┌─ 條件：Color Sensor (Port 3)
+    │  模式：Measure - Reflected Light Intensity
+    │  比較：&lt; (小於)
+    │  臨界值：45
+    │
+    ├─ TRUE (在黑線上，需要向右轉)
+    │   └─ [Move Tank 積木]
+    │       - 馬達：B+C
+    │       - B Power（左輪）：50
+    │       - C Power（右輪）：20
+    │       - 模式：On (持續運轉)
+    │
+    └─ FALSE (在白色區域，需要向左轉)
+        └─ [Move Tank 積木]
+            - 馬達：B+C
+            - B Power（左輪）：20
+            - C Power（右輪）：50
+            - 模式：On (持續運轉)
+  ↓
+  [返回 Loop 開頭]
+</code></pre>
+
+<p><strong>參數調整建議：</strong><br />
+- <strong>基礎速度</strong>：建議 40-60<br />
+- <strong>轉向時速度差</strong>：建議保持 2:1 到 3:1 的比例<br />
+  - 例如：50:25、60:30、50:20<br />
+- <strong>速度差越大</strong>：轉向越急，但路徑越不平穩</p>
+<hr />
+<h3>4.5 兩種方法的實際測試比較</h3>
+<h4><strong>測試環境：</strong></h4>
+<ul>
+<li>軌道：橢圓形黑線，線寬 2.5 公分</li>
+<li>場地：白色地板</li>
+<li>機器人：標準 EV3 教育套件組裝</li>
+</ul>
+<h4><strong>測試結果：</strong></h4>
+<table>
+<thead>
+<tr>
+<th>測試項目</th>
+<th>Move Steering (Power=50, Steering=±35)</th>
+<th>Move Tank (Left/Right=50/20 互換)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>平均速度</td>
+<td>中等</td>
+<td>中等</td>
+</tr>
+<tr>
+<td>路徑平穩度</td>
+<td>⭐⭐⭐⭐</td>
+<td>⭐⭐⭐⭐</td>
+</tr>
+<tr>
+<td>急彎表現</td>
+<td>⭐⭐⭐</td>
+<td>⭐⭐⭐⭐</td>
+</tr>
+<tr>
+<td>參數調整難度</td>
+<td>⭐⭐（簡單）</td>
+<td>⭐⭐⭐（中等）</td>
+</tr>
+<tr>
+<td>程式可讀性</td>
+<td>⭐⭐⭐⭐⭐</td>
+<td>⭐⭐⭐⭐</td>
+</tr>
+<tr>
+<td>初學者友善度</td>
+<td>⭐⭐⭐⭐⭐</td>
+<td>⭐⭐⭐</td>
+</tr>
+<tr>
+<td>進階擴展性</td>
+<td>⭐⭐⭐</td>
+<td>⭐⭐⭐⭐⭐</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3>4.6 機器人結構設定</h3>
+<p><strong>步驟 1：安裝顏色感應器</strong><br />
+- 位置：機器人<strong>前方中央</strong><br />
+- 方向：感應器<strong>面向地面</strong><br />
+- 高度：距離地面 <strong>0.5-1.5 公分</strong>（約一個手指寬）</p>
+<p><strong>步驟 2：馬達連接</strong><br />
+- <strong>Port B</strong>：左輪馬達<br />
+- <strong>Port C</strong>：右輪馬達<br />
+- <strong>Port 3</strong>：顏色感應器</p>
+<p><strong>步驟 3：測試馬達方向</strong></p>
+<pre class="codehilite"><code>測試程式：
+1. [Move Tank] 積木
+   - B Power: 50
+   - C Power: 50
+   - 持續 1 秒
+
+預期結果：機器人應該直線前進
+
+如果機器人：
+- 原地打轉 → 需要反轉其中一個馬達
+- 向左/右偏 → 檢查輪子是否安裝穩固
+</code></pre>
+
+<p><strong>步驟 4：下載並測試</strong><br />
+1. 連接 EV3 主機（USB 或藍牙）<br />
+2. 點擊 Download（下載）按鈕<br />
+3. 在測試軌道上執行程式<br />
+4. 觀察機器人是否能穩定循跡</p>
+<h4><strong>測試軌道建議：</strong></h4>
+<ul>
+<li>使用<strong>黑色膠帶</strong>或<strong>黑色絕緣膠帶</strong>在白色地板上貼出軌跡</li>
+<li>線條寬度：約 <strong>2-3 公分</strong></li>
+<li>先測試簡單的橢圓形軌道</li>
+<li>曲線不要太急（半徑至少 30 公分）</li>
+</ul>
+<hr />
+<h3>4.7 如何加速？速度優化策略</h3>
+<h4><strong>方法 1：提高基礎速度</strong></h4>
+<p><strong>Move Steering 方式：</strong></p>
+<pre class="codehilite"><code>原始程式：
+Power = 50, Steering = ±35
+
+加速版本：
+Power = 70, Steering = ±35
+</code></pre>
+
+<p><strong>Move Tank 方式：</strong></p>
+<pre class="codehilite"><code>原始程式：
+TRUE：  B=50, C=20
+FALSE： B=20, C=50
+
+加速版本：
+TRUE：  B=70, C=40
+FALSE： B=40, C=70
+</code></pre>
+
+<p><strong>注意事項：</strong><br />
+- ⚠️ 速度提高後，轉向反應時間會縮短<br />
+- ⚠️ 可能需要調整轉向參數<br />
+- ⚠️ 測試時逐步提升速度，避免衝出軌道</p>
+<hr />
+<h4><strong>方法 2：使用比例控制（Proportional Control）</strong></h4>
+<p><strong>原理：</strong><br />
+根據偏離黑線的程度，動態調整轉向力道。</p>
+<p><strong>Move Tank 實作方式（使用 LEGO EV3 軟體的 Math 積木）：</strong></p>
+<pre class="codehilite"><code>[Loop 循環]
+  ↓
+  [Color Sensor 積木] → 讀取反射強度 → 儲存到變數 &quot;Light&quot;
+  ↓
+  [Math 積木] → 計算偏差值
+    公式：Light - 45 → 儲存到變數 &quot;Error&quot;
+  ↓
+  [Math 積木] → 計算轉向修正
+    公式：Error × 1.5 → 儲存到變數 &quot;Correction&quot;
+  ↓
+  [Math 積木] → 計算左輪速度
+    公式：50 - Correction → 儲存到變數 &quot;LeftSpeed&quot;
+  ↓
+  [Math 積木] → 計算右輪速度
+    公式：50 + Correction → 儲存到變數 &quot;RightSpeed&quot;
+  ↓
+  [Move Tank 積木]
+    - B Power: LeftSpeed
+    - C Power: RightSpeed
+    - 模式：On
+</code></pre>
+
+<p><strong>範例計算：</strong></p>
+<pre class="codehilite"><code>情境 1：感應器在黑線上
+Light = 20
+Error = 20 - 45 = -25
+Correction = -25 × 1.5 = -37.5
+
+LeftSpeed  = 50 - (-37.5) = 87.5  ← 左輪加速
+RightSpeed = 50 + (-37.5) = 12.5  ← 右輪減速
+結果：向右轉（回到黑線邊緣）
+
+情境 2：感應器在白色區域
+Light = 70
+Error = 70 - 45 = 25
+Correction = 25 × 1.5 = 37.5
+
+LeftSpeed  = 50 - 37.5 = 12.5  ← 左輪減速
+RightSpeed = 50 + 37.5 = 87.5  ← 右輪加速
+結果：向左轉（尋找黑線）
+</code></pre>
+
+<p><strong>優點：</strong><br />
+- 偏離越多，修正越大（反應靈敏）<br />
+- 接近黑線時，修正變小（行駛平穩）<br />
+- 可支援更高的巡線速度</p>
+<hr />
+<h4><strong>方法 3：PID 控制（進階）</strong></h4>
+<p>PID (Proportional-Integral-Derivative) 是工業級的控制演算法，可實現最穩定的高速循跡。</p>
+<p><strong>PID 公式：</strong></p>
+<pre class="codehilite"><code>修正值 = Kp × 偏差 + Ki × 累積偏差 + Kd × 偏差變化率
+
+Kp = 比例係數（影響即時反應）
+Ki = 積分係數（消除穩態誤差）
+Kd = 微分係數（減少震盪）
+</code></pre>
+
+<p><strong>EV3 實作挑戰：</strong><br />
+- 需要使用變數儲存歷史偏差值<br />
+- 需要精確的時間控制<br />
+- 建議使用 EV3-Python 或 RobotC 實現<br />
+- Move Tank 比 Move Steering 更適合實作 PID</p>
+<hr />
+<h3>4.8 基礎循跡方式的優缺點</h3>
+<h4><strong>優點：</strong></h4>
+<p>✅ <strong>程式簡單</strong><br />
+- 只需要 Switch 積木和馬達控制積木<br />
+- 適合初學者快速上手</p>
+<p>✅ <strong>硬體需求低</strong><br />
+- 只需要一個顏色感應器<br />
+- 不需要複雜的機械結構</p>
+<p>✅ <strong>穩定性可接受</strong><br />
+- 在低速情況下表現良好<br />
+- 適合教學展示</p>
+<h4><strong>缺點：</strong></h4>
+<p>❌ <strong>速度受限</strong><br />
+- 高速時容易衝出軌道<br />
+- 反應時間不足</p>
+<p>❌ <strong>路徑震盪</strong><br />
+- 機器人會不斷左右擺動<br />
+- 行駛路徑呈現鋸齒狀</p>
+<p>❌ <strong>急彎表現差</strong><br />
+- 轉彎半徑太小時容易失去黑線<br />
+- 需要放慢速度通過彎道</p>
+<p>❌ <strong>環境敏感</strong><br />
+- 光線變化會影響臨界值<br />
+- 地面材質不同會影響反射強度</p>
+<hr />
+<h3>4.9 如何改善？進階優化方向</h3>
+<h4><strong>改善 1：雙感應器循跡</strong> ⭐⭐</h4>
+<p><strong>方法：</strong><br />
+使用兩個顏色感應器，分別安裝在黑線兩側。</p>
+<p><strong>邏輯：</strong></p>
+<pre class="codehilite"><code>左感應器  右感應器  → 動作
+───────  ───────  ────────
+  白        白     → 直行（在線上）
+  黑        白     → 右轉（偏左）
+  白        黑     → 左轉（偏右）
+  黑        黑     → 停止或後退（偏離軌道）
+</code></pre>
+
+<p><strong>優點：</strong><br />
+- 不需要設定臨界值<br />
+- 速度可以更快<br />
+- 路徑更平穩（減少震盪）</p>
+<hr />
+<h4><strong>改善 2：實作 PID 控制</strong> ⭐⭐⭐</h4>
+<p><strong>優點：</strong><br />
+- 支援高速巡線（可達 80-100% 速度）<br />
+- 路徑非常平穩<br />
+- 可自動適應不同彎道</p>
+<p><strong>實作建議：</strong><br />
+- 使用 <strong>Move Tank</strong> 而非 Move Steering<br />
+- 使用 <strong>MakeCode for EV3</strong> 或 <strong>Python</strong> 撰寫<br />
+- 調整參數：從 Kp 開始，逐步加入 Kd，最後微調 Ki</p>
+<hr />
+<h4><strong>改善 3：動態臨界值調整</strong></h4>
+<p><strong>方法：</strong><br />
+在程式執行期間，自動校正黑白臨界值。</p>
+<p><strong>邏輯：</strong></p>
+<pre class="codehilite"><code>啟動時：
+1. 掃描黑色區域 10 次，取平均值 → black_avg
+2. 掃描白色區域 10 次,取平均值 → white_avg
+3. 計算臨界值 = (black_avg + white_avg) / 2
+
+執行時：
+每 5 秒更新一次臨界值（適應環境光線變化）
+</code></pre>
+
+<p><strong>優點：</strong><br />
+- 適應不同環境光線<br />
+- 不需要手動調整參數</p>
+<hr />
+<h4><strong>改善 4：加入陀螺儀感應器</strong></h4>
+<p><strong>方法：</strong><br />
+使用 EV3 陀螺儀偵測機器人的轉向角度，配合顏色感應器進行路徑修正。</p>
+<p><strong>應用：</strong><br />
+- 直線路段：使用陀螺儀保持直行<br />
+- 彎道路段：使用顏色感應器循跡<br />
+- 結合兩者優點</p>
+<hr />
+<h2>五、完整程式碼範例</h2>
+<h3>5.1 基礎循跡程式（Move Steering 版本）</h3>
+<p><strong>使用 LEGO EV3 軟體的積木配置：</strong></p>
+<pre class="codehilite"><code>程式名稱：LineFollower_Steering_Basic
+
+[起始]
+  ↓
+[註解積木]「Move Steering 循跡程式」
+  ↓
+[Loop 循環積木] (無限循環)
+  ↓
+  [Switch 開關積木]
+    ┌─ 條件：Color Sensor (Port 3)
+    │  模式：Measure - Reflected Light Intensity
+    │  比較：&lt; (小於)
+    │  臨界值：45
+    │
+    ├─ TRUE (在黑線上)
+    │   └─ [Move Steering 積木]
+    │       - 馬達：B+C
+    │       - Power：50
+    │       - Steering：+35  ← 向右轉
+    │       - 模式：On
+    │
+    └─ FALSE (在白色區域)
+        └─ [Move Steering 積木]
+            - 馬達：B+C
+            - Power：50
+            - Steering：-35  ← 向左轉
+            - 模式：On
+  ↓
+  [返回 Loop 開頭]
+</code></pre>
+
+<hr />
+<h3>5.2 基礎循跡程式（Move Tank 版本）</h3>
+<p><strong>使用 LEGO EV3 軟體的積木配置：</strong></p>
+<pre class="codehilite"><code>程式名稱：LineFollower_Tank_Basic
+
+[起始]
+  ↓
+[註解積木]「設定馬達方向」
+  ↓
+[馬達設定積木]
+  - 馬達 B：Reverse（如果需要）
+  ↓
+[註解積木]「Move Tank 循跡程式」
+  ↓
+[Loop 循環積木] (無限循環)
+  ↓
+  [Switch 開關積木]
+    ┌─ 條件：Color Sensor (Port 3)
+    │  模式：Measure - Reflected Light Intensity
+    │  比較：&lt; (小於)
+    │  臨界值：45
+    │
+    ├─ TRUE (在黑線上)
+    │   └─ [Move Tank 積木]
+    │       - 馬達：B+C
+    │       - B Power：50  ← 左輪
+    │       - C Power：20  ← 右輪
+    │       - 模式：On
+    │
+    └─ FALSE (在白色區域)
+        └─ [Move Tank 積木]
+            - 馬達：B+C
+            - B Power：20  ← 左輪
+            - C Power：50  ← 右輪
+            - 模式：On
+  ↓
+  [返回 Loop 開頭]
+</code></pre>
+
+<hr />
+<h3>5.3 進階循跡程式（EV3 Python - Move Tank + PID）</h3>
+<pre class="codehilite"><code class="language-python">#!/usr/bin/env pybricks-micropython
+
+&quot;&quot;&quot;
+程式名稱：LineFollower_PID_Tank
+功能：使用 Move Tank 與 PID 控制實現高速循跡
+作者：Engineering Education
+版本：v1.0
+馬達配置：Port B = 左輪，Port C = 右輪
+&quot;&quot;&quot;
+
+from pybricks.hubs import EV3Brick
+from pybricks.ev3devices import Motor, ColorSensor
+from pybricks.parameters import Port
+from pybricks.tools import wait
+
+# ===== 初始化硬體 =====
+ev3 = EV3Brick()
+left_motor = Motor(Port.B)   # 左輪
+right_motor = Motor(Port.C)  # 右輪
+color_sensor = ColorSensor(Port.S3)
+
+# ===== PID 參數設定 =====
+TARGET = 45          # 目標反射強度（黑白臨界值）
+BASE_SPEED = 200     # 基礎速度（deg/s）
+Kp = 1.5             # 比例係數
+Ki = 0.01            # 積分係數
+Kd = 0.5             # 微分係數
+
+# ===== 變數初始化 =====
+integral = 0
+last_error = 0
+
+# ===== 主程式循環 =====
+ev3.speaker.beep()   # 啟動提示音
+
+while True:
+    # 讀取當前光線反射強度
+    reflection = color_sensor.reflection()
+
+    # 計算偏差值
+    error = reflection - TARGET
+
+    # PID 計算
+    integral = integral + error
+    derivative = error - last_error
+    correction = (Kp * error) + (Ki * integral) + (Kd * derivative)
+
+    # 計算左右馬達速度（Move Tank 方式）
+    left_speed = BASE_SPEED - correction
+    right_speed = BASE_SPEED + correction
+
+    # 限制馬達速度範圍（-400 到 400）
+    left_speed = max(-400, min(400, left_speed))
+    right_speed = max(-400, min(400, right_speed))
+
+    # 驅動馬達
+    left_motor.run(left_speed)
+    right_motor.run(right_speed)
+
+    # 更新上一次偏差值
+    last_error = error
+
+    # 控制循環頻率（每 10ms 執行一次）
+    wait(10)
+</code></pre>
+
+<p><strong>程式說明：</strong><br />
+1. <strong>第 16-18 行</strong>：明確定義 Port B 為左輪，Port C 為右輪<br />
+2. <strong>第 21-25 行</strong>：設定 PID 參數（可根據實際情況調整）<br />
+3. <strong>第 40-42 行</strong>：讀取感應器並計算偏差<br />
+4. <strong>第 44-47 行</strong>：執行 PID 運算<br />
+5. <strong>第 50-51 行</strong>：使用 Move Tank 概念計算左右輪速度<br />
+6. <strong>第 54-55 行</strong>：限制馬達速度，避免超出範圍<br />
+7. <strong>第 62 行</strong>：控制循環頻率為 100Hz（每秒執行 100 次）</p>
+<hr />
+<h3>5.4 比例控制程式（EV3 Python - Move Tank）</h3>
+<pre class="codehilite"><code class="language-python">#!/usr/bin/env pybricks-micropython
+
+&quot;&quot;&quot;
+程式名稱：LineFollower_Proportional_Tank
+功能：使用 Move Tank 與比例控制實現循跡
+馬達配置：Port B = 左輪，Port C = 右輪
+&quot;&quot;&quot;
+
+from pybricks.hubs import EV3Brick
+from pybricks.ev3devices import Motor, ColorSensor
+from pybricks.parameters import Port
+from pybricks.tools import wait
+
+# ===== 初始化 =====
+ev3 = EV3Brick()
+left_motor = Motor(Port.B)   # 左輪
+right_motor = Motor(Port.C)  # 右輪
+color_sensor = ColorSensor(Port.S3)
+
+# ===== 參數設定 =====
+TARGET = 45          # 目標反射強度
+BASE_SPEED = 200     # 基礎速度（deg/s）
+Kp = 1.5             # 比例係數
+
+# ===== 主程式 =====
+ev3.speaker.beep()
+
+while True:
+    # 讀取光線反射強度
+    reflection = color_sensor.reflection()
+
+    # 計算偏差值
+    error = reflection - TARGET
+
+    # 比例控制計算
+    correction = Kp * error
+
+    # 計算左右輪速度
+    left_speed = BASE_SPEED - correction
+    right_speed = BASE_SPEED + correction
+
+    # 限制速度範圍
+    left_speed = max(-400, min(400, left_speed))
+    right_speed = max(-400, min(400, right_speed))
+
+    # 驅動馬達（Move Tank 方式）
+    left_motor.run(left_speed)
+    right_motor.run(right_speed)
+
+    wait(10)
+</code></pre>
+
+<hr />
+<h3>5.5 雙感應器循跡程式（EV3 Python）</h3>
+<pre class="codehilite"><code class="language-python">#!/usr/bin/env pybricks-micropython
+
+&quot;&quot;&quot;
+程式名稱：LineFollower_DualSensor
+功能：使用雙顏色感應器實現穩定循跡
+馬達配置：Port B = 左輪，Port C = 右輪
+感應器：Port S2 = 左側，Port S3 = 右側
+&quot;&quot;&quot;
+
+from pybricks.hubs import EV3Brick
+from pybricks.ev3devices import Motor, ColorSensor
+from pybricks.parameters import Port
+from pybricks.tools import wait
+
+# ===== 初始化 =====
+ev3 = EV3Brick()
+left_motor = Motor(Port.B)
+right_motor = Motor(Port.C)
+left_sensor = ColorSensor(Port.S2)   # 左側感應器
+right_sensor = ColorSensor(Port.S3)  # 右側感應器
+
+# ===== 參數設定 =====
+THRESHOLD = 45       # 黑白臨界值
+SPEED_STRAIGHT = 300 # 直行速度
+SPEED_TURN = 150     # 轉彎速度
+
+# ===== 主程式 =====
+ev3.speaker.beep()
+
+while True:
+    # 讀取兩個感應器數值
+    left_light = left_sensor.reflection()
+    right_light = right_sensor.reflection()
+
+    # 判斷感應器狀態（True = 白色，False = 黑色）
+    left_white = left_light &gt; THRESHOLD
+    right_white = right_light &gt; THRESHOLD
+
+    # 四種情況的決策邏輯
+    if left_white and right_white:
+        # 兩側都是白色 → 在黑線上，直行
+        left_motor.run(SPEED_STRAIGHT)
+        right_motor.run(SPEED_STRAIGHT)
+
+    elif not left_white and right_white:
+        # 左黑右白 → 偏向左側，需要右轉
+        left_motor.run(SPEED_STRAIGHT)
+        right_motor.run(SPEED_TURN)
+
+    elif left_white and not right_white:
+        # 左白右黑 → 偏向右側，需要左轉
+        left_motor.run(SPEED_TURN)
+        right_motor.run(SPEED_STRAIGHT)
+
+    else:
+        # 兩側都是黑色 → 偏離軌道，停止並後退
+        left_motor.run(-200)
+        right_motor.run(-200)
+        wait(500)
+
+    wait(10)
+</code></pre>
+
+<hr />
+<h2>六、實作練習與挑戰</h2>
+<h3>練習 1：基礎循跡（Move Steering） ⭐</h3>
+<p><strong>目標：</strong><br />
+使用 Move Steering 積木，完成橢圓形軌道的循跡。</p>
+<p><strong>要求：</strong><br />
+- 機器人能穩定循跡至少 3 圈<br />
+- 不能偏離軌道超過 3 秒<br />
+- 使用 Move Steering 積木</p>
+<p><strong>提示：</strong><br />
+- Power 設定為 50<br />
+- Steering 從 ±30 開始調整</p>
+<hr />
+<h3>練習 2：基礎循跡（Move Tank） ⭐⭐</h3>
+<p><strong>目標：</strong><br />
+使用 Move Tank 積木，完成相同的橢圓形軌道循跡。</p>
+<p><strong>要求：</strong><br />
+- 完成與練習 1 相同的軌道<br />
+- 使用 Move Tank 積木<br />
+- 比較兩種方法的差異</p>
+<p><strong>提示：</strong><br />
+- 嘗試將練習 1 的 Move Steering 參數轉換為 Move Tank 參數</p>
+<hr />
+<h3>練習 3：速度挑戰 ⭐⭐</h3>
+<p><strong>目標：</strong><br />
+在保持穩定的前提下，盡可能提高巡線速度。</p>
+<p><strong>要求：</strong><br />
+- 完成一圈的時間少於 20 秒<br />
+- 不能衝出軌道<br />
+- 可選擇 Move Steering 或 Move Tank</p>
+<p><strong>提示：</strong><br />
+- 調整基礎速度和轉向參數<br />
+- Move Tank 可能在高速時表現更好</p>
+<hr />
+<h3>練習 4：複雜軌道 ⭐⭐⭐</h3>
+<p><strong>目標：</strong><br />
+設計包含<strong>直線、急彎、S彎</strong>的複雜軌道，測試循跡能力。</p>
+<p><strong>要求：</strong><br />
+- 能穩定通過半徑 20cm 的急彎<br />
+- 能順利通過連續 S 彎<br />
+- 分別使用 Move Steering 和 Move Tank 測試</p>
+<hr />
+<h3>練習 5：比例控制實作 ⭐⭐⭐⭐</h3>
+<p><strong>目標：</strong><br />
+使用 Math 積木實作比例控制。</p>
+<p><strong>要求：</strong><br />
+- 使用 Move Tank 積木<br />
+- 根據反射強度動態計算左右輪速度<br />
+- 速度應能達到 Power=60 以上</p>
+<hr />
+<h3>練習 6：PID 參數調校 ⭐⭐⭐⭐⭐</h3>
+<p><strong>目標：</strong><br />
+使用 Python 實作 PID 控制，並找到最佳參數組合。</p>
+<p><strong>步驟：</strong><br />
+1. 只使用 Kp，觀察震盪現象<br />
+2. 加入 Kd，減少震盪<br />
+3. 加入 Ki，消除穩態誤差<br />
+4. 記錄最佳參數組合</p>
+<hr />
+<h2>七、常見問題排除</h2>
+<h3>Q1: 機器人在黑線上不斷震盪，無法直行</h3>
+<p><strong>原因：</strong><br />
+- <strong>Move Steering</strong>：Steering 數值太大<br />
+- <strong>Move Tank</strong>：左右輪速度差太大<br />
+- 臨界值設定不當</p>
+<p><strong>解決方法：</strong><br />
+- <strong>Move Steering</strong>：減小 Steering（例如從 ±40 改為 ±25）<br />
+- <strong>Move Tank</strong>：減小速度差（例如從 50/20 改為 50/35）<br />
+- 重新測試並調整臨界值<br />
+- 嘗試實作比例控制</p>
+<hr />
+<h3>Q2: 使用 Move Steering 和 Move Tank 結果不同</h3>
+<p><strong>原因：</strong><br />
+- 參數轉換不正確<br />
+- 馬達方向設定不同</p>
+<p><strong>解決方法：</strong><br />
+- 使用本文件第 3.5 節的轉換公式<br />
+- 檢查馬達方向設定（Reverse）<br />
+- 確認 Port 連接正確（B=左，C=右）</p>
+<hr />
+<h3>Q3: 機器人容易衝出軌道</h3>
+<p><strong>原因：</strong><br />
+- 速度太快，反應不及<br />
+- 感應器與地面距離過大<br />
+- 轉向力道不足</p>
+<p><strong>解決方法：</strong><br />
+- 降低基礎速度（Power 或 B/C Power）<br />
+- 調整感應器高度至 0.5-1.0 公分<br />
+- <strong>Move Steering</strong>：增加 Steering 絕對值<br />
+- <strong>Move Tank</strong>：加大速度差<br />
+- 檢查馬達是否正常運作</p>
+<hr />
+<h3>Q4: 在不同環境下表現不一致</h3>
+<p><strong>原因：</strong><br />
+- 環境光線影響反射強度<br />
+- 地面材質不同</p>
+<p><strong>解決方法：</strong><br />
+- 每次更換場地時重新測試臨界值<br />
+- 實作自動校正功能<br />
+- 使用遮光罩減少環境光干擾</p>
+<hr />
+<h3>Q5: 急彎處容易失去黑線</h3>
+<p><strong>原因：</strong><br />
+- 轉向反應太慢<br />
+- 速度過快</p>
+<p><strong>解決方法：</strong><br />
+- <strong>Move Steering</strong>：增加 Steering 數值（例如從 ±30 到 ±50）<br />
+- <strong>Move Tank</strong>：加大速度差（例如從 50/30 改為 50/20）<br />
+- 降低基礎速度<br />
+- 使用雙感應器或 PID 控制</p>
+<hr />
+<h3>Q6: Move Steering 無法實作 PID 控制</h3>
+<p><strong>原因：</strong><br />
+- Steering 參數無法直接用變數動態調整（LEGO EV3 軟體限制）</p>
+<p><strong>解決方法：</strong><br />
+- 改用 <strong>Move Tank</strong> 積木<br />
+- 或使用 Python 程式（Pybricks）</p>
+<hr />
+<h2>八、延伸學習資源</h2>
+<h3>推薦閱讀</h3>
+<ul>
+<li><a href="https://education.lego.com/en-us/lessons">EV3 官方教學文件</a></li>
+<li><a href="https://pybricks.com/ev3-micropython/">Pybricks 官方文檔</a></li>
+<li><a href="https://zh.wikipedia.org/wiki/PID控制器">PID 控制理論入門</a></li>
+<li><a href="https://education.lego.com/en-us/support">Move Steering vs Move Tank 官方說明</a></li>
+</ul>
+<h3>相關競賽</h3>
+<ul>
+<li><strong>FLL (FIRST LEGO League)</strong>：國際性機器人競賽</li>
+<li><strong>WRO (World Robot Olympiad)</strong>：世界機器人奧林匹亞</li>
+<li><strong>RoboCup Junior</strong>：機器人足球與救援競賽</li>
+</ul>
+<h3>進階主題</h3>
+<ul>
+<li>使用陀螺儀實現路徑追蹤</li>
+<li>結合超音波感應器進行障礙物閃避</li>
+<li>多機器人協同循跡</li>
+</ul>
+<hr />
+<h2>九、總結</h2>
+<p>本教學涵蓋了 EV3 顏色感應器的兩種主要模式，並詳細說明了如何使用<strong>光線反射強度模式</strong>配合 <strong>Move Steering</strong> 或 <strong>Move Tank</strong> 實現高效的循跡機器人。</p>
+<p><strong>關鍵要點回顧：</strong><br />
+1. ✅ 光線反射強度模式比顏色模式更適合循跡<br />
+2. ✅ 臨界值設定是成功循跡的關鍵<br />
+3. ✅ <strong>Move Steering 適合初學者，Move Tank 適合進階應用</strong><br />
+4. ✅ <strong>馬達 B = 左輪，馬達 C = 右輪</strong> 是標準連接方式<br />
+5. ✅ Switch 積木邏輯是基礎，PID 控制是進階目標<br />
+6. ✅ 雙感應器或 PID 控制可大幅提升性能</p>
+<p><strong>學習路徑建議：</strong></p>
+<pre class="codehilite"><code>Move Steering 基礎循跡
+    ↓
+Move Tank 基礎循跡
+    ↓
+速度優化
+    ↓
+比例控制（Move Tank + Math）
+    ↓
+PID 控制（Python + Move Tank）
+    ↓
+雙感應器
+    ↓
+競賽應用
+</code></pre>
+
+<p><strong>選擇建議：</strong><br />
+- <strong>初學者</strong>：從 Move Steering 開始<br />
+- <strong>進階學習</strong>：轉向 Move Tank<br />
+- <strong>競賽應用</strong>：使用 Move Tank + PID</p>
+<p>透過不斷實作與調整，你將能掌握機器人循跡的核心技術，並應用於各種自動導航任務！</p>
+<hr />
+<p><strong>作者：</strong> Engineering Education Team<br />
+<strong>最後更新：</strong> 2025-10-19<br />
+<strong>版本：</strong> b03<br />
+<strong>主要更新：</strong> 將所有 "EV3-G" 統一改為 "LEGO EV3 軟體" 或相關清晰表述</p></div>
+    
+    <!-- Highlight.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    
+    <!-- Mermaid -->
+    <script type="module">
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+        mermaid.initialize({
+            "startOnLoad": true,
+            "theme": "dark",
+            "securityLevel": "loose"
+});
+    </script>
+</body>
+</html>

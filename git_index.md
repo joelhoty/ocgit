@@ -49,6 +49,7 @@ This file contains a list of all HTML files in the project, organized by folder.
 
 | File Name | Last Updated | Link |
 | --- | --- | --- |
+| Mindstorm_ColorSensor_b03.html | 2025-10-27 | [Link](https://joelhoty.github.io/ocgit/Robots/Mindstorm_ColorSensor_b03.html) |
 | Mindstorm_US_ACC_b09.html | 2025-10-26 | [Link](https://joelhoty.github.io/ocgit/Robots/Mindstorm_US_ACC_b09.html) |
 
 **Root**
