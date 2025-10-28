@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chapter_04_EarlyFoundations_b02</title>
+    
+    <!-- CSS 框架 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/dark.min.css">
+    
+    <!-- 代碼高亮 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/base16/darcula.min.css">
+    
+    <!-- 自定義樣式 -->
+    <style>
+        
+                body {
+                    max-width: 900px;
+                    margin: 0 auto;
+                    padding: 20px;
+                }
+                /* 提升代码块对比度 */
+                pre {
+                    background: #1e1e1e !important;
+                    border: 1px solid #3e3e3e;
+                }
+                pre code {
+                    background: #1e1e1e !important;
+                }
+                code {
+                    background: #2d2d2d !important;
+                }
+                /* 引用块对比度 */
+                blockquote {
+                    background: #2d2d2d;
+                    border-left: 4px solid #4a9eff;
+                }
+            
+        
+        /* 通用代碼塊樣式 */
+        pre code {
+            display: block;
+            padding: 1.5em;
+            border-radius: 8px;
+            overflow-x: auto;
+            line-height: 1.6;
+        }
+
+        /* Mermaid 圖表樣式 */
+        
+        .mermaid {
+            margin: 2em 0;
+            padding: 1.5em;
+            text-align: center;
+            border-radius: 8px;
+        }
+        
+        .mermaid {
+            background: #2c3034;
+            border: 1px solid #444;
+        }
+            
+        
+        /* 響應式調整 */
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            .container, .markdown-body, .latex-body, .window-body, .nes-container {
+                padding: 15px;
+            }
+            pre code {
+                padding: 1em;
+            }
+        }
+        
+        
+    </style>
+</head>
+<body>
+    <div class="container"><!-- Path: 114A_AI_intro/History | Timestamp: 2025-10-26 10:22:00 | Version: b02 -->
+<h1>第 IV 章：早期理論基礎 (1940s-1950s)</h1>
+<p><a href="./Chapter_03_TwoParadigms_b01.html">← 上一章</a> | <a href="./index.html">返回目錄</a> | <a href="./Chapter_05_ClassicalPeriod_b05.html">下一章 →</a></p><hr />
+<h2>4.1 時代背景</h2>
+<p>在電腦被發明出來的初期，科學家們就開始思考一個深刻的問題：<strong>機器是否可能「思考」？</strong></p>
+<h3>歷史情境</h3>
+<p><strong>1940年代的世界</strong>：<br />
+- 🌍 第二次世界大戰期間與戰後<br />
+- 💻 第一台電子計算機誕生（ENIAC, 1946）<br />
+- 🔬 科學技術快速發展<br />
+- 🧠 對人類智慧本質的哲學探討</p>
+<p><strong>技術條件</strong>：<br />
+- 計算機體積龐大（佔據整個房間）<br />
+- 運算能力極其有限<br />
+- 主要用於軍事計算與科研<br />
+- 程式設計需要直接操作硬體</p>
+<p><strong>思想氛圍</strong>：<br />
+- 科學樂觀主義盛行<br />
+- 跨學科研究興起<br />
+- 控制論、資訊理論等新領域誕生<br />
+- 哲學與科學的密切對話</p>
+<hr />
+<h2>4.2 艾倫·圖靈與圖靈測試</h2>
+<h3>4.2.1 艾倫·圖靈 — 計算機科學與 AI 之父</h3>
+<p><strong>Alan Turing (1912-1954)</strong><br />
+- 🇬🇧 英國數學家、邏輯學家、密碼學家<br />
+- 🏆 被譽為「計算機科學與人工智慧之父」<br />
+- 🔐 二戰期間破解德國 Enigma 密碼機<br />
+- 💡 奠定了現代計算理論的基礎</p>
+<p><strong>生平重要貢獻</strong>：<br />
+1. <strong>圖靈機 (1936)</strong> — 計算理論的基石<br />
+2. <strong>破解 Enigma (1940-1945)</strong> — 協助盟軍獲勝<br />
+3. <strong>圖靈測試 (1950)</strong> — 定義機器智慧的標準<br />
+4. <strong>化學形態發生 (1952)</strong> — 開創生物數學領域</p>
+<hr />
+<h3>4.2.2 圖靈測試 (The Turing Test, 1950)</h3>
+<h4>論文：《計算機器與智能》</h4>
+<p><strong>發表</strong>：Mind 期刊，1950年<br />
+<strong>核心問題</strong>：「機器能思考嗎？」(Can machines think?)</p>
+<p><strong>圖靈的策略</strong>：<br />
+不直接回答「什麼是思考」，而是提出一個<strong>行為測試</strong>：</p>
+<blockquote>
+<p>"如果一台機器的行為在所有方面都無法與人類區分，那麼我們就應該說它能夠思考。"</p>
+</blockquote>
+<h4>測試設計</h4>
+<p><strong>參與者</strong>：<br />
+- 👤 <strong>評審</strong>（人類）<br />
+- 👤 <strong>人類被測試者</strong> (Human)<br />
+- 🤖 <strong>機器被測試者</strong> (Machine)</p>
+<p><strong>測試流程</strong>：</p>
+<div class="mermaid">
+graph TD
+    Judge[評審]
+    Human[人類被測試者]
+    Machine[機器被測試者]
+
+    Judge -->|透過文字對話| Human
+    Judge -->|透過文字對話| Machine
+
+    Judge -->|嘗試判斷| Q{誰是機器?}
+
+    Q -->|無法分辨| Pass[✓ 機器通過測試]
+    Q -->|準確識別| Fail[✗ 機器未通過測試]
+
+    style Pass fill:#e1f5dd
+    style Fail fill:#ffe6e6
+
+</div>
+
+<p><strong>關鍵規則</strong>：<br />
+1. ✅ 只能透過<strong>文字</strong>交流（避免聲音、外觀干擾）<br />
+2. ✅ 評審不知道誰是人類、誰是機器<br />
+3. ✅ 如果評審無法穩定區分，機器通過測試</p>
+<p><strong>對話範例</strong>：</p>
+<pre class="codehilite"><code>評審：你能告訴我一首莎士比亞十四行詩嗎？
+回應A：當然可以。「我能否將你比作夏日？你比夏日更可愛、更溫和...」
+回應B：抱歉，我對詩歌不太在行。
+
+評審：請計算 34957 + 70764。
+回應A：105721。
+回應B：讓我想想... 大概是 105720 左右？（故意延遲並稍微出錯）
+
+評審：你覺得這個笑話好笑嗎？「為什麼火雞不會飛？因為它們更喜歡走路！」
+回應A：哈哈，有點冷笑話的感覺。
+回應B：我覺得還挺有趣的，雖然不是特別好笑。
+
+問題：哪個是機器？
+</code></pre>
+
+<p><strong>圖靈的洞察</strong>：<br />
+- 🤖 <strong>機器可能故意答錯數學題</strong>（表現得像人類）<br />
+- 🧠 <strong>智慧不在於完美計算</strong>，而在於「像人類一樣」<br />
+- 🎭 <strong>行為主義定義</strong>：重要的是行為，而非內在機制</p>
+<hr />
+<h4>圖靈測試的意義</h4>
+<p><strong>哲學意義</strong>：<br />
+1. <strong>操作化定義</strong>：<br />
+   - 將抽象的「思考」轉化為可測試的行為<br />
+   - 避免陷入「意識」的哲學泥潭</p>
+<ol>
+<li><strong>行為主義視角</strong>：</li>
+<li>如果看起來能思考，就應該被視為能思考</li>
+<li>
+<p>類似「如果走路像鴨子、叫聲像鴨子，就是鴨子」</p>
+</li>
+<li>
+<p><strong>功能等價性</strong>：</p>
+</li>
+<li>重點不是「如何思考」，而是「能否表現出智慧行為」</li>
+</ol>
+<p><strong>對 AI 的影響</strong>：<br />
+- ✅ 提供了<strong>可操作的目標</strong><br />
+- ✅ 啟發了對話系統的研究<br />
+- ✅ 成為衡量 AI 的經典標準</p>
+<p><strong>爭議與批評</strong>：</p>
+<p>❌ <strong>中文房間論證</strong> (John Searle, 1980)：<br />
+- 即使通過圖靈測試，也不代表真正「理解」<br />
+- 可能只是巧妙的符號操作，沒有真實的理解</p>
+<p>❌ <strong>意識問題</strong>：<br />
+- 通過測試 ≠ 擁有意識或自我意識<br />
+- 行為相似 ≠ 內在體驗相同</p>
+<p>❌ <strong>測試局限</strong>：<br />
+- 只測試語言能力，忽略其他智慧形式<br />
+- 可能被欺騙策略通過</p>
+<hr />
+<h3>4.2.3 圖靈機 — 計算理論的基石</h3>
+<p>雖然在 1936 年就提出（早於 AI 概念），但圖靈機為 AI 提供了理論基礎。</p>
+<h4>圖靈機的結構</h4>
+<p><strong>組成部分</strong>：</p>
+<div class="mermaid">
+graph LR
+    Tape[無限長紙帶<br/>Infinite Tape]
+    Head[讀寫頭<br/>Read/Write Head]
+    State[狀態機<br/>State Machine]
+    Rules[轉移規則<br/>Transition Rules]
+
+    Tape <--> Head
+    Head <--> State
+    State <--> Rules
+
+    style Tape fill:#e3f2fd
+    style Head fill:#fff4e6
+    style State fill:#f3e5f5
+    style Rules fill:#e1f5dd
+
+</div>
+
+<ol>
+<li><strong>無限長紙帶</strong>：</li>
+<li>分成一個個格子</li>
+<li>
+<p>每個格子包含一個符號（0, 1, 空白）</p>
+</li>
+<li>
+<p><strong>讀寫頭</strong>：</p>
+</li>
+<li>可以讀取當前格子的符號</li>
+<li>可以寫入新符號</li>
+<li>
+<p>可以左移或右移一格</p>
+</li>
+<li>
+<p><strong>狀態機</strong>：</p>
+</li>
+<li>處於某個內部狀態</li>
+<li>
+<p>根據當前狀態和讀取的符號決定動作</p>
+</li>
+<li>
+<p><strong>轉移規則</strong>：</p>
+</li>
+<li>形式：(當前狀態, 讀取符號) → (新狀態, 寫入符號, 移動方向)</li>
+</ol>
+<p><strong>範例：計算 1 + 1</strong></p>
+<pre class="codehilite"><code>初始紙帶：..._ 1 1 _...
+
+步驟 1：讀取第一個 1，寫入 #（標記）
+步驟 2：向右移動
+步驟 3：讀取第二個 1
+步驟 4：將其改為 0，向左移動
+步驟 5：找到 #，將其改為 1
+步驟 6：向右移動，寫入 0
+步驟 7：停機
+
+最終紙帶：..._ 1 0 _...  （表示 2，二進制）
+</code></pre>
+
+<h4>圖靈機的意義</h4>
+<p><strong>計算理論基礎</strong>：</p>
+<ol>
+<li><strong>通用計算</strong>：</li>
+<li>圖靈證明了存在一台「通用圖靈機」</li>
+<li>可以模擬任何其他圖靈機</li>
+<li>
+<p>這是現代通用電腦的理論原型</p>
+</li>
+<li>
+<p><strong>Church-Turing 論題</strong>：</p>
+<blockquote>
+<p>"任何可被演算法解決的問題，都可以被圖靈機解決。"</p>
+</blockquote>
+</li>
+<li>
+<p>定義了「可計算性」的邊界</p>
+</li>
+<li>
+<p>為 AI 的能力上限提供理論基礎</p>
+</li>
+<li>
+<p><strong>不可判定問題</strong>：</p>
+</li>
+<li>圖靈證明了某些問題原則上不可解</li>
+<li>例如：<strong>停機問題</strong> (Halting Problem)<ul>
+<li>無法寫出一個通用程式判斷任意程式是否會停機</li>
+<li>展示了計算的根本限制</li>
+</ul>
+</li>
+</ol>
+<p><strong>換句話說，這證明了有些看似明確的問題，是演算法永遠無法完美解決的。這個發現為電腦科學和 AI 的能力劃定了理論上的邊界，讓我們知道並非所有問題都能透過計算找到答案。</strong></p>
+<p><strong>對 AI 的啟示</strong>：<br />
+- ✅ AI 的能力受限於可計算性<br />
+- ✅ 某些問題可能原則上無解<br />
+- ✅ 理解這些限制幫助我們設定合理期望</p>
+<hr />
+<h2>4.3 諾伯特·維納與控制論</h2>
+<h3>4.3.1 控制論 (Cybernetics) 的誕生</h3>
+<p><strong>Norbert Wiener (1894-1964)</strong><br />
+- 🇺🇸 美國數學家<br />
+- 📚 1948年出版《控制論：關於在動物和機器中控制和通訊的科學》<br />
+- 🎯 研究動物與機器中的控制與通訊系統</p>
+<p><strong>控制論的定義</strong>：<br />
+研究<strong>自我調節系統</strong>的科學，探討生物與機器如何透過回饋機制維持目標狀態。</p>
+<hr />
+<h3>4.3.2 核心概念：回饋系統</h3>
+<p><strong>回饋 (Feedback)</strong> 是控制論的核心：</p>
+<div class="mermaid">
+graph LR
+    Goal[目標狀態]
+    System[系統]
+    Sensor[感測器]
+    Comparator[比較器]
+    Actuator[執行器]
+    Environment[環境]
+
+    Goal --> Comparator
+    Environment --> Sensor
+    Sensor --> Comparator
+    Comparator -->|誤差信號| Actuator
+    Actuator --> System
+    System --> Environment
+
+    style Goal fill:#e1f5dd
+    style Comparator fill:#f3e5f5
+    style System fill:#e3f2fd
+
+</div>
+
+<p><strong>經典範例：恆溫器 (Thermostat)</strong></p>
+<pre class="codehilite"><code>1. 目標：室溫 22°C
+2. 感測器：測量當前溫度 (18°C)
+3. 比較器：計算誤差 (22 - 18 = 4°C)
+4. 執行器：開啟暖氣
+5. 系統：溫度上升
+6. 持續回饋，直到達到目標溫度
+7. 溫度超過時，關閉暖氣
+
+這是一個「負回饋」系統：系統的輸出會抑制輸入，維持穩定。
+</code></pre>
+
+<p><strong>兩種回饋類型</strong>：</p>
+<table>
+<thead>
+<tr>
+<th>類型</th>
+<th>效果</th>
+<th>範例</th>
+<th>在 AI 中的應用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>負回饋</strong></td>
+<td>穩定系統，減少誤差</td>
+<td>恆溫器、自動駕駛</td>
+<td>梯度下降優化</td>
+</tr>
+<tr>
+<td><strong>正回饋</strong></td>
+<td>放大變化，可能失控</td>
+<td>音響嘯叫、連鎖反應</td>
+<td>GAN 訓練、強化學習探索</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3>4.3.3 對 AI 的影響</h3>
+<p><strong>概念貢獻</strong>：</p>
+<ol>
+<li><strong>自主系統</strong>：</li>
+<li>系統可以自我調節，無需外部持續控制</li>
+<li>
+<p>啟發了自主機器人的設計</p>
+</li>
+<li>
+<p><strong>目標導向行為</strong>：</p>
+</li>
+<li>系統透過回饋朝向目標狀態</li>
+<li>
+<p>影響了 AI 中的目標函數設計</p>
+</li>
+<li>
+<p><strong>生物與機器的統一視角</strong>：</p>
+</li>
+<li>兩者都是資訊處理與控制系統</li>
+<li>開啟了「生物啟發計算」的思路</li>
+</ol>
+<p><strong>在現代 AI 中的體現</strong>：</p>
+<pre class="codehilite"><code class="language-python"># 神經網路訓練的回饋循環
+while 未達到目標:
+    預測 = 模型(輸入)
+    誤差 = 計算_誤差(預測, 真實標籤)  # 感測器
+    梯度 = 計算_梯度(誤差)              # 比較器
+    更新_參數(梯度)                     # 執行器
+    # 系統透過回饋不斷逼近目標
+</code></pre>
+
+<p><strong>機器人控制</strong>：</p>
+<pre class="codehilite"><code>感知 → 決策 → 行動 → 觀察結果 → 調整決策
+（這是控制論回饋循環的直接應用）
+</code></pre>
+
+<hr />
+<h2>4.4 符號主義與邏輯系統</h2>
+<h3>4.4.1 符號 AI 的哲學基礎</h3>
+<p><strong>物理符號系統假說</strong> (Physical Symbol System Hypothesis)<br />
+- 📜 提出者：Allen Newell &amp; Herbert Simon (1976)<br />
+- 💡 核心主張：</p>
+<blockquote>
+<p>"物理符號系統擁有智慧行動所需的必要與充分手段。"</p>
+</blockquote>
+<p><strong>解讀</strong>：<br />
+- <strong>必要</strong>：任何展現智慧的系統都必定是符號系統<br />
+- <strong>充分</strong>：符號操作足以產生智慧行為<br />
+- <strong>意義</strong>：智慧可以被還原為符號的操作與轉換</p>
+<hr />
+<h3>4.4.2 符號 AI 的核心理念</h3>
+<p><strong>基本思想</strong>：</p>
+<pre class="codehilite"><code>智慧 = 符號操作 + 規則推理
+</code></pre>
+
+<p><strong>知識表示</strong>：</p>
+<ol>
+<li><strong>邏輯式</strong>：</li>
+</ol>
+<pre class="codehilite"><code>前提：人(蘇格拉底)
+規則：人(X) → 會死(X)
+推論：會死(蘇格拉底)
+</code></pre>
+
+<ol>
+<li><strong>語義網路</strong>：</li>
+</ol>
+<div class="mermaid">
+graph TD
+    Socrates[蘇格拉底]
+    Human[人類]
+    Mortal[會死的生物]
+
+    Socrates -->|是一個| Human
+    Human -->|是一種| Mortal
+
+    Socrates -.繼承.-> Mortal
+
+    style Socrates fill:#f3e5f5
+    style Human fill:#e3f2fd
+    style Mortal fill:#e1f5dd
+
+</div>
+
+<ol>
+<li><strong>框架 (Frames)</strong>：</li>
+</ol>
+<pre class="codehilite"><code>框架：房間
+  - 有牆壁：是
+  - 有門：至少1個
+  - 有窗戶：通常有
+  - 用途：居住、工作等
+</code></pre>
+
+<hr />
+<h3>4.4.3 符號 AI 的推理機制</h3>
+<p><strong>演繹推理 (Deductive Reasoning)</strong>：</p>
+<pre class="codehilite"><code>大前提：所有鳥都會飛
+小前提：企鵝是鳥
+結論：企鵝會飛（❌ 錯誤！）
+
+問題：邏輯正確，但結論錯誤
+原因：大前提不正確（有例外）
+</code></pre>
+
+<p><strong>歸納推理 (Inductive Reasoning)</strong>：</p>
+<pre class="codehilite"><code>觀察：天鵝1是白色的
+觀察：天鵝2是白色的
+觀察：天鵝3是白色的
+...
+推論：所有天鵝都是白色的（❌ 黑天鵝存在！）
+</code></pre>
+
+<p><strong>溯因推理 (Abductive Reasoning)</strong>：</p>
+<pre class="codehilite"><code>觀察：草地是濕的
+知識：下雨會讓草地濕
+推論：可能剛下過雨（也可能是澆水）
+</code></pre>
+
+<hr />
+<h3>4.4.4 符號 AI 的優勢與局限</h3>
+<p><strong>優勢</strong>：<br />
+- ✅ <strong>可解釋性強</strong>：推理過程清晰，可以追蹤<br />
+- ✅ <strong>邏輯嚴謹</strong>：符合形式邏輯規則<br />
+- ✅ <strong>知識表示明確</strong>：人類可以理解和編輯<br />
+- ✅ <strong>適合特定領域</strong>：數學證明、邏輯遊戲</p>
+<p><strong>局限</strong>：<br />
+- ❌ <strong>脆弱 (Brittle)</strong>：<br />
+  - 遇到未預見情況就失效<br />
+  - 難以處理例外與模糊情況</p>
+<ul>
+<li>❌ <strong>常識推理困難</strong>：</li>
+<li>人類的常識難以形式化</li>
+<li>
+<p>例如：「杯子可以裝水」（需要大量隱含知識）</p>
+</li>
+<li>
+<p>❌ <strong>組合爆炸</strong>：</p>
+</li>
+<li>可能性空間呈指數增長</li>
+<li>
+<p>難以在合理時間內搜索</p>
+</li>
+<li>
+<p>❌ <strong>感知問題</strong>：</p>
+</li>
+<li>難以處理視覺、聽覺等感知輸入</li>
+<li>符號與現實世界的鴻溝</li>
+</ul>
+<p><strong>經典難題</strong>：</p>
+<pre class="codehilite"><code>問題：「這個句子有多重意義嗎？」
+&quot;我在銀行看到她。&quot;
+
+符號 AI 的困境：
+- 銀行 = 金融機構？還是河岸？
+- 需要上下文理解
+- 純符號操作難以解決
+</code></pre>
+
+<hr />
+<h2>4.5 早期理論的統一視角</h2>
+<h3>4.5.1 三大支柱</h3>
+<div class="mermaid">
+graph TD
+    AI[AI 的理論基礎]
+
+    T[圖靈<br/>Turing]
+    W[維納<br/>Wiener]
+    S[符號主義<br/>Symbolic AI]
+
+    AI --> T
+    AI --> W
+    AI --> S
+
+    T -->|貢獻| T1[計算理論<br/>可計算性<br/>智慧的行為標準]
+    W -->|貢獻| W1[控制與回饋<br/>自主系統<br/>目標導向]
+    S -->|貢獻| S1[知識表示<br/>邏輯推理<br/>符號操作]
+
+    style AI fill:#f3e5f5
+    style T fill:#e3f2fd
+    style W fill:#fff4e6
+    style S fill:#e1f5dd
+
+</div>
+
+<hr />
+<h3>4.5.2 共同特徵</h3>
+<p><strong>樂觀主義</strong>：<br />
+- 相信智慧可以被理解和複製<br />
+- 相信機器最終能達到人類智慧</p>
+<p><strong>形式化追求</strong>：<br />
+- 試圖用數學和邏輯精確定義智慧<br />
+- 建立嚴謹的理論框架</p>
+<p><strong>跨學科視角</strong>：<br />
+- 融合數學、哲學、工程學、生物學<br />
+- 生物與機器的統一理解</p>
+<hr />
+<h2>4.6 本章小結</h2>
+<h3>核心要點</h3>
+<ol>
+<li><strong>圖靈的貢獻</strong>：</li>
+<li>圖靈機：定義了計算的理論邊界</li>
+<li>圖靈測試：提供了智慧的行為標準</li>
+<li>
+<p>影響至今，仍是 AI 研究的基準</p>
+</li>
+<li>
+<p><strong>控制論的啟示</strong>：</p>
+</li>
+<li>回饋機制：系統自我調節的核心</li>
+<li>統一視角：生物與機器的共同原理</li>
+<li>
+<p>影響：機器人、自動控制、優化演算法</p>
+</li>
+<li>
+<p><strong>符號主義的理念</strong>：</p>
+</li>
+<li>智慧 = 符號操作</li>
+<li>優勢：可解釋、邏輯嚴謹</li>
+<li>
+<p>局限：脆弱、難處理感知與常識</p>
+</li>
+<li>
+<p><strong>時代意義</strong>：</p>
+</li>
+<li>奠定了 AI 的理論基礎</li>
+<li>提出了核心問題和研究方向</li>
+<li>塑造了早期 AI 的研究範式</li>
+</ol>
+<h3>歷史地位</h3>
+<p>這個時期是 <strong>AI 的理論準備階段</strong>：<br />
+- 🧠 建立了基本概念<br />
+- 📐 奠定了數學基礎<br />
+- 🎯 設定了研究目標<br />
+- 🌱 為後續發展播下種子</p>
+<h3>思考問題</h3>
+<ol>
+<li><strong>圖靈測試的現代意義</strong>：</li>
+<li>ChatGPT 能否通過圖靈測試？</li>
+<li>
+<p>通過測試是否意味著真正的「理解」？</p>
+</li>
+<li>
+<p><strong>符號主義的價值</strong>：</p>
+</li>
+<li>為何今天的 AI 主要不使用符號方法？</li>
+<li>
+<p>符號推理是否仍有價值？</p>
+</li>
+<li>
+<p><strong>回饋機制</strong>：</p>
+</li>
+<li>神經網路訓練如何體現回饋循環？</li>
+<li>強化學習與控制論有何聯繫？</li>
+</ol>
+<hr />
+<h2>延伸閱讀</h2>
+<p><strong>原始文獻</strong>：<br />
+- Alan Turing (1950). "Computing Machinery and Intelligence"<br />
+- Norbert Wiener (1948). "Cybernetics: Or Control and Communication in the Animal and the Machine"</p>
+<p><strong>現代解讀</strong>：<br />
+- 第 V 章將展示這些理論如何催生 AI 學科的正式誕生<br />
+- 第 VI 章將討論符號 AI 的興衰</p>
+<p><strong>影片資源</strong>：<br />
+- 推薦觀看 <a href="https://youtu.be/dKNYTPDa5WA">陳宜欣教授演講</a> 了解 AI 的哲學思考</p>
+<hr />
+<p><a href="./Chapter_03_TwoParadigms_b01.html">← 上一章：兩大典範</a> | <a href="./README_b06.html">返回目錄</a> | <a href="./Chapter_05_ClassicalPeriod_b05.html">下一章：經典時期 →</a></p></div>
+    
+    <!-- Highlight.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    
+    <!-- Mermaid -->
+    <script type="module">
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+        mermaid.initialize({
+            "startOnLoad": true,
+            "theme": "dark",
+            "securityLevel": "loose"
+});
+    </script>
+</body>
+</html>

@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>References_b01</title>
+    
+    <!-- CSS 框架 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/dark.min.css">
+    
+    <!-- 代碼高亮 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/base16/darcula.min.css">
+    
+    <!-- 自定義樣式 -->
+    <style>
+        
+                body {
+                    max-width: 900px;
+                    margin: 0 auto;
+                    padding: 20px;
+                }
+                /* 提升代码块对比度 */
+                pre {
+                    background: #1e1e1e !important;
+                    border: 1px solid #3e3e3e;
+                }
+                pre code {
+                    background: #1e1e1e !important;
+                }
+                code {
+                    background: #2d2d2d !important;
+                }
+                /* 引用块对比度 */
+                blockquote {
+                    background: #2d2d2d;
+                    border-left: 4px solid #4a9eff;
+                }
+            
+        
+        /* 通用代碼塊樣式 */
+        pre code {
+            display: block;
+            padding: 1.5em;
+            border-radius: 8px;
+            overflow-x: auto;
+            line-height: 1.6;
+        }
+
+        /* Mermaid 圖表樣式 */
+        
+        .mermaid {
+            margin: 2em 0;
+            padding: 1.5em;
+            text-align: center;
+            border-radius: 8px;
+        }
+        
+        .mermaid {
+            background: #2c3034;
+            border: 1px solid #444;
+        }
+            
+        
+        /* 響應式調整 */
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            .container, .markdown-body, .latex-body, .window-body, .nes-container {
+                padding: 15px;
+            }
+            pre code {
+                padding: 1em;
+            }
+        }
+        
+        
+    </style>
+</head>
+<body>
+    <div class="container"><!-- Path: 114A_AI_intro/History | Timestamp: 2025-10-25 14:20:00 | Version: b01 -->
+<h1>參考資料與延伸閱讀</h1>
+<p><a href="./README_b06.html">← 返回目錄</a></p>
+<hr />
+<h2>📚 資源分類</h2>
+<p>本文檔整理了學習 AI 歷史與生成式 AI 的精選資源，包含影片、書籍、線上課程、研究論文等，並提供學習路徑建議。</p>
+<hr />
+<h2>🎥 推薦影片（中文資源）</h2>
+<h3>1. AI 歷史與發展概觀</h3>
+<h4>【AI世代的教與學】part2 / 陳宜欣教授</h4>
+<ul>
+<li><strong>連結</strong>: <a href="https://youtu.be/dKNYTPDa5WA" target="_blank" rel="noopener noreferrer">https://youtu.be/dKNYTPDa5WA</a></li>
+<li><strong>講者</strong>: 陳宜欣教授（清華大學資工系）</li>
+<li><strong>時長</strong>: 約 90 分鐘</li>
+<li><strong>難度</strong>: ⭐⭐ 中等</li>
+<li><strong>適合對象</strong>: 教育工作者、學生、對 AI 教育影響感興趣者</li>
+</ul>
+<p><strong>內容摘要</strong>:<br />
+此影片為清華大學資工系陳宜欣教授的演講，探討 AI 對教育、工作和社會的深遠影響。</p>
+<p><strong>核心議題</strong>:<br />
+- 在 AI 時代，「定義問題」比「解決問題」更重要<br />
+- 數學與機率思維的核心角色<br />
+- 重新思考學生評量方式的必要性<br />
+- 如何培養學生的批判性思維與創造力<br />
+- AI 無法取代的人類能力是什麼？</p>
+<p><strong>為什麼值得看</strong>:<br />
+- 從教育視角切入，思考 AI 時代的人才培養<br />
+- 提供實際教學案例與建議<br />
+- 適合思考「學什麼」而非「怎麼教」</p>
+<p><strong>相關章節</strong>: 第 I 章（導論）、第 IX 章（總結與反思）</p>
+<hr />
+<h4>【生成式AI時代下的機器學習(2025)】第一講：一堂課搞懂生成式人工智慧</h4>
+<ul>
+<li><strong>連結</strong>: <a href="https://youtu.be/QLiKmca4kzI" target="_blank" rel="noopener noreferrer">https://youtu.be/QLiKmca4kzI</a></li>
+<li><strong>講者</strong>: 李宏毅教授（台灣大學電機系）</li>
+<li><strong>時長</strong>: 約 3 小時</li>
+<li><strong>難度</strong>: ⭐⭐⭐ 中高</li>
+<li><strong>適合對象</strong>: 有基礎數學背景、想深入理解技術原理者</li>
+</ul>
+<p><strong>內容摘要</strong>:<br />
+李宏毅教授深入探討生成式 AI 的技術突破與未來發展趨勢。</p>
+<p><strong>涵蓋主題</strong>:<br />
+- <strong>自迴歸生成 (Autoregressive Generation)</strong>:<br />
+  - 如何逐步生成文本、圖像<br />
+  - GPT 系列的核心機制<br />
+- <strong>通用模型 (General/Universal Models)</strong>:<br />
+  - 為何大模型能處理多種任務<br />
+  - 規模化定律的解釋<br />
+- <strong>Transformer 架構深度解析</strong>:<br />
+  - 注意力機制的數學原理<br />
+  - 為何 Transformer 如此成功<br />
+- <strong>預訓練-微調範式</strong>:<br />
+  - 如何有效利用未標註數據<br />
+  - 遷移學習的原理</p>
+<p><strong>為什麼值得看</strong>:<br />
+- 台灣最受歡迎的機器學習課程之一<br />
+- 講解深入淺出，配有大量圖解<br />
+- 提供課程簡報下載（見影片說明欄）<br />
+- 涵蓋最新的研究進展</p>
+<p><strong>相關章節</strong>: 第 VII 章（深度學習）、第 VIII 章（生成式 AI）</p>
+<p><strong>學習建議</strong>:<br />
+- 可以分段觀看，每次約 30-45 分鐘<br />
+- 建議先看第 I-III 章建立概念，再觀看此影片<br />
+- 配合簡報一起學習效果更佳</p>
+<hr />
+<h4>【人工智能】回顧人工智能十年發展歷程 (2013-2023)</h4>
+<ul>
+<li><strong>連結</strong>: <a href="https://youtu.be/Tj7xI5yVMSM" target="_blank" rel="noopener noreferrer">https://youtu.be/Tj7xI5yVMSM</a></li>
+<li><strong>時長</strong>: 約 45 分鐘</li>
+<li><strong>難度</strong>: ⭐⭐ 中等</li>
+<li><strong>適合對象</strong>: 想快速了解近十年 AI 發展的所有人</li>
+</ul>
+<p><strong>內容摘要</strong>:<br />
+這部影片以時間軸方式回顧 2013 年至 2023 年間 AI 發展的關鍵里程碑。</p>
+<p><strong>重點事件時間軸</strong>:<br />
+- <strong>2012: AlexNet</strong> — 深度學習時代的開端<br />
+  - ImageNet 競賽奪冠<br />
+  - 證明 CNN 的巨大潛力</p>
+<ul>
+<li><strong>2014: GAN</strong> — 生成對抗網路誕生</li>
+<li>Ian Goodfellow 提出對抗訓練概念</li>
+<li>
+<p>開啟圖像生成新領域</p>
+</li>
+<li>
+<p><strong>2015: ResNet</strong> — 深度網路的突破</p>
+</li>
+<li>殘差連接解決梯度消失</li>
+<li>
+<p>訓練 152 層超深網路</p>
+</li>
+<li>
+<p><strong>2016: AlphaGo</strong> — 震驚世界的圍棋 AI</p>
+</li>
+<li>擊敗李世石</li>
+<li>
+<p>展現強化學習的威力</p>
+</li>
+<li>
+<p><strong>2017: Transformer</strong> — 徹底改變 NLP</p>
+</li>
+<li>注意力機制取代遞迴結構</li>
+<li>
+<p>成為當代 AI 基石</p>
+</li>
+<li>
+<p><strong>2018-2020: BERT, GPT-2, GPT-3</strong> — 預訓練模型崛起</p>
+</li>
+<li>NLP 性能飛躍</li>
+<li>
+<p>展現少樣本學習能力</p>
+</li>
+<li>
+<p><strong>2021-2022: DALL-E, Stable Diffusion, ChatGPT</strong> — 生成式 AI 爆發</p>
+</li>
+<li>文字生成圖像</li>
+<li>
+<p>對話 AI 走向大眾</p>
+</li>
+<li>
+<p><strong>2023: GPT-4, 多模態 AI</strong> — 能力再次飛躍</p>
+</li>
+<li>多模態理解與生成</li>
+<li>推理能力大幅提升</li>
+</ul>
+<p><strong>為什麼值得看</strong>:<br />
+- 快速建立近十年 AI 發展的全局視野<br />
+- 視覺化呈現技術演進<br />
+- 適合作為第 II 章（關鍵字地圖）的補充</p>
+<p><strong>相關章節</strong>: 第 II 章（關鍵字地圖）、第 VII-VIII 章</p>
+<hr />
+<h3>2. 其他推薦影片（供參考）</h3>
+<p>以下影片連結可能無法播放，但列出供參考：</p>
+<h4>人文社會AI導論第一集：AI的發展歷史</h4>
+<ul>
+<li><strong>連結</strong>: <a href="https://youtu.be/GYvzJCblnKM" target="_blank" rel="noopener noreferrer">https://youtu.be/GYvzJCblnKM</a></li>
+<li><strong>狀態</strong>: ⚠️ 影片無法播放</li>
+<li><strong>說明</strong>: 如能播放，應涵蓋 AI 歷史的人文社會視角</li>
+</ul>
+<h4>AI 時代的教與學：進行式與提議</h4>
+<ul>
+<li><strong>連結</strong>: <a href="https://youtu.be/BuQ8JARvp_s" target="_blank" rel="noopener noreferrer">https://youtu.be/BuQ8JARvp_s</a></li>
+<li><strong>狀態</strong>: ⚠️ 影片無法播放</li>
+<li><strong>說明</strong>: 如能播放，應探討 AI 時代的教育變革</li>
+</ul>
+<hr />
+<h2>📖 推薦書籍</h2>
+<h3>入門級</h3>
+<h4>1. 《人工智慧：現代方法》(Artificial Intelligence: A Modern Approach)</h4>
+<ul>
+<li><strong>作者</strong>: Stuart Russell &amp; Peter Norvig</li>
+<li><strong>版本</strong>: 第 4 版（2020）</li>
+<li><strong>難度</strong>: ⭐⭐⭐ 中高</li>
+<li><strong>特點</strong>:</li>
+<li>AI 領域的「聖經」級教科書</li>
+<li>系統性涵蓋 AI 各個領域</li>
+<li>從搜索、邏輯到機器學習、深度學習</li>
+<li>適合大學課程使用</li>
+</ul>
+<p><strong>推薦章節</strong>:<br />
+- 第 1-2 章：AI 的定義與歷史（對應本課程第 I 章）<br />
+- 第 18-21 章：機器學習基礎（對應第 VI-VII 章）<br />
+- 第 27-28 章：哲學與倫理（對應第 VIII 章倫理部分）</p>
+<hr />
+<h4>2. 《深度學習》(Deep Learning)</h4>
+<ul>
+<li><strong>作者</strong>: Ian Goodfellow, Yoshua Bengio, Aaron Courville</li>
+<li><strong>出版</strong>: 2016</li>
+<li><strong>難度</strong>: ⭐⭐⭐⭐ 高</li>
+<li><strong>特點</strong>:</li>
+<li>深度學習領域的權威著作</li>
+<li>數學推導詳細</li>
+<li>涵蓋理論與實踐</li>
+<li>免費線上版本：<a href="https://www.deeplearningbook.org/" target="_blank" rel="noopener noreferrer">https://www.deeplearningbook.org/</a></li>
+</ul>
+<p><strong>推薦章節</strong>:<br />
+- 第 1 章：簡介（歷史回顧）<br />
+- 第 6 章：深度前饋網路<br />
+- 第 9 章：CNN<br />
+- 第 10 章：RNN<br />
+- 第 20 章：生成模型（GAN, VAE）</p>
+<p><strong>相關章節</strong>: 第 VII-VIII 章</p>
+<hr />
+<h3>進階級</h3>
+<h4>3. 《注意力機制就是你所需要的》(Attention Is All You Need) — 原始論文</h4>
+<ul>
+<li><strong>作者</strong>: Vaswani et al.</li>
+<li><strong>年份</strong>: 2017</li>
+<li><strong>難度</strong>: ⭐⭐⭐⭐⭐ 專業</li>
+<li><strong>為什麼重要</strong>:</li>
+<li>Transformer 架構的原始論文</li>
+<li>奠定了 GPT, BERT, GPT-4 等所有現代 LLM 的基礎</li>
+<li>引用次數超過 10 萬次</li>
+</ul>
+<p><strong>閱讀建議</strong>:<br />
+- 先學習第 VII 章理解背景<br />
+- 配合李宏毅教授的講解影片<br />
+- 重點理解自注意力機制的概念</p>
+<hr />
+<h3>科普讀物</h3>
+<h4>4. 《Life 3.0》</h4>
+<ul>
+<li><strong>作者</strong>: Max Tegmark</li>
+<li><strong>中文版</strong>: 《生命3.0：人工智慧時代，人類的蛻變與重生》</li>
+<li><strong>難度</strong>: ⭐ 易</li>
+<li><strong>特點</strong>:</li>
+<li>探討 AI 對人類未來的影響</li>
+<li>討論 AGI 與超級智慧的可能性</li>
+<li>思考 AI 安全與對齊問題</li>
+<li>適合非技術背景讀者</li>
+</ul>
+<p><strong>相關主題</strong>: 第 IX 章（總結與展望）</p>
+<hr />
+<h2>🎓 線上課程</h2>
+<h3>1. Andrew Ng 的《機器學習》課程</h3>
+<ul>
+<li><strong>平台</strong>: Coursera</li>
+<li><strong>連結</strong>: <a href="https://www.coursera.org/learn/machine-learning" target="_blank" rel="noopener noreferrer">https://www.coursera.org/learn/machine-learning</a></li>
+<li><strong>難度</strong>: ⭐⭐ 中等</li>
+<li><strong>時長</strong>: 約 60 小時</li>
+<li><strong>語言</strong>: 英文（有中文字幕）</li>
+</ul>
+<p><strong>課程特色</strong>:<br />
+- 全球最受歡迎的機器學習入門課程<br />
+- 涵蓋監督學習、非監督學習、神經網路基礎<br />
+- 理論與實踐並重<br />
+- 適合零基礎但有基本數學能力者</p>
+<p><strong>涵蓋內容</strong>:<br />
+- 線性回歸、邏輯回歸<br />
+- 神經網路基礎<br />
+- SVM<br />
+- 聚類演算法<br />
+- 降維<br />
+- 異常檢測<br />
+- 推薦系統</p>
+<p><strong>相關章節</strong>: 第 VI 章（機器學習）</p>
+<hr />
+<h3>2. 李宏毅《機器學習》課程</h3>
+<ul>
+<li><strong>平台</strong>: YouTube</li>
+<li><strong>連結</strong>: <a href="https://www.youtube.com/playlist?list=PLJV_el3uVTsPy9oCRY30oBPNLCo89yu49" target="_blank" rel="noopener noreferrer">https://www.youtube.com/playlist?list=PLJV_el3uVTsPy9oCRY30oBPNLCo89yu49</a></li>
+<li><strong>難度</strong>: ⭐⭐⭐ 中高</li>
+<li><strong>語言</strong>: 中文</li>
+<li><strong>特點</strong>:</li>
+<li>繁體中文授課，無語言障礙</li>
+<li>內容深入，涵蓋最新研究</li>
+<li>幽默風趣，容易理解</li>
+<li>完全免費</li>
+</ul>
+<p><strong>2024/2025 版本涵蓋</strong>:<br />
+- 深度學習基礎<br />
+- CNN, RNN, Transformer<br />
+- 生成式 AI (GAN, Diffusion, LLM)<br />
+- 強化學習<br />
+- 對抗攻擊</p>
+<p><strong>相關章節</strong>: 第 VII-VIII 章</p>
+<hr />
+<h3>3. Fast.ai 《程式設計師的深度學習》</h3>
+<ul>
+<li><strong>平台</strong>: fast.ai</li>
+<li><strong>連結</strong>: <a href="https://course.fast.ai/" target="_blank" rel="noopener noreferrer">https://course.fast.ai/</a></li>
+<li><strong>難度</strong>: ⭐⭐ 中等</li>
+<li><strong>語言</strong>: 英文</li>
+<li><strong>特點</strong>:</li>
+<li>「由上而下」的教學方法</li>
+<li>先實作，再理解原理</li>
+<li>適合有程式基礎但非 AI 專家者</li>
+<li>完全免費</li>
+</ul>
+<p><strong>課程理念</strong>:</p>
+<pre class="codehilite"><code>傳統教學：理論 → 數學 → 實作
+Fast.ai：實作 → 直覺 → 理論 → 數學
+</code></pre>
+
+<hr />
+<h3>4. DeepLearning.AI 專項課程</h3>
+<ul>
+<li><strong>平台</strong>: Coursera</li>
+<li><strong>系列</strong>:</li>
+<li>Deep Learning Specialization（深度學習專項）</li>
+<li>Generative AI for Everyone（生成式 AI 概論）</li>
+<li>ChatGPT Prompt Engineering（提示工程）</li>
+</ul>
+<p><strong>特點</strong>:<br />
+- Andrew Ng 主講<br />
+- 循序漸進，體系完整<br />
+- 可取得證書（付費）</p>
+<hr />
+<h2>📄 重要研究論文</h2>
+<h3>奠基性論文</h3>
+<h4>1. "Computing Machinery and Intelligence" (1950)</h4>
+<ul>
+<li><strong>作者</strong>: Alan Turing</li>
+<li><strong>重要性</strong>: ⭐⭐⭐⭐⭐</li>
+<li><strong>內容</strong>: 提出圖靈測試，探討「機器能思考嗎？」</li>
+<li><strong>相關章節</strong>: 第 IV 章（早期理論基礎）</li>
+<li><strong>閱讀難度</strong>: ⭐⭐ 中等（哲學論述，無複雜數學）</li>
+</ul>
+<hr />
+<h4>2. "A Logical Calculus of Ideas Immanent in Nervous Activity" (1943)</h4>
+<ul>
+<li><strong>作者</strong>: Warren McCulloch &amp; Walter Pitts</li>
+<li><strong>重要性</strong>: ⭐⭐⭐⭐⭐</li>
+<li><strong>內容</strong>: 第一個神經元數學模型</li>
+<li><strong>影響</strong>: 所有神經網路的理論起點</li>
+</ul>
+<hr />
+<h3>深度學習時代</h3>
+<h4>3. "ImageNet Classification with Deep Convolutional Neural Networks" (2012)</h4>
+<ul>
+<li><strong>作者</strong>: Alex Krizhevsky, Ilya Sutskever, Geoffrey Hinton</li>
+<li><strong>暱稱</strong>: AlexNet 論文</li>
+<li><strong>重要性</strong>: ⭐⭐⭐⭐⭐</li>
+<li><strong>內容</strong>: 深度學習革命的起點</li>
+<li><strong>相關章節</strong>: 第 VII 章</li>
+<li><strong>為何重要</strong>: 證明了深度學習的巨大潛力，引爆 AI 復興</li>
+</ul>
+<hr />
+<h4>4. "Deep Residual Learning for Image Recognition" (2015)</h4>
+<ul>
+<li><strong>作者</strong>: Kaiming He et al.</li>
+<li><strong>暱稱</strong>: ResNet 論文</li>
+<li><strong>重要性</strong>: ⭐⭐⭐⭐⭐</li>
+<li><strong>內容</strong>: 殘差連接，訓練 152 層網路</li>
+<li><strong>影響</strong>: 使超深網路成為可能</li>
+</ul>
+<hr />
+<h4>5. "Attention Is All You Need" (2017)</h4>
+<ul>
+<li><strong>作者</strong>: Ashish Vaswani et al. (Google)</li>
+<li><strong>重要性</strong>: ⭐⭐⭐⭐⭐</li>
+<li><strong>內容</strong>: 提出 Transformer 架構</li>
+<li><strong>影響</strong>: 徹底改變 NLP，成為 GPT/BERT/GPT-4 的基礎</li>
+<li><strong>相關章節</strong>: 第 VII 章</li>
+</ul>
+<hr />
+<h3>生成式 AI 時代</h3>
+<h4>6. "Generative Adversarial Networks" (2014)</h4>
+<ul>
+<li><strong>作者</strong>: Ian Goodfellow et al.</li>
+<li><strong>重要性</strong>: ⭐⭐⭐⭐⭐</li>
+<li><strong>內容</strong>: 提出 GAN 架構</li>
+<li><strong>影響</strong>: 開啟圖像生成新紀元</li>
+<li><strong>相關章節</strong>: 第 VIII 章</li>
+</ul>
+<hr />
+<h4>7. "Language Models are Few-Shot Learners" (2020)</h4>
+<ul>
+<li><strong>作者</strong>: Tom Brown et al. (OpenAI)</li>
+<li><strong>暱稱</strong>: GPT-3 論文</li>
+<li><strong>重要性</strong>: ⭐⭐⭐⭐⭐</li>
+<li><strong>內容</strong>: 展現規模化定律與湧現能力</li>
+<li><strong>影響</strong>: 證明大模型的少樣本學習能力</li>
+<li><strong>相關章節</strong>: 第 VIII 章</li>
+</ul>
+<hr />
+<h4>8. "Denoising Diffusion Probabilistic Models" (2020)</h4>
+<ul>
+<li><strong>作者</strong>: Jonathan Ho et al.</li>
+<li><strong>重要性</strong>: ⭐⭐⭐⭐⭐</li>
+<li><strong>內容</strong>: 擴散模型的理論基礎</li>
+<li><strong>影響</strong>: DALL-E 2, Stable Diffusion 的基礎</li>
+<li><strong>相關章節</strong>: 第 VIII 章</li>
+</ul>
+<hr />
+<h2>🗺️ 學習路徑建議</h2>
+<h3>路徑 A：完全新手（無技術背景）</h3>
+<p><strong>第一階段：建立概念（1-2 週）</strong><br />
+1. 閱讀本課程第 I-III 章<br />
+2. 觀看陳宜欣教授的演講<br />
+3. 閱讀科普書籍《Life 3.0》</p>
+<p><strong>第二階段：了解歷史（2-3 週）</strong><br />
+1. 觀看「AI 十年發展歷程」影片<br />
+2. 閱讀本課程第 IV-VI 章<br />
+3. 了解 AI 寒冬與復甦的故事</p>
+<p><strong>第三階段：理解當代 AI（2-4 週）</strong><br />
+1. 閱讀本課程第 VII-VIII 章<br />
+2. 觀看李宏毅教授的生成式 AI 課程（選看）<br />
+3. 嘗試使用 ChatGPT, DALL-E 等工具</p>
+<hr />
+<h3>路徑 B：有程式基礎，想學 AI（2-3 個月）</h3>
+<p><strong>第一階段：理論基礎（2 週）</strong><br />
+1. 快速閱讀本課程全部章節<br />
+2. 同步學習 Andrew Ng 的機器學習課程</p>
+<p><strong>第二階段：深度學習實踐（4-6 週）</strong><br />
+1. Fast.ai 課程（實作導向）<br />
+2. 或李宏毅課程（理論導向）<br />
+3. 完成課程專案</p>
+<p><strong>第三階段：生成式 AI（4-6 週）</strong><br />
+1. 深入學習 Transformer 架構<br />
+2. 了解 LLM 的工作原理<br />
+3. 學習提示工程<br />
+4. 實作小型專案（如聊天機器人）</p>
+<hr />
+<h3>路徑 C：AI 研究者/進階學習（持續）</h3>
+<p><strong>核心論文閱讀</strong>:<br />
+1. 按時間順序閱讀奠基性論文<br />
+2. 追蹤最新頂會論文（NeurIPS, ICML, ICLR）<br />
+3. 複現重要算法</p>
+<p><strong>深入理論</strong>:<br />
+1. 閱讀《深度學習》教科書<br />
+2. 學習數學基礎（線性代數、機率論、優化）<br />
+3. 研究前沿方向（多模態、強化學習、AI 安全）</p>
+<hr />
+<h2>🔗 實用資源網站</h2>
+<h3>論文資源</h3>
+<ul>
+<li><strong>arXiv.org</strong> - AI 論文預印本</li>
+<li><strong>Papers With Code</strong> - 論文 + 程式碼實現</li>
+<li><strong>Google Scholar</strong> - 學術搜尋</li>
+</ul>
+<h3>模型與工具</h3>
+<ul>
+<li><strong>Hugging Face</strong> - 開源模型與數據集社群</li>
+<li><strong>GitHub</strong> - 開源專案</li>
+<li><strong>Kaggle</strong> - 數據科學競賽與學習</li>
+</ul>
+<h3>新聞與動態</h3>
+<ul>
+<li><strong>AI Index Report</strong> - 史丹佛 AI 年度報告</li>
+<li><strong>The Batch</strong> - Andrew Ng 的 AI 週報</li>
+<li><strong>Import AI</strong> - AI 新聞週報</li>
+</ul>
+<hr />
+<h2>📊 本文檔使用建議</h2>
+<h3>根據目標選擇資源</h3>
+<table>
+<thead>
+<tr>
+<th>您的目標</th>
+<th>推薦資源</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>快速了解 AI 是什麼</strong></td>
+<td>陳宜欣演講 + 本課程第 I-III 章</td>
+</tr>
+<tr>
+<td><strong>理解 AI 歷史發展</strong></td>
+<td>本課程全部 + AI 十年發展影片</td>
+</tr>
+<tr>
+<td><strong>學習 AI 技術</strong></td>
+<td>Andrew Ng 課程 + Fast.ai</td>
+</tr>
+<tr>
+<td><strong>深入生成式 AI</strong></td>
+<td>李宏毅課程 + GPT-3 論文</td>
+</tr>
+<tr>
+<td><strong>思考 AI 倫理</strong></td>
+<td>Life 3.0 + 第 VIII 章倫理部分</td>
+</tr>
+<tr>
+<td><strong>成為 AI 研究者</strong></td>
+<td>深度學習教科書 + 頂會論文</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>✨ 持續更新</h2>
+<p>本參考資料會隨著 AI 領域的快速發展持續更新。建議：<br />
+- 定期回訪，查看新增資源<br />
+- 關注推薦的 YouTube 頻道與部落格<br />
+- 加入 AI 社群，保持學習動力</p>
+<hr />
+<h2>🤝 貢獻資源</h2>
+<p>如果您有優質的 AI 學習資源推薦，歡迎提供回饋，幫助完善本文檔。</p>
+<hr />
+<p><a href="./README_b06.html">← 返回目錄</a></p></div>
+    
+    <!-- Highlight.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    
+    <!-- Mermaid -->
+    <script type="module">
+        import mermaid from '<a href="https://cdn.jsdelivr.net/npm/mermaid" target="_blank" rel="noopener noreferrer">https://cdn.jsdelivr.net/npm/mermaid</a>@10/dist/mermaid.esm.min.mjs';
+        mermaid.initialize({
+            "startOnLoad": true,
+            "theme": "dark",
+            "securityLevel": "loose"
+});
+    </script>
+</body>
+</html>

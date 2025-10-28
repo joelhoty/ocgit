@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chapter_05_ClassicalPeriod_b05</title>
+    
+    <!-- CSS 框架 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/dark.min.css">
+    
+    <!-- 代碼高亮 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/base16/darcula.min.css">
+    
+    <!-- 自定義樣式 -->
+    <style>
+        
+                body {
+                    max-width: 900px;
+                    margin: 0 auto;
+                    padding: 20px;
+                }
+                /* 提升代码块对比度 */
+                pre {
+                    background: #1e1e1e !important;
+                    border: 1px solid #3e3e3e;
+                }
+                pre code {
+                    background: #1e1e1e !important;
+                }
+                code {
+                    background: #2d2d2d !important;
+                }
+                /* 引用块对比度 */
+                blockquote {
+                    background: #2d2d2d;
+                    border-left: 4px solid #4a9eff;
+                }
+            
+        
+        /* 通用代碼塊樣式 */
+        pre code {
+            display: block;
+            padding: 1.5em;
+            border-radius: 8px;
+            overflow-x: auto;
+            line-height: 1.6;
+        }
+
+        /* Mermaid 圖表樣式 */
+        
+        .mermaid {
+            margin: 2em 0;
+            padding: 1.5em;
+            text-align: center;
+            border-radius: 8px;
+        }
+        
+        .mermaid {
+            background: #2c3034;
+            border: 1px solid #444;
+        }
+            
+        
+        /* 響應式調整 */
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            .container, .markdown-body, .latex-body, .window-body, .nes-container {
+                padding: 15px;
+            }
+            pre code {
+                padding: 1em;
+            }
+        }
+        
+        
+    </style>
+</head>
+<body>
+    <div class="container"><!-- Path: 114A_AI_intro/History | Timestamp: 2025-10-26 10:47:00 | Version: b05 -->
+<p><a href="./Chapter_04_EarlyFoundations_b02.html">← 上一章</a> | <a href="./index.html">返回目錄</a> | <a href="./Chapter_06_WinterAndRevival_b05.html">下一章 →</a></p>
+<hr />
+<h2>5.1 AI 的正式誕生</h2>
+<h3>5.1.1 達特茅斯會議 (1956) — AI 的誕生地</h3>
+<p><strong>The Dartmouth Summer Research Project on Artificial Intelligence</strong></p>
+<p><strong>時間</strong>：1956 年夏天（6-8月）<br />
+<strong>地點</strong>：美國新罕布什爾州達特茅斯學院<br />
+<strong>時長</strong>：原計劃 6-8 週</p>
+<p>這場會議被公認為 <strong>AI 作為一門獨立學科的誕生標誌</strong>。</p>
+<hr />
+<h3>5.1.2 會議發起人與參與者</h3>
+<p><strong>四位發起人</strong>：</p>
+<div class="mermaid">
+graph TD
+    Conference[達特茅斯會議<br/>1956]
+
+    M[John McCarthy<br/>達特茅斯學院<br/>創造 AI 一詞]
+    Mi[Marvin Minsky<br/>哈佛大學<br/>神經網路研究]
+    R[Nathaniel Rochester<br/>IBM<br/>工業界代表]
+    S[Claude Shannon<br/>貝爾實驗室<br/>資訊理論創始人]
+
+    Conference --> M
+    Conference --> Mi
+    Conference --> R
+    Conference --> S
+
+    style Conference fill:#f3e5f5
+    style M fill:#e3f2fd
+    style Mi fill:#e3f2fd
+    style R fill:#e3f2fd
+    style S fill:#e3f2fd
+
+</div>
+
+<p><strong>其他重要參與者</strong>：<br />
+- <strong>Allen Newell</strong> &amp; <strong>Herbert Simon</strong>（卡內基理工學院）<br />
+  - 帶來了 Logic Theorist 程式<br />
+- <strong>Ray Solomonoff</strong>（麻省理工學院）<br />
+  - 機率推理與機器學習<br />
+- <strong>Oliver Selfridge</strong>（麻省理工學院）<br />
+  - 模式識別</p>
+<hr />
+<h3>5.1.3 會議提案的核心內容</h3>
+<p><strong>提案開頭的著名定義</strong>：</p>
+<blockquote>
+<p>"我們提議在 1956 年夏天於達特茅斯學院進行為期 2 個月、由 10 人參與的人工智慧研究。研究將基於以下猜想：學習或智慧的任何其他特徵，原則上都可以被如此精確地描述，以至於可以製造一台機器來模擬它。"</p>
+</blockquote>
+<p><strong>研究議題</strong>：<br />
+1. <strong>自動電腦</strong> (Automatic Computers)<br />
+2. <strong>如何讓電腦使用語言</strong><br />
+3. <strong>神經網路</strong> (Neuron Nets)<br />
+4. <strong>計算複雜度理論</strong><br />
+5. <strong>自我改進</strong> (Self-improvement)<br />
+6. <strong>抽象概念形成</strong><br />
+7. <strong>隨機性與創造力</strong></p>
+<p><strong>核心假設</strong>：<br />
+- ✅ 智慧可以被精確描述<br />
+- ✅ 機器可以模擬智慧<br />
+- ✅ 這個目標可以在短期內實現（❌ 後來證明過於樂觀）</p>
+<hr />
+<h3>5.1.4 「人工智慧」一詞的誕生</h3>
+<p><strong>John McCarthy</strong> 創造了 "Artificial Intelligence" 這個詞：</p>
+<ul>
+<li><strong>為什麼選這個名字？</strong></li>
+<li>需要一個吸引人的名字來申請資金</li>
+<li>區別於已有的「控制論」、「自動機理論」</li>
+<li>
+<p>強調「智慧」而非「計算」</p>
+</li>
+<li>
+<p><strong>其他候選名字</strong>：</p>
+</li>
+<li>Complex Information Processing（複雜資訊處理）</li>
+<li>Machine Intelligence（機器智慧）</li>
+<li>Thinking Machines（思考機器）</li>
+</ul>
+<p><strong>影響</strong>：<br />
+這個名字既是 AI 的成功，也是負擔：<br />
+- ✅ 成功吸引了關注與資金<br />
+- ❌ 帶來了過高的期望（"智慧"一詞太強）</p>
+<hr />
+<h3>5.1.5 會議的歷史意義</h3>
+<p><strong>實際成果有限</strong>：<br />
+- 並非所有受邀者都全程參與<br />
+- 沒有產生革命性的技術突破<br />
+- 沒有正式的會議記錄或論文集</p>
+<p><strong>深遠影響</strong>：<br />
+- ✅ <strong>確立了 AI 作為獨立研究領域</strong><br />
+- ✅ <strong>建立了研究社群</strong>：參與者成為 AI 先驅<br />
+- ✅ <strong>吸引了資金</strong>：政府與企業開始投資<br />
+- ✅ <strong>定義了研究議程</strong>：影響後續幾十年</p>
+<p><strong>樂觀氛圍</strong>：<br />
+當時普遍認為：<br />
+- 20 年內將實現人類級別的 AI<br />
+- 機器翻譯將在 3-8 年內解決<br />
+- 電腦將在 10 年內成為象棋世界冠軍</p>
+<hr />
+<h2>5.2 早期的 AI 程式</h2>
+<h3>5.2.1 Logic Theorist (邏輯理論家, 1956)</h3>
+<p><strong>開發者</strong>：Allen Newell, Herbert Simon, Cliff Shaw<br />
+<strong>首次展示</strong>：達特茅斯會議</p>
+<p><strong>成就</strong>：<br />
+- 證明了《數學原理》(Principia Mathematica) 中的 38 個定理<br />
+- 其中一個證明比原書更優雅</p>
+<p><strong>工作原理</strong>：</p>
+<div class="mermaid">
+graph TD
+    Start[定理證明任務]
+    Goal[目標定理]
+    Rules[邏輯規則庫]
+    Search[搜索策略]
+    Proof[找到證明]
+
+    Start --> Goal
+    Goal --> Search
+    Rules --> Search
+    Search -->|啟發式搜索| Proof
+
+    style Start fill:#e1f5dd
+    style Proof fill:#f3e5f5
+
+</div>
+
+<p><strong>啟發式方法</strong>：<br />
+1. <strong>手段-目的分析</strong> (Means-Ends Analysis)<br />
+   - 識別當前狀態與目標的差距<br />
+   - 選擇能縮小差距的規則</p>
+<ol>
+<li><strong>逆向推理</strong>：</li>
+<li>從目標倒推需要什麼前提</li>
+<li>再證明這些前提</li>
+</ol>
+<p><strong>範例（簡化）</strong>：</p>
+<pre class="codehilite"><code>目標：證明 A → C
+逆向推理：如果有 A → B 和 B → C，則證明完成
+搜索：尋找 A → B 和 B → C
+找到後：證明成功
+</code></pre>
+
+<p><strong>意義</strong>：<br />
+- ✅ 第一個真正的 AI 程式<br />
+- ✅ 展現了機器的「推理能力」<br />
+- ✅ 證明了符號操作的可行性</p>
+<hr />
+<h3>5.2.2 General Problem Solver (GPS, 1957)</h3>
+<p><strong>開發者</strong>：Allen Newell &amp; Herbert Simon</p>
+<p><strong>野心</strong>：<br />
+創造一個<strong>通用</strong>問題解決程式，能處理任何可形式化的問題。</p>
+<p><strong>核心方法：手段-目的分析</strong></p>
+<pre class="codehilite"><code>while 當前狀態 ≠ 目標狀態:
+    1. 比較當前狀態與目標狀態
+    2. 識別最大的差異
+    3. 選擇能縮小該差異的操作
+    4. 如果無法直接應用該操作：
+       → 設立子目標：讓操作可被應用
+       → 遞迴解決子目標
+    5. 應用操作，更新當前狀態
+</code></pre>
+
+<p><strong>範例問題：河內塔 (Tower of Hanoi)</strong></p>
+<pre class="codehilite"><code>問題：將3個盤子從柱A移到柱C，規則：
+- 每次只能移動一個盤子
+- 大盤不能放在小盤上
+
+GPS 的解決過程：
+目標：將3個盤子移到C
+差異：所有盤子都在A
+手段：需要先移走上面的盤子
+
+子目標1：將小盤移到B（為了移中盤）
+子目標2：將中盤移到C
+子目標3：將小盤移到C
+...
+</code></pre>
+
+<p><strong>局限性</strong>：<br />
+- ❌ 只能解決簡單、良定義的問題<br />
+- ❌ 組合爆炸：問題稍複雜就無法處理<br />
+- ❌ 缺乏領域知識：純通用方法效率低<br />
+- ❌ 遠未達到「通用」的目標</p>
+<p><strong>歷史地位</strong>：<br />
+- 第一個嘗試通用問題解決的程式<br />
+- 啟發式搜索的經典案例<br />
+- 揭示了「通用 AI」的困難</p>
+<hr />
+<h3>5.2.3 LISP 語言 (1958)</h3>
+<p><strong>發明者</strong>：John McCarthy</p>
+<p><strong>LISP = LISt Processing（串列處理）</strong></p>
+<p><strong>為什麼需要新語言？</strong><br />
+當時主流語言（FORTRAN）專為數值計算設計，不適合符號操作。</p>
+<p><strong>LISP 的革命性特性</strong>：</p>
+<ol>
+<li><strong>符號處理</strong>：</li>
+</ol>
+<pre class="codehilite"><code class="language-lisp">; 直接操作符號，而非僅數字
+(define person 'John)
+(if (equal? person 'John)
+    (print &quot;Hello John&quot;)
+    (print &quot;Hello stranger&quot;))
+</code></pre>
+
+<ol>
+<li><strong>串列作為基礎結構</strong>：</li>
+</ol>
+<pre class="codehilite"><code class="language-lisp">; 一切都是串列
+(+ 1 2 3)        ; 函數呼叫是串列
+(list 'a 'b 'c)  ; 數據是串列
+'(1 2 (3 4) 5)   ; 可嵌套
+
+; 代碼即數據（同構性）
+</code></pre>
+
+<ol>
+<li><strong>遞迴</strong>：</li>
+</ol>
+<pre class="codehilite"><code class="language-lisp">; 計算階乘
+(define (factorial n)
+  (if (= n 0)
+      1
+      (* n (factorial (- n 1)))))
+</code></pre>
+
+<ol>
+<li><strong>高階函數</strong>：</li>
+</ol>
+<pre class="codehilite"><code class="language-lisp">; 函數可以作為參數傳遞
+(define (apply-twice f x)
+  (f (f x)))
+
+(apply-twice (lambda (x) (* x 2)) 5)  ; 結果：20
+</code></pre>
+
+<ol>
+<li><strong>垃圾回收</strong>：</li>
+<li>自動記憶體管理</li>
+<li>程式設計師無需手動釋放記憶體</li>
+</ol>
+<p><strong>影響</strong>：<br />
+- ✅ 成為 AI 研究的主要語言（直到 1980s）<br />
+- ✅ 影響了後來的函數式程式語言（Scheme, Haskell, Clojure）<br />
+- ✅ 「代碼即數據」啟發了後來的元程式設計<br />
+- ✅ 許多現代語言特性源自 LISP（垃圾回收、lambda 表達式）</p>
+<hr />
+<h2>5.3 神經網路的早期探索</h2>
+<h3>5.3.1 感知器 (Perceptron, 1958)</h3>
+<p><strong>發明者</strong>：Frank Rosenblatt（康奈爾航空實驗室）</p>
+<p><strong>歷史意義</strong>：<br />
+第一個<strong>可以從數據中學習</strong>的人工神經網路。</p>
+<p><strong>結構</strong>：</p>
+<div class="mermaid">
+graph LR
+    I1[輸入 1<br/>x₁]
+    I2[輸入 2<br/>x₂]
+    I3[輸入 3<br/>x₃]
+    I4[輸入 n<br/>xₙ]
+
+    W1[權重 w₁]
+    W2[權重 w₂]
+    W3[權重 w₃]
+    W4[權重 wₙ]
+
+    Sum[加權和<br/>Σ wᵢxᵢ]
+    Activation[激活函數<br/>if sum > 閾值<br/>then 1<br/>else 0]
+    Output[輸出]
+
+    I1 --> W1 --> Sum
+    I2 --> W2 --> Sum
+    I3 --> W3 --> Sum
+    I4 --> W4 --> Sum
+
+    Sum --> Activation --> Output
+
+    style I1 fill:#e3f2fd
+    style I2 fill:#e3f2fd
+    style I3 fill:#e3f2fd
+    style I4 fill:#e3f2fd
+    style Sum fill:#fff4e6
+    style Activation fill:#f3e5f5
+    style Output fill:#e1f5dd
+
+</div>
+
+<p><strong>數學表示</strong>：</p>
+<pre class="codehilite"><code>輸出 = 激活(Σ wᵢ × xᵢ - θ)
+
+其中：
+- xᵢ：輸入
+- wᵢ：權重（可學習）
+- θ：閾值
+- 激活函數：階躍函數（&gt; 閾值則 1，否則 0）
+</code></pre>
+
+<p><strong>學習規則（感知器學習演算法）</strong>：</p>
+<pre class="codehilite"><code class="language-python">for each 訓練樣本 (x, y_true):
+    y_pred = 感知器預測(x)
+    誤差 = y_true - y_pred
+
+    if 誤差 != 0:
+        for each 權重 wᵢ:
+            wᵢ = wᵢ + 學習率 × 誤差 × xᵢ
+</code></pre>
+
+<p><strong>能解決的問題</strong>：<br />
+✅ 線性可分問題</p>
+<p><strong>範例：AND 邏輯閘</strong></p>
+<pre class="codehilite"><code>輸入1  輸入2  → 輸出
+0      0     → 0
+0      1     → 0
+1      0     → 0
+1      1     → 1
+
+感知器可以學習到：
+如果 w₁×x₁ + w₂×x₂ &gt; 閾值，輸出 1
+</code></pre>
+
+<hr />
+<h3>5.3.2 感知器的局限 — XOR 問題</h3>
+<p><strong>1969 年，Minsky &amp; Papert 出版《感知器》一書</strong></p>
+<p><strong>關鍵發現</strong>：<br />
+單層感知器<strong>無法解決 XOR（互斥或）問題</strong>。</p>
+<p><strong>XOR 真值表</strong>：</p>
+<pre class="codehilite"><code>輸入1  輸入2  → 輸出
+0      0     → 0
+0      1     → 1
+1      0     → 1
+1      1     → 0
+</code></pre>
+
+<p><strong>為什麼無法解決？</strong></p>
+<p>視覺化：</p>
+<pre class="codehilite"><code>XOR 問題的數據分布：
+
+  輸入2
+    ↑
+  1 | ●     ○    (● = 輸出1, ○ = 輸出0)
+    |
+  0 | ○     ●
+    +--------→ 輸入1
+      0     1
+
+問題：無法用一條直線分開 ● 和 ○
+（這叫「線性不可分」）
+</code></pre>
+
+<p><strong>數學證明</strong>：</p>
+<pre class="codehilite"><code>假設存在權重 w₁, w₂ 和閾值 θ：
+
+對 (0,1) → 1： w₂ &gt; θ         ... (1)
+對 (1,0) → 1： w₁ &gt; θ         ... (2)
+對 (1,1) → 0： w₁ + w₂ ≤ θ    ... (3)
+
+從 (1)(2)： w₁ + w₂ &gt; 2θ
+與 (3) 矛盾！
+證明：不存在這樣的權重
+</code></pre>
+
+<p><strong>歷史影響</strong>：<br />
+這個發現導致：<br />
+- ❌ 神經網路研究資金大幅削減<br />
+- ❌ 研究重心轉向符號 AI<br />
+- ❌ 開啟了第一次「AI 寒冬」的序幕</p>
+<p><strong>後來的解決</strong>：<br />
+- ✅ 多層感知器（MLP）可以解決 XOR<br />
+- ✅ 但當時缺乏有效的訓練方法<br />
+- ✅ 直到 1986 年反向傳播演算法才解決</p>
+<hr />
+<h2>5.4 兩條研究路線的分野</h2>
+<h3>5.4.1 符號主義 vs 連結主義</h3>
+<p>經典時期確立了 AI 的兩大研究流派：</p>
+<div class="mermaid">
+graph TD
+    AI[人工智慧研究]
+
+    Symbolic[符號主義<br/>Symbolic AI]
+    Connectionist[連結主義<br/>Connectionism]
+
+    AI --> Symbolic
+    AI --> Connectionist
+
+    Symbolic --> S1[代表人物:<br/>McCarthy, Minsky,<br/>Newell, Simon]
+    Symbolic --> S2[核心理念:<br/>智慧 = 符號操作<br/>+ 邏輯推理]
+    Symbolic --> S3[代表成果:<br/>Logic Theorist<br/>GPS, 專家系統]
+
+    Connectionist --> C1[代表人物:<br/>Rosenblatt,<br/>Widrow, Hoff]
+    Connectionist --> C2[核心理念:<br/>智慧 = 神經元連結<br/>+ 學習調整]
+    Connectionist --> C3[代表成果:<br/>感知器<br/>ADALINE]
+
+    style Symbolic fill:#e3f2fd
+    style Connectionist fill:#f3e5f5
+
+</div>
+
+<p><strong>對比</strong>：</p>
+<table>
+<thead>
+<tr>
+<th>維度</th>
+<th>符號主義</th>
+<th>連結主義</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>靈感來源</strong></td>
+<td>邏輯學、語言學</td>
+<td>神經科學、生物學</td>
+</tr>
+<tr>
+<td><strong>知識表示</strong></td>
+<td>符號、規則、邏輯</td>
+<td>權重、連接</td>
+</tr>
+<tr>
+<td><strong>學習方式</strong></td>
+<td>專家編寫規則</td>
+<td>從數據自動學習</td>
+</tr>
+<tr>
+<td><strong>推理過程</strong></td>
+<td>邏輯推導</td>
+<td>前向傳播計算</td>
+</tr>
+<tr>
+<td><strong>可解釋性</strong></td>
+<td>強（規則清晰）</td>
+<td>弱（權重難解釋）</td>
+</tr>
+<tr>
+<td><strong>優勢領域</strong></td>
+<td>邏輯推理、規劃</td>
+<td>模式識別、分類</td>
+</tr>
+<tr>
+<td><strong>1960s 地位</strong></td>
+<td>主導地位</td>
+<td>邊緣地位</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3>5.4.2 為何符號主義占主導？</h3>
+<p><strong>1960-1970s，符號 AI 主導的原因</strong>：</p>
+<ol>
+<li><strong>早期成功</strong>：</li>
+<li>Logic Theorist 證明定理</li>
+<li>GPS 解決問題</li>
+<li>
+<p>符號方法「看起來更像智慧」</p>
+</li>
+<li>
+<p><strong>符合直覺</strong>：</p>
+</li>
+<li>人類思考似乎涉及符號和邏輯</li>
+<li>
+<p>數學、語言都是符號系統</p>
+</li>
+<li>
+<p><strong>資源與影響力</strong>：</p>
+</li>
+<li>符號派學者在學術界影響力大</li>
+<li>
+<p>獲得更多研究資金</p>
+</li>
+<li>
+<p><strong>神經網路的挫折</strong>：</p>
+</li>
+<li>感知器局限被揭示</li>
+<li>缺乏訓練深層網路的方法</li>
+</ol>
+<hr />
+<h2>5.5 經典時期的挑戰與局限</h2>
+<h3>5.5.1 樂觀預測的落空</h3>
+<p><strong>1960s 的樂觀預測</strong>：</p>
+<p>❌ <strong>Herbert Simon (1965)</strong>：</p>
+<blockquote>
+<p>"20 年內，機器將能完成人類能做的任何工作。"</p>
+</blockquote>
+<p>❌ <strong>Marvin Minsky (1967)</strong>：</p>
+<blockquote>
+<p>"一代人的時間內，創造人工智慧的問題將基本解決。"</p>
+</blockquote>
+<p>❌ <strong>機器翻譯 (1954-1966)</strong>：<br />
+- 1954年，Georgetown-IBM 展示自動俄英翻譯<br />
+- 預測 3-5 年內解決機器翻譯<br />
+- 1966年，ALPAC 報告：翻譯品質差、不實用<br />
+- 結果：資金大幅削減</p>
+<hr />
+<h3>5.5.2 根本性挑戰</h3>
+<p><strong>組合爆炸 (Combinatorial Explosion)</strong>：</p>
+<pre class="codehilite"><code>問題：下象棋
+搜索空間：每步約 35 種走法
+10 步後：35^10 ≈ 2.8 × 10^15 種可能
+
+即使每秒搜索 1 億種可能，
+需要 325 天才能搜索 10 步！
+
+圍棋更誇張：
+每步約 250 種走法
+19×19 棋盤，約 10^170 種可能局面
+（超過宇宙原子總數！）
+</code></pre>
+
+<p><strong>常識推理困難</strong>：</p>
+<pre class="codehilite"><code>人類：「杯子可以裝水」（常識）
+
+AI 需要知道：
+- 杯子是容器
+- 容器有內部空間
+- 水是液體
+- 液體需要容器盛裝
+- 杯子材質通常防水
+- 杯子開口朝上才能裝
+- ...（無窮無盡的隱含知識）
+
+如何將這些常識形式化？
+</code></pre>
+
+<p><strong>框架問題 (Frame Problem)</strong>：</p>
+<pre class="codehilite"><code>情境：機器人需要拿桌上的書
+
+需要推理：
+- 拿書後，桌子還在嗎？（是）
+- 拿書後，窗外的樹還在嗎？（是）
+- 拿書後，地球還在轉嗎？（是）
+- ...（需要推理無數「不變」的事實）
+
+問題：如何高效表示「大部分東西不變」？
+</code></pre>
+
+<hr />
+<h2>5.6 本章小結</h2>
+<h3>核心要點</h3>
+<ol>
+<li><strong>AI 的正式誕生</strong>：</li>
+<li>1956 年達特茅斯會議標誌 AI 學科成立</li>
+<li>"Artificial Intelligence" 一詞誕生</li>
+<li>
+<p>建立了研究社群與議程</p>
+</li>
+<li>
+<p><strong>早期程式成就</strong>：</p>
+</li>
+<li>Logic Theorist：證明數學定理</li>
+<li>GPS：通用問題解決（雖未真正通用）</li>
+<li>
+<p>LISP：成為 AI 的主要語言</p>
+</li>
+<li>
+<p><strong>兩大流派確立</strong>：</p>
+</li>
+<li>符號主義：主導地位，基於邏輯與規則</li>
+<li>
+<p>連結主義：邊緣地位，基於神經網路</p>
+</li>
+<li>
+<p><strong>感知器的榮耀與挫折</strong>：</p>
+</li>
+<li>第一個學習演算法</li>
+<li>XOR 問題揭示根本局限</li>
+<li>
+<p>導致神經網路研究進入低谷</p>
+</li>
+<li>
+<p><strong>挑戰與局限</strong>：</p>
+</li>
+<li>樂觀預測紛紛落空</li>
+<li>組合爆炸、常識推理、框架問題</li>
+<li>為即將到來的「AI 寒冬」埋下伏筆</li>
+</ol>
+<h3>時代特徵</h3>
+<p><strong>樂觀與天真</strong>：<br />
+- 相信很快實現人類級 AI<br />
+- 低估了智慧的複雜性<br />
+- 過度承諾導致後續失望</p>
+<p><strong>奠基意義</strong>：<br />
+- 儘管目標未達成，但奠定了基礎<br />
+- 確立了研究方向與方法<br />
+- 培養了第一代 AI 研究者</p>
+<h3>思考問題</h3>
+<ol>
+<li><strong>樂觀主義的雙刃劍</strong>：</li>
+<li>為何早期研究者如此樂觀？</li>
+<li>過度樂觀帶來了什麼後果？</li>
+<li>
+<p>對當代 AI 有何啟示？</p>
+</li>
+<li>
+<p><strong>符號 vs 連結</strong>：</p>
+</li>
+<li>為何符號主義當時占主導？</li>
+<li>今天的情況如何逆轉？</li>
+<li>
+<p>兩種方法能否結合？</p>
+</li>
+<li>
+<p><strong>XOR 問題的教訓</strong>：</p>
+</li>
+<li>一個簡單問題為何導致領域低谷？</li>
+<li>理論限制 vs 工程限制的區別</li>
+<li>如何看待技術的局限性？</li>
+</ol>
+<hr />
+<h2>延伸閱讀</h2>
+<p><strong>原始文獻</strong>：<br />
+- McCarthy et al. (1956). "A Proposal for the Dartmouth Summer Research Project on Artificial Intelligence"<br />
+- Minsky &amp; Papert (1969). "Perceptrons: An Introduction to Computational Geometry"</p>
+<p><strong>下一章預告</strong>：<br />
+第 VI 章將探討這些挑戰如何導致 AI 寒冬，以及領域如何透過專家系統與機器學習實現復甦。</p>
+<hr />
+<p><a href="./Chapter_04_EarlyFoundations_b02.html">← 上一章：早期理論基礎</a> | <a href="./README_b06.html">返回目錄</a> | <a href="./Chapter_06_WinterAndRevival_b05.html">下一章：寒冬與復甦 →</a></p></div>
+    
+    <!-- Highlight.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    
+    <!-- Mermaid -->
+    <script type="module">
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+        mermaid.initialize({
+            "startOnLoad": true,
+            "theme": "dark",
+            "securityLevel": "loose"
+});
+    </script>
+</body>
+</html>

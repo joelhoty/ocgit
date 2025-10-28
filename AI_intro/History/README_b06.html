@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>README_b06</title>
+    
+    <!-- CSS 框架 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/dark.min.css">
+    
+    <!-- 代碼高亮 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/base16/darcula.min.css">
+    
+    <!-- 自定義樣式 -->
+    <style>
+        
+                body {
+                    max-width: 900px;
+                    margin: 0 auto;
+                    padding: 20px;
+                }
+                /* 提升代码块对比度 */
+                pre {
+                    background: #1e1e1e !important;
+                    border: 1px solid #3e3e3e;
+                }
+                pre code {
+                    background: #1e1e1e !important;
+                }
+                code {
+                    background: #2d2d2d !important;
+                }
+                /* 引用块对比度 */
+                blockquote {
+                    background: #2d2d2d;
+                    border-left: 4px solid #4a9eff;
+                }
+            
+        
+        /* 通用代碼塊樣式 */
+        pre code {
+            display: block;
+            padding: 1.5em;
+            border-radius: 8px;
+            overflow-x: auto;
+            line-height: 1.6;
+        }
+
+        /* Mermaid 圖表樣式 */
+        
+        .mermaid {
+            margin: 2em 0;
+            padding: 1.5em;
+            text-align: center;
+            border-radius: 8px;
+        }
+        
+        .mermaid {
+            background: #2c3034;
+            border: 1px solid #444;
+        }
+            
+        
+        /* 響應式調整 */
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            .container, .markdown-body, .latex-body, .window-body, .nes-container {
+                padding: 15px;
+            }
+            pre code {
+                padding: 1em;
+            }
+        }
+        
+        
+    </style>
+</head>
+<body>
+    <div class="container"><!-- Path: 114A_AI_intro/History | Timestamp: 2025-10-26 10:49:00 | Version: b06 -->
+<h1>由歷史取向探討人工智慧發展到生成式人工智慧</h1>
+<h2>📚 課程概述</h2>
+<p>本課程教材以歷史發展的視角，帶領讀者理解人工智慧從誕生到生成式 AI 時代的完整演進過程。透過時間軸的梳理，我們將探討 AI 如何從早期的符號推理，經歷多次寒冬與復甦，最終發展到今日能夠創造內容的生成式 AI。</p>
+<h2>🎯 學習目標</h2>
+<p>完成本課程後，您將能夠：</p>
+<ol>
+<li><strong>理解 AI 的核心概念</strong>：掌握人工智慧的基本定義與哲學根源</li>
+<li><strong>認識 AI 發展歷程</strong>：了解從 1940 年代至今的重要里程碑</li>
+<li><strong>區分不同 AI 典範</strong>：理解傳統 AI 與生成式 AI 的本質差異</li>
+<li><strong>掌握關鍵技術</strong>：認識神經網路、深度學習、Transformer 等核心技術</li>
+<li><strong>思考倫理挑戰</strong>：探討 AI 帶來的社會、倫理與安全問題</li>
+<li><strong>展望未來趨勢</strong>：理解 AGI、多模態 AI 等前沿發展方向</li>
+</ol>
+<h2>📖 課程結構</h2>
+<h3><a href="./Chapter_01_Introduction_b02.html">第 I 章：導論 — AI 的起源與意義</a></h3>
+<p>探討人工智慧的核心定義、哲學根源，以及為何要從歷史視角理解 AI 的發展。</p>
+<p><strong>關鍵概念</strong>：<br />
+- AI 的核心定義<br />
+- 哲學與科學根源（亞里斯多德、萊布尼茲、布爾）<br />
+- 歷史視角的重要性<br />
+- 典範轉移 (Paradigm Shifts)</p>
+<hr />
+<h3><a href="./Chapter_02_KeywordMap_b02.html">第 II 章：AI 發展關鍵字探究地圖</a></h3>
+<p>提供視覺化的時間軸與關鍵詞地圖，作為整個課程的導航工具。</p>
+<p><strong>內容</strong>：<br />
+- 互動式時間軸圖表 (Mermaid)<br />
+- 五個時期的關鍵技術與事件<br />
+- 視覺化學習路徑</p>
+<hr />
+<h3><a href="./Chapter_03_TwoParadigms_b01.html">第 III 章：理解 AI 的兩大典範</a></h3>
+<p>在深入歷史前，先建立理解框架：傳統 AI vs 生成式 AI 的本質差異。</p>
+<p><strong>關鍵對比</strong>：<br />
+- 分析型 AI vs 生成式 AI<br />
+- 核心目標與技術差異<br />
+- 應用場景對比（文本、視覺、音訊）<br />
+- 典範轉移的意義</p>
+<hr />
+<h3><a href="./Chapter_04_EarlyFoundations_b02.html">第 IV 章：早期理論基礎 (1940s-1950s)</a></h3>
+<p>探討 AI 誕生前的理論準備，以及最早期的思想實驗與計算模型。</p>
+<p><strong>重點人物與概念</strong>：<br />
+- 艾倫·圖靈與圖靈測試<br />
+- 圖靈機與可計算性<br />
+- 諾伯特·維納與控制論<br />
+- 符號 AI 與邏輯系統</p>
+<hr />
+<h3><a href="./Chapter_05_ClassicalPeriod_b05.html">第 V 章：經典時期 (1956-1970s)</a></h3>
+<p>AI 作為獨立學科的誕生，以及早期研究者的樂觀探索。</p>
+<p><strong>里程碑</strong>：<br />
+- 達特茅斯會議 (1956)<br />
+- 早期程式：Logic Theorist, GPS<br />
+- LISP 語言的誕生<br />
+- 感知器與早期神經網路<br />
+- 樂觀主義與早期挑戰</p>
+<hr />
+<h3><a href="./Chapter_06_WinterAndRevival_b05.html">第 VI 章：寒冬與復甦 (1970s-1990s)</a></h3>
+<p>AI 研究遭遇挫折，以及透過專家系統與機器學習的復興之路。</p>
+<p><strong>轉折點</strong>：<br />
+- 兩次 AI 寒冬的成因<br />
+- 專家系統的興衰 (MYCIN)<br />
+- 從符號主義到機器學習的典範轉移<br />
+- 反向傳播演算法的突破<br />
+- 決策樹、SVM 等經典方法</p>
+<hr />
+<h3><a href="./Chapter_07_DeepLearning_b05.html">第 VII 章：深度學習革命 (2000s-2010s)</a></h3>
+<p>三大要素匯聚，引爆 AI 的第三次浪潮。</p>
+<p><strong>革命三要素</strong>：<br />
+- 大數據時代的來臨<br />
+- GPU 加速的突破<br />
+- 深度學習演算法的成熟</p>
+<p><strong>技術突破</strong>：<br />
+- CNN 與 AlexNet 的勝利<br />
+- RNN/LSTM 處理序列數據<br />
+- Transformer 架構革命<br />
+- 預訓練-微調範式</p>
+<hr />
+<h3><a href="./Chapter_08_GenerativeAI_b05.html">第 VIII 章：生成式 AI 時代 (2020s-)</a></h3>
+<p>從理解世界到創造世界，生成式 AI 的爆發與挑戰。</p>
+<p><strong>核心技術</strong>：<br />
+- 大型語言模型 (GPT, BERT, LLaMA, Claude, Gemini)<br />
+- 規模化定律<br />
+- 生成對抗網路 (GAN)<br />
+- 擴散模型 (DALL-E, Stable Diffusion)<br />
+- 多模態 AI (CLIP, GPT-4V)</p>
+<p><strong>倫理與社會挑戰</strong>：<br />
+- 偏見與公平性<br />
+- 透明度與可解釋性<br />
+- 數據隱私與深度偽造<br />
+- AI 監管與治理<br />
+- AI 對齊問題</p>
+<hr />
+<h3><a href="./Chapter_09_Conclusion_b01.html">第 IX 章：總結與反思</a></h3>
+<p>回顧 AI 發展的完整歷程，提煉關鍵洞察，展望未來方向。</p>
+<p><strong>核心主題</strong>：<br />
+- 四個發展階段的典範轉移<br />
+- 多重因素的交織作用<br />
+- 技術、社會、哲學層面的未來展望<br />
+- 對當代的啟示</p>
+<hr />
+<h3><a href="./Glossary_b01.html">附錄 A: 關鍵術語詞彙表</a></h3>
+<p>整理課程中出現的核心術語，以便快速查閱。</p>
+<hr />
+<h3><a href="./References_b01.html">附錄 B: 參考資料與延伸閱讀</a></h3>
+<p>精選的影片、書籍、課程、論文資源，供深入學習使用。</p>
+<p><strong>資源類型</strong>：<br />
+- 推薦影片（中文講座）<br />
+- 經典書籍<br />
+- 線上課程<br />
+- 重要論文<br />
+- 學習路徑建議</p>
+<hr />
+<h2>🗺️ 學習路徑建議</h2>
+<h3>快速瀏覽路徑（2-3 小時）</h3>
+<ol>
+<li>第 I 章：導論</li>
+<li>第 II 章：關鍵字地圖</li>
+<li>第 III 章：兩大典範</li>
+<li>第 VIII 章：生成式 AI（重點閱讀）</li>
+<li>第 IX 章：總結</li>
+</ol>
+<h3>完整學習路徑（6-8 小時）</h3>
+<p>按章節順序完整閱讀，建議分 2-3 次完成。</p>
+<h3>主題式學習路徑</h3>
+<ul>
+<li><strong>技術導向</strong>：第 IV, V, VI, VII 章（歷史技術演進）</li>
+<li><strong>應用導向</strong>：第 III, VIII 章（當代 AI 應用）</li>
+<li><strong>倫理導向</strong>：第 VIII 章的倫理部分 + 第 IX 章</li>
+</ul>
+<hr />
+<h2>💡 使用建議</h2>
+<h3>教師使用</h3>
+<ul>
+<li>可作為「AI 導論」或「AI 歷史」課程的主要教材</li>
+<li>每章約 1-2 小時授課內容</li>
+<li>配合參考影片作為補充資源</li>
+<li>Mermaid 圖表可用於課堂展示</li>
+</ul>
+<h3>自學者使用</h3>
+<ul>
+<li>建議先閱讀第 I-III 章建立基礎框架</li>
+<li>根據興趣選擇深入章節</li>
+<li>搭配參考資料中的影片強化理解</li>
+<li>每章後可自行查閱相關技術細節</li>
+</ul>
+<h3>進階學習者</h3>
+<ul>
+<li>可直接閱讀感興趣的章節</li>
+<li>參考文末的論文進行深入研究</li>
+<li>使用本教材作為知識地圖與索引</li>
+</ul>
+<hr />
+<h2>📊 課程特色</h2>
+<p>✅ <strong>系統化</strong>：完整涵蓋 AI 從誕生到當代的發展歷程<br />
+✅ <strong>視覺化</strong>：使用 Mermaid 圖表呈現時間軸與概念關係<br />
+✅ <strong>深入淺出</strong>：專業術語配有詳細解釋與實例<br />
+✅ <strong>中英對照</strong>：重要術語提供中英文對照<br />
+✅ <strong>模組化</strong>：章節獨立，可依需求選讀<br />
+✅ <strong>實用導向</strong>：連結當代應用與實際案例<br />
+✅ <strong>批判思考</strong>：探討倫理、社會影響與未來挑戰</p>
+<hr />
+<h2>🔄 版本資訊</h2>
+<ul>
+<li><strong>當前版本</strong>：b06</li>
+<li><strong>更新日期</strong>：2025-10-26</li>
+<li><strong>主要更新</strong>：</li>
+<li>第三次修正第 VI、VII 章中的 Mermaid 圖形語法，確保所有節點標籤的特殊字元都被正確處理。</li>
+<li>更新所有相關檔案的版本號與導航連結，確保整個課程文件的一致性。</li>
+</ul>
+<hr />
+<h2>📬 回饋與建議</h2>
+<p>如有任何問題、建議或發現錯誤，歡迎提供回饋以協助改進教材品質。</p>
+<hr />
+<p><strong>開始學習</strong> → <a href="./Chapter_01_Introduction_b02.html">第 I 章：導論 — AI 的起源與意義</a></p></div>
+    
+    <!-- Highlight.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    
+    <!-- Mermaid -->
+    <script type="module">
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+        mermaid.initialize({
+            "startOnLoad": true,
+            "theme": "dark",
+            "securityLevel": "loose"
+});
+    </script>
+</body>
+</html>

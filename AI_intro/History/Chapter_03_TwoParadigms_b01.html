@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chapter_03_TwoParadigms_b01</title>
+    
+    <!-- CSS 框架 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/dark.min.css">
+    
+    <!-- 代碼高亮 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/base16/darcula.min.css">
+    
+    <!-- 自定義樣式 -->
+    <style>
+        
+                body {
+                    max-width: 900px;
+                    margin: 0 auto;
+                    padding: 20px;
+                }
+                /* 提升代码块对比度 */
+                pre {
+                    background: #1e1e1e !important;
+                    border: 1px solid #3e3e3e;
+                }
+                pre code {
+                    background: #1e1e1e !important;
+                }
+                code {
+                    background: #2d2d2d !important;
+                }
+                /* 引用块对比度 */
+                blockquote {
+                    background: #2d2d2d;
+                    border-left: 4px solid #4a9eff;
+                }
+            
+        
+        /* 通用代碼塊樣式 */
+        pre code {
+            display: block;
+            padding: 1.5em;
+            border-radius: 8px;
+            overflow-x: auto;
+            line-height: 1.6;
+        }
+
+        /* Mermaid 圖表樣式 */
+        
+        .mermaid {
+            margin: 2em 0;
+            padding: 1.5em;
+            text-align: center;
+            border-radius: 8px;
+        }
+        
+        .mermaid {
+            background: #2c3034;
+            border: 1px solid #444;
+        }
+            
+        
+        /* 響應式調整 */
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            .container, .markdown-body, .latex-body, .window-body, .nes-container {
+                padding: 15px;
+            }
+            pre code {
+                padding: 1em;
+            }
+        }
+        
+        
+    </style>
+</head>
+<body>
+    <div class="container"><!-- Path: 114A_AI_intro/History | Timestamp: 2025-10-25 14:15:00 | Version: b01 -->
+<p><a href="./Chapter_02_KeywordMap_b02.html">← 上一章</a> | <a href="./index.html">返回目錄</a> | <a href="./Chapter_04_EarlyFoundations_b02.html">下一章 →</a></p>
+<hr />
+<h2>3.1 為什麼需要先理解兩大典範？</h2>
+<p>在深入 AI 的歷史發展之前，我們需要先建立一個重要的概念框架：<strong>傳統 AI 與生成式 AI 的本質差異</strong>。</p>
+<p>理解這個區別將幫助您：<br />
+1. ✅ <strong>清晰定位技術</strong>：知道不同技術屬於哪個典範<br />
+2. ✅ <strong>理解演進邏輯</strong>：明白為何會發生典範轉移<br />
+3. ✅ <strong>評估應用場景</strong>：判斷何時使用哪種技術<br />
+4. ✅ <strong>把握未來趨勢</strong>：預測技術發展方向</p>
+<hr />
+<h2>3.2 核心差異：分析 vs 創造</h2>
+<p>人工智慧的發展可以大致分為兩個主要階段，它們在<strong>目標、方法和應用</strong>上存在根本性的差異。</p>
+<h3>兩大典範的定義</h3>
+<div class="mermaid">
+graph LR
+    AI[人工智慧<br/>Artificial Intelligence]
+
+    Traditional[傳統 AI<br/>Analytical AI<br/>分析型]
+    Generative[生成式 AI<br/>Generative AI<br/>創造型]
+
+    AI --> Traditional
+    AI --> Generative
+
+    Traditional --> T1[理解<br/>Understanding]
+    Traditional --> T2[分類<br/>Classification]
+    Traditional --> T3[預測<br/>Prediction]
+
+    Generative --> G1[創造<br/>Creation]
+    Generative --> G2[合成<br/>Synthesis]
+    Generative --> G3[生成<br/>Generation]
+
+    T1 -.回答.-> TQ["這是什麼?<br/>What is it?"]
+    T2 -.回答.-> TQ2["屬於哪類?<br/>Which category?"]
+    T3 -.回答.-> TQ3["會發生什麼?<br/>What will happen?"]
+
+    G1 -.回答.-> GQ["能創造什麼?<br/>What can be created?"]
+    G2 -.回答.-> GQ2["還能有什麼?<br/>What else is possible?"]
+    G3 -.回答.-> GQ3["如何生成新內容?<br/>How to generate new?"]
+
+    style Traditional fill:#e3f2fd
+    style Generative fill:#f3e5f5
+
+</div>
+
+<h3>本質區別</h3>
+<table>
+<thead>
+<tr>
+<th>維度</th>
+<th>傳統 AI（分析型）</th>
+<th>生成式 AI（創造型）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>核心問題</strong></td>
+<td>「這是什麼？」</td>
+<td>「還能有什麼？」</td>
+</tr>
+<tr>
+<td><strong>主要目標</strong></td>
+<td>理解、分類、預測</td>
+<td>創造、合成、生成</td>
+</tr>
+<tr>
+<td><strong>數據角色</strong></td>
+<td>輸入 → 分析</td>
+<td>學習 → 創造</td>
+</tr>
+<tr>
+<td><strong>創造性</strong></td>
+<td>無（僅做判斷）</td>
+<td>有（生成新內容）</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>3.3 詳細對比表</h2>
+<h3>核心特徵對比</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">特性</th>
+<th style="text-align: left;">傳統 AI (Analytical AI)</th>
+<th style="text-align: left;">生成式 AI (Generative AI)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>主要目標</strong></td>
+<td style="text-align: left;"><strong>分析與預測</strong> (Analysis &amp; Prediction)</td>
+<td style="text-align: left;"><strong>創造與合成</strong> (Creation &amp; Synthesis)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>核心任務</strong></td>
+<td style="text-align: left;">分類、回歸、聚類、推薦</td>
+<td style="text-align: left;">內容生成、風格轉換、數據增強</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>輸出類型</strong></td>
+<td style="text-align: left;">一個標籤、數值、判斷<br/>(e.g., "是貓", "75分", "會購買")</td>
+<td style="text-align: left;">全新的複雜數據<br/>(e.g., 一篇文章、一張圖片、一段音樂)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>輸出性質</strong></td>
+<td style="text-align: left;">離散（類別）或連續（數值）</td>
+<td style="text-align: left;">複雜結構（文本、圖像、音訊、影片）</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>創造性</strong></td>
+<td style="text-align: left;">無創造性，只做判斷</td>
+<td style="text-align: left;">具有創造性，生成新內容</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>訓練數據</strong></td>
+<td style="text-align: left;">通常需要大量<strong>標記好</strong>的數據<br/>(每個樣本都有正確答案)</td>
+<td style="text-align: left;">傾向於使用海量的<strong>未標記</strong>數據<br/>(自我監督學習)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>模型複雜度</strong></td>
+<td style="text-align: left;">相對簡單（百萬到千萬參數）</td>
+<td style="text-align: left;">極其複雜（億到兆參數）</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>可解釋性</strong></td>
+<td style="text-align: left;">相對較好（特別是傳統方法如決策樹）</td>
+<td style="text-align: left;">較差（深度生成模型是「黑盒子」）</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>計算需求</strong></td>
+<td style="text-align: left;">較低（推理快速）</td>
+<td style="text-align: left;">極高（訓練和推理都需要大量算力）</td>
+</tr>
+</tbody>
+</table>
+<h3>技術方法對比</h3>
+<table>
+<thead>
+<tr>
+<th>技術層面</th>
+<th>傳統 AI</th>
+<th>生成式 AI</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>核心技術</strong></td>
+<td>決策樹、SVM、邏輯回歸、<br/>早期神經網路、隨機森林</td>
+<td>Transformer、GAN、VAE、<br/>擴散模型、大型語言模型</td>
+</tr>
+<tr>
+<td><strong>學習方式</strong></td>
+<td>監督式學習（主要）<br/>非監督式學習、強化學習</td>
+<td>自我監督學習<br/>對抗學習、去噪學習</td>
+</tr>
+<tr>
+<td><strong>數據標註</strong></td>
+<td>高度依賴人工標註</td>
+<td>可利用未標註數據</td>
+</tr>
+<tr>
+<td><strong>遷移能力</strong></td>
+<td>有限（需要重新訓練）</td>
+<td>強大（預訓練-微調範式）</td>
+</tr>
+<tr>
+<td><strong>少樣本學習</strong></td>
+<td>困難（需要大量樣本）</td>
+<td>優秀（GPT-3 展現 few-shot 能力）</td>
+</tr>
+</tbody>
+</table>
+<h3>應用場景對比</h3>
+<table>
+<thead>
+<tr>
+<th>應用領域</th>
+<th>傳統 AI 範例</th>
+<th>生成式 AI 範例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>文本處理</strong></td>
+<td>情感分析（正面/負面）<br/>垃圾郵件過濾<br/>關鍵字提取</td>
+<td>文章撰寫<br/>詩歌創作<br/>代碼生成<br/>對話系統</td>
+</tr>
+<tr>
+<td><strong>圖像處理</strong></td>
+<td>圖像分類（貓/狗）<br/>物體偵測（找出車輛）<br/>人臉辨識</td>
+<td>圖像生成（根據描述創作）<br/>風格轉換（照片→油畫）<br/>圖像修復</td>
+</tr>
+<tr>
+<td><strong>語音處理</strong></td>
+<td>語音辨識（語音→文字）<br/>說話人識別<br/>語音情緒分析</td>
+<td>語音合成（文字→語音）<br/>語音轉換（改變聲音特徵）<br/>音樂創作</td>
+</tr>
+<tr>
+<td><strong>數據分析</strong></td>
+<td>信用評分<br/>疾病診斷<br/>股價預測</td>
+<td>合成訓練數據<br/>數據增強<br/>異常檢測</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>3.4 具體範例對比</h2>
+<p>讓我們透過具體案例來理解兩者的差異。</p>
+<h3>範例 1：文本領域</h3>
+<h4>任務：處理電影評論</h4>
+<p><strong>傳統 AI 的做法</strong>：</p>
+<pre class="codehilite"><code>輸入：「這部電影太無聊了，浪費時間。」
+
+模型分析：
+- 提取特徵：「無聊」、「浪費時間」（負面詞彙）
+- 計算情感分數
+- 分類判斷
+
+輸出：負面評論（信心度：95%）
+</code></pre>
+
+<p><strong>生成式 AI 的做法</strong>：</p>
+<pre class="codehilite"><code>輸入提示：「請寫一篇關於科幻電影的正面評論」
+
+模型生成：
+「這部科幻電影的視覺效果令人驚嘆，導演巧妙地將
+深刻的哲學思考融入緊湊的劇情中。演員的表演細膩
+動人，配樂更是恰到好處地烘托了緊張氣氛。強烈推薦
+給所有科幻愛好者！」
+
+輸出：一篇完整的原創評論
+</code></pre>
+
+<p><strong>關鍵差異</strong>：<br />
+- 傳統 AI：判斷已有評論的情感（分析）<br />
+- 生成式 AI：創作全新的評論內容（創造）</p>
+<h3>範例 2：圖像領域</h3>
+<h4>任務：處理貓的圖片</h4>
+<p><strong>傳統 AI 的做法</strong>：</p>
+<pre class="codehilite"><code>輸入：一張圖片
+
+模型處理：
+- 提取視覺特徵（邊緣、紋理、形狀）
+- 與訓練數據比對
+- 計算相似度
+
+輸出：
+- 類別：貓（信心度：99.2%）
+- 品種：波斯貓
+- 位置：圖片中央
+</code></pre>
+
+<p><strong>生成式 AI 的做法</strong>：</p>
+<pre class="codehilite"><code>輸入提示：「一隻戴著太空頭盔的貓,站在火星表面,
+夕陽西下,數位藝術風格」
+
+模型生成：
+根據描述創造一張全新的圖像,其中包含：
+- 一隻貓（結合訓練數據中的貓特徵）
+- 太空頭盔（創意組合）
+- 火星景觀（風格融合）
+- 夕陽光影效果（藝術處理）
+
+輸出：一張從未存在過的原創圖像
+</code></pre>
+
+<p><strong>關鍵差異</strong>：<br />
+- 傳統 AI：識別圖片中有什麼（理解）<br />
+- 生成式 AI：根據描述創造圖片（創造）</p>
+<h3>範例 3：醫療領域</h3>
+<h4>任務：處理醫療影像</h4>
+<p><strong>傳統 AI 的做法</strong>：</p>
+<pre class="codehilite"><code>輸入：胸部 X 光片
+
+模型處理：
+- 掃描影像，尋找異常模式
+- 與已知病例比對
+- 計算機率
+
+輸出：
+- 診斷：疑似肺炎
+- 位置：左肺下葉
+- 嚴重程度：中度
+- 建議：進一步檢查
+</code></pre>
+
+<p><strong>生成式 AI 的做法</strong>：</p>
+<pre class="codehilite"><code>輸入：少量訓練數據
+
+模型生成：
+- 合成大量逼真的 X 光片數據
+- 包含各種疾病的變化形式
+- 用於訓練診斷模型
+
+輸出：用於數據增強的合成醫療影像
+（不直接用於診斷，而是幫助訓練更好的診斷系統）
+</code></pre>
+
+<p><strong>關鍵差異</strong>：<br />
+- 傳統 AI：診斷已有影像（判斷）<br />
+- 生成式 AI：生成訓練數據或輔助報告（創造）</p>
+<hr />
+<h2>3.5 典範轉移的意義</h2>
+<h3>3.5.1 不是替代，而是擴展</h3>
+<p>生成式 AI 並非要取代傳統 AI，而是<strong>擴展了 AI 的能力邊界</strong>。</p>
+<div class="mermaid">
+graph TD
+    Past[過去的 AI]
+    Now[現在的 AI]
+
+    Past --> P1[理解世界]
+    Past --> P2[分析數據]
+    Past --> P3[做出判斷]
+
+    Now --> N1[理解世界]
+    Now --> N2[分析數據]
+    Now --> N3[做出判斷]
+    Now --> N4[創造內容]
+    Now --> N5[生成方案]
+    Now --> N6[輔助創作]
+
+    style Past fill:#e3f2fd
+    style Now fill:#f3e5f5
+
+</div>
+
+<p><strong>互補關係</strong>：<br />
+- 傳統 AI 仍然在<strong>判斷、分類、預測</strong>方面不可或缺<br />
+- 生成式 AI 在<strong>內容創作、方案生成</strong>方面開闢新天地<br />
+- 兩者可以結合使用，發揮更大效用</p>
+<p><strong>實際應用中的結合</strong>：</p>
+<pre class="codehilite"><code>傳統 AI (分析) + 生成式 AI (創造) = 強大系統
+
+範例：智能內容推薦系統
+1. 傳統 AI：分析用戶喜好（分類預測）
+2. 生成式 AI：生成個性化內容（創造合成）
+3. 傳統 AI：評估生成質量（品質判斷）
+</code></pre>
+
+<h3>3.5.2 對各產業的影響</h3>
+<h4>內容產業</h4>
+<table>
+<thead>
+<tr>
+<th>產業</th>
+<th>傳統 AI 應用</th>
+<th>生成式 AI 應用</th>
+<th>影響</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>新聞媒體</strong></td>
+<td>自動分類、推薦</td>
+<td>新聞稿撰寫、摘要生成</td>
+<td>記者角色轉變</td>
+</tr>
+<tr>
+<td><strong>廣告行銷</strong></td>
+<td>受眾分析、效果預測</td>
+<td>文案生成、創意設計</td>
+<td>降低製作成本</td>
+</tr>
+<tr>
+<td><strong>影視娛樂</strong></td>
+<td>推薦系統、字幕生成</td>
+<td>劇本輔助、特效生成</td>
+<td>創作流程改變</td>
+</tr>
+<tr>
+<td><strong>遊戲產業</strong></td>
+<td>NPC 行為、難度調整</td>
+<td>關卡生成、劇情創作</td>
+<td>內容豐富度提升</td>
+</tr>
+</tbody>
+</table>
+<h4>創意產業</h4>
+<div class="mermaid">
+graph LR
+    Before[傳統流程]
+    After[AI 輔助流程]
+
+    Before --> B1[構思]
+    B1 --> B2[草圖]
+    B2 --> B3[修改]
+    B3 --> B4[完稿]
+
+    After --> A1[構思]
+    A1 --> A2[AI 生成初稿]
+    A2 --> A3[人類修改]
+    A3 --> A4[AI 快速迭代]
+    A4 --> A5[人類最終審核]
+
+    style Before fill:#ffe6e6
+    style After fill:#e1f5dd
+
+</div>
+
+<p><strong>改變</strong>：<br />
+- ✅ 降低創作門檻<br />
+- ✅ 加速迭代過程<br />
+- ✅ 探索更多可能性<br />
+- ⚠️ 需要新的技能（提示工程）<br />
+- ⚠️ 原創性與版權問題</p>
+<h4>軟體開發</h4>
+<p><strong>傳統 AI 在軟體開發的應用</strong>：<br />
+- Bug 檢測<br />
+- 代碼審查<br />
+- 性能分析<br />
+- 測試用例生成</p>
+<p><strong>生成式 AI 帶來的變革</strong>：<br />
+- <strong>代碼生成</strong>（GitHub Copilot）：<br />
+  - 根據註釋生成代碼<br />
+  - 自動完成函數<br />
+  - 提供多種實現方案</p>
+<ul>
+<li><strong>文件生成</strong>：</li>
+<li>自動撰寫 API 文件</li>
+<li>生成使用教程</li>
+<li>
+<p>創建測試報告</p>
+</li>
+<li>
+<p><strong>影響</strong>：</p>
+</li>
+<li>開發效率提升 30-50%</li>
+<li>初學者門檻降低</li>
+<li>程式設計師角色轉向架構與設計</li>
+</ul>
+<h4>科學研究</h4>
+<table>
+<thead>
+<tr>
+<th>領域</th>
+<th>傳統 AI</th>
+<th>生成式 AI</th>
+<th>突破</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>藥物研發</strong></td>
+<td>活性預測</td>
+<td>新分子生成</td>
+<td>加速發現過程</td>
+</tr>
+<tr>
+<td><strong>材料科學</strong></td>
+<td>性質預測</td>
+<td>新材料設計</td>
+<td>探索未知空間</td>
+</tr>
+<tr>
+<td><strong>蛋白質研究</strong></td>
+<td>結構預測 (AlphaFold)</td>
+<td>蛋白質設計</td>
+<td>從理解到創造</td>
+</tr>
+<tr>
+<td><strong>基因研究</strong></td>
+<td>序列分析</td>
+<td>基因編輯設計</td>
+<td>精準醫療</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>3.6 技術實現的差異</h2>
+<h3>3.6.1 訓練目標的差異</h3>
+<p><strong>傳統 AI（監督式學習）</strong>：</p>
+<pre class="codehilite"><code>目標：學習從輸入 X 到標籤 Y 的映射
+
+範例：圖像分類
+輸入 X：圖片像素
+標籤 Y：「貓」或「狗」
+目標：最小化分類錯誤率
+
+訓練過程：
+for each 標註好的樣本 (X, Y):
+    預測 = 模型(X)
+    誤差 = 預測 與 Y 的差距
+    調整模型參數以減少誤差
+</code></pre>
+
+<p><strong>生成式 AI（自我監督學習）</strong>：</p>
+<pre class="codehilite"><code>目標：學習數據的分佈，能夠生成新樣本
+
+範例：語言模型（GPT）
+輸入：前面的文字
+目標：預測下一個詞
+
+訓練過程（無需人工標註）：
+for each 文本：
+    遮蔽部分詞
+    讓模型預測被遮蔽的詞
+    根據預測準確度調整參數
+
+結果：模型學會了語言的統計規律
+→ 可以生成連貫的新文本
+</code></pre>
+
+<h3>3.6.2 模型架構的差異</h3>
+<p><strong>傳統 AI 模型範例</strong>：</p>
+<pre class="codehilite"><code class="language-python"># 決策樹（傳統 AI）
+if 特徵1 &gt; 閾值A:
+    if 特徵2 &lt; 閾值B:
+        return 類別A
+    else:
+        return 類別B
+else:
+    return 類別C
+
+# 特點：規則明確，可解釋性強
+</code></pre>
+
+<p><strong>生成式 AI 模型範例</strong>：</p>
+<pre class="codehilite"><code class="language-python"># Transformer（生成式 AI 基礎）
+class Transformer:
+    def __init__(self):
+        self.attention_layers = [多頭注意力層] * N
+        self.feedforward_layers = [前饋網路] * N
+        self.parameters = 數億到數兆個參數
+
+    def generate(self, prompt):
+        # 理解 prompt 的語義
+        context = self.encode(prompt)
+
+        # 逐步生成新內容
+        output = []
+        while not 結束條件:
+            next_token = self.predict_next(context)
+            output.append(next_token)
+            context = update(context, next_token)
+
+        return output
+
+# 特點：極其複雜，難以解釋，但能創造新內容
+</code></pre>
+
+<hr />
+<h2>3.7 何時使用哪種 AI？</h2>
+<h3>決策樹</h3>
+<div class="mermaid">
+graph TD
+    Start([需要 AI 解決什麼問題?])
+
+    Q1{需要創造<br/>新內容嗎?}
+    Q2{有明確的<br/>正確答案嗎?}
+    Q3{需要可解釋的<br/>決策過程嗎?}
+
+    Start --> Q1
+
+    Q1 -->|是| Gen[考慮生成式 AI]
+    Q1 -->|否| Q2
+
+    Q2 -->|是| Q3
+    Q2 -->|否| Unsup[非監督學習<br/>傳統 AI]
+
+    Q3 -->|是| Classic[傳統機器學習<br/>決策樹、邏輯回歸]
+    Q3 -->|否| Deep[深度學習<br/>CNN、RNN]
+
+    Gen --> GenType{什麼類型的內容?}
+    GenType -->|文字| LLM[大型語言模型<br/>GPT, Claude]
+    GenType -->|圖像| DM[擴散模型<br/>DALL-E, SD]
+    GenType -->|多模態| MM[多模態模型<br/>GPT-4V, Gemini]
+
+    style Gen fill:#f3e5f5
+    style Classic fill:#e3f2fd
+    style Deep fill:#e3f2fd
+
+</div>
+
+<h3>實用建議</h3>
+<table>
+<thead>
+<tr>
+<th>場景</th>
+<th>推薦方案</th>
+<th>理由</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>醫療診斷</strong></td>
+<td>傳統 AI（需監督的深度學習）</td>
+<td>需要高準確率、可解釋性、問責制</td>
+</tr>
+<tr>
+<td><strong>信用評分</strong></td>
+<td>傳統機器學習</td>
+<td>需要透明決策、符合監管要求</td>
+</tr>
+<tr>
+<td><strong>內容推薦</strong></td>
+<td>傳統 AI + 部分生成</td>
+<td>判斷喜好（傳統）+ 生成摘要（生成）</td>
+</tr>
+<tr>
+<td><strong>文章撰寫</strong></td>
+<td>生成式 AI</td>
+<td>需要創造性、語言流暢度</td>
+</tr>
+<tr>
+<td><strong>圖像創作</strong></td>
+<td>生成式 AI</td>
+<td>需要藝術性、創意表達</td>
+</tr>
+<tr>
+<td><strong>代碼輔助</strong></td>
+<td>生成式 AI</td>
+<td>提升開發效率、探索多種實現</td>
+</tr>
+<tr>
+<td><strong>客服系統</strong></td>
+<td>混合方案</td>
+<td>意圖分類（傳統）+ 回覆生成（生成）</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>3.8 本章小結</h2>
+<h3>核心要點</h3>
+<ol>
+<li><strong>兩大典範</strong>：</li>
+<li><strong>傳統 AI</strong>：分析、分類、預測（回答「是什麼」）</li>
+<li>
+<p><strong>生成式 AI</strong>：創造、合成、生成（回答「能創造什麼」）</p>
+</li>
+<li>
+<p><strong>關鍵差異</strong>：</p>
+</li>
+<li>目標：判斷 vs 創造</li>
+<li>輸出：標籤/數值 vs 複雜內容</li>
+<li>訓練：需標註數據 vs 可用未標註數據</li>
+<li>
+<p>創造性：無 vs 有</p>
+</li>
+<li>
+<p><strong>互補關係</strong>：</p>
+</li>
+<li>不是替代，而是擴展</li>
+<li>可以結合使用，發揮更大效用</li>
+<li>
+<p>各有適用場景</p>
+</li>
+<li>
+<p><strong>選擇標準</strong>：</p>
+</li>
+<li>需要創造新內容 → 生成式 AI</li>
+<li>需要判斷分類 → 傳統 AI</li>
+<li>需要可解釋性 → 傳統機器學習</li>
+<li>需要創意表達 → 生成式 AI</li>
+</ol>
+<h3>理解這個框架的價值</h3>
+<p>現在您已經建立了理解 AI 發展的基本框架，當您在後續章節學習歷史發展時，可以清楚地看到：</p>
+<ul>
+<li><strong>1950s-2000s</strong>：主要發展傳統 AI（符號主義 → 機器學習）</li>
+<li><strong>2010s</strong>：深度學習同時推進兩個方向</li>
+<li><strong>2020s-</strong>：生成式 AI 爆發，開啟新紀元</li>
+</ul>
+<h3>思考問題</h3>
+<ol>
+<li>
+<p><strong>技術選擇</strong>：如果要開發一個智能寫作助手，應該如何結合傳統 AI 和生成式 AI？</p>
+</li>
+<li>
+<p><strong>倫理思考</strong>：生成式 AI 的「創造能力」帶來哪些新的倫理挑戰？</p>
+</li>
+<li>
+<p><strong>未來展望</strong>：下一個典範轉移可能是什麼？從生成式 AI 到？</p>
+</li>
+<li>
+<p><strong>個人影響</strong>：在您的專業領域中，哪些工作更適合傳統 AI，哪些更適合生成式 AI？</p>
+</li>
+</ol>
+<hr />
+<h2>延伸閱讀</h2>
+<p><strong>深入理解生成式 AI</strong>：<br />
+- 第 VIII 章詳細介紹生成式 AI 的技術細節</p>
+<p><strong>理解歷史演進</strong>：<br />
+- 第 IV-VII 章展示從符號 AI 到深度學習的完整歷程</p>
+<p><strong>技術實現</strong>：<br />
+- 李宏毅教授的《生成式 AI 時代下的機器學習》課程</p>
+<hr />
+<p><a href="./Chapter_02_KeywordMap_b02.html">← 上一章：關鍵字地圖</a> | <a href="./README_b06.html">返回目錄</a> | <a href="./Chapter_04_EarlyFoundations_b02.html">下一章：早期理論基礎 →</a></p></div>
+    
+    <!-- Highlight.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    
+    <!-- Mermaid -->
+    <script type="module">
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+        mermaid.initialize({
+            "startOnLoad": true,
+            "theme": "dark",
+            "securityLevel": "loose"
+});
+    </script>
+</body>
+</html>

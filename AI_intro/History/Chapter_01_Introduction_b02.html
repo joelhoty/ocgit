@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chapter_01_Introduction_b02</title>
+    
+    <!-- CSS 框架 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/dark.min.css">
+    
+    <!-- 代碼高亮 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/base16/darcula.min.css">
+    
+    <!-- 自定義樣式 -->
+    <style>
+        
+                body {
+                    max-width: 900px;
+                    margin: 0 auto;
+                    padding: 20px;
+                }
+                /* 提升代码块对比度 */
+                pre {
+                    background: #1e1e1e !important;
+                    border: 1px solid #3e3e3e;
+                }
+                pre code {
+                    background: #1e1e1e !important;
+                }
+                code {
+                    background: #2d2d2d !important;
+                }
+                /* 引用块对比度 */
+                blockquote {
+                    background: #2d2d2d;
+                    border-left: 4px solid #4a9eff;
+                }
+            
+        
+        /* 通用代碼塊樣式 */
+        pre code {
+            display: block;
+            padding: 1.5em;
+            border-radius: 8px;
+            overflow-x: auto;
+            line-height: 1.6;
+        }
+
+        /* Mermaid 圖表樣式 */
+        
+        .mermaid {
+            margin: 2em 0;
+            padding: 1.5em;
+            text-align: center;
+            border-radius: 8px;
+        }
+        
+        .mermaid {
+            background: #2c3034;
+            border: 1px solid #444;
+        }
+            
+        
+        /* 響應式調整 */
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            .container, .markdown-body, .latex-body, .window-body, .nes-container {
+                padding: 15px;
+            }
+            pre code {
+                padding: 1em;
+            }
+        }
+        
+        
+    </style>
+</head>
+<body>
+    <div class="container"><!-- Path: 114A_AI_intro/History | Timestamp: 2025-10-26 10:20:00 | Version: b02 -->
+<p><a href="./index.html">返回目錄</a> | <a href="./Chapter_02_KeywordMap_b02.html">下一章 →</a></p>
+<hr />
+<h2>1.1 人工智慧的核心定義</h2>
+<p><strong>人工智慧 (Artificial Intelligence, AI)</strong> 的核心定義是「利用機器模擬人類智慧的科學與工程」。這不僅僅是關於計算，更是試圖複製人類的認知能力，如學習、推理、問題解決、感知和語言理解。</p>
+<h3>什麼是「智慧」？</h3>
+<p>在定義人工智慧之前，我們必須先問：什麼是智慧？這是一個哲學與科學交織的問題。</p>
+<p><strong>傳統觀點的智慧特徵</strong>：<br />
+- <strong>學習能力</strong>：從經驗中獲取知識<br />
+- <strong>推理能力</strong>：根據已知推導未知<br />
+- <strong>問題解決</strong>：面對新情境找出解決方案<br />
+- <strong>適應能力</strong>：根據環境變化調整行為<br />
+- <strong>語言理解</strong>：理解和生成有意義的語言<br />
+- <strong>感知能力</strong>：理解視覺、聽覺等感官輸入</p>
+<p><strong>AI 的挑戰</strong>：<br />
+如何將這些抽象的認知能力轉化為可計算的過程？這正是 AI 研究的核心挑戰。</p>
+<hr />
+<h2>1.2 哲學與科學根源</h2>
+<p>AI 的思想並非憑空而生，它可以追溯到古典哲學家對人類思維本質的探討。</p>
+<h3>1.2.1 亞里斯多德的邏輯三段論</h3>
+<p><strong>亞里斯多德 (Aristotle, 384-322 BC)</strong> 建立了形式邏輯的基礎，提供了推理的規則系統。</p>
+<p><strong>三段論範例</strong>：</p>
+<pre class="codehilite"><code>大前提：所有人都會死
+小前提：蘇格拉底是人
+結論：因此，蘇格拉底會死
+</code></pre>
+
+<p><strong>對 AI 的影響</strong>：<br />
+- 展示了推理可以被形式化為規則<br />
+- 成為後來專家系統的理論基礎<br />
+- 證明了某些智慧行為可以被結構化描述</p>
+<p><strong>局限性</strong>：<br />
+- 只能處理確定性推理<br />
+- 難以處理模糊、不確定的現實問題<br />
+- 無法處理例外情況</p>
+<h3>1.2.2 萊布尼茲的「通用語言」</h3>
+<p><strong>戈特弗里德·萊布尼茲 (Gottfried Wilhelm Leibniz, 1646-1716)</strong> 是德國哲學家、數學家，他提出了一個大膽的構想。</p>
+<p><strong>Characteristica Universalis（通用符號系統）</strong>：<br />
+- 設想創造一種通用的形式語言<br />
+- 這種語言可以表達所有人類思想<br />
+- 所有推理都可以轉化為符號計算<br />
+- 爭論可以透過「讓我們計算吧！」(Calculemus!) 來解決</p>
+<p><strong>預示意義</strong>：<br />
+- 「推理即計算」的理念<br />
+- 預示了現代計算機科學的核心思想<br />
+- 影響了後來的形式語言與 logique 系統設計</p>
+<p><strong>名言</strong>：</p>
+<blockquote>
+<p>"當爭論出現時，兩位哲學家之間不需要比兩位會計師之間更多的爭論。拿起筆和紙，坐下來說：讓我們計算吧。"</p>
+</blockquote>
+<h3>1.2.3 喬治·布爾的邏輯代數化</h3>
+<p><strong>喬治·布爾 (George Boole, 1815-1864)</strong> 將邏輯從哲學領域帶入了數學領域。</p>
+<p><strong>布爾代數 (Boolean Algebra, 1854)</strong>：<br />
+- 將邏輯運算轉化為代數運算<br />
+- 發明了二元邏輯系統：真/假、1/0<br />
+- 定義了 AND、OR、NOT 等邏輯運算</p>
+<p><strong>基本運算</strong>：</p>
+<pre class="codehilite"><code>AND (且)：兩者都為真時，結果為真
+OR (或)：至少一個為真時，結果為真
+NOT (非)：反轉真假值
+</code></pre>
+
+<p><strong>深遠影響</strong>：<br />
+- 成為數位電路的理論基礎<br />
+- 所有現代電腦都基於布林邏輯運作<br />
+- 直接影響了程式語言的邏輯運算</p>
+<p><strong>實例</strong>：</p>
+<pre class="codehilite"><code class="language-python"># 現代程式語言中的布林邏輯
+if (age &gt;= 18) AND (has_license == True):
+    print(&quot;可以開車&quot;)
+</code></pre>
+
+<hr />
+<h2>1.3 從哲學到工程：計算理論的建立</h2>
+<h3>1.3.1 計算的本質</h3>
+<p>20 世紀初，數學家開始嚴格探討「什麼可以被計算」的問題。</p>
+<p><strong>關鍵問題</strong>：<br />
+- 是否存在一個通用的方法可以解決所有數學問題？<br />
+- 哪些問題原則上是可解的？<br />
+- 計算的能力邊界在哪裡？</p>
+<p><strong>影響</strong>：<br />
+這些理論探討為 AI 提供了基礎：<br />
+- 定義了機器能力的理論上限<br />
+- 幫助我們理解 AI 的可能性與局限性<br />
+- 指引了 AI 研究的方向</p>
+<h3>1.3.2 AI 的多學科本質</h3>
+<p><strong>AI 建立在以下學科的交會點</strong>：</p>
+<div class="mermaid">
+graph TD
+    AI[人工智慧<br/>Artificial Intelligence]
+
+    Math[數學 Mathematics]
+    CS[計算機科學<br/>Computer Science]
+    Cog[認知科學<br/>Cognitive Science]
+    Neuro[神經科學<br/>Neuroscience]
+    Phil[哲學 Philosophy]
+    Lang[語言學 Linguistics]
+
+    Math --> AI
+    CS --> AI
+    Cog --> AI
+    Neuro --> AI
+    Phil --> AI
+    Lang --> AI
+
+    Math -.提供.-> M1[邏輯推理<br/>優化理論<br/>統計方法]
+    CS -.提供.-> C1[演算法<br/>資料結構<br/>計算理論]
+    Cog -.提供.-> Co1[思維模型<br/>決策過程<br/>學習機制]
+    Neuro -.提供.-> N1[神經網路啟發<br/>大腦運作原理]
+    Phil -.提供.-> P1[智慧本質<br/>意識問題<br/>倫理框架]
+    Lang -.提供.-> L1[語言結構<br/>語義理解<br/>對話機制]
+
+</div>
+
+<p><strong>各學科的貢獻</strong>：</p>
+<table>
+<thead>
+<tr>
+<th>學科</th>
+<th>核心貢獻</th>
+<th>代表概念</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>數學</strong></td>
+<td>提供形式化工具與優化方法</td>
+<td>微積分、線性代數、機率論</td>
+</tr>
+<tr>
+<td><strong>計算機科學</strong></td>
+<td>實現 AI 的技術基礎</td>
+<td>演算法、資料結構、平行計算</td>
+</tr>
+<tr>
+<td><strong>認知科學</strong></td>
+<td>理解人類思維過程</td>
+<td>記憶模型、注意力機制、學習理論</td>
+</tr>
+<tr>
+<td><strong>神經科學</strong></td>
+<td>啟發神經網路設計</td>
+<td>神經元、突觸、大腦分區</td>
+</tr>
+<tr>
+<td><strong>哲學</strong></td>
+<td>探討智慧與意識本質</td>
+<td>心靈哲學、知識論、倫理學</td>
+</tr>
+<tr>
+<td><strong>語言學</strong></td>
+<td>提供語言理解框架</td>
+<td>語法、語義、語用學</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>1.4 為什麼要學習 AI 歷史？</h2>
+<h3>1.4.1 為什麼要學習 AI 歷史？</h3>
+<p>了解 AI 的發展歷程不僅僅是知識的累積，更有以下重要意義：</p>
+<p><strong>1. 理解典範轉移 (Paradigm Shifts)</strong></p>
+<p>AI 的發展並非線性進步，而是經歷了多次根本性的典範轉移：</p>
+<div class="mermaid">
+graph LR
+    P1[符號主義<br/>Symbolic AI<br/>1950s-1980s] --> P2[統計學習<br/>Statistical Learning<br/>1990s-2000s]
+    P2 --> P3[深度學習<br/>Deep Learning<br/>2010s]
+    P3 --> P4[生成式 AI<br/>Generative AI<br/>2020s-]
+
+    P1 -.特徵.-> F1[手寫規則<br/>邏輯推理<br/>專家系統]
+    P2 -.特徵.-> F2[從數據學習<br/>統計模型<br/>特徵工程]
+    P3 -.特徵.-> F3[深層表徵<br/>端到端學習<br/>大規模數據]
+    P4 -.特徵.-> F4[內容生成<br/>少樣本學習<br/>多模態整合]
+
+    style P1 fill:#ffe6e6
+    style P2 fill:#fff4e6
+    style P3 fill:#e3f2fd
+    style P4 fill:#f3e5f5
+
+</div>
+
+<p><strong>典範轉移的啟示</strong>：<br />
+- 沒有一種方法是「終極解答」<br />
+- 每個典範都有其適用範圍與局限<br />
+- 新典範往往建立在舊典範的基礎上<br />
+- 理解過去能幫助我們預測未來</p>
+<p><strong>2. 避免過度樂觀與悲觀</strong></p>
+<p><strong>歷史教訓 — AI 寒冬</strong>：</p>
+<p>AI 歷史上經歷了兩次「寒冬期」：<br />
+- <strong>第一次 AI 寒冬 (1974-1980)</strong>：符號 AI 的局限性暴露<br />
+- <strong>第二次 AI 寒冬 (1987-1993)</strong>：專家系統的泡沫破滅</p>
+<p><strong>寒冬的成因</strong>：<br />
+- 過度承諾：研究者的預測過於樂觀<br />
+- 資金削減：未能實現承諾，導致投資者失去信心<br />
+- 技術瓶頸：硬體性能、數據匱乏、理論限制</p>
+<p><strong>當代的類比</strong>：<br />
+今天的生成式 AI 熱潮是否會重蹈覆轍？歷史告訴我們：<br />
+- ✅ 保持理性：技術有其局限性<br />
+- ✅ 長期視角：真正的突破需要時間<br />
+- ✅ 務實態度：關注實際應用與價值<br />
+- ❌ 盲目樂觀：避免過度誇大能力<br />
+- ❌ 全盤否定：也不應因挑戰而放棄</p>
+<p><strong>3. 理解技術的連續性</strong></p>
+<p>今天的 AI 成就並非憑空而來，而是建立在幾十年的累積之上：</p>
+<p><strong>範例：神經網路的演進</strong></p>
+<pre class="codehilite"><code>1943: McCulloch-Pitts 神經元模型
+  ↓
+1958: Rosenblatt 的感知器
+  ↓
+1969: Minsky 指出感知器局限 → 寒冬
+  ↓
+1986: Rumelhart 的反向傳播演算法 → 復甦
+  ↓
+2012: Hinton 的 AlexNet → 深度學習革命
+  ↓
+2017: Vaswani 的 Transformer → 當代 AI 基礎
+  ↓
+2022: ChatGPT → 生成式 AI 爆發
+</code></pre>
+
+<p><strong>啟示</strong>：<br />
+- 許多「新」技術其實有深厚的歷史根源<br />
+- 突破往往需要數十年的積累<br />
+- 失敗的嘗試也是進步的一部分</p>
+<p><strong>4. 學習前人的智慧與錯誤</strong></p>
+<p><strong>成功的經驗</strong>：<br />
+- AlexNet：證明了深度學習的潛力<br />
+- Transformer：簡化架構反而更有效<br />
+- 預訓練-微調：減少對標註數據的需求</p>
+<p><strong>失敗的教訓</strong>：<br />
+- 過度依賴符號推理的脆弱性<br />
+- 忽視硬體限制的代價<br />
+- 缺乏常識推理的困境</p>
+<hr />
+<h2>1.5 AI 發展的五個主要時期</h2>
+<h3>時期劃分</h3>
+<p>為了更好地理解 AI 的演進，我們將其歷史劃分為五個主要時期，這與第二章的關鍵字地圖保持一致。</p>
+<table>
+<thead>
+<tr>
+<th>時期</th>
+<th>年代</th>
+<th>核心特徵</th>
+<th>代表典範</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>早期理論基礎</strong></td>
+<td>1940s-1950s</td>
+<td>奠定理論基礎，提出核心概念</td>
+<td>計算理論、控制論</td>
+</tr>
+<tr>
+<td><strong>經典時期</strong></td>
+<td>1956-1970s</td>
+<td>AI 正式誕生，早期探索與樂觀</td>
+<td>符號主義 vs. 連結主義</td>
+</tr>
+<tr>
+<td><strong>寒冬與復甦</strong></td>
+<td>1970s-1990s</td>
+<td>遭遇挫折，典範轉移開始</td>
+<td>專家系統、機器學習</td>
+</tr>
+<tr>
+<td><strong>深度學習革命</strong></td>
+<td>2000s-2010s</td>
+<td>三要素匯聚，AI 爆發</td>
+<td>深度學習、CNN、Transformer</td>
+</tr>
+<tr>
+<td><strong>生成式 AI 時代</strong></td>
+<td>2020s-</td>
+<td>從理解到創造，AI 新紀元</td>
+<td>大型語言模型、擴散模型</td>
+</tr>
+</tbody>
+</table>
+<h3>知識來源的演變</h3>
+<div class="mermaid">
+graph TD
+    P1[早期理論<br/>人類智慧的抽象模型] --> P2[經典時期<br/>人類專家的知識<br/>手動編寫規則]
+    P2 --> P3[寒冬與復甦<br/>標註好的數據<br/>監督式學習]
+    P3 --> P4[深度學習<br/>大規模數據<br/>自動特徵學習]
+    P4 --> P5[生成式 AI<br/>海量無標註數據<br/>自我監督學習]
+
+    style P1 fill:#e1f5dd
+    style P2 fill:#fff4e6
+    style P3 fill:#ffe6e6
+    style P4 fill:#e3f2fd
+    style P5 fill:#f3e5f5
+
+</div>
+
+<hr />
+<h2>1.6 課程學習地圖</h2>
+<p>為了幫助您理解本課程的整體結構，以下是學習地圖：</p>
+<div class="mermaid">
+graph TD
+    Start([開始學習])
+
+    C1[第 I 章<br/>導論與定義]
+    C2[第 II 章<br/>關鍵字地圖]
+    C3[第 III 章<br/>兩大典範對比]
+
+    C4[第 IV 章<br/>早期理論]
+    C5[第 V 章<br/>經典時期]
+    C6[第 VI 章<br/>寒冬與復甦]
+
+    C7[第 VII 章<br/>深度學習革命]
+    C8[第 VIII 章<br/>生成式 AI]
+
+    C9[第 IX 章<br/>總結與展望]
+
+    End([完成學習])
+
+    Start --> C1
+    C1 --> C2
+    C2 --> C3
+    C3 --> C4
+    C4 --> C5
+    C5 --> C6
+    C6 --> C7
+    C7 --> C8
+    C8 --> C9
+    C9 --> End
+
+    C1 -.建立基礎.-> Base[概念框架]
+    C2 -.視覺導航.-> Base
+    C3 -.理解差異.-> Base
+
+    C4 -.歷史脈絡.-> History[發展歷程]
+    C5 -.歷史脈絡.-> History
+    C6 -.歷史脈絡.-> History
+    C7 -.歷史脈絡.-> History
+
+    C8 -.當代應用.-> Modern[現代 AI]
+    C9 -.未來展望.-> Modern
+
+    style C1 fill:#e1f5dd
+    style C2 fill:#e1f5dd
+    style C3 fill:#e1f5dd
+    style C4 fill:#fff4e6
+    style C5 fill:#fff4e6
+    style C6 fill:#fff4e6
+    style C7 fill:#e3f2fd
+    style C8 fill:#f3e5f5
+    style C9 fill:#ffe6e6
+
+</div>
+
+<hr />
+<h2>1.7 本章小結</h2>
+<h3>核心要點</h3>
+<ol>
+<li>
+<p><strong>AI 的定義</strong>：模擬人類智慧的科學與工程，涉及學習、推理、問題解決等認知能力</p>
+</li>
+<li>
+<p><strong>哲學根源</strong>：</p>
+</li>
+<li>亞里斯多德：形式邏輯與推理規則</li>
+<li>萊布尼茲：推理即計算的理念</li>
+<li>
+<p>布爾：邏輯的代數化</p>
+</li>
+<li>
+<p><strong>多學科本質</strong>：AI 融合了數學、計算機科學、認知科學、神經科學、哲學、語言學</p>
+</li>
+<li>
+<p><strong>歷史視角的價值</strong>：</p>
+</li>
+<li>理解典範轉移</li>
+<li>避免過度樂觀/悲觀</li>
+<li>認識技術的連續性</li>
+<li>
+<p>學習前人的智慧與錯誤</p>
+</li>
+<li>
+<p><strong>五個發展時期</strong>：</p>
+</li>
+<li>早期理論 → 經典時期 → 寒冬與復甦 → 深度學習 → 生成式 AI</li>
+</ol>
+<h3>思考問題</h3>
+<ol>
+<li>
+<p><strong>哲學思考</strong>：如果一個 AI 系統通過了圖靈測試，它是否真的「理解」了對話內容？還是只是巧妙地模擬？</p>
+</li>
+<li>
+<p><strong>歷史反思</strong>：AI 寒冬給我們的最大教訓是什麼？當代的生成式 AI 熱潮應該如何避免重蹈覆轍？</p>
+</li>
+<li>
+<p><strong>跨學科視角</strong>：為什麼 AI 需要如此多學科的貢獻？單靠計算機科學是否足夠？</p>
+</li>
+<li>
+<p><strong>未來展望</strong>：從符號主義到生成式 AI 的演進，下一個典範轉移可能是什麼？</p>
+</li>
+</ol>
+<hr />
+<h2>延伸閱讀</h2>
+<p><strong>經典著作</strong>：<br />
+- Alan Turing (1950). "Computing Machinery and Intelligence"<br />
+  - 圖靈測試的原始論文，探討機器是否能思考</p>
+<p><strong>推薦影片</strong>：<br />
+- 【AI世代的教與學】part2/ 陳宜欣教授<br />
+  - 探討 AI 對教育的衝擊與啟示</p>
+<p><strong>深入探討</strong>：<br />
+- 第 IV 章將詳細介紹圖靈測試與早期理論<br />
+- 第 VI 章將深入分析 AI 寒冬的成因與教訓</p>
+<hr />
+<p><a href="./index.html">返回目錄</a> | <a href="./Chapter_02_KeywordMap_b02.html">下一章 →</a></p></div>
+    
+    <!-- Highlight.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    
+    <!-- Mermaid -->
+    <script type="module">
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+        mermaid.initialize({
+            "startOnLoad": true,
+            "theme": "dark",
+            "securityLevel": "loose"
+});
+    </script>
+</body>
+</html>

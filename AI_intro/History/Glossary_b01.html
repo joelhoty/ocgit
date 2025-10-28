@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Glossary_b01</title>
+    
+    <!-- CSS 框架 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/dark.min.css">
+    
+    <!-- 代碼高亮 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/base16/darcula.min.css">
+    
+    <!-- 自定義樣式 -->
+    <style>
+        
+                body {
+                    max-width: 900px;
+                    margin: 0 auto;
+                    padding: 20px;
+                }
+                /* 提升代码块对比度 */
+                pre {
+                    background: #1e1e1e !important;
+                    border: 1px solid #3e3e3e;
+                }
+                pre code {
+                    background: #1e1e1e !important;
+                }
+                code {
+                    background: #2d2d2d !important;
+                }
+                /* 引用块对比度 */
+                blockquote {
+                    background: #2d2d2d;
+                    border-left: 4px solid #4a9eff;
+                }
+            
+        
+        /* 通用代碼塊樣式 */
+        pre code {
+            display: block;
+            padding: 1.5em;
+            border-radius: 8px;
+            overflow-x: auto;
+            line-height: 1.6;
+        }
+
+        /* Mermaid 圖表樣式 */
+        
+        .mermaid {
+            margin: 2em 0;
+            padding: 1.5em;
+            text-align: center;
+            border-radius: 8px;
+        }
+        
+        .mermaid {
+            background: #2c3034;
+            border: 1px solid #444;
+        }
+            
+        
+        /* 響應式調整 */
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            .container, .markdown-body, .latex-body, .window-body, .nes-container {
+                padding: 15px;
+            }
+            pre code {
+                padding: 1em;
+            }
+        }
+        
+        
+    </style>
+</head>
+<body>
+    <div class="container"><!-- Path: 114A_AI_intro/History | Timestamp: 2025-10-26 10:28:00 | Version: b01 -->
+<h1>關鍵術語詞彙表 (Glossary)</h1>
+<p><a href="./README_b06.html">返回目錄</a></p>
+<hr />
+<p>本詞彙表整理了課程中出現的核心術語，以便快速查閱。</p>
+<h2>A</h2>
+<ul>
+<li>
+<p><strong>AGI (Artificial General Intelligence / 通用人工智慧)</strong><br />
+  具備與人類同等智慧，能理解、學習並應用其智慧以解決任何問題的機器智慧，是 AI 領域的長期目標。</p>
+</li>
+<li>
+<p><strong>AlexNet</strong><br />
+  一個深度卷積神經網路 (CNN)，在 2012 年的 ImageNet 競賽中取得壓倒性勝利，標誌著深度學習時代的開啟。</p>
+</li>
+<li>
+<p><strong>Attention Mechanism (注意力機制)</strong><br />
+  一種模仿人類認知注意力的機制，允許神經網路在處理序列數據時，動態地為輸入的不同部分分配不同的權重。它是 Transformer 架構的核心。</p>
+</li>
+</ul>
+<h2>B</h2>
+<ul>
+<li>
+<p><strong>Backpropagation (反向傳播)</strong><br />
+  一種用於訓練多層神經網路的演算法。它透過計算輸出誤差，並將誤差信號從輸出層逐層向後傳播，來高效地更新網路的權重。</p>
+</li>
+<li>
+<p><strong>BERT (Bidirectional Encoder Representations from Transformers)</strong><br />
+  由 Google 於 2018 年推出的預訓練語言模型。它使用雙向 Transformer 編碼器，在多項 NLP 任務上取得了破紀錄的成果。</p>
+</li>
+</ul>
+<h2>C</h2>
+<ul>
+<li>
+<p><strong>CNN (Convolutional Neural Network / 卷積神經網路)</strong><br />
+  一種特別適用於處理網格狀數據（如圖像）的深度學習模型。它透過卷積層和池化層來自動學習圖像的空間層次特徵。</p>
+</li>
+<li>
+<p><strong>Cybernetics (控制論)</strong><br />
+  由諾伯特·維納提出的理論，研究動物和機器中的控制與通訊系統，核心概念是「回饋」。</p>
+</li>
+</ul>
+<h2>D</h2>
+<ul>
+<li>
+<p><strong>Deepfake (深度偽造)</strong><br />
+  利用深度學習技術（特別是生成模型）創建的虛假圖像或影片，可以將一個人的臉嫁接到另一個人的影片上，達到以假亂真的效果。</p>
+</li>
+<li>
+<p><strong>Diffusion Model (擴散模型)</strong><br />
+  一種強大的生成模型，透過學習從純雜訊中逐步「去噪」來還原數據的過程，從而生成高品質、高解析度的內容（特別是圖像）。</p>
+</li>
+<li>
+<p><strong>Dropout</strong><br />
+  一種在訓練深度學習模型時使用的正則化技術，透過在每次迭代中隨機「丟棄」一部分神經元及其連接，來有效防止模型過擬合。</p>
+</li>
+</ul>
+<h2>E</h2>
+<ul>
+<li><strong>Expert System (專家系統)</strong><br />
+  1980 年代流行的一種 AI 程式，它將特定領域專家的知識編碼成大量的「IF-THEN」規則，用以模擬專家的決策過程。</li>
+</ul>
+<h2>G</h2>
+<ul>
+<li>
+<p><strong>GAN (Generative Adversarial Network / 生成對抗網路)</strong><br />
+  一種由「生成器」和「判別器」兩個網路組成的生成模型。兩者相互對抗訓練，最終生成器能產生非常逼真的數據。</p>
+</li>
+<li>
+<p><strong>GPU (Graphics Processing Unit / 圖形處理器)</strong><br />
+  最初為圖形渲染設計的處理器，其大規模並行計算架構恰好非常適合神經網路的矩陣運算，成為推動深度學習革命的關鍵硬體。</p>
+</li>
+<li>
+<p><strong>GPT (Generative Pre-trained Transformer)</strong><br />
+  由 OpenAI 開發的一系列大型語言模型。它使用 Transformer 的解碼器架構，透過在海量文本上進行預訓練來學習生成連貫的文本。</p>
+</li>
+</ul>
+<h2>I</h2>
+<ul>
+<li><strong>ImageNet</strong><br />
+  一個大規模的標註圖像數據集，包含超過 1400 萬張圖片和 2 萬個類別。其年度競賽 (ILSVRC) 成為推動電腦視覺發展的重要平台。</li>
+</ul>
+<h2>L</h2>
+<ul>
+<li>
+<p><strong>LLM (Large Language Model / 大型語言模型)</strong><br />
+  指參數規模巨大（通常在數十億以上）的語言模型，如 GPT-3、GPT-4 等。它們透過在海量文本數據上預訓練，展現出強大的語言理解和生成能力。</p>
+</li>
+<li>
+<p><strong>LISP (List Processing)</strong><br />
+  由約翰·麥卡錫於 1958 年發明的程式語言，是第一個專為 AI 研究設計的語言，其核心是符號處理和串列結構。</p>
+</li>
+<li>
+<p><strong>LSTM (Long Short-Term Memory / 長短期記憶網路)</strong><br />
+  一種特殊的遞迴神經網路 (RNN)，透過引入「門控」機制來解決標準 RNN 的梯度消失/爆炸問題，能夠更好地學習序列中的長距離依賴關係。</p>
+</li>
+</ul>
+<h2>M</h2>
+<ul>
+<li><strong>Multimodal AI (多模態 AI)</strong><br />
+  能夠同時理解和處理多種不同類型數據（如文本、圖像、音訊、影片）的 AI 系統，例如 GPT-4V。</li>
+</ul>
+<h2>P</h2>
+<ul>
+<li><strong>Perceptron (感知器)</strong><br />
+  由 Frank Rosenblatt 於 1958 年發明，是第一個可以從數據中學習的人工神經網路模型，但其能力僅限於解決線性可分問題。</li>
+</ul>
+<h2>R</h2>
+<ul>
+<li>
+<p><strong>ReLU (Rectified Linear Unit / 整流線性單元)</strong><br />
+  一種激活函數，其形式為 <code>f(x) = max(0, x)</code>。相比 Sigmoid 等傳統激活函數，它能有效緩解梯度消失問題，大幅加速深度網路的訓練。</p>
+</li>
+<li>
+<p><strong>ResNet (Residual Network / 殘差網路)</strong><br />
+  由何凱明團隊於 2015 年提出，透過引入「殘差連接」（或稱「捷徑連接」），使得訓練數百甚至上千層的超深度神經網路成為可能。</p>
+</li>
+<li>
+<p><strong>RLHF (Reinforcement Learning from Human Feedback / 從人類回饋中強化學習)</strong><br />
+  一種訓練和對齊語言模型的技術。它透過收集人類對模型輸出的偏好排序，來訓練一個獎勵模型，然後用強化學習演算法根據該獎勵模型來微調語言模型，使其輸出更符合人類的期望。</p>
+</li>
+</ul>
+<h2>S</h2>
+<ul>
+<li>
+<p><strong>Scaling Laws (規模化定律)</strong><br />
+  指 AI 模型（特別是 LLM）的性能與其規模（包括模型參數、數據集大小和計算量）之間存在的可預測的冪律關係。簡而言之，模型越大，性能越好。</p>
+</li>
+<li>
+<p><strong>Symbolic AI (符號主義 AI)</strong><br />
+  AI 的早期研究範式，認為智慧的核心是透過操作符號和應用邏輯規則來進行推理。</p>
+</li>
+</ul>
+<h2>T</h2>
+<ul>
+<li>
+<p><strong>Transformer</strong><br />
+  由 Google 於 2017 年提出的深度學習架構。它完全基於自注意力機制，拋棄了傳統的遞迴結構，能夠高效地並行處理序列數據，已成為幾乎所有現代大型語言模型的基礎。</p>
+</li>
+<li>
+<p><strong>Turing Test (圖靈測試)</strong><br />
+  由艾倫·圖靈於 1950 年提出的思想實驗，用以判斷機器是否能展現出與人類無法區分的智慧行為。如果一個評審無法透過文字對話穩定地區分出機器和人類，那麼該機器就通過了圖靈測試。</p>
+</li>
+</ul>
+<hr />
+<p><a href="./README_b06.html">返回目錄</a></p></div>
+    
+    <!-- Highlight.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    
+    <!-- Mermaid -->
+    <script type="module">
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+        mermaid.initialize({
+            "startOnLoad": true,
+            "theme": "dark",
+            "securityLevel": "loose"
+});
+    </script>
+</body>
+</html>

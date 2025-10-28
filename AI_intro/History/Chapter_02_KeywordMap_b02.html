@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chapter_02_KeywordMap_b02</title>
+    
+    <!-- CSS 框架 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/dark.min.css">
+    
+    <!-- 代碼高亮 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/base16/darcula.min.css">
+    
+    <!-- 自定義樣式 -->
+    <style>
+        
+                body {
+                    max-width: 900px;
+                    margin: 0 auto;
+                    padding: 20px;
+                }
+                /* 提升代码块对比度 */
+                pre {
+                    background: #1e1e1e !important;
+                    border: 1px solid #3e3e3e;
+                }
+                pre code {
+                    background: #1e1e1e !important;
+                }
+                code {
+                    background: #2d2d2d !important;
+                }
+                /* 引用块对比度 */
+                blockquote {
+                    background: #2d2d2d;
+                    border-left: 4px solid #4a9eff;
+                }
+            
+        
+        /* 通用代碼塊樣式 */
+        pre code {
+            display: block;
+            padding: 1.5em;
+            border-radius: 8px;
+            overflow-x: auto;
+            line-height: 1.6;
+        }
+
+        /* Mermaid 圖表樣式 */
+        
+        .mermaid {
+            margin: 2em 0;
+            padding: 1.5em;
+            text-align: center;
+            border-radius: 8px;
+        }
+        
+        .mermaid {
+            background: #2c3034;
+            border: 1px solid #444;
+        }
+            
+        
+        /* 響應式調整 */
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            .container, .markdown-body, .latex-body, .window-body, .nes-container {
+                padding: 15px;
+            }
+            pre code {
+                padding: 1em;
+            }
+        }
+        
+        
+    </style>
+</head>
+<body>
+    <div class="container"><!-- Path: 114A_AI_intro/History | Timestamp: 2025-10-26 10:21:00 | Version: b02 -->
+<p><a href="./Chapter_01_Introduction_b02.html">← 上一章</a> | <a href="./index.html">返回目錄</a> | <a href="./Chapter_03_TwoParadigms_b01.html">下一章 →</a></p>
+<hr />
+<h2>2.1 章節目的</h2>
+<p>本章提供了 AI 發展的<strong>視覺化時間軸</strong>，作為整個課程的導航工具。透過關鍵字與技術里程碑的梳理，您可以：</p>
+<ol>
+<li><strong>建立全局視野</strong>：快速掌握 AI 發展的完整脈絡</li>
+<li><strong>識別重要節點</strong>：了解哪些技術與事件是轉折點</li>
+<li><strong>規劃學習路徑</strong>：根據興趣選擇深入探討的主題</li>
+<li><strong>理解技術演進</strong>：看到技術之間的承繼與發展關係</li>
+</ol>
+<hr />
+<h2>2.2 AI 發展時間軸 — 視覺化地圖</h2>
+<p>以下圖表呈現了從 1940 年代至今的 AI 發展關鍵里程碑，並標示了五個主要時期。</p>
+<div class="mermaid">
+timeline
+    title AI 發展時間軸
+    1940s-1950s : 早期理論基礎
+        : 圖靈測試 (1950)
+        : 控制論 (1948)
+        : 符號主義思想
+    1956-1970s : 經典時期
+        : 達特茅斯會議 (1956)
+        : LISP 語言 (1958)
+        : 感知器 (1958)
+        : 通用問題解決器 (1959)
+    1970s-1990s : 寒冬與復甦
+        : 第一次 AI 寒冬 (1974-1980)
+        : 專家系統興起 (1980s)
+        : 反向傳播演算法 (1986)
+        : 第二次 AI 寒冬 (1987-1993)
+    2000s-2010s : 深度學習革命
+        : 大數據與 GPU (2000s)
+        : AlexNet (2012)
+        : ResNet (2015)
+        : AlphaGo (2016)
+        : Transformer (2017)
+    2020s- : 生成式 AI 時代
+        : GPT-3 (2020)
+        : DALL-E (2021)
+        : ChatGPT (2022)
+        : GPT-4 (2023)
+        : Sora (2024)
+
+</div>
+
+<h3>圖例說明</h3>
+<table>
+<thead>
+<tr>
+<th>顏色</th>
+<th>時期</th>
+<th>年代</th>
+<th>核心特徵</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>🟢 <strong>綠色</strong></td>
+<td>早期理論基礎</td>
+<td>1940s-1950s</td>
+<td>奠定理論基礎，提出核心概念</td>
+</tr>
+<tr>
+<td>🟠 <strong>橙色</strong></td>
+<td>經典時期</td>
+<td>1956-1970s</td>
+<td>AI 正式誕生，早期探索與樂觀</td>
+</tr>
+<tr>
+<td>🔴 <strong>紅色</strong></td>
+<td>寒冬與復甦</td>
+<td>1970s-1990s</td>
+<td>遭遇挫折，典範轉移開始</td>
+</tr>
+<tr>
+<td>🔵 <strong>藍色</strong></td>
+<td>深度學習革命</td>
+<td>2000s-2010s</td>
+<td>三要素匯聚，AI 爆發</td>
+</tr>
+<tr>
+<td>🟣 <strong>紫色</strong></td>
+<td>生成式 AI 時代</td>
+<td>2020s-</td>
+<td>從理解到創造，AI 新紀元</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>2.3 五個時期的關鍵字解析</h2>
+<h3>🟢 時期 I：早期理論基礎 (1940s-1950s)</h3>
+<p><strong>時代背景</strong>：<br />
+- 電腦剛被發明<br />
+- 科學家開始思考「機器能思考嗎？」<br />
+- 理論探索多於實際應用</p>
+<p><strong>關鍵字與概念</strong>：</p>
+<table>
+<thead>
+<tr>
+<th>關鍵字</th>
+<th>年份</th>
+<th>提出者/發明者</th>
+<th>核心貢獻</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>圖靈測試</strong></td>
+<td>1950</td>
+<td>Alan Turing</td>
+<td>定義機器智慧的行為標準</td>
+</tr>
+<tr>
+<td><strong>控制論</strong></td>
+<td>1948</td>
+<td>Norbert Wiener</td>
+<td>回饋系統、自我調節機制</td>
+</tr>
+<tr>
+<td><strong>符號主義</strong></td>
+<td>1950s</td>
+<td>多位學者</td>
+<td>用符號和規則表示知識</td>
+</tr>
+<tr>
+<td><strong>圖靈機</strong></td>
+<td>1936</td>
+<td>Alan Turing</td>
+<td>計算理論基礎，定義可計算性</td>
+</tr>
+</tbody>
+</table>
+<p><strong>為什麼重要？</strong><br />
+- 建立了 AI 的哲學與理論基礎<br />
+- 提出了核心問題：「什麼是智慧？」「機器能思考嗎？」<br />
+- 為後續發展提供了概念框架</p>
+<p><strong>詳細內容</strong> → <a href="./Chapter_04_EarlyFoundations_b02.html">第 IV 章：早期理論基礎</a></p>
+<hr />
+<h3>🟠 時期 II：經典時期 (1956-1970s)</h3>
+<p><strong>時代背景</strong>：<br />
+- AI 正式成為一門學科<br />
+- 研究者極度樂觀，預測 20 年內實現人類級 AI<br />
+- 政府與企業大量投資</p>
+<p><strong>關鍵字與概念</strong>：</p>
+<table>
+<thead>
+<tr>
+<th>關鍵字</th>
+<th>年份</th>
+<th>提出者/發明者</th>
+<th>核心貢獻</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>達特茅斯會議</strong></td>
+<td>1956</td>
+<td>McCarthy 等</td>
+<td>AI 正式誕生的標誌</td>
+</tr>
+<tr>
+<td><strong>LISP 語言</strong></td>
+<td>1958</td>
+<td>John McCarthy</td>
+<td>第一個 AI 專用程式語言</td>
+</tr>
+<tr>
+<td><strong>感知器</strong></td>
+<td>1958</td>
+<td>Frank Rosenblatt</td>
+<td>第一個學習演算法</td>
+</tr>
+<tr>
+<td><strong>GPS</strong></td>
+<td>1959</td>
+<td>Newell &amp; Simon</td>
+<td>第一個通用問題解決程式</td>
+</tr>
+<tr>
+<td><strong>Logic Theorist</strong></td>
+<td>1956</td>
+<td>Newell &amp; Simon</td>
+<td>證明數學定理，展現推理能力</td>
+</tr>
+</tbody>
+</table>
+<p><strong>為什麼重要？</strong><br />
+- AI 從概念變為實際研究領域<br />
+- 建立了兩條主要研究路線：符號主義 vs 連結主義<br />
+- 創造了許多沿用至今的基礎工具與概念</p>
+<p><strong>典範</strong>：<br />
+- 符號主義（邏輯、規則）<br />
+- 連結主義（神經網路）</p>
+<p><strong>詳細內容</strong> → <a href="./Chapter_05_ClassicalPeriod_b05.html">第 V 章：經典時期</a></p>
+<hr />
+<h3>🔴 時期 III：寒冬與復甦 (1970s-1990s)</h3>
+<p><strong>時代背景</strong>：<br />
+- 早期承諾未能實現，資金大幅削減<br />
+- 經歷兩次「AI 寒冬」<br />
+- 典範開始轉移：從符號主義到機器學習</p>
+<p><strong>關鍵字與概念</strong>：</p>
+<table>
+<thead>
+<tr>
+<th>關鍵字</th>
+<th>年份</th>
+<th>背景/貢獻</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>第一次 AI 寒冬</strong></td>
+<td>1974-1980</td>
+<td>符號 AI 局限暴露，資金枯竭</td>
+</tr>
+<tr>
+<td><strong>專家系統</strong></td>
+<td>1980s</td>
+<td>短暫復興，商業應用</td>
+</tr>
+<tr>
+<td><strong>MYCIN</strong></td>
+<td>1972</td>
+<td>醫療診斷專家系統，準確率高</td>
+</tr>
+<tr>
+<td><strong>第二次 AI 寒冬</strong></td>
+<td>1987-1993</td>
+<td>專家系統泡沫破滅</td>
+</tr>
+<tr>
+<td><strong>反向傳播</strong></td>
+<td>1986</td>
+<td>Rumelhart 等</td>
+</tr>
+<tr>
+<td><strong>決策樹</strong></td>
+<td>1986</td>
+<td>Quinlan (ID3)</td>
+</tr>
+<tr>
+<td><strong>SVM</strong></td>
+<td>1990s</td>
+<td>Vapnik</td>
+</tr>
+</tbody>
+</table>
+<p><strong>為什麼重要？</strong><br />
+- 揭示了符號 AI 的根本局限<br />
+- 催生了典範轉移：從規則到數據<br />
+- 反向傳播為深度學習復興埋下伏筆</p>
+<p><strong>關鍵轉折</strong>：</p>
+<pre class="codehilite"><code>手動編寫規則 → 從數據中自動學習
+確定性推理 → 統計與機率方法
+邏輯符號 → 數值計算
+</code></pre>
+
+<p><strong>詳細內容</strong> → <a href="./Chapter_06_WinterAndRevival_b05.html">第 VI 章：寒冬與復甦</a></p>
+<hr />
+<h3>🔵 時期 IV：深度學習革命 (2000s-2010s)</h3>
+<p><strong>時代背景</strong>：<br />
+- 網際網路普及，數據爆炸<br />
+- GPU 從遊戲領域進入 AI 計算<br />
+- 演算法突破與硬體進步同時發生</p>
+<p><strong>關鍵字與概念</strong>：</p>
+<table>
+<thead>
+<tr>
+<th>關鍵字</th>
+<th>年份</th>
+<th>核心貢獻</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>大數據</strong></td>
+<td>2000s</td>
+<td>網際網路產生海量訓練數據</td>
+</tr>
+<tr>
+<td><strong>GPU 加速</strong></td>
+<td>2009</td>
+<td>Andrew Ng 證明 GPU 可加速神經網路訓練</td>
+</tr>
+<tr>
+<td><strong>ImageNet</strong></td>
+<td>2009</td>
+<td>大規模圖像資料集，推動視覺研究</td>
+</tr>
+<tr>
+<td><strong>AlexNet</strong></td>
+<td>2012</td>
+<td>Hinton 團隊</td>
+</tr>
+<tr>
+<td><strong>Word2Vec</strong></td>
+<td>2013</td>
+<td>Google</td>
+</tr>
+<tr>
+<td><strong>ResNet</strong></td>
+<td>2015</td>
+<td>何凱明等</td>
+</tr>
+<tr>
+<td><strong>AlphaGo</strong></td>
+<td>2016</td>
+<td>DeepMind</td>
+</tr>
+<tr>
+<td><strong>Transformer</strong></td>
+<td>2017</td>
+<td>Vaswani 等</td>
+</tr>
+</tbody>
+</table>
+<p><strong>為什麼重要？</strong><br />
+- <strong>三要素匯聚</strong>：大數據 + GPU + 演算法<br />
+- AI 從實驗室走向實際應用<br />
+- 證明了深度學習的巨大潛力<br />
+- Transformer 成為當代 AI 的基石</p>
+<p><strong>革命性突破</strong>：<br />
+- <strong>電腦視覺</strong>：CNN 實現超越人類的圖像識別<br />
+- <strong>自然語言處理</strong>：Transformer 取代 RNN，性能飛躍<br />
+- <strong>遊戲 AI</strong>：AlphaGo 展現超人類水平<br />
+- <strong>語音辨識</strong>：準確率從 70% 提升到 95%+</p>
+<p><strong>詳細內容</strong> → <a href="./Chapter_07_DeepLearning_b05.html">第 VII 章：深度學習革命</a></p>
+<hr />
+<h3>🟣 時期 V：生成式 AI 時代 (2020s-)</h3>
+<p><strong>時代背景</strong>：<br />
+- 從「理解世界」到「創造世界」<br />
+- 模型規模爆炸式增長（億 → 千億 → 兆參數）<br />
+- AI 能力出現「湧現」(Emergence)<br />
+- 普通大眾開始廣泛使用 AI</p>
+<p><strong>關鍵字與概念</strong>：</p>
+<table>
+<thead>
+<tr>
+<th>關鍵字</th>
+<th>年份</th>
+<th>核心貢獻</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>GPT-3</strong></td>
+<td>2020</td>
+<td>OpenAI</td>
+</tr>
+<tr>
+<td><strong>DALL-E</strong></td>
+<td>2021</td>
+<td>OpenAI</td>
+</tr>
+<tr>
+<td><strong>Stable Diffusion</strong></td>
+<td>2022</td>
+<td>Stability AI</td>
+</tr>
+<tr>
+<td><strong>ChatGPT</strong></td>
+<td>2022.11</td>
+<td>OpenAI</td>
+</tr>
+<tr>
+<td><strong>GPT-4</strong></td>
+<td>2023.03</td>
+<td>OpenAI</td>
+</tr>
+<tr>
+<td><strong>Claude</strong></td>
+<td>2023</td>
+<td>Anthropic</td>
+</tr>
+<tr>
+<td><strong>LLaMA</strong></td>
+<td>2023</td>
+<td>Meta</td>
+</tr>
+<tr>
+<td><strong>Gemini</strong></td>
+<td>2023</td>
+<td>Google</td>
+</tr>
+<tr>
+<td><strong>Sora</strong></td>
+<td>2024</td>
+<td>OpenAI</td>
+</tr>
+</tbody>
+</table>
+<p><strong>核心技術</strong>：</p>
+<div class="mermaid">
+graph TD
+    Gen[生成式 AI]
+
+    LLM[大型語言模型<br/>LLM]
+    GAN[生成對抗網路<br/>GAN]
+    Diff[擴散模型<br/>Diffusion]
+    Multi[多模態 AI<br/>Multimodal]
+
+    Gen --> LLM
+    Gen --> GAN
+    Gen --> Diff
+    Gen --> Multi
+
+    LLM --> L1[GPT 系列<br/>BERT 系列<br/>LLaMA]
+    GAN --> G1[StyleGAN<br/>CycleGAN]
+    Diff --> D1[DALL-E 2<br/>Stable Diffusion<br/>Midjourney]
+    Multi --> M1[GPT-4V<br/>Gemini<br/>CLIP]
+
+</div>
+
+<p><strong>為什麼重要？</strong><br />
+- AI 從「工具」變為「創作夥伴」<br />
+- 降低了內容創作的門檻<br />
+- 引發了深刻的倫理與社會討論<br />
+- 可能是通向 AGI 的道路</p>
+<p><strong>應用爆發</strong>：<br />
+- <strong>文字生成</strong>：文章、代碼、對話、翻譯<br />
+- <strong>圖像生成</strong>：藝術創作、設計、概念圖<br />
+- <strong>音訊生成</strong>：語音合成、音樂創作<br />
+- <strong>影片生成</strong>：Sora 等開啟影片生成時代<br />
+- <strong>多模態</strong>：理解並生成跨模態內容</p>
+<p><strong>詳細內容</strong> → <a href="./Chapter_08_GenerativeAI_b05.html">第 VIII 章：生成式 AI 時代</a></p>
+<hr />
+<h2>2.4 技術演進關係圖</h2>
+<p>以下圖表展示了主要技術之間的承繼與發展關係：</p>
+<div class="mermaid">
+graph TB
+    subgraph Foundation[基礎理論層]
+        T1[圖靈機<br/>1936]
+        T2[控制論<br/>1948]
+        T3[邏輯推理<br/>1950s]
+    end
+
+    subgraph Symbolic[符號主義時代]
+        S1[LISP<br/>1958]
+        S2[專家系統<br/>1980s]
+    end
+
+    subgraph Learning[機器學習時代]
+        M1[感知器<br/>1958]
+        M2[反向傳播<br/>1986]
+        M3[SVM<br/>1990s]
+    end
+
+    subgraph Deep[深度學習時代]
+        D1[CNN<br/>2012]
+        D2[RNN/LSTM<br/>2010s]
+        D3[Transformer<br/>2017]
+    end
+
+    subgraph Generative[生成式 AI 時代]
+        G1[GPT 系列<br/>2018-]
+        G2[GAN<br/>2014-]
+        G3[Diffusion<br/>2020-]
+        G4[多模態<br/>2021-]
+    end
+
+    T1 --> S1
+    T2 --> M1
+    T3 --> S2
+
+    S1 --> S2
+    M1 --> M2
+    M2 --> D1
+    M2 --> D2
+
+    D1 --> D3
+    D2 --> D3
+
+    D3 --> G1
+    D1 --> G2
+    D3 --> G3
+    G1 --> G4
+    G3 --> G4
+
+    style Foundation fill:#e1f5dd
+    style Symbolic fill:#fff4e6
+    style Learning fill:#ffe6e6
+    style Deep fill:#e3f2fd
+    style Generative fill:#f3e5f5
+
+</div>
+
+<hr />
+<h2>2.5 關鍵技術速查表</h2>
+<h3>經典演算法與架構</h3>
+<table>
+<thead>
+<tr>
+<th>技術</th>
+<th>年份</th>
+<th>應用領域</th>
+<th>核心特點</th>
+<th>當前狀態</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>決策樹</strong></td>
+<td>1986</td>
+<td>分類、回歸</td>
+<td>可解釋性強</td>
+<td>仍廣泛使用</td>
+</tr>
+<tr>
+<td><strong>SVM</strong></td>
+<td>1995</td>
+<td>分類</td>
+<td>小樣本效果好</td>
+<td>經典方法</td>
+</tr>
+<tr>
+<td><strong>隨機森林</strong></td>
+<td>2001</td>
+<td>分類、回歸</td>
+<td>集成學習</td>
+<td>仍是主流</td>
+</tr>
+<tr>
+<td><strong>CNN</strong></td>
+<td>2012</td>
+<td>電腦視覺</td>
+<td>卷積、池化</td>
+<td>視覺領域基礎</td>
+</tr>
+<tr>
+<td><strong>RNN/LSTM</strong></td>
+<td>1997/2010s</td>
+<td>序列數據</td>
+<td>記憶機制</td>
+<td>被 Transformer 取代</td>
+</tr>
+<tr>
+<td><strong>Transformer</strong></td>
+<td>2017</td>
+<td>NLP、視覺、多模態</td>
+<td>自注意力機制</td>
+<td>當代 AI 基石</td>
+</tr>
+<tr>
+<td><strong>GAN</strong></td>
+<td>2014</td>
+<td>圖像生成</td>
+<td>對抗訓練</td>
+<td>仍在發展</td>
+</tr>
+<tr>
+<td><strong>Diffusion</strong></td>
+<td>2020</td>
+<td>圖像生成</td>
+<td>去噪過程</td>
+<td>當前最佳生成方法</td>
+</tr>
+</tbody>
+</table>
+<h3>里程碑模型</h3>
+<table>
+<thead>
+<tr>
+<th>模型</th>
+<th>年份</th>
+<th>機構</th>
+<th>意義</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>AlexNet</strong></td>
+<td>2012</td>
+<td>多倫多大學</td>
+<td>深度學習革命起點</td>
+</tr>
+<tr>
+<td><strong>VGGNet</strong></td>
+<td>2014</td>
+<td>牛津大學</td>
+<td>證明深度的重要性</td>
+</tr>
+<tr>
+<td><strong>ResNet</strong></td>
+<td>2015</td>
+<td>微軟亞洲研究院</td>
+<td>殘差連接，訓練超深網路</td>
+</tr>
+<tr>
+<td><strong>BERT</strong></td>
+<td>2018</td>
+<td>Google</td>
+<td>雙向預訓練，NLP 突破</td>
+</tr>
+<tr>
+<td><strong>GPT-3</strong></td>
+<td>2020</td>
+<td>OpenAI</td>
+<td>湧現能力，少樣本學習</td>
+</tr>
+<tr>
+<td><strong>AlphaFold</strong></td>
+<td>2020</td>
+<td>DeepMind</td>
+<td>蛋白質結構預測，科學突破</td>
+</tr>
+<tr>
+<td><strong>DALL-E 2</strong></td>
+<td>2022</td>
+<td>OpenAI</td>
+<td>文字生成圖像</td>
+</tr>
+<tr>
+<td><strong>ChatGPT</strong></td>
+<td>2022</td>
+<td>OpenAI</td>
+<td>對話 AI 普及</td>
+</tr>
+<tr>
+<td><strong>GPT-4</strong></td>
+<td>2023</td>
+<td>OpenAI</td>
+<td>多模態，推理飛躍</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>2.6 如何使用本地圖</h2>
+<h3>🎯 學習策略建議</h3>
+<p><strong>1. 全局優先策略</strong><br />
+- 先通讀本章，建立整體時間軸概念<br />
+- 識別對您最有興趣的時期或技術<br />
+- 規劃深入學習的路徑</p>
+<p><strong>2. 問題驅動策略</strong><br />
+- 如果您想了解「AI 為何會有寒冬」→ 第 VI 章<br />
+- 如果您想了解「ChatGPT 如何工作」→ 第 VIII 章<br />
+- 如果您想了解「深度學習的突破」→ 第 VII 章</p>
+<p><strong>3. 技術追蹤策略</strong><br />
+選擇一個技術（如神經網路），追蹤其演進：</p>
+<pre class="codehilite"><code>感知器 (1958)
+  ↓
+反向傳播 (1986)
+  ↓
+CNN (2012)
+  ↓
+Transformer (2017)
+  ↓
+GPT (2018-)
+</code></pre>
+
+<p><strong>4. 對比學習策略</strong><br />
+同時學習兩個典範的對比：<br />
+- 符號 AI vs 機器學習（第 V 章 vs 第 VI 章）<br />
+- 傳統 AI vs 生成式 AI（第 III 章）</p>
+<hr />
+<h2>2.7 本章小結</h2>
+<h3>核心要點</h3>
+<ol>
+<li><strong>五個主要時期</strong>：</li>
+<li>
+<p>早期理論 → 經典時期 → 寒冬復甦 → 深度學習 → 生成式 AI</p>
+</li>
+<li>
+<p><strong>關鍵轉折點</strong>：</p>
+</li>
+<li>1956：AI 正式誕生（達特茅斯會議）</li>
+<li>1974：第一次 AI 寒冬開始</li>
+<li>1986：反向傳播復興神經網路</li>
+<li>2012：AlexNet 開啟深度學習時代</li>
+<li>2017：Transformer 奠定當代基礎</li>
+<li>
+<p>2022：ChatGPT 引爆生成式 AI 熱潮</p>
+</li>
+<li>
+<p><strong>技術演進路徑</strong>：</p>
+</li>
+<li>
+<p>符號推理 → 統計學習 → 深度表徵 → 生成創造</p>
+</li>
+<li>
+<p><strong>本地圖的用途</strong>：</p>
+</li>
+<li>全局導航工具</li>
+<li>學習路徑規劃</li>
+<li>技術關係索引</li>
+</ol>
+<h3>下一步</h3>
+<p>現在您已經建立了 AI 發展的全局視野，建議：</p>
+<ol>
+<li><strong>先閱讀</strong> <a href="./Chapter_03_TwoParadigms_b01.html">第 III 章：兩大典範</a></li>
+<li>
+<p>建立傳統 AI vs 生成式 AI 的概念框架</p>
+</li>
+<li>
+<p><strong>再深入歷史</strong>：從第 IV 章開始按時間順序學習</p>
+</li>
+<li>
+<p><strong>或直接跳到感興趣的章節</strong>：利用本地圖快速定位</p>
+</li>
+</ol>
+<hr />
+<p><a href="./Chapter_01_Introduction_b02.html">← 上一章：導論</a> | <a href="./README_b06.html">返回目錄</a> | <a href="./Chapter_03_TwoParadigms_b01.html">下一章：兩大典範 →</a></p></div>
+    
+    <!-- Highlight.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    
+    <!-- Mermaid -->
+    <script type="module">
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+        mermaid.initialize({
+            "startOnLoad": true,
+            "theme": "dark",
+            "securityLevel": "loose"
+});
+    </script>
+</body>
+</html>
