@@ -524,7 +524,7 @@ OpenCV haarcascade_frontalface_default.xml 模型：
 import cv2
 import numpy as np
 from google.colab.patches import cv2_imshow
-
+img=cv2.imread('br.jpg')
 # 建立一個 300x300 的黑色畫布
 img = np.zeros((300, 300, 3), dtype=np.uint8)
 # 在畫布上畫一個紅色的矩形
