@@ -8,6 +8,26 @@ This file contains a list of all HTML files in the project, organized by folder.
 | --- | --- | --- |
 | Arduino_IDE_01_b04.html | 2025-10-22 | [Link](https://joelhoty.github.io/ocgit/104A_EngeeringDesign/Arduino_IDE_01_b04.html) |
 
+**AI_intro/History**
+
+| File Name | Last Updated | Link |
+| --- | --- | --- |
+| References_b01.html | 2025-10-28 | [Link](https://joelhoty.github.io/ocgit/AI_intro/History/References_b01.html) |
+| index.html | 2025-10-28 | [Link](https://joelhoty.github.io/ocgit/AI_intro/History/index.html) |
+| README_b06.html | 2025-10-28 | [Link](https://joelhoty.github.io/ocgit/AI_intro/History/README_b06.html) |
+| Chapter_05_ClassicalPeriod_b05.html | 2025-10-28 | [Link](https://joelhoty.github.io/ocgit/AI_intro/History/Chapter_05_ClassicalPeriod_b05.html) |
+| Chapter_07_DeepLearning_b05.html | 2025-10-28 | [Link](https://joelhoty.github.io/ocgit/AI_intro/History/Chapter_07_DeepLearning_b05.html) |
+| Chapter_06_WinterAndRevival_b05.html | 2025-10-28 | [Link](https://joelhoty.github.io/ocgit/AI_intro/History/Chapter_06_WinterAndRevival_b05.html) |
+| Chapter_08_GenerativeAI_b05.html | 2025-10-28 | [Link](https://joelhoty.github.io/ocgit/AI_intro/History/Chapter_08_GenerativeAI_b05.html) |
+| Chapter_03_TwoParadigms_b01.html | 2025-10-28 | [Link](https://joelhoty.github.io/ocgit/AI_intro/History/Chapter_03_TwoParadigms_b01.html) |
+| Chapter_04_EarlyFoundations_b02.html | 2025-10-28 | [Link](https://joelhoty.github.io/ocgit/AI_intro/History/Chapter_04_EarlyFoundations_b02.html) |
+| Glossary_b01.html | 2025-10-28 | [Link](https://joelhoty.github.io/ocgit/AI_intro/History/Glossary_b01.html) |
+| Chapter_02_KeywordMap_b02.html | 2025-10-28 | [Link](https://joelhoty.github.io/ocgit/AI_intro/History/Chapter_02_KeywordMap_b02.html) |
+| Chapter_09_Conclusion_b01.html | 2025-10-28 | [Link](https://joelhoty.github.io/ocgit/AI_intro/History/Chapter_09_Conclusion_b01.html) |
+| jigsaw_inquiry_notebooklm_b06.html | 2025-10-28 | [Link](https://joelhoty.github.io/ocgit/AI_intro/History/jigsaw_inquiry_notebooklm_b06.html) |
+| index copy.html | 2025-10-28 | [Link](https://joelhoty.github.io/ocgit/AI_intro/History/index copy.html) |
+| Chapter_01_Introduction_b02.html | 2025-10-28 | [Link](https://joelhoty.github.io/ocgit/AI_intro/History/Chapter_01_Introduction_b02.html) |
+
 **GeminiForDesignTeaching**
 
 | File Name | Last Updated | Link |
