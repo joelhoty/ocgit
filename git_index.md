@@ -13,10 +13,10 @@
 ## AI_intro/History
 
 | File Name | Last Updated | Link |
-|---|---|---|| index.html | 2025-10-28 | [index.html](https://joelhoty.github.io/ocgit/AI_intro/History/index.html) |
+|---|---|---|| References_b01.html | 2025-10-29 | [References_b01.html](https://joelhoty.github.io/ocgit/AI_intro/History/References_b01.html) |
+| index.html | 2025-10-28 | [index.html](https://joelhoty.github.io/ocgit/AI_intro/History/index.html) |
 | jigsaw_inquiry_notebooklm_b06.html | 2025-10-28 | [jigsaw_inquiry_notebooklm_b06.html](https://joelhoty.github.io/ocgit/AI_intro/History/jigsaw_inquiry_notebooklm_b06.html) |
 | Chapter_03_TwoParadigms_b01.html | 2025-10-28 | [Chapter_03_TwoParadigms_b01.html](https://joelhoty.github.io/ocgit/AI_intro/History/Chapter_03_TwoParadigms_b01.html) |
-| References_b01.html | 2025-10-28 | [References_b01.html](https://joelhoty.github.io/ocgit/AI_intro/History/References_b01.html) |
 | Chapter_08_GenerativeAI_b05.html | 2025-10-28 | [Chapter_08_GenerativeAI_b05.html](https://joelhoty.github.io/ocgit/AI_intro/History/Chapter_08_GenerativeAI_b05.html) |
 | Chapter_01_Introduction_b02.html | 2025-10-28 | [Chapter_01_Introduction_b02.html](https://joelhoty.github.io/ocgit/AI_intro/History/Chapter_01_Introduction_b02.html) |
 | Chapter_09_Conclusion_b01.html | 2025-10-28 | [Chapter_09_Conclusion_b01.html](https://joelhoty.github.io/ocgit/AI_intro/History/Chapter_09_Conclusion_b01.html) |
