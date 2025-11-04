@@ -75,3 +75,8 @@
 | File Name | Last Updated | Link |
 |---|---|---|| taigiSpeaking.html | 2025-10-22 | [taigiSpeaking.html](https://joelhoty.github.io/ocgit/TaigiSpeaking/taigiSpeaking.html) |
 
+## Youtube_sub
+
+| File Name | Last Updated | Link |
+|---|---|---|| plan.html | 2025-11-04 | [plan.html](https://joelhoty.github.io/ocgit/Youtube_sub/plan.html) |
+
