@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="zh-Hant" data-theme="light">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>plan</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css" />
+</head>
+<body>
+    <main class="container">
+        <article>
+            <h1>影片字幕翻譯與語音生成實施計畫</h1>
+
+<p>本計畫旨在建立一套可重複且可擴充的處理鏈，從中文影音素材出發，同步產出中英文字幕與對應英文語音，並為後續的人工校對、批次自動化與影音整合奠定基礎。</p>
+
+<h2>核心目標</h2>
+
+<ol>
+<li>建立即時可用的基本流程：Whisper WebUI（參考 <a href="https://github.com/jhj0517/Whisper-WebUI">jhj0517/Whisper-WebUI</a>）產出中英文字幕，Python 腳本翻譯及生成英文語音 MP3。</li>
+<li>提供彈性選項：可挑選以 Gemini API 再翻譯、或僅執行語音合成。</li>
+<li>訂定後續擴充方向：影片合成、批次處理、自動上傳等進階功能。</li>
+</ol>
+
+<h2>交付成果</h2>
+
+<ul>
+<li>中文原始字幕 (<code>&lt;name&gt;_zh.srt</code>) 與初始英文字幕 (<code>&lt;name&gt;_en.srt</code>)。</li>
+<li>以 Gemini 翻譯補強的英文字幕 (<code>&lt;name&gt;_zh_en.srt</code>)。</li>
+<li>雙語音訊：保留原始中文音訊，並產出對應的英文語音 (<code>&lt;name&gt;_zh_en.mp3</code>) 供多音軌/配音使用。</li>
+<li>作業指引與需求清單（本文件）。</li>
+</ul>
+
+<h2>前置準備</h2>
+
+<ul>
+<li>工具：Whisper WebUI、Python 3.10 以上、<code>google-generativeai</code>、<code>gtts</code>、<code>python-dotenv</code>、<code>srt</code>、<code>markdown2</code>。</li>
+<li>設定：在 <code>.env</code> 中放置 <code>GEMINI_API_KEY</code>，確保網路可以存取 Google 服務；測試資料置於 <code>test/</code> 目錄。</li>
+<li>建議建立虛擬環境並以 <code>pip install -r requirements.txt</code> 安裝相依套件。</li>
+</ul>
+
+<h2>作業流程與擴充選項</h2>
+
+<ol>
+<li><strong>字幕轉錄</strong><br />
+在 Whisper WebUI（建議使用 <a href="https://github.com/jhj0517/Whisper-WebUI">jhj0517/Whisper-WebUI</a> 專案）上傳影音檔，設定基準語言為中文並啟用英文翻譯；下載輸出的 <code>*_zh.srt</code> 與 <code>*_en.srt</code>。若需要離線或批量處理，可改用本機 Whisper CLI 並將產出集中於 <code>input/</code> 目錄以便後續腳本掃描。</li>
+<li><strong>翻譯與語音</strong><br />
+執行 <code>python process_srt.py &lt;file&gt;_zh.srt</code>，腳本會呼叫 Gemini 翻譯並輸出新的英文字幕及 MP3。若僅需語音，可使用 <code>--tts-only</code> 模式並指定免費的 <code>gtts</code> 選項（例如 <code>--tts-engine gtts</code>）；需求較高時，可切換至 Gemini 付費 TTS (<code>--tts-engine gemini</code>) 取得更自然的語音，或新增批次腳本一次處理整個資料夾。</li>
+<li><strong>成果驗證與校對</strong><br />
+手動檢查翻譯後字幕對齊與語音品質，必要時以 CLI 或 GUI 工具逐句修訂再輸出；亦可引入自動化檢核（例如比對字幕行數、偵測時間戳回退）並記錄於 <code>logs/</code> 便於追蹤問題。</li>
+<li><strong>整合與輸出</strong><br />
+在 YouTube Studio 為影片掛載中英文字幕檔，並維持原始中文音訊為主聲軌；如需雙語音軌，可使用 <code>ffmpeg -i input.mp4 -i audio_en.mp3 -map 0:v -map 0:a -map 1:a -c:v copy -c:a aac -shortest output_dual_audio.mp4</code> 建立同時包含中文/英文語音的影片。若需製作英文配音版本，再額外匯出 <code>ffmpeg -i input.mp4 -i audio_en.mp3 -map 0:v -map 1:a -c:v copy -shortest output_en.mp4</code>。大量專案可透過批次腳本與任務佇列自動打包字幕、語音與影片。</li>
+</ol>
+
+<h2>風險與因應</h2>
+
+<ul>
+<li><strong>API 限額</strong>：Gemini 每日配額可能限制大量翻譯；準備退回 Whisper 英文稿或分批執行。</li>
+<li><strong>翻譯對齊問題</strong>：行數不一致時需加上平衡邏輯；現有腳本已有截斷補齊策略，但建議偵錯並 log 警示。</li>
+<li><strong>敏感內容</strong>：字幕與語音可能含個資，務必在分享前做匿名化或遮蔽。</li>
+</ul>
+
+<h2>實作階段建議</h2>
+
+<ul>
+<li><strong>環境建置</strong>：完成工具安裝、API 金鑰設定與測試資料整理，確保腳本可於本地穩定運行。</li>
+<li><strong>核心流程實作</strong>：以單一影片為例貫穿 Whisper → 翻譯 → 語音生成 → 手動整合，建立具體操作範本。</li>
+<li><strong>品質驗收與調整</strong>：針對字幕對齊、語音品質、API 限額進行檢測，必要時調整腳本邏輯與錯誤處理。</li>
+<li><strong>擴充與自動化</strong>：依需求導入可選功能（如 <code>--tts-only</code>、批次處理、影音合成），並更新操作指引。</li>
+<li><strong>文件與交付</strong>：整理成果檔與實際流程紀錄，更新維運指南以利後續維護或交接。</li>
+</ul>
+
+<h2>Mermaid 流程圖</h2>
+
+<div class="mermaid" id="mermaid-chart-0"></div>
+
+        </article>
+    </main>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <script>
+        const diagrams = ["graph LR\n    A[\u5f71\u7247/\u97f3\u8a0a\u4f86\u6e90] --> B{Whisper WebUI}\n    B -->|\u4e2d\u6587\u5b57\u5e55| C[<name>_zh.srt]\n    B -->|\u82f1\u6587\u5b57\u5e55| D[<name>_en.srt]\n    C --> E[process_srt.py]\n    E --> F[Gemini \u7ffb\u8b6f\u5b57\u5e55]\n    F --> G[TTS \u5f15\u64ce\uff1aGemini \u6216 gTTS]\n    G --> H[\u82f1\u6587 MP3]\n    H --> J[\u591a\u97f3\u8ecc\u5408\u6210 / \u4e0a\u50b3]\n    D --> G\n    F --> I[YouTube / \u5f8c\u88fd\u5b57\u5e55]\n    I --> K[\u767c\u5e03\uff08\u96d9\u5b57\u5e55\uff09]\n    J --> K[\u96d9\u5b57\u5e55 + \u96d9\u8a9e\u97f3]"];
+        document.addEventListener("DOMContentLoaded", () => {
+            if (!window.mermaid) {
+                console.error("Mermaid library failed to load.");
+                return;
+            }
+            mermaid.initialize({ startOnLoad: false, securityLevel: "loose" });
+            diagrams.forEach((definition, index) => {
+                const node = document.getElementById(`mermaid-chart-${index}`);
+                if (!node) {
+                    return;
+                }
+                const trimmed = (definition || "").trim();
+                if (!trimmed) {
+                    return;
+                }
+                mermaid
+                    .render(`mermaid-render-${index}`, trimmed)
+                    .then((renderResult) => {
+                        node.innerHTML = renderResult.svg;
+                    })
+                    .catch((error) => {
+                        console.error("Mermaid render failed:", error);
+                        node.textContent = trimmed;
+                    });
+            });
+        });
+    </script>
+</body>
+</html>
