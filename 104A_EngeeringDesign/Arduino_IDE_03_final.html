@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arduino_IDE_03_final</title>
+    
+    <!-- CSS 框架 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/dark.min.css">
+    
+    <!-- 代碼高亮 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/base16/darcula.min.css">
+    
+    <!-- 自定義樣式 -->
+    <style>
+        
+                body {
+                    max-width: 900px;
+                    margin: 0 auto;
+                    padding: 20px;
+                }
+                /* 提升代码块对比度 */
+                pre {
+                    background: #1e1e1e !important;
+                    border: 1px solid #3e3e3e;
+                }
+                pre code {
+                    background: #1e1e1e !important;
+                }
+                code {
+                    background: #2d2d2d !important;
+                }
+                /* 引用块对比度 */
+                blockquote {
+                    background: #2d2d2d;
+                    border-left: 4px solid #4a9eff;
+                }
+            
+        
+        /* 通用代碼塊樣式 */
+        pre code {
+            display: block;
+            padding: 1.5em;
+            border-radius: 8px;
+            overflow-x: auto;
+            line-height: 1.6;
+        }
+
+        /* Mermaid 圖表樣式 */
+        
+        .mermaid {
+            margin: 2em 0;
+            padding: 1.5em;
+            text-align: center;
+            border-radius: 8px;
+        }
+        
+        .mermaid {
+            background: #2c3034;
+            border: 1px solid #444;
+        }
+            
+        
+        /* 響應式調整 */
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            .container, .markdown-body, .latex-body, .window-body, .nes-container {
+                padding: 15px;
+            }
+            pre code {
+                padding: 1em;
+            }
+        }
+        
+        
+    </style>
+</head>
+<body>
+    <div class="container"><!-- Path: 114A_EngineerDesign | Timestamp: 2025-11-05 20:15:00 | Version: final -->
+
+<h1>Arduino 專案實作：整合 DHT11 與 SSD1306 OLED 顯示器 (進階篇)</h1>
+<p>本篇教學將深入探討 <code>U8g2</code> 程式庫的強大功能，帶您學習如何設計更豐富的資訊介面、使用圖形化元素，甚至顯示部分中文。我們將透過一系列<strong>螺旋式範例</strong>，從最基礎的文字顯示開始，逐步疊加功能，最終打造一個專業且具視覺吸引力的溫濕度儀表板。</p>
+<hr />
+<h2>學習路徑圖 (Learning Roadmap)</h2>
+<p>本教學文件採用螺旋式上升的結構設計，您可以依照下圖的路徑，從基礎概念開始，逐步完成實作，並深入理解其核心原理。</p>
+<div class="mermaid">
+graph TD
+    subgraph "A. 基礎知識 (Foundation)"
+        A1[1. U8g2 程式庫介紹] --> A2[1.2 OLED 座標系統]
+        A2 --> A3[1.4 U8g2 建構式詳解]
+    end
+
+    subgraph "B. 核心技能練習 (Core Skills)"
+        B1[1.3 函數應用練習]
+        B1 --> B1a(練習一: 繪製圖形)
+        B1 --> B1b(練習二: 文字與線條)
+    end
+
+    subgraph "C. 螺旋式專案實作 (Spiral Project)"
+        C1[範例一: 基本文字] --> C2[範例二: 加入圖示]
+        C2 --> C3[範例三: 使用中文]
+        C3 --> C4[範例四: 資料視覺化]
+        C4 --> C5[範例五: 綜合儀表板]
+    end
+
+    subgraph "D. 深入理解 (Deeper Understanding)"
+        D1[4. U8g2 核心優勢]
+        D1 --> D2(Page Buffer 機制)
+    end
+
+    subgraph "E. 學習成果 (Outcome)"
+        E1[🎉 掌握客製化介面設計]
+    end
+
+    A3 --> B1
+    B1b --> C1
+    C5 --> D1
+    D2 --> E1
+
+</div>
+
+<hr />
+<h2>1. U8g2 程式庫深度解析</h2>
+<p><code>U8g2</code> 不僅僅是個顯示文字的工具，它是一個功能完整的圖形函式庫。理解其核心功能是創造優質介面的關鍵。</p>
+<h3>1.1. 核心功能與常用函數</h3>
+<p>U8g2 的強大之處在於其豐富的繪圖 API。以下是一些最常用的函數：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">類別</th>
+<th style="text-align: left;">函數</th>
+<th style="text-align: left;">功能說明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>基礎控制</strong></td>
+<td style="text-align: left;"><code>u8g2.begin()</code></td>
+<td style="text-align: left;">初始化顯示器。</td>
+</tr>
+<tr>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"><code>u8g2.firstPage()</code></td>
+<td style="text-align: left;">開始一個頁面繪圖循環。</td>
+</tr>
+<tr>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"><code>u8g2.nextPage()</code></td>
+<td style="text-align: left;">繼續繪製下一個頁面，直到完成。</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>文字處理</strong></td>
+<td style="text-align: left;"><code>u8g2.setFont(font_name)</code></td>
+<td style="text-align: left;">設定要使用的字型。這是改變外觀最重要的指令。</td>
+</tr>
+<tr>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"><code>u8g2.setCursor(x, y)</code></td>
+<td style="text-align: left;">設定下一次 <code>print</code> 指令的起始座標。</td>
+</tr>
+<tr>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"><code>u8g2.print(value)</code></td>
+<td style="text-align: left;">在當前游標位置印出文字、數字或變數。</td>
+</tr>
+<tr>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"><code>u8g2.drawStr(x, y, "text")</code></td>
+<td style="text-align: left;">在指定座標繪製一個字串。</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>圖形繪製</strong></td>
+<td style="text-align: left;"><code>u8g2.drawBox(x, y, w, h)</code></td>
+<td style="text-align: left;">畫一個實心矩形。</td>
+</tr>
+<tr>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"><code>u8g2.drawFrame(x, y, w, h)</code></td>
+<td style="text-align: left;">畫一個空心矩形。</td>
+</tr>
+<tr>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"><code>u8g2.drawRFrame(x, y, w, h, r)</code></td>
+<td style="text-align: left;">畫一個圓角的空心矩形。</td>
+</tr>
+<tr>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"><code>u8g2.drawGlyph(x, y, char_code)</code></td>
+<td style="text-align: left;">繪製特定字型中的單一圖形或字元。</td>
+</tr>
+</tbody>
+</table>
+<h3>1.2. OLED 顯示規劃：座標系統詳解</h3>
+<p>在開始繪製畫面之前，最重要的一步是理解 OLED 螢幕的座標系統。對於一塊 128x64 解析度的螢幕：<br />
+-   <strong>原點 (0,0)</strong>：位於螢幕的<strong>左上角</strong>。<br />
+-   <strong>X 軸</strong>：從左到右，範圍是 <code>0</code> 到 <code>127</code>。<br />
+-   <strong>Y 軸</strong>：從上到下，範圍是 <code>0</code> 到 <code>63</code>。</p>
+<p>所有 <code>draw...</code> 或 <code>setCursor</code> 相關的函數，其 <code>(x, y)</code> 座標都遵循這個規則。</p>
+<pre class="codehilite"><code>(0,0)
+  +-----------------------------------------------------&gt; X (0 to 127)
+  |
+  |
+  |
+  |
+  |
+  |
+  V Y (0 to 63)
+</code></pre>
+
+<p>例如，<code>u8g2.drawPixel(64, 32)</code> 會在螢幕的正中央畫一個點。</p>
+<h3>1.3. 函數應用練習</h3>
+<p>在進入複雜的專案前，讓我們先透過幾個簡單的練習來熟悉這些繪圖函數。</p>
+<h4>練習一：繪製基本圖形</h4>
+<ul>
+<li><strong>目標</strong>：在螢幕中央畫一個 20x20 的實心方塊，並在螢幕四周畫上邊框。</li>
+<li><strong>AI Prompt 範例</strong>：<br />
+    &gt; "請為 Arduino Uno 撰寫一支程式，使用 <code>U8g2</code> 程式庫驅動 <code>SSD1306 I2C 128x64 OLED</code> 顯示器。程式需在螢幕四周繪製一個距離邊緣 1 像素的邊框，並在螢幕正中央繪製一個 20x20 像素的實心方塊。請確保程式碼是完整的 Arduino Sketch，包含 <code>setup()</code> 和 <code>loop()</code> 函數。"</li>
+<li>
+<p><strong>程式碼範例</strong>：<br />
+    ```cpp<br />
+    #include <Arduino.h><br />
+    #include <U8g2lib.h><br />
+    #include <Wire.h></p>
+<p>U8G2_SSD1306_128X64_NONAME_F_HW_I2C u8g2(U8G2_R0, U8X8_PIN_NONE);</p>
+<p>void setup(void) {<br />
+  u8g2.begin();<br />
+}</p>
+<p>void loop(void) {<br />
+  u8g2.firstPage();<br />
+  do {<br />
+    // 繪製外框 (x, y, width, height)<br />
+    u8g2.drawFrame(1, 1, 126, 62);</p>
+<pre class="codehilite"><code>// 繪製中央實心方塊
+// 中央 x 座標: (128 / 2) - (20 / 2) = 54
+// 中央 y 座標: (64 / 2) - (20 / 2) = 22
+u8g2.drawBox(54, 22, 20, 20);
+</code></pre>
+
+<p>} while (u8g2.nextPage());<br />
+  delay(1000); // 延遲一秒，觀察效果<br />
+}<br />
+```</p>
+</li>
+</ul>
+<h4>練習二：文字與線條</h4>
+<ul>
+<li><strong>目標</strong>：在螢幕上顯示一行文字 "Hello U8g2!"，並在文字下方畫一條底線。</li>
+<li><strong>AI Prompt 範例</strong>：<br />
+    &gt; "請為 Arduino Uno 撰寫一支程式，使用 <code>U8g2</code> 程式庫驅動 <code>SSD1306 I2C 128x64 OLED</code> 顯示器。程式需在螢幕的 (10, 30) 座標位置，使用 <code>u8g2_font_ncenB10_tr</code> 字型顯示文字 'Hello U8g2!'。然後，在文字下方 2 像素處，繪製一條從 (10, 32) 到 (90, 32) 的水平線作為底線。請確保程式碼是完整的 Arduino Sketch，包含 <code>setup()</code> 和 <code>loop()</code> 函數。"</li>
+<li>
+<p><strong>程式碼範例</strong>：<br />
+    ```cpp<br />
+    #include <Arduino.h><br />
+    #include <U8g2lib.h><br />
+    #include <Wire.h></p>
+<p>U8G2_SSD1306_128X64_NONAME_F_HW_I2C u8g2(U8G2_R0, U8X8_PIN_NONE);</p>
+<p>void setup(void) {<br />
+  u8g2.begin();<br />
+}</p>
+<p>void loop(void) {<br />
+  u8g2.firstPage();<br />
+  do {<br />
+    // 設定字型<br />
+    u8g2.setFont(u8g2_font_ncenB10_tr);<br />
+    // 繪製文字<br />
+    u8g2.drawStr(10, 30, "Hello U8g2!");<br />
+    // 繪製底線 (x1, y1, x2, y2)<br />
+    u8g2.drawLine(10, 32, 90, 32);<br />
+  } while (u8g2.nextPage());<br />
+  delay(1000);<br />
+}<br />
+```</p>
+</li>
+</ul>
+<h3>1.4. 關鍵指令：U8g2 建構式詳解</h3>
+<p>在所有 U8g2 程式碼中，最關鍵的一行就是<strong>建構式</strong>。它告訴程式庫你正在使用哪種硬體。讓我們來拆解它：<br />
+<code>U8G2_SSD1306_128X64_NONAME_F_HW_I2C u8g2(U8G2_R0, U8X8_PIN_NONE);</code></p>
+<ul>
+<li><code>U8G2_</code> : U8g2 程式庫的固定前綴。</li>
+<li><code>SSD1306</code> : OLED 的驅動晶片型號。如果你的螢幕是 SH1106，這裡就要跟著改。</li>
+<li><code>128X64</code> : 螢幕的解析度（寬 x 高）。常見的還有 128x32。</li>
+<li><code>NONAME</code> : 品牌或變體。<code>NONAME</code> 適用於大多數通用型模組。</li>
+<li><code>_F_</code> : 緩衝模式 (Buffer Mode)。<code>_F_</code> 代表 <strong>Full Buffer</strong>，會佔用 <code>(128*64)/8 = 1024</code> bytes 的 RAM，效能最好。其他選項如 <code>_1_</code> (128 bytes RAM)、<code>_2_</code> (256 bytes RAM) 則更節省記憶體，但繪圖速度稍慢。對於 Arduino Uno，<code>_F_</code> 模式已佔用其一半 RAM，但通常仍是可行的。</li>
+<li><code>HW_I2C</code> : 通訊介面。<code>HW_I2C</code> 表示使用硬體 I2C 介面，這是最常見的方式。</li>
+<li><code>u8g2</code> : 你為這個顯示器物件取的名字，可以自訂。</li>
+<li><code>(U8G2_R0, ...)</code> : 參數。<code>U8G2_R0</code> 代表螢幕不旋轉。你可以改成 <code>U8G2_R1</code> (旋轉90度)、<code>U8G2_R2</code> (180度) 或 <code>U8G2_R3</code> (270度)。</li>
+<li><code>U8X8_PIN_NONE</code> : Reset 腳位。如果你的 OLED 模組沒有用到 RST 腳，就設為此項。</li>
+</ul>
+<h3>1.5. U8g2 的字型系統與中文支援</h3>
+<p>U8g2 內建了數百種字型。最好的方法是參考 <a href="https://github.com/olikraus/u8g2/wiki/fntlistall">U8g2 官方字型圖庫</a> 來預覽所有字型的外觀。</p>
+<p><strong>如何使用中文？</strong><br />
+Arduino Uno 的記憶體有限，無法容納完整的 CJK (中日韓) 字庫。因此，U8g2 採取了<strong>收錄部分常用字</strong>的策略。您需要找到名稱包含 <code>chinese</code> 的字型，並在程式碼中啟用 UTF-8 編碼。<br />
+<code>u8g2.enableUTF8Print();</code></p>
+<blockquote>
+<p><strong>注意</strong>：使用中文字型會佔用大量的 Flash 儲存空間，可能會讓您的專案無法上傳至 Arduino Uno。在資源有限的開發板上，使用圖示或英文是更穩妥的選擇。</p>
+</blockquote>
+<hr />
+<h2>2. 螺旋式範例實作 (128x64 OLED)</h2>
+<p>接下來，我們將透過五個由簡入繁的範例，一步步建構出最終的儀表板。每個範例都包含<strong>顯示規劃</strong>、給 AI 的<strong>指令範例</strong>以及<strong>完整程式碼</strong>。</p>
+<h3>範例一：基本文字顯示</h3>
+<h4>a. 顯示規劃</h4>
+<p>在 128x64 的 OLED 螢幕上，上半部顯示溫度，下半部顯示濕度。<br />
+-   第一行 (y=20): <code>Temp: XX.X C</code><br />
+-   第二行 (y=50): <code>Humi: XX.X %</code></p>
+<p><strong>ASCII 模擬圖:</strong></p>
+<pre class="codehilite"><code>+--------------------------+
+|                          |
+| Temp: 25.5 C             |
+|                          |
+|                          |
+| Humi: 60.1 %             |
+|                          |
+|                          |
++--------------------------+
+</code></pre>
+
+<h4>b. AI 生成程式的 Prompt 範例</h4>
+<blockquote>
+<p>"請為 Arduino Uno 撰寫一支完整的程式碼，使用 <code>U8g2</code> 程式庫驅動 <code>SSD1306 I2C 128x64 OLED</code> 顯示器。程式需連接 <code>DHT11 感測器</code> (DATA 腳位連接到 Arduino 的 <code>Pin 2</code>)。在 OLED 螢幕上，請使用 <code>u8g2_font_ncenB10_tr</code> 字型，在 y=20 處顯示溫度資訊，格式為 'Temp: XX.X C'；在 y=50 處顯示濕度資訊，格式為 'Humi: XX.X %'。程式應使用非阻塞延遲 (millis()) 每 2 秒更新一次 DHT11 的數據並顯示在螢幕上。"</p>
+</blockquote>
+<h4>c. 程式碼範例</h4>
+<pre class="codehilite"><code class="language-cpp">#include &lt;Arduino.h&gt;
+#include &lt;U8g2lib.h&gt;
+#include &lt;Wire.h&gt;
+#include &quot;DHT.h&quot;
+
+#define DHTPIN 2
+#define DHTTYPE DHT11
+
+U8G2_SSD1306_128X64_NONAME_F_HW_I2C u8g2(U8G2_R0, U8X8_PIN_NONE);
+DHT dht(DHTPIN, DHTTYPE);
+
+unsigned long previousMillis = 0;
+const long interval = 2000;
+float humidity, temp_c;
+
+void setup(void) {
+  dht.begin();
+  u8g2.begin();
+}
+
+void loop(void) {
+  unsigned long currentMillis = millis();
+  if (currentMillis - previousMillis &gt;= interval) {
+    previousMillis = currentMillis;
+    humidity = dht.readHumidity();
+    temp_c = dht.readTemperature();
+  }
+
+  u8g2.firstPage();
+  do {
+    u8g2.setFont(u8g2_font_ncenB10_tr); // 選擇一個大小為 10 的粗體字型
+
+    // 顯示溫度
+    u8g2.setCursor(0, 20);
+    u8g2.print(&quot;Temp: &quot;);
+    u8g2.print(temp_c, 1);
+    u8g2.print(&quot; C&quot;);
+
+    // 顯示濕度
+    u8g2.setCursor(0, 50);
+    u8g2.print(&quot;Humi: &quot;);
+    u8g2.print(humidity, 1);
+    u8g2.print(&quot; %&quot;);
+  } while (u8g2.nextPage());
+}
+</code></pre>
+
+<hr />
+<h3>範例二：加入圖示</h3>
+<h4>a. 顯示規劃</h4>
+<p>在 128x64 的 OLED 螢幕上，於溫度和濕度文字左側分別加入溫度計和水滴圖示。<br />
+-   溫度計圖示 (x=5, y=22)，文字 (x=30, y=20): <code>Temp: XX.X C</code><br />
+-   水滴圖示 (x=5, y=52)，文字 (x=30, y=50): <code>Humi: XX.X %</code></p>
+<p><strong>ASCII 模擬圖:</strong></p>
+<pre class="codehilite"><code>+--------------------------+
+|                          |
+|  [T] Temp: 25.5 C        |
+|                          |
+|                          |
+|  [D] Humi: 60.1 %        |
+|                          |
+|                          |
++--------------------------+
+([T]: 溫度計圖示, [D]: 水滴圖示)
+</code></pre>
+
+<h4>b. AI 生成程式的 Prompt 範例</h4>
+<blockquote>
+<p>"請為 Arduino Uno 撰寫一支完整的程式碼，使用 <code>U8g2</code> 程式庫驅動 <code>SSD1306 I2C 128x64 OLED</code> 顯示器。程式需連接 <code>DHT11 感測器</code> (DATA 腳位連接到 Arduino 的 <code>Pin 2</code>)。在 OLED 螢幕上，請在溫度數值左側加入一個溫度計圖示，在濕度數值左側加入一個水滴圖示。請使用 <code>u8g2_font_open_iconic_weather_2x_t</code> 圖示字型，其中 'A' 為溫度計，'E' 為水滴。文字部分請使用 <code>u8g2_font_ncenB10_tr</code> 字型。確保圖示與文字排版對齊，溫度計圖示位於 (5, 22)，溫度文字從 (30, 20) 開始；水滴圖示位於 (5, 52)，濕度文字從 (30, 50) 開始。程式應使用非阻塞延遲 (millis()) 每 2 秒更新一次 DHT11 的數據並顯示在螢幕上。"</p>
+</blockquote>
+<h4>c. 程式碼範例</h4>
+<pre class="codehilite"><code class="language-cpp">#include &lt;Arduino.h&gt;
+#include &lt;U8g2lib.h&gt;
+#include &lt;Wire.h&gt;
+#include &quot;DHT.h&quot;
+
+#define DHTPIN 2
+#define DHTTYPE DHT11
+
+U8G2_SSD1306_128X64_NONAME_F_HW_I2C u8g2(U8G2_R0, U8X8_PIN_NONE);
+DHT dht(DHTPIN, DHTTYPE);
+
+unsigned long previousMillis = 0;
+const long interval = 2000;
+float humidity, temp_c;
+
+void setup(void) {
+  dht.begin();
+  u8g2.begin();
+}
+
+void loop(void) {
+  unsigned long currentMillis = millis();
+  if (currentMillis - previousMillis &gt;= interval) {
+    previousMillis = currentMillis;
+    humidity = dht.readHumidity();
+    temp_c = dht.readTemperature();
+  }
+
+  u8g2.firstPage();
+  do {
+    // --- 繪製溫度 ---
+    u8g2.setFont(u8g2_font_open_iconic_weather_2x_t); // 設定 2x 大小的圖示字型
+    u8g2.drawGlyph(5, 22, 'A'); // 繪製溫度計圖示
+
+    u8g2.setFont(u8g2_font_ncenB10_tr); // 切換回文字字型
+    u8g2.setCursor(30, 20);
+    u8g2.print(&quot;Temp: &quot;);
+    u8g2.print(temp_c, 1);
+    u8g2.print(&quot; C&quot;);
+
+    // --- 繪製濕度 ---
+    u8g2.setFont(u8g2_font_open_iconic_weather_2x_t);
+    u8g2.drawGlyph(5, 52, 'E'); // 繪製水滴圖示
+
+    u8g2.setFont(u8g2_font_ncenB10_tr);
+    u8g2.setCursor(30, 50);
+    u8g2.print(&quot;Humi: &quot;);
+    u8g2.print(humidity, 1);
+    u8g2.print(&quot; %&quot;);
+  } while (u8g2.nextPage());
+}
+</code></pre>
+
+<hr />
+<h3>範例三：使用中文</h3>
+<h4>a. 顯示規劃</h4>
+<p>在 128x64 的 OLED 螢幕上，將標籤 "Temp:" 和 "Humi:" 替換為中文 "溫度:" 和 "濕度:"。<br />
+-   第一行 (y=20): <code>溫度: XX.X C</code><br />
+-   第二行 (y=50): <code>濕度: XX.X %</code></p>
+<p><strong>ASCII 模擬圖:</strong></p>
+<pre class="codehilite"><code>+--------------------------+
+|                          |
+| 溫度: 25.5 C             |
+|                          |
+|                          |
+| 濕度: 60.1 %             |
+|                          |
+|                          |
++--------------------------+
+</code></pre>
+
+<h4>b. AI 生成程式的 Prompt 範例</h4>
+<blockquote>
+<p>"請為 Arduino Uno 撰寫一支完整的程式碼，使用 <code>U8g2</code> 程式庫驅動 <code>SSD1306 I2C 128x64 OLED</code> 顯示器。程式需連接 <code>DHT11 感測器</code> (DATA 腳位連接到 Arduino 的 <code>Pin 2</code>)。在 OLED 螢幕上，請將溫度標籤 'Temp:' 改為 '溫度:'，濕度標籤 'Humi:' 改為 '濕度:'。請使用 <code>u8g2_font_wqy12_t_chinese2</code> 字型顯示中文，並啟用 UTF-8 支援。溫度資訊顯示在 y=20 處，濕度資訊顯示在 y=50 處。程式應使用非阻塞延遲 (millis()) 每 2 秒更新一次 DHT11 的數據並顯示在螢幕上。請在程式碼註解中提醒使用者在 Arduino Uno 上使用中文字型可能導致儲存空間不足的問題。"</p>
+</blockquote>
+<h4>c. 程式碼範例</h4>
+<pre class="codehilite"><code class="language-cpp">#include &lt;Arduino.h&gt;
+#include &lt;U8g2lib.h&gt;
+#include &lt;Wire.h&gt;
+#include &quot;DHT.h&quot;
+
+#define DHTPIN 2
+#define DHTTYPE DHT11
+
+U8G2_SSD1306_128X64_NONAME_F_HW_I2C u8g2(U8G2_R0, U8X8_PIN_NONE);
+DHT dht(DHTPIN, DHTTYPE);
+
+unsigned long previousMillis = 0;
+const long interval = 2000;
+float humidity, temp_c;
+
+void setup(void) {
+  dht.begin();
+  u8g2.begin();
+  // 注意：使用中文字型會大幅增加程式碼大小，可能不適用於 Flash 空間小的開發板
+  u8g2.enableUTF8Print(); // 啟用 UTF-8 編碼以支援中文
+}
+
+void loop(void) {
+  unsigned long currentMillis = millis();
+  if (currentMillis - previousMillis &gt;= interval) {
+    previousMillis = currentMillis;
+    humidity = dht.readHumidity();
+    temp_c = dht.readTemperature();
+  }
+
+  u8g2.firstPage();
+  do {
+    u8g2.setFont(u8g2_font_wqy12_t_chinese2); // 選擇一個包含常用字的 12px 中文字型
+
+    // 顯示溫度
+    u8g2.setCursor(0, 20);
+    u8g2.print(&quot;溫度: &quot;);
+    u8g2.print(temp_c, 1);
+    u8g2.print(&quot; C&quot;);
+
+    // 顯示濕度
+    u8g2.setCursor(0, 50);
+    u8g2.print(&quot;濕度: &quot;);
+    u8g2.print(humidity, 1);
+    u8g2.print(&quot; %&quot;);
+  } while (u8g2.nextPage());
+}
+</code></pre>
+
+<hr />
+<h3>範例四：資料視覺化 (長條圖)</h3>
+<h4>a. 顯示規劃</h4>
+<p>在 128x64 的 OLED 螢幕上，上半部顯示溫度，下半部顯示濕度數值，並在濕度數值下方增加一個水平長條圖。<br />
+-   第一行 (y=20): <code>Temp: XX.X C</code><br />
+-   第二行 (y=45): <code>Humi: XX.X %</code><br />
+-   濕度長條圖: 位於 (0, 55) 處，外框寬度 102 像素，高度 8 像素。</p>
+<p><strong>ASCII 模擬圖:</strong></p>
+<pre class="codehilite"><code>+--------------------------+
+|                          |
+| Temp: 25.5 C             |
+|                          |
+| Humi: 60.1 %             |
+| [===========     ]       |
+|                          |
+|                          |
++--------------------------+
+</code></pre>
+
+<h4>b. AI 生成程式的 Prompt 範例</h4>
+<blockquote>
+<p>"請為 Arduino Uno 撰寫一支完整的程式碼，使用 <code>U8g2</code> 程式庫驅動 <code>SSD1306 I2C 128x64 OLED</code> 顯示器。程式需連接 <code>DHT11 感測器</code> (DATA 腳位連接到 Arduino 的 <code>Pin 2</code>)。在 OLED 螢幕上，請使用 <code>u8g2_font_ncenB10_tr</code> 字型，在 y=20 處顯示溫度資訊，格式為 'Temp: XX.X C'；在 y=45 處顯示濕度資訊，格式為 'Humi: XX.X %'。此外，在濕度數值下方 (從 (0, 55) 座標開始)，加入一個水平長條圖來視覺化呈現濕度百分比 (0-100%)。長條圖的外框寬度為 102 像素，高度為 8 像素，實心長條的寬度應根據濕度值 (0-100%) 映射到 0-100 像素。程式應使用非阻塞延遲 (millis()) 每 2 秒更新一次 DHT11 的數據並顯示在螢幕上。"</p>
+</blockquote>
+<h4>c. 程式碼範例</h4>
+<pre class="codehilite"><code class="language-cpp">#include &lt;Arduino.h&gt;
+#include &lt;U8g2lib.h&gt;
+#include &lt;Wire.h&gt;
+#include &quot;DHT.h&quot;
+
+#define DHTPIN 2
+#define DHTTYPE DHT11
+
+U8G2_SSD1306_128X64_NONAME_F_HW_I2C u8g2(U8G2_R0, U8X8_PIN_NONE);
+DHT dht(DHTPIN, DHTTYPE);
+
+unsigned long previousMillis = 0;
+const long interval = 2000;
+float humidity, temp_c;
+
+void setup(void) {
+  dht.begin();
+  u8g2.begin();
+}
+
+void loop(void) {
+  unsigned long currentMillis = millis();
+  if (currentMillis - previousMillis &gt;= interval) {
+    previousMillis = currentMillis;
+    humidity = dht.readHumidity();
+    temp_c = dht.readTemperature();
+  }
+
+  u8g2.firstPage();
+  do {
+    u8g2.setFont(u8g2_font_ncenB10_tr);
+
+    // 顯示溫度
+    u8g2.setCursor(0, 20);
+    u8g2.print(&quot;Temp: &quot;);
+    u8g2.print(temp_c, 1);
+    u8g2.print(&quot; C&quot;);
+
+    // 顯示濕度文字
+    u8g2.setCursor(0, 45);
+    u8g2.print(&quot;Humi: &quot;);
+    u8g2.print(humidity, 1);
+    u8g2.print(&quot; %&quot;);
+
+    // 繪製濕度長條圖
+    int barWidth = map(humidity, 0, 100, 0, 100); // 將 0-100% 映射到 0-100 像素寬度
+    u8g2.drawFrame(0, 55, 102, 8); // 繪製長條圖外框 (x, y, width, height)
+    u8g2.drawBox(1, 56, barWidth, 6); // 根據濕度繪製實心長條 (x, y, width, height)
+  } while (u8g2.nextPage());
+}
+</code></pre>
+
+<hr />
+<h3>範例五：綜合儀表板介面</h3>
+<h4>a. 顯示規劃</h4>
+<p>設計一個專業的儀表板介面，將 128x64 的 OLED 螢幕畫面分為上下兩區，結合圖示與更美觀的字型，並優化排版。<br />
+-   <strong>溫度區</strong>：左側為大型溫度計圖示，右側為標籤與數值。<br />
+-   <strong>濕度區</strong>：左側為大型水滴圖示，右側為標籤與數值。</p>
+<p><strong>ASCII 模擬圖:</strong></p>
+<pre class="codehilite"><code>+--------------------------+
+|      / \   Temp:         |
+|     | o |  25.5 C         |
+|      \ /                 |
+|--------------------------|
+|                          |
+|      / \   Humi:         |
+|     ( o )  60.1 %         |
+|      \ /                 |
++--------------------------+
+</code></pre>
+
+<h4>b. AI 生成程式的 Prompt 範例</h4>
+<blockquote>
+<p>"請為 Arduino Uno 撰寫一支完整的程式碼，使用 <code>U8g2</code> 程式庫驅動 <code>SSD1306 I2C 128x64 OLED</code> 顯示器。程式需連接 <code>DHT11 感測器</code> (DATA 腳位連接到 Arduino 的 <code>Pin 2</code>)。請設計一個專業的溫濕度儀表板介面，畫面分為上下兩區：<br />
+1.  <strong>溫度區</strong>：左側在 (5, 30) 處顯示一個大型溫度計圖示 (使用 <code>u8g2_font_open_iconic_weather_4x_t</code> 字型，字元 'A')。右側在 (40, 20) 處顯示標籤 'Temp:'，在 (40, 40) 處顯示溫度數值 (XX.X)，並在 (95, 40) 處顯示 '°C' 單位。數值和標籤請使用 <code>u8g2_font_logisoso16_tr</code> 字型，'°' 符號請使用 <code>drawGlyph(x, y, 176)</code> 繪製。<br />
+2.  <strong>濕度區</strong>：左側在 (5, 62) 處顯示一個大型水滴圖示 (使用 <code>u8g2_font_open_iconic_weather_4x_t</code> 字型，字元 'E')。右側在 (40, 60) 處顯示標籤 'Humi:'，在 (40, 80) 處顯示濕度數值 (XX.X)，並在 (95, 80) 處顯示 '%' 單位。數值和標籤請使用 <code>u8g2_font_logisoso16_tr</code> 字型。<br />
+程式應使用非阻塞延遲 (millis()) 每 2 秒更新一次 DHT11 的數據並顯示在螢幕上。"</p>
+</blockquote>
+<h4>c. 程式碼範例</h4>
+<pre class="codehilite"><code class="language-cpp">#include &lt;Arduino.h&gt;
+#include &lt;U8g2lib.h&gt;
+#include &lt;Wire.h&gt;
+#include &quot;DHT.h&quot;
+
+#define DHTPIN 2
+#define DHTTYPE DHT11
+
+U8G2_SSD1306_128X64_NONAME_F_HW_I2C u8g2(U8G2_R0, U8X8_PIN_NONE);
+DHT dht(DHTPIN, DHTTYPE);
+
+unsigned long previousMillis = 0;
+const long interval = 2000;
+float humidity, temp_c;
+
+void setup(void) {
+  dht.begin();
+  u8g2.begin();
+}
+
+void loop(void) {
+  unsigned long currentMillis = millis();
+  if (currentMillis - previousMillis &gt;= interval) {
+    previousMillis = currentMillis;
+    float h = dht.readHumidity();
+    float t = dht.readTemperature();
+    if (!isnan(h) &amp;&amp; !isnan(t)) {
+      humidity = h;
+      temp_c = t;
+    }
+  }
+
+  u8g2.firstPage();
+  do {
+    // --- 繪製溫度區 ---
+    u8g2.setFont(u8g2_font_open_iconic_weather_4x_t);
+    u8g2.drawGlyph(5, 30, 'A'); // 溫度計圖示
+
+    u8g2.setFont(u8g2_font_logisoso16_tr); // 使用較大的藝術字體
+    char tempString[10];
+    dtostrf(temp_c, 4, 1, tempString); 
+
+    u8g2.drawStr(40, 20, &quot;Temp:&quot;);
+    u8g2.drawStr(40, 40, tempString);
+    u8g2.drawGlyph(95, 40, 176); // '°' 符號
+    u8g2.drawStr(105, 40, &quot;C&quot;);
+
+    // --- 繪製濕度區 ---
+    u8g2.setFont(u8g2_font_open_iconic_weather_4x_t);
+    u8g2.drawGlyph(5, 62, 'E'); // 水滴圖示
+
+    u8g2.setFont(u8g2_font_logisoso16_tr);
+    char humiString[10];
+    dtostrf(humidity, 4, 1, humiString);
+
+    u8g2.drawStr(40, 60, &quot;Humi:&quot;);
+    u8g2.drawStr(40, 80, humiString); // 此處 y 座標調整以配合字體
+    u8g2.drawStr(95, 80, &quot;%&quot;);
+
+  } while (u8g2.nextPage());
+}
+</code></pre>
+
+<hr />
+<h2>3. 總結</h2>
+<p>透過以上五個螺旋式範例，我們從最簡單的文字顯示開始，逐步加入了圖示、中文、視覺化圖表，最終完成了一個精美的儀表板。這個過程不僅讓您學會了 U8g2 的各種功能，更重要的是，它展示了一種<strong>迭代開發</strong>的思維模式：從一個最小可行性產品 (MVP) 開始，逐步增加功能，直到達成最終目標。</p>
+<p>現在，您已經具備了使用 Arduino 和 OLED 顯示器創造各種客製化資訊面板的能力。下一步，您可以嘗試結合這些範例的元素，例如，創造一個帶有中文標籤和長條圖的介面，將您的創客專案提升到新的水平。</p>
+<hr />
+<h2>4. 深入探討：U8g2 的核心優勢</h2>
+<h3>4.1. Page Buffer 機制：為何使用 <code>u8g2.firstPage()</code> / <code>nextPage()</code> 迴圈？</h3>
+<p>您可能已經注意到，所有 U8g2 的繪圖指令都必須放在一個 <code>do-while</code> 迴圈中。這並非偶然，而是 U8g2 設計的核心，也是它能在像 Arduino Uno 這樣記憶體極小的微控制器上高效運作的秘密。</p>
+<p><strong>問題：有限的記憶體</strong><br />
+一台 Arduino Uno 只有 <strong>2KB (2048 bytes) 的 SRAM</strong> (靜態隨機存取記憶體)。如果要一次性在記憶體中準備好整個 128x64 畫面的資料，需要 <code>(128 * 64) / 8 = 1024</code> bytes 的空間。這就佔掉了整台裝置一半的記憶體！剩餘的空間非常小，很容易導致程式不穩定或崩潰。</p>
+<p><strong>解決方案：Page Buffer 機制</strong><br />
+為了解決這個問題，U8g2 採用了巧妙的 <strong>Page Buffer (頁面緩衝)</strong> 機制。它不在 Arduino 的記憶體中建立一個完整的畫面緩衝區，而是只建立一個小得多的「頁面」緩衝區（例如 128 或 256 bytes）。</p>
+<p>而 <code>u8g2.firstPage()</code> 和 <code>u8g2.nextPage()</code> 就是這個機制的執行者。整個繪圖過程如下：<br />
+1.  <code>u8g2.firstPage()</code>：準備繪製第一個頁面。<br />
+2.  <code>do { ... }</code>：您放在迴圈中的<strong>所有繪圖程式碼會被執行一次</strong>。U8g2 會計算哪些繪圖指令的結果落在目前這個小小的頁面範圍內，並將其存入緩-衝區。<br />
+3.  <code>while (u8g2.nextPage())</code>：將目前這個頁面的緩衝區內容傳送到 OLED 螢幕上，然後準備下一個頁面，並<strong>再次回到 <code>do</code> 開頭，重新執行一次所有的繪圖程式碼</strong>。<br />
+4.  這個過程會不斷重複，直到整個螢幕的所有頁面都被繪製完成為止。</p>
+<p>您可以把它想像成<strong>用一個小小的「郵票」去蓋滿一張大海報</strong>。您每次只在郵票大小的範圍內作畫，蓋完一格後，再移動到下一格，重新作畫，直到蓋滿整張海報。</p>
+<p><strong>結論：</strong><br />
+U8g2 透過「<strong>犧牲 CPU 運算時間，來換取極低的記憶體佔用</strong>」。它透過重複執行繪圖指令，來避免一次性佔用大量 RAM。這就是為什麼我們能在一台小小的 Arduino Uno 上，流暢地驅動圖形化螢幕，實現複雜介面的關鍵所在。</p></div>
+    
+    <!-- Highlight.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    
+    <!-- Mermaid -->
+    <script type="module">
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+        mermaid.initialize({
+            "startOnLoad": true,
+            "theme": "dark",
+            "securityLevel": "loose"
+});
+    </script>
+</body>
+</html>
