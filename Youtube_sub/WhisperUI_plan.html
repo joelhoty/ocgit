@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="zh-Hant" data-theme="light">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>WhisperUI</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css" />
+    <style>
+        :root {
+            color-scheme: light dark;
+            --bg-color: #f7f9fc;
+            --surface: #ffffff;
+            --text: #1f2a44;
+            --muted: #51607a;
+            --accent: #3a7bd5;
+            --border: rgba(58, 123, 213, 0.14);
+            --code-bg: #eef3fb;
+        }
+        body {
+            margin: 0;
+            background: var(--bg-color);
+            color: var(--text);
+            font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif;
+        }
+        main.container {
+            max-width: 960px;
+            padding: 3rem 1.5rem;
+        }
+        article {
+            background: var(--surface);
+            border-radius: 16px;
+            padding: 2.5rem;
+            border: 1px solid var(--border);
+            box-shadow: 0 18px 50px rgba(31, 42, 68, 0.08);
+        }
+        h1, h2, h3 {
+            color: var(--text);
+            font-weight: 600;
+        }
+        h1 {
+            font-size: 2.2rem;
+            margin-bottom: 1.2rem;
+        }
+        h2 {
+            margin-top: 2.2rem;
+            margin-bottom: 1rem;
+            padding-bottom: 0.6rem;
+            border-bottom: 1px solid var(--border);
+        }
+        p {
+            color: var(--muted);
+            line-height: 1.7;
+        }
+        a {
+            color: var(--accent);
+        }
+        ul, ol {
+            margin-left: 1.3rem;
+        }
+        code, pre {
+            font-family: "Fira Code", "JetBrains Mono", "SFMono-Regular", Menlo, monospace;
+            background: var(--code-bg);
+            border-radius: 8px;
+            border: 1px solid rgba(58, 123, 213, 0.12);
+        }
+        code {
+            padding: 0.15rem 0.4rem;
+        }
+        pre {
+            padding: 1rem 1.25rem;
+            overflow-x: auto;
+            margin: 1.2rem 0;
+        }
+        blockquote {
+            border-left: 4px solid var(--accent);
+            background: rgba(58, 123, 213, 0.08);
+            padding: 1rem 1.5rem;
+            border-radius: 0 14px 14px 0;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+        }
+        th, td {
+            border: 1px solid var(--border);
+            padding: 0.75rem 1rem;
+            text-align: left;
+        }
+        th {
+            background: rgba(58, 123, 213, 0.1);
+        }
+        .mermaid svg {
+            display: block;
+            margin: 0 auto;
+            background: #f0f5ff;
+            border-radius: 12px;
+            padding: 1rem;
+            box-shadow: inset 0 0 0 1px rgba(58, 123, 213, 0.08);
+        }
+    </style>
+</head>
+<body>
+    <main class="container">
+        <article>
+            <h1>WhisperWebUI 的學習路徑</h1>
+
+<h2>Github Repo</h2>
+
+<ul>
+<li>原始專案：<a href="https://github.com/jhj0517/Whisper-WebUI">jhj0517/Whisper-WebUI</a>。建議先閱讀 README，了解支援的 Whisper 模型、語言與部署模式。</li>
+<li>推薦先 Fork 一份至自己的帳號，方便後續自訂修改。</li>
+<li>若僅想體驗，可使用作者提供的發行版 Release 下載現成建置包；如需針對工作流程調整，則建議從原始碼啟動。</li>
+</ul>
+
+<hr />
+
+<h2>1. 功能介紹</h2>
+
+<ul>
+<li><strong>語音轉文字</strong>：支援 OpenAI Whisper 各種模型（tiny～large-v3），自動辨識語言並生成時間軸字幕。</li>
+<li><strong>語言翻譯</strong>：可選擇直接翻譯為英文或其他語言，亦可保留原文並生成雙語字幕。</li>
+<li><strong>段落編輯與審稿</strong>：WebUI 提供即時文字編輯、搜尋、合併/拆分區塊與時間調整。</li>
+<li><strong>多格式匯出</strong>：支援輸出 <code>.srt</code>、<code>.vtt</code>、<code>.txt</code>、<code>.csv</code> 等字幕格式，亦可直接產出帶字幕的影片或音訊。</li>
+<li><strong>批次處理與排程</strong>：可一次處理多個檔案，搭配自訂 Queue 進行長時間任務排程。</li>
+<li><strong>擴充功能</strong>：透過外掛整合語音分離 (Demucs)、說話者分離 (Diarization)、GPU 加速等高階功能。</li>
+</ul>
+
+<hr />
+
+<h2>2. Google Colab 執行環境</h2>
+
+<ol>
+<li>開啟官方 <a href="https://colab.research.google.com/github/jhj0517/Whisper-WebUI/blob/main/notebooks/Whisper_WebUI.ipynb">Colab Notebook</a>，在頂端工具列選 <code>File &gt; Save a copy in Drive</code>，保留一份可自由修改的副本。</li>
+<li>選擇 <code>Runtime &gt; Change runtime type</code>，將 <code>Hardware accelerator</code> 設為 <code>GPU</code>，<code>GPU type</code> 建議選 <code>T4</code> 或 <code>L4</code>（Pro 用戶可視情況改為 <code>A100</code>）。調整完成後按 <code>Save</code>。</li>
+<li>依序執行 Notebook 的每個區塊：
+<ul>
+<li>第一個 Setup 區塊會安裝必要套件並下載 WebUI 程式碼，約需 3～5 分鐘。若出現 <code>flash-attn</code> 安裝失敗，可暫時忽略或改用 CPU 模式。</li>
+<li>執行 <code>!python launch.py --share</code> 前，確認上一個安裝區塊已完全結束，避免混雜日誌導致錯誤。</li>
+</ul></li>
+<li>於左側工具列點選「掛載磁碟」圖示，或在 Notebook 新增下列程式碼以掛載 Google Drive，避免檔案於工作階段結束時被清除：
+<pre><code>from google.colab import drive
+drive.mount("/content/drive")
+</code></pre>
+將素材放在 <code>MyDrive/whisper_input</code> 等資料夾後，於 WebUI 中選擇對應路徑即可讀取。</li>
+<li>上傳大型檔案時，可透過左側 Files 面板的 <code>Upload</code> 按鈕，或使用 <code>!gdown</code>、<code>!wget</code> 直接在 Notebook 下載遠端檔案。建議壓縮為 zip 以縮短傳輸時間。</li>
+<li>啟動 WebUI 後，輸出欄位會顯示一組 <code>https://xxxxx.gradio.live</code> 的公開 URL，點擊即可進入界面。該連結僅在目前 Colab 執行階段保持運作時有效，工作階段結束或逾時後會立即失效。</li>
+<li>轉錄完成後，透過 WebUI 的 Download 按鈕保存 <code>.srt</code> 或 <code>.txt</code> 檔。若要寫回 Google Drive，可在 Notebook 內加入：
+<pre><code>!cp -r /content/Whisper-WebUI/outputs /content/drive/MyDrive/whisper_outputs
+</code></pre></li>
+<li>Colab 執行階段閒置約 30 分鐘會自動中斷，可在 Notebook 末端加入短程式（例如每隔幾分鐘列印訊息）或保持頁面活動，減少長任務被中斷的機率。</li>
+</ol>
+
+<div class="mermaid" id="mermaid-chart-0"></div>
+
+<hr />
+
+<h2>3. How to Start（本地環境）</h2>
+
+<ol>
+<li><strong>環境需求</strong>：建議使用 Python 3.10 以上、Git、防火牆允許 7860 或 8501 等 WebUI 預設埠號。若有 GPU (CUDA 11.7+) 可加速推論。</li>
+<li><strong>下載專案</strong>
+<pre><code>git clone https://github.com/jhj0517/Whisper-WebUI.git
+cd Whisper-WebUI
+</code></pre></li>
+<li><strong>建立虛擬環境並安裝依賴</strong>
+<pre><code>python3 -m venv .venv
+source .venv/bin/activate
+pip install --upgrade pip
+pip install -r requirements.txt
+</code></pre></li>
+<li><strong>啟動 WebUI</strong>
+<pre><code>python launch.py --share  # 如需公開連結，可加 --share
+</code></pre></li>
+<li><strong>首次設定</strong>：在 UI 中選擇 Whisper 模型體積、翻譯語言與輸出格式。測試小型檔案確認流程正常後，再處理正式影片。</li>
+</ol>
+
+<hr />
+
+<h2>4. 學習路徑規劃</h2>
+
+<ul>
+<li><strong>階段 1：快速體驗</strong>
+<ul>
+<li>在 Google Colab 上執行官方 Notebook。</li>
+<li>熟悉 UI 操作：上傳檔案、設定模型、下載字幕。</li>
+</ul></li>
+<li><strong>階段 2：搭建本地環境</strong>
+<ul>
+<li>在自己的電腦部署，測試 CPU 與 GPU 效能差異。</li>
+<li>學習調整 <code>config.json</code> 等設定檔，控制輸出語言、格式與細節。</li>
+</ul></li>
+<li><strong>階段 3：深度客製</strong>
+<ul>
+<li>研究 WebUI 導入的外掛或額外模組（如語音增強、說話者分離）。</li>
+<li>若需整合到既有流程，可呼叫底層 API 或改寫 <code>modules/</code> 中的任務腳本。</li>
+<li>與本專案 <code>process_srt.py</code> 搭配，建立自動化翻譯與配音流程。</li>
+</ul></li>
+<li><strong>階段 4：維運與最佳化</strong>
+<ul>
+<li>建置批次處理腳本，定期更新 Whisper 模型與依賴。</li>
+<li>監測 GPU/CPU 資源、磁碟空間，確保長時間任務穩定。</li>
+</ul></li>
+</ul>
+
+<hr />
+
+<h2>5. 影片生成中、英文字幕的詳細步驟</h2>
+
+<ol>
+<li><strong>準備素材</strong>
+<ul>
+<li>影片檔：建議使用 <code>mp4</code>、<code>mov</code> 或 <code>mkv</code>。</li>
+<li>若原始音訊品質較差，可先在外部工具進行降噪或音量平衡。</li>
+</ul></li>
+<li><strong>匯入至 WebUI</strong>
+<ul>
+<li>在 WebUI 的 Upload 區塊拖放影片/音訊檔，或貼上線上資源 URL。</li>
+<li>選擇 <code>Task Type</code> 為 <code>Transcribe</code>，Language 依需求選擇 <code>Auto</code>。</li>
+</ul></li>
+<li><strong>設定雙語輸出</strong>
+<ul>
+<li>勾選 <code>Translate to English</code> 以自動生成英文字幕。</li>
+<li>若要保留原文，可開啟 <code>Both Original &amp; Translated Subtitles</code> 選項。</li>
+<li>調整 <code>Segment Overlap</code>、<code>Word Timestamps</code> 等細節，避免字幕切割過碎。</li>
+</ul></li>
+<li><strong>執行轉錄</strong>
+<ul>
+<li>點擊 <code>Run Whisper</code>，觀察進度列與伺服器日誌。</li>
+<li>大型影片建議選用 <code>medium</code> 或 <code>large-v2</code> 模型以提升翻譯品質，但會增加等待時間。</li>
+</ul></li>
+<li><strong>檢視與修訂</strong>
+<ul>
+<li>完成後在 Transcript 頁面檢查時間軸與語句。</li>
+<li>使用內建編輯器調整錯字、停頓標點，可匯出為 <code>.srt</code> 再搭配外部工具（例如 Subtitle Edit）做批次校正。</li>
+</ul></li>
+<li><strong>匯出結果</strong>
+<ul>
+<li>原文字幕：下載 <code>filename.srt</code></li>
+<li>英文字幕：下載 <code>filename_en.srt</code></li>
+<li>需要內嵌字幕的影片，可使用 WebUI 的 <code>Mux Video</code> 功能或將字幕與影片放入 <code>ffmpeg</code> 另行封裝。</li>
+</ul></li>
+<li><strong>後續流程建議</strong>
+<ul>
+<li>將英文字幕導入本專案的 <code>process_srt.py</code> 進一步翻譯或合成語音。</li>
+<li>將雙語字幕放入 <code>test/</code> 目錄作為測試用樣本，方便比對調整後的輸出差異。</li>
+</ul></li>
+</ol>
+
+<hr />
+
+<h2>補充資源</h2>
+
+<ul>
+<li>Whisper 官方論文與模型說明：<a href="https://openai.com/research/whisper">https://openai.com/research/whisper</a></li>
+<li>Whisper 模型尺寸比較與速度分析：<a href="https://github.com/openai/whisper#available-models-and-languages">https://github.com/openai/whisper#available-models-and-languages</a></li>
+<li>字幕後製與校正工具：Subtitle Edit、Aegisub、ffsubsync。</li>
+<li>若需自動化腳本範例，可參考社群整理的 Workflow（例如 GitHub Discussions 或 Reddit r/LanguageTechnology）。</li>
+</ul>
+
+        </article>
+    </main>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <script>
+        const diagrams = ["flowchart TD\n    A[\u958b\u555f\u5b98\u65b9 Notebook] --> B[File > Save a copy in Drive]\n    B --> C[Runtime > Change runtime type > \u9078 GPU]\n    C --> D[\u4f9d\u5e8f\u57f7\u884c\u5b89\u88dd\u8207\u555f\u52d5\u7a0b\u5f0f\u78bc\u5340\u584a]\n    D --> E[\u639b\u8f09 Google Drive \u8b80\u53d6\u8207\u5132\u5b58\u6a94\u6848]\n    D --> F[\u4e0a\u50b3\u6216\u4e0b\u8f09\u97f3\u8a0a/\u5f71\u7247\u7d20\u6750]\n    E --> G[\u555f\u52d5 WebUI \u53d6\u5f97 gradio.live \u9023\u7d50]\n    F --> G\n    G --> H[\u5728 WebUI \u4e2d\u8f49\u9304\u8207\u7ffb\u8b6f\u5b57\u5e55]\n    H --> I[\u4e0b\u8f09\u6216\u8907\u88fd\u8f38\u51fa\u81f3 Drive]"];
+        document.addEventListener("DOMContentLoaded", () => {
+            if (!window.mermaid) {
+                console.error("Mermaid library failed to load.");
+                return;
+            }
+            mermaid.initialize({
+                startOnLoad: false,
+                securityLevel: "loose",
+                theme: "forest",
+                themeVariables: {
+                    primaryColor: "#e8f1ff",
+                    primaryTextColor: "#1f2a44",
+                    primaryBorderColor: "#3a7bd5",
+                    lineColor: "#3a7bd5",
+                    secondaryColor: "#f4f8ff",
+                    tertiaryColor: "#eef3fb"
+                }
+            });
+            diagrams.forEach((definition, index) => {
+                const node = document.getElementById(`mermaid-chart-${index}`);
+                if (!node) {
+                    return;
+                }
+                const trimmed = (definition || "").trim();
+                if (!trimmed) {
+                    return;
+                }
+                mermaid
+                    .render(`mermaid-render-${index}`, trimmed)
+                    .then((renderResult) => {
+                        node.innerHTML = renderResult.svg;
+                    })
+                    .catch((error) => {
+                        console.error("Mermaid render failed:", error);
+                        node.textContent = trimmed;
+                    });
+            });
+        });
+    </script>
+</body>
+</html>
