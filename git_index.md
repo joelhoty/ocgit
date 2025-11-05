@@ -78,5 +78,6 @@
 ## Youtube_sub
 
 | File Name | Last Updated | Link |
-|---|---|---|| plan.html | 2025-11-04 | [plan.html](https://joelhoty.github.io/ocgit/Youtube_sub/plan.html) |
+|---|---|---|| WhisperUI_plan.html | 2025-11-05 | [WhisperUI_plan.html](https://joelhoty.github.io/ocgit/Youtube_sub/WhisperUI_plan.html) |
+| plan.html | 2025-11-04 | [plan.html](https://joelhoty.github.io/ocgit/Youtube_sub/plan.html) |
 
