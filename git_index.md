@@ -59,8 +59,10 @@
 ## OpenCV
 
 | File Name | Last Updated | Link |
-|---|---|---|| opencv_objects_detection_b08.html | 2025-11-03 | [opencv_objects_detection_b08.html](https://joelhoty.github.io/ocgit/OpenCV/opencv_objects_detection_b08.html) |
-| opencv_task.html | 2025-10-25 | [opencv_task.html](https://joelhoty.github.io/ocgit/OpenCV/opencv_task.html) |
+|---|---|---|| kernel_morphology_explanation.html | 2025-11-09 | [kernel_morphology_explanation.html](https://joelhoty.github.io/ocgit/OpenCV/kernel_morphology_explanation.html) |
+| opencv_task.html | 2025-11-09 | [opencv_task.html](https://joelhoty.github.io/ocgit/OpenCV/opencv_task.html) |
+| opencv_imageclassfy_task2_b08.html | 2025-11-09 | [opencv_imageclassfy_task2_b08.html](https://joelhoty.github.io/ocgit/OpenCV/opencv_imageclassfy_task2_b08.html) |
+| opencv_objects_detection_b08.html | 2025-11-03 | [opencv_objects_detection_b08.html](https://joelhoty.github.io/ocgit/OpenCV/opencv_objects_detection_b08.html) |
 | opencv_imageclassfy_task3_b01.html | 2025-10-25 | [opencv_imageclassfy_task3_b01.html](https://joelhoty.github.io/ocgit/OpenCV/opencv_imageclassfy_task3_b01.html) |
 | opencv_imageclassfy_task2_b02.html | 2025-10-25 | [opencv_imageclassfy_task2_b02.html](https://joelhoty.github.io/ocgit/OpenCV/opencv_imageclassfy_task2_b02.html) |
 | opencv_imageclassfy_task1_b01.html | 2025-10-25 | [opencv_imageclassfy_task1_b01.html](https://joelhoty.github.io/ocgit/OpenCV/opencv_imageclassfy_task1_b01.html) |

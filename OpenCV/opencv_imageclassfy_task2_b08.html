@@ -1,0 +1,2395 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>opencv_imageclassfy_task2_b08</title>
+    
+    <!-- CSS 框架 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/dark.min.css">
+    
+    <!-- 代碼高亮 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/base16/darcula.min.css">
+    
+    <!-- 自定義樣式 -->
+    <style>
+        
+                body {
+                    max-width: 900px;
+                    margin: 0 auto;
+                    padding: 20px;
+                }
+                /* 提升代码块对比度 */
+                pre {
+                    background: #1e1e1e !important;
+                    border: 1px solid #3e3e3e;
+                }
+                pre code {
+                    background: #1e1e1e !important;
+                }
+                code {
+                    background: #2d2d2d !important;
+                }
+                /* 引用块对比度 */
+                blockquote {
+                    background: #2d2d2d;
+                    border-left: 4px solid #4a9eff;
+                }
+            
+        
+        /* 通用代碼塊樣式 */
+        pre code {
+            display: block;
+            padding: 1.5em;
+            border-radius: 8px;
+            overflow-x: auto;
+            line-height: 1.6;
+        }
+
+        /* Mermaid 圖表樣式 */
+        
+        .mermaid {
+            margin: 2em 0;
+            padding: 1.5em;
+            text-align: center;
+            border-radius: 8px;
+        }
+        
+        .mermaid {
+            background: #2c3034;
+            border: 1px solid #444;
+        }
+            
+        
+        /* 響應式調整 */
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            .container, .markdown-body, .latex-body, .window-body, .nes-container {
+                padding: 15px;
+            }
+            pre code {
+                padding: 1em;
+            }
+        }
+        
+        
+    </style>
+</head>
+<body>
+    <div class="container"><!-- Path: General_python/openCV/影像辨識-傳統方法 | Timestamp: 2025-11-09 20:30:00 | Version: b08 -->
+<h1>題目二：紅綠燈辨識系統</h1>
+<h2>📋 任務說明</h2>
+<p>請撰寫一個 Python 程式，能夠辨識圖片中的紅綠燈，偵測紅、黃、綠三種燈號的狀態，並在畫面上標示出當前亮起的燈號（例如：「紅燈」、「綠燈」等）。本任務的核心在於<strong>顏色分割</strong>與<strong>形狀分析</strong>。</p>
+<hr />
+<h2>🧠 演算法思維與辨識邏輯</h2>
+<h3>核心概念：如何「看見」紅綠燈？</h3>
+<p>人類辨識紅綠燈的方式：<br />
+1. <strong>顏色識別</strong>：看到「紅色」的圓形燈亮起 → 判斷為紅燈<br />
+2. <strong>形狀識別</strong>：確認是圓形的燈號（而非方形招牌）<br />
+3. <strong>位置判斷</strong>：通常在特定高度、特定位置</p>
+<p>電腦視覺的做法與人類相似，但更加結構化：</p>
+<div class="mermaid">
+graph TD
+    A[輸入圖片] --> B[色彩空間轉換<br/>BGR → HSV]
+    B --> C[顏色分割<br/>建立遮罩 Mask]
+    C --> D[形態學處理<br/>去除雜訊]
+    D --> E[輪廓偵測<br/>找到候選區域]
+    E --> F[特徵篩選<br/>面積 + 圓形度]
+    F --> G[判斷燈號狀態]
+    G --> H[輸出結果]
+
+    style B fill:#e1f5ff
+    style C fill:#fff3e0
+    style E fill:#f3e5f5
+    style F fill:#e8f5e9
+
+</div>
+
+<h3>演算法步驟詳解</h3>
+<h4>步驟 1：色彩空間轉換（BGR → HSV）</h4>
+<h5>💡 為什麼要用 HSV？光源特性的影響</h5>
+<p><strong>核心問題</strong>：紅綠燈是<strong>發光體</strong>，不是普通物體！</p>
+<pre class="codehilite"><code>普通物體（反射光）         發光體（自發光）
+┌─────────┐              ┌─────────┐
+│  紅色    │ 反射         │  紅燈    │ 發光
+│  蘋果    │ ←── 光源     │  ●○○    │ 自己發光
+└─────────┘              └─────────┘
+
+特性：                     特性：
+• 依賴環境光               • 不依賴環境光
+• 陰影影響大               • 亮度穩定
+• 顏色受光線影響           • 顏色一致性高
+</code></pre>
+
+<p><strong>紅綠燈的特殊挑戰</strong>：</p>
+<ol>
+<li><strong>亮度變化極大</strong><br />
+   ```<br />
+   白天（環境亮）           夜晚（環境暗）<br />
+   ┌─────────┐           ┌─────────┐<br />
+   │ 周圍很亮  │           │ 周圍很暗  │<br />
+   │   ●紅燈  │           │   ●紅燈  │<br />
+   │ 對比度低  │           │ 對比度高  │<br />
+   └─────────┘           └─────────┘</li>
+</ol>
+<p>BGR 值：               BGR 值：<br />
+   紅燈: (50, 50, 200)    紅燈: (0, 0, 255)<br />
+   背景: (180,180,180)    背景: (20, 20, 20)</p>
+<p>難以用固定範圍偵測！<br />
+   ```</p>
+<ol>
+<li>
+<p><strong>光暈效應（Bloom）</strong><br />
+<code>過曝或模糊時：
+   ┌─────────┐
+   │   ╱●╲   │  ← 紅燈周圍有光暈
+   │  ╱ ● ╲  │     BGR 值變化劇烈
+   │ ●●●●● │     難以定義邊界
+   └─────────┘</code></p>
+</li>
+<li>
+<p><strong>色溫變化</strong><br />
+   ```<br />
+   不同燈泡/LED：<br />
+   暖紅 (255, 0, 0)   ← 傳統燈泡<br />
+   冷紅 (255, 30, 50) ← LED 燈<br />
+   橙紅 (255, 50, 0)  ← 老舊燈泡</p>
+</li>
+</ol>
+<p>RGB 值差異大！<br />
+   ```</p>
+<p><strong>HSV 的解決方案</strong>：</p>
+<table>
+<thead>
+<tr>
+<th>問題</th>
+<th>BGR 的困境</th>
+<th>HSV 的優勢</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>亮度變化</strong></td>
+<td>所有通道都變 (R↓G↓B↓)</td>
+<td>只有 V 變化，H 和 S 穩定</td>
+</tr>
+<tr>
+<td><strong>光暈效應</strong></td>
+<td>邊緣 RGB 混亂</td>
+<td>H (色相) 仍保持紅色範圍</td>
+</tr>
+<tr>
+<td><strong>色溫差異</strong></td>
+<td>RGB 值完全不同</td>
+<td>H (色相) 都在紅色範圍內</td>
+</tr>
+</tbody>
+</table>
+<p><strong>實際數值對比</strong>：</p>
+<pre class="codehilite"><code class="language-python"># 場景 1：亮紅燈（白天）
+bright_red_bgr = (50, 50, 200)   # BGR
+bright_red_hsv = (0, 180, 200)   # HSV → H=0 (紅), S=180, V=200
+
+# 場景 2：暗紅燈（夜晚）
+dark_red_bgr = (0, 0, 100)       # BGR 差很多！
+dark_red_hsv = (0, 255, 100)     # HSV → H=0 (紅), S=255, V=100
+                                 #       H 完全一樣！只有 V 變化
+
+# 場景 3：過曝紅燈（逆光）
+bloom_red_bgr = (80, 100, 255)   # BGR 差很多！
+bloom_red_hsv = (0, 156, 255)    # HSV → H=0 (紅), S=156, V=255
+                                 #       H 還是一樣！
+
+# 用 HSV 可以統一處理：
+red_h_range = 0-10  # 色相範圍固定
+red_s_range = 100-255  # 只要夠鮮豔
+red_v_range = 50-255   # 亮度可以很寬鬆
+</code></pre>
+
+<h5>🎨 一般物體的顏色辨識需要 HSV 嗎？</h5>
+<p><strong>答案：視情況而定</strong></p>
+<table>
+<thead>
+<tr>
+<th>場景類型</th>
+<th>是否需要 HSV</th>
+<th>原因</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>發光體</strong></td>
+<td>✅ <strong>強烈建議</strong></td>
+<td>LED 燈、霓虹燈、螢幕、燈號</td>
+</tr>
+<tr>
+<td><strong>室外物體</strong></td>
+<td>✅ <strong>建議使用</strong></td>
+<td>陽光變化大（早中晚、陰晴）</td>
+</tr>
+<tr>
+<td><strong>室內物體</strong></td>
+<td>⚠️ <strong>可選</strong></td>
+<td>光線穩定時 BGR 也可以</td>
+</tr>
+<tr>
+<td><strong>固定光源</strong></td>
+<td>⚠️ <strong>可選</strong></td>
+<td>實驗室、攝影棚等控制環境</td>
+</tr>
+<tr>
+<td><strong>灰階物體</strong></td>
+<td>❌ <strong>不需要</strong></td>
+<td>黑白、灰色物體用亮度即可</td>
+</tr>
+</tbody>
+</table>
+<p><strong>實例分析</strong>：</p>
+<pre class="codehilite"><code>情境 1：偵測紅色蘋果（室外）
+┌─────────────────────┐
+│ 早上 8 點：陽光斜射  │ → 需要 HSV ✅
+│ 中午 12 點：直射強光 │   光線變化太大
+│ 傍晚 6 點：夕陽橙光  │
+└─────────────────────┘
+
+情境 2：偵測紅色蘋果（室內）
+┌─────────────────────┐
+│ 固定 LED 白光燈      │ → BGR 可用 ⚠️
+│ 蘋果固定在同一位置   │   但 HSV 更穩健
+│ 攝影機不移動         │
+└─────────────────────┘
+
+情境 3：偵測手機螢幕亮點
+┌─────────────────────┐
+│ 白色背光 LCD         │ → 必須用 HSV ✅
+│ OLED 自發光像素      │   發光體特性
+│ 亮度變化極大         │
+└─────────────────────┘
+
+情境 4：工業產品顏色檢測
+┌─────────────────────┐
+│ 固定光箱             │ → BGR 即可 ⚠️
+│ 標準化光源           │   環境完全控制
+│ 塑膠產品（不反光）   │
+└─────────────────────┘
+</code></pre>
+
+<p><strong>實際測試對比</strong>：</p>
+<pre class="codehilite"><code class="language-python">import cv2
+import numpy as np
+
+# 測試：同一個紅色物體在不同光線下
+
+# === 場景 1：室外紅色交通錐（陽光變化） ===
+def test_outdoor_red_cone():
+    # 早上（偏藍光）
+    morning_bgr = (40, 30, 180)
+    # 中午（強烈白光）
+    noon_bgr = (100, 100, 255)
+    # 傍晚（偏黃光）
+    evening_bgr = (60, 80, 200)
+
+    # BGR 範圍難以統一
+    bgr_lower = np.array([30, 20, 150])
+    bgr_upper = np.array([120, 120, 255])  # 範圍很寬，容易誤判
+
+    # 轉換為 HSV
+    morning_hsv = cv2.cvtColor(np.uint8([[morning_bgr]]), cv2.COLOR_BGR2HSV)[0][0]
+    noon_hsv = cv2.cvtColor(np.uint8([[noon_bgr]]), cv2.COLOR_BGR2HSV)[0][0]
+    evening_hsv = cv2.cvtColor(np.uint8([[evening_bgr]]), cv2.COLOR_BGR2HSV)[0][0]
+
+    print(&quot;室外紅色交通錐：&quot;)
+    print(f&quot;早上 BGR: {morning_bgr} → HSV: {morning_hsv}&quot;)  # H 值相近！
+    print(f&quot;中午 BGR: {noon_bgr}     → HSV: {noon_hsv}&quot;)
+    print(f&quot;傍晚 BGR: {evening_bgr} → HSV: {evening_hsv}&quot;)
+
+    # HSV 範圍容易統一
+    hsv_lower = np.array([0, 100, 100])   # H: 紅色, S: 鮮豔, V: 不太暗
+    hsv_upper = np.array([10, 255, 255])  # 範圍緊緻，準確度高
+
+    return &quot;HSV 優勢明顯 ✅&quot;
+
+# === 場景 2：室內紅色檔案夾（固定光源） ===
+def test_indoor_red_folder():
+    # 室內 LED 白光下的紅色
+    indoor_bgr = (50, 50, 220)
+
+    # BGR 就能穩定偵測
+    bgr_lower = np.array([40, 40, 200])
+    bgr_upper = np.array([60, 60, 240])
+
+    # 但 HSV 仍然更好（對不同紅色物體容錯性高）
+    hsv_lower = np.array([0, 150, 150])
+    hsv_upper = np.array([10, 255, 255])
+
+    return &quot;BGR 可用，但 HSV 更穩健 ⚠️&quot;
+
+# === 場景 3：紅色 LED 燈（發光體） ===
+def test_red_led():
+    # LED 燈在不同亮度下
+    dim_led_bgr = (0, 0, 80)      # 暗
+    bright_led_bgr = (0, 0, 255)  # 亮
+
+    # BGR 差異大
+    print(&quot;\nRED LED:&quot;)
+    print(f&quot;暗 LED BGR: {dim_led_bgr}&quot;)
+    print(f&quot;亮 LED BGR: {bright_led_bgr}&quot;)
+
+    # HSV 差異主要在 V
+    dim_led_hsv = cv2.cvtColor(np.uint8([[dim_led_bgr]]), cv2.COLOR_BGR2HSV)[0][0]
+    bright_led_hsv = cv2.cvtColor(np.uint8([[bright_led_bgr]]), cv2.COLOR_BGR2HSV)[0][0]
+
+    print(f&quot;暗 LED HSV: {dim_led_hsv}&quot;)  # H 相同！
+    print(f&quot;亮 LED HSV: {bright_led_hsv}&quot;)
+
+    return &quot;HSV 必須使用 ✅&quot;
+
+test_outdoor_red_cone()
+test_indoor_red_folder()
+test_red_led()
+</code></pre>
+
+<p><strong>結論</strong>：</p>
+<table>
+<thead>
+<tr>
+<th>情況</th>
+<th>建議</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>發光物體（如紅綠燈）</strong></td>
+<td>必須用 HSV ✅</td>
+</tr>
+<tr>
+<td><strong>室外顏色辨識</strong></td>
+<td>強烈建議用 HSV ✅</td>
+</tr>
+<tr>
+<td><strong>室內顏色辨識</strong></td>
+<td>建議用 HSV（更穩健）⚠️</td>
+</tr>
+<tr>
+<td><strong>完全控制環境</strong></td>
+<td>BGR 可用（但 HSV 更好）⚠️</td>
+</tr>
+<tr>
+<td><strong>灰階/形狀偵測</strong></td>
+<td>不需要 HSV ❌</td>
+</tr>
+</tbody>
+</table>
+<p><strong>HSV 的三個維度</strong>：</p>
+<pre class="codehilite"><code>HSV 色彩圓柱體模型：
+
+         V (明度)
+         ↑
+         │     ╱╲
+         │    ╱  ╲  ← 高飽和度（鮮豔）
+         │   ╱    ╲
+         │  │  H   │ ← H (色相) 圓環：0°=紅, 120°=綠, 240°=藍
+         │   ╲    ╱
+         │    ╲  ╱  ← 低飽和度（灰白）
+         │     ╲╱
+         └────────→ S (飽和度)
+</code></pre>
+
+<p><strong>1. H (Hue, 色相) - 顏色種類</strong></p>
+<p>色相環：想像彩虹圍成一個圓圈</p>
+<pre class="codehilite"><code>        0° / 180°
+         紅色
+          ↑
+    黃    │    紫
+   30°    │   150°
+      ╲   │   ╱
+       ╲  │  ╱
+  綠色 ← ─┼─ → 藍色
+  60°     │   120°
+       ╱  │  ╲
+      ╱   │   ╲
+  青色    │   橙色
+   90°         30°
+</code></pre>
+
+<p><strong>OpenCV 中的 H 值範圍</strong>：0-180（為了符合 8-bit 儲存）<br />
+- 0-10°：紅色（偏橙紅）<br />
+- 20-35°：黃色<br />
+- 40-80°：綠色<br />
+- 100-130°：藍色<br />
+- 170-180°：紅色（偏紫紅）</p>
+<p><strong>2. S (Saturation, 飽和度) - 顏色鮮豔程度</strong></p>
+<pre class="codehilite"><code>S = 0 (灰色)          S = 128 (中等)         S = 255 (鮮豔)
+┌─────────┐          ┌─────────┐           ┌─────────┐
+│         │          │         │           │         │
+│   灰    │    →     │  淡紅   │    →      │  鮮紅   │
+│         │          │         │           │         │
+└─────────┘          └─────────┘           └─────────┘
+</code></pre>
+
+<p><strong>範圍</strong>：0-255<br />
+- 0 = 完全無色（灰階）<br />
+- 255 = 最鮮豔</p>
+<p><strong>3. V (Value, 明度) - 亮度</strong></p>
+<pre class="codehilite"><code>V = 0 (黑色)          V = 128 (中等亮度)      V = 255 (最亮)
+┌─────────┐          ┌─────────┐           ┌─────────┐
+│         │          │         │           │         │
+│   黑    │    →     │  暗紅   │    →      │  亮紅   │
+│         │          │         │           │         │
+└─────────┘          └─────────┘           └─────────┘
+</code></pre>
+
+<p><strong>範圍</strong>：0-255<br />
+- 0 = 完全黑暗<br />
+- 255 = 最明亮</p>
+<h5>📊 實際顏色範例（紅綠燈）</h5>
+<p><strong>紅燈的 HSV 定義</strong>：</p>
+<pre class="codehilite"><code class="language-python">紅色 H: 0-10° (或 170-180°)  ← 色相：紅色
+高飽和度 S: 150-255          ← 鮮豔的紅
+高明度 V: 150-255            ← 亮的紅燈
+
+視覺化：
+BGR (0, 0, 255)  →  HSV (0, 255, 255)
+  ┌──────┐           ┌──────┐
+  │ 鮮紅 │    轉換    │ 鮮紅 │
+  │ 燈號 │    ───→    │ 燈號 │
+  └──────┘           └──────┘
+  但 HSV 更容易設定範圍！
+</code></pre>
+
+<p><strong>黃燈的 HSV 定義</strong>：</p>
+<pre class="codehilite"><code class="language-python">黃色 H: 20-35°
+高飽和度 S: 150-255
+高明度 V: 200-255
+
+BGR (0, 255, 255)  →  HSV (30, 255, 255)
+</code></pre>
+
+<p><strong>綠燈的 HSV 定義</strong>：</p>
+<pre class="codehilite"><code class="language-python">綠色 H: 40-80°
+中高飽和度 S: 100-255  ← 綠燈可能略淡
+高明度 V: 150-255
+
+BGR (0, 255, 0)  →  HSV (60, 255, 255)
+</code></pre>
+
+<h5>🖼️ HSV 視覺化程式碼範例</h5>
+<pre class="codehilite"><code class="language-python">import cv2
+import numpy as np
+from google.colab.patches import cv2_imshow
+
+# 建立 HSV 色彩空間的視覺化圖表
+def visualize_hsv_space():
+    &quot;&quot;&quot;繪製 HSV 色相環&quot;&quot;&quot;
+    img = np.zeros((400, 400, 3), dtype=np.uint8)
+
+    # 繪製色相環
+    for angle in range(0, 360, 1):
+        h = int(angle / 2)  # OpenCV H 範圍是 0-180
+        color_hsv = np.uint8([[[h, 255, 255]]])
+        color_bgr = cv2.cvtColor(color_hsv, cv2.COLOR_HSV2BGR)
+        color = tuple(map(int, color_bgr[0, 0]))
+
+        # 計算位置（圓形排列）
+        x = int(200 + 150 * np.cos(np.radians(angle)))
+        y = int(200 + 150 * np.sin(np.radians(angle)))
+        cv2.circle(img, (x, y), 15, color, -1)
+
+    # 標註主要顏色
+    cv2.putText(img, &quot;RED&quot;, (350, 210), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (255, 255, 255), 2)
+    cv2.putText(img, &quot;YELLOW&quot;, (280, 100), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (255, 255, 255), 2)
+    cv2.putText(img, &quot;GREEN&quot;, (50, 130), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (255, 255, 255), 2)
+    cv2.putText(img, &quot;BLUE&quot;, (80, 320), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (255, 255, 255), 2)
+
+    return img
+
+# 建立飽和度漸變圖
+def visualize_saturation():
+    &quot;&quot;&quot;展示飽和度對紅色的影響&quot;&quot;&quot;
+    img = np.zeros((100, 256, 3), dtype=np.uint8)
+
+    for s in range(256):
+        color_hsv = np.uint8([[[0, s, 255]]])  # H=0(紅), V=255(亮)
+        color_bgr = cv2.cvtColor(color_hsv, cv2.COLOR_HSV2BGR)
+        img[:, s] = color_bgr[0, 0]
+
+    return img
+
+# 建立明度漸變圖
+def visualize_value():
+    &quot;&quot;&quot;展示明度對紅色的影響&quot;&quot;&quot;
+    img = np.zeros((100, 256, 3), dtype=np.uint8)
+
+    for v in range(256):
+        color_hsv = np.uint8([[[0, 255, v]]])  # H=0(紅), S=255(鮮豔)
+        color_bgr = cv2.cvtColor(color_hsv, cv2.COLOR_HSV2BGR)
+        img[:, v] = color_bgr[0, 0]
+
+    return img
+
+# 顯示視覺化結果
+print(&quot;HSV 色相環：&quot;)
+cv2_imshow(visualize_hsv_space())
+
+print(&quot;\n飽和度漸變 (S: 0→255, 紅色)：&quot;)
+cv2_imshow(visualize_saturation())
+
+print(&quot;\n明度漸變 (V: 0→255, 紅色)：&quot;)
+cv2_imshow(visualize_value())
+</code></pre>
+
+<h4>步驟 2：顏色分割（Color Segmentation）</h4>
+<p><strong>核心函數</strong>：<code>cv2.inRange(hsv, lower_bound, upper_bound)</code></p>
+<p><strong>原理</strong>：<br />
+- 檢查每個像素的 HSV 值是否在指定範圍內<br />
+- 如果在範圍內 → 標記為白色 (255)<br />
+- 如果不在範圍內 → 標記為黑色 (0)<br />
+- 輸出：二值化遮罩 (Binary Mask)</p>
+<p><strong>視覺化範例</strong>：</p>
+<pre class="codehilite"><code>原始圖片 (BGR)         HSV 圖片              紅色遮罩 (Mask)
+┌─────────┐         ┌─────────┐          ┌─────────┐
+│ [灰][紅]│         │ [X][H=5]│          │ [0][255]│
+│ [綠][黃]│    →    │[H=60][30]│    →    │ [0][0]  │
+└─────────┘         └─────────┘          └─────────┘
+</code></pre>
+
+<h4>步驟 3:形態學處理(Morphological Operations)</h4>
+<p><strong>形態學處理</strong>是一種基於<strong>形狀</strong>的影像處理技術,就像用「橡皮擦」和「畫筆」來修改圖片中物體的形狀。</p>
+<h5>🎯 生活化比喻</h5>
+<pre class="codehilite"><code>想像你在黑板上畫了一個圓圈,但畫得不夠完美:
+- 圓圈內有些小缺口 → 用「粉筆填補」(膨脹)
+- 圓圈邊緣有些毛邊 → 用「板擦擦掉」(侵蝕)
+- 組合使用 → 得到平滑完美的圓圈
+</code></pre>
+
+<hr />
+<h5>📚 形態學處理核心概念總覽</h5>
+<p>在詳細說明之前,先了解形態學處理的核心元件:</p>
+<h6>🔹 核心元件:Kernel (結構元素)</h6>
+<p><strong>Kernel</strong> 是形態學操作的「工具」,就像一個「刷子」或「印章」。</p>
+<p><strong>基本定義</strong>:</p>
+<pre class="codehilite"><code class="language-python">kernel = np.ones((5, 5), np.uint8)
+</code></pre>
+
+<p><strong>視覺化 Kernel</strong>:</p>
+<pre class="codehilite"><code>5×5 Kernel 矩陣:
+[[1, 1, 1, 1, 1],
+ [1, 1, 1, 1, 1],
+ [1, 1, 1, 1, 1],
+ [1, 1, 1, 1, 1],
+ [1, 1, 1, 1, 1]]
+
+表示為:
+●●●●●
+●●●●●
+●●☆●●  ← ☆ 是中心點 (2, 2)
+●●●●●
+●●●●●
+</code></pre>
+
+<p><strong>Kernel 參數說明</strong>:</p>
+<table>
+<thead>
+<tr>
+<th>參數</th>
+<th>說明</th>
+<th>範例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>shape</code></td>
+<td>Kernel 的大小</td>
+<td><code>(3, 3)</code>, <code>(5, 5)</code>, <code>(7, 7)</code></td>
+</tr>
+<tr>
+<td><code>dtype</code></td>
+<td>資料型別</td>
+<td><code>np.uint8</code> (0-255)</td>
+</tr>
+<tr>
+<td><code>value</code></td>
+<td>矩陣中的值</td>
+<td><code>1</code> = 有效, <code>0</code> = 無效</td>
+</tr>
+</tbody>
+</table>
+<p><strong>不同 Kernel 形狀</strong>:</p>
+<pre class="codehilite"><code class="language-python"># 1. 方形 kernel (最常用)
+kernel_square = np.ones((5, 5), np.uint8)
+
+# 2. 圓形 kernel (更平滑)
+kernel_ellipse = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (5, 5))
+
+# 3. 十字形 kernel
+kernel_cross = cv2.getStructuringElement(cv2.MORPH_CROSS, (5, 5))
+</code></pre>
+
+<p><strong>Kernel 大小的影響</strong>:</p>
+<table>
+<thead>
+<tr>
+<th>Kernel 大小</th>
+<th>處理強度</th>
+<th>適用場景</th>
+<th>副作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>3×3</strong></td>
+<td>輕微</td>
+<td>細微雜訊</td>
+<td>幾乎沒有</td>
+</tr>
+<tr>
+<td><strong>5×5</strong></td>
+<td>中等 ✓</td>
+<td>一般使用</td>
+<td>輕微圓角</td>
+</tr>
+<tr>
+<td><strong>7×7</strong></td>
+<td>強烈</td>
+<td>嚴重雜訊</td>
+<td>明顯圓角</td>
+</tr>
+<tr>
+<td><strong>9×9</strong></td>
+<td>非常強烈</td>
+<td>極端情況</td>
+<td>物體變形</td>
+</tr>
+</tbody>
+</table>
+<h6>🔹 四個基本操作</h6>
+<p>形態學處理有<strong>四個核心操作</strong>,分為兩個基礎操作和兩個組合操作:</p>
+<p><strong>基礎操作</strong> (Building Blocks):</p>
+<table>
+<thead>
+<tr>
+<th>操作</th>
+<th>英文</th>
+<th>效果</th>
+<th>比喻</th>
+<th>函數</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>膨脹</strong></td>
+<td>Dilation</td>
+<td>白色區域向外擴張</td>
+<td>「長胖」</td>
+<td><code>cv2.dilate()</code></td>
+</tr>
+<tr>
+<td><strong>侵蝕</strong></td>
+<td>Erosion</td>
+<td>白色區域向內收縮</td>
+<td>「減肥」</td>
+<td><code>cv2.erode()</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>組合操作</strong> (Compound Operations):</p>
+<table>
+<thead>
+<tr>
+<th>操作</th>
+<th>英文</th>
+<th>組合方式</th>
+<th>用途</th>
+<th>函數</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>開運算</strong></td>
+<td>Opening</td>
+<td>先侵蝕 → 再膨脹</td>
+<td>去除外部雜點</td>
+<td><code>cv2.morphologyEx(..., cv2.MORPH_OPEN, ...)</code></td>
+</tr>
+<tr>
+<td><strong>閉運算</strong></td>
+<td>Closing</td>
+<td>先膨脹 → 再侵蝕</td>
+<td>填補內部黑洞</td>
+<td><code>cv2.morphologyEx(..., cv2.MORPH_CLOSE, ...)</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>操作流程圖</strong>:</p>
+<div class="mermaid">
+graph LR
+    A[原始遮罩 Mask] --> B{選擇操作}
+    B -->|填補內部缺口| C[閉運算 Closing]
+    B -->|去除外部雜點| D[開運算 Opening]
+    B -->|讓物體變大| E[膨脹 Dilation]
+    B -->|讓物體變小| F[侵蝕 Erosion]
+
+    C --> G[先膨脹 再侵蝕]
+    D --> H[先侵蝕 再膨脹]
+
+    style C fill:#ffe0e0
+    style D fill:#e0f0ff
+    style E fill:#ffe0f0
+    style F fill:#f0ffe0
+
+</div>
+
+<h6>🔹 函數參數說明</h6>
+<p><strong>1. 基礎操作函數</strong>:</p>
+<pre class="codehilite"><code class="language-python"># 膨脹 (Dilation)
+cv2.dilate(
+    src,          # 輸入圖片 (二值化遮罩)
+    kernel,       # 結構元素
+    iterations=1  # 迭代次數 (預設 1)
+)
+
+# 侵蝕 (Erosion)
+cv2.erode(
+    src,          # 輸入圖片 (二值化遮罩)
+    kernel,       # 結構元素
+    iterations=1  # 迭代次數 (預設 1)
+)
+</code></pre>
+
+<p><strong>2. 組合操作函數</strong> (推薦使用):</p>
+<pre class="codehilite"><code class="language-python"># 通用形態學函數
+cv2.morphologyEx(
+    src,          # 輸入圖片 (二值化遮罩)
+    op,           # 操作類型:
+                  #   cv2.MORPH_OPEN   → 開運算
+                  #   cv2.MORPH_CLOSE  → 閉運算
+                  #   cv2.MORPH_DILATE → 膨脹
+                  #   cv2.MORPH_ERODE  → 侵蝕
+    kernel        # 結構元素
+)
+</code></pre>
+
+<h6>🔹 紅綠燈辨識中的應用策略</h6>
+<p>在紅綠燈辨識中,我們使用<strong>「先閉後開」</strong>的策略:</p>
+<pre class="codehilite"><code class="language-python"># 第 1 步:建立 Kernel
+kernel = np.ones((5, 5), np.uint8)
+
+# 第 2 步:閉運算 - 填補燈號內部的小黑洞
+mask = cv2.morphologyEx(mask, cv2.MORPH_CLOSE, kernel)
+
+# 第 3 步:開運算 - 去除背景的小雜點
+mask = cv2.morphologyEx(mask, cv2.MORPH_OPEN, kernel)
+</code></pre>
+
+<p><strong>為什麼是「先閉後開」?</strong></p>
+<pre class="codehilite"><code>原始問題                  閉運算解決              開運算解決
+┌──────────────┐        ┌──────────────┐       ┌──────────────┐
+│ ●●●  ●  ●   │        │ ●●●●  ●  ●  │       │ ●●●●         │
+│ ●●○  ●      │   →    │ ●●●●  ●     │  →    │ ●●●●         │
+│ ●●●         │        │ ●●●●        │       │ ●●●●         │
+│  ●   ●      │        │  ●   ●      │       │              │
+└──────────────┘        └──────────────┘       └──────────────┘
+
+問題1:燈內有黑洞 (○)     ✓ 黑洞被填補            ✓ 保持完整
+問題2:背景有雜點 (●)     ✗ 雜點還在              ✓ 雜點去除
+</code></pre>
+
+<table>
+<thead>
+<tr>
+<th>步驟</th>
+<th>操作</th>
+<th>目標</th>
+<th>解決的問題</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>第 1 步</strong></td>
+<td>閉運算</td>
+<td>完善燈號本體</td>
+<td>填補燈內反光造成的小黑洞</td>
+</tr>
+<tr>
+<td><strong>第 2 步</strong></td>
+<td>開運算</td>
+<td>清理背景雜訊</td>
+<td>去除招牌、車燈等紅色雜點</td>
+</tr>
+</tbody>
+</table>
+<p><strong>快速參考表</strong>:</p>
+<table>
+<thead>
+<tr>
+<th>想要達成的效果</th>
+<th>使用的操作</th>
+<th>程式碼</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>填補物體內的小黑洞</td>
+<td>閉運算</td>
+<td><code>cv2.morphologyEx(mask, cv2.MORPH_CLOSE, kernel)</code></td>
+</tr>
+<tr>
+<td>去除背景的小白點</td>
+<td>開運算</td>
+<td><code>cv2.morphologyEx(mask, cv2.MORPH_OPEN, kernel)</code></td>
+</tr>
+<tr>
+<td>讓物體變大/連接斷裂</td>
+<td>膨脹</td>
+<td><code>cv2.dilate(mask, kernel)</code></td>
+</tr>
+<tr>
+<td>讓物體變小/分離黏連</td>
+<td>侵蝕</td>
+<td><code>cv2.erode(mask, kernel)</code></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h5>🔧 詳細操作說明</h5>
+<p>現在我們詳細說明每個操作的原理與應用。</p>
+<h6><strong>1️⃣ 膨脹 (Dilation) - 「長胖」</strong></h6>
+<p><strong>原理</strong>:讓白色區域向外擴張</p>
+<p><strong>工作方式</strong>:<br />
+- Kernel 在遮罩上滑動<br />
+- 如果 Kernel 覆蓋區域內<strong>有任何白色像素</strong><br />
+- 則中心點標記為白色</p>
+<p><strong>效果</strong>:<br />
+- ✅ 填補小的黑色缺口<br />
+- ✅ 連接斷裂的線條<br />
+- ⚠️ 物體變大</p>
+<p><strong>視覺化示例</strong>:</p>
+<pre class="codehilite"><code>原始圖          膨脹後
+●●○●●         ●●●●●
+●○○○●    →   ●●●●●
+●●○●●         ●●●●●
+
+(黑色的小缺口被填補了)
+</code></pre>
+
+<p><strong>程式碼</strong>:</p>
+<pre class="codehilite"><code class="language-python">kernel = np.ones((5, 5), np.uint8)
+dilated = cv2.dilate(mask, kernel, iterations=1)
+</code></pre>
+
+<p><strong>應用場景</strong>:<br />
+- 連接斷裂的文字或線條<br />
+- 增強物體的邊緣<br />
+- 填補物體內部的小洞</p>
+<hr />
+<h6><strong>2️⃣ 侵蝕 (Erosion) - 「減肥」</strong></h6>
+<p><strong>原理</strong>:讓白色區域向內收縮</p>
+<p><strong>工作方式</strong>:<br />
+- Kernel 在遮罩上滑動<br />
+- 如果 Kernel 覆蓋區域內<strong>全部是白色像素</strong><br />
+- 則中心點標記為白色<br />
+- 否則標記為黑色</p>
+<p><strong>效果</strong>:<br />
+- ✅ 去除小的白色雜點<br />
+- ✅ 分離黏連的物體<br />
+- ⚠️ 物體變小</p>
+<p><strong>視覺化示例</strong>:</p>
+<pre class="codehilite"><code>原始圖          侵蝕後
+●●●●●         ●●○●●
+●●●●●    →   ●○○○●
+●●●●●         ●●○●●
+
+(白色區域收縮了)
+</code></pre>
+
+<p><strong>程式碼</strong>:</p>
+<pre class="codehilite"><code class="language-python">kernel = np.ones((5, 5), np.uint8)
+eroded = cv2.erode(mask, kernel, iterations=1)
+</code></pre>
+
+<p><strong>應用場景</strong>:<br />
+- 去除細小的雜訊點<br />
+- 分離相連的物體<br />
+- 細化物體邊緣</p>
+<hr />
+<h6><strong>3️⃣ 開運算 (Opening) = 先侵蝕 → 再膨脹</strong></h6>
+<p><strong>組合方式</strong>:</p>
+<pre class="codehilite"><code class="language-python"># 等價於:
+mask_eroded = cv2.erode(mask, kernel)
+mask_opened = cv2.dilate(mask_eroded, kernel)
+
+# 簡化寫法 (推薦):
+mask_opened = cv2.morphologyEx(mask, cv2.MORPH_OPEN, kernel)
+</code></pre>
+
+<p><strong>用途</strong>:去除小的白色雜點(噪點)</p>
+<p><strong>視覺化示例</strong>:</p>
+<pre class="codehilite"><code>原始圖                開運算後
+████████  ●         ████████
+████████       →    ████████
+████████  ●         ████████
+
+(小白點被去除,主要物體保持原樣)
+</code></pre>
+
+<p><strong>特點</strong>:<br />
+- ✅ 去除雜訊<br />
+- ✅ 主要物體大小幾乎不變<br />
+- ✅ 平滑邊緣</p>
+<p><strong>程式碼</strong>:</p>
+<pre class="codehilite"><code class="language-python">kernel = np.ones((5, 5), np.uint8)
+opened = cv2.morphologyEx(mask, cv2.MORPH_OPEN, kernel)
+</code></pre>
+
+<p><strong>詳細運作過程</strong>:</p>
+<p>假設背景中有紅色的小雜點(可能是招牌、車燈):</p>
+<pre class="codehilite"><code>步驟 1:原始 mask
+┌─────────────────┐
+│                 │
+│  ●●●●   ●      │  ← 主要紅燈 + 背景小雜點
+│  ●●●●   ●      │
+│  ●●●●          │
+│  ●●●●   ●      │
+│                 │
+└─────────────────┘
+</code></pre>
+
+<p><strong>步驟 1:侵蝕 (Erosion)</strong></p>
+<pre class="codehilite"><code>侵蝕後 (小雜點消失)
+┌─────────────────┐
+│                 │
+│   ●●●           │  ← 小雜點被去除!
+│   ●●            │     主要物體變小
+│   ●●●           │
+│   ●●            │
+│                 │
+└─────────────────┘
+</code></pre>
+
+<p><strong>步驟 2:膨脹 (Dilation)</strong></p>
+<pre class="codehilite"><code>膨脹後 (恢復大小,雜點已去除)
+┌─────────────────┐
+│                 │
+│  ●●●●           │  ← 乾淨的紅燈,沒有背景雜點!
+│  ●●●●           │
+│  ●●●●           │
+│  ●●●●           │
+│                 │
+└─────────────────┘
+</code></pre>
+
+<hr />
+<h6><strong>4️⃣ 閉運算 (Closing) = 先膨脹 → 再侵蝕</strong></h6>
+<p><strong>組合方式</strong>:</p>
+<pre class="codehilite"><code class="language-python"># 等價於:
+mask_dilated = cv2.dilate(mask, kernel)
+mask_closed = cv2.erode(mask_dilated, kernel)
+
+# 簡化寫法 (推薦):
+mask_closed = cv2.morphologyEx(mask, cv2.MORPH_CLOSE, kernel)
+</code></pre>
+
+<p><strong>用途</strong>:填補物體內的小黑洞</p>
+<p><strong>視覺化示例</strong>:</p>
+<pre class="codehilite"><code>原始圖              閉運算後
+████  ████         █████████
+████  ████    →    █████████
+████  ████         █████████
+
+(中間的小缺口被填補)
+</code></pre>
+
+<p><strong>特點</strong>:<br />
+- ✅ 填補缺口<br />
+- ✅ 連接鄰近物體<br />
+- ✅ 主要物體大小幾乎不變</p>
+<p><strong>程式碼</strong>:</p>
+<pre class="codehilite"><code class="language-python">kernel = np.ones((5, 5), np.uint8)
+closed = cv2.morphologyEx(mask, cv2.MORPH_CLOSE, kernel)
+</code></pre>
+
+<p><strong>詳細運作過程</strong>:</p>
+<p>假設我們有一個紅燈的遮罩,但內部有小黑洞:</p>
+<pre class="codehilite"><code>步驟 1:原始 mask (紅燈偵測結果)
+┌─────────┐
+│         │
+│  ●●●●  │
+│  ●●○●  │  ← 紅燈內有一個小黑洞 (可能是反光造成)
+│  ●●●●  │
+│  ●●●●  │
+│         │
+└─────────┘
+</code></pre>
+
+<p><strong>步驟 1:膨脹 (Dilation)</strong></p>
+<pre class="codehilite"><code>膨脹後 (白色區域變大)
+┌─────────┐
+│         │
+│ ●●●●●● │
+│ ●●●●●● │  ← 小黑洞被填滿了!
+│ ●●●●●● │
+│ ●●●●●● │
+│ ●●●●●● │
+└─────────┘
+</code></pre>
+
+<p><strong>步驟 2:侵蝕 (Erosion)</strong></p>
+<pre class="codehilite"><code>侵蝕後 (恢復大小,但小洞已填補)
+┌─────────┐
+│         │
+│  ●●●●  │
+│  ●●●●  │  ← 乾淨的紅燈區域,沒有黑洞了!
+│  ●●●●  │
+│  ●●●●  │
+│         │
+└─────────┘
+</code></pre>
+
+<p><strong>為什麼先做閉運算?</strong></p>
+<p>在紅綠燈辨識中,常見問題:<br />
+1. <strong>燈號內部有反光</strong> → 造成小黑洞<br />
+2. <strong>燈號邊緣不完整</strong> → 造成小缺口<br />
+3. <strong>鏡頭畫質不佳</strong> → 造成雜訊</p>
+<p><strong>閉運算解決這些問題</strong>:填補紅燈內部的小缺陷,讓燈號更完整。</p>
+<hr />
+<h5>🔬 程式碼深度解析:形態學處理在紅綠燈辨識中的應用</h5>
+<p>讓我們逐行解析這段關鍵程式碼:</p>
+<pre class="codehilite"><code class="language-python"># (可選) 形態學操作:先閉合再開,幫助去除小雜訊點
+kernel = np.ones((5, 5), np.uint8)
+mask = cv2.morphologyEx(mask, cv2.MORPH_CLOSE, kernel)
+mask = cv2.morphologyEx(mask, cv2.MORPH_OPEN, kernel)
+</code></pre>
+
+<h6>📐 第一行:建立結構元素 (Kernel)</h6>
+<pre class="codehilite"><code class="language-python">kernel = np.ones((5, 5), np.uint8)
+</code></pre>
+
+<p><strong>Kernel(結構元素)</strong> 就像一個「刷子」或「印章」,定義了形態學操作的影響範圍和形狀。</p>
+<p><strong>視覺化 Kernel</strong>:</p>
+<pre class="codehilite"><code class="language-python">kernel = np.ones((5, 5), np.uint8)
+
+# 實際上建立了這樣的矩陣:
+[[1, 1, 1, 1, 1],
+ [1, 1, 1, 1, 1],
+ [1, 1, 1, 1, 1],
+ [1, 1, 1, 1, 1],
+ [1, 1, 1, 1, 1]]
+
+# 視覺化表示:
+●●●●●
+●●●●●
+●●☆●●  ← ☆ 是中心點 (2, 2)
+●●●●●
+●●●●●
+</code></pre>
+
+<p><strong>Kernel 的工作原理</strong>:</p>
+<p>想像 kernel 是一個「滑動窗口」,在遮罩圖上移動:</p>
+<pre class="codehilite"><code>遮罩圖 (Mask)              Kernel 掃描過程
+┌─────────────┐
+│○○●●●○○○○│           第1步:Kernel 在左上角
+│○●●●●●○○○│           ┌─────┐
+│●●●●●●●○○│    →      │●●●●●│
+│●●○●●●●○○│           │●●●●●│ 檢查這 5×5 區域
+│●●●●●●●○○│           │●●●●●│
+│○○○●●●○○○│           │●●●●●│
+└─────────────┘           │●●●●●│
+                          └─────┘
+
+                          第2步:Kernel 向右移動一格
+                            ┌─────┐
+                            │●●●●●│
+                            │●●●●●│
+                            │●●●●●│
+                            │●●●●●│
+                            │●●●●●│
+                            └─────┘
+                          ... 依此類推掃描整張圖
+</code></pre>
+
+<p><strong>np.ones() 的意義</strong>:</p>
+<pre class="codehilite"><code class="language-python">np.ones((5, 5), np.uint8)
+</code></pre>
+
+<ul>
+<li><code>np.ones()</code>:建立全為 1 的矩陣</li>
+<li><code>(5, 5)</code>:5 列 × 5 行 = 25 個元素</li>
+<li><code>np.uint8</code>:資料型別為 8-bit 無符號整數 (0-255)</li>
+</ul>
+<p><strong>為什麼用全 1 矩陣?</strong><br />
+- 1 表示「有效」,這個位置會參與運算<br />
+- 0 表示「無效」,這個位置會被忽略</p>
+<h6>🎨 第二行:閉運算 (Closing)</h6>
+<pre class="codehilite"><code class="language-python">mask = cv2.morphologyEx(mask, cv2.MORPH_CLOSE, kernel)
+</code></pre>
+
+<p><strong>函數參數說明</strong>:</p>
+<pre class="codehilite"><code class="language-python">cv2.morphologyEx(
+    mask,              # 輸入圖片(二值化遮罩)
+    cv2.MORPH_CLOSE,   # 操作類型:閉運算
+    kernel             # 結構元素
+)
+</code></pre>
+
+<p><strong>閉運算做什麼?</strong></p>
+<p><strong>閉運算 = 先膨脹,再侵蝕</strong></p>
+<pre class="codehilite"><code class="language-python"># 等價於:
+mask_dilated = cv2.dilate(mask, kernel)
+mask_closed = cv2.erode(mask_dilated, kernel)
+</code></pre>
+
+<h6>🧹 第三行:開運算 (Opening)</h6>
+<pre class="codehilite"><code class="language-python">mask = cv2.morphologyEx(mask, cv2.MORPH_OPEN, kernel)
+</code></pre>
+
+<p><strong>開運算做什麼?</strong></p>
+<p><strong>開運算 = 先侵蝕,再膨脹</strong></p>
+<pre class="codehilite"><code class="language-python"># 等價於:
+mask_eroded = cv2.erode(mask, kernel)
+mask_opened = cv2.dilate(mask_eroded, kernel)
+</code></pre>
+
+<h6>🔄 完整流程視覺化</h6>
+<pre class="codehilite"><code>原始 mask (問題多多)          閉運算後                開運算後 (完美)
+┌──────────────┐           ┌──────────────┐        ┌──────────────┐
+│              │           │              │        │              │
+│ ●●●  ●  ●   │           │ ●●●●  ●  ●  │        │ ●●●●         │
+│ ●●○  ●      │    →      │ ●●●●  ●     │   →    │ ●●●●         │
+│ ●●●         │           │ ●●●●        │        │ ●●●●         │
+│  ●   ●      │           │  ●   ●      │        │              │
+│             │           │             │        │              │
+└──────────────┘           └──────────────┘        └──────────────┘
+
+問題:                      閉運算效果:            開運算效果:
+1. 紅燈內有黑洞 (○)        1. 填補黑洞 ✓           1. 保持完整 ✓
+2. 背景有小雜點 (●)        2. 雜點還在 ✗           2. 雜點去除 ✓
+</code></pre>
+
+<h6>🎯 Kernel 大小的實際影響</h6>
+<p><strong>實驗:不同 Kernel 大小的效果</strong></p>
+<pre class="codehilite"><code class="language-python"># 小 kernel (3×3) - 處理細微雜訊
+kernel_small = np.ones((3, 3), np.uint8)
+mask_1 = cv2.morphologyEx(mask, cv2.MORPH_CLOSE, kernel_small)
+mask_1 = cv2.morphologyEx(mask_1, cv2.MORPH_OPEN, kernel_small)
+
+# 中 kernel (5×5) - 一般使用 ✓
+kernel_medium = np.ones((5, 5), np.uint8)
+mask_2 = cv2.morphologyEx(mask, cv2.MORPH_CLOSE, kernel_medium)
+mask_2 = cv2.morphologyEx(mask_2, cv2.MORPH_OPEN, kernel_medium)
+
+# 大 kernel (9×9) - 處理嚴重雜訊
+kernel_large = np.ones((9, 9), np.uint8)
+mask_3 = cv2.morphologyEx(mask, cv2.MORPH_CLOSE, kernel_large)
+mask_3 = cv2.morphologyEx(mask_3, cv2.MORPH_OPEN, kernel_large)
+</code></pre>
+
+<p><strong>效果對比表</strong>:</p>
+<table>
+<thead>
+<tr>
+<th>Kernel 大小</th>
+<th>填補黑洞能力</th>
+<th>去除雜點能力</th>
+<th>副作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>3×3</strong></td>
+<td>★☆☆</td>
+<td>★☆☆</td>
+<td>幾乎沒有</td>
+</tr>
+<tr>
+<td><strong>5×5</strong></td>
+<td>★★★</td>
+<td>★★★</td>
+<td>輕微圓角 ✓ <strong>推薦</strong></td>
+</tr>
+<tr>
+<td><strong>7×7</strong></td>
+<td>★★★★</td>
+<td>★★★★</td>
+<td>明顯圓角</td>
+</tr>
+<tr>
+<td><strong>9×9</strong></td>
+<td>★★★★★</td>
+<td>★★★★★</td>
+<td>物體變形</td>
+</tr>
+</tbody>
+</table>
+<h6>💡 完整演示程式碼</h6>
+<pre class="codehilite"><code class="language-python">import cv2
+import numpy as np
+from google.colab.patches import cv2_imshow
+
+# 建立測試遮罩 (模擬偵測到的紅燈區域,有雜訊)
+mask = np.zeros((200, 200), dtype=np.uint8)
+cv2.circle(mask, (100, 100), 40, 255, -1)  # 主要紅燈
+cv2.circle(mask, (95, 95), 5, 0, -1)       # 內部小黑洞 (反光)
+cv2.circle(mask, (150, 80), 8, 255, -1)    # 背景小雜點 (招牌)
+
+print(&quot;原始遮罩 (有問題):&quot;)
+cv2_imshow(mask)
+
+# 測試不同 kernel 大小
+kernel_sizes = [3, 5, 7]
+
+for size in kernel_sizes:
+    kernel = np.ones((size, size), np.uint8)
+
+    # 先閉運算 → 再開運算
+    result = cv2.morphologyEx(mask, cv2.MORPH_CLOSE, kernel)
+    result = cv2.morphologyEx(result, cv2.MORPH_OPEN, kernel)
+
+    print(f&quot;\nKernel {size}×{size} 處理後:&quot;)
+    cv2_imshow(result)
+</code></pre>
+
+<hr />
+<h5>📐 補充說明:圓形度公式的數學推導</h5>
+<p>在步驟 5 的特徵篩選中,我們使用<strong>圓形度 (Circularity)</strong> 來判斷偵測到的物體是否為圓形。</p>
+<p><strong>圓形度公式</strong>:</p>
+<pre class="codehilite"><code>圓形度 = 4π × 面積 / 周長²
+</code></pre>
+
+<p>讓我們理解這個公式的數學推導:</p>
+<h6>🎯 為什麼這個公式有效?</h6>
+<p><strong>核心概念</strong>:在所有相同周長的形狀中,<strong>圓形的面積最大</strong>。</p>
+<p><strong>數學推導</strong>:</p>
+<p><strong>1. 圓形的情況</strong></p>
+<pre class="codehilite"><code>已知:
+- 半徑 = r
+- 面積 Area = πr²
+- 周長 Perimeter = 2πr
+
+代入公式:
+圓形度 = 4π × Area / Perimeter²
+       = 4π × (πr²) / (2πr)²
+       = 4π × πr² / 4π²r²
+       = 4π²r² / 4π²r²
+       = 1.0
+
+結論:完美的圓形,圓形度 = 1.0 ✓
+</code></pre>
+
+<p><strong>2. 正方形的情況</strong></p>
+<pre class="codehilite"><code>已知:
+- 邊長 = a
+- 面積 Area = a²
+- 周長 Perimeter = 4a
+
+代入公式:
+圓形度 = 4π × Area / Perimeter²
+       = 4π × (a²) / (4a)²
+       = 4π × a² / 16a²
+       = 4πa² / 16a²
+       = π / 4
+       ≈ 0.785
+
+結論:正方形的圓形度 ≈ 0.785
+</code></pre>
+
+<p><strong>3. 其他形狀</strong></p>
+<table>
+<thead>
+<tr>
+<th>形狀</th>
+<th>圓形度值</th>
+<th>計算</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>圓形</strong></td>
+<td>1.0</td>
+<td>4π × πr² / (2πr)² = 1.0</td>
+</tr>
+<tr>
+<td><strong>正方形</strong></td>
+<td>~0.785</td>
+<td>4π × a² / (4a)² ≈ 0.785</td>
+</tr>
+<tr>
+<td><strong>長方形</strong> (2:1)</td>
+<td>~0.698</td>
+<td>4π × 2a² / (6a)² ≈ 0.698</td>
+</tr>
+<tr>
+<td><strong>三角形</strong> (等邊)</td>
+<td>~0.605</td>
+<td>4π × (√3/4)a² / (3a)² ≈ 0.605</td>
+</tr>
+<tr>
+<td><strong>不規則形狀</strong></td>
+<td>&lt; 0.5</td>
+<td>視形狀而定</td>
+</tr>
+</tbody>
+</table>
+<h6>🔍 圓形度在紅綠燈辨識中的應用</h6>
+<p>在程式碼中:</p>
+<pre class="codehilite"><code class="language-python"># 計算輪廓的面積和周長
+area = cv2.contourArea(contour)
+perimeter = cv2.arcLength(contour, True)
+
+# 計算圓形度
+if perimeter &gt; 0:
+    circularity = 4 * np.pi * area / (perimeter ** 2)
+
+    # 設定閾值:只接受圓形度 &gt; 0.7 的物體
+    if circularity &gt; 0.7:
+        # 這是一個接近圓形的物體,可能是紅綠燈!
+        ...
+</code></pre>
+
+<p><strong>閾值選擇</strong>:</p>
+<pre class="codehilite"><code>圓形度閾值 &gt; 0.7:
+┌──────────────────────────┐
+│ ✓ 圓形 (1.0)             │  ← 紅綠燈 ✓
+│ ✓ 略微變形的圓 (0.85)    │  ← 拍攝角度偏斜的燈 ✓
+│ ✓ 正方形 (0.785)         │  ← 可能是方形燈號 ✓
+│ ✗ 長方形 (0.698)         │  ← 招牌 ✗
+│ ✗ 三角形 (0.605)         │  ← 交通標誌 ✗
+│ ✗ 不規則形狀 (&lt; 0.5)     │  ← 雜訊 ✗
+└──────────────────────────┘
+</code></pre>
+
+<p><strong>視覺化範例</strong>:</p>
+<pre class="codehilite"><code class="language-python">import cv2
+import numpy as np
+import matplotlib.pyplot as plt
+
+# 建立不同形狀並計算圓形度
+shapes = []
+
+# 1. 圓形
+circle = np.zeros((200, 200), dtype=np.uint8)
+cv2.circle(circle, (100, 100), 50, 255, -1)
+shapes.append((&quot;圓形&quot;, circle))
+
+# 2. 正方形
+square = np.zeros((200, 200), dtype=np.uint8)
+cv2.rectangle(square, (50, 50), (150, 150), 255, -1)
+shapes.append((&quot;正方形&quot;, square))
+
+# 3. 長方形
+rectangle = np.zeros((200, 200), dtype=np.uint8)
+cv2.rectangle(rectangle, (50, 75), (150, 125), 255, -1)
+shapes.append((&quot;長方形&quot;, rectangle))
+
+# 4. 三角形
+triangle = np.zeros((200, 200), dtype=np.uint8)
+pts = np.array([[100, 50], [50, 150], [150, 150]], np.int32)
+cv2.fillPoly(triangle, [pts], 255)
+shapes.append((&quot;三角形&quot;, triangle))
+
+# 計算並顯示圓形度
+for name, shape in shapes:
+    contours, _ = cv2.findContours(shape, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+    contour = contours[0]
+
+    area = cv2.contourArea(contour)
+    perimeter = cv2.arcLength(contour, True)
+    circularity = 4 * np.pi * area / (perimeter ** 2)
+
+    print(f&quot;{name}: 圓形度 = {circularity:.3f}&quot;)
+
+    # 判斷是否通過閾值
+    if circularity &gt; 0.7:
+        print(f&quot;  ✓ 接受 (圓形度 &gt; 0.7)&quot;)
+    else:
+        print(f&quot;  ✗ 拒絕 (圓形度 &lt; 0.7)&quot;)
+</code></pre>
+
+<p><strong>輸出結果</strong>:</p>
+<pre class="codehilite"><code>圓形: 圓形度 = 1.000
+  ✓ 接受 (圓形度 &gt; 0.7)
+正方形: 圓形度 = 0.785
+  ✓ 接受 (圓形度 &gt; 0.7)
+長方形: 圓形度 = 0.698
+  ✗ 拒絕 (圓形度 &lt; 0.7)
+三角形: 圓形度 = 0.605
+  ✗ 拒絕 (圓形度 &lt; 0.7)
+</code></pre>
+
+<p><strong>結論</strong>:<br />
+- 圓形度公式利用等周不等式的數學特性<br />
+- 圓形的圓形度恆為 1.0<br />
+- 其他形狀的圓形度都 &lt; 1.0<br />
+- 設定適當閾值(如 0.7)可以有效篩選圓形物體</p>
+<hr />
+<h4>步驟 4：輪廓偵測（Contour Detection）</h4>
+<p><strong>核心函數</strong>：<code>cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)</code></p>
+<p><strong>原理</strong>：<br />
+- 在二值化圖上尋找連續的白色區域邊界<br />
+- 每個連續白色區塊 = 一個輪廓 (Contour)</p>
+<p><strong>參數說明</strong>：<br />
+- <code>cv2.RETR_EXTERNAL</code>：只偵測最外層輪廓（忽略嵌套）<br />
+- <code>cv2.CHAIN_APPROX_SIMPLE</code>：壓縮輪廓，只保留端點（節省記憶體）</p>
+<p><strong>視覺化</strong>：</p>
+<pre class="codehilite"><code>遮罩圖               偵測到的輪廓
+████████            ┌──────┐
+████████     →      │ C1   │  (Contour 1: 大圓形)
+████████            └──────┘
+  ███                  │     (Contour 2: 小圓形)
+  ███                  ▼
+</code></pre>
+
+<h4>步驟 5：特徵篩選（Feature Filtering）</h4>
+<p><strong>兩大核心特徵</strong>：</p>
+<ol>
+<li><strong>面積 (Area)</strong>：<br />
+<code>python
+   area = cv2.contourArea(contour)
+   if area &lt; 200: continue  # 過濾太小的雜訊</code></li>
+<li>過小 → 可能是雜訊（灰塵、反光）</li>
+<li>
+<p>過大 → 可能是整個招牌、建築物</p>
+</li>
+<li>
+<p><strong>圓形度 (Circularity)</strong>：<br />
+<code>python
+   circularity = 4 * π * area / (perimeter²)</code></p>
+</li>
+<li>完美圓形 = 1.0</li>
+<li>正方形 ≈ 0.785</li>
+<li>細長橢圓 ≈ 0.5</li>
+<li>我們接受 0.7 ~ 1.3（允許一些誤差）</li>
+</ol>
+<p><strong>圓形度公式推導</strong>：</p>
+<pre class="codehilite"><code>圓形：Area = πr², Perimeter = 2πr
+     → 圓形度 = 4π(πr²)/(2πr)² = 4π²r²/4π²r² = 1.0 ✓
+
+正方形：Area = a², Perimeter = 4a
+     → 圓形度 = 4π(a²)/(4a)² = 4πa²/16a² ≈ 0.785
+</code></pre>
+
+<h4>步驟 6：決策邏輯</h4>
+<pre class="codehilite"><code class="language-python">if 偵測到 0 個燈:
+    狀態 = &quot;未知&quot;
+elif 偵測到 1 個燈:
+    狀態 = 該燈的狀態 (STOP/CAUTION/GO)
+elif 偵測到多個燈:
+    狀態 = 面積最大的燈 (最可能是主要目標)
+</code></pre>
+
+<h3>演算法複雜度分析</h3>
+<table>
+<thead>
+<tr>
+<th>步驟</th>
+<th>時間複雜度</th>
+<th>說明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>BGR→HSV 轉換</td>
+<td>O(W×H)</td>
+<td>每個像素處理一次</td>
+</tr>
+<tr>
+<td>顏色分割</td>
+<td>O(W×H)</td>
+<td>每個像素比較一次</td>
+</tr>
+<tr>
+<td>形態學處理</td>
+<td>O(W×H×K²)</td>
+<td>K = kernel 大小</td>
+</tr>
+<tr>
+<td>輪廓偵測</td>
+<td>O(W×H)</td>
+<td>邊界追蹤</td>
+</tr>
+<tr>
+<td>特徵計算</td>
+<td>O(N×M)</td>
+<td>N = 輪廓數, M = 輪廓點數</td>
+</tr>
+<tr>
+<td><strong>總體</strong></td>
+<td><strong>O(W×H)</strong></td>
+<td>線性時間，效率高</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>🖼️ 影像選擇指引</h2>
+<h3>適合的影像類型</h3>
+<h4>✅ 推薦使用的影像</h4>
+<ol>
+<li>
+<p><strong>清晰的紅綠燈照片</strong></p>
+<ul>
+<li>特徵：紅綠燈清晰可見、燈號明亮</li>
+<li>距離：5-30 公尺內拍攝</li>
+<li>偵測成功率：★★★★★（95%+）</li>
+<li>最佳範例：<br />
+<code>✅ 白天拍攝的紅綠燈（光線充足）
+    ✅ 燈號清晰發光（紅/黃/綠其中一個亮）
+    ✅ 紅綠燈在畫面中央、佔比適中
+    ✅ 背景相對簡單（天空、建築物）</code></li>
+</ul>
+</li>
+<li>
+<p><strong>直視角度拍攝</strong></p>
+<ul>
+<li>特徵：鏡頭正對紅綠燈，非極端仰角或俯角</li>
+<li>偵測成功率：★★★★☆（85%+）</li>
+</ul>
+</li>
+<li>
+<p><strong>單一紅綠燈為主</strong></p>
+<ul>
+<li>特徵：畫面中主要是一組紅綠燈</li>
+<li>偵測成功率：★★★★★（90%+）</li>
+</ul>
+</li>
+<li>
+<p><strong>光線充足的照片</strong></p>
+<ul>
+<li>特徵：白天或傍晚、燈號清晰發光</li>
+<li>偵測成功率：★★★★☆（85%+）</li>
+</ul>
+</li>
+</ol>
+<h4>⚠️ 效果較差的影像</h4>
+<ol>
+<li><strong>背景複雜的照片</strong>：背景中的紅色招牌或綠色植物可能干擾偵測。</li>
+<li><strong>燈號不亮或微弱</strong>：顏色特徵不明顯。</li>
+<li><strong>紅綠燈過小或過遠</strong>：燈號像素不足（建議每個燈號至少 15×15 像素）。</li>
+<li><strong>天氣不佳的照片</strong>：大雨、大霧或強烈反光會影響影像品質。</li>
+</ol>
+<h4>❌ 完全不適合的影像</h4>
+<ul>
+<li>黑白照片（無色彩資訊）</li>
+<li>極度模糊或晃動的照片</li>
+<li>紅綠燈完全熄滅或被遮擋</li>
+</ul>
+<hr />
+<h2>✅ 詳細需求列表</h2>
+<h3>需求 1：匯入套件與建立測試圖片</h3>
+<p><strong>說明</strong>：匯入必要套件，並建立一個理想化的模擬紅綠燈圖片，用於初步驗證演算法的正確性。</p>
+<p><strong>程式碼提示</strong>：</p>
+<pre class="codehilite"><code class="language-python">import cv2
+import numpy as np
+from google.colab.patches import cv2_imshow
+
+print(&quot;=&quot;*60)
+print(&quot;Traffic Light Detection System&quot;)
+print(&quot;=&quot;*60)
+
+# 建立模擬紅綠燈測試圖片
+def create_traffic_light(light_on='red'):
+    img = np.ones((600, 400, 3), dtype=np.uint8) * 100
+    cv2.rectangle(img, (150, 100), (250, 450), (30, 30, 30), -1)
+    red_pos, yellow_pos, green_pos = (200, 180), (200, 300), (200, 420)
+    radius = 35
+    cv2.circle(img, red_pos, radius, (60, 60, 60), -1)
+    cv2.circle(img, yellow_pos, radius, (60, 60, 60), -1)
+    cv2.circle(img, green_pos, radius, (60, 60, 60), -1)
+    if light_on == 'red':
+        cv2.circle(img, red_pos, radius, (0, 0, 255), -1)
+    elif light_on == 'yellow':
+        cv2.circle(img, yellow_pos, radius, (0, 255, 255), -1)
+    elif light_on == 'green':
+        cv2.circle(img, green_pos, radius, (0, 255, 0), -1)
+    return img
+
+img = create_traffic_light('red')
+print(&quot;✓ Test image created&quot;)
+print(f&quot;Image size: {img.shape[1]} x {img.shape[0]} pixels&quot;)
+print(&quot;\nOriginal test image:&quot;)
+cv2_imshow(img)
+img_result = img.copy()
+</code></pre>
+
+<hr />
+<h3>需求 2：設定紅綠燈顏色 HSV 範圍</h3>
+<p><strong>說明</strong>：定義紅、黃、綠三種燈號的 HSV 顏色範圍。HSV（色相、飽和度、亮度）比 BGR 更適合根據顏色來辨識物體，因為它將顏色與光照強度分開。</p>
+<p><strong>重要提示</strong>：在 HSV 色彩空間中，紅色橫跨了 0° 和 360° 的邊界。因此，要完整偵測紅色，通常需要設定兩個範圍（例如 <code>0-10</code> 和 <code>170-180</code>）。為簡化初次練習，此處我們先使用一個主要範圍，並在除錯技巧中提供完整方案。</p>
+<p><strong>程式碼提示</strong>：</p>
+<pre class="codehilite"><code class="language-python"># 定義紅綠燈顏色範圍字典
+# 格式：'名稱': {'lower': HSV下限, 'upper': HSV上限, ...}
+traffic_light_colors = {
+    'RED': {
+        'lower': np.array([0, 150, 150]),
+        'upper': np.array([10, 255, 255]),
+        'display_color': (0, 0, 255),
+        'status': 'STOP'
+    },
+    'YELLOW': {
+        'lower': np.array([20, 150, 200]),
+        'upper': np.array([35, 255, 255]),
+        'display_color': (0, 255, 255),
+        'status': 'CAUTION'
+    },
+    'GREEN': {
+        'lower': np.array([40, 100, 150]),
+        'upper': np.array([80, 255, 255]),
+        'display_color': (0, 255, 0),
+        'status': 'GO'
+    }
+}
+print(&quot;✓ Color ranges configured&quot;)
+</code></pre>
+
+<hr />
+<h3>需求 3：轉換色彩空間為 HSV</h3>
+<p><strong>說明</strong>：將 BGR 格式的圖片轉換為 HSV 格式，以便使用我們定義的顏色範圍。</p>
+<p><strong>程式碼提示</strong>：</p>
+<pre class="codehilite"><code class="language-python">hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
+print(&quot;✓ Image converted to HSV color space\n&quot;)
+</code></pre>
+
+<hr />
+<h3>需求 4：偵測並標記紅綠燈燈號</h3>
+<p><strong>說明</strong>：這一步是核心。我們將遍歷三種燈號，對每一種顏色：<br />
+1.  <strong>建立遮罩 (Mask)</strong>：使用 <code>cv2.inRange</code> 篩選出在指定 HSV 範圍內的像素。<br />
+2.  <strong>尋找輪廓 (Contour)</strong>：在遮罩上使用 <code>cv2.findContours</code> 找到所有獨立的白色區域邊界。<br />
+3.  <strong>篩選輪廓</strong>：計算輪廓的<strong>面積</strong>和<strong>圓形度</strong>，過濾掉太小或形狀不對的雜訊。</p>
+<p><strong>程式碼提示</strong>：</p>
+<pre class="codehilite"><code class="language-python">detected_lights = []
+print(&quot;=&quot;*60 + &quot;\nDetecting traffic lights\n&quot; + &quot;=&quot;*60)
+
+for light_name, light_info in traffic_light_colors.items():
+    print(f&quot;\nDetecting {light_name}...&quot;)
+
+    # 步驟 1: 建立顏色遮罩
+    mask = cv2.inRange(hsv, light_info['lower'], light_info['upper'])
+
+    # (可選) 形態學操作：先閉合再開，幫助去除小雜訊點
+    kernel = np.ones((5, 5), np.uint8)
+    mask = cv2.morphologyEx(mask, cv2.MORPH_CLOSE, kernel)
+    mask = cv2.morphologyEx(mask, cv2.MORPH_OPEN, kernel)
+
+    # 步驟 2: 尋找輪廓
+    # cv2.RETR_EXTERNAL: 只偵測最外層的輪廓
+    # cv2.CHAIN_APPROX_SIMPLE: 壓縮水平、垂直和對角線段，只保留其端點
+    contours, _ = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+    print(f&quot;  Found {len(contours)} potential contours&quot;)
+
+    # 步驟 3: 篩選有效輪廓
+    for contour in contours:
+        area = cv2.contourArea(contour)
+        if area &lt; 200: continue # 過濾面積太小的雜訊
+
+        perimeter = cv2.arcLength(contour, True)
+        if perimeter == 0: continue
+
+        # 核心篩選條件：圓形度
+        # 公式：4π * 面積 / (周長^2)。完美圓形的值為 1.0
+        circularity = 4 * np.pi * area / (perimeter * perimeter)
+
+        if 0.7 &lt; circularity &lt; 1.3: # 接受接近圓形的輪廓
+            x, y, w, h = cv2.boundingRect(contour)
+            center_x, center_y = x + w // 2, y + h // 2
+
+            # 繪製標記
+            radius = max(w, h) // 2 + 5
+            cv2.circle(img_result, (center_x, center_y), radius, light_info['display_color'], 3)
+            label = f&quot;{light_name} ({light_info['status']})&quot;
+            cv2.putText(img_result, label, (x, y - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.7, light_info['display_color'], 2)
+
+            detected_lights.append({'name': light_name, 'status': light_info['status'], 'position': (center_x, center_y), 'area': area})
+            print(f&quot;    ✓ Valid contour: pos({center_x},{center_y}), area={area:.0f}px, circularity={circularity:.2f}&quot;)
+
+print(&quot;\n&quot; + &quot;=&quot;*60)
+</code></pre>
+
+<hr />
+<h3>需求 5 &amp; 6：判斷狀態並顯示結果</h3>
+<p><strong>說明</strong>：根據偵測到的燈號數量進行最終判斷，並將所有資訊繪製到結果圖上。</p>
+<p><strong>程式碼提示</strong>：</p>
+<pre class="codehilite"><code class="language-python">print(&quot;Traffic Light Status\n&quot; + &quot;=&quot;*60)
+if not detected_lights:
+    current_status = &quot;Unknown (No light detected)&quot;
+elif len(detected_lights) == 1:
+    light = detected_lights[0]
+    current_status = f&quot;{light['name']} - {light['status']}&quot;
+else: # 偵測到多個燈亮，可能是誤判或場景複雜
+    main_light = max(detected_lights, key=lambda x: x['area']) # 以面積最大的為準
+    current_status = f&quot;{main_light['name']} - {main_light['status']} (primary)&quot;
+    print(&quot;⚠️ Warning: Multiple lights detected, using largest one&quot;)
+
+print(f&quot;✓ Final status: {current_status}&quot;)
+print(&quot;=&quot;*60 + &quot;\n&quot;)
+
+# 將狀態資訊繪製到圖片上
+cv2.putText(img_result, f&quot;Status: {current_status}&quot;, (10, 40), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (255, 255, 255), 2)
+cv2.putText(img_result, f&quot;Detected: {len(detected_lights)} light(s)&quot;, (10, 75), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (255, 255, 255), 2)
+
+# 顯示原圖與結果圖
+print(&quot;Original image:&quot;)
+cv2_imshow(img)
+print(&quot;\nResult with annotations:&quot;)
+cv2_imshow(img_result)
+
+# 儲存結果
+output_filename = 'result_traffic_light.jpg'
+cv2.imwrite(output_filename, img_result)
+print(f&quot;\n✓ Result saved as {output_filename}&quot;)
+</code></pre>
+
+<hr />
+<h2>📝 完整可執行程式碼（英文版）</h2>
+<pre class="codehilite"><code class="language-python"># ========================================
+# Traffic Light Detection System (v1 - English)
+# ========================================
+import cv2
+import numpy as np
+from google.colab.patches import cv2_imshow
+
+# === 1. Create/Load Image ===
+def create_traffic_light(light_on='red'):
+    img = np.ones((600, 400, 3), dtype=np.uint8) * 100
+    cv2.rectangle(img, (150, 100), (250, 450), (30, 30, 30), -1)
+    positions = {'red': (200, 180), 'yellow': (200, 300), 'green': (200, 420)}
+    radius = 35
+    for color, pos in positions.items():
+        cv2.circle(img, pos, radius, (60, 60, 60), -1)
+    if light_on in positions:
+        bgr_color = {'red': (0,0,255), 'yellow': (0,255,255), 'green': (0,255,0)}
+        cv2.circle(img, positions[light_on], radius, bgr_color[light_on], -1)
+    return img
+
+img = create_traffic_light('red') # Can be replaced with 'yellow', 'green', or cv2.imread('your_image.jpg')
+img_result = img.copy()
+print(&quot;✓ Image prepared\n&quot;)
+
+# === 2. Configure Color Ranges ===
+traffic_light_colors = {
+    'RED': {'lower': np.array([0, 150, 150]), 'upper': np.array([10, 255, 255]), 'display_color': (0, 0, 255), 'status': 'STOP'},
+    'RED2': {'lower': np.array([170, 150, 150]), 'upper': np.array([180, 255, 255]), 'display_color': (0, 0, 255), 'status': 'STOP'}, # Handle red wraparound
+    'YELLOW': {'lower': np.array([20, 150, 200]), 'upper': np.array([35, 255, 255]), 'display_color': (0, 255, 255), 'status': 'CAUTION'},
+    'GREEN': {'lower': np.array([40, 100, 150]), 'upper': np.array([80, 255, 255]), 'display_color': (0, 255, 0), 'status': 'GO'}
+}
+print(&quot;✓ Color ranges configured\n&quot;)
+
+# === 3. Convert Color Space ===
+hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
+
+# === 4. Detect Lights ===
+detected_lights = []
+print(&quot;=&quot;*60 + &quot;\nDetecting...\n&quot; + &quot;=&quot;*60)
+for light_name, light_info in traffic_light_colors.items():
+    mask = cv2.inRange(hsv, light_info['lower'], light_info['upper'])
+    kernel = np.ones((5, 5), np.uint8)
+    mask = cv2.morphologyEx(mask, cv2.MORPH_CLOSE, kernel)
+    mask = cv2.morphologyEx(mask, cv2.MORPH_OPEN, kernel)
+    contours, _ = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+
+    for contour in contours:
+        area = cv2.contourArea(contour)
+        if area &lt; 200: continue
+        perimeter = cv2.arcLength(contour, True)
+        if perimeter == 0: continue
+        circularity = 4 * np.pi * area / (perimeter * perimeter)
+        if 0.7 &lt; circularity &lt; 1.3:
+            x, y, w, h = cv2.boundingRect(contour)
+            center_x, center_y = x + w // 2, y + h // 2
+            detected_lights.append({'name': light_name.replace('2',''), 'status': light_info['status'], 'position': (center_x, center_y), 'area': area, 'display_color': light_info['display_color']})
+
+# === 5. Judge and Display ===
+# Remove duplicates caused by dual red range detection
+unique_lights = []
+if detected_lights:
+    detected_lights.sort(key=lambda l: l['area'], reverse=True)
+    positions_seen = set()
+    for light in detected_lights:
+        pos_key = (light['position'][0]//20, light['position'][1]//20) # Treat nearby points as the same
+        if pos_key not in positions_seen:
+            unique_lights.append(light)
+            positions_seen.add(pos_key)
+
+print(f&quot;Found {len(unique_lights)} unique light(s)&quot;)
+for light in unique_lights:
+    cv2.circle(img_result, light['position'], 30, light['display_color'], 3)
+    label = f&quot;{light['name']} ({light['status']})&quot;
+    cv2.putText(img_result, label, (light['position'][0]-30, light['position'][1]-40), cv2.FONT_HERSHEY_SIMPLEX, 0.7, light['display_color'], 2)
+
+if not unique_lights:
+    current_status = &quot;Unknown&quot;
+else:
+    main_light = max(unique_lights, key=lambda x: x['area'])
+    current_status = f&quot;{main_light['name']} - {main_light['status']}&quot;
+
+cv2.putText(img_result, f&quot;Status: {current_status}&quot;, (10, 40), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (255, 255, 255), 2)
+print(f&quot;\nFinal result: {current_status}\n&quot; + &quot;=&quot;*60)
+
+print(&quot;\nAnnotated result:&quot;)
+cv2_imshow(img_result)
+cv2.imwrite('result_traffic_light_en.jpg', img_result)
+</code></pre>
+
+<hr />
+<h2>📝 完整可執行程式碼（中文版 - 使用 PIL 繪製中文）</h2>
+<pre class="codehilite"><code class="language-python"># ========================================
+# 題目二：紅綠燈辨識系統 (v2 - 中文版)
+# ========================================
+import cv2
+import numpy as np
+from google.colab.patches import cv2_imshow
+from PIL import Image, ImageDraw, ImageFont
+
+# === 下載中文字型 (在 Colab 中執行一次) ===
+# !wget -O NotoSansTC.ttf https://github.com/google/fonts/raw/main/ofl/notosanstc/NotoSansTC-Regular.ttf
+
+# === 中文文字繪製函數 ===
+def put_chinese_text(img, text, position, font_path, font_size=30, color=(255, 255, 255)):
+    &quot;&quot;&quot;
+    在 OpenCV 圖片上繪製中文文字
+
+    參數:
+        img: OpenCV 圖片 (BGR 格式)
+        text: 要顯示的文字
+        position: 文字位置 (x, y)
+        font_path: 字型檔案路徑
+        font_size: 字型大小
+        color: 文字顏色 (BGR 格式)
+
+    返回:
+        繪製後的圖片 (BGR 格式)
+    &quot;&quot;&quot;
+    # 轉換為 PIL 格式 (RGB)
+    img_pil = Image.fromarray(cv2.cvtColor(img, cv2.COLOR_BGR2RGB))
+    draw = ImageDraw.Draw(img_pil)
+
+    # 載入字型
+    try:
+        font = ImageFont.truetype(font_path, font_size)
+    except:
+        print(f&quot;⚠️ 無法載入字型 {font_path}，使用預設字型&quot;)
+        font = ImageFont.load_default()
+
+    # 繪製文字 (PIL 使用 RGB，所以要轉換 BGR 到 RGB)
+    draw.text(position, text, font=font, fill=(color[2], color[1], color[0]))
+
+    # 轉回 OpenCV 格式 (BGR)
+    return cv2.cvtColor(np.array(img_pil), cv2.COLOR_RGB2BGR)
+
+# === 1. 建立/讀取圖片 ===
+def create_traffic_light(light_on='red'):
+    img = np.ones((600, 400, 3), dtype=np.uint8) * 100
+    cv2.rectangle(img, (150, 100), (250, 450), (30, 30, 30), -1)
+    positions = {'red': (200, 180), 'yellow': (200, 300), 'green': (200, 420)}
+    radius = 35
+    for color, pos in positions.items():
+        cv2.circle(img, pos, radius, (60, 60, 60), -1)
+    if light_on in positions:
+        bgr_color = {'red': (0,0,255), 'yellow': (0,255,255), 'green': (0,255,0)}
+        cv2.circle(img, positions[light_on], radius, bgr_color[light_on], -1)
+    return img
+
+img = create_traffic_light('red') # 可替換為 'yellow', 'green', 或使用 cv2.imread('your_image.jpg')
+img_result = img.copy()
+print(&quot;✓ 圖片準備完成\n&quot;)
+
+# === 2. 設定顏色範圍 ===
+traffic_light_colors = {
+    '紅燈': {'lower': np.array([0, 150, 150]), 'upper': np.array([10, 255, 255]), 'display_color': (0, 0, 255), 'status': '停止'},
+    '紅燈2': {'lower': np.array([170, 150, 150]), 'upper': np.array([180, 255, 255]), 'display_color': (0, 0, 255), 'status': '停止'}, # 處理紅色環繞問題
+    '黃燈': {'lower': np.array([20, 150, 200]), 'upper': np.array([35, 255, 255]), 'display_color': (0, 255, 255), 'status': '注意'},
+    '綠燈': {'lower': np.array([40, 100, 150]), 'upper': np.array([80, 255, 255]), 'display_color': (0, 255, 0), 'status': '通行'}
+}
+print(&quot;✓ 顏色範圍設定完成\n&quot;)
+
+# === 3. 轉換色彩空間 ===
+hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
+
+# === 4. 偵測燈號 ===
+detected_lights = []
+print(&quot;=&quot;*60 + &quot;\n開始偵測...\n&quot; + &quot;=&quot;*60)
+for light_name, light_info in traffic_light_colors.items():
+    mask = cv2.inRange(hsv, light_info['lower'], light_info['upper'])
+    kernel = np.ones((5, 5), np.uint8)
+    mask = cv2.morphologyEx(mask, cv2.MORPH_CLOSE, kernel)
+    mask = cv2.morphologyEx(mask, cv2.MORPH_OPEN, kernel)
+    contours, _ = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+
+    for contour in contours:
+        area = cv2.contourArea(contour)
+        if area &lt; 200: continue
+        perimeter = cv2.arcLength(contour, True)
+        if perimeter == 0: continue
+        circularity = 4 * np.pi * area / (perimeter * perimeter)
+        if 0.7 &lt; circularity &lt; 1.3:
+            x, y, w, h = cv2.boundingRect(contour)
+            center_x, center_y = x + w // 2, y + h // 2
+            detected_lights.append({'name': light_name.replace('2',''), 'status': light_info['status'], 'position': (center_x, center_y), 'area': area, 'display_color': light_info['display_color']})
+
+# === 5. 判斷與顯示 ===
+# 移除因雙紅色範圍檢測導致的重複項
+unique_lights = []
+if detected_lights:
+    detected_lights.sort(key=lambda l: l['area'], reverse=True)
+    positions_seen = set()
+    for light in detected_lights:
+        pos_key = (light['position'][0]//20, light['position'][1]//20) # 將鄰近點視為同一個
+        if pos_key not in positions_seen:
+            unique_lights.append(light)
+            positions_seen.add(pos_key)
+
+print(f&quot;找到 {len(unique_lights)} 個獨立燈號&quot;)
+
+# 使用中文字型繪製標記
+FONT_PATH = 'NotoSansTC.ttf'  # 請確保已下載字型檔案
+for light in unique_lights:
+    cv2.circle(img_result, light['position'], 30, light['display_color'], 3)
+    label = f&quot;{light['name']} ({light['status']})&quot;
+    # 使用 PIL 繪製中文
+    img_result = put_chinese_text(img_result, label,
+                                   (light['position'][0]-40, light['position'][1]-50),
+                                   FONT_PATH, 24, light['display_color'])
+
+if not unique_lights:
+    current_status = &quot;未知&quot;
+else:
+    main_light = max(unique_lights, key=lambda x: x['area'])
+    current_status = f&quot;{main_light['name']} - {main_light['status']}&quot;
+
+# 繪製狀態資訊（使用中文）
+img_result = put_chinese_text(img_result, f&quot;狀態: {current_status}&quot;,
+                               (10, 40), FONT_PATH, 28, (255, 255, 255))
+img_result = put_chinese_text(img_result, f&quot;偵測到: {len(unique_lights)} 個燈號&quot;,
+                               (10, 80), FONT_PATH, 20, (255, 255, 255))
+
+print(f&quot;\n最終判斷: {current_status}\n&quot; + &quot;=&quot;*60)
+
+print(&quot;\n標記後的結果：&quot;)
+cv2_imshow(img_result)
+cv2.imwrite('result_traffic_light_zh.jpg', img_result)
+print(&quot;✓ 結果已儲存&quot;)
+</code></pre>
+
+<hr />
+<h2>🎨 PIL (Pillow) 詳細說明與應用</h2>
+<h3>PIL/Pillow 簡介</h3>
+<p><strong>PIL (Python Imaging Library)</strong> 是 Python 中經典的影像處理函式庫，<strong>Pillow</strong> 是它的現代分支和繼任者。</p>
+<table>
+<thead>
+<tr>
+<th>特性</th>
+<th>OpenCV</th>
+<th>PIL/Pillow</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>主要用途</strong></td>
+<td>電腦視覺、即時處理</td>
+<td>影像編輯、圖片生成</td>
+</tr>
+<tr>
+<td><strong>顏色格式</strong></td>
+<td>BGR (藍綠紅)</td>
+<td>RGB (紅綠藍)</td>
+</tr>
+<tr>
+<td><strong>中文支援</strong></td>
+<td>❌ 不支援</td>
+<td>✅ 完整支援</td>
+</tr>
+<tr>
+<td><strong>效能</strong></td>
+<td>極快 (C++ 實作)</td>
+<td>較慢 (Python 為主)</td>
+</tr>
+<tr>
+<td><strong>適用場景</strong></td>
+<td>影像分析、物體偵測</td>
+<td>文字繪製、圖片合成</td>
+</tr>
+</tbody>
+</table>
+<h3>PIL 核心模組</h3>
+<h4>1. Image 模組：影像物件操作</h4>
+<pre class="codehilite"><code class="language-python">from PIL import Image
+
+# 開啟圖片
+img = Image.open('photo.jpg')
+
+# 從 NumPy 陣列建立 (與 OpenCV 互轉)
+img_pil = Image.fromarray(cv_image_rgb)
+
+# 轉回 NumPy 陣列
+cv_image = np.array(img_pil)
+
+# 基本屬性
+print(img.size)      # (寬, 高)
+print(img.mode)      # 'RGB', 'RGBA', 'L' (灰階)
+print(img.format)    # 'JPEG', 'PNG', etc.
+
+# 基本操作
+img_resized = img.resize((800, 600))
+img_cropped = img.crop((100, 100, 400, 400))  # (left, top, right, bottom)
+img_rotated = img.rotate(45)
+img_flipped = img.transpose(Image.FLIP_LEFT_RIGHT)
+</code></pre>
+
+<h4>2. ImageDraw 模組：繪圖操作</h4>
+<pre class="codehilite"><code class="language-python">from PIL import ImageDraw
+
+# 建立繪圖物件
+draw = ImageDraw.Draw(img)
+
+# 繪製各種形狀
+draw.rectangle([(100, 100), (200, 200)], outline='red', fill='blue', width=3)
+draw.ellipse([(50, 50), (150, 150)], outline='green', width=2)
+draw.line([(0, 0), (100, 100)], fill='yellow', width=5)
+draw.polygon([(100, 100), (150, 50), (200, 100)], outline='orange', fill='pink')
+
+# 繪製文字 (關鍵功能！)
+draw.text((50, 50), &quot;Hello 你好&quot;, fill='white', font=font)
+</code></pre>
+
+<h4>3. ImageFont 模組：字型管理</h4>
+<pre class="codehilite"><code class="language-python">from PIL import ImageFont
+
+# 載入 TrueType 字型
+font = ImageFont.truetype('/path/to/font.ttf', size=30)
+
+# 載入預設字型 (無中文支援)
+font_default = ImageFont.load_default()
+
+# 取得文字尺寸 (用於對齊排版)
+bbox = draw.textbbox((0, 0), &quot;測試文字&quot;, font=font)
+text_width = bbox[2] - bbox[0]
+text_height = bbox[3] - bbox[1]
+</code></pre>
+
+<h3>OpenCV ↔ PIL 完整轉換指南</h3>
+<pre class="codehilite"><code class="language-python">import cv2
+import numpy as np
+from PIL import Image
+
+# === OpenCV → PIL ===
+def cv2pil(cv_img):
+    &quot;&quot;&quot;
+    OpenCV (BGR) → PIL (RGB)
+    &quot;&quot;&quot;
+    # 方法 1: 使用 cv2.cvtColor
+    rgb_img = cv2.cvtColor(cv_img, cv2.COLOR_BGR2RGB)
+    pil_img = Image.fromarray(rgb_img)
+
+    # 方法 2: 使用 NumPy 切片 (更快)
+    # pil_img = Image.fromarray(cv_img[:, :, ::-1])
+
+    return pil_img
+
+# === PIL → OpenCV ===
+def pil2cv(pil_img):
+    &quot;&quot;&quot;
+    PIL (RGB) → OpenCV (BGR)
+    &quot;&quot;&quot;
+    # 轉為 NumPy 陣列
+    rgb_array = np.array(pil_img)
+
+    # 轉換顏色通道
+    bgr_img = cv2.cvtColor(rgb_array, cv2.COLOR_RGB2BGR)
+
+    return bgr_img
+
+# === 使用範例 ===
+cv_image = cv2.imread('photo.jpg')
+pil_image = cv2pil(cv_image)
+# ... PIL 操作 (如繪製中文)
+cv_result = pil2cv(pil_image)
+cv2.imwrite('result.jpg', cv_result)
+</code></pre>
+
+<h3>PIL 中文文字繪製進階範例</h3>
+<h4>範例 1：基本中文顯示</h4>
+<pre class="codehilite"><code class="language-python">from PIL import Image, ImageDraw, ImageFont
+import numpy as np
+
+# 建立空白畫布
+img = Image.new('RGB', (600, 400), color='white')
+draw = ImageDraw.Draw(img)
+
+# 載入中文字型
+font = ImageFont.truetype('NotoSansTC.ttf', 40)
+
+# 繪製文字
+draw.text((50, 50), &quot;紅綠燈辨識系統&quot;, fill='black', font=font)
+draw.text((50, 120), &quot;Traffic Light Detection&quot;, fill='blue', font=font)
+
+img.show()
+</code></pre>
+
+<h4>範例 2：多色文字與陰影效果</h4>
+<pre class="codehilite"><code class="language-python">def draw_text_with_shadow(draw, position, text, font, text_color, shadow_color):
+    &quot;&quot;&quot;繪製帶陰影的文字&quot;&quot;&quot;
+    x, y = position
+    # 繪製陰影 (偏移 2 像素)
+    draw.text((x+2, y+2), text, fill=shadow_color, font=font)
+    # 繪製主文字
+    draw.text((x, y), text, fill=text_color, font=font)
+
+# 使用範例
+img = Image.new('RGB', (600, 200), color='white')
+draw = ImageDraw.Draw(img)
+font = ImageFont.truetype('NotoSansTC.ttf', 50)
+
+draw_text_with_shadow(draw, (50, 50), &quot;紅燈停&quot;, font, 'red', 'black')
+img.show()
+</code></pre>
+
+<h4>範例 3：文字置中對齊</h4>
+<pre class="codehilite"><code class="language-python">def draw_centered_text(img, text, font, color):
+    &quot;&quot;&quot;繪製置中文字&quot;&quot;&quot;
+    draw = ImageDraw.Draw(img)
+
+    # 計算文字尺寸
+    bbox = draw.textbbox((0, 0), text, font=font)
+    text_width = bbox[2] - bbox[0]
+    text_height = bbox[3] - bbox[1]
+
+    # 計算置中位置
+    img_width, img_height = img.size
+    x = (img_width - text_width) // 2
+    y = (img_height - text_height) // 2
+
+    # 繪製
+    draw.text((x, y), text, fill=color, font=font)
+    return img
+
+# 使用範例
+img = Image.new('RGB', (600, 300), color='lightblue')
+font = ImageFont.truetype('NotoSansTC.ttf', 60)
+img = draw_centered_text(img, &quot;偵測成功&quot;, font, 'darkblue')
+img.show()
+</code></pre>
+
+<h4>範例 4：混合 OpenCV 輪廓與 PIL 文字</h4>
+<pre class="codehilite"><code class="language-python">import cv2
+from PIL import Image, ImageDraw, ImageFont
+import numpy as np
+
+def annotate_with_chinese(cv_img, contours, labels):
+    &quot;&quot;&quot;
+    在 OpenCV 偵測結果上標註中文標籤
+
+    參數:
+        cv_img: OpenCV 圖片 (BGR)
+        contours: 輪廓列表
+        labels: 對應的中文標籤
+    &quot;&quot;&quot;
+    # 1. OpenCV 繪製輪廓
+    cv2.drawContours(cv_img, contours, -1, (0, 255, 0), 2)
+
+    # 2. 轉換為 PIL 格式
+    pil_img = Image.fromarray(cv2.cvtColor(cv_img, cv2.COLOR_BGR2RGB))
+    draw = ImageDraw.Draw(pil_img)
+    font = ImageFont.truetype('NotoSansTC.ttf', 25)
+
+    # 3. PIL 繪製中文標籤
+    for i, contour in enumerate(contours):
+        x, y, w, h = cv2.boundingRect(contour)
+        draw.text((x, y-30), labels[i], fill='red', font=font)
+
+    # 4. 轉回 OpenCV 格式
+    result = cv2.cvtColor(np.array(pil_img), cv2.COLOR_RGB2BGR)
+    return result
+
+# 使用範例
+img = cv2.imread('traffic_light.jpg')
+# ... (進行輪廓偵測)
+result = annotate_with_chinese(img, contours, ['紅燈', '黃燈', '綠燈'])
+cv2.imwrite('result.jpg', result)
+</code></pre>
+
+<h3>PIL 實用技巧</h3>
+<h4>技巧 1：批次處理圖片</h4>
+<pre class="codehilite"><code class="language-python">from pathlib import Path
+
+def batch_add_watermark(input_dir, output_dir, watermark_text):
+    &quot;&quot;&quot;批次加入浮水印&quot;&quot;&quot;
+    font = ImageFont.truetype('NotoSansTC.ttf', 30)
+
+    for img_path in Path(input_dir).glob('*.jpg'):
+        img = Image.open(img_path)
+        draw = ImageDraw.Draw(img)
+
+        # 右下角浮水印
+        w, h = img.size
+        draw.text((w-200, h-50), watermark_text, fill='white', font=font)
+
+        img.save(Path(output_dir) / img_path.name)
+</code></pre>
+
+<h4>技巧 2：圖片拼接</h4>
+<pre class="codehilite"><code class="language-python">def concat_images_horizontal(img_list):
+    &quot;&quot;&quot;水平拼接圖片&quot;&quot;&quot;
+    widths, heights = zip(*(img.size for img in img_list))
+
+    total_width = sum(widths)
+    max_height = max(heights)
+
+    result = Image.new('RGB', (total_width, max_height))
+
+    x_offset = 0
+    for img in img_list:
+        result.paste(img, (x_offset, 0))
+        x_offset += img.width
+
+    return result
+</code></pre>
+
+<h3>常見錯誤與解決方案</h3>
+<table>
+<thead>
+<tr>
+<th>錯誤現象</th>
+<th>原因</th>
+<th>解決方法</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>中文顯示為方塊</td>
+<td>字型不支援中文</td>
+<td>使用 <code>truetype()</code> 載入中文字型</td>
+</tr>
+<tr>
+<td>顏色錯誤</td>
+<td>BGR/RGB 混淆</td>
+<td>轉換前檢查色彩空間</td>
+</tr>
+<tr>
+<td><code>OSError: cannot open resource</code></td>
+<td>字型路徑錯誤</td>
+<td>檢查字型檔案存在且路徑正確</td>
+</tr>
+<tr>
+<td>文字位置偏移</td>
+<td>座標系統不同</td>
+<td>PIL 左上角為 (0,0)，與 OpenCV 相同</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>🔧 除錯與進階技巧</h2>
+<h3>問題 1：紅色偵測不完整或失敗</h3>
+<p><strong>原因</strong>：在 HSV 色彩圓環中，紅色位於 0/360 度的交界處。<br />
+<strong>完整解法</strong>：建立兩個範圍的遮罩（例如 0-10 和 170-180），然後將兩個遮罩合併。</p>
+<pre class="codehilite"><code class="language-python"># 紅燈需要兩個 HSV 範圍
+red_lower1 = np.array([0, 150, 150])
+red_upper1 = np.array([10, 255, 255])
+red_lower2 = np.array([170, 150, 150])
+red_upper2 = np.array([180, 255, 255])
+
+# 建立兩個遮罩並用 cv2.bitwise_or 合併
+mask_red1 = cv2.inRange(hsv, red_lower1, red_upper1)
+mask_red2 = cv2.inRange(hsv, red_lower2, red_upper2)
+mask_red = cv2.bitwise_or(mask_red1, mask_red2)
+
+# 後續輪廓分析使用合併後的 mask_red
+contours, _ = cv2.findContours(mask_red, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+</code></pre>
+
+<p><em>（註：上方完整程式碼已包含此邏輯的簡化實現。）</em></p>
+<h3>問題 2：背景干擾（誤判）</h3>
+<p><strong>解法</strong>：<br />
+1.  <strong>提高面積閾值</strong>：<code>if area &lt; 500: continue</code>，過濾更大的雜訊。<br />
+2.  <strong>收緊圓形度範圍</strong>：<code>if 0.8 &lt; circularity &lt; 1.2:</code>，要求更接近正圓。<br />
+3.  <strong>限制偵測區域 (ROI)</strong>：如果紅綠燈總是在畫面上半部，可以只對上半部進行偵測，忽略下半部的干擾。</p>
+<h3>問題 3：中文顯示為方塊或亂碼</h3>
+<p><strong>解決方案</strong>：</p>
+<ol>
+<li><strong>使用 PIL/Pillow 繪製中文</strong>（推薦）</li>
+<li>優點：完整支援中文、字型品質好</li>
+<li>
+<p>缺點：需要額外的字型檔案</p>
+</li>
+<li>
+<p><strong>使用英文標籤</strong>（最簡單）</p>
+</li>
+<li>優點：無需額外設定、相容性最佳</li>
+<li>
+<p>缺點：不支援中文顯示</p>
+</li>
+<li>
+<p><strong>字型檔案來源</strong>：</p>
+</li>
+<li>Google Colab: <code>wget -O NotoSansTC.ttf https://github.com/google/fonts/raw/main/ofl/notosanstc/NotoSansTC-Regular.ttf</code></li>
+<li>macOS: <code>/System/Library/Fonts/PingFang.ttc</code></li>
+<li>Windows: <code>C:/Windows/Fonts/msjh.ttc</code> (微軟正黑體)</li>
+<li>Linux: <code>/usr/share/fonts/truetype/noto/NotoSansCJK-Regular.ttc</code></li>
+</ol>
+<hr />
+<h2>📚 學習資源</h2>
+<ul>
+<li>OpenCV 官方文件：<a href="https://docs.opencv.org/4.x/df/d9d/tutorial_py_colorspaces.html">Color Spaces</a></li>
+<li>OpenCV 官方文件：<a href="https://docs.opencv.org/4.x/dd/d49/tutorial_py_contour_features.html">Contour Features</a></li>
+<li>OpenCV 官方文件：<a href="https://docs.opencv.org/4.x/d9/d61/tutorial_py_morphological_ops.html">Morphological Transformations</a></li>
+<li>PIL/Pillow 文件：<a href="https://pillow.readthedocs.io/en/stable/reference/ImageDraw.html">ImageDraw Module</a></li>
+<li>PIL/Pillow 教學：<a href="https://pillow.readthedocs.io/en/stable/handbook/tutorial.html">Pillow Tutorial</a></li>
+</ul>
+<hr />
+<h2>📖 版本說明</h2>
+<p><strong>Version b07 更新內容</strong>：<br />
+1. <strong>新增完整的形態學處理程式碼深度解析章節</strong>：<br />
+   - 逐行解釋三行關鍵程式碼<br />
+   - Kernel 建立與工作原理的詳細說明<br />
+   - 閉運算與開運算的完整流程視覺化<br />
+   - 不同 Kernel 大小的影響分析<br />
+   - 完整演示程式碼與效果對比<br />
+   - 進階理解（為什麼先閉後開、可以只用一種嗎）</p>
+<ol>
+<li><strong>大幅擴充 HSV 色彩空間說明，加入光源特性分析</strong>：</li>
+<li>紅綠燈作為發光體的特殊性</li>
+<li>發光體 vs 反射體的詳細對比</li>
+<li>紅綠燈的三大挑戰（亮度變化、光暈效應、色溫變化）</li>
+<li>HSV 如何解決這些問題的詳細說明</li>
+<li>
+<p>實際數值對比（不同場景下的 BGR vs HSV）</p>
+</li>
+<li>
+<p><strong>新增「一般物體的顏色辨識需要 HSV 嗎？」完整分析</strong>：</p>
+</li>
+<li>不同場景類型的需求表格</li>
+<li>四種情境的實例分析（室外蘋果、室內蘋果、螢幕亮點、工業檢測）</li>
+<li>實際測試對比程式碼</li>
+<li>
+<p>發光物體 vs 一般物體的使用建議</p>
+</li>
+<li>
+<p><strong>優化視覺化呈現</strong>：</p>
+</li>
+<li>更多 ASCII 藝術圖示</li>
+<li>完整的流程對比圖</li>
+<li>表格化的效果對比</li>
+<li>
+<p>實務建議總結</p>
+</li>
+<li>
+<p><strong>增強實用性</strong>：</p>
+</li>
+<li>新增完整的測試程式碼範例</li>
+<li>不同 Kernel 大小的視覺化對比</li>
+<li>常見問題的解決方案表格</li>
+</ol></div>
+    
+    <!-- Highlight.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    
+    <!-- Mermaid -->
+    <script type="module">
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+        mermaid.initialize({
+            "startOnLoad": true,
+            "theme": "dark",
+            "securityLevel": "loose"
+});
+    </script>
+</body>
+</html>
