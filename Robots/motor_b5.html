@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>motor_b5</title>
+    
+    <!-- CSS 框架 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/dark.min.css">
+    
+    <!-- 代碼高亮 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/base16/darcula.min.css">
+    
+    <!-- 自定義樣式 -->
+    <style>
+        
+                body {
+                    max-width: 900px;
+                    margin: 0 auto;
+                    padding: 20px;
+                }
+                /* 提升代码块对比度 */
+                pre {
+                    background: #1e1e1e !important;
+                    border: 1px solid #3e3e3e;
+                }
+                pre code {
+                    background: #1e1e1e !important;
+                }
+                code {
+                    background: #2d2d2d !important;
+                }
+                /* 引用块对比度 */
+                blockquote {
+                    background: #2d2d2d;
+                    border-left: 4px solid #4a9eff;
+                }
+            
+        
+        /* 通用代碼塊樣式 */
+        pre code {
+            display: block;
+            padding: 1.5em;
+            border-radius: 8px;
+            overflow-x: auto;
+            line-height: 1.6;
+        }
+
+        /* Mermaid 圖表樣式 */
+        
+        .mermaid {
+            margin: 2em 0;
+            padding: 1.5em;
+            text-align: center;
+            border-radius: 8px;
+        }
+        
+        .mermaid {
+            background: #2c3034;
+            border: 1px solid #444;
+        }
+            
+        
+        /* 響應式調整 */
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            .container, .markdown-body, .latex-body, .window-body, .nes-container {
+                padding: 15px;
+            }
+            pre code {
+                padding: 1em;
+            }
+        }
+        
+        
+    </style>
+</head>
+<body>
+    <div class="container"><h1>馬達控制教學：從 LEGO EV3 到 Arduino</h1>
+<h2>前言</h2>
+<p>在機器人製作和自動化專案中，精準的馬達控制是核心關鍵之一。LEGO Mindstorms EV3 提供了一個高度整合、易於使用的馬達系統，而 Arduino 則提供了一個更具彈性、成本更低但需要更多電子知識的平台。</p>
+<p>本教學將分為兩部分：<br />
+1.  <strong>分析 LEGO EV3 馬達的特色與功能</strong>。<br />
+2.  <strong>說明如何使用 Arduino Uno 搭配相應硬體，來實現與 EV3 馬達類似的強大功能</strong>。</p>
+<hr />
+<h2>第一部分：LEGO EV3 馬達的特色與功能</h2>
+<p>LEGO EV3 的馬達之所以強大且適合教學，主要歸功於其內建的整合式設計。使用者無需處理複雜的電路和底層程式碼，即可實現精準控制。</p>
+<h3>主要特色：</h3>
+<h4>1. 整合式旋轉感測器 (內建編碼器)</h4>
+<p>這是 EV3 馬達最核心的功能。每個大型和中型馬達都內建一個高精度的旋轉感測器（Encoder），能夠：<br />
+*   <strong>測量旋轉角度</strong>：可以精確知道馬達轉了幾度，精度高達 1 度。<br />
+*   <strong>計算旋轉圈數</strong>：可以累計馬達總共轉了多少圈。<br />
+*   <strong>提供即時回饋</strong>：程式可以隨時讀取馬達的當前位置，實現閉環控制（Closed-loop Control）。</p>
+<h4>2. 伺服控制 (Servo Control)</h4>
+<p>EV3 馬達是「伺服馬達」，意味著它們不僅僅是轉動，更能：<br />
+*   <strong>維持特定速度</strong>：你可以命令馬達以設定的功率（速度）穩定轉動，EV3 主機會自動調整功率以應對負載變化。<br />
+*   <strong>轉到指定位置</strong>：可以命令馬達轉到某個絕對角度（例如：90度位置）並保持不動。<br />
+*   <strong>鎖定位置</strong>：在停止時，馬達會主動施加力量抵抗外力，以維持目前的位置。</p>
+<hr />
+<h2>第二部分：Arduino 實現類似 EV3 的馬達控制</h2>
+<p>使用 Arduino 要達到 EV3 馬達的功能，我們無法使用單一元件，而需要組合一個系統。核心思想是<strong>「馬達 + 感測器 + 驅動器」</strong>。</p>
+<h3>核心組件 (Hardware Requirements)</h3>
+<ul>
+<li><strong>1. 控制板：Arduino Uno</strong>：專案的大腦。</li>
+<li><strong>2. 馬達與感測器</strong>：根據需求選擇不同馬達。</li>
+<li><strong>3. 馬達驅動板 (Motor Driver Board)</strong>：為馬達提供足夠電流的橋樑。</li>
+<li><strong>4. 獨立電源供應 (Power Supply)</strong>：為馬達提供穩定動力。</li>
+</ul>
+<h3>Arduino 可搭配的馬達種類</h3>
+<p>Arduino 可以控制多種馬達，每種都有其獨特的應用場景。</p>
+<h4>1. 直流馬達 (DC Motor)</h4>
+<ul>
+<li><strong>特點</strong>：結構簡單，通電就轉，電壓越高轉速越快。是構成很多複雜馬達的基礎。</li>
+<li><strong>優點</strong>：便宜、高速、易於控制轉速。</li>
+<li><strong>缺點</strong>：本身無法控制轉動的角度或位置。</li>
+<li><strong>控制方式</strong>：透過 L298N 等馬達驅動板，使用 Arduino 的 PWM 訊號 (透過 <code>analogWrite()</code>) 控制轉速。</li>
+<li><strong>如何實現精準控制</strong>：<strong>必須外掛編碼器</strong>，將其變成帶有回饋的伺服系統，才能模擬 EV3 馬達的功能。</li>
+</ul>
+<h4>2. 伺服馬達 (Servo Motor)</h4>
+<ul>
+<li><strong>特點</strong>：內部已包含直流馬達、齒輪箱、電位器（用於位置回饋）和控制電路。是一種高度整合的位置控制器件。</li>
+<li><strong>優點</strong>：位置控制極為簡單精準，非常適合需要控制角度的場景（如機器人手臂關節、轉向機構）。Arduino 有內建的 <code>Servo.h</code> 函式庫，控制非常方便。</li>
+<li><strong>缺點</strong>：大多數標準伺服馬達有轉動範圍限制（如 0-180度），不適合需要連續旋轉的輪子。</li>
+</ul>
+<h4>3. 步進馬達 (Stepper Motor)</h4>
+<ul>
+<li><strong>特點</strong>：將旋轉運動分解為一步步的離散動作，可以極為精確地控制轉動的角度和步數。</li>
+<li><strong>優點</strong>：在無回饋的開環系統（Open-loop）中就能實現高精度定位，低速時扭力大。</li>
+<li><strong>缺點</strong>：控制相對複雜，需要專用的步進馬達驅動板（如 A4988, ULN2003），且在高速時扭力會下降，若負載過大可能會「失步」。</li>
+</ul>
+<h3>深入探討：編碼器與馬達的配合</h3>
+<p>要讓一個普通的直流馬達（DC Motor）變得像 EV3 馬達一樣「聰明」，關鍵就在於<strong>編碼器（Encoder）</strong>。</p>
+<h4>為什麼需要編碼器？</h4>
+<p>一個基本的直流馬達是開環的——你給它電，它就轉，但你不知道它轉了多快、轉了多少圈。編碼器提供了一個回饋迴路，把馬達的物理運動轉換成 Arduino 能讀懂的電子訊號，從而實現閉環控制（Closed-loop Control）。它回答了兩個關鍵問題：<br />
+1.  <strong>我轉了多遠？</strong> (位置)<br />
+2.  <strong>我轉了多快？</strong> (速度)</p>
+<h4>常用編碼器硬體</h4>
+<p>市面上常見的編碼器通常已和小型直流減速馬達整合在一起，方便直接使用。<br />
+*   <strong>霍爾效應編碼器 (Hall Effect Encoder)</strong>：通常與黃色的 TT 減速馬達配套，在馬達尾部有一個小磁環和兩個霍爾感測器。精度相對較低，但便宜耐用，適合入門。<br />
+*   <strong>光學編碼器 (Optical Encoder)</strong>：如 JGA25-370、Pololu 等品牌的馬達，內建了光學碼盤，精度較高，反應更靈敏，適合需要精準控制的場合。</p>
+<h4>硬體辨識：如何判斷 TT 馬達是否有編碼器？</h4>
+<p>這是在選購或使用零件時非常關鍵的一點。</p>
+<p><strong>1. 看接線數量（最準確的方法）</strong></p>
+<ul>
+<li><strong>無編碼器 (2條線)</strong>：如果馬達只有 <strong>2 條線</strong>，那它 100% 是一個標準的直流馬達。這兩條線只負責提供電力（正、負極）。</li>
+<li><strong>有編碼器 (4條線以上)</strong>：帶編碼器的馬達，除了馬達本身的2條線，還需要為編碼器提供電源(VCC/GND)和輸出訊號(A/B相)，所以總共<strong>至少會有 4 到 6 條線</strong>。</li>
+</ul>
+<p><strong>2. 看外觀</strong></p>
+<ul>
+<li><strong>無編碼器</strong>：馬達尾部是乾淨、封閉的，只有兩個金屬焊點。</li>
+<li><strong>有編碼器</strong>：馬達尾部會明顯多出一塊<strong>方形或圓形的黑色電路板(PCB)</strong>，所有的接線都從這塊板子上引出。</li>
+</ul>
+<p><strong>結論：一個只有兩條線的 TT 馬達，絕對沒有編碼器。</strong></p>
+<h4>如何在 Arduino 中高效讀取編碼器？</h4>
+<p>馬達轉速可能很快，每秒產生數千個脈衝。如果使用傳統的 <code>digitalRead()</code> 在主迴圈 <code>loop()</code> 中讀取，極易錯過脈衝，導致計數不準。<strong>正確的方法是使用「外部中斷」(External Interrupts)。</strong></p>
+<ul>
+<li><strong>原理</strong>：將編碼器的 A/B 相訊號線連接到 Arduino 的中斷接腳（Uno 上為 D2, D3）。當這些接腳的電位發生變化時，會觸發一個中斷。CPU 會立刻暫停當前任務，執行一個預先指定好的<strong>中斷服務函式 (ISR)</strong>，例如讓計數器加一或減一，完成後再返回原任務。</li>
+<li><strong>優點</strong>：這種方式確保了每一個脈衝都能被即時捕捉到，計數非常精確。</li>
+</ul>
+<h4>範例程式碼：讀取編碼器數值</h4>
+<p>這是一個只讀取編碼器數值並透過序列埠輸出的基礎範例。</p>
+<pre class="codehilite"><code class="language-cpp">// --- 硬體定義 ---
+// 將編碼器的A相和B相輸出分別接到Arduino的2號和3號腳位
+// 這兩個腳位在Arduino Uno上支援外部中斷
+#define ENCODER_A_PIN 2
+#define ENCODER_B_PIN 3
+
+// --- 全域變數 ---
+// 使用 volatile 關鍵字，因為這個變數會在中斷函式中被修改
+// 確保主程式能讀取到最新的值
+volatile long encoder_pos = 0;
+
+void setup() {
+  // 初始化序列埠，用於顯示結果
+  Serial.begin(9600);
+
+  // 設定編碼器腳位為輸入模式，並啟用內部上拉電阻
+  // 這樣可以避免腳位懸空時的訊號干擾
+  pinMode(ENCODER_A_PIN, INPUT_PULLUP);
+  pinMode(ENCOER_B_PIN, INPUT_PULLUP);
+
+  // 設定中斷
+  // 當 ENCODER_A_PIN 的電位發生變化 (RISING, FALLING, CHANGE) 時，呼叫 do_encoder 函式
+  attachInterrupt(digitalPinToInterrupt(ENCODER_A_PIN), do_encoder, CHANGE);
+}
+
+void loop() {
+  // 在主迴圈中，每50毫秒讀取一次計數值並輸出
+  // 注意這裡並沒有做任何複雜操作，以確保能即時反應中斷的結果
+  Serial.print(&quot;Encoder Position: &quot;);
+  Serial.println(encoder_pos);
+  delay(50);
+}
+
+// --- 中斷服務函式 (ISR) ---
+// 每次 ENCODER_A_PIN 腳位的電位改變時，此函式就會被觸發
+void do_encoder() {
+  // 讀取A相和B相的目前狀態
+  int state_a = digitalRead(ENCODER_A_PIN);
+  int state_b = digitalRead(ENCODER_B_PIN);
+
+  // 根據A相和B相的電位組合來判斷方向
+  // 這是標準的正交編碼器解碼邏輯
+  if (state_a == state_b) {
+    encoder_pos++; // 順時針轉動
+  } else {
+    encoder_pos--; // 逆時針轉動
+  }
+}
+</code></pre>
+
+<h3>進階控制：PID 演算法實現精準調速</h3>
+<p>僅有編碼器我們只能「知道」馬達的狀態，但要「控制」它穩定在某個速度或位置，就需要閉環控制演算法，其中最經典的就是 <strong>PID 控制</strong>。</p>
+<h4>什麼是 PID 控制？</h4>
+<p>PID 是一種回饋控制演算法，它會持續計算一個「誤差值」（Error，即 <code>目標值 - 目前值</code>），並試圖最小化這個誤差。它由三個部分組成：</p>
+<ol>
+<li>
+<p><strong>P - 比例 (Proportional)</strong></p>
+<ul>
+<li><strong>作用</strong>：對「現在」的誤差做出反應。誤差越大，控制力道越強。</li>
+<li><strong>公式</strong>：<code>P_output = Kp * error</code></li>
+<li><strong>行為</strong>：反應最快，但單獨使用 P 控制時，馬達很難精確停在目標點，常會出現「穩態誤差」（Steady-state Error），或在目標點附近震盪。</li>
+</ul>
+</li>
+<li>
+<p><strong>I - 積分 (Integral)</strong></p>
+<ul>
+<li><strong>作用</strong>：消除「過去」累積的誤差。如果系統長時間存在一個微小的穩態誤差，積分項會不斷累積，直到產生足夠的力道來消除這個誤差。</li>
+<li><strong>公式</strong>：<code>I_output = Ki * (累積誤差)</code></li>
+<li><strong>行為</strong>：能有效消除穩態誤差，但反應較慢。如果 <code>Ki</code> 值太大，可能導致系統震盪（Overshoot）。</li>
+</ul>
+</li>
+<li>
+<p><strong>D - 微分 (Derivative)</strong></p>
+<ul>
+<li><strong>作用</strong>：預測「未來」的誤差趨勢。它觀察誤差變化的速率，如果誤差正在快速減小（代表系統正衝向目標），微分項會產生一個反向的力道來「踩剎車」，防止衝過頭。</li>
+<li><strong>公式</strong>：<code>D_output = Kd * (目前誤差 - 上次誤差)</code></li>
+<li><strong>行為</strong>：能有效抑制震盪，增加系統的穩定性。但對訊號中的雜訊非常敏感。</li>
+</ul>
+</li>
+</ol>
+<p>三者結合，<code>最終輸出 = P_output + I_output + D_output</code>，就能達到快速、穩定且精準的控制效果。<code>Kp</code>, <code>Ki</code>, <code>Kd</code> 這三個常數需要根據實際的馬達和負載進行「調參」(Tuning)，以達到最佳效果。</p>
+<h4>範例程式碼：使用 PID 控制馬達速度</h4>
+<p>這個範例整合了編碼器讀取和 PID 速度控制。</p>
+<pre class="codehilite"><code class="language-cpp">// --- 硬體定義 ---
+#define ENCODER_A_PIN 2
+#define ENCODER_B_PIN 3
+#define MOTOR_PWM_PIN 5   // 馬達速度控制 PWM 腳位
+#define MOTOR_DIR_PIN 4   // 馬達方向控制腳位
+
+// --- PID 控制參數 ---
+// !!注意!! 這些值需要根據你的馬達和負載進行調整 (Tuning)
+double Kp = 2.0;
+double Ki = 5.0;
+double Kd = 1.0;
+
+// --- PID 運算變數 ---
+double target_speed = 100; // 目標速度 (單位: 脈衝數/取樣週期)
+double current_speed = 0;
+double error = 0;
+double last_error = 0;
+double integral_error = 0;
+double derivative_error = 0;
+int motor_output = 0;
+
+// --- 編碼器變數 ---
+volatile long encoder_pos = 0;
+long last_encoder_pos = 0;
+
+// --- 時間控制變數 ---
+long last_time = 0;
+
+void setup() {
+  Serial.begin(9600);
+
+  // 編碼器設定
+  pinMode(ENCODER_A_PIN, INPUT_PULLUP);
+  pinMode(ENCODER_B_PIN, INPUT_PULLUP);
+  attachInterrupt(digitalPinToInterrupt(ENCODER_A_PIN), do_encoder, CHANGE);
+
+  // 馬達驅動設定
+  pinMode(MOTOR_PWM_PIN, OUTPUT);
+  pinMode(MOTOR_DIR_PIN, OUTPUT);
+  digitalWrite(MOTOR_DIR_PIN, HIGH); // 設定一個固定方向
+
+  last_time = millis();
+}
+
+void loop() {
+  // --- 計算當前速度 ---
+  long current_time = millis();
+  long dt = current_time - last_time;
+
+  // 每隔 10ms 計算一次速度和PID
+  if (dt &gt;= 10) {
+    // 速度 = (目前位置 - 上次位置) / 時間差
+    current_speed = (encoder_pos - last_encoder_pos) / (double)dt;
+
+    // --- PID 計算 ---
+    error = target_speed - current_speed;
+    integral_error += error * dt;
+    derivative_error = (error - last_error) / dt;
+
+    // 計算PID總輸出
+    double pid_output = (Kp * error) + (Ki * integral_error) + (Kd * derivative_error);
+
+    // --- 驅動馬達 ---
+    // 限制輸出範圍在 0-255 之間
+    motor_output = constrain(pid_output, 0, 255);
+    analogWrite(MOTOR_PWM_PIN, motor_output);
+
+    // --- 更新變數 ---
+    last_encoder_pos = encoder_pos;
+    last_error = error;
+    last_time = current_time;
+
+    // --- 監控輸出 ---
+    Serial.print(&quot;Target: &quot;); Serial.print(target_speed);
+    Serial.print(&quot; | Current: &quot;); Serial.print(current_speed);
+    Serial.print(&quot; | Output: &quot;); Serial.println(motor_output);
+  }
+}
+
+// --- 中斷服務函式 (ISR) ---
+void do_encoder() {
+  if (digitalRead(ENCODER_A_PIN) == digitalRead(ENCODER_B_PIN)) {
+    encoder_pos++;
+  } else {
+    encoder_pos--;
+  }
+}
+</code></pre>
+
+<h3>硬體接線示意</h3>
+<ol>
+<li><strong>電源</strong> -&gt; <strong>馬達驅動板</strong>：將獨立電源的正負極接到 L298N 的 <code>VCC</code> 和 <code>GND</code>。</li>
+<li><strong>馬達驅動板</strong> -&gt; <strong>馬達</strong>：將 L298N 的輸出端（如 <code>OUT1</code>, <code>OUT2</code>）接到直流馬達的兩個接腳。</li>
+<li><strong>Arduino</strong> -&gt; <strong>馬達驅動板</strong>：<ul>
+<li>將 Arduino 的 <code>GND</code> 與 L298N 的 <code>GND</code> 相連（共地）。</li>
+<li>將 Arduino 的數位 I/O 接腳（如 <code>~5</code>, <code>4</code>）接到 L298N 的 <code>ENA</code>, <code>IN1</code> 等對應腳位。</li>
+</ul>
+</li>
+<li><strong>編碼器</strong> -&gt; <strong>Arduino</strong>：<ul>
+<li>將編碼器的 <code>VCC</code> 和 <code>GND</code> 接到 Arduino 的 <code>5V</code> 和 <code>GND</code>。</li>
+<li>將編碼器的 A/B 相訊號輸出接腳，接到 Arduino 的<strong>外部中斷接腳</strong>（在 Uno 上是 <code>D2</code> 和 <code>D3</code>）。</li>
+</ul>
+</li>
+</ol>
+<h3>功能對比與 Arduino 實現方式</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">EV3 功能</th>
+<th style="text-align: left;">Arduino 實現方式</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>讀取旋轉角度/圈數</strong></td>
+<td style="text-align: left;">使用中斷讀取編碼器脈衝數，再透過數學換算得到。</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>以特定速度轉動</strong></td>
+<td style="text-align: left;">結合編碼器回饋和 <strong>PID 控制演算法</strong>，動態調整 PWM 輸出，實現精準的閉環速度控制。</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>轉到指定位置</strong></td>
+<td style="text-align: left;">結合編碼器回饋和 <strong>PID 位置控制演算法</strong>，計算與目標位置的誤差，並驅動馬達消除誤差。</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>實作範例：Arduino 雙輪機器人控制</h2>
+<p>本章節將前面討論的零件整合起來，建立一台可以前進、後退、轉彎和調速的雙輪機器人。我們將使用最常見的 L298N 馬達驅動板和兩個標準的 TT 馬達（無編碼器版本，做開環控制）。</p>
+<h3>1. 所需硬體 (Required Hardware)</h3>
+<ul>
+<li><strong>控制器</strong>: 1x Arduino Uno</li>
+<li><strong>馬達驅動</strong>: 1x L298N 馬達驅動板</li>
+<li><strong>馬達</strong>: 2x TT 直流減速馬達 (黃色那種)</li>
+<li><strong>機體</strong>: 1x 雙輪機器人底盤 (包含輪子、萬向輪、螺絲銅柱等)</li>
+<li><strong>電源</strong>:<ul>
+<li>1x 4顆AA電池盒 (約 6V)，用於驅動馬達。</li>
+<li>1x USB 線或 9V 電池，用於為 Arduino 供電。</li>
+</ul>
+</li>
+<li><strong>線材</strong>: 若干杜邦線 (公對公、公對母)。</li>
+</ul>
+<h3>2. 硬體接線說明</h3>
+<p><strong>重要：接線前請確保所有電源都已斷開！</strong></p>
+<ol>
+<li>
+<p><strong>L298N 電源設定</strong>:</p>
+<ul>
+<li><strong>移除 ENA 和 ENB 上的黃色跳線帽</strong>。這是為了讓 Arduino 能透過 PWM 控制馬達速度。如果跳線帽插著，馬達只會全速運轉。</li>
+<li>將 4顆AA電池盒 的<strong>正極 (+)</strong> 連接到 L298N 的 <strong><code>+12V</code></strong> 端子。</li>
+<li>將 4顆AA電池盒 的<strong>負極 (-)</strong> 連接到 L298N 的 <strong><code>GND</code></strong> 端子。</li>
+<li>將 L298N 的 <strong><code>GND</code></strong> 端子用一條杜邦線連接到 Arduino 的任意一個 <strong><code>GND</code></strong> 腳位。(<strong>此為共地，非常重要！</strong>)</li>
+</ul>
+</li>
+<li>
+<p><strong>連接左輪馬達 (L298N 的 Motor A)</strong>:</p>
+<ul>
+<li>將左邊 TT 馬達的兩條線，連接到 L298N 的 <strong><code>OUT1</code></strong> 和 <strong><code>OUT2</code></strong> 端子。</li>
+<li><code>L298N IN1</code> &lt;--&gt; <code>Arduino D7</code></li>
+<li><code>L298N IN2</code> &lt;--&gt; <code>Arduino D6</code></li>
+<li><code>L298N ENA</code> &lt;--&gt; <code>Arduino D5</code> (注意：D5 是 PWM 腳位)</li>
+</ul>
+</li>
+<li>
+<p><strong>連接右輪馬達 (L298N 的 Motor B)</strong>:</p>
+<ul>
+<li>將右邊 TT 馬達的兩條線，連接到 L298N 的 <strong><code>OUT3</code></strong> 和 <strong><code>OUT4</code></strong> 端子。</li>
+<li><code>L298N IN3</code> &lt;--&gt; <code>Arduino D4</code></li>
+<li><code>L298N IN4</code> &lt;--&gt; <code>Arduino D3</code> (注意：D3 是 PWM 腳位)</li>
+<li><code>L298N ENB</code> &lt;--&gt; <code>Arduino D9</code> (注意：D9 是 PWM 腳位)</li>
+</ul>
+</li>
+<li>
+<p><strong>為 Arduino 供電</strong>:</p>
+<ul>
+<li>完成上述接線後，用 USB 線將電腦連接到 Arduino 為其供電和上傳程式。</li>
+<li>若要脫離電腦運作，可以將 9V 電池接到 Arduino 的 DC 電源孔。</li>
+</ul>
+</li>
+</ol>
+<h3>3. 範例程式碼：基本運動控制</h3>
+<p>這個程式提供了控制機器人基本動作的函式，並在主迴圈中進行簡單的展示。</p>
+<pre class="codehilite"><code class="language-cpp">// --- 左輪馬達 (Motor A) 的控制腳位 ---
+#define ENA 5  // 速度控制 (PWM)
+#define IN1 7  // 方向控制
+#define IN2 6  // 方向控制
+
+// --- 右輪馬達 (Motor B) 的控制腳位 ---
+#define ENB 9  // 速度控制 (PWM)
+#define IN3 4  // 方向控制
+#define IN4 3  // 方向控制
+
+void setup() {
+  // 將所有控制腳位設定為輸出模式
+  pinMode(ENA, OUTPUT);
+  pinMode(IN1, OUTPUT);
+  pinMode(IN2, OUTPUT);
+  pinMode(ENB, OUTPUT);
+  pinMode(IN3, OUTPUT);
+  pinMode(IN4, OUTPUT);
+
+  // 初始狀態讓馬達停止
+  stop_motors();
+}
+
+void loop() {
+  // --- 動作展示 ---
+
+  // 全速前進 2 秒
+  move_forward(255); // 速度值 0-255
+  delay(2000);
+
+  // 停止 1 秒
+  stop_motors();
+  delay(1000);
+
+  // 半速後退 2 秒
+  move_backward(150); // 速度值 0-255
+  delay(2000);
+
+  // 停止 1 秒
+  stop_motors();
+  delay(1000);
+
+  // 全速原地右轉 1 秒
+  turn_right(255);
+  delay(1000);
+
+  // 停止 1 秒
+  stop_motors();
+  delay(1000);
+
+  // 全速原地左轉 1 秒
+  turn_left(255);
+  delay(1000);
+
+  // 停止 1 秒
+  stop_motors();
+  delay(1000);
+}
+
+// --- 運動控制函式 ---
+
+// 前進
+void move_forward(int speed) {
+  // 左輪前轉
+  digitalWrite(IN1, HIGH);
+  digitalWrite(IN2, LOW);
+  analogWrite(ENA, speed);
+
+  // 右輪前轉
+  digitalWrite(IN3, HIGH);
+  digitalWrite(IN4, LOW);
+  analogWrite(ENB, speed);
+}
+
+// 後退
+void move_backward(int speed) {
+  // 左輪後轉
+  digitalWrite(IN1, LOW);
+  digitalWrite(IN2, HIGH);
+  analogWrite(ENA, speed);
+
+  // 右輪後轉
+  digitalWrite(IN3, LOW);
+  digitalWrite(IN4, HIGH);
+  analogWrite(ENB, speed);
+}
+
+// 原地右轉
+void turn_right(int speed) {
+  // 左輪前轉
+  digitalWrite(IN1, HIGH);
+  digitalWrite(IN2, LOW);
+  analogWrite(ENA, speed);
+
+  // 右輪後轉
+  digitalWrite(IN3, LOW);
+  digitalWrite(IN4, HIGH);
+  analogWrite(ENB, speed);
+}
+
+// 原地左轉
+void turn_left(int speed) {
+  // 左輪後轉
+  digitalWrite(IN1, LOW);
+  digitalWrite(IN2, HIGH);
+  analogWrite(ENA, speed);
+
+  // 右輪前轉
+  digitalWrite(IN3, HIGH);
+  digitalWrite(IN4, LOW);
+  analogWrite(ENB, speed);
+}
+
+// 停止
+void stop_motors() {
+  // 左輪停止
+  digitalWrite(I1, LOW);
+  digitalWrite(IN2, LOW);
+  analogWrite(ENA, 0);
+
+  // 右輪停止
+  digitalWrite(IN3, LOW);
+  digitalWrite(IN4, LOW);
+  analogWrite(ENB, 0);
+}
+</code></pre>
+
+<hr />
+<h2>進階實作：使用編碼器實現精準運動控制</h2>
+<p>上一章的開環控制（Open-loop Control）很簡單，但有明顯缺點：<br />
+*   <strong>無法走直線</strong>：兩個馬達的實際速度幾乎總有微小差異，導致機器人會慢慢偏向一邊。<br />
+*   <strong>無法走指定距離</strong>：<code>delay(2000)</code> 只能控制「時間」，無法控制「距離」。地面摩擦力、電池電壓變化都會影響實際行走的距離。</p>
+<p>本章節將引入編碼器，實現閉環控制（Closed-loop Control），解決上述問題。</p>
+<h3>1. 更新硬體清單 (Updated Hardware List)</h3>
+<p>大部分硬體與上一章相同，只有馬達需要替換。</p>
+<ul>
+<li><strong>馬達</strong>: 2x <strong>帶編碼器的 TT 直流減速馬達</strong>。這種馬達通常有6條線（2條馬達動力線，4條編碼器訊號線）。</li>
+</ul>
+<h3>2. 更新硬體接線 (Updated Wiring)</h3>
+<p>馬達驅動部分的接線與上一章完全相同，我們只需要<strong>新增編碼器的接線</strong>。</p>
+<ul>
+<li><strong>L298N 與馬達動力線</strong>: 接法與上一章完全一致。</li>
+<li>
+<p><strong>共地</strong>: L298N、Arduino、電池盒的 <code>GND</code> 必須全部連在一起。</p>
+</li>
+<li>
+<p><strong>連接左輪編碼器</strong>:</p>
+<ul>
+<li><code>編碼器 VCC</code> &lt;--&gt; <code>Arduino 5V</code></li>
+<li><code>編碼器 GND</code> &lt;--&gt; <code>Arduino GND</code></li>
+<li><code>編碼器 A相</code> &lt;--&gt; <code>Arduino D2</code> (<strong>中斷腳位 0</strong>)</li>
+<li><code>編碼器 B相</code> &lt;--&gt; <code>Arduino D8</code> (任意數位腳位)</li>
+</ul>
+</li>
+<li>
+<p><strong>連接右輪編碼器</strong>:</p>
+<ul>
+<li><code>編碼器 VCC</code> &lt;--&gt; <code>Arduino 5V</code></li>
+<li><code>編碼器 GND</code> &lt;--&gt; <code>Arduino GND</code></li>
+<li><code>編碼器 A相</code> &lt;--&gt; <code>Arduino D3</code> (<strong>中斷腳位 1</strong>)</li>
+<li><code>編碼器 B相</code> &lt;--&gt; <code>Arduino D10</code> (任意數位腳位)</li>
+</ul>
+</li>
+</ul>
+<h3>3. 範例程式碼：行走指定距離並保持直線</h3>
+<p>這個程式碼會定義一個目標脈衝數，讓機器人走到該距離後停止。並在行進中，不斷比較左右輪的脈衝數，微調速度以保持直線。</p>
+<pre class="codehilite"><code class="language-cpp">// --- 馬達控制腳位定義 (與上一版相同) ---
+#define ENA 5
+#define IN1 7
+#define IN2 6
+#define ENB 9
+#define IN3 4
+#define IN4 3
+
+// --- 編碼器腳位定義 ---
+#define LEFT_ENCODER_A 2  // 中斷 0
+#define LEFT_ENCODER_B 8
+#define RIGHT_ENCODER_A 3 // 中斷 1
+#define RIGHT_ENCODER_B 10
+
+// --- 全域變數 ---
+volatile long left_pos = 0;
+volatile long right_pos = 0;
+
+void setup() {
+  Serial.begin(9600);
+
+  // 設定馬達腳位為輸出
+  pinMode(ENA, OUTPUT);
+  pinMode(IN1, OUTPUT);
+  pinMode(IN2, OUTPUT);
+  pinMode(ENB, OUTPUT);
+  pinMode(IN3, OUTPUT);
+  pinMode(IN4, OUTPUT);
+
+  // 設定編碼器腳位為輸入 (啟用上拉電阻)
+  pinMode(LEFT_ENCODER_A, INPUT_PULLUP);
+  pinMode(LEFT_ENCODER_B, INPUT_PULLUP);
+  pinMode(RIGHT_ENCODER_A, INPUT_PULLUP);
+  pinMode(RIGHT_ENCODER_B, INPUT_PULLUP);
+
+  // 設定中斷
+  attachInterrupt(digitalPinToInterrupt(LEFT_ENCODER_A), read_left_encoder, RISING);
+  attachInterrupt(digitalPinToInterrupt(RIGHT_ENCODER_A), read_right_encoder, RISING);
+
+  stop_motors();
+}
+
+void loop() {
+  Serial.println(&quot;準備前進 1000 脈衝...&quot;);
+  move_forward_distance(1000, 200); // 目標脈衝數, 基礎速度
+  stop_motors();
+  Serial.println(&quot;已停止.&quot;);
+  Serial.print(&quot;左輪最終位置: &quot;); Serial.println(left_pos);
+  Serial.print(&quot;右輪最終位置: &quot;); Serial.println(right_pos);
+
+  delay(5000); // 等待5秒後重複
+}
+
+// --- 運動控制函式 ---
+
+// 走指定距離 (脈衝數)
+void move_forward_distance(long target_pos, int base_speed) {
+  // 重置計數器
+  left_pos = 0;
+  right_pos = 0;
+
+  // 簡易 P 控制器 (比例控制器) 參數
+  float Kp = 0.5; 
+
+  while (left_pos &lt; target_pos &amp;&amp; right_pos &lt; target_pos) {
+    // 計算左右輪誤差
+    long error = left_pos - right_pos;
+
+    // 根據誤差調整速度
+    int left_speed = base_speed - (error * Kp);
+    int right_speed = base_speed + (error * Kp);
+
+    // 限制速度範圍
+    left_speed = constrain(left_speed, 0, 255);
+    right_speed = constrain(right_speed, 0, 255);
+
+    // 驅動馬達
+    set_motor(IN1, IN2, ENA, left_speed, 1); // 1 代表前進
+    set_motor(IN3, IN4, ENB, right_speed, 1); // 1 代表前進
+
+    // 透過序列埠監控
+    Serial.print(&quot;L: &quot;); Serial.print(left_pos);
+    Serial.print(&quot; R: &quot;); Serial.print(right_pos);
+    Serial.print(&quot; Error: &quot;); Serial.print(error);
+    Serial.print(&quot; L_Spd: &quot;); Serial.print(left_speed);
+    Serial.print(&quot; R_Spd: &quot;); Serial.println(right_speed);
+  }
+}
+
+// 停止
+void stop_motors() {
+  set_motor(IN1, IN2, ENA, 0, 0);
+  set_motor(IN3, IN4, ENB, 0, 0);
+}
+
+// 泛用馬達設定函式
+// direction: 1=前, 0=停, -1=後
+void set_motor(int in_a, int in_b, int en, int speed, int direction) {
+  if (direction == 1) {
+    digitalWrite(in_a, HIGH);
+    digitalWrite(in_b, LOW);
+  } else if (direction == -1) {
+    digitalWrite(in_a, LOW);
+    digitalWrite(in_b, HIGH);
+  } else {
+    digitalWrite(in_a, LOW);
+    digitalWrite(in_b, LOW);
+  }
+  analogWrite(en, speed);
+}
+
+
+// --- 中斷服務函式 (ISRs) ---
+
+void read_left_encoder() {
+  // 簡單的計數，如果需要判斷方向，則需讀取 B 相
+  left_pos++;
+}
+
+void read_right_encoder() {
+  right_pos++;
+}
+</code></pre>
+
+<h3>4. 校正與說明</h3>
+<ul>
+<li><strong>脈衝與距離的關係</strong>: <code>move_forward_distance(1000, ...)</code> 中的 <code>1000</code> 是一個脈衝數。你需要自己進行校正，例如讓它跑 1000 脈衝，然後用尺量一下實際走了多少公分，這樣就能算出 <code>脈衝數/公分</code> 的比例，未來就能讓機器人走精確的物理距離。</li>
+<li><strong>Kp 值的意義</strong>: <code>float Kp = 0.5;</code> 是 P 控制器的增益值。如果你的機器人修正過頭，左右搖擺，可以試著調低 <code>Kp</code> 值（如 0.3）。如果修正力道不足，依然走偏，可以試著調高 <code>Kp</code> 值（如 0.8）。這個值需要實驗來找到最佳點。</li>
+<li><strong>方向判斷</strong>: 這個範例為了簡化，ISR 中沒有讀取 B 相來判斷方向，它假設機器人只會前進。在更複雜的應用中（例如需要精確後退），你需要在 ISR 中加入 <code>digitalRead(LEFT_ENCODER_B)</code> 來判斷是該 <code>++</code> 還是 <code>--</code>。</li>
+</ul>
+<hr /></div>
+    
+    <!-- Highlight.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    
+    <!-- Mermaid -->
+    <script type="module">
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+        mermaid.initialize({
+            "startOnLoad": true,
+            "theme": "dark",
+            "securityLevel": "loose"
+});
+    </script>
+</body>
+</html>
