@@ -72,6 +72,7 @@
 | File Name | Last Updated | Link |
 |---|---|---|| motor_b5.html | 2025-11-10 | [motor_b5.html](https://joelhoty.github.io/ocgit/Robots/motor_b5.html) |
 | Arduino_motor_b06.html | 2025-11-10 | [Arduino_motor_b06.html](https://joelhoty.github.io/ocgit/Robots/Arduino_motor_b06.html) |
+| Arduino_motor_b08.html | 2025-11-10 | [Arduino_motor_b08.html](https://joelhoty.github.io/ocgit/Robots/Arduino_motor_b08.html) |
 | Mindstorm_ColorSensor_b03.html | 2025-10-27 | [Mindstorm_ColorSensor_b03.html](https://joelhoty.github.io/ocgit/Robots/Mindstorm_ColorSensor_b03.html) |
 | Mindstorm_US_ACC_b09.html | 2025-10-26 | [Mindstorm_US_ACC_b09.html](https://joelhoty.github.io/ocgit/Robots/Mindstorm_US_ACC_b09.html) |
 

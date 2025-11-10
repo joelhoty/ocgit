@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arduino_motor_b08</title>
+    
+    <!-- CSS 框架 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/dark.min.css">
+    
+    <!-- 代碼高亮 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/base16/darcula.min.css">
+    
+    <!-- 自定義樣式 -->
+    <style>
+        
+                body {
+                    max-width: 900px;
+                    margin: 0 auto;
+                    padding: 20px;
+                }
+                /* 提升代码块对比度 */
+                pre {
+                    background: #1e1e1e !important;
+                    border: 1px solid #3e3e3e;
+                }
+                pre code {
+                    background: #1e1e1e !important;
+                }
+                code {
+                    background: #2d2d2d !important;
+                }
+                /* 引用块对比度 */
+                blockquote {
+                    background: #2d2d2d;
+                    border-left: 4px solid #4a9eff;
+                }
+            
+        
+        /* 通用代碼塊樣式 */
+        pre code {
+            display: block;
+            padding: 1.5em;
+            border-radius: 8px;
+            overflow-x: auto;
+            line-height: 1.6;
+        }
+
+        /* Mermaid 圖表樣式 */
+        
+        .mermaid {
+            margin: 2em 0;
+            padding: 1.5em;
+            text-align: center;
+            border-radius: 8px;
+        }
+        
+        .mermaid {
+            background: #2c3034;
+            border: 1px solid #444;
+        }
+            
+        
+        /* 響應式調整 */
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            .container, .markdown-body, .latex-body, .window-body, .nes-container {
+                padding: 15px;
+            }
+            pre code {
+                padding: 1em;
+            }
+        }
+        
+        
+    </style>
+</head>
+<body>
+    <div class="container"><!-- Path: 114A_Robot_Agent | Timestamp: 2025-11-10 10:45:00 | Version: b08 -->
+<h1>Arduino的馬達控制</h1>
+<h2>1. 直流馬達與TT馬達(無編碼器)</h2>
+<h3>1.1. 直流馬達工作原理</h3>
+<h4>1.1.1. 工作原理</h4>
+<p>直流馬達（DC Motor）是一種將電能轉換為機械能的裝置。其基本原理基於「勞侖茲力」：當載有電流的導體（線圈）放置在磁場中時，會受到一個力的作用，從而產生轉矩，驅動馬達轉動。馬達內部的電刷和換向器結構確保線圈在不同旋轉角度下能持續朝同一方向轉動。</p>
+<h4>1.1.2. 轉速控制 (PWM)</h4>
+<p>要控制直流馬達的轉速，最常見的方法是使用<strong>脈衝寬度調變（Pulse-Width Modulation, PWM）</strong>。<br />
+- <strong>原理</strong>：PWM 技術不是改變電壓大小，而是快速地開關電源，並調整「開啟」時間佔總週期的比例（稱為<strong>工作週期 Duty Cycle</strong>）。<br />
+- <strong>效果</strong>：<br />
+    - <strong>高工作週期</strong>（如90%）：馬達獲得的平均功率較高，轉速較快。<br />
+    - <strong>低工作週期</strong>（如20%）：馬達獲得的平均功率較低，轉速較慢。<br />
+- <strong>Arduino 實作</strong>：Arduino 的 <code>analogWrite(pin, value)</code> 函式就是用來產生PWM訊號的。<code>value</code> 的範圍是 <code>0</code>（0% 工作週期，停止）到 <code>255</code>（100% 工作週期，全速）。</p>
+<h4>1.1.3. 方向控制的挑戰 與 馬達驅動器的必要性</h4>
+<p><strong>理論上的方向控制：</strong><br />
+要改變馬達的旋轉方向，最直觀的方法就是將供應給馬達的<strong>電源正負極交換</strong>。如果你將一個直流馬達接到電池上，然後將電線反接，你會發現馬達立刻反向旋轉。</p>
+<p><strong>實務上的挑戰：</strong><br />
+這個「手動換線」的方法在自走車、機器手臂等需要<strong>動態改變方向</strong>的專案中是完全不可行的。我們不可能在程式跑到一半時，親手去拔插電線。我們需要的是一種能讓 Arduino <strong>用程式邏輯訊號來控制電流方向</strong>的方法。</p>
+<p><strong>解決方案：馬達驅動器 (Motor Driver)</strong><br />
+這就是為什麼<strong>馬達驅動器是不可或缺的</strong>。它一次解決了控制直流馬達的兩大核心問題：</p>
+<ol>
+<li>
+<p><strong>功率放大 (Power Amplification)</strong>：<br />
+    Arduino 的 I/O 接腳輸出電流非常小（約 20-40mA），遠不足以驅動馬達（通常需要數百mA甚至數A）。馬達驅動器從<strong>外部電源</strong>獲取足夠的電力，並根據 Arduino 的訊號來驅動馬達，就像一個由程式控制的「大功率水龍頭」。<strong>直接將馬達接到 Arduino 會燒毀開發板！</strong></p>
+</li>
+<li>
+<p><strong>方向控制 (Direction Control)</strong>：<br />
+    馬達驅動器內部整合了稱為 <strong>H-Bridge (H橋)</strong> 的精密電路。這個電路就像一個由程式控制的「雙向道閘門」，可以根據 Arduino 送來的 <code>HIGH</code> 或 <code>LOW</code> 訊號，來決定電流要「從左到右」還是「從右到左」流過馬達，從而實現程式化的正反轉控制。</p>
+</li>
+</ol>
+<p>總結來說，馬達驅動器扮演著<strong>「翻譯官」兼「大力士」</strong>的角色：它將 Arduino 微弱的「指令」（邏輯訊號）轉譯成強大的「動作」（大電流輸出），並能依指令決定動作的方向。</p>
+<h3>1.2. TT馬達(無編碼器)介紹</h3>
+<ul>
+<li><strong>介紹</strong>：TT馬達是一種常見於玩具、自走車專案的減速直流馬達。它整合了直流馬達和一個減速齒輪箱。</li>
+<li><strong>特點</strong>：<ul>
+<li><strong>高扭力</strong>：齒輪箱降低了輸出轉速，但大幅增加了扭力，使其能驅動輪子等負載。</li>
+<li><strong>低轉速</strong>：適合需要穩定、可控速度的應用，而非高速旋轉。</li>
+<li><strong>價格低廉</strong>：是入門機器人專案的熱門選擇。</li>
+</ul>
+</li>
+<li><strong>無編碼器</strong>：本文件討論的TT馬達不帶編碼器，意味著我們無法精確讀取馬達的轉速或旋轉角度。只能透過PWM控制其大致速度。</li>
+</ul>
+<h3>1.3. 直流馬達與TT馬達比較</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">特性</th>
+<th style="text-align: left;">一般直流馬達 (無齒輪箱)</th>
+<th style="text-align: left;">TT馬達 (帶減速齒輪箱)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>轉速</strong></td>
+<td style="text-align: left;">非常高</td>
+<td style="text-align: left;">較低</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>扭力</strong></td>
+<td style="text-align: left;">非常低</td>
+<td style="text-align: left;">較高</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>應用場景</strong></td>
+<td style="text-align: left;">風扇、飛輪、需要高速旋轉的場合</td>
+<td style="text-align: left;">輪型機器人、履帶車、需要力量的場合</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>控制</strong></td>
+<td style="text-align: left;">轉速不易在低速時穩定控制</td>
+<td style="text-align: left;">轉速相對穩定，適合入門自走車</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>選擇建議</strong></td>
+<td style="text-align: left;">如果你需要高速旋轉，例如做一個小風扇。</td>
+<td style="text-align: left;">如果你需要驅動輪子或任何需要力量的結構，請選擇TT馬達。</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>2. Arduino與馬達控制器</h2>
+<h3>2.1. H-Bridge原理：馬達控制的核心</h3>
+<p><strong>H-Bridge (H橋)</strong> 是所有直流馬達驅動器的核心電路。它的名字來自其電路結構形狀像一個大寫的 "H"。</p>
+<h4>2.1.1. 電路結構</h4>
+<p>H橋由四個電子開關（Q1, Q2, Q3, Q4）組成。在現代驅動器中，這些開關通常是<strong>電晶體(Transistors)</strong>，由 Arduino 發出的邏輯訊號控制其開關狀態。馬達(M)被放置在H的中央橫槓上。</p>
+<div class="mermaid">
+graph TD
+    subgraph H-Bridge Circuit
+        VCC(Power +)
+        GND(Ground -)
+
+        Q1(Q1: 左上開關)
+        Q2(Q2: 右上開關)
+        Q3(Q3: 左下開關)
+        Q4(Q4: 右下開關)
+
+        M((M))
+
+        VCC --> Q1
+        VCC --> Q2
+        Q1 -- 馬達左端 --> M
+        Q2 -- 馬達右端 --> M
+        M -- 馬達左端 --> Q3
+        M -- 馬達右端 --> Q4
+        Q3 --> GND
+        Q4 --> GND
+    end
+
+</div>
+
+<h4>2.1.2. 工作模式詳解</h4>
+<p><strong>1. 正轉 (Forward)</strong><br />
+- <strong>狀態</strong>：開關 <code>Q1</code> 和 <code>Q4</code> 閉合，<code>Q2</code> 和 <code>Q3</code> 斷開。<br />
+- <strong>電流路徑</strong>：電流從 <code>Power+</code> -&gt; <code>Q1</code> -&gt; 馬達 (左至右) -&gt; <code>Q4</code> -&gt; <code>Ground-</code>。<br />
+- <strong>結果</strong>：馬達向一個方向旋轉。</p>
+<p><strong>2. 反轉 (Reverse)</strong><br />
+- <strong>狀態</strong>：開關 <code>Q2</code> 和 <code>Q3</code> 閉合，<code>Q1</code> 和 <code>Q4</code> 斷開。<br />
+- <strong>電流路徑</strong>：電流從 <code>Power+</code> -&gt; <code>Q2</code> -&gt; 馬達 (右至左) -&gt; <code>Q3</code> -&gt; <code>Ground-</code>。<br />
+- <strong>結果</strong>：馬達向相反方向旋轉。</p>
+<p><strong>3. 自由滑行 (Coast / Freewheeling)</strong><br />
+- <strong>狀態</strong>：所有開關 <code>Q1, Q2, Q3, Q4</code> 全部斷開。<br />
+- <strong>電流路徑</strong>：沒有電流路徑。馬達與電路完全斷開。<br />
+- <strong>結果</strong>：馬達會因自身的慣性繼續旋轉，直到摩擦力使其自然停止。這就像空檔滑行。</p>
+<p><strong>4. 電磁煞車 (Dynamic Brake)</strong><br />
+- <strong>狀態</strong>：上方開關 <code>Q1, Q2</code> 斷開，下方開關 <code>Q3, Q4</code> 閉合。<br />
+- <strong>電流路徑</strong>：馬達的兩個接腳被 <code>Q3</code> 和 <code>Q4</code> 短路在一起。<br />
+- <strong>結果</strong>：<br />
+    - 由於慣性，仍在旋轉的馬達會像一個小型發電機一樣產生感應電動勢。<br />
+    - 這個電壓在短路的迴路中產生電流。<br />
+    - 根據勞侖茲力，這個電流會產生一個與旋轉方向相反的扭力，從而迅速地讓馬達停下來。這提供了比自由滑行更快的煞車效果。</p>
+<h4>2.1.3. 重要警告：直通 (Shoot-through)</h4>
+<p><strong>絕對不能</strong>讓同一側的開關（例如 <code>Q1</code> 和 <code>Q3</code>，或 <code>Q2</code> 和 <code>Q4</code>）同時閉合。這會造成從 <code>Power+</code> 直接通過兩個開關流向 <code>Ground-</code> 的<strong>短路</strong>，產生巨大電流，瞬間燒毀馬達驅動器。專業的馬達驅動晶片（如L298N）內部都設計有「死區時間」或保護邏輯，以防止這種情況發生。</p>
+<h3>2.2. 馬達控制器介紹</h3>
+<h4>2.2.1. 馬達控制器種類</h4>
+<p>除了 L298N，市面上還有許多不同的馬達驅動器，各有優劣：<br />
+- <strong>L298N</strong>：經典、便宜、耐用，但效率較低、體積大、會發熱。適合初學者。<br />
+- <strong>TB6612FNG</strong>：比 L298N 更現代、效率更高、體積小。是目前許多專案的首選。<br />
+- <strong>DRV8833</strong>：與 TB6612FNG 類似，體積小、效率高，常用於小型機器人。<br />
+- <strong>馬達擴充板 (Motor Shield)</strong>：直接插在 Arduino 上的擴充板，通常整合了 TB6612FNG 或類似晶片，接線非常方便，但價格較高。</p>
+<h4>2.2.2. 馬達控制器選型指南</h4>
+<ol>
+<li><strong>馬達數量</strong>：你需要控制幾個馬達？L298N、TB6612FNG、DRV8833 通常都能控制2個。</li>
+<li><strong>工作電壓</strong>：你的馬達需要多高的電壓？檢查驅動器的電壓範圍是否匹配。</li>
+<li><strong>最大電流</strong>：這是最重要的參數。檢查驅動器能持續提供及瞬間提供的最大電流是否大於你的馬達堵轉時的電流，否則會燒毀驅動器。</li>
+<li><strong>效率與發熱</strong>：L298N 是電晶體結構，效率低、易發熱；TB6612FNG 等是 MOSFET 結構，效率高、發熱少。</li>
+<li><strong>體積與便利性</strong>：擴充板最方便，但犧牲了靈活性；L298N體積最大。</li>
+</ol>
+<h3>2.3. L298N 接線圖 (以L298N為例)</h3>
+<p>本節包含兩種常見的接線方式：<strong>獨立電源</strong>與<strong>共用電源</strong>。</p>
+<h4>2.3.1. 獨立電源接線 (建議初學者使用)</h4>
+<p>此方式使用兩個獨立的電源：一個為 Arduino 供電（如USB），另一個為馬達供電（如電池盒）。這種方式最穩定，可以避免馬達的電流干擾 Arduino。</p>
+<div class="mermaid">
+graph TD
+    subgraph Arduino_UNO
+        D9((PWM ~9))
+        D8((8))
+        D7((7))
+        D6((PWM ~6))
+        D5((5))
+        D4((4))
+        GND_A[GND]
+    end
+
+    subgraph L298N_Motor_Driver
+        ENA((ENA))
+        IN1((IN1))
+        IN2((IN2))
+        ENB((ENB))
+        IN3((IN3))
+        IN4((IN4))
+        VCC_L298N((12V))
+        GND_L298N((GND))
+        OUT1((OUT1))
+        OUT2((OUT2))
+        OUT3((OUT3))
+        OUT4((OUT4))
+    end
+
+    subgraph External_Power_for_Motors
+        Battery[電池盒 6V]
+        P_BAT[+]
+        N_BAT[-]
+    end
+
+    subgraph Motors
+        MotorA[左馬達]
+        MotorB[右馬達]
+    end
+
+    %% Arduino to L298N connections
+    D9 -- PWM控制左輪轉速 --> ENA
+    D8 -- 左輪方向 --> IN1
+    D7 -- 左輪方向 --> IN2
+    D6 -- PWM控制右輪轉速 --> ENB
+    D5 -- 右輪方向 --> IN3
+    D4 -- 右輪方向 --> IN4
+
+    %% Power connections
+    P_BAT -- 電源正極 --> VCC_L298N
+    N_BAT -- 電源負極 --> GND_L298N
+    GND_L298N -- "建立共地(非常重要)" --> GND_A
+
+    %% Motor connections
+    OUT1 -- 馬達線 --> MotorA
+    OUT2 -- 馬達線 --> MotorA
+    OUT3 -- 馬達線 --> MotorB
+    OUT4 -- 馬達線 --> MotorB
+
+    classDef arduino fill:#66ccff,stroke:#333,stroke-width:2px;
+    classDef l298n fill:#ffcc66,stroke:#333,stroke-width:2px;
+    classDef power fill:#cc99ff,stroke:#333,stroke-width:2px;
+    classDef motor fill:#99ff99,stroke:#333,stroke-width:2px;
+
+    class Arduino_UNO arduino
+    class L298N_Motor_Driver l298n
+    class External_Power_for_Motors power
+    class Motors motor
+
+</div>
+
+<h4>2.3.2. 共用電源與共地接線</h4>
+<p>當您只有一個電源（例如 7.4V~12V 的電池組）時，可以同時為 Arduino 和 L298N 供電。此時「共地」的觀念與接法就極為重要。</p>
+<p><strong>原理：</strong> 整個電路系統必須有一個統一的 0V 參考點，這就是「共地」。如果 Arduino 和 L298N 的接地點沒有連在一起，Arduino 送出的 5V 訊號對 L298N 來說可能沒有任何意義，導致控制失靈。</p>
+<p><strong>接線圖：</strong></p>
+<div class="mermaid">
+graph TD
+    subgraph Shared_Power_Source
+        style Shared_Power_Source fill:#cc99ff,stroke:#333
+        Battery["電池組 (7.4V ~ 12V)"]
+        P_BAT[+]
+        N_BAT[-]
+    end
+
+    subgraph Arduino_UNO
+        style Arduino_UNO fill:#66ccff,stroke:#333
+        VIN((VIN))
+        GND_A1[GND]
+        GND_A2[GND]
+    end
+
+    subgraph L298N_Motor_Driver
+        style L298N_Motor_Driver fill:#ffcc66,stroke:#333
+        VCC_L298N((12V))
+        GND_L298N((GND))
+    end
+
+    %% Power Distribution
+    P_BAT -- "電源正極" --> VIN
+    P_BAT -- "電源正極" --> VCC_L298N
+
+    N_BAT -- "電源負極" --> GND_A1
+    N_BAT -- "電源負極" --> GND_L298N
+
+    %% Common Ground Connection
+    GND_A2 -.-> GND_L298N;
+    linkStyle 4 stroke:#ff0000,stroke-width:2px,stroke-dasharray: 5 5;
+    subgraph Legend
+        style Legend fill:#eee,stroke:#999
+        L1["--- 電源線"]
+        L2["-.-. 關鍵的共地線"]
+    end
+
+</div>
+
+<p><strong>接線說明：</strong><br />
+1.  <strong>正極分配</strong>：電池正極 <code>+</code> 分別接到 Arduino 的 <code>VIN</code> 和 L298N 的 <code>12V</code>。<br />
+2.  <strong>負極分配</strong>：電池負極 <code>-</code> 分別接到 Arduino 的 <code>GND</code> 和 L298N 的 <code>GND</code>。<br />
+3.  <strong>共地連接 (最關鍵)</strong>：即使它們都接到了電池負極，也要<strong>額外用一條線將 Arduino 的任一 <code>GND</code> 與 L298N 的 <code>GND</code> 連接起來</strong>。這條線確保了兩個模組的 0V 參考電位完全一致。</p>
+<h3>2.4. 兩個馬達的控制邏輯</h3>
+<p>假設 <code>IN1, IN2</code> 控制左輪，<code>IN3, IN4</code> 控制右輪。轉速由 <code>ENA, ENB</code> 的PWM值決定。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">動作</th>
+<th style="text-align: center;">IN1</th>
+<th style="text-align: center;">IN2</th>
+<th style="text-align: center;">IN3</th>
+<th style="text-align: center;">IN4</th>
+<th style="text-align: left;">說明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>前進</strong></td>
+<td style="text-align: center;"><code>HIGH</code></td>
+<td style="text-align: center;"><code>LOW</code></td>
+<td style="text-align: center;"><code>HIGH</code></td>
+<td style="text-align: center;"><code>LOW</code></td>
+<td style="text-align: left;">兩個馬達都向前轉</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>後退</strong></td>
+<td style="text-align: center;"><code>LOW</code></td>
+<td style="text-align: center;"><code>HIGH</code></td>
+<td style="text-align: center;"><code>LOW</code></td>
+<td style="text-align: center;"><code>HIGH</code></td>
+<td style="text-align: left;">兩個馬達都向後轉</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>左轉</strong></td>
+<td style="text-align: center;"><code>LOW</code></td>
+<td style="text-align: center;"><code>HIGH</code></td>
+<td style="text-align: center;"><code>HIGH</code></td>
+<td style="text-align: center;"><code>LOW</code></td>
+<td style="text-align: left;">左輪後退，右輪前進 (原地旋轉)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>右轉</strong></td>
+<td style="text-align: center;"><code>HIGH</code></td>
+<td style="text-align: center;"><code>LOW</code></td>
+<td style="text-align: center;"><code>LOW</code></td>
+<td style="text-align: center;"><code>HIGH</code></td>
+<td style="text-align: left;">左輪前進，右輪後退 (原地旋轉)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>停止</strong></td>
+<td style="text-align: center;"><code>LOW</code></td>
+<td style="text-align: center;"><code>LOW</code></td>
+<td style="text-align: center;"><code>LOW</code></td>
+<td style="text-align: center;"><code>LOW</code></td>
+<td style="text-align: left;">兩個馬達停止 (自由滑行)</td>
+</tr>
+</tbody>
+</table>
+<p><em>註：左轉和右轉也可以透過單邊輪子轉動、另一邊停止的方式實現，會是畫弧線轉彎而非原地旋轉。</em></p>
+<hr />
+<h2>3. 程式範例</h2>
+<p>這個範例程式會讓自走車重複執行「前進2秒 -&gt; 停止1秒 -&gt; 右轉0.5秒 -&gt; 停止1秒」的動作。</p>
+<pre class="codehilite"><code class="language-cpp">// ===== Pin Definitions =====
+// Motor A (Left)
+const int enA = 9;   // 左輪轉速控制 (PWM)
+const int in1 = 8;   // 左輪方向控制
+const int in2 = 7;   // 左輪方向控制
+
+// Motor B (Right)
+const int enB = 6;   // 右輪轉速控制 (PWM)
+const int in3 = 5;   // 右輪方向控制
+const int in4 = 4;   // 右輪方向控制
+
+// ===== Speed Setting =====
+int motorSpeed = 200; // 設定馬達轉速 (0-255)
+
+// ===== Setup Function =====
+void setup() {
+  // 將所有控制腳位設定為輸出模式
+  pinMode(enA, OUTPUT);
+  pinMode(in1, OUTPUT);
+  pinMode(in2, OUTPUT);
+  pinMode(enB, OUTPUT);
+  pinMode(in3, OUTPUT);
+  pinMode(in4, OUTPUT);
+
+  // 程式開始時，先讓馬達停止
+  stopMotors();
+}
+
+// ===== Main Loop =====
+void loop() {
+  // 1. 前進 2 秒
+  moveForward(motorSpeed);
+  delay(2000);
+
+  // 2. 停止 1 秒
+  stopMotors();
+  delay(1000);
+
+  // 3. 右轉 0.5 秒
+  turnRight(motorSpeed);
+  delay(500);
+
+  // 4. 停止 1 秒
+  stopMotors();
+  delay(1000);
+}
+
+// ===== Custom Functions =====
+
+// 前進
+void moveForward(int speed) {
+  // 左輪前進
+  digitalWrite(in1, HIGH);
+  digitalWrite(in2, LOW);
+  analogWrite(enA, speed);
+
+  // 右輪前進
+  digitalWrite(in3, HIGH);
+  digitalWrite(in4, LOW);
+  analogWrite(enB, speed);
+}
+
+// 後退
+void moveBackward(int speed) {
+  // 左輪後退
+  digitalWrite(in1, LOW);
+  digitalWrite(in2, HIGH);
+  analogWrite(enA, speed);
+
+  // 右輪後退
+  digitalWrite(in3, LOW);
+  digitalWrite(in4, HIGH);
+  analogWrite(enB, speed);
+}
+
+// 原地右轉
+void turnRight(int speed) {
+  // 左輪前進
+  digitalWrite(in1, HIGH);
+  digitalWrite(in2, LOW);
+  analogWrite(enA, speed);
+
+  // 右輪後退
+  digitalWrite(in3, LOW);
+  digitalWrite(in4, HIGH);
+  analogWrite(enB, speed);
+}
+
+// 原地左轉
+void turnLeft(int speed) {
+  // 左輪後退
+  digitalWrite(in1, LOW);
+  digitalWrite(in2, HIGH);
+  analogWrite(enA, speed);
+
+  // 右輪前進
+  digitalWrite(in3, HIGH);
+  digitalWrite(in4, LOW);
+  analogWrite(enB, speed);
+}
+
+// 停止
+void stopMotors() {
+  // 左輪停止
+  digitalWrite(in1, LOW);
+  digitalWrite(in2, LOW);
+  analogWrite(enA, 0);
+
+  // 右輪停止
+  digitalWrite(in3, LOW);
+  digitalWrite(in4, LOW);
+  analogWrite(enB, 0);
+}
+</code></pre>
+
+<h3>程式解說</h3>
+<ol>
+<li><strong>Pin Definitions</strong>：在程式最上方用常數（<code>const int</code>）定義所有接腳，方便未來修改與閱讀。</li>
+<li><strong><code>setup()</code></strong>：<ul>
+<li>使用 <code>pinMode()</code> 將所有控制腳位設為 <code>OUTPUT</code>。</li>
+<li>在程式一開始呼叫 <code>stopMotors()</code>，確保裝置啟動時不會暴衝。</li>
+</ul>
+</li>
+<li><strong><code>loop()</code></strong>：<ul>
+<li>主迴圈是動作的編排區。它依序呼叫自訂的動作函式（如<code>moveForward</code>）和 <code>delay()</code> 來實現一個簡單的自動控制流程。</li>
+</ul>
+</li>
+<li><strong>Custom Functions (自訂函式)</strong>：<ul>
+<li>將「前進」、「後退」、「左轉」、「右轉」、「停止」等基本動作封裝成獨立的函式。</li>
+<li>這麼做的好處是讓 <code>loop()</code> 中的邏輯更清晰，並且可以重複使用這些動作。</li>
+<li>每個函式內部根據之前討論的 <strong>控制邏輯表</strong>，透過 <code>digitalWrite()</code> 設定方向，並用 <code>analogWrite()</code> 設定速度。</li>
+<li><code>stopMotors()</code> 函式將所有方向設為 <code>LOW</code>，並將PWM速度設為 <code>0</code>，徹底停止馬達。</li>
+</ul>
+</li>
+</ol>
+<hr />
+<h2>4. 常見問題與除錯 (Troubleshooting)</h2>
+<ol>
+<li>
+<p><strong>問題：馬達完全沒反應</strong></p>
+<ul>
+<li><strong>檢查電源</strong>：L298N 的 <code>VCC</code> 是否接到外部電源？外部電源是否有電？</li>
+<li><strong>檢查共地</strong>：L298N 的 <code>GND</code> 是否同時連接到外部電源負極和 Arduino 的 <code>GND</code>？這是最常見的錯誤。</li>
+<li><strong>檢查跳線帽</strong>：L298N 上的 <code>ENA</code> 和 <code>ENB</code> 跳線帽是否插著？如果拔掉了，需要手動將 <code>ENA</code> 和 <code>ENB</code> 接到 <code>HIGH</code> 或 PWM 腳位。</li>
+<li><strong>檢查 5V EN 跳線帽</strong>：L298N 上的 <code>5V EN</code> 跳線帽是否插著？如果拔掉了，需要手動為 <code>5V</code> 腳位提供邏輯電源。</li>
+</ul>
+</li>
+<li>
+<p><strong>問題：馬達轉向或轉速不如預期</strong></p>
+<ul>
+<li><strong>檢查 IN 接腳</strong>：<code>IN1/IN2</code> 和 <code>IN3/IN4</code> 的接線是否與程式碼中的定義一致？<code>HIGH/LOW</code> 的組合是否正確？</li>
+<li><strong>檢查 ENA/ENB 接腳</strong>：<code>ENA</code> 和 <code>ENB</code> 是否接到 Arduino 的 <strong>PWM</strong> 腳位（有 <code>~</code> 符號的）？如果接到普通數位腳位，將無法調速。</li>
+<li><strong>檢查馬達接線</strong>：嘗試交換 <code>OUT1/OUT2</code> 或 <code>OUT3/OUT4</code> 的接線，看看轉向是否反了。如果反了，可以交換接線或修改程式碼邏輯。</li>
+</ul>
+</li>
+<li>
+<p><strong>問題：Arduino 板上的燈變暗或重啟</strong></p>
+<ul>
+<li><strong>原因</strong>：這通常是電流問題。你可能不小心將馬達電源（L298N 的 VCC）接到 Arduino 的 5V 腳位了。馬達啟動時的大電流會拉低 Arduino 的電壓，導致重啟。</li>
+<li><strong>解決</strong>：<strong>永遠</strong>使用外部電源供應馬達電力。</li>
+</ul>
+</li>
+</ol></div>
+    
+    <!-- Highlight.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    
+    <!-- Mermaid -->
+    <script type="module">
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+        mermaid.initialize({
+            "startOnLoad": true,
+            "theme": "dark",
+            "securityLevel": "loose"
+});
+    </script>
+</body>
+</html>
