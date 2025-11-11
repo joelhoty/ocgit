@@ -1,0 +1,887 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CNN 卷積神經網路:影像辨識的深度學習應用</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Microsoft JhengHei', 'Segoe UI', sans-serif;
+            line-height: 1.8;
+            color: #e0e0e0;
+            background: linear-gradient(135deg, #0f0f0f 0%, #1a1a2e 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            padding: 50px 20px;
+            background: rgba(26, 26, 46, 0.95);
+            border-radius: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            border: 2px solid rgba(0, 217, 255, 0.3);
+        }
+
+        h1 {
+            color: #00d9ff;
+            font-size: 3em;
+            margin-bottom: 20px;
+            text-shadow: 0 0 20px rgba(0, 217, 255, 0.5);
+        }
+
+        .subtitle {
+            color: #a8b8c4;
+            font-size: 1.4em;
+            font-style: italic;
+        }
+
+        .section {
+            background: rgba(20, 20, 35, 0.95);
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(168, 184, 196, 0.2);
+        }
+
+        h2 {
+            color: #00d9ff;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            font-size: 2.2em;
+            position: relative;
+            text-shadow: 0 0 10px rgba(0, 217, 255, 0.3);
+        }
+
+        h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, #00d9ff 0%, #a8b8c4 100%);
+        }
+
+        h3 {
+            color: #a8b8c4;
+            margin: 30px 0 20px 0;
+            font-size: 1.6em;
+        }
+
+        h4 {
+            color: #00d9ff;
+            margin: 20px 0 15px 0;
+            font-size: 1.3em;
+        }
+
+        p {
+            margin: 15px 0;
+            font-size: 1.05em;
+            color: #d0d0d0;
+        }
+
+        .code-block, pre {
+            background: #0a0a0a;
+            color: #d4d4d4;
+            padding: 25px;
+            border-radius: 12px;
+            margin: 25px 0;
+            overflow-x: auto;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(0, 217, 255, 0.2);
+        }
+
+        .code-block::before {
+            content: attr(data-lang);
+            position: absolute;
+            top: 8px;
+            right: 15px;
+            color: #00d9ff;
+            font-size: 0.9em;
+            font-weight: bold;
+            background: rgba(0, 217, 255, 0.1);
+            padding: 4px 12px;
+            border-radius: 5px;
+            text-transform: uppercase;
+        }
+
+        pre {
+            margin: 0;
+            white-space: pre;
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            line-height: 1.6;
+            font-size: 0.95em;
+        }
+
+        code {
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            background: rgba(0, 217, 255, 0.1);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.9em;
+            color: #00d9ff;
+        }
+
+        pre code {
+            background: transparent;
+            padding: 0;
+            color: #d4d4d4;
+        }
+
+        /* 程式碼語法高亮 */
+        .keyword { color: #569CD6; font-weight: bold; }
+        .string { color: #CE9178; }
+        .comment { color: #6A9955; font-style: italic; }
+        .function { color: #DCDCAA; }
+        .number { color: #B5CEA8; }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 30px 0;
+            background: rgba(20, 20, 35, 0.8);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        th {
+            background: linear-gradient(135deg, #00d9ff 0%, #a8b8c4 100%);
+            color: #0a0a0a;
+            padding: 18px;
+            text-align: left;
+            font-weight: bold;
+            font-size: 1.05em;
+        }
+
+        td {
+            padding: 15px 18px;
+            border-bottom: 1px solid rgba(168, 184, 196, 0.1);
+            color: #d0d0d0;
+        }
+
+        tr:hover {
+            background: rgba(0, 217, 255, 0.05);
+        }
+
+        ul, ol {
+            margin-left: 30px;
+            margin-top: 15px;
+        }
+
+        li {
+            margin: 12px 0;
+            line-height: 1.8;
+            color: #d0d0d0;
+        }
+
+        strong {
+            color: #00d9ff;
+            font-weight: 600;
+        }
+
+        blockquote {
+            border-left: 5px solid #00d9ff;
+            padding-left: 20px;
+            margin: 20px 0;
+            color: #a8b8c4;
+            font-style: italic;
+            background: rgba(0, 217, 255, 0.05);
+            padding: 15px 20px;
+            border-radius: 5px;
+        }
+
+        .mermaid {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 30px;
+            margin: 30px 0;
+            text-align: center;
+            border: 2px dashed rgba(0, 217, 255, 0.3);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        @media (max-width: 768px) {
+            h1 { font-size: 2em; }
+            h2 { font-size: 1.6em; }
+            .section { padding: 25px; }
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script>
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'dark',
+            themeVariables: {
+                primaryColor: '#00d9ff',
+                primaryTextColor: '#fff',
+                primaryBorderColor: '#a8b8c4',
+                lineColor: '#a8b8c4',
+                secondaryColor: '#a8b8c4',
+                tertiaryColor: '#1a1a2e'
+            }
+        });
+    </script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>CNN 卷積神經網路:影像辨識的深度學習應用</h1>
+            <p class="subtitle">在進入 CNN 的世界之前,讓我們先釐清一個常見的問題:深度學習 (Deep Learning) 和機器學習 (Machine Learning) 有什麼不同?</p>
+        </header>
+
+        <div class="section">
+            <h2>1. 深度學習與機器學習的差異</h2>
+<p>在進入 CNN 的世界之前,讓我們先釐清一個常見的問題:深度學習 (Deep Learning) 和機器學習 (Machine Learning) 有什麼不同?</p>
+<ul>
+<li><strong>機器學習 (Machine Learning)</strong>: 是一個廣泛的領域,指的是讓電腦從資料中「學習」出模式,而不需要明確撰寫規則。例如,給定一堆房價資料,機器學習模型可以學習如何預測房價。</li>
+<li><strong>深度學習 (Deep Learning)</strong>: 是機器學習的一個分支。它的核心是使用「深度神經網路」(Deep Neural Networks),也就是包含許多層次的神經網路。這種深度結構讓模型能夠自動學習資料中從簡單到複雜的特徵,特別適合處理像圖片、聲音、自然語言這類複雜的非結構化資料。</li>
+</ul>
+<p>簡單來說,<strong>深度學習是實現機器學習的一種更強大、更複雜的方法</strong>。</p>
+
+<h2>2. 什麼是 CNN (卷積神經網路)?</h2>
+<p>CNN,全名為 Convolutional Neural Network,是深度學習中最著名且應用最廣的模型之一,尤其在影像處理領域取得了革命性的成功。</p>
+
+<h3>類神經網路是什麼?</h3>
+<p>想像一下人腦中的神經元。它接收來自其他神經元的訊號,經過處理後,再決定是否要將訊號傳遞下去。類神經網路 (Artificial Neural Network) 就是模仿這種結構的數學模型。它由許多互相連接的「神經元」(節點) 組成,這些神經元被組織在不同的「層」(Layer) 中。資料從輸入層開始,經過中間的「隱藏層」,最後到達「輸出層」得到結果。網路透過「訓練」過程,不斷調整神經元之間的連接權重,以學習如何完成特定任務。</p>
+
+<h3>神經網路的開關:激勵函數 (Activation Function)</h3>
+<p>在介紹 CNN 的詳細架構前,我們必須先認識一個關鍵元件:<strong>激勵函數</strong>。</p>
+<ul>
+<li><strong>目的:加入「非線性」能力</strong><ul>
+<li>如果沒有激勵函數,神經網路不論疊加多少層,本質上都只是一個巨大的線性方程式 (<code>y = ax + b</code>)。這樣的網路只能學習簡單的線性關係,無法解決現實世界中複雜的問題(例如,區分貓和狗的複雜視覺邊界)。</li>
+<li>激勵函數就像是神經元的「開關」或「調節器」,它為網路加入了非線性因素,使得網路能夠學習並擬合幾乎任何複雜的模式。</li>
+</ul>
+</li>
+<li><strong>ReLU (Rectified Linear Unit) 的功能</strong><ul>
+<li>在我們的範例中,以及目前大多數的 CNN 模型中,最常用的激勵函數是 <strong>ReLU</strong>。</li>
+<li><strong>運作方式</strong>:它的規則非常簡單:<code>output = max(0, input)</code>。意思是,當神經元收到的訊號是正數時,就讓它直接通過;當訊號是負數或零時,就將其阻斷(輸出為 0)。</li>
+<li><strong>優點</strong>:這種簡單粗暴的方式,計算速度極快,並且在實務上能有效緩解「梯度消失」問題(一種在深層網路中常見的訓練障礙),讓深度學習模型的訓練變得更有效率。</li>
+</ul>
+</li>
+</ul>
+
+<h3>圖解 CNN 架構</h3>
+<p>一個典型的 CNN 架構就像一個處理影像的流水線,主要包含以下幾個部分:</p>
+<div class="mermaid">
+graph TD
+    A[輸入影像] --> B(卷積層 Conv + 激勵函數 ReLU);
+    B --> C(池化層 Pooling);
+    C --> D(卷積層 Conv + 激勵函數 ReLU);
+    D --> E(池化層 Pooling);
+    E --> F[扁平化 Flatten];
+    F --> G(全連接層 Fully Connected);
+    G --> H(輸出層 Softmax);
+    H --> I[分類結果];
+</div>
+
+<h4>各層詳細解釋</h4>
+<ul>
+<li><strong>輸入影像 (Input Image)</strong>: 這是模型的起點,例如一張 32x32 像素的彩色圖片。</li>
+<li><strong>卷積層 + ReLU (Conv + ReLU)</strong>: 這是 CNN 的核心。卷積層負責偵測影像的局部特徵(如邊緣、紋理)。ReLU 激勵函數則為網路增加了非線性能力,幫助學習更複雜的模式。</li>
+<li><strong>池化層 (Pooling)</strong>: 緊跟在卷積層之後,用於降低特徵圖的維度(縮小圖片),減少計算量,同時保留最顯著的特徵,使模型對物體的微小位移不那麼敏感。</li>
+<li><strong>扁平化 (Flatten)</strong>: 在特徵提取完成後,這個步驟會將二維的特徵圖(像一張小圖片)壓平成一維的向量,以便將其輸入到全連接層進行分類。</li>
+<li><strong>全連接層 (Fully Connected)</strong>: 這是傳統的神經網路層,它會根據前面提取到的所有特徵,進行最終的綜合判斷。</li>
+<li><strong>輸出層 (Softmax)</strong>: 這是最後一層,它會將全連接層的輸出轉換成機率分佈。例如,對於10個類別的分類任務,它會輸出10個0到1之間的數字,總和為1,分別代表圖片屬於每個類別的機率。</li>
+</ul>
+
+<h3>CNN 的運作原理</h3>
+<p>CNN 之所以強大,在於它有兩個秘密武器:<strong>卷積層</strong>和<strong>池化層</strong>。</p>
+<ol>
+<li>
+<p><strong>卷積層 (Convolutional Layer)</strong>:</p>
+<ul>
+<li><strong>作用</strong>: 提取影像的局部特徵。</li>
+<li><strong>原理</strong>: 卷積層使用一個稱為「<strong>Kernel (核心/濾鏡)</strong>」的小型滑動視窗,在整張圖片上滑動。每滑動到一個位置,Kernel 就會與其覆蓋的圖片區域進行數學運算,並將結果存為新圖片(稱為<strong>特徵圖 Feature Map</strong>)上的一個像素。</li>
+<li><strong>生活實例</strong>: 這就像在玩《威利在哪裡?》。你的眼睛就是 Kernel,你腦中記得威利的「紅白條紋衫」特徵。你的目光(Kernel)在整張圖上掃描,每看到一個類似紅白條紋的圖案,大腦的對應區域(特徵圖)就會變得活躍。CNN 會自動學習成千上萬種 Kernel,有的學會找眼睛,有的學會找輪胎,有的學會找貓耳朵。</li>
+</ul>
+<h4>Kernel 的具體呈現:一個特徵偵測的視覺化範例</h4>
+<p>Kernel 的本質是一個<strong>充滿數字(權重)的小矩陣</strong>。這些數字是 CNN 在訓練過程中透過「梯度下降」和「反向傳播」學習到的參數。不同的數字組合,讓 Kernel 能偵測不同的特徵。</p>
+<p><strong>1. 假設我們有一張 5x5 的黑白圖片</strong> (數字越大代表越亮):
+圖片中間有一條垂直的亮線。</p>
+<pre><code>0  0  10  0  0
+0  0  10  0  0
+0  0  10  0  0
+0  0  10  0  0
+0  0  10  0  0
+</code></pre>
+<p><strong>2. 我們設計一個 3x3 的 Kernel 來偵測「左邊亮、右邊暗」的垂直邊緣</strong>:</p>
+<pre><code>  1   0  -1
+  1   0  -1
+  1   0  -1
+</code></pre>
+<p><strong>3. 進行卷積運算(滑動視窗並計算)</strong>:
+我們將 Kernel 疊在圖片左上角,對應位置的數字相乘後再相加:</p>
+<ul>
+<li><code>(0*1 + 0*0 + 10*-1) + (0*1 + 0*0 + 10*-1) + (0*1 + 0*0 + 10*-1) = -30</code></li>
+</ul>
+<p>將 Kernel 往右移動一格,再次計算:</p>
+<ul>
+<li><code>(0*1 + 10*0 + 0*-1) + (0*1 + 10*0 + 0*-1) + (0*1 + 10*0 + 0*-1) = 0</code></li>
+</ul>
+<p>將 Kernel 再往右移動一格,再次計算:</p>
+<ul>
+<li><code>(10*1 + 0*0 + 0*-1) + (10*1 + 0*0 + 0*-1) + (10*1 + 0*0 + 0*-1) = 30</code></li>
+</ul>
+<p><strong>4. 最終產生的特徵圖 (Feature Map)</strong>:
+將所有計算結果組合起來,就得到了一張新的 3x3 特徵圖:</p>
+<pre><code>-30    0   30
+-30    0   30
+-30    0   30
+</code></pre>
+<p><strong>觀察</strong>:在這張特徵圖上,數值最大的地方 (30),正好就是 Kernel 在原始圖片中<strong>成功偵測到「左亮右暗」垂直邊緣</strong>的位置!這就是 Kernel 偵測特徵並產生特徵圖的整個過程。在真實的 CNN 中,模型會自動學習出數百個能偵測各種複雜特徵的 Kernel。</p>
+</li>
+<li>
+<p><strong>池化層 (Pooling Layer)</strong>:</p>
+<ul>
+<li><strong>作用</strong>: 縮減特徵圖的尺寸,減少計算量,並保留最重要的特徵。</li>
+<li><strong>原理</strong>: 最常見的是「最大池化」(Max Pooling)。它同樣在特徵圖上滑動一個窗口,但它不做計算,而是直接選出窗口內的最大值(最顯著的特徵)作為代表。</li>
+<li><strong>生活實例</strong>: 這就像你在寫一本書的摘要。你不會逐字逐句抄寫,而是閱讀每個章節(一個區域),然後挑出最關鍵的一句話(最大值)來代表整個章節的內容。這樣一來,摘要(池化後的特徵圖)會短很多,但仍然保留了全書的精華。這也使得摘要對於原文中一些無關緊要的詞句變動不那麼敏感。</li>
+</ul>
+</li>
+<li>
+<p><strong>全連接層 (Fully Connected Layer)</strong>:</p>
+<ul>
+<li><strong>作用</strong>: 在經過多次卷積和池化後,影像的特徵已經被提取並濃縮。全連接層負責將這些最終的特徵進行匯總,並根據這些特徵進行分類。</li>
+<li><strong>原理</strong>: 它的結構和傳統的類神經網路一樣,每個神經元都與前一層的所有神經元相連。</li>
+<li><strong>生活實例</strong>: 這好比是一位偵探(全連接層)在破案。他已經收集了所有的線索(被提取的特徵),比如「不在場證明」、「指紋」、「目擊者證詞」。最後,他需要在大腦中將所有線索串聯起來,進行邏輯推理,最終指認出兇手(做出分類)。</li>
+</ul>
+</li>
+</ol>
+
+<h3>CNN 在影像辨識的應用</h3>
+<p>CNN 的應用無所不在,包括:</p>
+<ul>
+<li><strong>圖片分類</strong>: 判斷一張圖片是貓還是狗。</li>
+<li><strong>物件偵測</strong>: 在一張圖片中框出所有的汽車和行人。</li>
+<li><strong>人臉辨識</strong>: 手機解鎖、門禁系統。</li>
+<li><strong>自動駕駛</strong>: 辨識路標、車輛、行人。</li>
+<li><strong>醫學影像分析</strong>: 輔助醫生判斷 X 光片或 CT 掃描中的病灶。</li>
+</ul>
+
+<h2>3. CNN 如何訓練?</h2>
+<p>訓練 CNN 的過程,就是拿大量的「有標籤」的圖片餵給它,讓它去猜。如果猜錯了,就告訴它正確答案,並微調內部 Kernel 和神經元的權重,讓它下次能猜得更準。這個過程會重複成千上萬次,直到模型達到令人滿意的準確率為止。</p>
+
+<h3>範例使用之資料集:CIFAR-10</h3>
+<p>在我們的範例中,將使用 <strong>CIFAR-10</strong> 這個經典的影像資料集。</p>
+<ul>
+<li><strong>是什麼</strong>: 它是影像分類領域的「入門級」標準資料集,由加拿大高等研究院 (CIFAR) 收集。</li>
+<li><strong>內容</strong>: 包含 60,000 張 32x32 像素的彩色小圖片,共分為 10 個類別,每個類別有 6,000 張圖。這 10 個類別分別是:飛機、汽車、鳥、貓、鹿、狗、青蛙、馬、船、卡車。</li>
+<li><strong>應用</strong>: 由於圖片尺寸小、類別明確,非常適合用來教學、快速驗證模型架構與訓練演算法。幾乎所有的深度學習框架都內建了下載和使用它的功能,非常方便。</li>
+</ul>
+
+<h3>由 Python 實作簡易的 CNN 範例</h3>
+<p>接下來,我們將提供一段完整的 Python 程式碼。您可以直接將它複製到 Google Colab 的一個儲存格中執行。
+這段程式碼將會自動完成以下所有步驟:</p>
+<ol>
+<li><strong>環境設定</strong>:檢查是否有可用的 GPU 並設定好運算裝置。</li>
+<li><strong>資料準備</strong>:自動下載 CIFAR-10 訓練與測試資料集,並設定好標準化處理流程。</li>
+<li><strong>模型建構</strong>:定義一個包含兩個卷積層的簡單 CNN 模型架構。</li>
+<li><strong>模型訓練</strong>:設定損失函數與優化器,並執行 10 個週期的訓練迴圈。</li>
+<li><strong>模型評估</strong>:在 10,000 張測試圖片上驗證我們訓練好的模型,並計算出最終的分類準確率。</li>
+<li><strong>結果展示</strong>:隨機抽取幾張測試圖片,同時秀出「真實標籤」與模型的「預測結果」,讓您能直觀地看到模型的表現。</li>
+</ol>
+<p><strong>注意</strong>:第一次執行時,因為需要下載資料集,會花費稍長的時間。</p>
+<pre class="code-block" data-lang="python"><code class="language-python"># ==================================================================
+# 1. 匯入所有必要的函式庫
+# ==================================================================
+<span class="keyword">import</span> torch
+<span class="keyword">import</span> torch.nn <span class="keyword">as</span> nn
+<span class="keyword">import</span> torchvision
+<span class="keyword">import</span> torchvision.transforms <span class="keyword">as</span> transforms
+<span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt
+<span class="keyword">import</span> numpy <span class="keyword">as</span> np
+
+# ==================================================================
+# 2. 設定運算裝置與超參數
+# ==================================================================
+<span class="comment"># 檢查是否有可用的 NVIDIA GPU (cuda),若無則使用 CPU</span>
+device = torch.device(<span class="string">'cuda'</span> <span class="keyword">if</span> torch.cuda.is_available() <span class="keyword">else</span> <span class="string">'cpu'</span>)
+print(f<span class="string">'目前使用的裝置: {device}'</span>)
+
+<span class="comment"># 定義訓練過程中的超參數</span>
+num_epochs = <span class="number">10</span>         <span class="comment"># 訓練週期數:所有訓練資料要看過幾遍</span>
+batch_size = <span class="number">100</span>        <span class="comment"># 批次大小:模型每次更新權重前要看幾張圖片</span>
+learning_rate = <span class="number">0.001</span>   <span class="comment"># 學習率:模型每次學習(更新權重)的步伐大小</span>
+
+# ==================================================================
+# 3. 準備 CIFAR-10 資料集
+# ==================================================================
+<span class="comment"># 定義圖片的預處理流程 (Image Transformation)</span>
+<span class="comment"># 這是非常重要的一步,後續我們自己的圖片也需要經過完全相同的轉換</span>
+transform = transforms.Compose(
+    [
+     transforms.Resize((<span class="number">32</span>, <span class="number">32</span>)), <span class="comment"># 確保所有輸入圖片的尺寸皆為 32x32</span>
+     transforms.ToTensor(),       <span class="comment"># 將 PIL Image 格式轉換為 PyTorch 的 Tensor 格式</span>
+     <span class="comment"># 將 Tensor 標準化,(0.5, 0.5, 0.5) 分別是 R,G,B 三個頻道的平均值和標準差</span>
+     <span class="comment"># 這能讓模型收斂更快、訓練更穩定</span>
+     transforms.Normalize((<span class="number">0.5</span>, <span class="number">0.5</span>, <span class="number">0.5</span>), (<span class="number">0.5</span>, <span class="number">0.5</span>, <span class="number">0.5</span>))
+    ])
+
+<span class="comment"># 下載並載入訓練資料集 (train=True)</span>
+<span class="comment"># PyTorch 會自動從網路上下載資料集到 './data' 路徑下</span>
+train_dataset = torchvision.datasets.CIFAR10(root=<span class="string">'./data'</span>, train=True,
+                                        download=True, transform=transform)
+
+<span class="comment"># 下載並載入測試資料集 (train=False)</span>
+test_dataset = torchvision.datasets.CIFAR10(root=<span class="string">'./data'</span>, train=False,
+                                       download=True, transform=transform)
+
+<span class="comment"># 建立資料載入器 (Data Loader)</span>
+<span class="comment"># DataLoader 能幫助我們自動打包批次、打亂資料順序</span>
+train_loader = torch.utils.data.DataLoader(train_dataset, batch_size=batch_size,
+                                          shuffle=True) <span class="comment"># shuffle=True 表示在每個 epoch 開始時都重新打亂順序</span>
+
+test_loader = torch.utils.data.DataLoader(test_dataset, batch_size=batch_size,
+                                         shuffle=False) <span class="comment"># 測試集不需要打亂順序</span>
+
+<span class="comment"># CIFAR-10 的10個類別名稱,用於後續結果展示</span>
+classes = (<span class="string">'plane'</span>, <span class="string">'car'</span>, <span class="string">'bird'</span>, <span class="string">'cat'</span>, <span class="string">'deer'</span>,
+           <span class="string">'dog'</span>, <span class="string">'frog'</span>, <span class="string">'horse'</span>, <span class="string">'ship'</span>, <span class="string">'truck'</span>)
+
+# ==================================================================
+# 4. 定義 CNN 模型架構
+# ==================================================================
+<span class="keyword">class</span> <span class="function">ConvNet</span>(nn.Module):
+    <span class="keyword">def</span> <span class="function">__init__</span>(self):
+        super(ConvNet, self).__init__()
+        <span class="comment"># 第一個卷積層: 輸入頻道數為3 (彩色圖片), 輸出頻道數為32, Kernel大小為3x3</span>
+        self.conv1 = nn.Conv2d(<span class="number">3</span>, <span class="number">32</span>, <span class="number">3</span>, padding=<span class="number">1</span>)
+        <span class="comment"># 池化層: 使用 2x2 的視窗進行最大池化</span>
+        self.pool = nn.MaxPool2d(<span class="number">2</span>, <span class="number">2</span>)
+        <span class="comment"># 第二個卷積層: 輸入頻道數為32 (來自上一層), 輸出頻道數為64</span>
+        self.conv2 = nn.Conv2d(<span class="number">32</span>, <span class="number">64</span>, <span class="number">3</span>, padding=<span class="number">1</span>)
+        <span class="comment"># 全連接層1: 圖片經過兩次 2x2 池化後, 尺寸變為 32 -&gt; 16 -&gt; 8</span>
+        <span class="comment"># 因此輸入特徵數為 64(頻道數) * 8 * 8 = 4096</span>
+        self.fc1 = nn.Linear(<span class="number">64</span> * <span class="number">8</span> * <span class="number">8</span>, <span class="number">512</span>)
+        <span class="comment"># 全連接層2 (輸出層): 512個輸入特徵, 10個輸出節點 (對應10個類別)</span>
+        self.fc2 = nn.Linear(<span class="number">512</span>, <span class="number">10</span>)
+        <span class="comment"># 定義 ReLU 激勵函數</span>
+        self.relu = nn.ReLU()
+
+    <span class="comment"># 定義模型的前向傳播路徑</span>
+    <span class="keyword">def</span> <span class="function">forward</span>(self, x):
+        <span class="comment"># 輸入 x 的維度: (batch_size, 3, 32, 32)</span>
+        x = self.pool(self.relu(self.conv1(x)))  <span class="comment"># 卷積 -&gt; ReLU -&gt; 池化, 維度變為 (batch_size, 32, 16, 16)</span>
+        x = self.pool(self.relu(self.conv2(x)))  <span class="comment"># 卷積 -&gt; ReLU -&gt; 池化, 維度變為 (batch_size, 64, 8, 8)</span>
+        x = x.view(-<span class="number">1</span>, <span class="number">64</span> * <span class="number">8</span> * <span class="number">8</span>)              <span class="comment"># 將特徵圖扁平化, 維度變為 (batch_size, 4096)</span>
+        x = self.relu(self.fc1(x))             <span class="comment"># 全連接層1 -&gt; ReLU, 維度變為 (batch_size, 512)</span>
+        x = self.fc2(x)                        <span class="comment"># 全連接層2 (輸出層), 維度變為 (batch_size, 10)</span>
+        <span class="keyword">return</span> x
+
+<span class="comment"># 建立模型實例並將其移動到指定的運算裝置</span>
+model = ConvNet().to(device)
+
+# ==================================================================
+# 5. 定義損失函數和優化器
+# ==================================================================
+<span class="comment"># 使用交叉熵損失函數,適用於多類別分類問題</span>
+criterion = nn.CrossEntropyLoss()
+<span class="comment"># 使用 Adam 優化器來更新模型的權重,lr 為學習率</span>
+optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
+
+# ==================================================================
+# 6. 訓練模型
+# ==================================================================
+print(<span class="string">"開始進行模型訓練..."</span>)
+total_step = len(train_loader)
+<span class="keyword">for</span> epoch <span class="keyword">in</span> range(num_epochs):  <span class="comment"># 外層迴圈:跑 num_epochs 個訓練週期</span>
+    <span class="keyword">for</span> i, (images, labels) <span class="keyword">in</span> enumerate(train_loader):  <span class="comment"># 內層迴圈:遍歷所有批次</span>
+        <span class="comment"># 將圖片和標籤資料移動到指定的運算裝置 (GPU或CPU)</span>
+        images = images.to(device)
+        labels = labels.to(device)
+
+        <span class="comment"># --- 前向傳播 (Forward pass) ---</span>
+        outputs = model(images)
+        loss = criterion(outputs, labels) <span class="comment"># 計算模型的預測與真實標籤之間的損失</span>
+
+        <span class="comment"># --- 反向傳播與優化 (Backward and optimize) ---</span>
+        optimizer.zero_grad() <span class="comment"># 將上一步的梯度清零,避免梯度累積</span>
+        loss.backward()       <span class="comment"># 根據損失值計算梯度 (反向傳播)</span>
+        optimizer.step()      <span class="comment"># 使用優化器根據梯度更新所有模型的權重</span>
+
+        <span class="comment"># 每 200 個批次,印出一次目前的訓練狀態</span>
+        <span class="keyword">if</span> (i+<span class="number">1</span>) % <span class="number">200</span> == <span class="number">0</span>:
+            print (f<span class="string">'週期 [{epoch+1}/{num_epochs}], 步驟 [{i+1}/{total_step}], 損失: {loss.item():.4f}'</span>)
+
+print(<span class="string">'訓練完成!'</span>)
+
+# ==================================================================
+# 7. 測試模型
+# ==================================================================
+print(<span class="string">"開始在測試資料集上評估模型..."</span>)
+<span class="comment"># 將模型設定為評估模式,這會關閉 Dropout 等只在訓練時使用的層</span>
+model.eval()
+<span class="comment"># 在 with torch.no_grad() 區塊中,所有計算都不會追蹤梯度,可以節省記憶體與運算資源</span>
+<span class="keyword">with</span> torch.no_grad():
+    n_correct = <span class="number">0</span>
+    n_samples = <span class="number">0</span>
+    <span class="keyword">for</span> images, labels <span class="keyword">in</span> test_loader:
+        images = images.to(device)
+        labels = labels.to(device)
+        outputs = model(images)
+
+        <span class="comment"># 找出分數最高的類別作為預測結果</span>
+        <span class="comment"># torch.max 會返回 (最大值, 最大值的索引)</span>
+        _, predicted = torch.max(outputs.data, <span class="number">1</span>)
+
+        n_samples += labels.size(<span class="number">0</span>) <span class="comment"># 累計樣本總數</span>
+        n_correct += (predicted == labels).sum().item() <span class="comment"># 累計預測正確的數量</span>
+
+    acc = <span class="number">100.0</span> * n_correct / n_samples
+    print(f<span class="string">'模型在 10000 張測試圖片上的準確率為: {acc:.2f} %'</span>)
+
+# ==================================================================
+# 8. 隨機抽樣查看測試結果
+# ==================================================================
+<span class="comment"># 從測試資料中取出一批圖片</span>
+dataiter = iter(test_loader)
+images, labels = next(dataiter)
+<span class="comment"># 我們只看前4張圖片</span>
+images_for_show = images[:<span class="number">4</span>]
+labels_for_show = labels[:<span class="number">4</span>]
+
+<span class="comment"># 定義一個顯示圖片的輔助函數</span>
+<span class="keyword">def</span> <span class="function">imshow</span>(img):
+    img = img / <span class="number">2</span> + <span class="number">0.5</span>     <span class="comment"># 將標準化後的圖片反標準化回來</span>
+    npimg = img.numpy()   <span class="comment"># 轉換為 numpy 格式</span>
+    plt.imshow(np.transpose(npimg, (<span class="number">1</span>, <span class="number">2</span>, <span class="number">0</span>))) <span class="comment"># 轉換維度順序以符合 imshow 的要求</span>
+    plt.show()
+
+<span class="comment"># 顯示圖片</span>
+imshow(torchvision.utils.make_grid(images_for_show))
+
+<span class="comment"># 顯示這4張圖片的真實標籤</span>
+print(<span class="string">'真實標籤: '</span>, <span class="string">' '</span>.join(f<span class="string">'{classes[labels_for_show[j]]:5s}'</span> <span class="keyword">for</span> j <span class="keyword">in</span> range(<span class="number">4</span>)))
+
+<span class="comment"># 讓模型對這4張圖片進行預測</span>
+outputs = model(images_for_show.to(device))
+_, predicted = torch.max(outputs, <span class="number">1</span>)
+
+<span class="comment"># 印出模型的預測結果</span>
+print(<span class="string">'模型預測: '</span>, <span class="string">' '</span>.join(f<span class="string">'{classes[predicted[j]]:5s}'</span> <span class="keyword">for</span> j <span class="keyword">in</span> range(<span class="number">4</span>)))</code></pre>
+
+<h3>範例程式碼的目標與結果解讀</h3>
+<ul>
+<li>
+<p><strong>🎯 目標</strong>: 我們的目標是建立並訓練一個基礎的 CNN 模型,讓它學會辨識 CIFAR-10 資料集中的10種不同物體。我們希望在訓練結束後,模型能在從未見過的「測試圖片」上達到一個合理的準確率(通常對於這個簡易模型,60-70% 是一個不錯的起點)。</p>
+</li>
+<li>
+<p><strong>📊 結果解讀</strong>:</p>
+<ol>
+<li><strong>訓練過程日誌</strong>:<ul>
+<li><code>目前使用的裝置: cuda</code>: 這表示程式碼成功偵測到並正在使用 GPU 進行運算,這會比只用 CPU 快很多。</li>
+<li><code>週期 [1/10], 步驟 [200/500], 損失: 1.5432</code>: 這行告訴我們:<ul>
+<li><code>週期 [1/10]</code>: 目前正在進行第 1 輪的訓練(總共要跑 10 輪)。</li>
+<li><code>步驟 [200/500]</code>: 在第 1 輪中,已經處理了 200 個批次(總共 500 批)。</li>
+<li><code>損失: 1.5432</code>: 目前這個批次的「損失值」是 1.5432。<strong>Loss 代表模型預測結果與真實答案之間的差距,這個數字越小越好</strong>。你會觀察到隨著訓練進行,Loss 會逐漸下降。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>最終準確率</strong>:<ul>
+<li><code>模型在 10000 張測試圖片上的準確率為: 68.25 %</code>: 這是模型的最終成績單。它表示在 10,000 張模型從未見過的測試圖片中,它<strong>答對了 68.25%</strong>。這證明模型學到了一些通用的辨識能力,而不僅僅是「背誦」訓練過的圖片。</li>
+</ul>
+</li>
+<li><strong>抽樣預測結果</strong>:<ul>
+<li><code>真實標籤: cat   ship  ship  plane</code>: 這是隨機抽取的 4 張測試圖片的<strong>真實標籤</strong>。</li>
+<li><code>模型預測: cat   car   ship  plane</code>: 這是我們的模型對這 4 張圖片的<strong>預測結果</strong>。</li>
+<li>在這個例子中,模型答對了第 1、3、4 張圖片,但把第 2 張的「船 (ship)」誤判為「汽車 (car)」。這讓我們可以直觀地看到模型的表現,並了解它可能會在哪些類別上犯錯。</li>
+</ul>
+</li>
+</ol>
+</li>
+</ul>
+
+<h3>實際應用:測試你自己上傳的圖片</h3>
+<p>在您成功執行上方的訓練程式碼後,現在可以執行下方的儲存格來測試自己的圖片了。</p>
+<p><strong>使用說明:</strong></p>
+<ol>
+<li>在 Google Colab 中,將下方整段程式碼貼到一個新的儲存格中並執行。</li>
+<li>執行後,儲存格下方會出現一個「<strong>選擇檔案</strong>」的按鈕。</li>
+<li>點擊按鈕並選擇一張您電腦中的圖片(建議使用 .jpg 或 .png 格式)。</li>
+<li>程式會自動完成上傳、處理圖片,並在最後顯示您上傳的圖片以及模型對它的預測結果。</li>
+</ol>
+<pre class="code-block" data-lang="python"><code class="language-python"># ==================================================================
+# 1. 匯入必要的函式庫
+# ==================================================================
+<span class="comment"># google.colab.files 是 Colab 專屬的工具,用於在瀏覽器端處理檔案上傳</span>
+<span class="keyword">from</span> google.colab <span class="keyword">import</span> files
+<span class="comment"># PIL (Pillow) 是 Python 中最強大的影像處理函式庫</span>
+<span class="keyword">from</span> PIL <span class="keyword">import</span> Image
+<span class="comment"># io 用於在記憶體中處理二進位資料流</span>
+<span class="keyword">import</span> io
+
+# ==================================================================
+# 2. 設定模型並上傳圖片
+# ==================================================================
+<span class="comment"># 將模型切換到評估模式 (model.eval())</span>
+<span class="comment"># 這很重要,可以確保 Dropout 等層在預測時被關閉,得到一致的結果</span>
+model.eval()
+
+<span class="comment"># 呼叫 Colab 的上傳功能,會跳出互動式對話框</span>
+print(<span class="string">"請選擇一張圖片上傳..."</span>)
+uploaded = files.upload()
+
+# ==================================================================
+# 3. 預處理圖片並進行預測
+# ==================================================================
+<span class="comment"># 檢查是否有成功上傳檔案</span>
+<span class="keyword">if</span> len(uploaded.keys()) > <span class="number">0</span>:
+    <span class="comment"># 取得上傳檔案的檔名 (我們只處理上傳的第一張圖片)</span>
+    filename = next(iter(uploaded))
+    print(f<span class="string">"使用者上傳的檔案名稱: {filename}"</span>)
+
+    <span class="comment"># 讀取圖片的二進位資料</span>
+    img_data = uploaded[filename]
+    <span class="comment"># 使用 PIL.Image 開啟圖片,並用 .convert("RGB") 確保圖片是3個顏色頻道的彩色圖片</span>
+    <span class="comment"># 這樣可以避免單色灰階圖或帶有透明度的 PNG 圖片在處理時出錯</span>
+    image = Image.open(io.BytesIO(img_data)).convert(<span class="string">"RGB"</span>)
+
+    <span class="comment"># --- 以下是預測流程中最關鍵的一步 ---</span>
+    <span class="comment"># 將單張圖片轉換為模型看得懂的 "標準格式"</span>
+    <span class="comment"># 1. transform(image): 進行跟訓練時一模一樣的預處理 (縮放、轉Tensor、標準化)</span>
+    <span class="comment"># 2. unsqueeze(0): 增加一個批次維度,(3, 32, 32) -&gt; (1, 3, 32, 32)</span>
+    <span class="comment"># 3. to(device): 將準備好的 Tensor 送到模型所在的運算裝置 (GPU/CPU)</span>
+    input_tensor = transform(image).unsqueeze(<span class="number">0</span>).to(device)
+
+    <span class="comment"># 使用模型進行預測</span>
+    <span class="comment"># 在 torch.no_grad() 內執行,可以關閉梯度計算,節省運算資源</span>
+    <span class="keyword">with</span> torch.no_grad():
+        output = model(input_tensor)
+        <span class="comment"># 從10個類別的輸出分數中,找出分數最高的那個</span>
+        _, predicted_idx = torch.max(output, <span class="number">1</span>)
+        <span class="comment"># 從 classes 列表中,根據索引找出對應的類別名稱</span>
+        predicted_class = classes[predicted_idx.item()]
+
+    # ==================================================================
+    # 4. 顯示預測結果
+    # ==================================================================
+    <span class="comment"># 使用 matplotlib 顯示上傳的原始圖片</span>
+    plt.imshow(image)
+    <span class="comment"># 將預測結果顯示在圖片標題上</span>
+    plt.title(f<span class="string">'模型預測結果: {predicted_class}'</span>)
+    <span class="comment"># 關閉座標軸</span>
+    plt.axis(<span class="string">'off'</span>)
+    plt.show()
+
+<span class="keyword">else</span>:
+    print(<span class="string">"沒有上傳任何檔案。"</span>)</code></pre>
+
+<p><strong>⚠️ 請注意:</strong></p>
+<blockquote>
+<p>這個模型是在 32x32 像素的 CIFAR-10 小圖片上訓練的。因此,它對於解析度過高、或與10個訓練類別無關的複雜真實世界圖片,辨識效果可能不佳。例如,你給它一張人像照,它仍然會硬猜一個最像的類別(比如 <code>cat</code> 或 <code>dog</code>),但這個結果是沒有意義的。這個練習的主要目的是體驗一個完整的「從訓練到應用」的流程。</p>
+</blockquote>
+
+<h3>(補充) 視覺化學習到的 Kernel</h3>
+<p>訓練完成後,模型到底學會了什麼?我們可以透過視覺化第一層卷積層 (<code>conv1</code>) 的 Kernel 來一窺究竟。第一層的 Kernel 直接作用於原始圖片,因此它們通常會學習到一些基礎的視覺特徵,例如顏色、邊緣、紋理等。</p>
+<p>下方的程式碼會抽取出我們剛剛訓練好的 <code>model</code> 中 <code>conv1</code> 層的 32 個 Kernel,並將它們繪製出來。</p>
+<pre class="code-block" data-lang="python"><code class="language-python"># ==================================================================
+# 1. 取得第一層卷積的 Kernel 權重
+# ==================================================================
+<span class="comment"># 將模型切換到評估模式</span>
+model.eval()
+<span class="comment"># .cpu() 是為了確保權重在 CPU 上,方便後續 Matplotlib 處理</span>
+kernels = model.conv1.weight.data.clone().cpu()
+<span class="comment"># kernels 的維度: (32, 3, 3, 3),代表有 32 個 Kernel,每個都是 3x3 的彩色濾鏡</span>
+
+# ==================================================================
+# 2. 視覺化這 32 個 Kernel
+# ==================================================================
+<span class="comment"># 建立一個 4x8 的子圖網格</span>
+fig, axes = plt.subplots(<span class="number">4</span>, <span class="number">8</span>, figsize=(<span class="number">12</span>, <span class="number">6</span>))
+<span class="comment"># 將 2D 的 axes 陣列扁平化,方便遍歷</span>
+axes = axes.ravel()
+
+<span class="comment"># 遍歷 32 個 Kernel</span>
+<span class="keyword">for</span> i <span class="keyword">in</span> range(kernels.shape[<span class="number">0</span>]):
+    ax = axes[i]
+    kernel = kernels[i]
+
+    <span class="comment"># 為了能正確顯示,需要將權重值正規化到 [0, 1] 的範圍</span>
+    kernel = (kernel - kernel.min()) / (kernel.max() - kernel.min())
+
+    <span class="comment"># .permute(1, 2, 0) 是為了將維度從 (C, H, W) 轉換為 (H, W, C) 以符合 imshow 的要求</span>
+    ax.imshow(kernel.permute(<span class="number">1</span>, <span class="number">2</span>, <span class="number">0</span>))
+    ax.set_xticks([]) <span class="comment"># 隱藏 x 軸刻度</span>
+    ax.set_yticks([]) <span class="comment"># 隱藏 y 軸刻度</span>
+
+plt.suptitle(<span class="string">'模型第一層學習到的 32 個 Kernel'</span>)
+plt.tight_layout()
+plt.show()</code></pre>
+
+<p><strong>如何解讀這些圖案?</strong></p>
+<blockquote>
+<p>您會看到 32 個 3x3 的小色塊。每一個色塊就是一個特徵偵測器。仔細觀察,您可能會發現:</p>
+<ul>
+<li>某些 Kernel 呈現由左到右或由上到下的顏色漸層,它們是<strong>邊緣偵測器</strong>。</li>
+<li>某些 Kernel 可能是單一顏色的色塊(如偏綠色、偏藍色),它們是<strong>顏色偵測器</strong>。</li>
+<li>某些 Kernel 可能呈現對角線或更複雜的圖案。</li>
+</ul>
+<p>這些就是 CNN 的「眼睛」所看到的最基礎的視覺元素。更深層的卷積層會將這些基礎特徵組合起來,形成更複雜的特徵(例如,用邊緣和紋理組成「輪胎」,再用輪胎和車窗組成「汽車」)。</p>
+</blockquote>
+
+<h2>4. CNN 的參數調整</h2>
+<p>訓練深度學習模型就像做菜,需要不斷調整各種「調味料」(超參數),才能得到最好的味道。</p>
+
+<h3>調整學習率 (Learning Rate)</h3>
+<ul>
+<li><strong>是什麼</strong>: 控制模型每次更新權重的幅度。</li>
+</ul>
+<h4>背後的原理:梯度下降 (Gradient Descent)</h4>
+<p>要理解學習率,得先知道模型是如何學習的。這個過程的核心就叫做<strong>梯度下降</strong>。</p>
+<ol>
+<li><strong>目標 - 最小化損失 (Loss)</strong>: 訓練的唯一目標,是找到一組能讓「損失函數」值最小的模型參數(權重和偏差)。</li>
+<li><strong>損失地貌 (Loss Landscape)</strong>: 想像一個由所有可能的參數組合構成的、高低起伏的巨大山谷。你在這個地貌上的任何一個位置,其「海拔高度」就代表了當前參數設定下的「損失值」。我們的目標就是走到這個地貌的「最低點」。</li>
+<li><strong>梯度 (Gradient) - 最陡峭的方向</strong>: 在你站立的任何位置,梯度就是一個向量,指向「上坡最陡峭」的方向。也就是說,它告訴你往哪個方向調整參數,損失值會上升得最快。</li>
+<li><strong>梯度下降 - 往反方向走</strong>: 既然梯度指向了上坡路,那我們只要朝它的<strong>完全相反方向</strong>走,自然就是下坡最快的路。這就是梯度下降的核心思想。</li>
+<li><strong>學習率 (Learning Rate) - 每一步要走多大</strong>: 你已經知道要往哪個方向走了,但每一步要邁多大呢?這就是學習率的角色。它決定了你每次沿著梯度相反方向更新參數時的「步長」。</li>
+</ol>
+<ul>
+<li><strong>影響</strong>:<ul>
+<li><strong>太大 (步長太大)</strong>: 就像從山上往下跳。你可能一步就跳過了谷底,跑到對面的山坡上,結果損失值反而變大了。這會導致訓練過程非常不穩定,損失值來回震盪,無法收斂。</li>
+<li><strong>太小 (步長太小)</strong>: 就像小碎步下山。雖然很穩,幾乎不會錯過谷底,但下山會花費非常非常長的時間,導致訓練效率低下。</li>
+</ul>
+</li>
+<li><strong>建議</strong>: 通常從 <code>0.001</code> 開始嘗試,再根據訓練情況放大或縮小10倍。找到一個既能穩定下降、速度又不至於太慢的學習率是訓練的關鍵之一。</li>
+</ul>
+
+<h3>調整批次大小 (Batch Size)</h3>
+<ul>
+<li><strong>是什麼</strong>: 模型每次更新權重前所看的樣本數量。</li>
+<li><strong>影響</strong>:<ul>
+<li><strong>太大</strong>: 可能會陷入局部最佳解,且非常消耗記憶體 (特別是 GPU 記憶體)。</li>
+<li><strong>太小</strong>: 訓練過程會很不穩定,損失值 (Loss) 會劇烈波動,但有時反而有助於跳出局部最佳解。</li>
+</ul>
+</li>
+<li><strong>建議</strong>: 常見的批次大小為 32, 64, 128。在記憶體允許的情況下,可以選擇大一點的批次。</li>
+</ul>
+
+<h3>調整卷積層數量 (網路深度)</h3>
+<ul>
+<li><strong>是什麼</strong>: CNN模型中卷積層和池化層的堆疊數量。</li>
+<li><strong>影響</strong>:<ul>
+<li><strong>越多 (網路越深)</strong>: 模型能學習到更複雜、更抽象的特徵,潛在效能越好。</li>
+<li><strong>風險</strong>: 網路越深,越容易產生「過擬合」,且訓練難度更高。</li>
+</ul>
+</li>
+<li><strong>建議</strong>: 從像我們範例中的2-3層卷積開始,如果效果不佳,再逐步增加深度。</li>
+</ul>
+
+<h3>調整過擬合 (Overfitting) 問題</h3>
+<ul>
+<li><strong>是什麼</strong>: 模型在「訓練資料」上表現極好,但在「測試資料」上表現很差,代表它只記住了訓練題庫,卻沒有學會通用的解題方法。</li>
+<li><strong>解決方法</strong>:<ul>
+<li><strong>Dropout</strong>: 在訓練過程中隨機「丟棄」一部分神經元,強迫網路學習更穩健的特徵。</li>
+<li><strong>Data Augmentation (資料增強)</strong>: 對現有訓練圖片進行隨機旋轉、裁切、變色等操作,憑空製造出更多樣的訓練資料。</li>
+<li><strong>Early Stopping</strong>: 在訓練過程中,當測試集上的準確率不再提升時,就提早停止訓練。</li>
+</ul>
+</li>
+</ul>
+
+<h2>5. 進階觀念釐清</h2>
+
+<h3>監督式學習 vs. 半監督式學習</h3>
+<p>在我們的範例中,使用的學習方法是<strong>監督式學習 (Supervised Learning)</strong>。</p>
+<ul>
+<li>
+<p><strong>監督式學習</strong>: 提供給模型的<strong>所有</strong>訓練資料都是「有標籤的」(Tagged/Labeled)。也就是說,每一張圖片,我們都明確地告訴模型它對應的正確答案是什麼(例如,這張圖是 <code>cat</code>)。模型的目標就是學習如何從輸入(圖片)對應到正確的輸出(標籤)。</p>
+</li>
+<li>
+<p><strong>非監督式學習 (Unsupervised Learning)</strong>: 提供給模型的資料<strong>完全沒有標籤</strong>。模型的目標不是「分類」,而是自己從資料中找出隱藏的結構或模式,例如將相似的資料點群聚在一起(Clustering)。</p>
+</li>
+<li>
+<p><strong>半監督式學習 (Semi-Supervised Learning)</strong>: 這是介於兩者之間的方法,它會<strong>混合使用「有標籤」和「無標籤」的資料</strong>。通常是使用少量有標籤的資料,搭配大量無標籤的資料。這種方法適用於取得標籤成本很高的情境。</p>
+</li>
+</ul>
+
+<h3>學習類型 vs. 訓練機制:Forward & Backward Propagation</h3>
+<p>釐清了學習的「類型」,我們還需要知道模型學習的「機制」。<strong>學習類型</strong>回答的是「<strong>用什麼資料學?</strong>」,而<strong>訓練機制</strong>回答的是「<strong>如何從資料中學?</strong>」。</p>
+<p><strong>Forward Propagation (前向傳播)</strong> 和 <strong>Backward Propagation (反向傳播)</strong> 正是神經網路進行學習的核心機制。</p>
+<ul>
+<li>
+<p><strong>Forward Propagation (前向傳播)</strong></p>
+<ul>
+<li><strong>是什麼?</strong>:將一筆資料(例如一張圖片)從輸入層開始,一層一層地通過神經網路,直到最後輸出層得到一個<strong>預測結果</strong>。</li>
+<li><strong>生活比喻</strong>:就像一位學生在寫考卷。他看到題目(輸入圖片),經過大腦的思考與計算(神經網路各層),最後在答案卷上寫下自己的答案(預測結果)。</li>
+</ul>
+</li>
+<li>
+<p><strong>Backward Propagation (反向傳播)</strong></p>
+<ul>
+<li><strong>是什麼?</strong>:在得到預測結果後,將它與「正確答案」進行比較,計算出一個「誤差」(Loss)。接著,這個誤差會從輸出層開始,<strong>反向地</strong>傳播回網路的每一層,告訴每一層的權重「你們應該往哪個方向調整,才能讓這次的誤差變小」。</li>
+<li><strong>生活比喻</strong>:這就像老師批改考卷。老師對照標準答案(正確標籤),發現學生寫錯了(計算出誤差)。老師不只告訴學生「你錯了」,還會告訴他「你這個步驟的觀念不對,應該要這樣想...」(反向傳播誤差,更新權重)。學生根據老師的指正,修正自己的思考模式(更新權重),下次遇到類似的題目就會做得更好。</li>
+</ul>
+</li>
+</ul>
+
+<h2>學習總結</h2>
+<ul>
+<li><strong>知識</strong>:<ul>
+<li>了解深度學習與機器學習的關係。</li>
+<li>理解激勵函數 (如 ReLU) 為神經網路加入非線性能力的目的與功能。</li>
+<li>掌握 CNN 的核心組成 (卷積層、池化層、全連接層) 及其運作原理與生活實例。</li>
+<li>透過視覺化範例,具體理解 Kernel 如何作為權重矩陣來偵測特徵。</li>
+<li>知道 CNN 在影像辨識領域的廣泛應用,並了解 CIFAR-10 資料集。</li>
+<li>理解梯度下降的基本原理,以及它與學習率(步長)的關聯。</li>
+<li>了解學習率、批次大小等關鍵超參數的意義與影響。</li>
+<li>能夠區分監督式、非監督式與半監督式學習。</li>
+<li>理解 Forward/Backward Propagation 是模型訓練的機制,而非學習的類型。</li>
+</ul>
+</li>
+<li><strong>技能</strong>:<ul>
+<li>能夠使用 PyTorch 在 Google Colab 上搭建、訓練和測試一個基礎的 CNN 模型。</li>
+<li>能夠讀懂並解讀 CNN 訓練過程中的指標,如 Loss 和 Accuracy。</li>
+<li>能夠對一個 CNN 模型進行初步的參數調整與問題排查。</li>
+<li>能夠載入並預處理單張圖片,並使用訓練好的模型進行預測。</li>
+<li>能夠視覺化並初步解讀 CNN 模型學習到的第一層 Kernel。</li>
+</ul>
+</li>
+</ul>
+        </div>
+    </div>
+
+    <script>
+        // 為程式碼區塊添加語言標籤
+        document.addEventListener('DOMContentLoaded', function() {
+            const codeBlocks = document.querySelectorAll('pre code');
+            codeBlocks.forEach(block => {
+                const parent = block.parentElement;
+                const className = block.className;
+                const match = className.match(/language-(\w+)/);
+                if (match && match[1]) {
+                    parent.classList.add('code-block');
+                    parent.setAttribute('data-lang', match[1]);
+                }
+            });
+
+            // 添加載入動畫
+            const sections = document.querySelectorAll('.section');
+            sections.forEach((section, index) => {
+                section.style.opacity = '0';
+                section.style.transform = 'translateY(20px)';
+                setTimeout(() => {
+                    section.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                    section.style.opacity = '1';
+                    section.style.transform = 'translateY(0)';
+                }, index * 100);
+            });
+        });
+    </script>
+</body>
+</html>
