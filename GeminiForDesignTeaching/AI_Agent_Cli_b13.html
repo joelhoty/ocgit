@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI_Agent_Cli_b13</title>
+    
+    <!-- CSS 框架 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/dark.min.css">
+    
+    <!-- 代碼高亮 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/base16/darcula.min.css">
+    
+    <!-- 自定義樣式 -->
+    <style>
+        
+                body {
+                    max-width: 900px;
+                    margin: 0 auto;
+                    padding: 20px;
+                }
+                /* 提升代码块对比度 */
+                pre {
+                    background: #1e1e1e !important;
+                    border: 1px solid #3e3e3e;
+                }
+                pre code {
+                    background: #1e1e1e !important;
+                }
+                code {
+                    background: #2d2d2d !important;
+                }
+                /* 引用块对比度 */
+                blockquote {
+                    background: #2d2d2d;
+                    border-left: 4px solid #4a9eff;
+                }
+            
+        
+        /* 通用代碼塊樣式 */
+        pre code {
+            display: block;
+            padding: 1.5em;
+            border-radius: 8px;
+            overflow-x: auto;
+            line-height: 1.6;
+        }
+
+        /* Mermaid 圖表樣式 */
+        
+        .mermaid {
+            margin: 2em 0;
+            padding: 1.5em;
+            text-align: center;
+            border-radius: 8px;
+        }
+        
+        .mermaid {
+            background: #2c3034;
+            border: 1px solid #444;
+        }
+            
+        
+        /* 響應式調整 */
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            .container, .markdown-body, .latex-body, .window-body, .nes-container {
+                padding: 15px;
+            }
+            pre code {
+                padding: 1em;
+            }
+        }
+        
+        
+    </style>
+</head>
+<body>
+    <div class="container"><!-- Path: project/IRC | Timestamp: 2025-11-17 11:00:00 | Version: b13 -->
+<h1>AI Agent 與 AI CLI 應用</h1>
+<h2>AI Agent 是什麼？</h2>
+<p>AI Agent（人工智慧代理人）是一個能自主感知環境、進行決策並執行動作以達成特定目標的智慧實體。它不僅僅是被動地回應指令，更能主動規劃、推理，並利用可用工具（例如：讀寫檔案、執行程式碼、搜尋網路）來完成複雜任務。</p>
+<p>一個典型的 AI Agent 包含以下幾個核心組件：<br />
+- <strong>感知 (Perception)</strong>: 接收並理解來自環境的資訊，例如使用者的輸入、檔案內容、API 回應等。<br />
+- <strong>規劃 (Planning)</strong>: 根據目標將複雜任務拆解成一系列可執行的小步驟。<br />
+- <strong>記憶 (Memory)</strong>: 擁有短期與長期記憶，能記住過去的互動、學習經驗與使用者偏好。<br />
+- <strong>工具使用 (Tool Use)</strong>: 能夠呼叫外部工具或函式庫來擴展其能力，例如執行程式碼、操作檔案系統、進行網路搜尋等。</p>
+<h3>AI Agent 可以做些什麼？</h3>
+<ul>
+<li><strong>自動化軟體開發</strong>: 從高階的需求描述開始，自動規劃、編寫、測試甚至除錯程式碼。</li>
+<li><strong>數據分析與報告生成</strong>: 分析給定的數據集，找出洞見，並自動生成結構化的分析報告。</li>
+<li><strong>複雜問題研究</strong>: 針對一個研究主題，自主上網搜尋資料、閱讀文件、整理重點，並產出綜合性的摘要。</li>
+<li><strong>個人化助理</strong>: 管理你的行事曆、自動回覆電子郵件、在你需要時提供個人化的資訊與建議。</li>
+</ul>
+<h3>常見的 AI Agent 應用場景</h3>
+<ol>
+<li><strong>軟體工程</strong>: 如 Devin AI，能夠獨立完成整個軟體開發專案。</li>
+<li><strong>客戶服務</strong>: 可自主處理複雜的客戶問題，不僅限於腳本問答，甚至能操作後台系統完成退款、訂單修改等。</li>
+<li><strong>科學研究</strong>: 自動分析實驗數據、搜尋相關論文、甚至提出新的假說。</li>
+<li><strong>智慧家庭</strong>: 根據你的生活習慣，主動調節燈光、溫度，並在你回家前預先準備好舒適的環境。</li>
+</ol>
+<h2>AI CLI 是什麼？</h2>
+<p>AI CLI (Command-Line Interface) 是一種將大型語言模型（LLM）的強大能力整合到終端機命令列環境中的工具。它讓開發者、系統管理員和進階使用者能用自然語言與他們的電腦互動，將傳統上需要手動輸入的複雜指令，轉化為與 AI 的對話。</p>
+<p>相較於傳統 CLI 只能執行語法固定的指令，AI CLI 能理解使用者的「意圖」，並將其轉換為實際的指令或程式碼。</p>
+<h3>AI CLI 可以做些什麼？</h3>
+<ul>
+<li><strong>自然語言轉指令</strong>: 你可以用說的（例如：「幫我找出這個資料夾裡最大的前 5 個檔案」），AI CLI 會自動生成對應的 shell 指令 (<code>find . -type f -exec ls -s {} + | sort -n -r | head -n 5</code>)。</li>
+<li><strong>程式碼生成與解釋</strong>: 直接在終端機中請求 AI 生成一段特定功能的程式碼，或貼上一段看不懂的程式碼請它解釋。</li>
+<li><strong>檔案系統操作</strong>: 用自然語言要求它幫你建立、移動、修改或搜尋檔案。</li>
+<li><strong>即時除錯輔助</strong>: 當指令執行出錯時，可以直接詢問 AI CLI 錯誤訊息的意義以及可能的解決方案。</li>
+</ul>
+<h3>常見的 AI CLI 應用場景</h3>
+<ul>
+<li><strong>開發者</strong>: 快速生成程式碼片段、撰寫 Git 提交訊息、設定 Docker 環境。</li>
+<li><strong>系統管理員</strong>: 撰寫複雜的 <code>bash</code> 或 <code>powershell</code> 腳本來自動化維運任務。</li>
+<li><strong>數據科學家</strong>: 輔助撰寫 <code>SQL</code> 查詢或 <code>Python</code> 腳本來進行數據清洗與分析。</li>
+<li><strong>學習者</strong>: 在學習新的程式語言或工具時，作為一個即時的互動式導師。</li>
+</ul>
+<h3>OpenAI Codex, Claude Code, Google Gemini CLI</h3>
+<p>這些是目前市面上主流的、為程式開發與命令列操作提供支援的 AI 模型或工具。它們各自擁有強大的程式碼理解與生成能力，而 Google Gemini CLI 則是將這種能力深度整合到開發者工作流程中的一個範例。</p>
+<h2>AI CLI 與 AI Agent 的關係</h2>
+<p>這是一個很好的問題，也點出了一個有趣的分界點。簡單來說，<strong>AI CLI 可以被視為一種「特定領域」且「使用者驅動」的 AI Agent</strong>，但它通常不具備一個完整 AI Agent 所擁有的<strong>高度自主性 (Autonomy)</strong>。</p>
+<p>您可以這樣理解：AI CLI 讓<strong>您</strong>成為了一個更強大的 Agent；而 AI Agent 則試圖<strong>自己</strong>成為一個 Agent。</p>
+<h2>AI CLI 的獨特優勢：超越 Web 介面</h2>
+<p>雖然 Web 介面的 AI 服務（如 ChatGPT、Claude 網頁版）非常方便，但它們存在一個根本性的限制：<strong>它們被侷限在瀏覽器的沙盒中，無法直接與您電腦的本地檔案系統和開發環境互動。</strong> 這正是 AI CLI 發揮其最大價值的所在。</p>
+<p>AI CLI 將大型語言模型的智慧，從雲端帶到您的本地終端機，使其能夠：<br />
+- <strong>讀取本地檔案</strong>: 分析您專案中的實際程式碼。<br />
+- <strong>寫入本地檔案</strong>: 直接修改程式碼、新增檔案、產出報告。<br />
+- <strong>執行本地指令</strong>: 運行測試、安裝套件、啟動伺服器、操作 Git。</p>
+<p>這意味著 AI CLI 能完成許多 Web 介面 AI 無法處理的、需要與真實開發環境深度整合的複雜任務。</p>
+<h3>應用場景：自動化專案重構與驗證</h3>
+<p><strong>情境</strong>:<br />
+假設您正在維護一個中型 JavaScript 專案。您發現專案中有一個名為 <code>getUserProfile()</code> 的舊函式已被棄用，您希望將所有使用到它的地方，全部替換為一個新的、位於 <code>src/utils/api.js</code> 中的 <code>fetchUserProfile()</code> 函式。完成後，您還需要執行專案的測試來確保這次重構沒有引入新的 Bug。</p>
+<p><strong>為什麼 Web 介面 AI 做不到？</strong><br />
+- 它<strong>看不到</strong>您的專案資料夾結構，不知道哪些檔案需要修改。<br />
+- 您必須手動一個一個地將檔案內容<strong>複製貼上</strong>到聊天視窗中，極度耗時且容易出錯。<br />
+- 它<strong>無法</strong>在修改後，幫您執行 <code>npm test</code> 或 <code>pytest</code> 等本地測試指令來驗證結果。</p>
+<p><strong>AI CLI 如何解決這個問題？</strong></p>
+<p>您可以直接在專案的根目錄下，對 Gemini CLI 下達一個高階指令：</p>
+<div class="codehilite"><pre><span></span><code>gemini<span class="w"> </span><span class="s2">&quot;請幫我分析這個專案中所有的 .js 檔案。將所有 `getUserProfile()` 的呼叫，替換成 `fetchUserProfile()`。同時，請在需要修改的檔案頂部自動加入 `import { fetchUserProfile } from &#39;/src/utils/api.js&#39;;` 這行匯入語句。完成所有檔案的修改後，請使用 @shell 工具執行 `npm test` 來運行單元測試，並告訴我測試結果。&quot;</span>
+</code></pre></div>
+
+<p><strong>背後的工作流程</strong>:<br />
+1.  <strong>理解意圖</strong>: Gemini CLI 解析您的自然語言指令，理解了這是一個包含「搜尋、取代、新增匯入、執行測試」四個步驟的複雜任務。<br />
+2.  <strong>檔案搜尋</strong>: 它會使用內建的檔案系統工具（或呼叫 <code>@shell</code> 執行 <code>find . -name "*.js"</code>)，找出專案中所有需要檢查的 JavaScript 檔案。<br />
+3.  <strong>逐一處理</strong>:<br />
+    - 對於每一個找到的檔案，它會讀取其內容。<br />
+    - 檢查是否包含 <code>getUserProfile()</code>。<br />
+    - 如果有，它會執行程式碼替換，並在檔案頂部插入 <code>import</code> 語句（同時會智能地判斷是否已存在）。<br />
+    - 將修改後的內容寫回原檔案。<br />
+4.  <strong>執行驗證</strong>: 在處理完所有檔案後，它會呼叫 <code>@shell</code> 工具，在您的終端機中執行 <code>npm test</code> 指令。<br />
+5.  <strong>結果回報</strong>: 最後，它會將 <code>npm test</code> 的輸出結果回報給您，告訴您測試是否通過，或者出現了哪些錯誤。</p>
+<p>這個範例清楚地展示了 AI CLI 如何作為一個真正的「開發助理」，無縫地融入您的工作流程，自動化完成那些繁瑣、重複且需要與本地環境互動的任務。</p>
+<h2>以 Google Gemini CLI 為例 (詳細指南)</h2>
+<p>Google Gemini CLI 是一個功能強大的開源 AI 代理人，它將 Gemini 模型的強大能力直接整合到您的終端機中。它不僅是一個問答工具，更是一個能理解您的工作環境、操作檔案、執行指令的開發夥伴。</p>
+<h3>核心特色</h3>
+<ul>
+<li><strong>強大的 Gemini Pro 模型</strong>: 存取 Google 先進的生成式 AI 模型，能理解複雜的對話、程式碼庫與文件。</li>
+<li><strong>內建工具箱</strong>:<ul>
+<li><strong>Google 搜尋</strong>: 可直接在查詢中整合最新的網路資訊。</li>
+<li><strong>檔案系統操作</strong>: 能讀取、寫入、搜尋本地檔案。</li>
+<li><strong>Shell 指令執行</strong>: 能執行終端機指令來完成任務。</li>
+<li><strong>網頁內容擷取</strong>: 能讀取並分析指定 URL 的網頁內容。</li>
+</ul>
+</li>
+<li><strong>終端機優先設計</strong>: 專為命令列使用者優化，提供流暢的互動體驗。</li>
+<li><strong>免費方案</strong>: 個人 Google 帳戶即可享有每分鐘 60 次、每天 1000 次的免費請求額度。</li>
+</ul>
+<h3>0. 安裝前置需求：Node.js</h3>
+<p>在安裝 Gemini CLI 之前，您的系統中必須先安裝 <strong>Node.js</strong>。</p>
+<p><strong>為什麼需要 Node.js？</strong><br />
+Google Gemini CLI 這個工具本身是一個基於 Node.js 開發的應用程式。因此，無論您使用 <code>npx</code>、<code>npm</code> 或是 <code>Homebrew</code> 進行安裝，都需要 Node.js 的執行環境才能運作。簡單來說，<strong>如果沒有安裝 Node.js，是無法執行 Gemini CLI 的</strong>。</p>
+<p><strong>如何安裝 Node.js？</strong><br />
+1.  前往 <a href="https://nodejs.org/">Node.js 官方網站</a>。<br />
+2.  建議下載並安裝 <strong>LTS (Long-Term Support)</strong> 版本，因為它最為穩定。<br />
+3.  安裝完成後，您可以打開終端機並執行 <code>node -v</code> 和 <code>npm -v</code> 來確認是否安裝成功。如果成功，這兩個指令會分別顯示 Node.js 和 npm 的版本號。</p>
+<h3>1. 安裝 Gemini CLI</h3>
+<p>確認 Node.js 安裝成功後，您可以根據您的作業系統與偏好，選擇以下任一種方式進行安裝。</p>
+<h4>a) 使用 <code>npx</code> (推薦，無需全域安裝)</h4>
+<p>這是最快開始的方式，<code>npx</code> 會執行最新的版本而不在您的系統中永久安裝。</p>
+<div class="codehilite"><pre><span></span><code>npx<span class="w"> </span>@google/gemini-cli
+</code></pre></div>
+
+<h4>b) 使用 <code>npm</code> (全域安裝)</h4>
+<p>如果您希望在系統的任何地方都能直接使用 <code>gemini</code> 指令，可以選擇全域安裝。</p>
+<div class="codehilite"><pre><span></span><code>npm<span class="w"> </span>install<span class="w"> </span>-g<span class="w"> </span>@google/gemini-cli
+</code></pre></div>
+
+<h4>c) 使用 Homebrew (適用於 macOS)</h4>
+<div class="codehilite"><pre><span></span><code>brew<span class="w"> </span>install<span class="w"> </span>gemini-cli
+</code></pre></div>
+
+<h3>2. 設定與驗證</h3>
+<p>安裝後，第一次執行時需要進行設定，主要是提供您的 API 金鑰。</p>
+<h4>a) 取得 Gemini API 金鑰</h4>
+<ol>
+<li>前往 <a href="https://aistudio.google.com/app/apikey">Google AI for Developers</a>。</li>
+<li>登入您的 Google 帳戶。</li>
+<li>點擊「Create API key」來生成您的專屬金鑰。</li>
+</ol>
+<h4>b) 設定 API 金鑰</h4>
+<p>執行以下指令，並將您剛剛取得的金鑰貼上。</p>
+<div class="codehilite"><pre><span></span><code>gemini<span class="w"> </span>config<span class="w"> </span><span class="nb">set</span><span class="w"> </span>api_key<span class="w"> </span>YOUR_API_KEY_HERE
+</code></pre></div>
+
+<p>設定完成後，<code>gemini-cli</code> 就準備就緒了。</p>
+<h3>3. 基本用法</h3>
+<h4>a) 直接提問 (Prompt)</h4>
+<p>這是最基礎的用法，就像與 ChatGPT 或其他聊天機器人對話一樣。</p>
+<div class="codehilite"><pre><span></span><code>gemini<span class="w"> </span><span class="s2">&quot;請用 Python 寫一個函式，它能將 Markdown 檔案轉換為 HTML。&quot;</span>
+</code></pre></div>
+
+<h4>b) 互動式聊天 (Chat)</h4>
+<p>如果您需要進行多輪對話，以逐步完成一個複雜任務，可以使用 <code>chat</code> 模式。</p>
+<div class="codehilite"><pre><span></span><code>gemini<span class="w"> </span>chat
+</code></pre></div>
+
+<p>進入 <code>chat</code> 模式後，您可以持續提問，<code>gemini</code> 會記住之前的對話內容。</p>
+<h4>c) 結合管道 (Piping) 與檔案</h4>
+<p>Gemini CLI 可以與傳統的 shell 指令完美結合。</p>
+<ul>
+<li>
+<p><strong>分析檔案內容</strong>:<br />
+<code>bash
+  # 請 gemini 解釋一個 shell 腳本的用途
+  cat script.sh | gemini "這個腳本是做什麼用的？"</code></p>
+</li>
+<li>
+<p><strong>將輸出儲存到檔案</strong>:<br />
+<code>bash
+  # 產生一個 Dockerfile 並直接寫入檔案
+  gemini "為一個基本的 Node.js Express 應用產生一個 Dockerfile" &gt; Dockerfile</code></p>
+</li>
+</ul>
+<h3>4. 進階應用範例</h3>
+<h4>範例一：程式碼生成與解釋</h4>
+<p><strong>情境</strong>: 您看到一段不熟悉的 C++ 程式碼，想了解它的功能。</p>
+<div class="codehilite"><pre><span></span><code><span class="c1">// main.cpp</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;iostream&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;vector&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;numeric&gt;</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="w"> </span><span class="n">v</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">};</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">sum</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">accumulate</span><span class="p">(</span><span class="n">v</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span><span class="w"> </span><span class="n">v</span><span class="p">.</span><span class="n">end</span><span class="p">(),</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="p">[](</span><span class="kt">int</span><span class="w"> </span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">b</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">b</span><span class="p">;</span>
+<span class="w">    </span><span class="p">});</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Sum: &quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">sum</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p><strong>操作</strong>:</p>
+<div class="codehilite"><pre><span></span><code>cat<span class="w"> </span>main.cpp<span class="w"> </span><span class="p">|</span><span class="w"> </span>gemini<span class="w"> </span><span class="s2">&quot;用繁體中文解釋這段 C++ 程式碼的功能，並說明 std::accumulate 的用途。&quot;</span>
+</code></pre></div>
+
+<h4>範例二：整合 Google 搜尋進行研究</h4>
+<p><strong>情境</strong>: 您想了解目前最新的前端框架趨勢。<br />
+<strong>操作</strong>: 使用 <code>@google</code> 工具來觸發網路搜尋。</p>
+<div class="codehilite"><pre><span></span><code>gemini<span class="w"> </span><span class="s2">&quot;@google 2025 年最值得關注的前端框架有哪些？請整理成表格並說明各自的優缺點。&quot;</span>
+</code></pre></div>
+
+<h4>範例三：操作檔案系統</h4>
+<p><strong>情境</strong>: 您想快速找出目前專案中所有 <code>TODO</code> 註解的位置。<br />
+<strong>操作</strong>: 使用 <code>@file</code> 工具來讀取檔案內容。</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># 讓 gemini 搜尋當前目錄下所有 .js 檔案</span>
+ls<span class="w"> </span>*.js<span class="w"> </span><span class="p">|</span><span class="w"> </span>gemini<span class="w"> </span><span class="s2">&quot;在 @file 中找出所有包含 &#39;TODO&#39; 的行，並列出檔案名稱與行號。&quot;</span>
+</code></pre></div>
+
+<h4>範例四：專案管理與自動化</h4>
+<p><strong>情境</strong>: 您想為您的 Python 專案自動產生 <code>requirements.txt</code> 檔案。<br />
+<strong>操作</strong>: 結合 <code>@shell</code> 工具來執行指令。</p>
+<div class="codehilite"><pre><span></span><code>gemini<span class="w"> </span><span class="s2">&quot;分析這個 Python 專案，然後使用 @shell 工具執行 &#39;pip freeze &gt; requirements.txt&#39; 來產生依賴檔案。&quot;</span>
+</code></pre></div>
+
+<h4>範例五：結合工具進行研究與文件整理 (Meta 範例)</h4>
+<p><strong>情境</strong>: 您想快速了解一個新的開源工具（例如 Gemini CLI 本身），並產出一份清晰的教學文件。這正是您剛剛對我下達的指令！</p>
+<p><strong>操作</strong>: 您在終端機中輸入的指令，本質上就是一個完美的 Gemini CLI 使用範例。</p>
+<div class="codehilite"><pre><span></span><code>gemini<span class="w"> </span><span class="s2">&quot;google cli的安裝 https://github.com/google-gemini/gemini-cli 根據這個網頁整理更詳細的說明與應用&quot;</span>
+</code></pre></div>
+
+<p><strong>背後原理</strong>:<br />
+1.  <strong>工具觸發</strong>: Gemini CLI 偵測到指令中包含一個 URL (<code>https://...</code>)。它會自動啟用內建的 <code>@web</code> 工具來處理這個網址。<br />
+2.  <strong>資料擷取</strong>: <code>@web</code> 工具在背景執行，存取該 GitHub 頁面，並將整個頁面的主要內容（例如 README.md 的文字）擷取下來。<br />
+3.  <strong>情境注入</strong>: 擷取到的網頁內容會被自動加入到您的原始提示中，作為一個龐大的上下文資訊。<br />
+4.  <strong>自然語言處理與生成</strong>: Gemini Pro 模型接著處理這個包含完整上下文的最終提示，閱讀並理解 GitHub 頁面的內容，然後根據您的要求，重新組織、提煉重點、撰寫範例，最終生成一份結構清晰、內容詳盡的教學文件。</p>
+<p>這個範例完美展示了 AI CLI 如何將「外部資料」與「使用者意圖」無縫結合，自動化完成從<strong>研究</strong>到<strong>內容創作</strong>的完整工作流程。</p>
+<h4>範例六：迭代式內容生成與專案演進 (本次對話實錄)</h4>
+<p><strong>情境</strong>:<br />
+這份您正在閱讀的文件，就是 AI CLI 能力的最佳證明。它並非一蹴可幾，而是透過一系列與 AI CLI 的對話，從一個簡單的大綱逐步演進、修正、擴充而來的。</p>
+<p><strong>為什麼 Web 介面不適合這個任務？</strong><br />
+- <strong>缺乏檔案系統感知</strong>: 您無法簡單地告訴 Web AI：「讀取 b06 版本，然後加入一個新章節，存成 b07 版本」。您必須手動複製 <code>b06</code> 的全部內容貼到網頁上，然後再將 AI 生成的結果完整複製回來，儲存為新檔案。這個過程極其繁瑣且容易出錯。<br />
+- <strong>上下文遺忘</strong>: 在長時間、多輪的對話中，Web 介面可能會遺忘最初的目標或之前的修正細節。<br />
+- <strong>無法整合外部資訊</strong>: 您無法讓 Web AI 直接讀取一個 URL 的內容並整合進現有的文件中。</p>
+<p><strong>AI CLI 如何實現這個迭代流程？</strong></p>
+<p>以下是我們這次對話的模擬指令流程，完美展示了 AI CLI 如何解決上述所有痛點：</p>
+<ol>
+<li>
+<p><strong>第一步：從大綱開始</strong><br />
+<code>bash
+    # 初始檔案 AI_Agent_Cli.md 只有一個基本大綱
+    gemini "請根據 @AI_Agent_Cli.md 的大綱，為每一個標題擴充詳細的解說與範例，並將結果儲存為 AI_Agent_Cli_b01.md"</code></p>
+<ul>
+<li><strong>能力</strong>: 讀取本地檔案 (<code>@file</code>) 作為上下文，並將結果寫入新檔案。</li>
+</ul>
+</li>
+<li>
+<p><strong>第二步：補充與修正</strong><br />
+<code>bash
+    gemini "讀取 @AI_Agent_Cli_b01.md，在其中加入一個新章節，討論『AI CLI 是否為一種 Agent』，然後儲存為 AI_Agent_Cli_b02.md"</code></p>
+<ul>
+<li><strong>能力</strong>: 維持對話的上下文，理解「加入新章節」的意圖，並繼續進行檔案的版本迭代。</li>
+</ul>
+</li>
+<li>
+<p><strong>第三步：整合外部資訊</strong><br />
+<code>bash
+    gemini "請根據這個網頁 https://github.com/google-gemini/gemini-cli 的內容，更新 @AI_Agent_Cli_b02.md 中關於安裝與應用的說明，使其更詳細，然後儲存為 AI_Agent_Cli_b03.md"</code></p>
+<ul>
+<li><strong>能力</strong>: 整合 <code>@web</code> 工具，自動抓取並理解 URL 內容，並將其與現有檔案內容結合後，產出新版本。</li>
+</ul>
+</li>
+<li>
+<p><strong>第四步：持續迭代與完善</strong><br />
+<code>bash
+    # 模擬後續的修正指令...
+    gemini "修正 @AI_Agent_Cli_b03.md 中關於 Gemini 1.5 Pro 的錯誤資訊，並加入 Node.js 的安裝說明，存成 b04.md"
+    gemini "擴充 @AI_Agent_Cli_b04.md 中關於 gemini.md 的範例，存成 b05.md"
+    gemini "在 @AI_Agent_Cli_b05.md 中加入一個『超越 Web UI』的範例，存成 b06.md"
+    # ... 直到我們現在的版本</code></p>
+<ul>
+<li><strong>能力</strong>: 整個流程展示了 AI CLI 作為一個<strong>有狀態、有工具、能讀寫本地檔案</strong>的開發夥伴，如何深度參與到一個專案的完整生命週期中。</li>
+</ul>
+</li>
+</ol>
+<p>這個真實的迭代過程，是 Web 介面 AI 難以企及的，也正是 AI CLI 最核心的價值所在。</p>
+<h3>5. 善用 <code>gemini.md</code> 的指引規範</h3>
+<p>這是 <code>gemini-cli</code> 最強大的特色之一。透過在您執行指令的專案資料夾根目錄下建立一個名為 <code>gemini.md</code> 的檔案，您可以為 AI 設定一個「角色」、「行為準則」和「輸出規範」，讓它在該專案中的所有回應都能遵循您的要求，確保風格與格式的一致性。</p>
+<h4>運作原理</h4>
+<p>當您在一個資料夾中執行 <code>gemini</code> 指令時，它會自動向上搜尋 <code>gemini.md</code> 檔案。如果找到了，它會將該檔案的內容作為「系統提示 (System Prompt)」或「前導指令 (Preamble)」加到您的每一次請求的最前面。這等於是為 AI 提供了一個永久性的、專案範圍的行為指南。</p>
+<h4>應用場景與範例</h4>
+<h5>範例一：Python 資深開發者</h5>
+<p><strong>情境</strong>: 您正在開發一個 Python 專案，並希望 AI 產生的所有程式碼都符合高品質的工程標準。<br />
+<strong><code>gemini.md</code> 內容</strong>:</p>
+<div class="codehilite"><pre><span></span><code><span class="gh"># Gemini 協作指引: Python 專案</span>
+
+<span class="gu">## 1. 角色定位</span>
+你是一位資深的 Python 開發者，專長是撰寫乾淨、高效且易於維護的程式碼。
+
+<span class="gu">## 2. 程式碼生成規則</span>
+<span class="k">-</span><span class="w"> </span><span class="gs">**型別提示 (Type Hint)**</span>: 所有函式的參數與回傳值都必須加上型別提示。
+<span class="k">-</span><span class="w"> </span><span class="gs">**文件字串 (Docstring)**</span>: 每個公開的函式和類別都必須有符合 Google 風格的 Docstring，並包含 Args 和 Returns 區塊。
+<span class="k">-</span><span class="w"> </span><span class="gs">**註解**</span>: 對於複雜的商業邏輯，請加上簡潔的繁體中文註解來解釋「為什麼」這樣做，而不是「做了什麼」。
+<span class="k">-</span><span class="w"> </span><span class="gs">**風格**</span>: 嚴格遵循 PEP 8 程式碼風格指南。
+<span class="k">-</span><span class="w"> </span><span class="gs">**錯誤處理**</span>: 優先使用 try...except 區塊處理潛在的例外，而不是讓程式崩潰。
+</code></pre></div>
+
+<p><strong>效果</strong>: 在此專案中，當您請求 <code>gemini "寫一個函式讀取 csv"</code> 時，它產生的程式碼將會自動包含型別提示、完整的 Docstring 和錯誤處理。</p>
+<h5>範例二：技術文件寫手</h5>
+<p><strong>情境</strong>: 您正在為一個軟體專案撰寫使用者手冊，需要 AI 協助產生清晰、格式一致的說明文件。<br />
+<strong><code>gemini.md</code> 內容</strong>:</p>
+<div class="codehilite"><pre><span></span><code><span class="gh"># Gemini 協作指引: 技術文件撰寫</span>
+
+<span class="gu">## 1. 角色定位</span>
+你是一位專業的技術文件寫手，擅長將複雜的技術概念轉化為普通使用者也能輕鬆理解的文字。
+
+<span class="gu">## 2. 寫作風格與規則</span>
+<span class="k">-</span><span class="w"> </span><span class="gs">**語言**</span>: 使用繁體中文。
+<span class="k">-</span><span class="w"> </span><span class="gs">**目標讀者**</span>: 假設讀者是初學者，避免使用過於深奧的技術術語。如果必須使用，請務必加上簡短的解釋。
+<span class="k">-</span><span class="w"> </span><span class="gs">**語氣**</span>: 專業、友善且有耐心。
+<span class="k">-</span><span class="w"> </span><span class="gs">**格式**</span>:
+<span class="w">    </span><span class="k">-</span><span class="w"> </span>使用 Markdown 格式。
+<span class="w">    </span><span class="k">-</span><span class="w"> </span>操作步驟必須使用有序列表 (1., 2., 3.)。
+<span class="w">    </span><span class="k">-</span><span class="w"> </span>程式碼或指令必須放在 <span class="sb">` `</span>``bash <span class="sb">` 或 `</span> ```python ` 等對應的程式碼區塊中。
+<span class="w">    </span><span class="k">-</span><span class="w"> </span>重要的名詞或提示，請使用**粗體**標示。
+</code></pre></div>
+
+<p><strong>效果</strong>: 當您請求 <code>gemini "說明如何設定資料庫連線"</code> 時，它會自動產出格式工整、用語淺顯易懂的 Markdown 教學文件。</p>
+<h5>範例三：前端 React 開發者</h5>
+<p><strong>情境</strong>: 您正在開發一個 React 專案，使用 TypeScript 和 Tailwind CSS。<br />
+<strong><code>gemini.md</code> 內容</strong>:</p>
+<div class="codehilite"><pre><span></span><code><span class="gh"># Gemini 協作指引: React + TypeScript 專案</span>
+
+<span class="gu">## 1. 角色定位</span>
+你是一位專精於 React 和 TypeScript 的前端工程師，熟悉現代前端開發實踐。
+
+<span class="gu">## 2. 程式碼生成規則</span>
+<span class="k">-</span><span class="w"> </span><span class="gs">**元件類型**</span>: 優先使用函式元件 (Functional Components) 搭配 Hooks。
+<span class="k">-</span><span class="w"> </span><span class="gs">**狀態管理**</span>: 簡單狀態使用 <span class="sb">`useState`</span>，複雜狀態使用 <span class="sb">`useReducer`</span> 或 <span class="sb">`Zustand`</span>。
+<span class="k">-</span><span class="w"> </span><span class="gs">**型別**</span>: 為所有 props 和 state 加上明確的 TypeScript 型別定義。
+<span class="k">-</span><span class="w"> </span><span class="gs">**樣式**</span>: 使用 Tailwind CSS 的 utility classes 進行樣式設計，避免使用傳統的 CSS 檔案或 CSS-in-JS。
+<span class="k">-</span><span class="w"> </span><span class="gs">**檔案結構**</span>: 元件檔案命名為 <span class="sb">`ComponentName.tsx`</span>。
+</code></pre></div>
+
+<p><strong>效果</strong>: 當您請求 <code>gemini "建立一個使用者登入表單元件"</code> 時，它會產出一個 <code>.tsx</code> 格式的 React 函式元件，其中包含 TypeScript 型別定義和 Tailwind CSS 樣式。</p>
+<h5>範例四：Git 提交訊息產生器</h5>
+<p><strong>情境</strong>: 您希望團隊的 Git 提交訊息都遵循「Conventional Commits」規範。<br />
+<strong><code>gemini.md</code> 內容</strong>:</p>
+<div class="codehilite"><pre><span></span><code><span class="gh"># Gemini 協作指引: Git 提交訊息</span>
+
+<span class="gu">## 1. 角色定位</span>
+你是一個嚴格遵守 Conventional Commits 規範的 Git 專家。
+
+<span class="gu">## 2. 輸出規則</span>
+<span class="k">-</span><span class="w"> </span>你的**唯一**任務是根據使用者提供的程式碼變更描述，產生一個符合規範的 Git 提交訊息。
+<span class="k">-</span><span class="w"> </span><span class="gs">**不要**</span>產生任何程式碼或解釋。
+<span class="k">-</span><span class="w"> </span>訊息格式必須是 <span class="sb">`&lt;type&gt;(&lt;scope&gt;): &lt;subject&gt;`</span>，例如 <span class="sb">`feat(api): add user login endpoint`</span>。
+<span class="k">-</span><span class="w"> </span>常見的 type 包括: <span class="sb">`feat`</span>, <span class="sb">`fix`</span>, <span class="sb">`docs`</span>, <span class="sb">`style`</span>, <span class="sb">`refactor`</span>, <span class="sb">`test`</span>, <span class="sb">`chore`</span>。
+</code></pre></div>
+
+<p><strong>效果</strong>: 當您執行 <code>git diff | gemini "我新增了登入功能"</code> 時，它會直接回傳 <code>feat(auth): implement user login functionality</code> 這樣的標準化訊息，方便您直接用於提交。</p>
+<hr />
+<h3>附錄：設定 VS Code 的 C++ 與 Python 開發環境</h3>
+<p>為了讓 VS Code 成為一個強大的 C++ 與 Python 開發環境，使其能與 Gemini CLI 完美配合，您需要安裝一些核心的擴充功能並進行基礎設定。</p>
+<h4>1. Python 環境設定</h4>
+<p>設定 Python 環境相對單純，主要依賴 Microsoft 官方提供的擴充功能。</p>
+<p><strong>步驟一：安裝 Python 擴充功能</strong><br />
+1.  打開 VS Code。<br />
+2.  點擊左側活動欄的「擴充功能」圖示 (Extensions)。<br />
+3.  在搜尋框中輸入 <code>Python</code>。<br />
+4.  找到由 <strong>Microsoft</strong> 發布的 <strong>Python</strong> 擴充功能，點擊「安裝」(Install)。</p>
+<p><strong>核心功能</strong><br />
+安裝後，您將獲得一個功能齊全的 Python 開發環境，包括：<br />
+- <strong>IntelliSense</strong>: 智慧程式碼補全、語法提示、函式簽名輔助。<br />
+- <strong>Linter 與 Formatter</strong>: 自動檢查程式碼風格（如 Pylint, Flake8）並進行格式化（如 Black, autopep8）。<br />
+- <strong>偵錯 (Debugging)</strong>: 支援中斷點、單步執行、變數監看等完整的偵錯功能。<br />
+- <strong>Jupyter Notebook 支援</strong>: 直接在 VS Code 中建立和執行 <code>.ipynb</code> 檔案。<br />
+- <strong>環境管理</strong>: 輕鬆切換不同的 Python 解譯器，包括虛擬環境 (venv) 和 Conda 環境。VS Code 會自動偵測您專案中的虛擬環境。</p>
+<p><strong>步驟二：選擇 Python 解譯器</strong><br />
+1.  打開您的 Python 專案資料夾。<br />
+2.  使用快捷鍵 <code>Cmd + Shift + P</code> (macOS) 或 <code>Ctrl + Shift + P</code> (Windows) 打開命令面板。<br />
+3.  輸入 <code>Python: Select Interpreter</code>。<br />
+4.  從列表中選擇您希望使用的 Python 版本（系統安裝的、venv 或 Conda 環境中的）。</p>
+<h4>2. C++ 環境設定 (Windows 推薦流程)</h4>
+<p>本節將引導您在 Windows 上使用 MSYS2 和 VS Code 建立一個現代、穩定且易於更新的 C++ 開發環境。</p>
+<p><strong>步驟一：安裝 C/C++ 編譯器 (使用 MSYS2 — 推薦)</strong></p>
+<p>⚠️ <strong>重要提示</strong>：請不要再使用舊版的 MinGW 安裝程式。MSYS2 提供了最新版本的 g++ 和 gdb，並且可以透過套件管理器輕鬆更新。</p>
+<ol>
+<li>
+<p><strong>下載並安裝 MSYS2</strong></p>
+<ul>
+<li>前往 MSYS2 官方網站下載：<a href="https://www.msys2.org/">https://www.msys2.org/</a></li>
+<li>安裝後，依照指示執行 <strong>MSYS2 MSYS</strong> 終端機。</li>
+</ul>
+</li>
+<li>
+<p><strong>更新系統套件</strong></p>
+<ul>
+<li>在 MSYS2 終端機中，執行以下指令來更新核心套件：<br />
+<code>bash
+    pacman -Syu</code></li>
+<li>更新過程中，它可能會提示您關閉視窗。請依照指示關閉，然後<strong>重新開啟 MSYS2 MSYS</strong> 終端機，執行第二次更新：<br />
+<code>bash
+    pacman -Su</code></li>
+</ul>
+</li>
+<li>
+<p><strong>安裝 MinGW 64-bit C++ 工具鏈</strong></p>
+<ul>
+<li>執行以下指令來安裝最新的 GCC (g++), GDB (偵錯器) 等工具：<br />
+<code>bash
+    pacman -S mingw-w64-ucrt-x86_64-gcc mingw-w64-ucrt-x86_64-gdb</code></li>
+</ul>
+</li>
+<li>
+<p><strong>將 MinGW-w64 加入 Windows PATH 環境變數</strong></p>
+<ul>
+<li>這是最關鍵的一步，目的是讓 Windows 和 VS Code 能在任何地方找到 <code>g++.exe</code>。</li>
+<li>您需要將 <code>C:\msys64\ucrt64\bin</code> 這個路徑加入到 Windows 的 <code>Path</code> 環境變數中。</li>
+<li><strong>確認是否成功</strong>：重新開啟一個<strong>新的</strong>命令提示字元 (CMD) 或 PowerShell，執行以下指令：<br />
+<code>bash
+    g++ --version
+    gdb --version</code></li>
+<li>如果兩個指令都能成功顯示版本號，代表編譯器已安裝並設定成功。</li>
+</ul>
+</li>
+</ol>
+<p><strong>步驟二：安裝 VS Code C++ 擴充套件</strong></p>
+<ol>
+<li>打開 VS Code。</li>
+<li>點擊左側活動欄的「擴充功能」圖示 (Extensions)。</li>
+<li>在搜尋框中搜尋並安裝：<ul>
+<li><strong>C/C++</strong> (由 Microsoft 發布)：提供核心的語言支援，如 IntelliSense 和語法高亮。</li>
+<li><strong>C/C++ Extension Pack</strong> (由 Microsoft 發布)：推薦安裝，它包含了 C/C++ 核心套件以及偵錯器等實用工具。</li>
+</ul>
+</li>
+</ol>
+<p><strong>步驟三：建立並設定您的第一個 C++ 專案</strong></p>
+<ol>
+<li><strong>建立專案資料夾</strong>：在您喜歡的位置建立一個新資料夾，例如 <code>D:\cpp_test</code>。</li>
+<li><strong>用 VS Code 開啟資料夾</strong>：在 VS Code 中，選擇「File &gt; Open Folder...」，然後選擇您剛剛建立的資料夾。</li>
+<li>
+<p><strong>新增程式碼檔案</strong>：在 VS Code 的檔案總管中，新增一個名為 <code>main.cpp</code> 的檔案，並貼上以下程式碼：<br />
+    ```cpp<br />
+    #include <iostream><br />
+    #include <vector> // 為了展示偵錯功能<br />
+    using namespace std;</p>
+<p>int main() {<br />
+    vector<string> msg {"Hello", "C++", "World", "from", "VS Code!"};<br />
+    for (const string&amp; word : msg) {<br />
+        cout &lt;&lt; word &lt;&lt; " ";<br />
+    }<br />
+    cout &lt;&lt; endl;<br />
+    return 0;<br />
+}<br />
+```</p>
+</li>
+</ol>
+<p><strong>步驟四：一鍵編譯與偵錯 (推薦的快速方法)</strong></p>
+<p>VS Code 提供了極為便利的自動化設定功能，讓您無需手動撰寫複雜的 JSON 設定檔。</p>
+<ol>
+<li><strong>設定中斷點</strong>：在 <code>main.cpp</code> 中，點擊 <code>cout &lt;&lt; word &lt;&lt; " ";</code> 這一行程式碼最左邊的行號處，會出現一個紅點，這就是中斷點。</li>
+<li><strong>按下 F5 啟動偵錯</strong>：<ul>
+<li>直接按下鍵盤上的 <code>F5</code> 鍵。</li>
+<li>VS Code 會在上方跳出一個選項面板，詢問您要使用哪個偵錯環境。請選擇 <strong>C++ (GDB/LLDB)</strong>。</li>
+<li>接著，它會詢問您要使用哪個設定。請選擇 <strong><code>g++.exe build and debug active file</code></strong> (它應該會自動偵測到您安裝的 g++)。</li>
+</ul>
+</li>
+<li><strong>自動化完成</strong>：<ul>
+<li>VS Code 會在您的專案資料夾中自動建立一個 <code>.vscode</code> 資料夾，並在其中生成 <code>tasks.json</code> (告訴 VS Code 如何編譯程式) 和 <code>launch.json</code> (告訴 VS Code 如何啟動偵錯器) 兩個檔案。</li>
+<li>接著，它會自動執行編譯任務，然後啟動偵錯器，程式會在您設定的中斷點停下來。</li>
+<li>此時，您可以查看左側「Run and Debug」面板中的變數狀態，或使用上方的偵錯控制列（繼續、單步執行等）。</li>
+</ul>
+</li>
+</ol>
+<p>從現在起，只要您在這個專案中按下 <code>F5</code>，VS Code 就會自動完成「編譯 -&gt; 執行 -&gt; 偵錯」的完整流程。</p>
+<p><strong>步驟五：(選用) 使用 Code Runner 快速執行</strong></p>
+<p>如果您只是想快速執行程式並看到結果，而不需要偵錯功能，可以安裝 <strong>Code Runner</strong> 擴充功能。安裝後，在編輯器右上角會出現一個播放按鈕 (Run Code)，點擊即可快速在終端機中編譯並執行您的程式碼。</p>
+<p><strong>步驟六：常見問題</strong></p>
+<ul>
+<li><strong>問題</strong>: 按下 <code>F5</code> 後出現錯誤，提示「g++: command not found」或類似訊息。</li>
+<li><strong>解法</strong>: 這幾乎可以肯定是您的 PATH 環境變數沒有設定正確。請回到<strong>步驟一的第 4 點</strong>，仔細檢查 <code>C:\msys64\ucrt64\bin</code> 是否已確實加入到 Windows 的系統 <code>Path</code> 中，並確保您是在<strong>新的終端機</strong>中執行 <code>g++ --version</code> 來驗證。</li>
+</ul></div>
+    
+    <!-- Highlight.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    
+    <!-- Mermaid -->
+    <script type="module">
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+        mermaid.initialize({
+            "startOnLoad": true,
+            "theme": "dark",
+            "securityLevel": "loose"
+});
+    </script>
+</body>
+</html>
