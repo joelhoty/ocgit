@@ -71,7 +71,7 @@ def main():
 
         # Create markdown table
         markdown_content += "| File Name | Last Updated | Link |\n"
-        markdown_content += "|---|---|---|"
+        markdown_content += "|---|---|---|\n"
         for file_info in sorted_files:
             markdown_content += f"| {file_info['name']} | {file_info['last_updated']} | [{file_info['name']}]({file_info['link']}) |\n"
         markdown_content += "\n"

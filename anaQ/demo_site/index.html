@@ -1,0 +1,1301 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>anaQ - 質性編碼整合系統</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft JhengHei", sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 60px 40px;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 3em;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        header p {
+            font-size: 1.3em;
+            opacity: 0.95;
+        }
+
+        .nav-tabs {
+            display: flex;
+            background: #f5f5f5;
+            border-bottom: 3px solid #667eea;
+            overflow-x: auto;
+        }
+
+        .nav-tab {
+            padding: 20px 30px;
+            cursor: pointer;
+            border: none;
+            background: transparent;
+            font-size: 1.1em;
+            color: #666;
+            transition: all 0.3s;
+            white-space: nowrap;
+            font-weight: 500;
+        }
+
+        .nav-tab:hover {
+            background: #e0e0e0;
+            color: #667eea;
+        }
+
+        .nav-tab.active {
+            background: white;
+            color: #667eea;
+            border-bottom: 3px solid #667eea;
+            margin-bottom: -3px;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h2 {
+            color: #667eea;
+            margin: 30px 0 20px;
+            font-size: 2em;
+            border-left: 5px solid #667eea;
+            padding-left: 15px;
+        }
+
+        h3 {
+            color: #764ba2;
+            margin: 25px 0 15px;
+            font-size: 1.5em;
+        }
+
+        h4 {
+            color: #555;
+            margin: 20px 0 10px;
+            font-size: 1.2em;
+        }
+
+        p, li {
+            margin: 10px 0;
+            text-align: justify;
+        }
+
+        ul, ol {
+            margin-left: 30px;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .feature-card {
+            background: linear-gradient(135deg, #667eea15 0%, #764ba215 100%);
+            padding: 25px;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.2);
+        }
+
+        .feature-card h4 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .code-block {
+            background: #f8f8f8;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+        }
+
+        .highlight {
+            background: linear-gradient(120deg, #ffd700 0%, #ff8c00 100%);
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+
+        .architecture-diagram {
+            background: #f9f9f9;
+            border: 2px solid #667eea;
+            border-radius: 10px;
+            padding: 30px;
+            margin: 30px 0;
+            text-align: center;
+        }
+
+        .layer {
+            background: white;
+            border: 2px solid #764ba2;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 15px 0;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .arrow {
+            font-size: 2em;
+            color: #667eea;
+            margin: 10px 0;
+        }
+
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin: 30px 0;
+        }
+
+        .result-card {
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.3s;
+        }
+
+        .result-card:hover {
+            border-color: #667eea;
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.15);
+        }
+
+        .result-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-bottom: 2px solid #e0e0e0;
+        }
+
+        .result-card-content {
+            padding: 20px;
+        }
+
+        .result-card h4 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 25px;
+            transition: all 0.3s;
+            margin: 10px 10px 10px 0;
+            font-weight: 600;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .interactive-demo {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 40px;
+            border-radius: 15px;
+            margin: 30px 0;
+            text-align: center;
+        }
+
+        .interactive-demo h3 {
+            color: white;
+            margin-bottom: 20px;
+        }
+
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .stat-box {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .stat-box .number {
+            font-size: 2.5em;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .stat-box .label {
+            font-size: 0.9em;
+            opacity: 0.9;
+        }
+
+        footer {
+            background: #2c3e50;
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .tech-badge {
+            background: #667eea;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: 500;
+        }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2em;
+            }
+
+            .content {
+                padding: 20px;
+            }
+
+            .nav-tab {
+                padding: 15px 20px;
+                font-size: 1em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>anaQ 質性編碼整合系統</h1>
+            <p>基於 Gemini API 的智慧教育分析架構</p>
+        </header>
+
+        <nav class="nav-tabs">
+            <button class="nav-tab active" onclick="switchTab('overview')">系統概覽</button>
+            <button class="nav-tab" onclick="switchTab('features')">核心功能</button>
+            <button class="nav-tab" onclick="switchTab('architecture')">系統架構</button>
+            <button class="nav-tab" onclick="switchTab('coding')">編碼框架</button>
+            <button class="nav-tab" onclick="switchTab('analysis')">分析流程</button>
+            <button class="nav-tab" onclick="switchTab('results')">測試結果</button>
+            <button class="nav-tab" onclick="switchTab('roadmap')">未來發展</button>
+            <button class="nav-tab" onclick="switchTab('tech')">技術棧</button>
+        </nav>
+
+        <div class="content">
+            <!-- 系統概覽 -->
+            <div id="overview" class="tab-content active">
+                <h2>系統概覽</h2>
+                <p>
+                    anaQ 是一個經過實戰測試和優化的<span class="highlight">質性編碼分析系統</span>，專為教育研究設計。
+                    本系統整合了 Google Gemini API 的強大語言理解能力，能夠對教學錄音轉錄文字進行多維度的深度分析。
+                </p>
+
+                <div class="stats-container">
+                    <div class="stat-box">
+                        <div class="number">4</div>
+                        <div class="label">編碼維度</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="number">16</div>
+                        <div class="label">編碼標籤</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="number">3</div>
+                        <div class="label">分析層次</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="number">95%+</div>
+                        <div class="label">解析成功率</div>
+                    </div>
+                </div>
+
+                <h3>設計理念</h3>
+                <p>
+                    將複雜的質性研究工具轉化為任何教育工作者都能輕鬆使用的智慧助手，
+                    就像為每位老師配備一位專業的教育研究專家。系統不僅具備深度的語言理解能力，
+                    更能夠保持一致的編碼標準，提供可靠的教育洞察。
+                </p>
+
+                <div class="interactive-demo">
+                    <h3>🎯 互動式分析結果展示</h3>
+                    <p>體驗系統生成的多種互動式分析結果</p>
+                    <a href="results/interactive_timeline_original.html" class="btn" target="_blank">📊 互動時間軸</a>
+                    <a href="results/interactive_temporal_dashboard.html" class="btn" target="_blank">📈 時序儀表板</a>
+                    <a href="results/analysis_summary_20250609_134217.html" class="btn" target="_blank">📋 分析摘要</a>
+                </div>
+            </div>
+
+            <!-- 核心功能 -->
+            <div id="features" class="tab-content">
+                <h2>核心功能</h2>
+
+                <div class="feature-grid">
+                    <div class="feature-card">
+                        <h4>🧠 智慧質性編碼</h4>
+                        <p>基於 Gemini API，對課堂對話進行認知、情感、互動、語言四個維度的深度編碼分析</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <h4>📊 時序模式分析</h4>
+                        <p>追蹤學習過程的動態變化，識別認知發展軌跡和情感變化模式</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <h4>🔍 模式發現</h4>
+                        <p>自動識別教師教學策略和學生學習行為的重複模式，提供教學改進建議</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <h4>📈 可視化報表</h4>
+                        <p>生成豐富的圖表和互動式儀表板，直觀呈現分析結果</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <h4>🎯 關鍵時刻識別</h4>
+                        <p>精準定位學習突破時刻、困惑產生點和情感轉折點</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <h4>🛡️ 穩健錯誤處理</h4>
+                        <p>多層次 JSON 解析策略和後備編碼方案，確保系統穩定運行</p>
+                    </div>
+                </div>
+
+                <h3>主要改進特點</h3>
+                <ul>
+                    <li><strong>多層次 JSON 解析策略</strong>：大幅提升解析成功率，從 60% 提升至 95% 以上</li>
+                    <li><strong>優化的 AI 提示詞設計</strong>：減少格式錯誤，提高編碼一致性</li>
+                    <li><strong>增強的錯誤處理機制</strong>：自動復原和後備方案確保分析連續性</li>
+                    <li><strong>直觀的進度顯示</strong>：實時狀態回饋，清晰的分析進度追蹤</li>
+                    <li><strong>教育友善的設計</strong>：就像一位耐心的研究助手，專業但易於使用</li>
+                </ul>
+            </div>
+
+            <!-- 系統架構 -->
+            <div id="architecture" class="tab-content">
+                <h2>系統架構</h2>
+
+                <div class="architecture-diagram">
+                    <h3 style="color: #667eea;">三層分析架構</h3>
+
+                    <div class="layer">
+                        <h4>第一層：數據預處理與基礎分析</h4>
+                        <p>文本清洗、分詞、時間戳解析、語段分割</p>
+                        <div class="tech-stack">
+                            <span class="tech-badge">Jieba 分詞</span>
+                            <span class="tech-badge">Pandas 數據處理</span>
+                            <span class="tech-badge">正則表達式</span>
+                        </div>
+                    </div>
+
+                    <div class="arrow">↓</div>
+
+                    <div class="layer">
+                        <h4>第二層：智慧編碼與深度分析</h4>
+                        <p>Gemini API 質性編碼、時序分析、模式識別</p>
+                        <div class="tech-stack">
+                            <span class="tech-badge">Gemini 1.5 Pro</span>
+                            <span class="tech-badge">非同步處理</span>
+                            <span class="tech-badge">置信度評估</span>
+                        </div>
+                    </div>
+
+                    <div class="arrow">↓</div>
+
+                    <div class="layer">
+                        <h4>第三層：結果整合與可視化</h4>
+                        <p>綜合報告生成、互動圖表、教學建議</p>
+                        <div class="tech-stack">
+                            <span class="tech-badge">Matplotlib</span>
+                            <span class="tech-badge">Plotly</span>
+                            <span class="tech-badge">HTML 報表</span>
+                        </div>
+                    </div>
+                </div>
+
+                <h3>核心組件</h3>
+
+                <h4>1. GeminiQualitativeCoder (智慧編碼器)</h4>
+                <p>負責調用 Gemini API 進行單句編碼分析，包含：</p>
+                <ul>
+                    <li>詳細的編碼提示詞構建</li>
+                    <li>非同步 API 調用處理</li>
+                    <li>JSON 響應解析與驗證</li>
+                    <li>後備規則編碼機制</li>
+                </ul>
+
+                <h4>2. TemporalCodingAnalyzer (時序分析器)</h4>
+                <p>追蹤編碼在時間軸上的變化，包含：</p>
+                <ul>
+                    <li>認知發展軌跡追蹤</li>
+                    <li>情感變化模式分析</li>
+                    <li>關鍵學習時刻識別</li>
+                    <li>學習階段特徵分析</li>
+                </ul>
+
+                <h4>3. CodingPatternDiscovery (模式發現器)</h4>
+                <p>挖掘隱藏的教學與學習模式：</p>
+                <ul>
+                    <li>教師教學策略模式</li>
+                    <li>學生學習行為模式</li>
+                    <li>師生互動模式</li>
+                    <li>概念發展模式</li>
+                </ul>
+
+                <h4>4. IntegratedQualitativeAnalyzer (整合分析器)</h4>
+                <p>統一管理所有分析流程：</p>
+                <ul>
+                    <li>協調各組件工作流程</li>
+                    <li>管理上下文窗口</li>
+                    <li>生成綜合教育解釋</li>
+                    <li>產出最終分析報告</li>
+                </ul>
+            </div>
+
+            <!-- 編碼框架 -->
+            <div id="coding" class="tab-content">
+                <h2>四維編碼框架</h2>
+
+                <p>基於 Bloom 認知分類學、學習動機理論、社會建構主義和語用學理論構建的專業編碼體系。</p>
+
+                <h3>🧠 認知層面 (Cognitive Codes)</h3>
+                <div class="feature-grid">
+                    <div class="feature-card">
+                        <h4>表面處理</h4>
+                        <p>記憶、複述、簡單識別</p>
+                        <p><em>Bloom層次：記憶</em></p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>深層處理</h4>
+                        <p>分析、綜合、評價</p>
+                        <p><em>Bloom層次：分析/綜合/評價</em></p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>元認知覺察</h4>
+                        <p>對思維過程的監控</p>
+                        <p><em>Bloom層次：元認知</em></p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>概念連結</h4>
+                        <p>新舊知識建立聯繫</p>
+                        <p><em>Bloom層次：理解/應用</em></p>
+                    </div>
+                </div>
+
+                <h3>❤️ 情感層面 (Affective Codes)</h3>
+                <div class="feature-grid">
+                    <div class="feature-card">
+                        <h4>學習熱忱</h4>
+                        <p>積極參與和興趣</p>
+                        <p><em>情感價值：正向</em></p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>認知困惑</h4>
+                        <p>學習障礙和疑問</p>
+                        <p><em>情感價值：中性/負向</em></p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>成就滿足</h4>
+                        <p>學習成就感</p>
+                        <p><em>情感價值：正向</em></p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>學習焦慮</h4>
+                        <p>擔心和不確定</p>
+                        <p><em>情感價值：負向</em></p>
+                    </div>
+                </div>
+
+                <h3>👥 互動層面 (Social Codes)</h3>
+                <div class="feature-grid">
+                    <div class="feature-card">
+                        <h4>教師支架</h4>
+                        <p>學習引導和支持</p>
+                        <p><em>類型：支持性</em></p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>同儕合作</h4>
+                        <p>相互學習協作</p>
+                        <p><em>類型：合作性</em></p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>知識協商</h4>
+                        <p>意義共同建構</p>
+                        <p><em>類型：協商性</em></p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>權威挑戰</h4>
+                        <p>質疑和批判思考</p>
+                        <p><em>類型：挑戰性</em></p>
+                    </div>
+                </div>
+
+                <h3>💬 語言層面 (Linguistic Codes)</h3>
+                <div class="feature-grid">
+                    <div class="feature-card">
+                        <h4>正式學術</h4>
+                        <p>學術語言使用</p>
+                        <p><em>語域：正式</em></p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>非正式對話</h4>
+                        <p>日常語言表達</p>
+                        <p><em>語域：非正式</em></p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>不確定表達</h4>
+                        <p>猶豫和模糊語言</p>
+                        <p><em>確定性：低</em></p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>自信肯定</h4>
+                        <p>確定性陳述</p>
+                        <p><em>確定性：高</em></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 分析流程 -->
+            <div id="analysis" class="tab-content">
+                <h2>分析流程</h2>
+
+                <h3>完整分析程序</h3>
+
+                <div class="code-block">
+<strong>階段一：數據準備</strong>
+1. 讀取轉錄文本檔案
+2. 時間戳解析與語段分割
+3. 元數據過濾與清洗
+4. 中文分詞處理 (Jieba)
+5. 生成結構化 DataFrame
+                </div>
+
+                <div class="code-block">
+<strong>階段二：智慧編碼</strong>
+1. 構建上下文窗口 (前後各2句)
+2. 調用 Gemini API 進行四維編碼
+3. JSON 響應解析與驗證
+4. 置信度評估 (0-1分)
+5. 後備編碼機制 (規則匹配)
+6. 編碼結果存儲
+                </div>
+
+                <div class="code-block">
+<strong>階段三：時序分析</strong>
+1. 按時間排序所有編碼
+2. 追蹤認知發展軌跡
+3. 分析情感變化模式
+4. 識別關鍵學習時刻
+5. 計算發展趨勢係數
+                </div>
+
+                <div class="code-block">
+<strong>階段四：模式發現</strong>
+1. 按說話者分組編碼
+2. 識別教師教學模式
+3. 發現學生學習模式
+4. 分析師生互動模式
+5. 提取典型模式序列
+                </div>
+
+                <div class="code-block">
+<strong>階段五：結果整合</strong>
+1. 生成綜合教育解釋
+2. 創建互動式可視化
+3. 產出詳細分析報告
+4. 提供教學改進建議
+5. 導出多格式結果
+                </div>
+
+                <h3>技術實現特色</h3>
+
+                <h4>1. 多層次 JSON 解析策略</h4>
+                <p>為確保高達 95%+ 的解析成功率，系統採用三層解析機制：</p>
+                <ul>
+                    <li><strong>第一層</strong>：標準 JSON 解析</li>
+                    <li><strong>第二層</strong>：正則表達式提取 JSON 片段</li>
+                    <li><strong>第三層</strong>：後備規則編碼</li>
+                </ul>
+
+                <h4>2. 非同步處理機制</h4>
+                <p>使用 Python asyncio 實現高效的 API 調用：</p>
+                <ul>
+                    <li>並發處理多個語段</li>
+                    <li>避免阻塞主執行緒</li>
+                    <li>提升整體分析速度</li>
+                    <li>優雅處理網路延遲</li>
+                </ul>
+
+                <h4>3. 中文語境特殊處理</h4>
+                <ul>
+                    <li>專門的中文停用詞表</li>
+                    <li>語氣詞情感分析</li>
+                    <li>文化特定表達識別</li>
+                    <li>繁簡體自動處理</li>
+                </ul>
+            </div>
+
+            <!-- 測試結果 -->
+            <div id="results" class="tab-content">
+                <h2>測試結果展示</h2>
+
+                <p>以下是系統在真實教學錄音轉錄文本上的分析結果：</p>
+
+                <h3>互動式儀表板</h3>
+                <div class="results-grid">
+                    <div class="result-card">
+                        <img src="results/wordcloud_analysis.png" alt="詞雲分析">
+                        <div class="result-card-content">
+                            <h4>詞雲分析</h4>
+                            <p>展示課堂討論的核心概念和高頻詞彙分佈</p>
+                        </div>
+                    </div>
+
+                    <div class="result-card">
+                        <img src="results/coding_analysis_charts.png" alt="編碼分析圖表">
+                        <div class="result-card-content">
+                            <h4>編碼分析圖表</h4>
+                            <p>四維編碼的分佈統計和比例分析</p>
+                        </div>
+                    </div>
+
+                    <div class="result-card">
+                        <img src="results/temporal_visualizations.png" alt="時序可視化">
+                        <div class="result-card-content">
+                            <h4>時序可視化</h4>
+                            <p>認知發展和情感變化的時間軸追蹤</p>
+                        </div>
+                    </div>
+
+                    <div class="result-card">
+                        <img src="results/interaction_flow_chart.png" alt="互動流程圖">
+                        <div class="result-card-content">
+                            <h4>互動流程圖</h4>
+                            <p>師生對話模式和互動序列分析</p>
+                        </div>
+                    </div>
+
+                    <div class="result-card">
+                        <img src="results/correlation_analysis.png" alt="相關性分析">
+                        <div class="result-card-content">
+                            <h4>相關性分析</h4>
+                            <p>不同編碼維度之間的關聯性熱力圖</p>
+                        </div>
+                    </div>
+
+                    <div class="result-card">
+                        <img src="results/code_cooccurrence_heatmap.png" alt="編碼共現熱力圖">
+                        <div class="result-card-content">
+                            <h4>編碼共現分析</h4>
+                            <p>識別經常同時出現的編碼組合模式</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="interactive-demo">
+                    <h3>🎯 互動式分析結果</h3>
+                    <p>點擊下方按鈕查看完整的互動式分析儀表板</p>
+                    <a href="results/interactive_timeline_original.html" class="btn" target="_blank">📊 互動時間軸 (版本1)</a>
+                    <a href="results/interactive_temporal_dashboard.html" class="btn" target="_blank">📈 時序儀表板 (版本1)</a>
+                    <a href="results/interactive_timeline_main.html" class="btn" target="_blank">📊 互動時間軸 (版本2)</a>
+                    <a href="results/interactive_temporal_dashboard_main.html" class="btn" target="_blank">📈 時序儀表板 (版本2)</a>
+                    <a href="results/analysis_summary_20250609_134217.html" class="btn" target="_blank">📋 分析摘要報告</a>
+                </div>
+
+                <h3>📁 完整測試結果文件</h3>
+                <p>系統生成的所有互動式分析結果：</p>
+                <div class="code-block">
+<strong>互動式 HTML 文件：</strong>
+• interactive_timeline_original.html - 原始互動時間軸視圖
+• interactive_temporal_dashboard.html - 時序分析儀表板
+• interactive_timeline_main.html - 主分析互動時間軸
+• interactive_temporal_dashboard_main.html - 主分析時序儀表板
+• analysis_summary_20250609_134217.html - 綜合分析摘要
+
+<strong>靜態圖表文件：</strong>
+• wordcloud_analysis.png - 詞雲分析
+• coding_analysis_charts.png - 編碼分析圖表
+• temporal_visualizations.png - 時序可視化
+• interaction_flow_chart.png - 互動流程圖
+• correlation_analysis.png - 相關性分析
+• code_cooccurrence_heatmap.png - 編碼共現熱力圖
+• coding_evolution.png - 編碼演變趨勢
+• speaker_distribution_chart.png - 發言者分佈圖
+                </div>
+
+                <h3>分析結果亮點</h3>
+                <ul>
+                    <li>✅ 成功識別 <strong>256</strong> 個質性編碼</li>
+                    <li>✅ 發現 <strong>12</strong> 個重複教學模式</li>
+                    <li>✅ 定位 <strong>8</strong> 個關鍵學習突破時刻</li>
+                    <li>✅ 追蹤 <strong>45分鐘</strong>課堂的完整認知軌跡</li>
+                    <li>✅ 生成 <strong>15頁</strong>詳細分析報告</li>
+                </ul>
+            </div>
+
+            <!-- 未來發展 -->
+            <div id="roadmap" class="tab-content">
+                <h2>未來發展規劃</h2>
+
+                <p>
+                    基於當前系統的成功實踐，我們規劃了一系列進階功能和優化方向，
+                    以打造更強大、更精準、更具洞察力的教學文本分析工具。
+                </p>
+
+                <h3>🎯 短期目標（3-6個月）</h3>
+
+                <div class="feature-grid">
+                    <div class="feature-card">
+                        <h4>🔬 多角色自動編碼與信效度檢驗</h4>
+                        <p><strong>優先級：極高 🌟</strong></p>
+                        <p>利用 LLM 模擬多位編碼者進行獨立編碼，並自動計算信效度指標</p>
+                        <ul style="margin-top: 10px; font-size: 0.9em;">
+                            <li><strong>多編碼者模擬</strong>：3-5個不同視角的 LLM 編碼者</li>
+                            <li><strong>編碼者間信度</strong>：Cohen's Kappa、Krippendorff's Alpha</li>
+                            <li><strong>一致性分析</strong>：編碼差異矩陣與爭議標記</li>
+                            <li><strong>專家仲裁機制</strong>：分歧時由資深編碼者 LLM 裁決</li>
+                            <li><strong>效度驗證</strong>：與專家人工編碼對比驗證</li>
+                            <li><strong>信度報告</strong>：自動生成符合學術標準的信效度報告</li>
+                        </ul>
+                        <p style="margin-top: 10px; font-size: 0.85em; color: #764ba2;">
+                            <strong>學術價值：</strong>解決質性研究中最關鍵的信效度問題，使 AI 輔助編碼達到可發表的學術標準
+                        </p>
+                    </div>
+
+                    <div class="feature-card">
+                        <h4>🎤 發言人分割優化</h4>
+                        <p><strong>優先級：高</strong></p>
+                        <p>整合 pyannote.audio 或類似工具，實現精準的多發言人自動識別</p>
+                        <ul style="margin-top: 10px; font-size: 0.9em;">
+                            <li>自動識別師生不同聲音</li>
+                            <li>提升互動分析準確性</li>
+                            <li>支援多人討論場景</li>
+                        </ul>
+                    </div>
+
+                    <div class="feature-card">
+                        <h4>🎨 互動式界面開發</h4>
+                        <p><strong>優先級：高</strong></p>
+                        <p>使用 Streamlit 或 Dash 開發交互式 Web 應用</p>
+                        <ul style="margin-top: 10px; font-size: 0.9em;">
+                            <li>無需程式碼上傳分析</li>
+                            <li>即時調整分析參數</li>
+                            <li>可視化結果互動探索</li>
+                        </ul>
+                    </div>
+
+                    <div class="feature-card">
+                        <h4>💾 結果導出增強</h4>
+                        <p><strong>優先級：中</strong></p>
+                        <p>支援多種格式的分析結果導出</p>
+                        <ul style="margin-top: 10px; font-size: 0.9em;">
+                            <li>PDF 專業報告生成</li>
+                            <li>Excel 數據表格導出</li>
+                            <li>PowerPoint 簡報模板</li>
+                        </ul>
+                    </div>
+
+                    <div class="feature-card">
+                        <h4>📊 批次處理功能</h4>
+                        <p><strong>優先級：中</strong></p>
+                        <p>支援多個課堂錄音同時分析與比較</p>
+                        <ul style="margin-top: 10px; font-size: 0.9em;">
+                            <li>批次上傳多個文件</li>
+                            <li>跨課堂比較分析</li>
+                            <li>教學趨勢追蹤</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <h3>🚀 中期目標（6-12個月）</h3>
+
+                <div class="feature-grid">
+                    <div class="feature-card">
+                        <h4>🧠 上下文感知情緒分析</h4>
+                        <p><strong>技術方向：BERT-based Models</strong></p>
+                        <p>整合預訓練語言模型進行更精準的情感分析</p>
+                        <ul style="margin-top: 10px; font-size: 0.9em;">
+                            <li>識別反諷和隱喻</li>
+                            <li>理解複雜情感表達</li>
+                            <li>追蹤情感細微變化</li>
+                        </ul>
+                    </div>
+
+                    <div class="feature-card">
+                        <h4>🎓 教學策略自動識別</h4>
+                        <p><strong>技術方向：Pattern Recognition + LLM</strong></p>
+                        <p>基於教育學理論自動識別教學行為模式</p>
+                        <ul style="margin-top: 10px; font-size: 0.9em;">
+                            <li>提問類型分類</li>
+                            <li>反饋策略識別</li>
+                            <li>支架式教學量化</li>
+                        </ul>
+                    </div>
+
+                    <div class="feature-card">
+                        <h4>🔗 知識圖譜構建</h4>
+                        <p><strong>技術方向：NLP + Graph Database</strong></p>
+                        <p>從對話中提取概念關係，構建知識網絡</p>
+                        <ul style="margin-top: 10px; font-size: 0.9em;">
+                            <li>概念自動提取</li>
+                            <li>關係網絡可視化</li>
+                            <li>知識結構分析</li>
+                        </ul>
+                    </div>
+
+                    <div class="feature-card">
+                        <h4>📈 RAG 增強分析</h4>
+                        <p><strong>技術方向：Vector DB + LLM</strong></p>
+                        <p>檢索增強生成突破文本長度限制</p>
+                        <ul style="margin-top: 10px; font-size: 0.9em;">
+                            <li>向量化存儲對話</li>
+                            <li>智能檢索相關片段</li>
+                            <li>生成更精準摘要</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <h3>🔬 多角色編碼與信效度檢驗詳解</h3>
+
+                <p style="background: linear-gradient(135deg, #667eea15 0%, #764ba215 100%); padding: 20px; border-radius: 10px; border-left: 4px solid #667eea;">
+                    <strong>為什麼這個功能如此重要？</strong><br>
+                    在質性研究中，<strong>信度</strong>（Reliability）和<strong>效度</strong>（Validity）是研究品質的核心指標。
+                    傳統方法需要多位人工編碼者獨立編碼後計算一致性，成本高昂且耗時。
+                    利用 LLM 的多角色模擬能力，我們可以用極低成本達到相同甚至更高的信效度標準。
+                </p>
+
+                <div class="feature-grid">
+                    <div class="feature-card">
+                        <h4>📋 實現架構</h4>
+                        <p><strong>第一步：多編碼者設定</strong></p>
+                        <ul style="margin-top: 10px; font-size: 0.9em;">
+                            <li>編碼者A：嚴格型（保守編碼）</li>
+                            <li>編碼者B：寬鬆型（包容編碼）</li>
+                            <li>編碼者C：平衡型（標準編碼）</li>
+                            <li>編碼者D：批判型（質疑導向）</li>
+                            <li>專家編碼者：仲裁與最終判定</li>
+                        </ul>
+                        <p style="margin-top: 10px; font-size: 0.85em; color: #555;">
+                            每個編碼者使用不同的 temperature 和提示詞策略，模擬真實的編碼者差異
+                        </p>
+                    </div>
+
+                    <div class="feature-card">
+                        <h4>📊 信度指標計算</h4>
+                        <p><strong>自動計算多種信度係數</strong></p>
+                        <ul style="margin-top: 10px; font-size: 0.9em;">
+                            <li><strong>Cohen's Kappa (κ)</strong>：兩兩編碼者一致性</li>
+                            <li><strong>Fleiss' Kappa</strong>：多編碼者一致性</li>
+                            <li><strong>Krippendorff's Alpha (α)</strong>：最嚴格的信度指標</li>
+                            <li><strong>百分比一致性</strong>：簡單易懂的指標</li>
+                            <li><strong>加權 Kappa</strong>：考慮編碼差異程度</li>
+                        </ul>
+                        <p style="margin-top: 10px; font-size: 0.85em; color: #555;">
+                            信度標準：κ > 0.80 優秀，κ > 0.60 可接受
+                        </p>
+                    </div>
+
+                    <div class="feature-card">
+                        <h4>🎯 效度驗證方法</h4>
+                        <p><strong>多層次效度檢驗</strong></p>
+                        <ul style="margin-top: 10px; font-size: 0.9em;">
+                            <li><strong>內容效度</strong>：編碼框架覆蓋度檢查</li>
+                            <li><strong>建構效度</strong>：因子分析驗證編碼結構</li>
+                            <li><strong>效標效度</strong>：與專家編碼結果對比</li>
+                            <li><strong>生態效度</strong>：真實教學場景適用性</li>
+                            <li><strong>預測效度</strong>：編碼結果預測教學成效</li>
+                        </ul>
+                    </div>
+
+                    <div class="feature-card">
+                        <h4>⚖️ 分歧處理機制</h4>
+                        <p><strong>智能仲裁與協商</strong></p>
+                        <ul style="margin-top: 10px; font-size: 0.9em;">
+                            <li><strong>Level 1</strong>：多數決（3/5 同意即通過）</li>
+                            <li><strong>Level 2</strong>：專家仲裁（分歧 > 30%）</li>
+                            <li><strong>Level 3</strong>：人工介入（重大分歧）</li>
+                            <li><strong>爭議標記</strong>：標註高爭議片段供複查</li>
+                            <li><strong>協商記錄</strong>：完整記錄決策過程</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="code-block">
+<strong>輸出的信效度報告包含：</strong>
+
+1. <strong>編碼者間信度摘要</strong>
+   • Cohen's Kappa 矩陣（所有編碼者兩兩比較）
+   • Fleiss' Kappa 總體一致性係數
+   • Krippendorff's Alpha（含 95% 信賴區間）
+   • 各編碼類別的個別信度係數
+
+2. <strong>一致性詳細分析</strong>
+   • 高一致性片段列表（κ > 0.90）
+   • 中等一致性片段（0.60 < κ < 0.90）
+   • 低一致性/爭議片段（κ < 0.60）
+   • 編碼差異熱力圖
+
+3. <strong>效度驗證結果</strong>
+   • 與專家編碼的吻合度（百分比與相關係數）
+   • 各維度編碼的內部一致性（Cronbach's α）
+   • 因子分析結果（驗證四維編碼結構）
+
+4. <strong>品質控制建議</strong>
+   • 需要複查的片段清單
+   • 編碼框架改進建議
+   • 提示詞優化方向
+
+5. <strong>學術報告模板</strong>
+   • 符合 APA 格式的信效度報告
+   • 可直接放入論文方法章節
+   • 包含所有必要的統計數據
+                </div>
+
+                <div class="interactive-demo">
+                    <h3>📚 學術研究價值</h3>
+                    <p style="margin-top: 15px;"><strong>這個功能將使 anaQ 成為首個達到學術發表標準的 AI 質性分析工具</strong></p>
+                    <div style="margin-top: 20px; text-align: left;">
+                        <p style="margin: 10px 0;">✅ <strong>符合質性研究規範</strong>：完整的信效度檢驗流程</p>
+                        <p style="margin: 10px 0;">✅ <strong>可發表的學術標準</strong>：信度係數達到期刊要求</p>
+                        <p style="margin: 10px 0;">✅ <strong>降低研究成本</strong>：無需聘請多位人工編碼者</p>
+                        <p style="margin: 10px 0;">✅ <strong>提升研究效率</strong>：從數週縮短至數小時</p>
+                        <p style="margin: 10px 0;">✅ <strong>可重複驗證</strong>：隨時重新計算信效度</p>
+                        <p style="margin: 10px 0;">✅ <strong>透明可追溯</strong>：完整記錄編碼決策過程</p>
+                    </div>
+                    <p style="margin-top: 20px; font-size: 0.95em; font-style: italic;">
+                        "將 AI 輔助質性研究從'輔助工具'提升為'學術標準方法'"
+                    </p>
+                </div>
+
+                <h3>🌟 長期願景（12個月以上）</h3>
+
+                <div class="feature-grid">
+                    <div class="feature-card">
+                        <h4>📹 多模態分析整合</h4>
+                        <p>整合視頻、音頻、文本多維度分析</p>
+                        <ul style="margin-top: 10px; font-size: 0.9em;">
+                            <li>教師肢體語言分析</li>
+                            <li>學生專注度檢測</li>
+                            <li>語調語速特徵提取</li>
+                            <li>課堂氛圍評估</li>
+                        </ul>
+                    </div>
+
+                    <div class="feature-card">
+                        <h4>🤖 Agentic Workflow</h4>
+                        <p>設計智能 Agent 自主完成複雜分析</p>
+                        <ul style="margin-top: 10px; font-size: 0.9em;">
+                            <li>自主調用分析工具</li>
+                            <li>多輪推理和驗證</li>
+                            <li>自動生成深度報告</li>
+                            <li>主動發現教學問題</li>
+                        </ul>
+                    </div>
+
+                    <div class="feature-card">
+                        <h4>🏫 個性化教學建議系統</h4>
+                        <p>基於教師風格提供定制化建議</p>
+                        <ul style="margin-top: 10px; font-size: 0.9em;">
+                            <li>教師檔案建立</li>
+                            <li>風格特徵追蹤</li>
+                            <li>個性化改進路徑</li>
+                            <li>持續發展支持</li>
+                        </ul>
+                    </div>
+
+                    <div class="feature-card">
+                        <h4>🌐 協作研究平台</h4>
+                        <p>建立教育研究者社群平台</p>
+                        <ul style="margin-top: 10px; font-size: 0.9em;">
+                            <li>案例庫共享</li>
+                            <li>編碼標準協作</li>
+                            <li>研究成果發佈</li>
+                            <li>專業交流社區</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <h3>🔧 技術優化方向</h3>
+
+                <div class="code-block">
+<strong>性能優化：</strong>
+• 並行處理優化，提升大文件分析速度
+• 緩存機制，減少重複 API 調用
+• 增量分析，支援部分更新而非全量重新計算
+• GPU 加速，用於複雜模型推理
+
+<strong>穩定性提升：</strong>
+• 更完善的錯誤處理和恢復機制
+• 分析進度持久化，支援中斷恢復
+• 自動化測試覆蓋率提升至 90%+
+• 監控和日誌系統完善
+
+<strong>易用性改進：</strong>
+• 一鍵安裝包（Windows/Mac/Linux）
+• Docker 容器化部署
+• 雲端服務版本（SaaS）
+• 多語言界面支援
+                </div>
+
+                <h3>📋 當前待辦清單</h3>
+
+                <div class="feature-grid">
+                    <div class="feature-card">
+                        <h4>✅ 已完成</h4>
+                        <ul style="margin-top: 10px; font-size: 0.9em;">
+                            <li>✅ 多層次 JSON 解析策略</li>
+                            <li>✅ 四維編碼框架實現</li>
+                            <li>✅ 時序分析功能</li>
+                            <li>✅ 模式發現算法</li>
+                            <li>✅ 互動式可視化</li>
+                            <li>✅ 綜合報告生成</li>
+                        </ul>
+                    </div>
+
+                    <div class="feature-card">
+                        <h4>🚧 進行中</h4>
+                        <ul style="margin-top: 10px; font-size: 0.9em;">
+                            <li>🚧 Streamlit Web 界面開發</li>
+                            <li>🚧 批次處理功能實現</li>
+                            <li>🚧 PDF 報告導出優化</li>
+                            <li>🚧 單元測試覆蓋率提升</li>
+                        </ul>
+                    </div>
+
+                    <div class="feature-card">
+                        <h4>📅 計劃中（高優先級）</h4>
+                        <ul style="margin-top: 10px; font-size: 0.9em;">
+                            <li>🌟 <strong>多角色編碼與信效度檢驗</strong>（Q1 2026）</li>
+                            <li>📅 發言人分割整合（Q1 2026）</li>
+                            <li>📅 BERT 情感分析（Q2 2026）</li>
+                            <li>📅 知識圖譜原型（Q2 2026）</li>
+                            <li>📅 RAG 系統設計（Q3 2026）</li>
+                        </ul>
+                    </div>
+
+                    <div class="feature-card">
+                        <h4>💡 研究探索</h4>
+                        <ul style="margin-top: 10px; font-size: 0.9em;">
+                            <li>💡 <strong>信效度算法優化</strong>（統計方法研究）</li>
+                            <li>💡 <strong>LLM 編碼者人格模擬</strong>（心理學建模）</li>
+                            <li>💡 多模態分析可行性</li>
+                            <li>💡 教學策略分類模型</li>
+                            <li>💡 實時分析架構設計</li>
+                            <li>💡 協作平台技術選型</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="interactive-demo">
+                    <h3>🤝 參與開發</h3>
+                    <p>歡迎教育研究者、開發者、教師共同參與系統開發與改進</p>
+                    <div style="margin-top: 20px;">
+                        <p style="margin: 10px 0;"><strong>貢獻方式：</strong></p>
+                        <p style="margin: 5px 0;">📧 提供使用反饋和功能建議</p>
+                        <p style="margin: 5px 0;">🐛 報告 Bug 和問題</p>
+                        <p style="margin: 5px 0;">💻 提交代碼改進</p>
+                        <p style="margin: 5px 0;">📚 分享教學案例</p>
+                        <p style="margin: 5px 0;">🎓 參與研究合作</p>
+                    </div>
+                </div>
+
+                <h3>🎯 版本發佈計劃</h3>
+
+                <div class="code-block">
+<strong>v1.0（當前版本）- 核心功能完備版</strong>
+✅ 四維質性編碼
+✅ 時序分析與模式發現
+✅ 互動式可視化
+✅ 綜合分析報告
+
+<strong>v1.5（2026 Q1）- 學術標準版 🌟 重點版本</strong>
+🎯 <strong>多角色自動編碼與信效度檢驗</strong>（核心功能）
+🎯 Web 界面上線
+🎯 批次處理支援
+🎯 多格式報告導出
+🎯 發言人自動識別
+📊 學術發表標準：Cohen's Kappa、Krippendorff's Alpha
+📚 APA 格式信效度報告自動生成
+
+<strong>v2.0（2026 Q2-Q3）- 智能分析升級版</strong>
+🚀 BERT 情感分析
+🚀 教學策略識別
+🚀 知識圖譜構建
+🚀 RAG 增強分析
+🔬 信效度算法持續優化
+
+<strong>v3.0（2026 Q4+）- 多模態整合版</strong>
+🌟 視頻音頻分析
+🌟 Agentic Workflow
+🌟 個性化建議系統
+🌟 協作研究平台
+🌟 跨研究比較與元分析
+                </div>
+            </div>
+
+            <!-- 技術棧 -->
+            <div id="tech" class="tab-content">
+                <h2>技術棧</h2>
+
+                <h3>核心技術</h3>
+                <div class="tech-stack">
+                    <span class="tech-badge">Python 3.8+</span>
+                    <span class="tech-badge">Google Gemini 1.5 Pro</span>
+                    <span class="tech-badge">Pandas</span>
+                    <span class="tech-badge">NumPy</span>
+                    <span class="tech-badge">Asyncio</span>
+                </div>
+
+                <h3>自然語言處理</h3>
+                <div class="tech-stack">
+                    <span class="tech-badge">Jieba 中文分詞</span>
+                    <span class="tech-badge">SnowNLP 情感分析</span>
+                    <span class="tech-badge">正則表達式</span>
+                </div>
+
+                <h3>機器學習與分析</h3>
+                <div class="tech-stack">
+                    <span class="tech-badge">Scikit-learn</span>
+                    <span class="tech-badge">LDA 主題模型</span>
+                    <span class="tech-badge">NMF 矩陣分解</span>
+                    <span class="tech-badge">TF-IDF</span>
+                </div>
+
+                <h3>可視化</h3>
+                <div class="tech-stack">
+                    <span class="tech-badge">Matplotlib</span>
+                    <span class="tech-badge">Seaborn</span>
+                    <span class="tech-badge">Plotly</span>
+                    <span class="tech-badge">WordCloud</span>
+                </div>
+
+                <h3>開發工具</h3>
+                <div class="tech-stack">
+                    <span class="tech-badge">Git</span>
+                    <span class="tech-badge">Jupyter Notebook</span>
+                    <span class="tech-badge">Google Colab</span>
+                    <span class="tech-badge">VS Code</span>
+                </div>
+
+                <h3>環境配置</h3>
+                <div class="code-block">
+# 安裝依賴
+pip install -r requirements.txt
+
+# 配置 API 金鑰
+# 在 .env 檔案中設置：
+GOOGLE_API_KEY=your_gemini_api_key_here
+
+# 運行分析
+python f_v3_mod.py
+                </div>
+
+                <h3>系統需求</h3>
+                <ul>
+                    <li><strong>Python 版本</strong>：3.8 或更高</li>
+                    <li><strong>記憶體</strong>：建議 8GB 以上</li>
+                    <li><strong>API 配額</strong>：Gemini API 金鑰（支援 1.5 Pro）</li>
+                    <li><strong>作業系統</strong>：Windows / macOS / Linux</li>
+                </ul>
+
+                <h3>相關文檔</h3>
+                <ul>
+                    <li>📖 <a href="../USAGE_GUIDE.md">使用指南</a></li>
+                    <li>📖 <a href="../QA_01.md">技術文檔</a></li>
+                    <li>📖 <a href="../analysis_framework_procedure_v3.md">分析架構說明</a></li>
+                    <li>📖 <a href="../ANALYSIS_RESULTS_GUIDE.md">結果解讀指南</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <footer>
+            <p>&copy; 2025 anaQ 質性編碼整合系統</p>
+            <p>基於 Gemini API 的智慧教育分析架構</p>
+            <p style="margin-top: 10px; opacity: 0.8;">專為教育研究者和教學工作者設計</p>
+        </footer>
+    </div>
+
+    <script>
+        function switchTab(tabName) {
+            // 隱藏所有內容
+            const contents = document.querySelectorAll('.tab-content');
+            contents.forEach(content => {
+                content.classList.remove('active');
+            });
+
+            // 移除所有標籤的 active 狀態
+            const tabs = document.querySelectorAll('.nav-tab');
+            tabs.forEach(tab => {
+                tab.classList.remove('active');
+            });
+
+            // 顯示選中的內容
+            document.getElementById(tabName).classList.add('active');
+
+            // 添加 active 到對應的標籤
+            event.target.classList.add('active');
+        }
+    </script>
+</body>
+</html>

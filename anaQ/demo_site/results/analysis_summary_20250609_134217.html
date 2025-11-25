@@ -1,0 +1,131 @@
+
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>質性分析報告摘要</title>
+    <style>
+        body { font-family: 'Taipei Sans TC Beta', 'DejaVu Sans', 'Noto Sans CJK TC', 'Microsoft JhengHei', 'PingFang TC', sans-serif; margin: 20px; background-color: #f8f9fa; color: #212529; }
+        .container { max-width: 1200px; margin: auto; background-color: #ffffff; padding: 30px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+        h1 { color: #0056b3; border-bottom: 3px solid #007bff; padding-bottom: 15px; text-align: center; }
+        h2 { color: #007bff; margin-top: 40px; border-bottom: 1px solid #dee2e6; padding-bottom: 10px;}
+        h3 { color: #343a40; margin-top: 25px; }
+        .chart-container { margin-bottom: 35px; padding: 20px; border: 1px solid #e9ecef; border-radius: 5px; background-color: #fdfdff; box-shadow: 0 2px 4px rgba(0,0,0,0.05);}
+        img { max-width: 100%; height: auto; display: block; margin: 15px auto; border: 1px solid #ced4da; border-radius: 4px; }
+        iframe { width: 100%; height: 650px; border: 1px solid #ced4da; margin-top: 15px; border-radius: 4px; }
+        a { color: #0056b3; text-decoration: none; font-weight: bold; }
+        a:hover { text-decoration: underline; color: #003d80; }
+        p { line-height: 1.7; font-size: 16px; }
+        code { background-color: #e9ecef; padding: 2px 5px; border-radius: 3px; font-family: 'Courier New', Courier, monospace; }
+        .footer { text-align: center; margin-top: 40px; padding-top: 20px; border-top: 1px solid #dee2e6; font-size: 0.9em; color: #6c757d; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>質性分析報告摘要</h1>
+        <p>本報告基於 <strong>80</strong> 條對話記錄進行分析。</p>
+        <p>所有圖表和報告檔案均儲存在 <code>output_20250609_134217</code> 資料夾中 (相對於此HTML檔案)。</p>
+        <p>報告生成時間戳記: 20250609_134217</p>
+<h2>靜態圖表分析 (PNG 圖片)</h2>
+
+        <div class="chart-container">
+            <h3>發言者分布圖</h3>
+            <img src="output_20250609_134217/speaker_distribution_chart.png" alt="發言者分布圖">
+            <p><a href="output_20250609_134217/speaker_distribution_chart.png" target="_blank">在新分頁中打開圖片</a></p>
+        </div>
+
+        <div class="chart-container">
+            <h3>編碼分析圖表</h3>
+            <img src="output_20250609_134217/coding_analysis_charts.png" alt="編碼分析圖表">
+            <p><a href="output_20250609_134217/coding_analysis_charts.png" target="_blank">在新分頁中打開圖片</a></p>
+        </div>
+
+        <div class="chart-container">
+            <h3>相關性熱力圖</h3>
+            <img src="output_20250609_134217/correlation_analysis_heatmap.png" alt="相關性熱力圖">
+            <p><a href="output_20250609_134217/correlation_analysis_heatmap.png" target="_blank">在新分頁中打開圖片</a></p>
+        </div>
+
+        <div class="chart-container">
+            <h3>時間序列可視化總覽</h3>
+            <img src="output_20250609_134217/temporal_visualizations.png" alt="時間序列可視化總覽">
+            <p><a href="output_20250609_134217/temporal_visualizations.png" target="_blank">在新分頁中打開圖片</a></p>
+        </div>
+
+        <div class="chart-container">
+            <h3>編碼演變趨勢圖</h3>
+            <img src="output_20250609_134217/coding_evolution_trends.png" alt="編碼演變趨勢圖">
+            <p><a href="output_20250609_134217/coding_evolution_trends.png" target="_blank">在新分頁中打開圖片</a></p>
+        </div>
+
+        <div class="chart-container">
+            <h3>編碼共現熱力圖</h3>
+            <img src="output_20250609_134217/code_cooccurrence_heatmap.png" alt="編碼共現熱力圖">
+            <p><a href="output_20250609_134217/code_cooccurrence_heatmap.png" target="_blank">在新分頁中打開圖片</a></p>
+        </div>
+
+        <div class="chart-container">
+            <h3>互動流程分析圖</h3>
+            <img src="output_20250609_134217/interaction_flow_chart.png" alt="互動流程分析圖">
+            <p><a href="output_20250609_134217/interaction_flow_chart.png" target="_blank">在新分頁中打開圖片</a></p>
+        </div>
+
+        <div class="chart-container">
+            <h3>詞雲分析圖</h3>
+            <img src="output_20250609_134217/wordcloud_analysis.png" alt="詞雲分析圖">
+            <p><a href="output_20250609_134217/wordcloud_analysis.png" target="_blank">在新分頁中打開圖片</a></p>
+        </div>
+<h2>互動式圖表分析 (HTML 檔案)</h2>
+
+        <div class="chart-container">
+            <h3>互動式時間軸 (原始)</h3>
+            <p><a href="output_20250609_134217/interactive_timeline_original.html" target="_blank">點此在新分頁中打開互動式圖表: 互動式時間軸 (原始)</a></p>
+            <iframe src="output_20250609_134217/interactive_timeline_original.html"></iframe>
+        </div>
+
+        <div class="chart-container">
+            <h3>互動式時間分析儀表板</h3>
+            <p><a href="output_20250609_134217/interactive_temporal_dashboard.html" target="_blank">點此在新分頁中打開互動式圖表: 互動式時間分析儀表板</a></p>
+            <iframe src="output_20250609_134217/interactive_temporal_dashboard.html"></iframe>
+        </div>
+<h2>詳細文字報告 (TXT 檔案)</h2>
+
+        <div class="chart-container">
+            <h3>詳細分析報告</h3>
+            <p><a href="output_20250609_134217/detailed_analysis_report.txt" target="_blank">點此查看詳細報告: 詳細分析報告</a></p>
+        </div>
+<h2>AI 解讀與詮釋 (Markdown 檔案)</h2>
+
+        <div class="chart-container">
+            <h3>Gemini API 分析解讀與詮釋</h3>
+            <p><a href="output_20250609_134217/gemini_analysis_interpretation.md" target="_blank">點此查看完整的 AI 解讀報告: Gemini API 分析解讀與詮釋</a></p>
+            <h4>報告預覽:</h4>
+            <div style="background-color: #f0f0f0; border: 1px solid #ddd; padding: 10px; border-radius: 4px; max-height: 200px; overflow-y: auto;">
+                <pre style="white-space: pre-wrap; word-wrap: break-word;">## 師生對話質性分析報告解讀
+
+**1. 總體概述**
+
+本次分析基於80輪師生對話，數據顯示教學活動以認知層面的互動為主，教師主導性較強，學生參與度相對較低。教師的鷹架支持活躍，但學生表達機會有限，可能限制了更深層次的學習。雖然師生信心分數都較高，但學生的簡短回答和教師較長的講解暗示了以教師為中心的教學模式。 "理解"、"學習"、"引導"等關鍵詞的高頻出現，也突顯了教學目標聚焦於知識傳授和理解。
+
+**2. 關鍵洞察**
+
+* **表面認知處理佔主導:** "cognitive" 和 "surface_processing" 編碼的高頻出現表明，對話主要集中在淺層次的知識理解和記憶，缺乏深入的分析、評估和創造性思考。
+* **教師主導，學生參與度低:** 教師發言長度遠超學生，學生平均發言僅9.1字，表明學生表達和思考的機會不足。
+* **發言長度與教師角色正相關:**  `content_length` 與 `speaker_code` 的正相關 (r=0.524) 驗證了教師主導的教學模式，教師發言長度顯著長於學生。
+
+**3. 發言者行為模式**
+
+教師發言長度平均98.6字...</pre>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>報告生成時間: <span id="generationTime"></span></p>
+        </div>
+    </div>
+    <script>
+        document.getElementById('generationTime').textContent = new Date().toLocaleString('zh-TW', { timeZone: 'Asia/Taipei' });
+    </script>
+</body>
+</html>
