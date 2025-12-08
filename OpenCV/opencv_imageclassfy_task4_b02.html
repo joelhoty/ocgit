@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>opencv_imageclassfy_task4_b02</title>
+    
+    <!-- CSS 框架 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/dark.min.css">
+    
+    <!-- 代碼高亮 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/base16/darcula.min.css">
+    
+    <!-- 自定義樣式 -->
+    <style>
+        
+                body {
+                    max-width: 900px;
+                    margin: 0 auto;
+                    padding: 20px;
+                }
+                /* 提升代码块对比度 */
+                pre {
+                    background: #1e1e1e !important;
+                    border: 1px solid #3e3e3e;
+                }
+                pre code {
+                    background: #1e1e1e !important;
+                }
+                code {
+                    background: #2d2d2d !important;
+                }
+                /* 引用块对比度 */
+                blockquote {
+                    background: #2d2d2d;
+                    border-left: 4px solid #4a9eff;
+                }
+            
+        
+        /* 通用代碼塊樣式 */
+        pre code {
+            display: block;
+            padding: 1.5em;
+            border-radius: 8px;
+            overflow-x: auto;
+            line-height: 1.6;
+        }
+
+        /* Mermaid 圖表樣式 */
+        
+        .mermaid {
+            margin: 2em 0;
+            padding: 1.5em;
+            text-align: center;
+            border-radius: 8px;
+        }
+        
+        .mermaid {
+            background: #2c3034;
+            border: 1px solid #444;
+        }
+            
+        
+        /* 響應式調整 */
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            .container, .markdown-body, .latex-body, .window-body, .nes-container {
+                padding: 15px;
+            }
+            pre code {
+                padding: 1em;
+            }
+        }
+        
+        
+    </style>
+</head>
+<body>
+    <div class="container"><!-- Path: General_python/openCV/影像辨識-傳統方法 | Timestamp: 2025-10-07 10:00:00 | Version: b02 -->
+<h1>題目四：遊戲畫面道具定位系統</h1>
+<h2>📋 任務說明</h2>
+<p>請撰寫一個 Python 程式，能夠在一張複雜的遊戲畫面截圖中，精準地找到所有指定的道具圖示（例如：藥水、金幣）的位置。本任務的核心是學習 <strong>模板匹配 (Template Matching)</strong> 技術，它適用於尋找外觀、尺寸與旋轉角度固定的物體。</p>
+<hr />
+<h2>🖼️ 影像選擇指引</h2>
+<h3>適合的影像類型</h3>
+<h4>✅ 推薦使用的影像</h4>
+<ol>
+<li>
+<p><strong>像素級一致的目標</strong></p>
+<ul>
+<li><strong>特徵</strong>：遊戲 UI 或道具圖示與你要尋找的「模板圖片」在尺寸、角度和外觀上完全一致。</li>
+<li><strong>偵測成功率</strong>：★★★★★（95%+）</li>
+<li><strong>最佳範例</strong>：從原始遊戲截圖中直接、精確地裁剪下來的圖示作為模板。</li>
+</ul>
+</li>
+<li>
+<p><strong>高對比度、無遮擋的圖示</strong></p>
+<ul>
+<li><strong>特徵</strong>：目標圖示完整顯示，且與背景有明顯區別。</li>
+<li><strong>偵測成功率</strong>：★★★★☆（90%+）</li>
+</ul>
+</li>
+</ol>
+<h4>⚠️ 效果較差的影像</h4>
+<ol>
+<li><strong>經過縮放或旋轉</strong>：模板匹配對尺寸和角度變化<strong>極度敏感</strong>，任何變形都會導致匹配失敗。</li>
+<li><strong>有透明度或特效</strong>：半透明、發光等特效會改變像素值，干擾匹配。</li>
+<li><strong>圖片壓縮失真</strong>：JPG 等有損壓縮會產生噪點，建議模板和主圖都使用 PNG 格式。</li>
+</ol>
+<h4>❌ 完全不適合的影像</h4>
+<ul>
+<li>目標物有明顯的 3D 旋轉或視角變化。</li>
+</ul>
+<hr />
+<h2>✅ 詳細需求列表</h2>
+<h3>需求 1：環境準備</h3>
+<p><strong>說明</strong>：匯入套件，並建立一個包含多個目標道具的模擬遊戲畫面，以及一個道具模板。</p>
+<p><strong>程式碼提示</strong>：</p>
+<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">cv2</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">google.colab.patches</span><span class="w"> </span><span class="kn">import</span> <span class="n">cv2_imshow</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;=&quot;</span><span class="o">*</span><span class="mi">60</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">遊戲畫面道具定位系統</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="s2">&quot;=&quot;</span><span class="o">*</span><span class="mi">60</span><span class="p">)</span>
+
+<span class="c1"># 建立模擬遊戲畫面與模板</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">create_test_images</span><span class="p">():</span>
+    <span class="n">game_screen</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">600</span><span class="p">,</span> <span class="mi">800</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">);</span> <span class="n">game_screen</span><span class="p">[:]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">128</span><span class="p">,</span> <span class="mi">64</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="n">potion_icon</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">50</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">);</span> <span class="n">potion_icon</span><span class="p">[:]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">200</span><span class="p">)</span>
+    <span class="n">cv2</span><span class="o">.</span><span class="n">putText</span><span class="p">(</span><span class="n">potion_icon</span><span class="p">,</span> <span class="s1">&#39;P&#39;</span><span class="p">,</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">40</span><span class="p">),</span> <span class="n">cv2</span><span class="o">.</span><span class="n">FONT_HERSHEY_SIMPLEX</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">,</span> <span class="p">(</span><span class="mi">255</span><span class="p">,</span><span class="mi">255</span><span class="p">,</span><span class="mi">255</span><span class="p">),</span> <span class="mi">3</span><span class="p">)</span>
+    <span class="c1"># 在多個位置放置圖示，包含一個輕微重疊的狀況，以測試後續處理</span>
+    <span class="n">positions</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">150</span><span class="p">),</span> <span class="p">(</span><span class="mi">500</span><span class="p">,</span> <span class="mi">80</span><span class="p">),</span> <span class="p">(</span><span class="mi">300</span><span class="p">,</span> <span class="mi">400</span><span class="p">),</span> <span class="p">(</span><span class="mi">110</span><span class="p">,</span> <span class="mi">160</span><span class="p">)]</span>
+    <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">positions</span><span class="p">:</span> <span class="n">game_screen</span><span class="p">[</span><span class="n">y</span><span class="p">:</span><span class="n">y</span><span class="o">+</span><span class="mi">50</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span><span class="n">x</span><span class="o">+</span><span class="mi">50</span><span class="p">]</span> <span class="o">=</span> <span class="n">potion_icon</span>
+    <span class="n">cv2</span><span class="o">.</span><span class="n">imwrite</span><span class="p">(</span><span class="s1">&#39;game_screen.png&#39;</span><span class="p">,</span> <span class="n">game_screen</span><span class="p">)</span>
+    <span class="n">cv2</span><span class="o">.</span><span class="n">imwrite</span><span class="p">(</span><span class="s1">&#39;template_potion.png&#39;</span><span class="p">,</span> <span class="n">potion_icon</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;✓ 測試圖片 &#39;game_screen.png&#39; 與 &#39;template_potion.png&#39; 建立完成&quot;</span><span class="p">)</span>
+
+<span class="n">create_test_images</span><span class="p">()</span>
+</code></pre></div>
+
+<hr />
+<h3>需求 2：讀取圖片與執行模板匹配</h3>
+<p><strong>說明</strong>：讀取主畫面與模板，並使用 <code>cv2.matchTemplate</code> 執行匹配。此函數會用模板在主畫面上滑動比對，生成一張「熱力圖 (heatmap)」，圖中越亮的位置代表與模板的相似度越高。</p>
+<p><strong>程式碼提示</strong>：</p>
+<div class="codehilite"><pre><span></span><code><span class="n">img_rgb</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="s1">&#39;game_screen.png&#39;</span><span class="p">)</span>
+<span class="n">img_gray</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">cvtColor</span><span class="p">(</span><span class="n">img_rgb</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">COLOR_BGR2GRAY</span><span class="p">)</span>
+<span class="n">template</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="s1">&#39;template_potion.png&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="n">w</span><span class="p">,</span> <span class="n">h</span> <span class="o">=</span> <span class="n">template</span><span class="o">.</span><span class="n">shape</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;✓ 圖片讀取成功，模板尺寸: </span><span class="si">{</span><span class="n">w</span><span class="si">}</span><span class="s2">x</span><span class="si">{</span><span class="n">h</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># 執行模板匹配。TM_CCOEFF_NORMED 是最常用的方法，它返回一個標準化的相關係數，</span>
+<span class="c1"># 結果介於 -1.0 到 1.0 之間，1.0 代表完美匹配。</span>
+<span class="n">res</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">matchTemplate</span><span class="p">(</span><span class="n">img_gray</span><span class="p">,</span> <span class="n">template</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">TM_CCOEFF_NORMED</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;匹配結果熱力圖 (越亮代表越可能匹配)：&quot;</span><span class="p">)</span>
+<span class="c1"># 為了方便觀察，我們將熱力圖的灰階值範圍拉伸到 0-255</span>
+<span class="n">res_visual</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">normalize</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">NORM_MINMAX</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">CV_8U</span><span class="p">)</span>
+<span class="n">cv2_imshow</span><span class="p">(</span><span class="n">res_visual</span><span class="p">)</span>
+</code></pre></div>
+
+<hr />
+<h3>需求 3：篩選高相似度位置</h3>
+<p><strong>說明</strong>：使用 <code>np.where</code> 搭配閾值 (threshold) 從熱力圖中篩選出所有相似度足夠高的點。</p>
+<p><strong>程式碼提示</strong>：</p>
+<div class="codehilite"><pre><span></span><code><span class="n">threshold</span> <span class="o">=</span> <span class="mf">0.8</span> <span class="c1"># 設定信賴度閾值</span>
+<span class="n">loc</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">res</span> <span class="o">&gt;=</span> <span class="n">threshold</span><span class="p">)</span>
+<span class="n">points</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">loc</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]))</span> <span class="c1"># 將 (y,x) 座標轉換為 (x,y) 格式</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">✓ 使用閾值 </span><span class="si">{</span><span class="n">threshold</span><span class="si">}</span><span class="s2"> 找到 </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">points</span><span class="p">)</span><span class="si">}</span><span class="s2"> 個原始匹配點&quot;</span><span class="p">)</span>
+</code></pre></div>
+
+<hr />
+<h3>需求 4：處理重疊的偵測框 (簡化版 NMS)</h3>
+<p><strong>說明</strong>：單一目標周圍常有多個點的匹配值都高於閾值，導致偵測框重疊。我們需要將這些密集的點群組合併，只保留一個最具代表性的中心點。這個過程是<strong>非極大值抑制 (Non-Maximum Suppression, NMS)</strong> 的簡化版。</p>
+<p><strong>程式碼提示</strong>：</p>
+<div class="codehilite"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">group_rectangles</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">group_threshold</span><span class="o">=</span><span class="mi">20</span><span class="p">):</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">points</span><span class="p">:</span> <span class="k">return</span> <span class="p">[]</span>
+    <span class="n">points</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
+    <span class="n">grouped_points</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">current_group</span> <span class="o">=</span> <span class="p">[</span><span class="n">points</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">points</span><span class="p">)):</span>
+        <span class="n">dist_x</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">points</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">current_group</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">dist_y</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">points</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">current_group</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">dist_x</span> <span class="o">&lt;</span> <span class="n">group_threshold</span> <span class="ow">and</span> <span class="n">dist_y</span> <span class="o">&lt;</span> <span class="n">group_threshold</span><span class="p">:</span>
+            <span class="n">current_group</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">points</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">avg_x</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">([</span><span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">current_group</span><span class="p">]))</span>
+            <span class="n">avg_y</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">([</span><span class="n">p</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">current_group</span><span class="p">]))</span>
+            <span class="n">grouped_points</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">avg_x</span><span class="p">,</span> <span class="n">avg_y</span><span class="p">))</span>
+            <span class="n">current_group</span> <span class="o">=</span> <span class="p">[</span><span class="n">points</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span>
+    <span class="c1"># 處理最後一個群組</span>
+    <span class="n">avg_x</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">([</span><span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">current_group</span><span class="p">]))</span>
+    <span class="n">avg_y</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">([</span><span class="n">p</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">current_group</span><span class="p">]))</span>
+    <span class="n">grouped_points</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">avg_x</span><span class="p">,</span> <span class="n">avg_y</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">grouped_points</span>
+
+<span class="n">grouped_points</span> <span class="o">=</span> <span class="n">group_rectangles</span><span class="p">(</span><span class="n">points</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;✓ 經過重疊處理，最終確認 </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">grouped_points</span><span class="p">)</span><span class="si">}</span><span class="s2"> 個獨立目標</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+</code></pre></div>
+
+<hr />
+<h3>需求 5：標記與顯示結果</h3>
+<p><strong>說明</strong>：在原始彩色圖片上，根據處理後的座標點繪製矩形框，標示出所有找到的目標。</p>
+<p><strong>程式碼提示</strong>：</p>
+<div class="codehilite"><pre><span></span><code><span class="n">img_result</span> <span class="o">=</span> <span class="n">img_rgb</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">pt</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">grouped_points</span><span class="p">):</span>
+    <span class="n">cv2</span><span class="o">.</span><span class="n">rectangle</span><span class="p">(</span><span class="n">img_result</span><span class="p">,</span> <span class="n">pt</span><span class="p">,</span> <span class="p">(</span><span class="n">pt</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">w</span><span class="p">,</span> <span class="n">pt</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">h</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">),</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="n">cv2</span><span class="o">.</span><span class="n">putText</span><span class="p">(</span><span class="n">img_result</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="n">pt</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="mi">5</span><span class="p">,</span> <span class="n">pt</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mi">20</span><span class="p">),</span> <span class="n">cv2</span><span class="o">.</span><span class="n">FONT_HERSHEY_SIMPLEX</span><span class="p">,</span> <span class="mf">0.7</span><span class="p">,</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">),</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  目標 </span><span class="si">{</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2">: 位置 (</span><span class="si">{</span><span class="n">pt</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">pt</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">原始遊戲畫面：&quot;</span><span class="p">)</span>
+<span class="n">cv2_imshow</span><span class="p">(</span><span class="n">img_rgb</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">標記後的結果：&quot;</span><span class="p">)</span>
+<span class="n">cv2_imshow</span><span class="p">(</span><span class="n">img_result</span><span class="p">)</span>
+
+<span class="n">output_filename</span> <span class="o">=</span> <span class="s1">&#39;result_template_matching.png&#39;</span>
+<span class="n">cv2</span><span class="o">.</span><span class="n">imwrite</span><span class="p">(</span><span class="n">output_filename</span><span class="p">,</span> <span class="n">img_result</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">✓ 結果已儲存為 </span><span class="si">{</span><span class="n">output_filename</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</code></pre></div>
+
+<hr />
+<h2>📝 完整可執行程式碼</h2>
+<div class="codehilite"><pre><span></span><code><span class="c1"># ========================================</span>
+<span class="c1"># 題目四：遊戲畫面道具定位系統 (v2)</span>
+<span class="c1"># ========================================</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">cv2</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">google.colab.patches</span><span class="w"> </span><span class="kn">import</span> <span class="n">cv2_imshow</span>
+
+<span class="c1"># === 1. 環境準備 ===</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">create_test_images</span><span class="p">():</span>
+    <span class="n">game_screen</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">600</span><span class="p">,</span> <span class="mi">800</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">);</span> <span class="n">game_screen</span><span class="p">[:]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">128</span><span class="p">,</span> <span class="mi">64</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="n">potion_icon</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">50</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">);</span> <span class="n">potion_icon</span><span class="p">[:]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">200</span><span class="p">)</span>
+    <span class="n">cv2</span><span class="o">.</span><span class="n">putText</span><span class="p">(</span><span class="n">potion_icon</span><span class="p">,</span> <span class="s1">&#39;P&#39;</span><span class="p">,</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">40</span><span class="p">),</span> <span class="n">cv2</span><span class="o">.</span><span class="n">FONT_HERSHEY_SIMPLEX</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">,</span> <span class="p">(</span><span class="mi">255</span><span class="p">,</span><span class="mi">255</span><span class="p">,</span><span class="mi">255</span><span class="p">),</span> <span class="mi">3</span><span class="p">)</span>
+    <span class="n">positions</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">150</span><span class="p">),</span> <span class="p">(</span><span class="mi">500</span><span class="p">,</span> <span class="mi">80</span><span class="p">),</span> <span class="p">(</span><span class="mi">300</span><span class="p">,</span> <span class="mi">400</span><span class="p">),</span> <span class="p">(</span><span class="mi">110</span><span class="p">,</span> <span class="mi">160</span><span class="p">)]</span>
+    <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">positions</span><span class="p">:</span> <span class="n">game_screen</span><span class="p">[</span><span class="n">y</span><span class="p">:</span><span class="n">y</span><span class="o">+</span><span class="mi">50</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span><span class="n">x</span><span class="o">+</span><span class="mi">50</span><span class="p">]</span> <span class="o">=</span> <span class="n">potion_icon</span>
+    <span class="n">cv2</span><span class="o">.</span><span class="n">imwrite</span><span class="p">(</span><span class="s1">&#39;game_screen.png&#39;</span><span class="p">,</span> <span class="n">game_screen</span><span class="p">)</span>
+    <span class="n">cv2</span><span class="o">.</span><span class="n">imwrite</span><span class="p">(</span><span class="s1">&#39;template_potion.png&#39;</span><span class="p">,</span> <span class="n">potion_icon</span><span class="p">)</span>
+<span class="n">create_test_images</span><span class="p">()</span>
+
+<span class="c1"># === 2. 讀取與匹配 ===</span>
+<span class="n">img_rgb</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="s1">&#39;game_screen.png&#39;</span><span class="p">)</span>
+<span class="n">img_gray</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">cvtColor</span><span class="p">(</span><span class="n">img_rgb</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">COLOR_BGR2GRAY</span><span class="p">)</span>
+<span class="n">template</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="s1">&#39;template_potion.png&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="n">w</span><span class="p">,</span> <span class="n">h</span> <span class="o">=</span> <span class="n">template</span><span class="o">.</span><span class="n">shape</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">res</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">matchTemplate</span><span class="p">(</span><span class="n">img_gray</span><span class="p">,</span> <span class="n">template</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">TM_CCOEFF_NORMED</span><span class="p">)</span>
+
+<span class="c1"># === 3. 篩選與群組 ===</span>
+<span class="n">threshold</span> <span class="o">=</span> <span class="mf">0.8</span>
+<span class="n">loc</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">res</span> <span class="o">&gt;=</span> <span class="n">threshold</span><span class="p">)</span>
+<span class="n">points</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">loc</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]))</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">group_rectangles</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">group_threshold</span><span class="o">=</span><span class="mi">20</span><span class="p">):</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">points</span><span class="p">:</span> <span class="k">return</span> <span class="p">[]</span>
+    <span class="n">points</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
+    <span class="n">grouped_points</span><span class="p">,</span> <span class="n">current_group</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[</span><span class="n">points</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">points</span><span class="p">)):</span>
+        <span class="n">dist_x</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">points</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">current_group</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">dist_y</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">points</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">current_group</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">dist_x</span> <span class="o">&lt;</span> <span class="n">group_threshold</span> <span class="ow">and</span> <span class="n">dist_y</span> <span class="o">&lt;</span> <span class="n">group_threshold</span><span class="p">:</span>
+            <span class="n">current_group</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">points</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">avg_x</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">([</span><span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">current_group</span><span class="p">]));</span> <span class="n">avg_y</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">([</span><span class="n">p</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">current_group</span><span class="p">]))</span>
+            <span class="n">grouped_points</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">avg_x</span><span class="p">,</span> <span class="n">avg_y</span><span class="p">))</span>
+            <span class="n">current_group</span> <span class="o">=</span> <span class="p">[</span><span class="n">points</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span>
+    <span class="n">avg_x</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">([</span><span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">current_group</span><span class="p">]));</span> <span class="n">avg_y</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">([</span><span class="n">p</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">current_group</span><span class="p">]))</span>
+    <span class="n">grouped_points</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">avg_x</span><span class="p">,</span> <span class="n">avg_y</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">grouped_points</span>
+
+<span class="n">grouped_points</span> <span class="o">=</span> <span class="n">group_rectangles</span><span class="p">(</span><span class="n">points</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;找到 </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">grouped_points</span><span class="p">)</span><span class="si">}</span><span class="s2"> 個獨立目標</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># === 4. 標記與顯示 ===</span>
+<span class="n">img_result</span> <span class="o">=</span> <span class="n">img_rgb</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">pt</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">grouped_points</span><span class="p">):</span>
+    <span class="n">cv2</span><span class="o">.</span><span class="n">rectangle</span><span class="p">(</span><span class="n">img_result</span><span class="p">,</span> <span class="n">pt</span><span class="p">,</span> <span class="p">(</span><span class="n">pt</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">w</span><span class="p">,</span> <span class="n">pt</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">h</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">),</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  目標 </span><span class="si">{</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2">: 位置 (</span><span class="si">{</span><span class="n">pt</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">pt</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">標記後的結果：&quot;</span><span class="p">)</span>
+<span class="n">cv2_imshow</span><span class="p">(</span><span class="n">img_result</span><span class="p">)</span>
+<span class="n">cv2</span><span class="o">.</span><span class="n">imwrite</span><span class="p">(</span><span class="s1">&#39;result_template_matching.png&#39;</span><span class="p">,</span> <span class="n">img_result</span><span class="p">)</span>
+</code></pre></div>
+
+<hr />
+<h2>🔧 除錯與進階技巧</h2>
+<h3>問題 1：找不到目標或誤判太多</h3>
+<p><strong>解法</strong>：關鍵在於調整 <code>threshold</code>。<br />
+-   <strong>找不到目標</strong>：逐步<strong>降低</strong> <code>threshold</code> (例如 <code>0.9</code> -&gt; <code>0.8</code> -&gt; <code>0.7</code>)。原因可能是圖片壓縮、微小特效導致無法完美匹配。<br />
+-   <strong>誤判太多</strong>：逐步<strong>提高</strong> <code>threshold</code> (例如 <code>0.8</code> -&gt; <code>0.9</code> -&gt; <code>0.95</code>)。原因可能是模板太簡單，容易在背景中找到相似區域。</p>
+<h3>挑戰 1：多尺度模板匹配</h3>
+<p><strong>問題</strong>：如果目標物大小會變化怎麼辦？<br />
+<strong>解法</strong>：將模板縮放成多種尺寸，對每個尺寸都進行一次模板匹配，最後匯總結果。</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># 範例：在 80% 到 120% 的尺寸範圍內搜索</span>
+<span class="k">for</span> <span class="n">scale</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">0.8</span><span class="p">,</span> <span class="mf">1.2</span><span class="p">,</span> <span class="mi">20</span><span class="p">):</span>
+    <span class="n">resized_template</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span><span class="n">template</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">w</span> <span class="o">*</span> <span class="n">scale</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">h</span> <span class="o">*</span> <span class="n">scale</span><span class="p">)))</span>
+    <span class="c1"># ... 執行 matchTemplate 並保存結果 ...</span>
+</code></pre></div>
+
+<h3>挑戰 2：遮罩匹配 (Mask Matching)</h3>
+<p><strong>問題</strong>：如果模板是不規則形狀（例如圓形藥水），如何忽略矩形框中的背景？<br />
+<strong>解法</strong>：為模板建立一個二值化的遮罩 (mask)，在匹配時傳入 <code>mask</code> 參數，OpenCV 就會只比對遮罩為白色的區域。</p>
+<hr />
+<h2>📚 學習資源</h2>
+<ul>
+<li>OpenCV 官方文件：<a href="https://docs.opencv.org/4.x/d4/dc6/tutorial_py_template_matching.html">Template Matching</a></li>
+<li>PyImageSearch 教學 (含多尺度匹配)：<a href="https://pyimagesearch.com/2021/03/22/opencv-template-matching-cv2-matchtemplate/">OpenCV Template Matching</a></li>
+</ul>
+<div class="codehilite"><pre><span></span><code>
+</code></pre></div></div>
+    
+    <!-- Highlight.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    
+    <!-- Mermaid -->
+    <script type="module">
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+        mermaid.initialize({
+            "startOnLoad": true,
+            "theme": "dark",
+            "securityLevel": "loose"
+});
+    </script>
+</body>
+</html>
