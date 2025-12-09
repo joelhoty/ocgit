@@ -43,6 +43,7 @@
 
 | File Name | Last Updated | Link |
 |---|---|---|
+| unit01_first_ai_material_b02.html | 2025-12-09 | [unit01_first_ai_material_b02.html](https://joelhoty.github.io/ocgit/GeminiForDesignTeaching/unit01_first_ai_material_b02.html) |
 | index_content.html | 2025-11-18 | [index_content.html](https://joelhoty.github.io/ocgit/GeminiForDesignTeaching/index_content.html) |
 | AI_Agent_Cli_b13.html | 2025-11-18 | [AI_Agent_Cli_b13.html](https://joelhoty.github.io/ocgit/GeminiForDesignTeaching/AI_Agent_Cli_b13.html) |
 | literacy_research.html | 2025-10-20 | [literacy_research.html](https://joelhoty.github.io/ocgit/GeminiForDesignTeaching/literacy_research.html) |
@@ -53,7 +54,6 @@
 | unit06_supplement_additions.html | 2025-10-18 | [unit06_supplement_additions.html](https://joelhoty.github.io/ocgit/GeminiForDesignTeaching/unit06_supplement_additions.html) |
 | unit05_gemini_md_customization_b01.html | 2025-10-18 | [unit05_gemini_md_customization_b01.html](https://joelhoty.github.io/ocgit/GeminiForDesignTeaching/unit05_gemini_md_customization_b01.html) |
 | unit04_supplement_additions.html | 2025-10-18 | [unit04_supplement_additions.html](https://joelhoty.github.io/ocgit/GeminiForDesignTeaching/unit04_supplement_additions.html) |
-| unit01_first_ai_material_b02.html | 2025-10-18 | [unit01_first_ai_material_b02.html](https://joelhoty.github.io/ocgit/GeminiForDesignTeaching/unit01_first_ai_material_b02.html) |
 | unit04_local_ai_setup_b02.html | 2025-10-18 | [unit04_local_ai_setup_b02.html](https://joelhoty.github.io/ocgit/GeminiForDesignTeaching/unit04_local_ai_setup_b02.html) |
 | unit03_notebooklm_b02.html | 2025-10-18 | [unit03_notebooklm_b02.html](https://joelhoty.github.io/ocgit/GeminiForDesignTeaching/unit03_notebooklm_b02.html) |
 
