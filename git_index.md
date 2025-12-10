@@ -43,8 +43,8 @@
 
 | File Name | Last Updated | Link |
 |---|---|---|
+| index_content.html | 2025-12-10 | [index_content.html](https://joelhoty.github.io/ocgit/GeminiForDesignTeaching/index_content.html) |
 | unit01_first_ai_material_b02.html | 2025-12-09 | [unit01_first_ai_material_b02.html](https://joelhoty.github.io/ocgit/GeminiForDesignTeaching/unit01_first_ai_material_b02.html) |
-| index_content.html | 2025-11-18 | [index_content.html](https://joelhoty.github.io/ocgit/GeminiForDesignTeaching/index_content.html) |
 | AI_Agent_Cli_b13.html | 2025-11-18 | [AI_Agent_Cli_b13.html](https://joelhoty.github.io/ocgit/GeminiForDesignTeaching/AI_Agent_Cli_b13.html) |
 | literacy_research.html | 2025-10-20 | [literacy_research.html](https://joelhoty.github.io/ocgit/GeminiForDesignTeaching/literacy_research.html) |
 | literacy_chatgpt_revise_b06.html | 2025-10-20 | [literacy_chatgpt_revise_b06.html](https://joelhoty.github.io/ocgit/GeminiForDesignTeaching/literacy_chatgpt_revise_b06.html) |
