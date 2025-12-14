@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VibeCoding_Python_Tutorial_b01</title>
+    
+    <!-- CSS 框架 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/dark.min.css">
+    
+    <!-- 代碼高亮 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/base16/darcula.min.css">
+    
+    <!-- 自定義樣式 -->
+    <style>
+        
+                body {
+                    max-width: 900px;
+                    margin: 0 auto;
+                    padding: 20px;
+                }
+                /* 提升代码块对比度 */
+                pre {
+                    background: #1e1e1e !important;
+                    border: 1px solid #3e3e3e;
+                }
+                pre code {
+                    background: #1e1e1e !important;
+                }
+                code {
+                    background: #2d2d2d !important;
+                }
+                /* 引用块对比度 */
+                blockquote {
+                    background: #2d2d2d;
+                    border-left: 4px solid #4a9eff;
+                }
+            
+        
+        /* 通用代碼塊樣式 */
+        pre code {
+            display: block;
+            padding: 1.5em;
+            border-radius: 8px;
+            overflow-x: auto;
+            line-height: 1.6;
+        }
+
+        /* Mermaid 圖表樣式 */
+        
+        .mermaid {
+            margin: 2em 0;
+            padding: 1.5em;
+            text-align: center;
+            border-radius: 8px;
+        }
+        
+        .mermaid {
+            background: #2c3034;
+            border: 1px solid #444;
+        }
+            
+        
+        /* 響應式調整 */
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            .container, .markdown-body, .latex-body, .window-body, .nes-container {
+                padding: 15px;
+            }
+            pre code {
+                padding: 1em;
+            }
+        }
+        
+        
+    </style>
+</head>
+<body>
+    <div class="container"><!-- Path: 114A_AI_intro/VibeCoding_intro | Timestamp: 2025-12-14 10:00:00 | Version: b01 -->
+
+<h1>Vibe Coding 實戰：用 AI 協作開發 Python 開放資料應用</h1>
+<h2>1. 課程導讀：什麼是 Vibe Coding？</h2>
+<p>在 AI 時代，寫程式的方式正在發生根本性的轉變。<br />
+*   <strong>傳統方式 (Coding)</strong>：你需要熟背語法、函數庫，一個字一個字地敲出程式碼。<br />
+*   <strong>Vibe Coding (AI 協作)</strong>：你專注於「想做什麼 (What)」與「邏輯流程 (Flow)」，用自然語言描述你的需求（Prompt），讓 AI 幫你生成程式碼。你更像是一位<strong>軟體架構師</strong>或<strong>產品經理</strong>。</p>
+<p><strong>本課程目標</strong>：<br />
+1.  學習如何撰寫精準的 Prompt 來引導 AI 寫 Python。<br />
+2.  利用 Python 處理真實世界的「政府開放資料 (Open Data)」。<br />
+3.  完成從「讀取檔案」、「API 串接」到「資料視覺化」的完整流程。</p>
+<hr />
+<h2>2. Vibe Coding 核心工作流</h2>
+<p>我們將採用 <strong>Prompt -&gt; Run -&gt; Fix/Refine</strong> 的循環模式。</p>
+<div class="codehilite"><pre><span></span><code><span class="n">flowchart</span><span class="w"> </span><span class="n">LR</span>
+<span class="w">    </span><span class="n">A</span><span class="p">[</span><span class="s">&quot;想法/需求 (Idea)&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">--&gt;|</span><span class="s">&quot;Prompting&quot;</span><span class="o">|</span><span class="w"> </span><span class="n">B</span><span class="p">(</span><span class="s">&quot;AI 生成程式碼&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="n">B</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">C</span><span class="p">{</span><span class="s">&quot;執行與測試&quot;</span><span class="p">}</span>
+<span class="w">    </span><span class="n">C</span><span class="w"> </span><span class="o">--&gt;|</span><span class="s">&quot;成功&quot;</span><span class="o">|</span><span class="w"> </span><span class="n">D</span><span class="p">[</span><span class="s">&quot;功能擴充/優化&quot;</span><span class="p">]</span>
+<span class="w">    </span><span class="n">C</span><span class="w"> </span><span class="o">--&gt;|</span><span class="s">&quot;錯誤/不如預期&quot;</span><span class="o">|</span><span class="w"> </span><span class="n">E</span><span class="p">[</span><span class="s">&quot;修正 Prompt 或貼上錯誤訊息&quot;</span><span class="p">]</span>
+<span class="w">    </span><span class="n">E</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">B</span>
+</code></pre></div>
+
+<hr />
+<h2>3. 實戰任務一：解析 JSON 格式的開放資料</h2>
+<h3>3.1 任務場景</h3>
+<p>我們有一份模擬的氣象資料（JSON 格式），需要用 Python 讀取它並顯示出我們關心的資訊（例如：城市與溫度）。</p>
+<h3>3.2 準備資料</h3>
+<p>首先，請 AI 幫我們生成一份測試用的 JSON 資料。</p>
+<blockquote>
+<p><strong>Prompt (給 AI):</strong><br />
+請幫我產生一個名為 <code>weather_data.json</code> 的檔案內容，格式為 JSON。<br />
+內容包含台灣 5 個主要城市（台北、台中、高雄、花蓮、台東）的氣象資訊。<br />
+每個城市應包含：<code>city</code> (城市名), <code>temperature</code> (攝氏溫度), <code>humidity</code> (濕度), <code>condition</code> (天氣狀況，如晴天、雨天)。</p>
+</blockquote>
+<p><em>(學生將 AI 生成的內容存成 <code>weather_data.json</code>)</em></p>
+<h3>3.3 生成解析程式</h3>
+<p>現在，我們不自己查 <code>json</code> 模組的語法，而是告訴 AI 我們要這做什麼。</p>
+<blockquote>
+<p><strong>Prompt (給 AI):</strong><br />
+我有一個 Python 程式開發的需求。</p>
+<p><strong>目標</strong>：撰寫一個 Python 腳本 (<code>parse_json.py</code>)。<br />
+<strong>輸入</strong>：讀取同目錄下的 <code>weather_data.json</code> 檔案。<br />
+<strong>處理</strong>：解析 JSON 內容。<br />
+<strong>輸出</strong>：在終端機列印出每個城市的名稱與溫度，格式如：「台北：25°C」。</p>
+<p>請提供完整的 Python 程式碼，並加上簡單的註解。</p>
+</blockquote>
+<h3>3.4 檢視與學習</h3>
+<p>AI 通常會使用 Python 內建的 <code>json</code> 模組：</p>
+<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+
+<span class="c1"># 讀取檔案</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;weather_data.json&#39;</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+
+<span class="c1"># 迴圈讀取並列印</span>
+<span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">item</span><span class="p">[</span><span class="s1">&#39;city&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">：</span><span class="si">{</span><span class="n">item</span><span class="p">[</span><span class="s1">&#39;temperature&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">°C&quot;</span><span class="p">)</span>
+</code></pre></div>
+
+<ul>
+<li><strong>Vibe Check</strong>: 程式碼是否符合你的預期？有沒有用到 <code>with open</code> (這比較安全)？編碼有設定 <code>utf-8</code> 嗎？</li>
+</ul>
+<hr />
+<h2>4. 實戰任務二：透過 API 取得即時資料</h2>
+<h3>4.1 任務場景</h3>
+<p>讀取靜態檔案不夠看，我們要讓程式連上網路，抓取即時資料。這裡我們使用 Python 最流行的 <code>requests</code> 模組。</p>
+<h3>4.2 升級程式碼</h3>
+<p>我們不需要重寫，而是請 AI <strong>修改</strong> 剛剛的程式。</p>
+<blockquote>
+<p><strong>Prompt (給 AI):</strong><br />
+接續上一個程式。現在我想要改為透過 API 取得資料。</p>
+<p><strong>修改需求</strong>：<br />
+1. 使用 <code>requests</code> 模組發送 GET 請求。<br />
+2. 目標 URL 假設為 <code>https://api.example.com/weather</code> (註：實作時可替換為真實的氣象局 API 或測試用 API)。<br />
+3. 加入錯誤處理：如果網路連線失敗或狀態碼不是 200，請列印錯誤訊息。</p>
+<p>請給我修改後的完整程式碼。</p>
+</blockquote>
+<h3>4.3 關鍵知識點</h3>
+<ul>
+<li><strong>Requests</strong>: Python 處理 HTTP 請求的神器。</li>
+<li><strong>Status Code</strong>: 檢查 <code>response.status_code == 200</code> 代表成功。</li>
+<li><strong>Exception Handling</strong>: <code>try...except</code> 是程式穩健的關鍵，AI 幫你寫好了嗎？</li>
+</ul>
+<hr />
+<h2>5. 實戰任務三：資料視覺化 (畫圖)</h2>
+<h3>5.1 任務場景</h3>
+<p>文字列表太枯燥，我們想把溫度數據變成一張「長條圖 (Bar Chart)」，讓趨勢一目了然。</p>
+<h3>5.2 引入 Matplotlib</h3>
+<p>這是 Python 資料科學界最基礎的繪圖庫。</p>
+<blockquote>
+<p><strong>Prompt (給 AI):</strong><br />
+我想要將氣象資料視覺化。</p>
+<p><strong>新功能需求</strong>：<br />
+1. 使用 <code>matplotlib</code> 模組。<br />
+2. 繪製一張長條圖 (Bar Chart)。<br />
+3. <strong>X 軸</strong>：城市名稱。<br />
+4. <strong>Y 軸</strong>：溫度。<br />
+5. 圖表標題設為 "Taiwan Cities Temperature"。<br />
+6. 若城市名稱包含中文字，請確保圖表能正確顯示中文（或者是告訴我如何設定字型）。</p>
+<p>請寫出完整的 Python 程式碼。</p>
+</blockquote>
+<h3>5.3 解決常見問題 (中文亂碼)</h3>
+<p>在 matplotlib 顯示中文常會遇到亂碼（變成方框）。<br />
+*   <strong>Vibe Coding 技巧</strong>：遇到錯誤直接把錯誤訊息貼給 AI，「圖表上的中文變成方框了，怎麼辦？」，AI 會教你設定 <code>plt.rcParams['font.sans-serif']</code>。</p>
+<hr />
+<h2>6. 綜合練習與挑戰</h2>
+<p>現在你已經掌握了 Vibe Coding 的基本流。請嘗試以下挑戰：</p>
+<ol>
+<li><strong>更換資料來源</strong>：找一份政府開放資料（例如：台灣人口統計），試著分析哪個縣市人口最多。</li>
+<li><strong>更換圖表類型</strong>：將氣象資料的「濕度」與「溫度」畫成「散佈圖 (Scatter Plot)」。</li>
+<li><strong>封裝成函數</strong>：請 AI 將「抓取資料」、「解析資料」、「繪圖」分別包裝成不同的 Function，讓程式架構更整潔。</li>
+</ol>
+<hr />
+<h2>7. 學習總結</h2>
+<p>透過今天的實作，你獲得了以下能力：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">技能維度</th>
+<th style="text-align: left;">具體內容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>Prompt Engineering</strong></td>
+<td style="text-align: left;">能夠清楚描述輸入、處理邏輯與輸出格式，引導 AI 寫程式。</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Python 基礎</strong></td>
+<td style="text-align: left;">理解 <code>json</code> 解析、<code>requests</code> 網路請求、<code>matplotlib</code> 繪圖的基本用法。</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>除錯能力</strong></td>
+<td style="text-align: left;">遇到問題時，懂得利用 AI 協助分析錯誤訊息並修正。</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>資料素養</strong></td>
+<td style="text-align: left;">了解如何將非結構化或半結構化的開放資料，轉化為有意義的視覺資訊。</td>
+</tr>
+</tbody>
+</table></div>
+    
+    <!-- Highlight.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    
+    <!-- Mermaid -->
+    <script type="module">
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+        mermaid.initialize({
+            "startOnLoad": true,
+            "theme": "dark",
+            "securityLevel": "loose"
+});
+    </script>
+</body>
+</html>

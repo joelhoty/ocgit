@@ -99,6 +99,12 @@
 |---|---|---|
 | taigiSpeaking.html | 2025-10-22 | [taigiSpeaking.html](https://joelhoty.github.io/ocgit/TaigiSpeaking/taigiSpeaking.html) |
 
+## VideCoding
+
+| File Name | Last Updated | Link |
+|---|---|---|
+| VibeCoding_Python_Tutorial_b01.html | 2025-12-14 | [VibeCoding_Python_Tutorial_b01.html](https://joelhoty.github.io/ocgit/VideCoding/VibeCoding_Python_Tutorial_b01.html) |
+
 ## Youtube_sub
 
 | File Name | Last Updated | Link |
