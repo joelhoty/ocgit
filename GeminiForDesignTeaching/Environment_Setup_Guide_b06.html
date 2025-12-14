@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Environment_Setup_Guide_b06</title>
+    
+    <!-- CSS 框架 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/dark.min.css">
+    
+    <!-- 代碼高亮 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/base16/darcula.min.css">
+    
+    <!-- 自定義樣式 -->
+    <style>
+        
+                body {
+                    max-width: 900px;
+                    margin: 0 auto;
+                    padding: 20px;
+                }
+                /* 提升代码块对比度 */
+                pre {
+                    background: #1e1e1e !important;
+                    border: 1px solid #3e3e3e;
+                }
+                pre code {
+                    background: #1e1e1e !important;
+                }
+                code {
+                    background: #2d2d2d !important;
+                }
+                /* 引用块对比度 */
+                blockquote {
+                    background: #2d2d2d;
+                    border-left: 4px solid #4a9eff;
+                }
+            
+        
+        /* 通用代碼塊樣式 */
+        pre code {
+            display: block;
+            padding: 1.5em;
+            border-radius: 8px;
+            overflow-x: auto;
+            line-height: 1.6;
+        }
+
+        /* Mermaid 圖表樣式 */
+        
+        .mermaid {
+            margin: 2em 0;
+            padding: 1.5em;
+            text-align: center;
+            border-radius: 8px;
+        }
+        
+        .mermaid {
+            background: #2c3034;
+            border: 1px solid #444;
+        }
+            
+        
+        /* 響應式調整 */
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            .container, .markdown-body, .latex-body, .window-body, .nes-container {
+                padding: 15px;
+            }
+            pre code {
+                padding: 1em;
+            }
+        }
+        
+        
+    </style>
+</head>
+<body>
+    <div class="container"><!-- Path: CLI_VSCODE_PYTHON | Timestamp: 2025-12-14 11:00:00 | Version: b06 -->
+<h1>開發環境建置指南：Gemini CLI, VS Code 與 Python (Windows 版)</h1>
+<p>本指南旨在協助初學者在 Windows 系統上建立完整的 Python 開發環境，整合 Gemini CLI 人工智慧工具、VS Code 編輯器以及現代化的 Python 套件管理工具 <code>uv</code>。</p>
+<hr />
+<h2>第一部分：安裝 Gemini CLI</h2>
+<p>Gemini CLI 是一個基於命令列的介面，讓我們能直接在終端機與 Gemini AI 互動。它是基於 Node.js 開發的。</p>
+<h3>1. 安裝 Node.js (前置需求)</h3>
+<p>由於 Gemini CLI 是 Node.js 應用程式，必須先安裝執行環境。</p>
+<ol>
+<li>前往 Node.js 官方網站：<a href="https://nodejs.org/">https://nodejs.org/</a></li>
+<li>下載 <strong>LTS (Long Term Support)</strong> 版本（建議選擇穩定版）。</li>
+<li>執行安裝檔，依指示完成安裝（大部份選項維持預設即可）。</li>
+</ol>
+<h3>2. 安裝 Gemini CLI</h3>
+<ol>
+<li>開啟 <strong>命令提示字元 (Command Prompt)</strong> 或 <strong>PowerShell</strong>。</li>
+<li>輸入以下指令並按 Enter：<br />
+<code>bash
+    npm install -g @google/gemini-cli</code></li>
+<li>安裝完成後，初次執行 <code>gemini</code> 指令時，系統會引導您透過瀏覽器登入 Google 帳號進行驗證。</li>
+</ol>
+<h3>3. 常見問題排除：PowerShell 權限問題</h3>
+<p>如果在 Windows PowerShell 執行 Gemini 相關指令時出現紅色錯誤訊息，提示「依據系統的執行原則，無法載入檔案...」，這是 Windows 的安全機制。</p>
+<p><strong>解決步驟：</strong><br />
+1.  按「開始」按鈕，搜尋 "PowerShell"。<br />
+2.  在 "Windows PowerShell" 上按右鍵，選擇 <strong>「以系統管理員身分執行」</strong>。<br />
+3.  在藍色的終端機視窗中，輸入以下指令並按 Enter：<br />
+<code>powershell
+    Set-ExecutionPolicy RemoteSigned</code><br />
+    &gt; <strong>解釋</strong>：此指令會將您的系統權限設定為 <code>RemoteSigned</code>（遠端簽署）。這代表您自己寫的指令碼可以自由執行，但從網路下載的指令碼必須經過受信任的發布者簽署才能執行。這是一個在「安全性」與「開發便利性」之間取得平衡的設定，也是開發者最常用的設定。</p>
+<ol>
+<li>系統會詢問是否變更執行原則，請輸入 <code>Y</code> 或 <code>A</code> 並按 Enter 確認。</li>
+<li>關閉視窗，重新開啟一般的 PowerShell 即可正常使用。</li>
+</ol>
+<hr />
+<h2>第二部分：安裝與設定 Visual Studio Code (VS Code)</h2>
+<p>VS Code 是目前最主流的程式碼編輯器。</p>
+<h3>1. 下載與安裝</h3>
+<ol>
+<li>前往官網：<a href="https://code.visualstudio.com/">https://code.visualstudio.com/</a></li>
+<li>下載 Windows 版本並安裝。</li>
+</ol>
+<h3>2. 安裝 Python 擴充套件</h3>
+<p>為了讓 VS Code 看得懂 Python 語法並提供除錯功能，需要安裝官方套件。</p>
+<ol>
+<li>開啟 VS Code。</li>
+<li>點擊左側邊欄的 <strong>擴充套件圖示 (Extensions)</strong>（或按 <code>Ctrl+Shift+X</code>）。</li>
+<li>在搜尋框輸入 <code>Python</code>。</li>
+<li>選擇由 <strong>Microsoft</strong> 發布的第一個項目（通常下載量最高），點擊 <strong>Install</strong>。</li>
+</ol>
+<hr />
+<h2>第三部分：Python 環境與 UV 套件管理 (核心觀念)</h2>
+<p>這部分是現代 Python 開發最重要的環節。我們將使用 <code>uv</code> 這套新一代工具來管理 Python 環境。</p>
+<h3>1. 安裝 Python</h3>
+<ol>
+<li>前往 Python 官網：<a href="https://www.python.org/downloads/">https://www.python.org/downloads/</a></li>
+<li>下載最新版 Python 安裝檔。</li>
+<li><strong>重要關鍵</strong>：執行安裝時，務必勾選底部的 <strong>"Add Python to PATH"</strong> (將 Python 加入環境變數)。這能確保你在終端機打 <code>python</code> 指令時電腦找得到它。</li>
+<li>點擊 "Install Now" 完成安裝。</li>
+</ol>
+<h3>2. 重要概念：什麼是「虛擬環境」 (Virtual Environment)？</h3>
+<p>在開始寫程式前，請先理解這個概念。</p>
+<blockquote>
+<p><strong>比喻</strong>：想像你在做工藝作業。<br />
+*   <strong>全域環境 (Global)</strong>：就像把你所有的工具（膠水、剪刀、顏料）全部丟在客廳的地板上。如果你同時做兩個專案，一個需要水彩，一個需要油漆，工具混在一起很容易弄髒或拿錯。<br />
+*   <strong>虛擬環境 (Virtual Environment)</strong>：就像為每個專案準備一個 <strong>「專屬工具箱」</strong>。A 專案的工具箱裡只有它需要的工具；B 專案有另一個獨立的工具箱。</p>
+</blockquote>
+<p><strong>為什麼需要它？</strong><br />
+*   <strong>避免衝突</strong>：專案 A 可能需要舊版的 pandas 套件，而專案 B 需要新版的。如果都裝在電腦全域環境，會發生衝突。<br />
+*   <strong>保持整潔</strong>：當專案結束刪除資料夾時，相關的套件也就跟著消失，不會在電腦深處留下垃圾。</p>
+<h3>3. 安裝 UV (新一代 Python 管理工具)</h3>
+<p><code>uv</code> 是一個極速的 Python 套件與專案管理工具，比傳統的 <code>pip</code> 快上許多，且能同時管理 Python 版本與專案依賴。</p>
+<p><strong>詳細安裝說明請參考</strong>：<a href="https://docs.astral.sh/uv/getting-started/installation/">uv 官方安裝文件</a></p>
+<p><strong>推薦安裝方法 (Standalone installer)</strong>：<br />
+這是官方推薦的方式，能確保 <code>uv</code> 能夠自我更新並管理 Python 版本。</p>
+<p>開啟 <strong>PowerShell</strong>，輸入以下指令並按 Enter：</p>
+<div class="codehilite"><pre><span></span><code><span class="n">powershell</span> <span class="n">-ExecutionPolicy</span> <span class="n">ByPass</span> <span class="n">-c</span> <span class="s2">&quot;irm https://astral.sh/uv/install.ps1 | iex&quot;</span>
+</code></pre></div>
+
+<blockquote>
+<p><strong>解釋</strong>：這個指令中的 <code>-ExecutionPolicy ByPass</code> 參數是告訴 PowerShell：「僅針對這次執行，暫時忽略權限限制」。這允許我們下載並執行官方的安裝腳本 (<code>install.ps1</code>)，而不需要永久修改系統安全性設定，是一個安全且常見的安裝手法。</p>
+</blockquote>
+<p><strong>其他安裝方法</strong>：<br />
+*   <strong>使用 pip</strong>：<code>pip install uv</code><br />
+*   <strong>使用 WinGet</strong>：<code>winget install --id=astral-sh.uv -e</code></p>
+<p><strong>驗證與更新</strong>：<br />
+*   驗證安裝：<code>uv --version</code><br />
+*   更新 uv (僅限使用推薦方法安裝者)：<code>uv self update</code></p>
+<h3>4. 實戰演練：使用 UV 建立 Python 專案 (標準流程)</h3>
+<p>假設我們要建立一個名為 <code>my_ai_project</code> 的專案。</p>
+<h4>步驟 1：初始化專案</h4>
+<p>在 PowerShell 中操作：</p>
+<div class="codehilite"><pre><span></span><code><span class="c"># 1. 建立專案資料夾</span>
+<span class="n">mkdir</span> <span class="n">my_ai_project</span>
+<span class="nb">cd </span><span class="n">my_ai_project</span>
+
+<span class="c"># 2. 初始化 uv 專案 (這會建立 pyproject.toml 設定檔)</span>
+<span class="n">uv</span> <span class="n">init</span>
+</code></pre></div>
+
+<h4>步驟 2：建立虛擬環境</h4>
+<div class="codehilite"><pre><span></span><code><span class="c"># 建立一個隱藏的 .venv 資料夾，這就是你的「專屬工具箱」</span>
+<span class="n">uv</span> <span class="n">venv</span>
+</code></pre></div>
+
+<p><em>執行後，你會在資料夾中看到 <code>.venv</code> 資料夾，請勿手動修改裡面的檔案。</em></p>
+<h4>步驟 3：安裝套件 (Install Packages)</h4>
+<p>假設我們需要 <code>requests</code> 和 <code>pandas</code> 套件：</p>
+<div class="codehilite"><pre><span></span><code><span class="c"># 使用 uv add 加入套件 (這會自動安裝到虛擬環境並更新設定檔)</span>
+<span class="n">uv</span> <span class="n">add</span> <span class="n">requests</span> <span class="n">pandas</span>
+</code></pre></div>
+
+<p><em>這取代了傳統的 <code>pip install</code> 指令。<code>uv</code> 會自動解析並下載最適合的版本。</em></p>
+<h4>步驟 4：執行程式</h4>
+<p>當你要執行 Python 程式時，使用 <code>uv run</code> 確保它是使用虛擬環境中的 Python 執行的：</p>
+<ol>
+<li>在 VS Code 中建立一個 <code>main.py</code> 檔案。</li>
+<li>輸入程式碼。</li>
+<li>在終端機執行：<br />
+<code>powershell
+    uv run main.py</code><br />
+<em><code>uv run</code> 會自動檢查環境，如果還沒建立虛擬環境或缺套件，它甚至會自動幫你補上，非常方便。</em></li>
+</ol>
+<hr />
+<h2>第四部分：專案管理與 Gemini 協作 (Project Context)</h2>
+<p>在現代軟體開發中，「專案 (Project)」不僅僅是一堆程式碼檔案，它是一個完整的上下文 (Context)，包含了設定檔、說明文件、以及程式碼邏輯。</p>
+<h3>1. 為什麼「資料夾」很重要？</h3>
+<p>在使用 VS Code 時，<strong>「開啟資料夾 (Open Folder)」</strong> 而不是單純「開啟檔案」是非常重要的習慣。<br />
+*   <strong>VS Code</strong> 會將該資料夾視為一個 <strong>Workspace (工作區)</strong>，能正確讀取 <code>.venv</code> (虛擬環境) 與 <code>.vscode</code> (編輯器設定)。<br />
+*   <strong>Gemini CLI</strong> 或其他 AI 助理也需要依賴這個資料夾結構來理解整個專案的上下文。</p>
+<h3>2. 使用 gemini.md 建立 AI 協作指南</h3>
+<p>為了讓 Gemini 更精準地協助你的專案，我們可以在專案根目錄下建立一個特殊的設定檔。</p>
+<p><strong>建立步驟：</strong><br />
+1.  在專案根目錄 (例如 <code>my_ai_project/</code>) 建立一個名為 <code>gemini.md</code> 的檔案。<br />
+2.  這個檔案就像是給 AI 的「入職手冊」，告訴它你是誰、這個專案在做什麼、以及你希望它遵守的規則。</p>
+<p><strong><code>gemini.md</code> 範例內容：</strong></p>
+<div class="codehilite"><pre><span></span><code><span class="gh"># 專案名稱：My AI Project</span>
+
+<span class="gu">## 專案簡介</span>
+這是一個使用 Python 撰寫的網路爬蟲專案，目標是自動收集每日新聞。
+
+<span class="gu">## 你的角色</span>
+你是一位資深的 Python 後端工程師，擅長寫出乾淨、好維護的程式碼。
+
+<span class="gu">## 開發規則</span>
+<span class="k">1.</span> 所有程式碼必須加上中文註解。
+<span class="k">2.</span> 優先使用 <span class="sb">`requests`</span> 與 <span class="sb">`BeautifulSoup`</span> 套件。
+<span class="k">3.</span> 錯誤訊息請用繁體中文顯示。
+</code></pre></div>
+
+<h3>3. 如何讓 Gemini 讀取專案設定？</h3>
+<p>當你在該專案資料夾中開啟終端機並執行 <code>gemini</code> 時，你可以透過以下方式讓 AI 參考這些設定：<br />
+*   <strong>手動參考</strong>：在對話中直接告訴 Gemini 「請參考 gemini.md 的規則」。<br />
+*   <strong>自動載入 (進階)</strong>：部分進階的 AI 整合工具會自動掃描根目錄的 <code>.md</code> 說明檔來建立上下文。</p>
+<h3>總結</h3>
+<ol>
+<li><strong>專案 = 資料夾</strong>：養成在 VS Code 中「開啟資料夾」的好習慣。</li>
+<li><strong>環境隔離</strong>：使用 <code>uv</code> 為每個專案建立獨立的 <code>.venv</code>。</li>
+<li><strong>AI 指引</strong>：撰寫 <code>gemini.md</code> 來定義 AI 的角色與專案規則，讓協作更順暢。</li>
+</ol></div>
+    
+    <!-- Highlight.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    
+    <!-- Mermaid -->
+    <script type="module">
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+        mermaid.initialize({
+            "startOnLoad": true,
+            "theme": "dark",
+            "securityLevel": "loose"
+});
+    </script>
+</body>
+</html>
