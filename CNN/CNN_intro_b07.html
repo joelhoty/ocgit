@@ -19,7 +19,7 @@
                     margin: 0 auto;
                     padding: 20px;
                 }
-                /* 提升代码块对比度 */
+                /* 提升代碼塊對比度 */
                 pre {
                     background: #1e1e1e !important;
                     border: 1px solid #3e3e3e;
@@ -30,13 +30,12 @@
                 code {
                     background: #2d2d2d !important;
                 }
-                /* 引用块对比度 */
+                /* 引用塊對比度 */
                 blockquote {
                     background: #2d2d2d;
                     border-left: 4px solid #4a9eff;
                 }
-            
-        
+                    
         /* 通用代碼塊樣式 */
         pre code {
             display: block;
@@ -66,7 +65,7 @@
             body {
                 padding: 10px;
             }
-            .container, .markdown-body, .latex-body, .window-body, .nes-container {
+            .container, .markdown-body, .latex-body, .window-body, .nes-container { # Added .nes-container here
                 padding: 15px;
             }
             pre code {
@@ -89,63 +88,64 @@
 - ✅ 詳細的專有名詞與函數說明</p>
 <hr />
 <h2>學習路徑視覺化</h2>
-<div class="codehilite"><pre><span></span><code><span class="nx">graph</span><span class="w"> </span><span class="nx">TB</span>
-<span class="w">    </span><span class="nx">Start</span><span class="p">([</span><span class="nx">開始學習</span><span class="w"> </span><span class="nx">CNN</span><span class="p">])</span><span class="w"> </span><span class="o">--</span><span class="p">&gt;</span><span class="w"> </span><span class="nx">Choice</span><span class="p">{</span><span class="nx">有程式經驗</span><span class="p">?}</span>
+<div class="mermaid">
+graph TB
+    Start([開始學習 CNN]) --&gt; Choice{有程式經驗?}
 
-<span class="w">    </span><span class="nx">Choice</span><span class="w"> </span><span class="o">--</span><span class="p">&gt;</span><span class="o">|</span><span class="nx">初學者</span><span class="o">|</span><span class="w"> </span><span class="nx">Week1</span><span class="p">[</span><span class="nx">Week</span><span class="w"> </span><span class="mi">1</span><span class="o">-</span><span class="mi">2</span><span class="p">:</span><span class="w"> </span><span class="nx">基礎知識</span><span class="p">]</span>
-<span class="w">    </span><span class="nx">Choice</span><span class="w"> </span><span class="o">--</span><span class="p">&gt;</span><span class="o">|</span><span class="nx">有經驗</span><span class="o">|</span><span class="w"> </span><span class="nx">Fast</span><span class="p">[</span><span class="nx">直接進入</span><span class="w"> </span><span class="nx">CIFAR</span><span class="o">-</span><span class="mi">10</span><span class="p">]</span>
+    Choice --&gt;|初學者| Week1[Week 1-2: 基礎知識]
+    Choice --&gt;|有經驗| Fast[直接進入 CIFAR-10]
 
-<span class="w">    </span><span class="nx">Week1</span><span class="w"> </span><span class="o">--</span><span class="p">&gt;</span><span class="w"> </span><span class="nx">Week1a</span><span class="p">[</span><span class="nx">認識</span><span class="w"> </span><span class="nx">MNIST</span><span class="w"> </span><span class="nx">資料集</span><span class="p">]</span>
-<span class="w">    </span><span class="nx">Week1</span><span class="w"> </span><span class="o">--</span><span class="p">&gt;</span><span class="w"> </span><span class="nx">Week1b</span><span class="p">[</span><span class="nx">了解</span><span class="w"> </span><span class="nx">Keras</span><span class="w"> </span><span class="nx">框架</span><span class="p">]</span>
-<span class="w">    </span><span class="nx">Week1</span><span class="w"> </span><span class="o">--</span><span class="p">&gt;</span><span class="w"> </span><span class="nx">Week1c</span><span class="p">[</span><span class="nx">實作</span><span class="w"> </span><span class="nx">LeNet</span><span class="o">-</span><span class="mi">5</span><span class="p">]</span>
-<span class="w">    </span><span class="nx">Week1c</span><span class="w"> </span><span class="o">--</span><span class="p">&gt;</span><span class="w"> </span><span class="nx">Check1</span><span class="p">{</span><span class="nx">準確率</span><span class="w"> </span><span class="p">&gt;</span><span class="w"> </span><span class="mi">98</span><span class="o">%</span><span class="p">?}</span>
+    Week1 --&gt; Week1a[認識 MNIST 資料集]
+    Week1 --&gt; Week1b[了解 Keras 框架]
+    Week1 --&gt; Week1c[實作 LeNet-5]
+    Week1c --&gt; Check1{準確率 &gt; 98%?}
 
-<span class="w">    </span><span class="nx">Check1</span><span class="w"> </span><span class="o">--</span><span class="p">&gt;</span><span class="o">|</span><span class="nx">否</span><span class="o">|</span><span class="w"> </span><span class="nx">Debug1</span><span class="p">[</span><span class="nx">除錯與優化</span><span class="p">]</span>
-<span class="w">    </span><span class="nx">Check1</span><span class="w"> </span><span class="o">--</span><span class="p">&gt;</span><span class="o">|</span><span class="nx">是</span><span class="o">|</span><span class="w"> </span><span class="nx">Week2</span><span class="p">[</span><span class="nx">Week</span><span class="w"> </span><span class="mi">3</span><span class="o">-</span><span class="mi">4</span><span class="p">:</span><span class="w"> </span><span class="nx">進階技術</span><span class="p">]</span>
-<span class="w">    </span><span class="nx">Debug1</span><span class="w"> </span><span class="o">--</span><span class="p">&gt;</span><span class="w"> </span><span class="nx">Week1c</span>
+    Check1 --&gt;|否| Debug1[除錯與優化]
+    Check1 --&gt;|是| Week2[Week 3-4: 進階技術]
+    Debug1 --&gt; Week1c
 
-<span class="w">    </span><span class="nx">Week2</span><span class="w"> </span><span class="o">--</span><span class="p">&gt;</span><span class="w"> </span><span class="nx">Week2a</span><span class="p">[</span><span class="nx">學習</span><span class="w"> </span><span class="nx">PyTorch</span><span class="w"> </span><span class="nx">框架</span><span class="p">]</span>
-<span class="w">    </span><span class="nx">Week2</span><span class="w"> </span><span class="o">--</span><span class="p">&gt;</span><span class="w"> </span><span class="nx">Week2b</span><span class="p">[</span><span class="nx">實作</span><span class="w"> </span><span class="nx">SimpleCNN</span><span class="p">]</span>
-<span class="w">    </span><span class="nx">Week2</span><span class="w"> </span><span class="o">--</span><span class="p">&gt;</span><span class="w"> </span><span class="nx">Week2c</span><span class="p">[</span><span class="nx">理解訓練迴圈</span><span class="p">]</span>
-<span class="w">    </span><span class="nx">Week2c</span><span class="w"> </span><span class="o">--</span><span class="p">&gt;</span><span class="w"> </span><span class="nx">Check2</span><span class="p">{</span><span class="nx">準確率</span><span class="w"> </span><span class="p">&gt;</span><span class="w"> </span><span class="mi">99</span><span class="o">%</span><span class="p">?}</span>
+    Week2 --&gt; Week2a[學習 PyTorch 框架]
+    Week2 --&gt; Week2b[實作 SimpleCNN]
+    Week2 --&gt; Week2c[理解訓練迴圈]
+    Week2c --&gt; Check2{準確率 &gt; 99%?}
 
-<span class="w">    </span><span class="nx">Check2</span><span class="w"> </span><span class="o">--</span><span class="p">&gt;</span><span class="o">|</span><span class="nx">否</span><span class="o">|</span><span class="w"> </span><span class="nx">Debug2</span><span class="p">[</span><span class="nx">調整超參數</span><span class="p">]</span>
-<span class="w">    </span><span class="nx">Check2</span><span class="w"> </span><span class="o">--</span><span class="p">&gt;</span><span class="o">|</span><span class="nx">是</span><span class="o">|</span><span class="w"> </span><span class="nx">Week3</span><span class="p">[</span><span class="nx">Week</span><span class="w"> </span><span class="mi">5</span><span class="o">-</span><span class="mi">6</span><span class="p">:</span><span class="w"> </span><span class="nx">CIFAR</span><span class="o">-</span><span class="mi">10</span><span class="w"> </span><span class="nx">挑戰</span><span class="p">]</span>
-<span class="w">    </span><span class="nx">Debug2</span><span class="w"> </span><span class="o">--</span><span class="p">&gt;</span><span class="w"> </span><span class="nx">Week2b</span>
+    Check2 --&gt;|否| Debug2[調整超參數]
+    Check2 --&gt;|是| Week3[Week 5-6: CIFAR-10 挑戰]
+    Debug2 --&gt; Week2b
 
-<span class="w">    </span><span class="nx">Week3</span><span class="w"> </span><span class="o">--</span><span class="p">&gt;</span><span class="w"> </span><span class="nx">Week3a</span><span class="p">[</span><span class="nx">資料增強技術</span><span class="p">]</span>
-<span class="w">    </span><span class="nx">Week3</span><span class="w"> </span><span class="o">--</span><span class="p">&gt;</span><span class="w"> </span><span class="nx">Week3b</span><span class="p">[</span><span class="nx">進階</span><span class="w"> </span><span class="nx">CNN</span><span class="w"> </span><span class="nx">架構</span><span class="p">]</span>
-<span class="w">    </span><span class="nx">Week3</span><span class="w"> </span><span class="o">--</span><span class="p">&gt;</span><span class="w"> </span><span class="nx">Week3c</span><span class="p">[</span><span class="nx">學習率調度</span><span class="p">]</span>
-<span class="w">    </span><span class="nx">Week3c</span><span class="w"> </span><span class="o">--</span><span class="p">&gt;</span><span class="w"> </span><span class="nx">Check3</span><span class="p">{</span><span class="nx">準確率</span><span class="w"> </span><span class="p">&gt;</span><span class="w"> </span><span class="mi">85</span><span class="o">%</span><span class="p">?}</span>
+    Week3 --&gt; Week3a[資料增強技術]
+    Week3 --&gt; Week3b[進階 CNN 架構]
+    Week3 --&gt; Week3c[學習率調度]
+    Week3c --&gt; Check3{準確率 &gt; 85%?}
 
-<span class="w">    </span><span class="nx">Check3</span><span class="w"> </span><span class="o">--</span><span class="p">&gt;</span><span class="o">|</span><span class="nx">否</span><span class="o">|</span><span class="w"> </span><span class="nx">Debug3</span><span class="p">[</span><span class="nx">模型優化</span><span class="p">]</span>
-<span class="w">    </span><span class="nx">Check3</span><span class="w"> </span><span class="o">--</span><span class="p">&gt;</span><span class="o">|</span><span class="nx">是</span><span class="o">|</span><span class="w"> </span><span class="nx">Advanced</span><span class="p">[</span><span class="nx">進階挑戰</span><span class="p">]</span>
-<span class="w">    </span><span class="nx">Debug3</span><span class="w"> </span><span class="o">--</span><span class="p">&gt;</span><span class="w"> </span><span class="nx">Week3b</span>
+    Check3 --&gt;|否| Debug3[模型優化]
+    Check3 --&gt;|是| Advanced[進階挑戰]
+    Debug3 --&gt; Week3b
 
-<span class="w">    </span><span class="nx">Fast</span><span class="w"> </span><span class="o">--</span><span class="p">&gt;</span><span class="w"> </span><span class="nx">Advanced</span>
+    Fast --&gt; Advanced
 
-<span class="w">    </span><span class="nx">Advanced</span><span class="w"> </span><span class="o">--</span><span class="p">&gt;</span><span class="w"> </span><span class="nx">Adv1</span><span class="p">[</span><span class="nx">CIFAR</span><span class="o">-</span><span class="mi">100</span><span class="p">]</span>
-<span class="w">    </span><span class="nx">Advanced</span><span class="w"> </span><span class="o">--</span><span class="p">&gt;</span><span class="w"> </span><span class="nx">Adv2</span><span class="p">[</span><span class="nx">ResNet</span><span class="o">/</span><span class="nx">DenseNet</span><span class="p">]</span>
-<span class="w">    </span><span class="nx">Advanced</span><span class="w"> </span><span class="o">--</span><span class="p">&gt;</span><span class="w"> </span><span class="nx">Adv3</span><span class="p">[</span><span class="nx">遷移學習</span><span class="p">]</span>
-<span class="w">    </span><span class="nx">Advanced</span><span class="w"> </span><span class="o">--</span><span class="p">&gt;</span><span class="w"> </span><span class="nx">Adv4</span><span class="p">[</span><span class="nx">實際應用</span><span class="p">]</span>
+    Advanced --&gt; Adv1[CIFAR-100]
+    Advanced --&gt; Adv2[ResNet/DenseNet]
+    Advanced --&gt; Adv3[遷移學習]
+    Advanced --&gt; Adv4[實際應用]
 
-<span class="w">    </span><span class="nx">Adv1</span><span class="w"> </span><span class="o">--</span><span class="p">&gt;</span><span class="w"> </span><span class="nx">Master</span><span class="p">([</span><span class="nx">成為</span><span class="w"> </span><span class="nx">CNN</span><span class="w"> </span><span class="nx">專家</span><span class="p">])</span>
-<span class="w">    </span><span class="nx">Adv2</span><span class="w"> </span><span class="o">--</span><span class="p">&gt;</span><span class="w"> </span><span class="nx">Master</span>
-<span class="w">    </span><span class="nx">Adv3</span><span class="w"> </span><span class="o">--</span><span class="p">&gt;</span><span class="w"> </span><span class="nx">Master</span>
-<span class="w">    </span><span class="nx">Adv4</span><span class="w"> </span><span class="o">--</span><span class="p">&gt;</span><span class="w"> </span><span class="nx">Master</span>
+    Adv1 --&gt; Master([成為 CNN 專家])
+    Adv2 --&gt; Master
+    Adv3 --&gt; Master
+    Adv4 --&gt; Master
 
-<span class="w">    </span><span class="nx">style</span><span class="w"> </span><span class="nx">Start</span><span class="w"> </span><span class="nx">fill</span><span class="p">:</span><span class="err">#</span><span class="mi">90</span><span class="nx">EE90</span>
-<span class="w">    </span><span class="nx">style</span><span class="w"> </span><span class="nx">Master</span><span class="w"> </span><span class="nx">fill</span><span class="p">:</span><span class="err">#</span><span class="nx">FFD700</span>
-<span class="w">    </span><span class="nx">style</span><span class="w"> </span><span class="nx">Check1</span><span class="w"> </span><span class="nx">fill</span><span class="p">:</span><span class="err">#</span><span class="nx">FFE4B5</span>
-<span class="w">    </span><span class="nx">style</span><span class="w"> </span><span class="nx">Check2</span><span class="w"> </span><span class="nx">fill</span><span class="p">:</span><span class="err">#</span><span class="nx">FFE4B5</span>
-<span class="w">    </span><span class="nx">style</span><span class="w"> </span><span class="nx">Check3</span><span class="w"> </span><span class="nx">fill</span><span class="p">:</span><span class="err">#</span><span class="nx">FFE4B5</span>
-<span class="w">    </span><span class="nx">style</span><span class="w"> </span><span class="nx">Debug1</span><span class="w"> </span><span class="nx">fill</span><span class="p">:</span><span class="err">#</span><span class="nx">FFB6C1</span>
-<span class="w">    </span><span class="nx">style</span><span class="w"> </span><span class="nx">Debug2</span><span class="w"> </span><span class="nx">fill</span><span class="p">:</span><span class="err">#</span><span class="nx">FFB6C1</span>
-<span class="w">    </span><span class="nx">style</span><span class="w"> </span><span class="nx">Debug3</span><span class="w"> </span><span class="nx">fill</span><span class="p">:</span><span class="err">#</span><span class="nx">FFB6C1</span>
-</code></pre></div>
-
+    style Start fill:#90EE90
+    style Master fill:#FFD700
+    style Check1 fill:#FFE4B5
+    style Check2 fill:#FFE4B5
+    style Check3 fill:#FFE4B5
+    style Debug1 fill:#FFB6C1
+    style Debug2 fill:#FFB6C1
+    style Debug3 fill:#FFB6C1
+</div>
 <h2>CNN 架構演進圖</h2>
-<div class="codehilite"><pre><span></span><code>timeline
+<div class="mermaid">
+timeline
     title CNN 發展歷程與本指南涵蓋內容
     1998 : LeNet-5 (本指南 Part 2)
          : MNIST 資料集發布
@@ -166,49 +166,48 @@
     2020-2025 : Vision Transformer
               : 注意力機制
               : CIFAR-10 準確率 99%+
-</code></pre></div>
-
+</div>
 <h2>技術架構圖</h2>
-<div class="codehilite"><pre><span></span><code><span class="n">graph</span><span class="w"> </span><span class="n">LR</span>
-<span class="w">    </span><span class="n">subgraph</span><span class="w"> </span><span class="n">資料準備</span>
-<span class="w">        </span><span class="n">A</span><span class="o">[</span><span class="n">原始影像</span><span class="o">]</span><span class="w"> </span><span class="c1">--&gt; B[前處理]</span>
-<span class="w">        </span><span class="n">B</span><span class="w"> </span><span class="c1">--&gt; C[正規化]</span>
-<span class="w">        </span><span class="n">C</span><span class="w"> </span><span class="c1">--&gt; D[資料增強]</span>
-<span class="w">    </span><span class="k">end</span>
+<div class="mermaid">
+graph LR
+    subgraph 資料準備
+        A[原始影像] --&gt; B[前處理]
+        B --&gt; C[正規化]
+        C --&gt; D[資料增強]
+    end
 
-<span class="w">    </span><span class="n">subgraph</span><span class="w"> </span><span class="n">CNN</span><span class="w"> </span><span class="n">模型</span>
-<span class="w">        </span><span class="n">D</span><span class="w"> </span><span class="c1">--&gt; E[卷積層 Conv2D]</span>
-<span class="w">        </span><span class="n">E</span><span class="w"> </span><span class="c1">--&gt; F[激活函數 ReLU]</span>
-<span class="w">        </span><span class="n">F</span><span class="w"> </span><span class="c1">--&gt; G[池化層 Pooling]</span>
-<span class="w">        </span><span class="n">G</span><span class="w"> </span><span class="c1">--&gt; H[Dropout]</span>
-<span class="w">        </span><span class="n">H</span><span class="w"> </span><span class="c1">--&gt; I[全連接層 Dense]</span>
-<span class="w">        </span><span class="n">I</span><span class="w"> </span><span class="c1">--&gt; J[輸出層 Softmax]</span>
-<span class="w">    </span><span class="k">end</span>
+    subgraph CNN 模型
+        D --&gt; E[卷積層 Conv2D]
+        E --&gt; F[激活函數 ReLU]
+        F --&gt; G[池化層 Pooling]
+        G --&gt; H[Dropout]
+        H --&gt; I[全連接層 Dense]
+        I --&gt; J[輸出層 Softmax]
+    end
 
-<span class="w">    </span><span class="n">subgraph</span><span class="w"> </span><span class="n">訓練流程</span>
-<span class="w">        </span><span class="n">J</span><span class="w"> </span><span class="c1">--&gt; K[損失計算]</span>
-<span class="w">        </span><span class="n">K</span><span class="w"> </span><span class="c1">--&gt; L[反向傳播]</span>
-<span class="w">        </span><span class="n">L</span><span class="w"> </span><span class="c1">--&gt; M[優化器更新]</span>
-<span class="w">        </span><span class="n">M</span><span class="w"> </span><span class="c1">--&gt; N{收斂?}</span>
-<span class="w">        </span><span class="n">N</span><span class="w"> </span><span class="c1">--&gt;|否| E</span>
-<span class="w">        </span><span class="n">N</span><span class="w"> </span><span class="c1">--&gt;|是| O[最終模型]</span>
-<span class="w">    </span><span class="k">end</span>
+    subgraph 訓練流程
+        J --&gt; K[損失計算]
+        K --&gt; L[反向傳播]
+        L --&gt; M[優化器更新]
+        M --&gt; N{收斂?}
+        N --&gt;|否| E
+        N --&gt;|是| O[最終模型]
+    end
 
-<span class="w">    </span><span class="n">subgraph</span><span class="w"> </span><span class="n">評估</span>
-<span class="w">        </span><span class="n">O</span><span class="w"> </span><span class="c1">--&gt; P[測試集評估]</span>
-<span class="w">        </span><span class="n">P</span><span class="w"> </span><span class="c1">--&gt; Q[混淆矩陣]</span>
-<span class="w">        </span><span class="n">P</span><span class="w"> </span><span class="c1">--&gt; R[準確率指標]</span>
-<span class="w">    </span><span class="k">end</span>
+    subgraph 評估
+        O --&gt; P[測試集評估]
+        P --&gt; Q[混淆矩陣]
+        P --&gt; R[準確率指標]
+    end
 
-<span class="w">    </span><span class="n">style</span><span class="w"> </span><span class="n">E</span><span class="w"> </span><span class="nl">fill</span><span class="p">:</span><span class="n">#FFE4B5</span>
-<span class="w">    </span><span class="n">style</span><span class="w"> </span><span class="n">F</span><span class="w"> </span><span class="nl">fill</span><span class="p">:</span><span class="n">#FFE4B5</span>
-<span class="w">    </span><span class="n">style</span><span class="w"> </span><span class="n">G</span><span class="w"> </span><span class="nl">fill</span><span class="p">:</span><span class="n">#FFE4B5</span>
-<span class="w">    </span><span class="n">style</span><span class="w"> </span><span class="n">I</span><span class="w"> </span><span class="nl">fill</span><span class="p">:</span><span class="n">#87CEEB</span>
-<span class="w">    </span><span class="n">style</span><span class="w"> </span><span class="n">J</span><span class="w"> </span><span class="nl">fill</span><span class="p">:</span><span class="n">#90EE90</span>
-<span class="w">    </span><span class="n">style</span><span class="w"> </span><span class="n">K</span><span class="w"> </span><span class="nl">fill</span><span class="p">:</span><span class="n">#FFB6C1</span>
-<span class="w">    </span><span class="n">style</span><span class="w"> </span><span class="n">L</span><span class="w"> </span><span class="nl">fill</span><span class="p">:</span><span class="n">#FFB6C1</span>
-</code></pre></div>
-
+    style E fill:#FFE4B5
+    style F fill:#FFE4B5
+    style G fill:#FFE4B5
+    style I fill:#87CEEB
+    style J fill:#90EE90
+    style K fill:#FFB6C1
+    style L fill:#FFB6C1
+</div>
 <hr />
 <h2>互動式 CNN 視覺化工具：CNN Explainer</h2>
 <p>為了更直觀地理解 CNN 的內部運作機制，強烈推薦使用 <strong>CNN Explainer</strong> 這個互動式網頁工具。它能讓你動手操作，觀察每個層的變化。</p>
@@ -1399,32 +1398,32 @@ CIFAR-10 資料集資訊
 </tr>
 </tbody>
 </table>
-<div class="codehilite"><pre><span></span><code><span class="nf">graph</span><span class="w"> </span><span class="n">LR</span>
-<span class="w">    </span><span class="n">subgraph</span><span class="w"> </span><span class="n">Keras優勢</span>
-<span class="w">        </span><span class="n">A1</span><span class="p">[</span><span class="err">簡潔語法</span><span class="p">]</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">A2</span><span class="p">[</span><span class="err">快速原型</span><span class="p">]</span>
-<span class="w">        </span><span class="n">A3</span><span class="p">[</span><span class="err">豐富文件</span><span class="p">]</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">A2</span>
-<span class="w">        </span><span class="n">A4</span><span class="p">[</span><span class="err">易於部署</span><span class="p">]</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">A5</span><span class="p">[</span><span class="err">生產環境</span><span class="p">]</span>
-<span class="w">    </span><span class="kd">end</span>
+<div class="mermaid">
+graph LR
+    subgraph Keras優勢
+        A1[簡潔語法] --&gt; A2[快速原型]
+        A3[豐富文件] --&gt; A2
+        A4[易於部署] --&gt; A5[生產環境]
+    end
 
-<span class="w">    </span><span class="n">subgraph</span><span class="w"> </span><span class="n">PyTorch優勢</span>
-<span class="w">        </span><span class="n">B1</span><span class="p">[</span><span class="err">靈活架構</span><span class="p">]</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">B2</span><span class="p">[</span><span class="err">研究專案</span><span class="p">]</span>
-<span class="w">        </span><span class="n">B3</span><span class="p">[</span><span class="err">易於除錯</span><span class="p">]</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">B2</span>
-<span class="w">        </span><span class="n">B4</span><span class="p">[</span><span class="err">動態圖</span><span class="p">]</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">B5</span><span class="p">[</span><span class="err">複雜模型</span><span class="p">]</span>
-<span class="w">    </span><span class="kd">end</span>
+    subgraph PyTorch優勢
+        B1[靈活架構] --&gt; B2[研究專案]
+        B3[易於除錯] --&gt; B2
+        B4[動態圖] --&gt; B5[複雜模型]
+    end
 
-<span class="w">    </span><span class="n">A2</span><span class="w"> </span><span class="o">-</span><span class="p">.</span><span class="err">選擇</span><span class="p">.</span><span class="o">-&gt;</span><span class="w"> </span><span class="n">C</span><span class="p">{</span><span class="err">專案需求</span><span class="p">}</span>
-<span class="w">    </span><span class="n">B2</span><span class="w"> </span><span class="o">-</span><span class="p">.</span><span class="err">選擇</span><span class="p">.</span><span class="o">-&gt;</span><span class="w"> </span><span class="n">C</span>
+    A2 -.選擇.-&gt; C{專案需求}
+    B2 -.選擇.-&gt; C
+    
+    C --&gt;|快速開發| Keras
+    C --&gt;|深入研究| PyTorch
+    C --&gt;|生產部署| Keras
+    C --&gt;|學術論文| PyTorch
 
-<span class="w">    </span><span class="n">C</span><span class="w"> </span><span class="o">--&gt;|</span><span class="err">快速開發</span><span class="o">|</span><span class="w"> </span><span class="n">Keras</span>
-<span class="w">    </span><span class="n">C</span><span class="w"> </span><span class="o">--&gt;|</span><span class="err">深入研究</span><span class="o">|</span><span class="w"> </span><span class="n">PyTorch</span>
-<span class="w">    </span><span class="n">C</span><span class="w"> </span><span class="o">--&gt;|</span><span class="err">生產部署</span><span class="o">|</span><span class="w"> </span><span class="n">Keras</span>
-<span class="w">    </span><span class="n">C</span><span class="w"> </span><span class="o">--&gt;|</span><span class="err">學術論文</span><span class="o">|</span><span class="w"> </span><span class="n">PyTorch</span>
-
-<span class="w">    </span><span class="n">style</span><span class="w"> </span><span class="n">A2</span><span class="w"> </span><span class="n">fill</span><span class="o">:</span><span class="err">#</span><span class="mi">90</span><span class="n">EE90</span>
-<span class="w">    </span><span class="n">style</span><span class="w"> </span><span class="n">B2</span><span class="w"> </span><span class="n">fill</span><span class="o">:</span><span class="err">#</span><span class="mi">87</span><span class="n">CEEB</span>
-<span class="w">    </span><span class="n">style</span><span class="w"> </span><span class="n">C</span><span class="w"> </span><span class="n">fill</span><span class="o">:</span><span class="err">#</span><span class="n">FFE4B5</span>
-</code></pre></div>
-
+    style A2 fill:#90EE90
+    style B2 fill:#87CEEB
+    style C fill:#FFE4B5
+</div>
 <h4>程式碼風格對比</h4>
 <p><strong>範例 1: 建立簡單模型</strong></p>
 <div class="codehilite"><pre><span></span><code><span class="c1"># ============ Keras 風格 ============</span>
@@ -1729,24 +1728,24 @@ python<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;i
 <h2>第二部分：MNIST + LeNet-5 (Keras)</h2>
 <p>本部分將實作經典的 <strong>LeNet-5</strong> 架構，這是 1998 年 Yann LeCun 等人發表的開創性 CNN 模型。</p>
 <h3>LeNet-5 架構圖解</h3>
-<div class="codehilite"><pre><span></span><code><span class="nf">graph</span><span class="w"> </span><span class="n">LR</span>
-<span class="w">    </span><span class="n">Input</span><span class="p">[</span><span class="err">輸入影像</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="mi">32</span><span class="err">×</span><span class="mi">32</span><span class="err">×</span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">C1</span><span class="p">[</span><span class="n">C1</span><span class="o">:</span><span class="w"> </span><span class="err">卷積層</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="mi">6</span><span class="w"> </span><span class="n">filters</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="err">×</span><span class="mi">5</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="err">→</span><span class="w"> </span><span class="mi">28</span><span class="err">×</span><span class="mi">28</span><span class="err">×</span><span class="mi">6</span><span class="p">]</span>
-<span class="w">    </span><span class="n">C1</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">S2</span><span class="p">[</span><span class="n">S2</span><span class="o">:</span><span class="w"> </span><span class="err">平均池化</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="mi">2</span><span class="err">×</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="n">stride</span><span class="o">=</span><span class="mi">2</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="err">→</span><span class="w"> </span><span class="mi">14</span><span class="err">×</span><span class="mi">14</span><span class="err">×</span><span class="mi">6</span><span class="p">]</span>
-<span class="w">    </span><span class="n">S2</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">C3</span><span class="p">[</span><span class="n">C3</span><span class="o">:</span><span class="w"> </span><span class="err">卷積層</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="mi">16</span><span class="w"> </span><span class="n">filters</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="err">×</span><span class="mi">5</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="err">→</span><span class="w"> </span><span class="mi">10</span><span class="err">×</span><span class="mi">10</span><span class="err">×</span><span class="mi">16</span><span class="p">]</span>
-<span class="w">    </span><span class="n">C3</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">S4</span><span class="p">[</span><span class="n">S4</span><span class="o">:</span><span class="w"> </span><span class="err">平均池化</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="mi">2</span><span class="err">×</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="n">stride</span><span class="o">=</span><span class="mi">2</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="err">→</span><span class="w"> </span><span class="mi">5</span><span class="err">×</span><span class="mi">5</span><span class="err">×</span><span class="mi">16</span><span class="p">]</span>
-<span class="w">    </span><span class="n">S4</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">F</span><span class="p">[</span><span class="n">Flatten</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="err">→</span><span class="w"> </span><span class="mi">400</span><span class="p">]</span>
-<span class="w">    </span><span class="n">F</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">C5</span><span class="p">[</span><span class="n">C5</span><span class="o">:</span><span class="w"> </span><span class="err">全連接</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="err">→</span><span class="w"> </span><span class="mi">120</span><span class="p">]</span>
-<span class="w">    </span><span class="n">C5</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">F6</span><span class="p">[</span><span class="n">F6</span><span class="o">:</span><span class="w"> </span><span class="err">全連接</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="err">→</span><span class="w"> </span><span class="mi">84</span><span class="p">]</span>
-<span class="w">    </span><span class="n">F6</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="kr">Output</span><span class="p">[</span><span class="err">輸出層</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="err">→</span><span class="w"> </span><span class="mi">10</span><span class="w"> </span><span class="n">classes</span><span class="p">]</span>
+<div class="mermaid">
+graph LR
+    Input[輸入影像&lt;br/&gt;32×32×1] --&gt; C1[C1: 卷積層&lt;br/&gt;6 filters, 5×5&lt;br/&gt;→ 28×28×6]
+    C1 --&gt; S2[S2: 平均池化&lt;br/&gt;2×2, stride=2&lt;br/&gt;→ 14×14×6]
+    S2 --&gt; C3[C3: 卷積層&lt;br/&gt;16 filters, 5×5&lt;br/&gt;→ 10×10×16]
+    C3 --&gt; S4[S4: 平均池化&lt;br/&gt;2×2, stride=2&lt;br/&gt;→ 5×5×16]
+    S4 --&gt; F[Flatten&lt;br/&gt;→ 400]
+    F --&gt; C5[C5: 全連接&lt;br/&gt;→ 120]
+    C5 --&gt; F6[F6: 全連接&lt;br/&gt;→ 84]
+    F6 --&gt; Output[輸出層&lt;br/&gt;→ 10 classes]
 
-<span class="w">    </span><span class="n">style</span><span class="w"> </span><span class="n">Input</span><span class="w"> </span><span class="n">fill</span><span class="o">:</span><span class="err">#</span><span class="mi">90</span><span class="n">EE90</span>
-<span class="w">    </span><span class="n">style</span><span class="w"> </span><span class="n">C1</span><span class="w"> </span><span class="n">fill</span><span class="o">:</span><span class="err">#</span><span class="n">FFE4B5</span>
-<span class="w">    </span><span class="n">style</span><span class="w"> </span><span class="n">C3</span><span class="w"> </span><span class="n">fill</span><span class="o">:</span><span class="err">#</span><span class="n">FFE4B5</span>
-<span class="w">    </span><span class="n">style</span><span class="w"> </span><span class="n">S2</span><span class="w"> </span><span class="n">fill</span><span class="o">:</span><span class="err">#</span><span class="mi">87</span><span class="n">CEEB</span>
-<span class="w">    </span><span class="n">style</span><span class="w"> </span><span class="n">S4</span><span class="w"> </span><span class="n">fill</span><span class="o">:</span><span class="err">#</span><span class="mi">87</span><span class="n">CEEB</span>
-<span class="w">    </span><span class="n">style</span><span class="w"> </span><span class="kr">Output</span><span class="w"> </span><span class="n">fill</span><span class="o">:</span><span class="err">#</span><span class="n">FFD700</span>
-</code></pre></div>
-
+    style Input fill:#90EE90
+    style C1 fill:#FFE4B5
+    style C3 fill:#FFE4B5
+    style S2 fill:#87CEEB
+    style S4 fill:#87CEEB
+    style Output fill:#FFD700
+</div>
 <h3>完整 Colab Notebook 程式碼</h3>
 <p>以下程式碼可直接複製到 Colab 執行：</p>
 <div class="codehilite"><pre><span></span><code><span class="c1"># ============================================</span>

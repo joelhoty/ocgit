@@ -19,7 +19,7 @@
                     margin: 0 auto;
                     padding: 20px;
                 }
-                /* 提升代码块对比度 */
+                /* 提升代碼塊對比度 */
                 pre {
                     background: #1e1e1e !important;
                     border: 1px solid #3e3e3e;
@@ -30,13 +30,12 @@
                 code {
                     background: #2d2d2d !important;
                 }
-                /* 引用块对比度 */
+                /* 引用塊對比度 */
                 blockquote {
                     background: #2d2d2d;
                     border-left: 4px solid #4a9eff;
                 }
-            
-        
+                    
         /* 通用代碼塊樣式 */
         pre code {
             display: block;
@@ -66,7 +65,7 @@
             body {
                 padding: 10px;
             }
-            .container, .markdown-body, .latex-body, .window-body, .nes-container {
+            .container, .markdown-body, .latex-body, .window-body, .nes-container { # Added .nes-container here
                 padding: 15px;
             }
             pre code {
@@ -172,35 +171,35 @@
 
 <h3>SimpleCNN 架構設計</h3>
 <p>我們將實作一個比 LeNet-5 更現代化的 CNN 架構：</p>
-<div class="codehilite"><pre><span></span><code><span class="nf">graph</span><span class="w"> </span><span class="n">LR</span>
-<span class="w">    </span><span class="n">Input</span><span class="p">[</span><span class="err">輸入</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="mi">28</span><span class="err">×</span><span class="mi">28</span><span class="err">×</span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">Conv1</span><span class="p">[</span><span class="n">Conv1</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="mi">32</span><span class="w"> </span><span class="n">filters</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="err">×</span><span class="mi">3</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="n">ReLU</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="err">→</span><span class="w"> </span><span class="mi">28</span><span class="err">×</span><span class="mi">28</span><span class="err">×</span><span class="mi">32</span><span class="p">]</span>
-<span class="w">    </span><span class="n">Conv1</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">Conv2</span><span class="p">[</span><span class="n">Conv2</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="mi">32</span><span class="w"> </span><span class="n">filters</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="err">×</span><span class="mi">3</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="n">ReLU</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="err">→</span><span class="w"> </span><span class="mi">28</span><span class="err">×</span><span class="mi">28</span><span class="err">×</span><span class="mi">32</span><span class="p">]</span>
-<span class="w">    </span><span class="n">Conv2</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">Pool1</span><span class="p">[</span><span class="n">MaxPool</span><span class="w"> </span><span class="mi">2</span><span class="err">×</span><span class="mi">2</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="err">→</span><span class="w"> </span><span class="mi">14</span><span class="err">×</span><span class="mi">14</span><span class="err">×</span><span class="mi">32</span><span class="p">]</span>
-<span class="w">    </span><span class="n">Pool1</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">Drop1</span><span class="p">[</span><span class="n">Dropout</span><span class="w"> </span><span class="mf">0.25</span><span class="p">]</span>
+<div class="mermaid">
+graph LR
+    Input[輸入&lt;br/&gt;28×28×1] --&gt; Conv1[Conv1&lt;br/&gt;32 filters, 3×3&lt;br/&gt;ReLU&lt;br/&gt;→ 28×28×32]
+    Conv1 --&gt; Conv2[Conv2&lt;br/&gt;32 filters, 3×3&lt;br/&gt;ReLU&lt;br/&gt;→ 28×28×32]
+    Conv2 --&gt; Pool1[MaxPool 2×2&lt;br/&gt;→ 14×14×32]
+    Pool1 --&gt; Drop1[Dropout 0.25]
 
-<span class="w">    </span><span class="n">Drop1</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">Conv3</span><span class="p">[</span><span class="n">Conv3</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="mi">64</span><span class="w"> </span><span class="n">filters</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="err">×</span><span class="mi">3</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="n">ReLU</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="err">→</span><span class="w"> </span><span class="mi">14</span><span class="err">×</span><span class="mi">14</span><span class="err">×</span><span class="mi">64</span><span class="p">]</span>
-<span class="w">    </span><span class="n">Conv3</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">Conv4</span><span class="p">[</span><span class="n">Conv4</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="mi">64</span><span class="w"> </span><span class="n">filters</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="err">×</span><span class="mi">3</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="n">ReLU</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="err">→</span><span class="w"> </span><span class="mi">14</span><span class="err">×</span><span class="mi">14</span><span class="err">×</span><span class="mi">64</span><span class="p">]</span>
-<span class="w">    </span><span class="n">Conv4</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">Pool2</span><span class="p">[</span><span class="n">MaxPool</span><span class="w"> </span><span class="mi">2</span><span class="err">×</span><span class="mi">2</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="err">→</span><span class="w"> </span><span class="mi">7</span><span class="err">×</span><span class="mi">7</span><span class="err">×</span><span class="mi">64</span><span class="p">]</span>
-<span class="w">    </span><span class="n">Pool2</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">Drop2</span><span class="p">[</span><span class="n">Dropout</span><span class="w"> </span><span class="mf">0.25</span><span class="p">]</span>
+    Drop1 --&gt; Conv3[Conv3&lt;br/&gt;64 filters, 3×3&lt;br/&gt;ReLU&lt;br/&gt;→ 14×14×64]
+    Conv3 --&gt; Conv4[Conv4&lt;br/&gt;64 filters, 3×3&lt;br/&gt;ReLU&lt;br/&gt;→ 14×14×64]
+    Conv4 --&gt; Pool2[MaxPool 2×2&lt;br/&gt;→ 7×7×64]
+    Pool2 --&gt; Drop2[Dropout 0.25]
 
-<span class="w">    </span><span class="n">Drop2</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">Flatten</span><span class="p">[</span><span class="n">Flatten</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="err">→</span><span class="w"> </span><span class="mi">3136</span><span class="p">]</span>
-<span class="w">    </span><span class="n">Flatten</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">FC1</span><span class="p">[</span><span class="n">FC</span><span class="w"> </span><span class="mi">128</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="n">ReLU</span><span class="p">]</span>
-<span class="w">    </span><span class="n">FC1</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">Drop3</span><span class="p">[</span><span class="n">Dropout</span><span class="w"> </span><span class="mf">0.5</span><span class="p">]</span>
-<span class="w">    </span><span class="n">Drop3</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">FC2</span><span class="p">[</span><span class="n">FC</span><span class="w"> </span><span class="mi">10</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="n">Softmax</span><span class="p">]</span>
+    Drop2 --&gt; Flatten[Flatten&lt;br/&gt;→ 3136]
+    Flatten --&gt; FC1[FC 128&lt;br/&gt;ReLU]
+    FC1 --&gt; Drop3[Dropout 0.5]
+    Drop3 --&gt; FC2[FC 10&lt;br/&gt;Softmax]
 
-<span class="w">    </span><span class="n">style</span><span class="w"> </span><span class="n">Input</span><span class="w"> </span><span class="n">fill</span><span class="o">:</span><span class="err">#</span><span class="mi">90</span><span class="n">EE90</span>
-<span class="w">    </span><span class="n">style</span><span class="w"> </span><span class="n">Conv1</span><span class="w"> </span><span class="n">fill</span><span class="o">:</span><span class="err">#</span><span class="n">FFE4B5</span>
-<span class="w">    </span><span class="n">style</span><span class="w"> </span><span class="n">Conv2</span><span class="w"> </span><span class="n">fill</span><span class="o">:</span><span class="err">#</span><span class="n">FFE4B5</span>
-<span class="w">    </span><span class="n">style</span><span class="w"> </span><span class="n">Conv3</span><span class="w"> </span><span class="n">fill</span><span class="o">:</span><span class="err">#</span><span class="n">FFE4B5</span>
-<span class="w">    </span><span class="n">style</span><span class="w"> </span><span class="n">Conv4</span><span class="w"> </span><span class="n">fill</span><span class="o">:</span><span class="err">#</span><span class="n">FFE4B5</span>
-<span class="w">    </span><span class="n">style</span><span class="w"> </span><span class="n">Pool1</span><span class="w"> </span><span class="n">fill</span><span class="o">:</span><span class="err">#</span><span class="mi">87</span><span class="n">CEEB</span>
-<span class="w">    </span><span class="n">style</span><span class="w"> </span><span class="n">Pool2</span><span class="w"> </span><span class="n">fill</span><span class="o">:</span><span class="err">#</span><span class="mi">87</span><span class="n">CEEB</span>
-<span class="w">    </span><span class="n">style</span><span class="w"> </span><span class="n">Drop1</span><span class="w"> </span><span class="n">fill</span><span class="o">:</span><span class="err">#</span><span class="n">FFB6C1</span>
-<span class="w">    </span><span class="n">style</span><span class="w"> </span><span class="n">Drop2</span><span class="w"> </span><span class="n">fill</span><span class="o">:</span><span class="err">#</span><span class="n">FFB6C1</span>
-<span class="w">    </span><span class="n">style</span><span class="w"> </span><span class="n">Drop3</span><span class="w"> </span><span class="n">fill</span><span class="o">:</span><span class="err">#</span><span class="n">FFB6C1</span>
-<span class="w">    </span><span class="n">style</span><span class="w"> </span><span class="n">FC2</span><span class="w"> </span><span class="n">fill</span><span class="o">:</span><span class="err">#</span><span class="n">FFD700</span>
-</code></pre></div>
-
+    style Input fill:#90EE90
+    style Conv1 fill:#FFE4B5
+    style Conv2 fill:#FFE4B5
+    style Conv3 fill:#FFE4B5
+    style Conv4 fill:#FFE4B5
+    style Pool1 fill:#87CEEB
+    style Pool2 fill:#87CEEB
+    style Drop1 fill:#FFB6C1
+    style Drop2 fill:#FFB6C1
+    style Drop3 fill:#FFB6C1
+    style FC2 fill:#FFD700
+</div>
 <p><strong>架構特色</strong>：</p>
 <table>
 <thead>

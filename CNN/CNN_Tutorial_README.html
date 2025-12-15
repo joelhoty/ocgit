@@ -19,7 +19,7 @@
                     margin: 0 auto;
                     padding: 20px;
                 }
-                /* 提升代码块对比度 */
+                /* 提升代碼塊對比度 */
                 pre {
                     background: #1e1e1e !important;
                     border: 1px solid #3e3e3e;
@@ -30,13 +30,12 @@
                 code {
                     background: #2d2d2d !important;
                 }
-                /* 引用块对比度 */
+                /* 引用塊對比度 */
                 blockquote {
                     background: #2d2d2d;
                     border-left: 4px solid #4a9eff;
                 }
-            
-        
+                    
         /* 通用代碼塊樣式 */
         pre code {
             display: block;
@@ -66,7 +65,7 @@
             body {
                 padding: 10px;
             }
-            .container, .markdown-body, .latex-body, .window-body, .nes-container {
+            .container, .markdown-body, .latex-body, .window-body, .nes-container { # Added .nes-container here
                 padding: 15px;
             }
             pre code {
@@ -387,39 +386,39 @@ Week 3-4: Part 4 理論總結 + 進階主題
 
 <hr />
 <h2>📊 完整內容地圖</h2>
-<div class="codehilite"><pre><span></span><code><span class="nx">graph</span><span class="w"> </span><span class="nx">TB</span>
-<span class="w">    </span><span class="nx">Start</span><span class="p">([</span><span class="nx">開始</span><span class="w"> </span><span class="nx">CNN</span><span class="w"> </span><span class="nx">學習</span><span class="p">])</span>
+<div class="mermaid">
+graph TB
+    Start([開始 CNN 學習])
 
-<span class="w">    </span><span class="nx">Start</span><span class="w"> </span><span class="o">--</span><span class="p">&gt;</span><span class="w"> </span><span class="nx">Part1</span><span class="p">[</span><span class="nx">Part</span><span class="w"> </span><span class="mi">1</span><span class="p">:</span><span class="w"> </span><span class="nx">基礎</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nx">Keras</span><span class="p">&lt;</span><span class="nx">br</span><span class="o">/</span><span class="p">&gt;</span><span class="nx">CNN_intro_b07</span><span class="p">.</span><span class="nx">md</span><span class="p">]</span>
-<span class="w">    </span><span class="nx">Part1</span><span class="w"> </span><span class="o">--</span><span class="p">&gt;</span><span class="w"> </span><span class="nx">P1_1</span><span class="p">[</span><span class="nx">第零部分</span><span class="p">:</span><span class="w"> </span><span class="nx">基礎知識</span><span class="p">]</span>
-<span class="w">    </span><span class="nx">Part1</span><span class="w"> </span><span class="o">--</span><span class="p">&gt;</span><span class="w"> </span><span class="nx">P1_2</span><span class="p">[</span><span class="nx">第一部分</span><span class="p">:</span><span class="w"> </span><span class="nx">Colab</span><span class="w"> </span><span class="nx">設置</span><span class="p">]</span>
-<span class="w">    </span><span class="nx">Part1</span><span class="w"> </span><span class="o">--</span><span class="p">&gt;</span><span class="w"> </span><span class="nx">P1_3</span><span class="p">[</span><span class="nx">第二部分</span><span class="p">:</span><span class="w"> </span><span class="nx">LeNet</span><span class="o">-</span><span class="mi">5</span><span class="p">]</span>
+    Start --&gt; Part1[Part 1: 基礎 + Keras&lt;br/&gt;CNN_intro_b07.html]
+    Part1 --&gt; P1_1[第零部分: 基礎知識]
+    Part1 --&gt; P1_2[第一部分: Colab 設置]
+    Part1 --&gt; P1_3[第二部分: LeNet-5]
 
-<span class="w">    </span><span class="nx">P1_3</span><span class="w"> </span><span class="o">--</span><span class="p">&gt;</span><span class="w"> </span><span class="nx">Part2</span><span class="p">[</span><span class="nx">Part</span><span class="w"> </span><span class="mi">2</span><span class="p">:</span><span class="w"> </span><span class="nx">PyTorch</span><span class="w"> </span><span class="nx">實戰</span><span class="p">&lt;</span><span class="nx">br</span><span class="o">/</span><span class="p">&gt;</span><span class="nx">CNN_intro_b07_part2</span><span class="p">.</span><span class="nx">md</span><span class="p">]</span>
-<span class="w">    </span><span class="nx">Part2</span><span class="w"> </span><span class="o">--</span><span class="p">&gt;</span><span class="w"> </span><span class="nx">P2_1</span><span class="p">[</span><span class="nx">第三部分</span><span class="p">:</span><span class="w"> </span><span class="nx">SimpleCNN</span><span class="p">]</span>
-<span class="w">    </span><span class="nx">Part2</span><span class="w"> </span><span class="o">--</span><span class="p">&gt;</span><span class="w"> </span><span class="nx">P2_2</span><span class="p">[</span><span class="nx">PyTorch</span><span class="w"> </span><span class="nx">核心概念</span><span class="p">]</span>
-<span class="w">    </span><span class="nx">Part2</span><span class="w"> </span><span class="o">--</span><span class="p">&gt;</span><span class="w"> </span><span class="nx">P2_3</span><span class="p">[</span><span class="nx">程式碼深度解析</span><span class="p">]</span>
+    P1_3 --&gt; Part2[Part 2: PyTorch 實戰&lt;br/&gt;CNN_intro_b07_part2.html]
+    Part2 --&gt; P2_1[第三部分: SimpleCNN]
+    Part2 --&gt; P2_2[PyTorch 核心概念]
+    Part2 --&gt; P2_3[程式碼深度解析]
 
-<span class="w">    </span><span class="nx">P2_3</span><span class="w"> </span><span class="o">--</span><span class="p">&gt;</span><span class="w"> </span><span class="nx">Part3</span><span class="p">[</span><span class="nx">Part</span><span class="w"> </span><span class="mi">3</span><span class="p">:</span><span class="w"> </span><span class="nx">CIFAR</span><span class="o">-</span><span class="mi">10</span><span class="p">&lt;</span><span class="nx">br</span><span class="o">/</span><span class="p">&gt;</span><span class="nx">CNN_intro_b07_part3</span><span class="p">.</span><span class="nx">md</span><span class="p">]</span>
-<span class="w">    </span><span class="nx">Part3</span><span class="w"> </span><span class="o">--</span><span class="p">&gt;</span><span class="w"> </span><span class="nx">P3_1</span><span class="p">[</span><span class="nx">第四部分</span><span class="p">:</span><span class="w"> </span><span class="nx">進階實戰</span><span class="p">]</span>
-<span class="w">    </span><span class="nx">Part3</span><span class="w"> </span><span class="o">--</span><span class="p">&gt;</span><span class="w"> </span><span class="nx">P3_2</span><span class="p">[</span><span class="nx">資料增強技術</span><span class="p">]</span>
-<span class="w">    </span><span class="nx">Part3</span><span class="w"> </span><span class="o">--</span><span class="p">&gt;</span><span class="w"> </span><span class="nx">P3_3</span><span class="p">[</span><span class="nx">DeepCIFAR</span><span class="w"> </span><span class="nx">架構</span><span class="p">]</span>
+    P2_3 --&gt; Part3[Part 3: CIFAR-10&lt;br/&gt;CNN_intro_b07_part3.html]
+    Part3 --&gt; P3_1[第四部分: 進階實戰]
+    Part3 --&gt; P3_2[資料增強技術]
+    Part3 --&gt; P3_3[DeepCIFAR 架構]
 
-<span class="w">    </span><span class="nx">P3_3</span><span class="w"> </span><span class="o">--</span><span class="p">&gt;</span><span class="w"> </span><span class="nx">Part4</span><span class="p">[</span><span class="nx">Part</span><span class="w"> </span><span class="mi">4</span><span class="p">:</span><span class="w"> </span><span class="nx">技巧</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nx">總結</span><span class="p">&lt;</span><span class="nx">br</span><span class="o">/</span><span class="p">&gt;</span><span class="nx">CNN_intro_b07_part4</span><span class="p">.</span><span class="nx">md</span><span class="p">]</span>
-<span class="w">    </span><span class="nx">Part4</span><span class="w"> </span><span class="o">--</span><span class="p">&gt;</span><span class="w"> </span><span class="nx">P4_1</span><span class="p">[</span><span class="nx">第五部分</span><span class="p">:</span><span class="w"> </span><span class="nx">疑難排解</span><span class="p">]</span>
-<span class="w">    </span><span class="nx">Part4</span><span class="w"> </span><span class="o">--</span><span class="p">&gt;</span><span class="w"> </span><span class="nx">P4_2</span><span class="p">[</span><span class="nx">CNN</span><span class="w"> </span><span class="nx">理論總結</span><span class="p">]</span>
-<span class="w">    </span><span class="nx">Part4</span><span class="w"> </span><span class="o">--</span><span class="p">&gt;</span><span class="w"> </span><span class="nx">P4_3</span><span class="p">[</span><span class="nx">進階主題導覽</span><span class="p">]</span>
+    P3_3 --&gt; Part4[Part 4: 技巧 + 總結&lt;br/&gt;CNN_intro_b07_part4.html]
+    Part4 --&gt; P4_1[第五部分: 疑難排解]
+    Part4 --&gt; P4_2[CNN 理論總結]
+    Part4 --&gt; P4_3[進階主題導覽]
 
-<span class="w">    </span><span class="nx">P4_3</span><span class="w"> </span><span class="o">--</span><span class="p">&gt;</span><span class="w"> </span><span class="nx">End</span><span class="p">([</span><span class="nx">CNN</span><span class="w"> </span><span class="nx">專家</span><span class="p">])</span>
+    P4_3 --&gt; End([CNN 專家])
 
-<span class="w">    </span><span class="nx">style</span><span class="w"> </span><span class="nx">Start</span><span class="w"> </span><span class="nx">fill</span><span class="p">:</span><span class="err">#</span><span class="mi">90</span><span class="nx">EE90</span>
-<span class="w">    </span><span class="nx">style</span><span class="w"> </span><span class="nx">Part1</span><span class="w"> </span><span class="nx">fill</span><span class="p">:</span><span class="err">#</span><span class="nx">FFE4B5</span>
-<span class="w">    </span><span class="nx">style</span><span class="w"> </span><span class="nx">Part2</span><span class="w"> </span><span class="nx">fill</span><span class="p">:</span><span class="err">#</span><span class="mi">87</span><span class="nx">CEEB</span>
-<span class="w">    </span><span class="nx">style</span><span class="w"> </span><span class="nx">Part3</span><span class="w"> </span><span class="nx">fill</span><span class="p">:</span><span class="err">#</span><span class="nx">DDA0DD</span>
-<span class="w">    </span><span class="nx">style</span><span class="w"> </span><span class="nx">Part4</span><span class="w"> </span><span class="nx">fill</span><span class="p">:</span><span class="err">#</span><span class="nx">FFD700</span>
-<span class="w">    </span><span class="nx">style</span><span class="w"> </span><span class="nx">End</span><span class="w"> </span><span class="nx">fill</span><span class="p">:</span><span class="err">#</span><span class="nx">FFD700</span>
-</code></pre></div>
-
+    style Start fill:#90EE90
+    style Part1 fill:#FFE4B5
+    style Part2 fill:#87CEEB
+    style Part3 fill:#DDA0DD
+    style Part4 fill:#FFD700
+    style End fill:#FFD700
+</div>
 <hr />
 <h2>🔍 快速查找指南</h2>
 <h3>我想學習...</h3>
@@ -433,6 +432,8 @@ Week 3-4: Part 4 理論總結 + 進階主題
 </thead>
 <tbody>
 <tr>
+<td><strong>CNN 基本概念</strong></td>
+<td>Part 1 - 第零部分</td>
 <td><code>CNN_intro_b07.html</code></td>
 </tr>
 <tr>

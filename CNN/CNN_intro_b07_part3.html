@@ -19,7 +19,7 @@
                     margin: 0 auto;
                     padding: 20px;
                 }
-                /* 提升代码块对比度 */
+                /* 提升代碼塊對比度 */
                 pre {
                     background: #1e1e1e !important;
                     border: 1px solid #3e3e3e;
@@ -30,13 +30,12 @@
                 code {
                     background: #2d2d2d !important;
                 }
-                /* 引用块对比度 */
+                /* 引用塊對比度 */
                 blockquote {
                     background: #2d2d2d;
                     border-left: 4px solid #4a9eff;
                 }
-            
-        
+                    
         /* 通用代碼塊樣式 */
         pre code {
             display: block;
@@ -66,7 +65,7 @@
             body {
                 padding: 10px;
             }
-            .container, .markdown-body, .latex-body, .window-body, .nes-container {
+            .container, .markdown-body, .latex-body, .window-body, .nes-container { # Added .nes-container here
                 padding: 15px;
             }
             pre code {
@@ -155,39 +154,39 @@
 </tbody>
 </table>
 <h4>具體困難範例</h4>
-<div class="codehilite"><pre><span></span><code><span class="nf">graph</span><span class="w"> </span><span class="n">TB</span>
-<span class="w">    </span><span class="n">subgraph</span><span class="w"> </span><span class="n">MNIST困難</span>
-<span class="w">        </span><span class="n">M1</span><span class="p">[</span><span class="err">數字</span><span class="w"> </span><span class="mi">4</span><span class="w"> </span><span class="n">vs</span><span class="w"> </span><span class="mi">9</span><span class="p">]</span>
-<span class="w">        </span><span class="n">M2</span><span class="p">[</span><span class="err">數字</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="n">vs</span><span class="w"> </span><span class="mi">8</span><span class="p">]</span>
-<span class="w">        </span><span class="n">M3</span><span class="p">[</span><span class="err">筆跡粗細</span><span class="p">]</span>
-<span class="w">        </span><span class="n">M4</span><span class="p">[</span><span class="err">輕微旋轉</span><span class="p">]</span>
-<span class="w">    </span><span class="kd">end</span>
+<div class="mermaid">
+graph TB
+    subgraph MNIST困難
+        M1[數字 4 vs 9]
+        M2[數字 3 vs 8]
+        M3[筆跡粗細]
+        M4[輕微旋轉]
+    end
 
-<span class="w">    </span><span class="n">subgraph</span><span class="w"> </span><span class="n">CIFAR</span><span class="o">-</span><span class="mi">10</span><span class="err">困難</span>
-<span class="w">        </span><span class="n">C1</span><span class="p">[</span><span class="err">貓</span><span class="w"> </span><span class="n">vs</span><span class="w"> </span><span class="err">狗</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="err">姿態變化</span><span class="p">]</span>
-<span class="w">        </span><span class="n">C2</span><span class="p">[</span><span class="err">汽車</span><span class="w"> </span><span class="n">vs</span><span class="w"> </span><span class="err">卡車</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="err">視角差異</span><span class="p">]</span>
-<span class="w">        </span><span class="n">C3</span><span class="p">[</span><span class="err">背景干擾</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="err">草地、道路</span><span class="p">]</span>
-<span class="w">        </span><span class="n">C4</span><span class="p">[</span><span class="err">光照變化</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="err">白天、夜晚</span><span class="p">]</span>
-<span class="w">        </span><span class="n">C5</span><span class="p">[</span><span class="err">遮擋問題</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="err">部分可見</span><span class="p">]</span>
-<span class="w">        </span><span class="n">C6</span><span class="p">[</span><span class="err">尺度變化</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="err">遠近不同</span><span class="p">]</span>
-<span class="w">    </span><span class="kd">end</span>
+    subgraph CIFAR-10困難
+        C1[貓 vs 狗&lt;br/&gt;姿態變化]
+        C2[汽車 vs 卡車&lt;br/&gt;視角差異]
+        C3[背景干擾&lt;br/&gt;草地、道路]
+        C4[光照變化&lt;br/&gt;白天、夜晚]
+        C5[遮擋問題&lt;br/&gt;部分可見]
+        C6[尺度變化&lt;br/&gt;遠近不同]
+    end
 
-<span class="w">    </span><span class="n">M1</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">Difficulty1</span><span class="p">[</span><span class="err">★★☆☆☆</span><span class="p">]</span>
-<span class="w">    </span><span class="n">M2</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">Difficulty1</span>
-<span class="w">    </span><span class="n">M3</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">Difficulty1</span>
-<span class="w">    </span><span class="n">M4</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">Difficulty1</span>
+    M1 --&gt; Difficulty1[★★☆☆☆]
+    M2 --&gt; Difficulty1
+    M3 --&gt; Difficulty1
+    M4 --&gt; Difficulty1
 
-<span class="w">    </span><span class="n">C1</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">Difficulty2</span><span class="p">[</span><span class="err">★★★★★</span><span class="p">]</span>
-<span class="w">    </span><span class="n">C2</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">Difficulty2</span>
-<span class="w">    </span><span class="n">C3</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">Difficulty2</span>
-<span class="w">    </span><span class="n">C4</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">Difficulty2</span>
-<span class="w">    </span><span class="n">C5</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">Difficulty2</span>
-<span class="w">    </span><span class="n">C6</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">Difficulty2</span>
+    C1 --&gt; Difficulty2[★★★★★]
+    C2 --&gt; Difficulty2
+    C3 --&gt; Difficulty2
+    C4 --&gt; Difficulty2
+    C5 --&gt; Difficulty2
+    C6 --&gt; Difficulty2
 
-<span class="w">    </span><span class="n">style</span><span class="w"> </span><span class="n">Difficulty1</span><span class="w"> </span><span class="n">fill</span><span class="o">:</span><span class="err">#</span><span class="mi">90</span><span class="n">EE90</span>
-<span class="w">    </span><span class="n">style</span><span class="w"> </span><span class="n">Difficulty2</span><span class="w"> </span><span class="n">fill</span><span class="o">:</span><span class="err">#</span><span class="n">FFB6C1</span>
-</code></pre></div>
-
+    style Difficulty1 fill:#90EE90
+    style Difficulty2 fill:#FFB6C1
+</div>
 <h4>為什麼 CIFAR-10 更難？</h4>
 <p><strong>1. 彩色影像的複雜性</strong></p>
 <div class="codehilite"><pre><span></span><code><span class="c1"># MNIST: 單一亮度值</span>
@@ -236,24 +235,24 @@
 </code></pre></div>
 
 <p><strong>解決方案</strong>：透過轉換產生新的訓練樣本</p>
-<div class="codehilite"><pre><span></span><code><span class="nf">graph</span><span class="w"> </span><span class="n">LR</span>
-<span class="w">    </span><span class="n">Original</span><span class="p">[</span><span class="err">原始影像</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="mi">5</span><span class="p">,</span><span class="mo">000</span><span class="w"> </span><span class="err">張</span><span class="o">/</span><span class="err">類</span><span class="p">]</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">Aug1</span><span class="p">[</span><span class="err">水平翻轉</span><span class="p">]</span>
-<span class="w">    </span><span class="n">Original</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">Aug2</span><span class="p">[</span><span class="err">隨機裁剪</span><span class="p">]</span>
-<span class="w">    </span><span class="n">Original</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">Aug3</span><span class="p">[</span><span class="err">顏色抖動</span><span class="p">]</span>
-<span class="w">    </span><span class="n">Original</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">Aug4</span><span class="p">[</span><span class="err">旋轉</span><span class="p">]</span>
+<div class="mermaid">
+graph LR
+    Original[原始影像&lt;br/&gt;5,000 張/類] --&gt; Aug1[水平翻轉]
+    Original --&gt; Aug2[隨機裁剪]
+    Original --&gt; Aug3[顏色抖動]
+    Original --&gt; Aug4[旋轉]
 
-<span class="w">    </span><span class="n">Aug1</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="kr">Virtual</span><span class="p">[</span><span class="err">虛擬樣本</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="mi">50</span><span class="p">,</span><span class="mo">000</span><span class="o">+</span><span class="w"> </span><span class="err">張</span><span class="o">/</span><span class="err">類</span><span class="p">]</span>
-<span class="w">    </span><span class="n">Aug2</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="kr">Virtual</span>
-<span class="w">    </span><span class="n">Aug3</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="kr">Virtual</span>
-<span class="w">    </span><span class="n">Aug4</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="kr">Virtual</span>
+    Aug1 --&gt; Virtual[虛擬樣本&lt;br/&gt;50,000+ 張/類]
+    Aug2 --&gt; Virtual
+    Aug3 --&gt; Virtual
+    Aug4 --&gt; Virtual
 
-<span class="w">    </span><span class="kr">Virtual</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">Better</span><span class="p">[</span><span class="err">更好的泛化能力</span><span class="p">]</span>
+    Virtual --&gt; Better[更好的泛化能力]
 
-<span class="w">    </span><span class="n">style</span><span class="w"> </span><span class="n">Original</span><span class="w"> </span><span class="n">fill</span><span class="o">:</span><span class="err">#</span><span class="n">FFE4B5</span>
-<span class="w">    </span><span class="n">style</span><span class="w"> </span><span class="kr">Virtual</span><span class="w"> </span><span class="n">fill</span><span class="o">:</span><span class="err">#</span><span class="mi">90</span><span class="n">EE90</span>
-<span class="w">    </span><span class="n">style</span><span class="w"> </span><span class="n">Better</span><span class="w"> </span><span class="n">fill</span><span class="o">:</span><span class="err">#</span><span class="n">FFD700</span>
-</code></pre></div>
-
+    style Original fill:#FFE4B5
+    style Virtual fill:#90EE90
+    style Better fill:#FFD700
+</div>
 <h4>常用增強技術</h4>
 <table>
 <thead>
@@ -374,34 +373,34 @@
 <h3>進階 CNN 架構</h3>
 <p>針對 CIFAR-10 的挑戰，我們設計一個更深、更強的 CNN 架構。</p>
 <h4>DeepCIFAR 架構設計</h4>
-<div class="codehilite"><pre><span></span><code><span class="n">graph</span><span class="w"> </span><span class="n">TB</span>
-<span class="w">    </span><span class="n">Input</span><span class="p">[</span><span class="n">輸入</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="mi">32</span><span class="err">×</span><span class="mi">32</span><span class="err">×</span><span class="mi">3</span><span class="p">]</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">Block1</span><span class="p">[</span><span class="n">卷積塊</span><span class="w"> </span><span class="mi">1</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="mi">64</span><span class="w"> </span><span class="n">filters</span><span class="p">]</span>
-<span class="w">    </span><span class="n">Block1</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">Block2</span><span class="p">[</span><span class="n">卷積塊</span><span class="w"> </span><span class="mi">2</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="mi">128</span><span class="w"> </span><span class="n">filters</span><span class="p">]</span>
-<span class="w">    </span><span class="n">Block2</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">Block3</span><span class="p">[</span><span class="n">卷積塊</span><span class="w"> </span><span class="mi">3</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="mi">256</span><span class="w"> </span><span class="n">filters</span><span class="p">]</span>
-<span class="w">    </span><span class="n">Block3</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">Block4</span><span class="p">[</span><span class="n">卷積塊</span><span class="w"> </span><span class="mi">4</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="mi">512</span><span class="w"> </span><span class="n">filters</span><span class="p">]</span>
-<span class="w">    </span><span class="n">Block4</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">GAP</span><span class="p">[</span><span class="n">全局平均池化</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="n">GlobalAveragePooling</span><span class="p">]</span>
-<span class="w">    </span><span class="n">GAP</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">FC</span><span class="p">[</span><span class="n">全連接</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="mi">512</span><span class="w"> </span><span class="err">→</span><span class="w"> </span><span class="mi">10</span><span class="p">]</span>
+<div class="mermaid">
+graph TB
+    Input[輸入&lt;br/&gt;32×32×3] --&gt; Block1[卷積塊 1&lt;br/&gt;64 filters]
+    Block1 --&gt; Block2[卷積塊 2&lt;br/&gt;128 filters]
+    Block2 --&gt; Block3[卷積塊 3&lt;br/&gt;256 filters]
+    Block3 --&gt; Block4[卷積塊 4&lt;br/&gt;512 filters]
+    Block4 --&gt; GAP[全局平均池化&lt;br/&gt;GlobalAveragePooling]
+    GAP --&gt; FC[全連接&lt;br/&gt;512 → 10]
 
-<span class="w">    </span><span class="n">subgraph</span><span class="w"> </span><span class="s">&quot;每個卷積塊&quot;</span>
-<span class="w">        </span><span class="n">direction</span><span class="w"> </span><span class="n">LR</span>
-<span class="w">        </span><span class="n">Conv1</span><span class="p">[</span><span class="n">Conv</span><span class="w"> </span><span class="mi">3</span><span class="err">×</span><span class="mi">3</span><span class="p">]</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">BN1</span><span class="p">[</span><span class="n">Batch</span><span class="w"> </span><span class="n">Norm</span><span class="p">]</span>
-<span class="w">        </span><span class="n">BN1</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">Act1</span><span class="p">[</span><span class="n">ReLU</span><span class="p">]</span>
-<span class="w">        </span><span class="n">Act1</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">Conv2</span><span class="p">[</span><span class="n">Conv</span><span class="w"> </span><span class="mi">3</span><span class="err">×</span><span class="mi">3</span><span class="p">]</span>
-<span class="w">        </span><span class="n">Conv2</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">BN2</span><span class="p">[</span><span class="n">Batch</span><span class="w"> </span><span class="n">Norm</span><span class="p">]</span>
-<span class="w">        </span><span class="n">BN2</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">Act2</span><span class="p">[</span><span class="n">ReLU</span><span class="p">]</span>
-<span class="w">        </span><span class="n">Act2</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">Pool</span><span class="p">[</span><span class="n">MaxPool</span><span class="w"> </span><span class="mi">2</span><span class="err">×</span><span class="mi">2</span><span class="p">]</span>
-<span class="w">        </span><span class="n">Pool</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">Drop</span><span class="p">[</span><span class="n">Dropout</span><span class="p">]</span>
-<span class="w">    </span><span class="n">end</span>
+    subgraph &quot;每個卷積塊&quot;
+        direction LR
+        Conv1[Conv 3×3] --&gt; BN1[Batch Norm]
+        BN1 --&gt; Act1[ReLU]
+        Act1 --&gt; Conv2[Conv 3×3]
+        Conv2 --&gt; BN2[Batch Norm]
+        BN2 --&gt; Act2[ReLU]
+        Act2 --&gt; Pool[MaxPool 2×2]
+        Pool --&gt; Drop[Dropout]
+    end
 
-<span class="w">    </span><span class="n">style</span><span class="w"> </span><span class="n">Input</span><span class="w"> </span><span class="n">fill</span><span class="o">:</span><span class="err">#</span><span class="mi">90</span><span class="n">EE90</span>
-<span class="w">    </span><span class="n">style</span><span class="w"> </span><span class="n">Block1</span><span class="w"> </span><span class="n">fill</span><span class="o">:</span><span class="err">#</span><span class="n">FFE4B5</span>
-<span class="w">    </span><span class="n">style</span><span class="w"> </span><span class="n">Block2</span><span class="w"> </span><span class="n">fill</span><span class="o">:</span><span class="err">#</span><span class="n">FFE4B5</span>
-<span class="w">    </span><span class="n">style</span><span class="w"> </span><span class="n">Block3</span><span class="w"> </span><span class="n">fill</span><span class="o">:</span><span class="err">#</span><span class="n">FFE4B5</span>
-<span class="w">    </span><span class="n">style</span><span class="w"> </span><span class="n">Block4</span><span class="w"> </span><span class="n">fill</span><span class="o">:</span><span class="err">#</span><span class="n">FFE4B5</span>
-<span class="w">    </span><span class="n">style</span><span class="w"> </span><span class="n">GAP</span><span class="w"> </span><span class="n">fill</span><span class="o">:</span><span class="err">#</span><span class="mi">87</span><span class="n">CEEB</span>
-<span class="w">    </span><span class="n">style</span><span class="w"> </span><span class="n">FC</span><span class="w"> </span><span class="n">fill</span><span class="o">:</span><span class="err">#</span><span class="n">FFD700</span>
-</code></pre></div>
-
+    style Input fill:#90EE90
+    style Block1 fill:#FFE4B5
+    style Block2 fill:#FFE4B5
+    style Block3 fill:#FFE4B5
+    style Block4 fill:#FFE4B5
+    style GAP fill:#87CEEB
+    style FC fill:#FFD700
+</div>
 <h4>架構特色</h4>
 <table>
 <thead>
@@ -538,21 +537,21 @@
 </code></pre></div>
 
 <p><strong>優勢</strong>：</p>
-<div class="codehilite"><pre><span></span><code><span class="nf">graph</span><span class="w"> </span><span class="n">LR</span>
-<span class="w">    </span><span class="n">GAP</span><span class="p">[</span><span class="kr">Global</span><span class="w"> </span><span class="n">Average</span><span class="w"> </span><span class="n">Pooling</span><span class="p">]</span>
+<div class="mermaid">
+graph LR
+    GAP[Global Average Pooling]
 
-<span class="w">    </span><span class="n">GAP</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">A1</span><span class="p">[</span><span class="err">減少參數</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="mi">1600</span><span class="err">萬</span><span class="w"> </span><span class="err">→</span><span class="w"> </span><span class="mi">5</span><span class="err">千</span><span class="p">]</span>
-<span class="w">    </span><span class="n">GAP</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">A2</span><span class="p">[</span><span class="err">防止過擬合</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="err">更強泛化能力</span><span class="p">]</span>
-<span class="w">    </span><span class="n">GAP</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">A3</span><span class="p">[</span><span class="err">空間不變性</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="err">物體位置不敏感</span><span class="p">]</span>
-<span class="w">    </span><span class="n">GAP</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">A4</span><span class="p">[</span><span class="err">更快訓練</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="err">記憶體需求低</span><span class="p">]</span>
+    GAP --&gt; A1[減少參數&lt;br/&gt;1600萬 → 5千]
+    GAP --&gt; A2[防止過擬合&lt;br/&gt;更強泛化能力]
+    GAP --&gt; A3[空間不變性&lt;br/&gt;物體位置不敏感]
+    GAP --&gt; A4[更快訓練&lt;br/&gt;記憶體需求低]
 
-<span class="w">    </span><span class="n">style</span><span class="w"> </span><span class="n">GAP</span><span class="w"> </span><span class="n">fill</span><span class="o">:</span><span class="err">#</span><span class="n">FFE4B5</span>
-<span class="w">    </span><span class="n">style</span><span class="w"> </span><span class="n">A1</span><span class="w"> </span><span class="n">fill</span><span class="o">:</span><span class="err">#</span><span class="mi">90</span><span class="n">EE90</span>
-<span class="w">    </span><span class="n">style</span><span class="w"> </span><span class="n">A2</span><span class="w"> </span><span class="n">fill</span><span class="o">:</span><span class="err">#</span><span class="mi">90</span><span class="n">EE90</span>
-<span class="w">    </span><span class="n">style</span><span class="w"> </span><span class="n">A3</span><span class="w"> </span><span class="n">fill</span><span class="o">:</span><span class="err">#</span><span class="mi">90</span><span class="n">EE90</span>
-<span class="w">    </span><span class="n">style</span><span class="w"> </span><span class="n">A4</span><span class="w"> </span><span class="n">fill</span><span class="o">:</span><span class="err">#</span><span class="mi">90</span><span class="n">EE90</span>
-</code></pre></div>
-
+    style GAP fill:#FFE4B5
+    style A1 fill:#90EE90
+    style A2 fill:#90EE90
+    style A3 fill:#90EE90
+    style A4 fill:#90EE90
+</div>
 <hr />
 <h3>完整實作：Keras 版本</h3>
 <p>以下是完整的 CIFAR-10 實作（Keras），可直接在 Colab 執行。</p>

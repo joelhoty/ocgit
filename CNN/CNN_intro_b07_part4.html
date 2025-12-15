@@ -19,7 +19,7 @@
                     margin: 0 auto;
                     padding: 20px;
                 }
-                /* 提升代码块对比度 */
+                /* 提升代碼塊對比度 */
                 pre {
                     background: #1e1e1e !important;
                     border: 1px solid #3e3e3e;
@@ -30,13 +30,12 @@
                 code {
                     background: #2d2d2d !important;
                 }
-                /* 引用块对比度 */
+                /* 引用塊對比度 */
                 blockquote {
                     background: #2d2d2d;
                     border-left: 4px solid #4a9eff;
                 }
-            
-        
+                    
         /* 通用代碼塊樣式 */
         pre code {
             display: block;
@@ -66,7 +65,7 @@
             body {
                 padding: 10px;
             }
-            .container, .markdown-body, .latex-body, .window-body, .nes-container {
+            .container, .markdown-body, .latex-body, .window-body, .nes-container { # Added .nes-container here
                 padding: 15px;
             }
             pre code {
@@ -109,33 +108,33 @@ Epoch 20: Train Acc 76%, Test Acc 72%
 </code></pre></div>
 
 <p><strong>可能原因與解決方案</strong>：</p>
-<div class="codehilite"><pre><span></span><code><span class="nf">graph</span><span class="w"> </span><span class="n">TD</span>
-<span class="w">    </span><span class="n">Problem</span><span class="p">[</span><span class="err">準確率停滯</span><span class="p">]</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">Check1</span><span class="p">{</span><span class="err">學習率</span><span class="p">}</span>
-<span class="w">    </span><span class="n">Problem</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">Check2</span><span class="p">{</span><span class="err">模型容量</span><span class="p">}</span>
-<span class="w">    </span><span class="n">Problem</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">Check3</span><span class="p">{</span><span class="err">資料品質</span><span class="p">}</span>
-<span class="w">    </span><span class="n">Problem</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">Check4</span><span class="p">{</span><span class="err">損失函數</span><span class="p">}</span>
+<div class="mermaid">
+graph TD
+    Problem[準確率停滯] --&gt; Check1{學習率}
+    Problem --&gt; Check2{模型容量}
+    Problem --&gt; Check3{資料品質}
+    Problem --&gt; Check4{損失函數}
 
-<span class="w">    </span><span class="n">Check1</span><span class="w"> </span><span class="o">--&gt;|</span><span class="err">過大</span><span class="o">|</span><span class="w"> </span><span class="n">Sol1</span><span class="p">[</span><span class="err">降低學習率</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="mf">0.001</span><span class="w"> </span><span class="err">→</span><span class="w"> </span><span class="mf">0.0001</span><span class="p">]</span>
-<span class="w">    </span><span class="n">Check1</span><span class="w"> </span><span class="o">--&gt;|</span><span class="err">過小</span><span class="o">|</span><span class="w"> </span><span class="n">Sol2</span><span class="p">[</span><span class="err">提高學習率</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="err">使用學習率調度</span><span class="p">]</span>
+    Check1 --&gt;|過大| Sol1[降低學習率&lt;br/&gt;0.001 → 0.0001]
+    Check1 --&gt;|過小| Sol2[提高學習率&lt;br/&gt;使用學習率調度]
 
-<span class="w">    </span><span class="n">Check2</span><span class="w"> </span><span class="o">--&gt;|</span><span class="err">太小</span><span class="o">|</span><span class="w"> </span><span class="n">Sol3</span><span class="p">[</span><span class="err">增加層數</span><span class="o">/</span><span class="err">濾波器</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="mi">64</span><span class="err">→</span><span class="mi">128</span><span class="err">→</span><span class="mi">256</span><span class="p">]</span>
-<span class="w">    </span><span class="n">Check2</span><span class="w"> </span><span class="o">--&gt;|</span><span class="err">太大</span><span class="o">|</span><span class="w"> </span><span class="n">Sol4</span><span class="p">[</span><span class="err">減少參數</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="err">加強正規化</span><span class="p">]</span>
+    Check2 --&gt;|太小| Sol3[增加層數/濾波器&lt;br/&gt;64→128→256]
+    Check2 --&gt;|太大| Sol4[減少參數&lt;br/&gt;加強正規化]
 
-<span class="w">    </span><span class="n">Check3</span><span class="w"> </span><span class="o">--&gt;|</span><span class="err">標籤錯誤</span><span class="o">|</span><span class="w"> </span><span class="n">Sol5</span><span class="p">[</span><span class="err">檢查資料標註</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="err">清理異常樣本</span><span class="p">]</span>
-<span class="w">    </span><span class="n">Check3</span><span class="w"> </span><span class="o">--&gt;|</span><span class="err">不平衡</span><span class="o">|</span><span class="w"> </span><span class="n">Sol6</span><span class="p">[</span><span class="err">使用加權損失</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="err">過採樣</span><span class="o">/</span><span class="err">欠採樣</span><span class="p">]</span>
+    Check3 --&gt;|標籤錯誤| Sol5[檢查資料標註&lt;br/&gt;清理異常樣本]
+    Check3 --&gt;|不平衡| Sol6[使用加權損失&lt;br/&gt;過採樣/欠採樣]
 
-<span class="w">    </span><span class="n">Check4</span><span class="w"> </span><span class="o">--&gt;|</span><span class="err">不適合</span><span class="o">|</span><span class="w"> </span><span class="n">Sol7</span><span class="p">[</span><span class="err">換損失函數</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="n">Focal</span><span class="w"> </span><span class="n">Loss</span><span class="p">]</span>
+    Check4 --&gt;|不適合| Sol7[換損失函數&lt;br/&gt;Focal Loss]
 
-<span class="w">    </span><span class="n">style</span><span class="w"> </span><span class="n">Problem</span><span class="w"> </span><span class="n">fill</span><span class="o">:</span><span class="err">#</span><span class="n">FFB6C1</span>
-<span class="w">    </span><span class="n">style</span><span class="w"> </span><span class="n">Sol1</span><span class="w"> </span><span class="n">fill</span><span class="o">:</span><span class="err">#</span><span class="mi">90</span><span class="n">EE90</span>
-<span class="w">    </span><span class="n">style</span><span class="w"> </span><span class="n">Sol2</span><span class="w"> </span><span class="n">fill</span><span class="o">:</span><span class="err">#</span><span class="mi">90</span><span class="n">EE90</span>
-<span class="w">    </span><span class="n">style</span><span class="w"> </span><span class="n">Sol3</span><span class="w"> </span><span class="n">fill</span><span class="o">:</span><span class="err">#</span><span class="mi">90</span><span class="n">EE90</span>
-<span class="w">    </span><span class="n">style</span><span class="w"> </span><span class="n">Sol4</span><span class="w"> </span><span class="n">fill</span><span class="o">:</span><span class="err">#</span><span class="mi">90</span><span class="n">EE90</span>
-<span class="w">    </span><span class="n">style</span><span class="w"> </span><span class="n">Sol5</span><span class="w"> </span><span class="n">fill</span><span class="o">:</span><span class="err">#</span><span class="mi">90</span><span class="n">EE90</span>
-<span class="w">    </span><span class="n">style</span><span class="w"> </span><span class="n">Sol6</span><span class="w"> </span><span class="n">fill</span><span class="o">:</span><span class="err">#</span><span class="mi">90</span><span class="n">EE90</span>
-<span class="w">    </span><span class="n">style</span><span class="w"> </span><span class="n">Sol7</span><span class="w"> </span><span class="n">fill</span><span class="o">:</span><span class="err">#</span><span class="mi">90</span><span class="n">EE90</span>
-</code></pre></div>
-
+    style Problem fill:#FFB6C1
+    style Sol1 fill:#90EE90
+    style Sol2 fill:#90EE90
+    style Sol3 fill:#90EE90
+    style Sol4 fill:#90EE90
+    style Sol5 fill:#90EE90
+    style Sol6 fill:#90EE90
+    style Sol7 fill:#90EE90
+</div>
 <p><strong>診斷步驟</strong>：</p>
 <div class="codehilite"><pre><span></span><code><span class="c1"># ===== 步驟 1: 檢查學習率 =====</span>
 <span class="c1"># 畫出損失曲線，觀察震盪情況</span>
@@ -424,37 +423,37 @@ Epoch 20: Train Acc 76%, Test Acc 72%
 
 <hr />
 <h3>模型不收斂的診斷流程</h3>
-<div class="codehilite"><pre><span></span><code><span class="nf">graph</span><span class="w"> </span><span class="n">TD</span>
-<span class="w">    </span><span class="n">Start</span><span class="p">[</span><span class="err">模型不收斂</span><span class="p">]</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">Q1</span><span class="p">{</span><span class="err">損失是否下降</span><span class="o">?</span><span class="p">}</span>
+<div class="mermaid">
+graph TD
+    Start[模型不收斂] --&gt; Q1{損失是否下降?}
 
-<span class="w">    </span><span class="n">Q1</span><span class="w"> </span><span class="o">--&gt;|</span><span class="err">完全不降</span><span class="o">|</span><span class="w"> </span><span class="n">Path1</span><span class="p">[</span><span class="err">檢查基礎設定</span><span class="p">]</span>
-<span class="w">    </span><span class="n">Q1</span><span class="w"> </span><span class="o">--&gt;|</span><span class="err">下降但停滯</span><span class="o">|</span><span class="w"> </span><span class="n">Path2</span><span class="p">[</span><span class="err">優化超參數</span><span class="p">]</span>
-<span class="w">    </span><span class="n">Q1</span><span class="w"> </span><span class="o">--&gt;|</span><span class="err">劇烈震盪</span><span class="o">|</span><span class="w"> </span><span class="n">Path3</span><span class="p">[</span><span class="err">學習率過大</span><span class="p">]</span>
+    Q1 --&gt;|完全不降| Path1[檢查基礎設定]
+    Q1 --&gt;|下降但停滯| Path2[優化超參數]
+    Q1 --&gt;|劇烈震盪| Path3[學習率過大]
 
-<span class="w">    </span><span class="n">Path1</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">Check1</span><span class="p">[</span><span class="mf">1.</span><span class="w"> </span><span class="err">資料是否正規化</span><span class="o">?</span><span class="p">]</span>
-<span class="w">    </span><span class="n">Check1</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">Check2</span><span class="p">[</span><span class="mf">2.</span><span class="w"> </span><span class="err">標籤格式正確</span><span class="o">?</span><span class="p">]</span>
-<span class="w">    </span><span class="n">Check2</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">Check3</span><span class="p">[</span><span class="mf">3.</span><span class="w"> </span><span class="err">優化器設定正確</span><span class="o">?</span><span class="p">]</span>
-<span class="w">    </span><span class="n">Check3</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">Check4</span><span class="p">[</span><span class="mf">4.</span><span class="w"> </span><span class="err">損失函數適合</span><span class="o">?</span><span class="p">]</span>
+    Path1 --&gt; Check1[1. 資料是否正規化?]
+    Check1 --&gt; Check2[2. 標籤格式正確?]
+    Check2 --&gt; Check3[3. 優化器設定正確?]
+    Check3 --&gt; Check4[4. 損失函數適合?]
 
-<span class="w">    </span><span class="n">Path2</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">Opt1</span><span class="p">[</span><span class="mf">1.</span><span class="w"> </span><span class="err">提高學習率</span><span class="p">]</span>
-<span class="w">    </span><span class="n">Opt1</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">Opt2</span><span class="p">[</span><span class="mf">2.</span><span class="w"> </span><span class="err">增加模型容量</span><span class="p">]</span>
-<span class="w">    </span><span class="n">Opt2</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">Opt3</span><span class="p">[</span><span class="mf">3.</span><span class="w"> </span><span class="err">檢查資料品質</span><span class="p">]</span>
+    Path2 --&gt; Opt1[1. 提高學習率]
+    Opt1 --&gt; Opt2[2. 增加模型容量]
+    Opt2 --&gt; Opt3[3. 檢查資料品質]
 
-<span class="w">    </span><span class="n">Path3</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">Fix1</span><span class="p">[</span><span class="err">降低學習率</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="mf">0.001</span><span class="w"> </span><span class="err">→</span><span class="w"> </span><span class="mf">0.0001</span><span class="p">]</span>
+    Path3 --&gt; Fix1[降低學習率&lt;br/&gt;0.001 → 0.0001]
 
-<span class="w">    </span><span class="n">Check1</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">Fix2</span><span class="p">[</span><span class="err">正規化到</span><span class="w"> </span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="err">或標準化</span><span class="p">]</span>
-<span class="w">    </span><span class="n">Check2</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">Fix3</span><span class="p">[</span><span class="n">Keras</span><span class="o">:</span><span class="w"> </span><span class="n">One</span><span class="o">-</span><span class="n">Hot</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="n">PyTorch</span><span class="o">:</span><span class="w"> </span><span class="err">類別索引</span><span class="p">]</span>
-<span class="w">    </span><span class="n">Check3</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">Fix4</span><span class="p">[</span><span class="err">檢查</span><span class="w"> </span><span class="n">zero_grad</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="err">檢查</span><span class="w"> </span><span class="n">optimizer</span><span class="p">.</span><span class="n">step</span><span class="p">]</span>
-<span class="w">    </span><span class="n">Check4</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">Fix5</span><span class="p">[</span><span class="err">分類</span><span class="o">:</span><span class="w"> </span><span class="n">CrossEntropy</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="err">回歸</span><span class="o">:</span><span class="w"> </span><span class="n">MSE</span><span class="p">]</span>
+    Check1 --&gt; Fix2[正規化到 [0,1]&lt;br/&gt;或標準化]
+    Check2 --&gt; Fix3[Keras: One-Hot&lt;br/&gt;PyTorch: 類別索引]
+    Check3 --&gt; Fix4[檢查 zero_grad&lt;br/&gt;檢查 optimizer.step]
+    Check4 --&gt; Fix5[分類: CrossEntropy&lt;br/&gt;回歸: MSE]
 
-<span class="w">    </span><span class="n">style</span><span class="w"> </span><span class="n">Start</span><span class="w"> </span><span class="n">fill</span><span class="o">:</span><span class="err">#</span><span class="n">FFB6C1</span>
-<span class="w">    </span><span class="n">style</span><span class="w"> </span><span class="n">Fix2</span><span class="w"> </span><span class="n">fill</span><span class="o">:</span><span class="err">#</span><span class="mi">90</span><span class="n">EE90</span>
-<span class="w">    </span><span class="n">style</span><span class="w"> </span><span class="n">Fix3</span><span class="w"> </span><span class="n">fill</span><span class="o">:</span><span class="err">#</span><span class="mi">90</span><span class="n">EE90</span>
-<span class="w">    </span><span class="n">style</span><span class="w"> </span><span class="n">Fix4</span><span class="w"> </span><span class="n">fill</span><span class="o">:</span><span class="err">#</span><span class="mi">90</span><span class="n">EE90</span>
-<span class="w">    </span><span class="n">style</span><span class="w"> </span><span class="n">Fix5</span><span class="w"> </span><span class="n">fill</span><span class="o">:</span><span class="err">#</span><span class="mi">90</span><span class="n">EE90</span>
-<span class="w">    </span><span class="n">style</span><span class="w"> </span><span class="n">Fix1</span><span class="w"> </span><span class="n">fill</span><span class="o">:</span><span class="err">#</span><span class="mi">90</span><span class="n">EE90</span>
-</code></pre></div>
-
+    style Start fill:#FFB6C1
+    style Fix2 fill:#90EE90
+    style Fix3 fill:#90EE90
+    style Fix4 fill:#90EE90
+    style Fix5 fill:#90EE90
+    style Fix1 fill:#90EE90
+</div>
 <p><strong>診斷代碼</strong>：</p>
 <div class="codehilite"><pre><span></span><code><span class="c1"># ===== 診斷清單 =====</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">diagnose_model</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">):</span>
@@ -535,33 +534,33 @@ Epoch 20: Train Acc 76%, Test Acc 72%
 <hr />
 <h3>過擬合與欠擬合</h3>
 <h4>完整對比</h4>
-<div class="codehilite"><pre><span></span><code><span class="nf">graph</span><span class="w"> </span><span class="n">LR</span>
-<span class="w">    </span><span class="n">subgraph</span><span class="w"> </span><span class="err">欠擬合</span>
-<span class="w">        </span><span class="n">U1</span><span class="p">[</span><span class="err">訓練準確率</span><span class="w"> </span><span class="err">低</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="err">測試準確率</span><span class="w"> </span><span class="err">低</span><span class="p">]</span>
-<span class="w">        </span><span class="n">U2</span><span class="p">[</span><span class="err">模型太簡單</span><span class="p">]</span>
-<span class="w">        </span><span class="n">U3</span><span class="p">[</span><span class="err">學習不足</span><span class="p">]</span>
-<span class="w">    </span><span class="kd">end</span>
+<div class="mermaid">
+graph LR
+    subgraph 欠擬合
+        U1[訓練準確率 低&lt;br/&gt;測試準確率 低]
+        U2[模型太簡單]
+        U3[學習不足]
+    end
 
-<span class="w">    </span><span class="n">subgraph</span><span class="w"> </span><span class="err">良好擬合</span>
-<span class="w">        </span><span class="n">G1</span><span class="p">[</span><span class="err">訓練準確率</span><span class="w"> </span><span class="err">高</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="err">測試準確率</span><span class="w"> </span><span class="err">高</span><span class="p">]</span>
-<span class="w">        </span><span class="n">G2</span><span class="p">[</span><span class="err">泛化能力強</span><span class="p">]</span>
-<span class="w">    </span><span class="kd">end</span>
+    subgraph 良好擬合
+        G1[訓練準確率 高&lt;br/&gt;測試準確率 高]
+        G2[泛化能力強]
+    end
 
-<span class="w">    </span><span class="n">subgraph</span><span class="w"> </span><span class="err">過擬合</span>
-<span class="w">        </span><span class="n">O1</span><span class="p">[</span><span class="err">訓練準確率</span><span class="w"> </span><span class="err">高</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="err">測試準確率</span><span class="w"> </span><span class="err">低</span><span class="p">]</span>
-<span class="w">        </span><span class="n">O2</span><span class="p">[</span><span class="err">記住訓練資料</span><span class="p">]</span>
-<span class="w">        </span><span class="n">O3</span><span class="p">[</span><span class="err">泛化能力弱</span><span class="p">]</span>
-<span class="w">    </span><span class="kd">end</span>
+    subgraph 過擬合
+        O1[訓練準確率 高&lt;br/&gt;測試準確率 低]
+        O2[記住訓練資料]
+        O3[泛化能力弱]
+    end
 
-<span class="w">    </span><span class="n">U1</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">Solution1</span><span class="p">[</span><span class="err">增加模型容量</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="err">訓練更久</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="err">更好的特徵</span><span class="p">]</span>
-<span class="w">    </span><span class="n">G1</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">Maintain</span><span class="p">[</span><span class="err">保持現狀</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="err">或繼續優化</span><span class="p">]</span>
-<span class="w">    </span><span class="n">O1</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">Solution2</span><span class="p">[</span><span class="err">資料增強</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="n">Dropout</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="err">正規化</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="err">早停</span><span class="p">]</span>
+    U1 --&gt; Solution1[增加模型容量&lt;br/&gt;訓練更久&lt;br/&gt;更好的特徵]
+    G1 --&gt; Maintain[保持現狀&lt;br/&gt;或繼續優化]
+    O1 --&gt; Solution2[資料增強&lt;br/&gt;Dropout&lt;br/&gt;正規化&lt;br/&gt;早停]
 
-<span class="w">    </span><span class="n">style</span><span class="w"> </span><span class="n">U1</span><span class="w"> </span><span class="n">fill</span><span class="o">:</span><span class="err">#</span><span class="n">FFE4B5</span>
-<span class="w">    </span><span class="n">style</span><span class="w"> </span><span class="n">G1</span><span class="w"> </span><span class="n">fill</span><span class="o">:</span><span class="err">#</span><span class="mi">90</span><span class="n">EE90</span>
-<span class="w">    </span><span class="n">style</span><span class="w"> </span><span class="n">O1</span><span class="w"> </span><span class="n">fill</span><span class="o">:</span><span class="err">#</span><span class="n">FFB6C1</span>
-</code></pre></div>
-
+    style U1 fill:#FFE4B5
+    style G1 fill:#90EE90
+    style O1 fill:#FFB6C1
+</div>
 <h4>視覺化診斷</h4>
 <div class="codehilite"><pre><span></span><code><span class="c1"># 視覺化過擬合/欠擬合</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">plot_learning_curves</span><span class="p">(</span><span class="n">history</span><span class="p">):</span>
@@ -647,22 +646,22 @@ Epoch 20: Train Acc 76%, Test Acc 72%
 <hr />
 <h3>超參數調整指南</h3>
 <h4>超參數重要性排序</h4>
-<div class="codehilite"><pre><span></span><code><span class="nf">graph</span><span class="w"> </span><span class="n">LR</span>
-<span class="w">    </span><span class="n">P1</span><span class="p">[</span><span class="err">學習率</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="err">⭐⭐⭐⭐⭐</span><span class="p">]</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">Impact1</span><span class="p">[</span><span class="err">影響最大</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="err">優先調整</span><span class="p">]</span>
-<span class="w">    </span><span class="n">P2</span><span class="p">[</span><span class="n">Batch</span><span class="w"> </span><span class="n">Size</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="err">⭐⭐⭐⭐☆</span><span class="p">]</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">Impact2</span><span class="p">[</span><span class="err">影響訓練速度</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="err">與穩定性</span><span class="p">]</span>
-<span class="w">    </span><span class="n">P3</span><span class="p">[</span><span class="err">優化器</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="err">⭐⭐⭐☆☆</span><span class="p">]</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">Impact3</span><span class="p">[</span><span class="n">Adam</span><span class="w"> </span><span class="err">通常足夠</span><span class="p">]</span>
-<span class="w">    </span><span class="n">P4</span><span class="p">[</span><span class="err">網路架構</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="err">⭐⭐⭐⭐☆</span><span class="p">]</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">Impact4</span><span class="p">[</span><span class="err">層數、濾波器數</span><span class="p">]</span>
-<span class="w">    </span><span class="n">P5</span><span class="p">[</span><span class="n">Dropout</span><span class="w"> </span><span class="err">率</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="err">⭐⭐⭐☆☆</span><span class="p">]</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">Impact5</span><span class="p">[</span><span class="err">防過擬合</span><span class="p">]</span>
-<span class="w">    </span><span class="n">P6</span><span class="p">[</span><span class="n">L2</span><span class="w"> </span><span class="err">正規化</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="err">⭐⭐☆☆☆</span><span class="p">]</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">Impact6</span><span class="p">[</span><span class="err">輔助防過擬合</span><span class="p">]</span>
+<div class="mermaid">
+graph LR
+    P1[學習率&lt;br/&gt;⭐⭐⭐⭐⭐] --&gt; Impact1[影響最大&lt;br/&gt;優先調整]
+    P2[Batch Size&lt;br/&gt;⭐⭐⭐⭐☆] --&gt; Impact2[影響訓練速度&lt;br/&gt;與穩定性]
+    P3[優化器&lt;br/&gt;⭐⭐⭐☆☆] --&gt; Impact3[Adam 通常足夠]
+    P4[網路架構&lt;br/&gt;⭐⭐⭐⭐☆] --&gt; Impact4[層數、濾波器數]
+    P5[Dropout 率&lt;br/&gt;⭐⭐⭐☆☆] --&gt; Impact5[防過擬合]
+    P6[L2 正規化&lt;br/&gt;⭐⭐☆☆☆] --&gt; Impact6[輔助防過擬合]
 
-<span class="w">    </span><span class="n">style</span><span class="w"> </span><span class="n">P1</span><span class="w"> </span><span class="n">fill</span><span class="o">:</span><span class="err">#</span><span class="n">FFD700</span>
-<span class="w">    </span><span class="n">style</span><span class="w"> </span><span class="n">P2</span><span class="w"> </span><span class="n">fill</span><span class="o">:</span><span class="err">#</span><span class="n">FFD700</span>
-<span class="w">    </span><span class="n">style</span><span class="w"> </span><span class="n">P4</span><span class="w"> </span><span class="n">fill</span><span class="o">:</span><span class="err">#</span><span class="n">FFD700</span>
-<span class="w">    </span><span class="n">style</span><span class="w"> </span><span class="n">P3</span><span class="w"> </span><span class="n">fill</span><span class="o">:</span><span class="err">#</span><span class="n">FFE4B5</span>
-<span class="w">    </span><span class="n">style</span><span class="w"> </span><span class="n">P5</span><span class="w"> </span><span class="n">fill</span><span class="o">:</span><span class="err">#</span><span class="n">FFE4B5</span>
-<span class="w">    </span><span class="n">style</span><span class="w"> </span><span class="n">P6</span><span class="w"> </span><span class="n">fill</span><span class="o">:</span><span class="err">#</span><span class="n">E0E0E0</span>
-</code></pre></div>
-
+    style P1 fill:#FFD700
+    style P2 fill:#FFD700
+    style P4 fill:#FFD700
+    style P3 fill:#FFE4B5
+    style P5 fill:#FFE4B5
+    style P6 fill:#E0E0E0
+</div>
 <h4>學習率調整策略</h4>
 <div class="codehilite"><pre><span></span><code><span class="c1"># ===== 策略 1: 學習率範圍測試 (Learning Rate Finder) =====</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">find_learning_rate</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">train_loader</span><span class="p">,</span> <span class="n">criterion</span><span class="p">,</span> <span class="n">device</span><span class="p">):</span>
@@ -820,25 +819,25 @@ Epoch 20: Train Acc 76%, Test Acc 72%
 </code></pre></div>
 
 <p><strong>Batch Size 選擇建議</strong>：</p>
-<div class="codehilite"><pre><span></span><code><span class="nf">graph</span><span class="w"> </span><span class="n">TD</span>
-<span class="w">    </span><span class="n">Start</span><span class="p">{</span><span class="n">GPU</span><span class="w"> </span><span class="err">記憶體</span><span class="p">}</span>
+<div class="mermaid">
+graph TD
+    Start{GPU 記憶體}
 
-<span class="w">    </span><span class="n">Start</span><span class="w"> </span><span class="o">--&gt;|</span><span class="mi">16</span><span class="n">GB</span><span class="o">+|</span><span class="w"> </span><span class="n">Large</span><span class="p">[</span><span class="n">Batch</span><span class="w"> </span><span class="n">Size</span><span class="w"> </span><span class="mi">256</span><span class="o">-</span><span class="mi">512</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="err">需調高學習率</span><span class="p">]</span>
-<span class="w">    </span><span class="n">Start</span><span class="w"> </span><span class="o">--&gt;|</span><span class="mi">8</span><span class="o">-</span><span class="mi">16</span><span class="n">GB</span><span class="o">|</span><span class="w"> </span><span class="n">Medium</span><span class="p">[</span><span class="n">Batch</span><span class="w"> </span><span class="n">Size</span><span class="w"> </span><span class="mi">128</span><span class="o">-</span><span class="mi">256</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="err">最佳選擇</span><span class="p">]</span>
-<span class="w">    </span><span class="n">Start</span><span class="w"> </span><span class="o">--&gt;|</span><span class="mi">4</span><span class="o">-</span><span class="mi">8</span><span class="n">GB</span><span class="o">|</span><span class="w"> </span><span class="n">Small</span><span class="p">[</span><span class="n">Batch</span><span class="w"> </span><span class="n">Size</span><span class="w"> </span><span class="mi">64</span><span class="o">-</span><span class="mi">128</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="err">平衡效能</span><span class="p">]</span>
-<span class="w">    </span><span class="n">Start</span><span class="w"> </span><span class="o">--&gt;|&lt;</span><span class="mi">4</span><span class="n">GB</span><span class="o">|</span><span class="w"> </span><span class="n">Tiny</span><span class="p">[</span><span class="n">Batch</span><span class="w"> </span><span class="n">Size</span><span class="w"> </span><span class="mi">32</span><span class="o">-</span><span class="mi">64</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="err">或用梯度累積</span><span class="p">]</span>
+    Start --&gt;|16GB+| Large[Batch Size 256-512&lt;br/&gt;需調高學習率]
+    Start --&gt;|8-16GB| Medium[Batch Size 128-256&lt;br/&gt;最佳選擇]
+    Start --&gt;|4-8GB| Small[Batch Size 64-128&lt;br/&gt;平衡效能]
+    Start --&gt;|&lt;4GB| Tiny[Batch Size 32-64&lt;br/&gt;或用梯度累積]
 
-<span class="w">    </span><span class="n">Large</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">Note1</span><span class="p">[</span><span class="err">學習率</span><span class="w"> </span><span class="err">×</span><span class="w"> </span><span class="mi">2</span><span class="o">-</span><span class="mi">4</span><span class="p">]</span>
-<span class="w">    </span><span class="n">Medium</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">Note2</span><span class="p">[</span><span class="err">學習率保持</span><span class="p">]</span>
-<span class="w">    </span><span class="n">Small</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">Note2</span>
-<span class="w">    </span><span class="n">Tiny</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">Note3</span><span class="p">[</span><span class="err">考慮梯度累積</span><span class="p">]</span>
+    Large --&gt; Note1[學習率 × 2-4]
+    Medium --&gt; Note2[學習率保持]
+    Small --&gt; Note2
+    Tiny --&gt; Note3[考慮梯度累積]
 
-<span class="w">    </span><span class="n">style</span><span class="w"> </span><span class="n">Medium</span><span class="w"> </span><span class="n">fill</span><span class="o">:</span><span class="err">#</span><span class="mi">90</span><span class="n">EE90</span>
-<span class="w">    </span><span class="n">style</span><span class="w"> </span><span class="n">Small</span><span class="w"> </span><span class="n">fill</span><span class="o">:</span><span class="err">#</span><span class="n">FFE4B5</span>
-<span class="w">    </span><span class="n">style</span><span class="w"> </span><span class="n">Large</span><span class="w"> </span><span class="n">fill</span><span class="o">:</span><span class="err">#</span><span class="n">FFE4B5</span>
-<span class="w">    </span><span class="n">style</span><span class="w"> </span><span class="n">Tiny</span><span class="w"> </span><span class="n">fill</span><span class="o">:</span><span class="err">#</span><span class="n">FFB6C1</span>
-</code></pre></div>
-
+    style Medium fill:#90EE90
+    style Small fill:#FFE4B5
+    style Large fill:#FFE4B5
+    style Tiny fill:#FFB6C1
+</div>
 <hr />
 <h3>效能優化技巧</h3>
 <h4>完整優化清單</h4>
@@ -944,27 +943,27 @@ Epoch 20: Train Acc 76%, Test Acc 72%
 - Fine-tuning 策略<br />
 - Domain Adaptation</p>
 <h3>2. 進階 CNN 架構</h3>
-<div class="codehilite"><pre><span></span><code><span class="nf">graph</span><span class="w"> </span><span class="n">LR</span>
-<span class="w">    </span><span class="n">Basic</span><span class="p">[</span><span class="err">基礎</span><span class="w"> </span><span class="n">CNN</span><span class="p">]</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">Adv1</span><span class="p">[</span><span class="n">ResNet</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="err">殘差連接</span><span class="p">]</span>
-<span class="w">    </span><span class="n">Basic</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">Adv2</span><span class="p">[</span><span class="n">DenseNet</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="err">密集連接</span><span class="p">]</span>
-<span class="w">    </span><span class="n">Basic</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">Adv3</span><span class="p">[</span><span class="n">Inception</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="err">多尺度特徵</span><span class="p">]</span>
-<span class="w">    </span><span class="n">Basic</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">Adv4</span><span class="p">[</span><span class="n">EfficientNet</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="err">複合縮放</span><span class="p">]</span>
-<span class="w">    </span><span class="n">Basic</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">Adv5</span><span class="p">[</span><span class="n">Vision</span><span class="w"> </span><span class="n">Transformer</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="err">注意力機制</span><span class="p">]</span>
+<div class="mermaid">
+graph LR
+    Basic[基礎 CNN] --&gt; Adv1[ResNet&lt;br/&gt;殘差連接]
+    Basic --&gt; Adv2[DenseNet&lt;br/&gt;密集連接]
+    Basic --&gt; Adv3[Inception&lt;br/&gt;多尺度特徵]
+    Basic --&gt; Adv4[EfficientNet&lt;br/&gt;複合縮放]
+    Basic --&gt; Adv5[Vision Transformer&lt;br/&gt;注意力機制]
 
-<span class="w">    </span><span class="n">Adv1</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">Papers1</span><span class="p">[</span><span class="n">He</span><span class="w"> </span><span class="n">et</span><span class="w"> </span><span class="n">al</span><span class="p">.,</span><span class="w"> </span><span class="mi">2015</span><span class="p">]</span>
-<span class="w">    </span><span class="n">Adv2</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">Papers2</span><span class="p">[</span><span class="n">Huang</span><span class="w"> </span><span class="n">et</span><span class="w"> </span><span class="n">al</span><span class="p">.,</span><span class="w"> </span><span class="mi">2017</span><span class="p">]</span>
-<span class="w">    </span><span class="n">Adv3</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">Papers3</span><span class="p">[</span><span class="n">Szegedy</span><span class="w"> </span><span class="n">et</span><span class="w"> </span><span class="n">al</span><span class="p">.,</span><span class="w"> </span><span class="mi">2015</span><span class="p">]</span>
-<span class="w">    </span><span class="n">Adv4</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">Papers4</span><span class="p">[</span><span class="nf">Tan</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">Le</span><span class="p">,</span><span class="w"> </span><span class="mi">2019</span><span class="p">]</span>
-<span class="w">    </span><span class="n">Adv5</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">Papers5</span><span class="p">[</span><span class="n">Dosovitskiy</span><span class="w"> </span><span class="n">et</span><span class="w"> </span><span class="n">al</span><span class="p">.,</span><span class="w"> </span><span class="mi">2020</span><span class="p">]</span>
+    Adv1 --&gt; Papers1[He et al., 2015]
+    Adv2 --&gt; Papers2[Huang et al., 2017]
+    Adv3 --&gt; Papers3[Szegedy et al., 2015]
+    Adv4 --&gt; Papers4[Tan &amp; Le, 2019]
+    Adv5 --&gt; Papers5[Dosovitskiy et al., 2020]
 
-<span class="w">    </span><span class="n">style</span><span class="w"> </span><span class="n">Basic</span><span class="w"> </span><span class="n">fill</span><span class="o">:</span><span class="err">#</span><span class="n">FFE4B5</span>
-<span class="w">    </span><span class="n">style</span><span class="w"> </span><span class="n">Adv1</span><span class="w"> </span><span class="n">fill</span><span class="o">:</span><span class="err">#</span><span class="mi">90</span><span class="n">EE90</span>
-<span class="w">    </span><span class="n">style</span><span class="w"> </span><span class="n">Adv2</span><span class="w"> </span><span class="n">fill</span><span class="o">:</span><span class="err">#</span><span class="mi">90</span><span class="n">EE90</span>
-<span class="w">    </span><span class="n">style</span><span class="w"> </span><span class="n">Adv3</span><span class="w"> </span><span class="n">fill</span><span class="o">:</span><span class="err">#</span><span class="mi">90</span><span class="n">EE90</span>
-<span class="w">    </span><span class="n">style</span><span class="w"> </span><span class="n">Adv4</span><span class="w"> </span><span class="n">fill</span><span class="o">:</span><span class="err">#</span><span class="mi">90</span><span class="n">EE90</span>
-<span class="w">    </span><span class="n">style</span><span class="w"> </span><span class="n">Adv5</span><span class="w"> </span><span class="n">fill</span><span class="o">:</span><span class="err">#</span><span class="mi">87</span><span class="n">CEEB</span>
-</code></pre></div>
-
+    style Basic fill:#FFE4B5
+    style Adv1 fill:#90EE90
+    style Adv2 fill:#90EE90
+    style Adv3 fill:#90EE90
+    style Adv4 fill:#90EE90
+    style Adv5 fill:#87CEEB
+</div>
 <h3>3. 進階正規化技術</h3>
 <table>
 <thead>
@@ -1025,23 +1024,23 @@ Epoch 20: Train Acc 76%, Test Acc 72%
 </code></pre></div>
 
 <h3>4. 模型壓縮與加速</h3>
-<div class="codehilite"><pre><span></span><code><span class="nf">graph</span><span class="w"> </span><span class="n">TD</span>
-<span class="w">    </span><span class="n">FullModel</span><span class="p">[</span><span class="err">完整模型</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="err">準確率</span><span class="w"> </span><span class="mi">87</span><span class="o">%&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="mi">100</span><span class="w"> </span><span class="n">MB</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="mi">50</span><span class="w"> </span><span class="n">ms</span><span class="p">]</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">Compress</span><span class="p">{</span><span class="err">壓縮技術</span><span class="p">}</span>
+<div class="mermaid">
+graph TD
+    FullModel[完整模型&lt;br/&gt;準確率 87%&lt;br/&gt;100 MB&lt;br/&gt;50 ms] --&gt; Compress{壓縮技術}
 
-<span class="w">    </span><span class="n">Compress</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">Pruning</span><span class="p">[</span><span class="err">剪枝</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="n">Pruning</span><span class="p">]</span>
-<span class="w">    </span><span class="n">Compress</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">Quantization</span><span class="p">[</span><span class="err">量化</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="n">Quantization</span><span class="p">]</span>
-<span class="w">    </span><span class="n">Compress</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">Distillation</span><span class="p">[</span><span class="err">知識蒸餾</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="n">Distillation</span><span class="p">]</span>
+    Compress --&gt; Pruning[剪枝&lt;br/&gt;Pruning]
+    Compress --&gt; Quantization[量化&lt;br/&gt;Quantization]
+    Compress --&gt; Distillation[知識蒸餾&lt;br/&gt;Distillation]
 
-<span class="w">    </span><span class="n">Pruning</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">Result1</span><span class="p">[</span><span class="err">準確率</span><span class="w"> </span><span class="mi">86</span><span class="o">%&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="mi">30</span><span class="w"> </span><span class="n">MB</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="mi">20</span><span class="w"> </span><span class="n">ms</span><span class="p">]</span>
-<span class="w">    </span><span class="n">Quantization</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">Result2</span><span class="p">[</span><span class="err">準確率</span><span class="w"> </span><span class="mf">86.5</span><span class="o">%&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="mi">25</span><span class="w"> </span><span class="n">MB</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="mi">15</span><span class="w"> </span><span class="n">ms</span><span class="p">]</span>
-<span class="w">    </span><span class="n">Distillation</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">Result3</span><span class="p">[</span><span class="err">準確率</span><span class="w"> </span><span class="mi">85</span><span class="o">%&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="mi">10</span><span class="w"> </span><span class="n">MB</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="mi">10</span><span class="w"> </span><span class="n">ms</span><span class="p">]</span>
+    Pruning --&gt; Result1[準確率 86%&lt;br/&gt;30 MB&lt;br/&gt;20 ms]
+    Quantization --&gt; Result2[準確率 86.5%&lt;br/&gt;25 MB&lt;br/&gt;15 ms]
+    Distillation --&gt; Result3[準確率 85%&lt;br/&gt;10 MB&lt;br/&gt;10 ms]
 
-<span class="w">    </span><span class="n">style</span><span class="w"> </span><span class="n">FullModel</span><span class="w"> </span><span class="n">fill</span><span class="o">:</span><span class="err">#</span><span class="n">FFE4B5</span>
-<span class="w">    </span><span class="n">style</span><span class="w"> </span><span class="n">Result1</span><span class="w"> </span><span class="n">fill</span><span class="o">:</span><span class="err">#</span><span class="mi">90</span><span class="n">EE90</span>
-<span class="w">    </span><span class="n">style</span><span class="w"> </span><span class="n">Result2</span><span class="w"> </span><span class="n">fill</span><span class="o">:</span><span class="err">#</span><span class="mi">90</span><span class="n">EE90</span>
-<span class="w">    </span><span class="n">style</span><span class="w"> </span><span class="n">Result3</span><span class="w"> </span><span class="n">fill</span><span class="o">:</span><span class="err">#</span><span class="mi">90</span><span class="n">EE90</span>
-</code></pre></div>
-
+    style FullModel fill:#FFE4B5
+    style Result1 fill:#90EE90
+    style Result2 fill:#90EE90
+    style Result3 fill:#90EE90
+</div>
 <h3>5. 實際應用領域</h3>
 <table>
 <thead>
@@ -1093,41 +1092,41 @@ Epoch 20: Train Acc 76%, Test Acc 72%
 </table>
 <hr />
 <h2>完整學習路線圖</h2>
-<div class="codehilite"><pre><span></span><code><span class="nf">graph</span><span class="w"> </span><span class="n">TB</span>
-<span class="w">    </span><span class="n">Start</span><span class="p">([</span><span class="err">開始</span><span class="w"> </span><span class="n">CNN</span><span class="w"> </span><span class="err">之旅</span><span class="p">])</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">Phase1</span><span class="p">[</span><span class="err">階段</span><span class="w"> </span><span class="mi">1</span><span class="o">:</span><span class="w"> </span><span class="err">基礎</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="mi">1</span><span class="o">-</span><span class="mi">2</span><span class="w"> </span><span class="err">週</span><span class="p">]</span>
+<div class="mermaid">
+graph TB
+    Start([開始 CNN 之旅]) --&gt; Phase1[階段 1: 基礎&lt;br/&gt;1-2 週]
 
-<span class="w">    </span><span class="n">Phase1</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">Task1</span><span class="p">[</span><span class="err">✓</span><span class="w"> </span><span class="n">MNIST</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">LeNet</span><span class="o">-</span><span class="mi">5</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="mi">98</span><span class="o">%+</span><span class="w"> </span><span class="err">準確率</span><span class="p">]</span>
-<span class="w">    </span><span class="n">Task1</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">Task2</span><span class="p">[</span><span class="err">✓</span><span class="w"> </span><span class="err">理解卷積、池化</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="err">手算特徵圖尺寸</span><span class="p">]</span>
-<span class="w">    </span><span class="n">Task2</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">Task3</span><span class="p">[</span><span class="err">✓</span><span class="w"> </span><span class="n">Keras</span><span class="w"> </span><span class="err">實作</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="err">熟悉</span><span class="w"> </span><span class="kr">Sequential</span><span class="w"> </span><span class="n">API</span><span class="p">]</span>
+    Phase1 --&gt; Task1[✓ MNIST + LeNet-5&lt;br/&gt;98%+ 準確率]
+    Task1 --&gt; Task2[✓ 理解卷積、池化&lt;br/&gt;手算特徵圖尺寸]
+    Task2 --&gt; Task3[✓ Keras 實作&lt;br/&gt;熟悉 Sequential API]
 
-<span class="w">    </span><span class="n">Task3</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">Phase2</span><span class="p">[</span><span class="err">階段</span><span class="w"> </span><span class="mi">2</span><span class="o">:</span><span class="w"> </span><span class="err">進階</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="mi">2</span><span class="o">-</span><span class="mi">3</span><span class="w"> </span><span class="err">週</span><span class="p">]</span>
+    Task3 --&gt; Phase2[階段 2: 進階&lt;br/&gt;2-3 週]
 
-<span class="w">    </span><span class="n">Phase2</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">Task4</span><span class="p">[</span><span class="err">✓</span><span class="w"> </span><span class="n">MNIST</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">PyTorch</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="mi">99</span><span class="o">%+</span><span class="w"> </span><span class="err">準確率</span><span class="p">]</span>
-<span class="w">    </span><span class="n">Task4</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">Task5</span><span class="p">[</span><span class="err">✓</span><span class="w"> </span><span class="err">手寫訓練迴圈</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="err">理解</span><span class="w"> </span><span class="n">backward</span><span class="p">]</span>
-<span class="w">    </span><span class="n">Task5</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">Task6</span><span class="p">[</span><span class="err">✓</span><span class="w"> </span><span class="n">CIFAR</span><span class="o">-</span><span class="mi">10</span><span class="w"> </span><span class="err">挑戰</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="mi">85</span><span class="o">%+</span><span class="w"> </span><span class="err">準確率</span><span class="p">]</span>
+    Phase2 --&gt; Task4[✓ MNIST + PyTorch&lt;br/&gt;99%+ 準確率]
+    Task4 --&gt; Task5[✓ 手寫訓練迴圈&lt;br/&gt;理解 backward]
+    Task5 --&gt; Task6[✓ CIFAR-10 挑戰&lt;br/&gt;85%+ 準確率]
 
-<span class="w">    </span><span class="n">Task6</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">Phase3</span><span class="p">[</span><span class="err">階段</span><span class="w"> </span><span class="mi">3</span><span class="o">:</span><span class="w"> </span><span class="err">深化</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="mi">3</span><span class="o">-</span><span class="mi">4</span><span class="w"> </span><span class="err">週</span><span class="p">]</span>
+    Task6 --&gt; Phase3[階段 3: 深化&lt;br/&gt;3-4 週]
 
-<span class="w">    </span><span class="n">Phase3</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">Task7</span><span class="p">[</span><span class="err">✓</span><span class="w"> </span><span class="err">資料增強技巧</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="err">準確率</span><span class="w"> </span><span class="o">+</span><span class="mi">5</span><span class="o">%</span><span class="p">]</span>
-<span class="w">    </span><span class="n">Task7</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">Task8</span><span class="p">[</span><span class="err">✓</span><span class="w"> </span><span class="n">Batch</span><span class="w"> </span><span class="n">Norm</span><span class="p">,</span><span class="w"> </span><span class="n">Dropout</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="err">理解正規化</span><span class="p">]</span>
-<span class="w">    </span><span class="n">Task8</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">Task9</span><span class="p">[</span><span class="err">✓</span><span class="w"> </span><span class="err">超參數調整</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="err">學習率調度</span><span class="p">]</span>
+    Phase3 --&gt; Task7[✓ 資料增強技巧&lt;br/&gt;準確率 +5%]
+    Task7 --&gt; Task8[✓ Batch Norm, Dropout&lt;br/&gt;理解正規化]
+    Task8 --&gt; Task9[✓ 超參數調整&lt;br/&gt;學習率調度]
 
-<span class="w">    </span><span class="n">Task9</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">Phase4</span><span class="p">[</span><span class="err">階段</span><span class="w"> </span><span class="mi">4</span><span class="o">:</span><span class="w"> </span><span class="err">實戰</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="mi">4</span><span class="o">-</span><span class="mi">8</span><span class="w"> </span><span class="err">週</span><span class="p">]</span>
+    Task9 --&gt; Phase4[階段 4: 實戰&lt;br/&gt;4-8 週]
 
-<span class="w">    </span><span class="n">Phase4</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">Task10</span><span class="p">[</span><span class="n">ResNet</span><span class="w"> </span><span class="err">實作</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="err">殘差連接</span><span class="p">]</span>
-<span class="w">    </span><span class="n">Task10</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">Task11</span><span class="p">[</span><span class="err">遷移學習</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="n">ImageNet</span><span class="w"> </span><span class="err">預訓練</span><span class="p">]</span>
-<span class="w">    </span><span class="n">Task11</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">Task12</span><span class="p">[</span><span class="err">實際專案</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="err">自己的資料集</span><span class="p">]</span>
+    Phase4 --&gt; Task10[ResNet 實作&lt;br/&gt;殘差連接]
+    Task10 --&gt; Task11[遷移學習&lt;br/&gt;ImageNet 預訓練]
+    Task11 --&gt; Task12[實際專案&lt;br/&gt;自己的資料集]
 
-<span class="w">    </span><span class="n">Task12</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">Master</span><span class="p">([</span><span class="n">CNN</span><span class="w"> </span><span class="err">專家</span><span class="p">])</span>
+    Task12 --&gt; Master([CNN 專家])
 
-<span class="w">    </span><span class="n">style</span><span class="w"> </span><span class="n">Start</span><span class="w"> </span><span class="n">fill</span><span class="o">:</span><span class="err">#</span><span class="mi">90</span><span class="n">EE90</span>
-<span class="w">    </span><span class="n">style</span><span class="w"> </span><span class="n">Phase1</span><span class="w"> </span><span class="n">fill</span><span class="o">:</span><span class="err">#</span><span class="n">FFE4B5</span>
-<span class="w">    </span><span class="n">style</span><span class="w"> </span><span class="n">Phase2</span><span class="w"> </span><span class="n">fill</span><span class="o">:</span><span class="err">#</span><span class="n">FFE4B5</span>
-<span class="w">    </span><span class="n">style</span><span class="w"> </span><span class="n">Phase3</span><span class="w"> </span><span class="n">fill</span><span class="o">:</span><span class="err">#</span><span class="n">FFE4B5</span>
-<span class="w">    </span><span class="n">style</span><span class="w"> </span><span class="n">Phase4</span><span class="w"> </span><span class="n">fill</span><span class="o">:</span><span class="err">#</span><span class="n">FFD700</span>
-<span class="w">    </span><span class="n">style</span><span class="w"> </span><span class="n">Master</span><span class="w"> </span><span class="n">fill</span><span class="o">:</span><span class="err">#</span><span class="n">FFD700</span>
-</code></pre></div>
-
+    style Start fill:#90EE90
+    style Phase1 fill:#FFE4B5
+    style Phase2 fill:#FFE4B5
+    style Phase3 fill:#FFE4B5
+    style Phase4 fill:#FFD700
+    style Master fill:#FFD700
+</div>
 <h3>學習時程建議</h3>
 <p><strong>全職學習（每週 40 小時）</strong>：<br />
 - 第 1-2 週：完成 MNIST，理解基礎概念<br />
@@ -1350,31 +1349,31 @@ Epoch 20: Train Acc 76%, Test Acc 72%
 </table>
 <h3>3. 激活函數的深度分析</h3>
 <h4>3.1 各種激活函數對比</h4>
-<div class="codehilite"><pre><span></span><code><span class="nf">graph</span><span class="w"> </span><span class="n">TB</span>
-<span class="w">    </span><span class="n">subgraph</span><span class="w"> </span><span class="err">激活函數特性對比</span>
-<span class="w">        </span><span class="n">A</span><span class="p">[</span><span class="n">ReLU</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">=</span><span class="nf">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">x</span><span class="p">)]</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">A1</span><span class="p">[</span><span class="err">優點</span><span class="o">:</span><span class="w"> </span><span class="err">計算快</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="err">避免梯度消失</span><span class="p">]</span>
-<span class="w">        </span><span class="n">A</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">A2</span><span class="p">[</span><span class="err">缺點</span><span class="o">:</span><span class="w"> </span><span class="n">Dead</span><span class="w"> </span><span class="n">ReLU</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="err">負值神經元死亡</span><span class="p">]</span>
+<div class="mermaid">
+graph TB
+    subgraph 激活函數特性對比
+        A[ReLU&lt;br/&gt;f(x)=max(0,x)] --&gt; A1[優點: 計算快&lt;br/&gt;避免梯度消失]
+        A --&gt; A2[缺點: Dead ReLU&lt;br/&gt;負值神經元死亡]
 
-<span class="w">        </span><span class="n">B</span><span class="p">[</span><span class="n">Leaky</span><span class="w"> </span><span class="n">ReLU</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">=</span><span class="nf">max</span><span class="p">(</span><span class="mf">0.01</span><span class="n">x</span><span class="p">,</span><span class="n">x</span><span class="p">)]</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">B1</span><span class="p">[</span><span class="err">優點</span><span class="o">:</span><span class="w"> </span><span class="err">解決</span><span class="w"> </span><span class="n">Dead</span><span class="w"> </span><span class="n">ReLU</span><span class="p">]</span>
-<span class="w">        </span><span class="n">B</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">B2</span><span class="p">[</span><span class="err">缺點</span><span class="o">:</span><span class="w"> </span><span class="err">需調整斜率</span><span class="p">]</span>
+        B[Leaky ReLU&lt;br/&gt;f(x)=max(0.01x,x)] --&gt; B1[優點: 解決 Dead ReLU]
+        B --&gt; B2[缺點: 需調整斜率]
 
-<span class="w">        </span><span class="n">C</span><span class="p">[</span><span class="n">Sigmoid</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">=</span><span class="mi">1</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="n">e</span><span class="err">⁻ˣ</span><span class="p">)]</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">C1</span><span class="p">[</span><span class="err">優點</span><span class="o">:</span><span class="w"> </span><span class="err">平滑、有界</span><span class="p">]</span>
-<span class="w">        </span><span class="n">C</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">C2</span><span class="p">[</span><span class="err">缺點</span><span class="o">:</span><span class="w"> </span><span class="err">梯度消失</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="err">計算成本高</span><span class="p">]</span>
+        C[Sigmoid&lt;br/&gt;f(x)=1/(1+e⁻ˣ)] --&gt; C1[優點: 平滑、有界]
+        C --&gt; C2[缺點: 梯度消失&lt;br/&gt;計算成本高]
 
-<span class="w">        </span><span class="n">D</span><span class="p">[</span><span class="nf">Tanh</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">=</span><span class="nf">tanh</span><span class="p">(</span><span class="n">x</span><span class="p">)]</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">D1</span><span class="p">[</span><span class="err">優點</span><span class="o">:</span><span class="w"> </span><span class="err">零中心化</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="err">比</span><span class="w"> </span><span class="n">Sigmoid</span><span class="w"> </span><span class="err">好</span><span class="p">]</span>
-<span class="w">        </span><span class="n">D</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">D2</span><span class="p">[</span><span class="err">缺點</span><span class="o">:</span><span class="w"> </span><span class="err">仍有梯度消失</span><span class="p">]</span>
+        D[Tanh&lt;br/&gt;f(x)=tanh(x)] --&gt; D1[優點: 零中心化&lt;br/&gt;比 Sigmoid 好]
+        D --&gt; D2[缺點: 仍有梯度消失]
 
-<span class="w">        </span><span class="n">E</span><span class="p">[</span><span class="n">Softmax</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="n">f</span><span class="p">(</span><span class="n">xᵢ</span><span class="p">)</span><span class="o">=</span><span class="n">eˣⁱ</span><span class="o">/</span><span class="err">Σ</span><span class="n">eˣʲ</span><span class="p">]</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">E1</span><span class="p">[</span><span class="err">優點</span><span class="o">:</span><span class="w"> </span><span class="err">輸出機率分布</span><span class="p">]</span>
-<span class="w">        </span><span class="n">E</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">E2</span><span class="p">[</span><span class="err">用途</span><span class="o">:</span><span class="w"> </span><span class="err">多分類輸出層</span><span class="p">]</span>
-<span class="w">    </span><span class="kd">end</span>
+        E[Softmax&lt;br/&gt;f(xᵢ)=eˣⁱ/Σeˣʲ] --&gt; E1[優點: 輸出機率分布]
+        E --&gt; E2[用途: 多分類輸出層]
+    end
 
-<span class="w">    </span><span class="n">style</span><span class="w"> </span><span class="n">A</span><span class="w"> </span><span class="n">fill</span><span class="o">:</span><span class="err">#</span><span class="mi">90</span><span class="n">EE90</span>
-<span class="w">    </span><span class="n">style</span><span class="w"> </span><span class="n">B</span><span class="w"> </span><span class="n">fill</span><span class="o">:</span><span class="err">#</span><span class="mi">90</span><span class="n">EE90</span>
-<span class="w">    </span><span class="n">style</span><span class="w"> </span><span class="n">E</span><span class="w"> </span><span class="n">fill</span><span class="o">:</span><span class="err">#</span><span class="n">FFD700</span>
-<span class="w">    </span><span class="n">style</span><span class="w"> </span><span class="n">C</span><span class="w"> </span><span class="n">fill</span><span class="o">:</span><span class="err">#</span><span class="n">FFE4B5</span>
-<span class="w">    </span><span class="n">style</span><span class="w"> </span><span class="n">D</span><span class="w"> </span><span class="n">fill</span><span class="o">:</span><span class="err">#</span><span class="n">FFE4B5</span>
-</code></pre></div>
-
+    style A fill:#90EE90
+    style B fill:#90EE90
+    style E fill:#FFD700
+    style C fill:#FFE4B5
+    style D fill:#FFE4B5
+</div>
 <h4>3.2 激活函數的數學性質</h4>
 <table>
 <thead>
@@ -1454,23 +1453,23 @@ Epoch 20: Train Acc 76%, Test Acc 72%
 </code></pre></div>
 
 <p><strong>為什麼有效？</strong></p>
-<div class="codehilite"><pre><span></span><code><span class="n">graph</span><span class="w"> </span><span class="n">LR</span>
-<span class="w">    </span><span class="n">A</span><span class="p">[</span><span class="n">輸入分布不穩定</span><span class="p">]</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">B</span><span class="p">[</span><span class="n">內部協變量偏移</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="n">Internal</span><span class="w"> </span><span class="n">Covariate</span><span class="w"> </span><span class="n">Shift</span><span class="p">]</span>
-<span class="w">    </span><span class="n">B</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">C</span><span class="p">[</span><span class="n">每層輸入分布變化</span><span class="p">]</span>
-<span class="w">    </span><span class="n">C</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">D</span><span class="p">[</span><span class="n">難以訓練</span><span class="p">]</span>
+<div class="mermaid">
+graph LR
+    A[輸入分布不穩定] --&gt; B[內部協變量偏移&lt;br/&gt;Internal Covariate Shift]
+    B --&gt; C[每層輸入分布變化]
+    C --&gt; D[難以訓練]
 
-<span class="w">    </span><span class="n">E</span><span class="p">[</span><span class="n">Batch</span><span class="w"> </span><span class="n">Normalization</span><span class="p">]</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">F</span><span class="p">[</span><span class="n">穩定輸入分布</span><span class="p">]</span>
-<span class="w">    </span><span class="n">F</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">G</span><span class="p">[</span><span class="n">加速收斂</span><span class="p">]</span>
-<span class="w">    </span><span class="n">F</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">H</span><span class="p">[</span><span class="n">允許更大學習率</span><span class="p">]</span>
-<span class="w">    </span><span class="n">F</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">I</span><span class="p">[</span><span class="n">正規化效果</span><span class="p">]</span>
+    E[Batch Normalization] --&gt; F[穩定輸入分布]
+    F --&gt; G[加速收斂]
+    F --&gt; H[允許更大學習率]
+    F --&gt; I[正規化效果]
 
-<span class="w">    </span><span class="n">style</span><span class="w"> </span><span class="n">A</span><span class="w"> </span><span class="n">fill</span><span class="o">:</span><span class="err">#</span><span class="n">FFB6C1</span>
-<span class="w">    </span><span class="n">style</span><span class="w"> </span><span class="n">E</span><span class="w"> </span><span class="n">fill</span><span class="o">:</span><span class="err">#</span><span class="mi">90</span><span class="n">EE90</span>
-<span class="w">    </span><span class="n">style</span><span class="w"> </span><span class="n">G</span><span class="w"> </span><span class="n">fill</span><span class="o">:</span><span class="err">#</span><span class="n">FFD700</span>
-<span class="w">    </span><span class="n">style</span><span class="w"> </span><span class="n">H</span><span class="w"> </span><span class="n">fill</span><span class="o">:</span><span class="err">#</span><span class="n">FFD700</span>
-<span class="w">    </span><span class="n">style</span><span class="w"> </span><span class="n">I</span><span class="w"> </span><span class="n">fill</span><span class="o">:</span><span class="err">#</span><span class="n">FFD700</span>
-</code></pre></div>
-
+    style A fill:#FFB6C1
+    style E fill:#90EE90
+    style G fill:#FFD700
+    style H fill:#FFD700
+    style I fill:#FFD700
+</div>
 <h4>4.2 Dropout 的理論基礎</h4>
 <p><strong>運作機制</strong>：</p>
 <div class="codehilite"><pre><span></span><code><span class="c1"># 訓練時（Dropout rate = 0.5）</span>
@@ -1726,31 +1725,37 @@ L = Loss(Softmax(Dense(Flatten(Pool(Conv(X, W))))))
 
 <h3>7. 超參數的系統性影響</h3>
 <h4>7.1 學習率的影響</h4>
-<div class="codehilite"><pre><span></span><code><span class="nf">graph</span><span class="w"> </span><span class="n">TB</span>
-<span class="w">    </span><span class="n">LR</span><span class="p">[</span><span class="err">學習率</span><span class="w"> </span><span class="err">η</span><span class="p">]</span>
+<div class="mermaid">
+graph TD
+    Start[模型不收斂] --&gt; Q1{損失是否下降?}
 
-<span class="w">    </span><span class="n">LR</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">Too_Large</span><span class="p">[</span><span class="err">過大</span><span class="w"> </span><span class="err">η</span><span class="o">&gt;</span><span class="mf">0.1</span><span class="p">]</span>
-<span class="w">    </span><span class="n">LR</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">Good</span><span class="p">[</span><span class="err">適中</span><span class="w"> </span><span class="err">η≈</span><span class="mf">0.001</span><span class="p">]</span>
-<span class="w">    </span><span class="n">LR</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">Too_Small</span><span class="p">[</span><span class="err">過小</span><span class="w"> </span><span class="err">η</span><span class="o">&lt;</span><span class="mf">0.00001</span><span class="p">]</span>
+    Q1 --&gt;|完全不降| Path1[檢查基礎設定]
+    Q1 --&gt;|下降但停滯| Path2[優化超參數]
+    Q1 --&gt;|劇烈震盪| Path3[學習率過大]
 
-<span class="w">    </span><span class="n">Too_Large</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">TL1</span><span class="p">[</span><span class="err">損失震盪</span><span class="p">]</span>
-<span class="w">    </span><span class="n">Too_Large</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">TL2</span><span class="p">[</span><span class="err">無法收斂</span><span class="p">]</span>
-<span class="w">    </span><span class="n">Too_Large</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">TL3</span><span class="p">[</span><span class="err">可能發散</span><span class="p">]</span>
+    Path1 --&gt; Check1[1. 資料是否正規化?]
+    Check1 --&gt; Check2[2. 標籤格式正確?]
+    Check2 --&gt; Check3[3. 優化器設定正確?]
+    Check3 --&gt; Check4[4. 損失函數適合?]
 
-<span class="w">    </span><span class="n">Good</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">G1</span><span class="p">[</span><span class="err">穩定收斂</span><span class="p">]</span>
-<span class="w">    </span><span class="n">Good</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">G2</span><span class="p">[</span><span class="err">適當速度</span><span class="p">]</span>
-<span class="w">    </span><span class="n">Good</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">G3</span><span class="p">[</span><span class="err">達到最優</span><span class="p">]</span>
+    Path2 --&gt; Opt1[1. 提高學習率]
+    Opt1 --&gt; Opt2[2. 增加模型容量]
+    Opt2 --&gt; Opt3[3. 檢查資料品質]
 
-<span class="w">    </span><span class="n">Too_Small</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">TS1</span><span class="p">[</span><span class="err">收斂極慢</span><span class="p">]</span>
-<span class="w">    </span><span class="n">Too_Small</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">TS2</span><span class="p">[</span><span class="err">易卡在局部最小</span><span class="p">]</span>
-<span class="w">    </span><span class="n">Too_Small</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">TS3</span><span class="p">[</span><span class="err">訓練時間長</span><span class="p">]</span>
+    Path3 --&gt; Fix1[降低學習率&lt;br/&gt;0.001 → 0.0001]
 
-<span class="w">    </span><span class="n">style</span><span class="w"> </span><span class="n">LR</span><span class="w"> </span><span class="n">fill</span><span class="o">:</span><span class="err">#</span><span class="n">FFE4B5</span>
-<span class="w">    </span><span class="n">style</span><span class="w"> </span><span class="n">Good</span><span class="w"> </span><span class="n">fill</span><span class="o">:</span><span class="err">#</span><span class="mi">90</span><span class="n">EE90</span>
-<span class="w">    </span><span class="n">style</span><span class="w"> </span><span class="n">Too_Large</span><span class="w"> </span><span class="n">fill</span><span class="o">:</span><span class="err">#</span><span class="n">FFB6C1</span>
-<span class="w">    </span><span class="n">style</span><span class="w"> </span><span class="n">Too_Small</span><span class="w"> </span><span class="n">fill</span><span class="o">:</span><span class="err">#</span><span class="n">FFB6C1</span>
-</code></pre></div>
+    Check1 --&gt; Fix2[正規化到 [0,1]&lt;br/&gt;或標準化]
+    Check2 --&gt; Fix3[Keras: One-Hot&lt;br/&gt;PyTorch: 類別索引]
+    Check3 --&gt; Fix4[檢查 zero_grad&lt;br/&gt;檢查 optimizer.step]
+    Check4 --&gt; Fix5[分類: CrossEntropy&lt;br/&gt;回歸: MSE]
 
+    style Start fill:#FFB6C1
+    style Fix2 fill:#90EE90
+    style Fix3 fill:#90EE90
+    style Fix4 fill:#90EE90
+    style Fix5 fill:#90EE90
+    style Fix1 fill:#90EE90
+</div>0</p>
 <p><strong>數學分析</strong>：</p>
 <div class="codehilite"><pre><span></span><code><span class="err">梯度下降</span><span class="o">:</span><span class="w"> </span><span class="err">θₜ₊₁</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="err">θₜ</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="err">η</span><span class="w"> </span><span class="err">×</span><span class="w"> </span><span class="err">∇</span><span class="n">L</span><span class="o">(</span><span class="err">θₜ</span><span class="o">)</span>
 
@@ -1854,22 +1859,37 @@ Batch Size 512, LR = 0.004  ← 4 倍
 - 不可約誤差: 資料本身的雜訊
 </code></pre></div>
 
-<div class="codehilite"><pre><span></span><code><span class="nf">graph</span><span class="w"> </span><span class="n">LR</span>
-<span class="w">    </span><span class="n">A</span><span class="p">[</span><span class="err">模型複雜度</span><span class="p">]</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">B</span><span class="p">{</span><span class="err">權衡點</span><span class="p">}</span>
+<div class="mermaid">
+graph TD
+    Start[模型不收斂] --&gt; Q1{損失是否下降?}
 
-<span class="w">    </span><span class="n">B</span><span class="w"> </span><span class="o">--&gt;|</span><span class="err">低複雜度</span><span class="o">|</span><span class="w"> </span><span class="n">C</span><span class="p">[</span><span class="err">欠擬合</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="err">高偏差</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="err">低方差</span><span class="p">]</span>
-<span class="w">    </span><span class="n">B</span><span class="w"> </span><span class="o">--&gt;|</span><span class="err">適中複雜度</span><span class="o">|</span><span class="w"> </span><span class="n">D</span><span class="p">[</span><span class="err">最佳點</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="err">平衡偏差方差</span><span class="p">]</span>
-<span class="w">    </span><span class="n">B</span><span class="w"> </span><span class="o">--&gt;|</span><span class="err">高複雜度</span><span class="o">|</span><span class="w"> </span><span class="n">E</span><span class="p">[</span><span class="err">過擬合</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="err">低偏差</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="err">高方差</span><span class="p">]</span>
+    Q1 --&gt;|完全不降| Path1[檢查基礎設定]
+    Q1 --&gt;|下降但停滯| Path2[優化超參數]
+    Q1 --&gt;|劇烈震盪| Path3[學習率過大]
 
-<span class="w">    </span><span class="n">C</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">C1</span><span class="p">[</span><span class="err">訓練誤差</span><span class="o">:</span><span class="w"> </span><span class="err">高</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="err">測試誤差</span><span class="o">:</span><span class="w"> </span><span class="err">高</span><span class="p">]</span>
-<span class="w">    </span><span class="n">D</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">D1</span><span class="p">[</span><span class="err">訓練誤差</span><span class="o">:</span><span class="w"> </span><span class="err">中</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="err">測試誤差</span><span class="o">:</span><span class="w"> </span><span class="err">中</span><span class="p">]</span>
-<span class="w">    </span><span class="n">E</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">E1</span><span class="p">[</span><span class="err">訓練誤差</span><span class="o">:</span><span class="w"> </span><span class="err">低</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="err">測試誤差</span><span class="o">:</span><span class="w"> </span><span class="err">高</span><span class="p">]</span>
+    Path1 --&gt; Check1[1. 資料是否正規化?]
+    Check1 --&gt; Check2[2. 標籤格式正確?]
+    Check2 --&gt; Check3[3. 優化器設定正確?]
+    Check3 --&gt; Check4[4. 損失函數適合?]
 
-<span class="w">    </span><span class="n">style</span><span class="w"> </span><span class="n">D</span><span class="w"> </span><span class="n">fill</span><span class="o">:</span><span class="err">#</span><span class="mi">90</span><span class="n">EE90</span>
-<span class="w">    </span><span class="n">style</span><span class="w"> </span><span class="n">C</span><span class="w"> </span><span class="n">fill</span><span class="o">:</span><span class="err">#</span><span class="n">FFE4B5</span>
-<span class="w">    </span><span class="n">style</span><span class="w"> </span><span class="n">E</span><span class="w"> </span><span class="n">fill</span><span class="o">:</span><span class="err">#</span><span class="n">FFB6C1</span>
-</code></pre></div>
+    Path2 --&gt; Opt1[1. 提高學習率]
+    Opt1 --&gt; Opt2[2. 增加模型容量]
+    Opt2 --&gt; Opt3[3. 檢查資料品質]
 
+    Path3 --&gt; Fix1[降低學習率&lt;br/&gt;0.001 → 0.0001]
+
+    Check1 --&gt; Fix2[正規化到 [0,1]&lt;br/&gt;或標準化]
+    Check2 --&gt; Fix3[Keras: One-Hot&lt;br/&gt;PyTorch: 類別索引]
+    Check3 --&gt; Fix4[檢查 zero_grad&lt;br/&gt;檢查 optimizer.step]
+    Check4 --&gt; Fix5[分類: CrossEntropy&lt;br/&gt;回歸: MSE]
+
+    style Start fill:#FFB6C1
+    style Fix2 fill:#90EE90
+    style Fix3 fill:#90EE90
+    style Fix4 fill:#90EE90
+    style Fix5 fill:#90EE90
+    style Fix1 fill:#90EE90
+</div>1</p>
 <h4>8.2 模型容量理論</h4>
 <p><strong>VC 維（Vapnik-Chervonenkis Dimension）</strong>：</p>
 <p>模型能夠擬合的最大樣本數量</p>
@@ -1987,49 +2007,37 @@ RF_l = RF_{l-1} + (K_l - 1) × Π_{i=1}^{l-1} S_i
 </code></pre></div>
 
 <h3>理論總結的關鍵要點</h3>
-<div class="codehilite"><pre><span></span><code><span class="nf">graph</span><span class="w"> </span><span class="n">TB</span>
-<span class="w">    </span><span class="n">CNN</span><span class="p">[</span><span class="n">CNN</span><span class="w"> </span><span class="err">理論體系</span><span class="p">]</span>
+<div class="mermaid">
+graph TD
+    Start[模型不收斂] --&gt; Q1{損失是否下降?}
 
-<span class="w">    </span><span class="n">CNN</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">Math</span><span class="p">[</span><span class="err">數學基礎</span><span class="p">]</span>
-<span class="w">    </span><span class="n">CNN</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">Design</span><span class="p">[</span><span class="err">架構設計</span><span class="p">]</span>
-<span class="w">    </span><span class="n">CNN</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">Train</span><span class="p">[</span><span class="err">訓練技術</span><span class="p">]</span>
+    Q1 --&gt;|完全不降| Path1[檢查基礎設定]
+    Q1 --&gt;|下降但停滯| Path2[優化超參數]
+    Q1 --&gt;|劇烈震盪| Path3[學習率過大]
 
-<span class="w">    </span><span class="n">Math</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">M1</span><span class="p">[</span><span class="err">卷積運算</span><span class="p">]</span>
-<span class="w">    </span><span class="n">Math</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">M2</span><span class="p">[</span><span class="err">反向傳播</span><span class="p">]</span>
-<span class="w">    </span><span class="n">Math</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">M3</span><span class="p">[</span><span class="err">優化理論</span><span class="p">]</span>
+    Path1 --&gt; Check1[1. 資料是否正規化?]
+    Check1 --&gt; Check2[2. 標籤格式正確?]
+    Check2 --&gt; Check3[3. 優化器設定正確?]
+    Check3 --&gt; Check4[4. 損失函數適合?]
 
-<span class="w">    </span><span class="n">Design</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">D1</span><span class="p">[</span><span class="err">參數共享</span><span class="p">]</span>
-<span class="w">    </span><span class="n">Design</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">D2</span><span class="p">[</span><span class="err">層次化特徵</span><span class="p">]</span>
-<span class="w">    </span><span class="n">Design</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">D3</span><span class="p">[</span><span class="err">平移不變性</span><span class="p">]</span>
+    Path2 --&gt; Opt1[1. 提高學習率]
+    Opt1 --&gt; Opt2[2. 增加模型容量]
+    Opt2 --&gt; Opt3[3. 檢查資料品質]
 
-<span class="w">    </span><span class="n">Train</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">T1</span><span class="p">[</span><span class="err">損失函數</span><span class="p">]</span>
-<span class="w">    </span><span class="n">Train</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">T2</span><span class="p">[</span><span class="err">正規化</span><span class="p">]</span>
-<span class="w">    </span><span class="n">Train</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">T3</span><span class="p">[</span><span class="err">超參數</span><span class="p">]</span>
+    Path3 --&gt; Fix1[降低學習率&lt;br/&gt;0.001 → 0.0001]
 
-<span class="w">    </span><span class="n">M1</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">Key1</span><span class="p">[</span><span class="err">輸出尺寸計算</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="err">參數量計算</span><span class="p">]</span>
-<span class="w">    </span><span class="n">M2</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">Key2</span><span class="p">[</span><span class="err">鏈式法則</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="err">梯度流動</span><span class="p">]</span>
-<span class="w">    </span><span class="n">M3</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">Key3</span><span class="p">[</span><span class="n">Adam</span><span class="w"> </span><span class="err">自適應</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="err">學習率調度</span><span class="p">]</span>
+    Check1 --&gt; Fix2[正規化到 [0,1]&lt;br/&gt;或標準化]
+    Check2 --&gt; Fix3[Keras: One-Hot&lt;br/&gt;PyTorch: 類別索引]
+    Check3 --&gt; Fix4[檢查 zero_grad&lt;br/&gt;檢查 optimizer.step]
+    Check4 --&gt; Fix5[分類: CrossEntropy&lt;br/&gt;回歸: MSE]
 
-<span class="w">    </span><span class="n">D1</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">Key4</span><span class="p">[</span><span class="err">減少參數</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="err">提高效率</span><span class="p">]</span>
-<span class="w">    </span><span class="n">D2</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">Key5</span><span class="p">[</span><span class="err">淺層→深層</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="err">簡單→複雜</span><span class="p">]</span>
-<span class="w">    </span><span class="n">D3</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">Key6</span><span class="p">[</span><span class="err">魯棒性</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="err">泛化能力</span><span class="p">]</span>
-
-<span class="w">    </span><span class="n">T1</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">Key7</span><span class="p">[</span><span class="err">交叉熵</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="err">梯度特性</span><span class="p">]</span>
-<span class="w">    </span><span class="n">T2</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">Key8</span><span class="p">[</span><span class="n">Dropout</span><span class="p">,</span><span class="w"> </span><span class="n">BN</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="err">防過擬合</span><span class="p">]</span>
-<span class="w">    </span><span class="n">T3</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">Key9</span><span class="p">[</span><span class="n">Learning</span><span class="w"> </span><span class="n">Rate</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="n">Batch</span><span class="w"> </span><span class="n">Size</span><span class="p">]</span>
-
-<span class="w">    </span><span class="n">style</span><span class="w"> </span><span class="n">CNN</span><span class="w"> </span><span class="n">fill</span><span class="o">:</span><span class="err">#</span><span class="n">FFD700</span>
-<span class="w">    </span><span class="n">style</span><span class="w"> </span><span class="n">Key1</span><span class="w"> </span><span class="n">fill</span><span class="o">:</span><span class="err">#</span><span class="mi">90</span><span class="n">EE90</span>
-<span class="w">    </span><span class="n">style</span><span class="w"> </span><span class="n">Key2</span><span class="w"> </span><span class="n">fill</span><span class="o">:</span><span class="err">#</span><span class="mi">90</span><span class="n">EE90</span>
-<span class="w">    </span><span class="n">style</span><span class="w"> </span><span class="n">Key3</span><span class="w"> </span><span class="n">fill</span><span class="o">:</span><span class="err">#</span><span class="mi">90</span><span class="n">EE90</span>
-<span class="w">    </span><span class="n">style</span><span class="w"> </span><span class="n">Key4</span><span class="w"> </span><span class="n">fill</span><span class="o">:</span><span class="err">#</span><span class="mi">90</span><span class="n">EE90</span>
-<span class="w">    </span><span class="n">style</span><span class="w"> </span><span class="n">Key5</span><span class="w"> </span><span class="n">fill</span><span class="o">:</span><span class="err">#</span><span class="mi">90</span><span class="n">EE90</span>
-<span class="w">    </span><span class="n">style</span><span class="w"> </span><span class="n">Key6</span><span class="w"> </span><span class="n">fill</span><span class="o">:</span><span class="err">#</span><span class="mi">90</span><span class="n">EE90</span>
-<span class="w">    </span><span class="n">style</span><span class="w"> </span><span class="n">Key7</span><span class="w"> </span><span class="n">fill</span><span class="o">:</span><span class="err">#</span><span class="mi">90</span><span class="n">EE90</span>
-<span class="w">    </span><span class="n">style</span><span class="w"> </span><span class="n">Key8</span><span class="w"> </span><span class="n">fill</span><span class="o">:</span><span class="err">#</span><span class="mi">90</span><span class="n">EE90</span>
-<span class="w">    </span><span class="n">style</span><span class="w"> </span><span class="n">Key9</span><span class="w"> </span><span class="n">fill</span><span class="o">:</span><span class="err">#</span><span class="mi">90</span><span class="n">EE90</span>
-</code></pre></div>
-
+    style Start fill:#FFB6C1
+    style Fix2 fill:#90EE90
+    style Fix3 fill:#90EE90
+    style Fix4 fill:#90EE90
+    style Fix5 fill:#90EE90
+    style Fix1 fill:#90EE90
+</div>2</p>
 <p><strong>核心公式速查表</strong>：</p>
 <table>
 <thead>
