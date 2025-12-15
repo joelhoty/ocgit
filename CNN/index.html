@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CNN 深度學習系列教程索引</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', 'Microsoft JhengHei', sans-serif;
+            line-height: 1.6;
+            color: #e0e0e0;
+            background-color: #1a1a2e;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #16213e;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        }
+        h1 {
+            text-align: center;
+            color: #00d9ff;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #0f3460;
+            padding-bottom: 10px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background-color: #1a1a2e;
+        }
+        th, td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #0f3460;
+        }
+        th {
+            background-color: #0f3460;
+            color: #fff;
+            font-weight: bold;
+        }
+        tr:hover {
+            background-color: #1f4068;
+        }
+        a {
+            color: #00d9ff;
+            text-decoration: none;
+            font-weight: bold;
+            display: block;
+        }
+        a:hover {
+            text-decoration: underline;
+            color: #4db5ff;
+        }
+        .tag {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.85em;
+            margin-right: 5px;
+            margin-bottom: 5px;
+        }
+        .tag-intro { background-color: #2a9d8f; color: white; }
+        .tag-keras { background-color: #e76f51; color: white; }
+        .tag-pytorch { background-color: #e63946; color: white; }
+        .tag-advanced { background-color: #a8dadc; color: #1d3557; }
+        .tag-theory { background-color: #457b9d; color: white; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>CNN 深度學習系列教程索引</h1>
+        <p style="text-align: center; color: #a8b8c4;">本系列教材涵蓋從 CNN 基礎理論、Keras 與 PyTorch 雙框架實作，到進階的 CIFAR-10 影像分類與模型優化技巧。</p>
+        
+        <table>
+            <thead>
+                <tr>
+                    <th style="width: 35%;">課程章節 / 檔案</th>
+                    <th>內容摘要</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <a href="CNN_Tutorial_README.html">📖 完整學習導覽 (README)</a>
+                        <span class="tag tag-intro">總覽</span>
+                    </td>
+                    <td>
+                        本系列教材的總目錄與學習路徑圖。詳細介紹四個部分的內容架構（基礎、PyTorch 實作、CIFAR-10 進階、實戰技巧），並提供適合初學者到進階者的學習路線建議。
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <a href="CNN_01_final.html">🚀 CNN 基礎與 PyTorch 快速入門</a>
+                        <span class="tag tag-theory">理論</span> <span class="tag tag-pytorch">PyTorch</span>
+                    </td>
+                    <td>
+                        單一檔案完整教學。涵蓋深度學習 vs 機器學習、CNN 核心架構（卷積、池化、ReLU）、運作原理圖解，並提供一個完整的 PyTorch CIFAR-10 訓練範例與 Kernel 視覺化。
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <a href="CNN_intro_b07.html">Part 1: 基礎知識與 Keras 實作</a>
+                        <span class="tag tag-intro">基礎</span> <span class="tag tag-keras">Keras</span>
+                    </td>
+                    <td>
+                        介紹 MNIST 手寫數字與 CIFAR-10 資料集、比較 Keras 與 PyTorch 框架差異。實作部分使用 Google Colab 環境與 Keras 框架搭建經典的 LeNet-5 模型。
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <a href="CNN_intro_b07_part2.html">Part 2: PyTorch 深度實戰</a>
+                        <span class="tag tag-pytorch">PyTorch</span> <span class="tag tag-theory">核心觀念</span>
+                    </td>
+                    <td>
+                        專注於 PyTorch 框架的底層實作。深入講解 Tensor、Autograd、DataLoader 等核心概念，並手把手教學如何從頭搭建訓練迴圈，實作 SimpleCNN 達到 99% MNIST 準確率。
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <a href="CNN_intro_b07_part3.html">Part 3: CIFAR-10 進階實戰</a>
+                        <span class="tag tag-advanced">進階</span> <span class="tag tag-keras">Keras</span> <span class="tag tag-pytorch">PyTorch</span>
+                    </td>
+                    <td>
+                        挑戰更複雜的彩色影像分類。探討資料增強 (Data Augmentation) 技術的重要性，並設計包含 Batch Normalization 與 GAP 的現代化 DeepCIFAR 架構來提升準確率。
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <a href="CNN_intro_b07_part4.html">Part 4: 實戰技巧與理論總結</a>
+                        <span class="tag tag-advanced">調參</span> <span class="tag tag-theory">數學原理</span>
+                    </td>
+                    <td>
+                        集大成之作。涵蓋模型不收斂的診斷流程、過擬合/欠擬合的解決方案、學習率與 Batch Size 的超參數調整指南，以及 CNN 反向傳播與優化器的完整數學理論總結。
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

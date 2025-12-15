@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CNN_Tutorial_README</title>
+    
+    <!-- CSS 框架 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/dark.min.css">
+    
+    <!-- 代碼高亮 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/base16/darcula.min.css">
+    
+    <!-- 自定義樣式 -->
+    <style>
+        
+                body {
+                    max-width: 900px;
+                    margin: 0 auto;
+                    padding: 20px;
+                }
+                /* 提升代码块对比度 */
+                pre {
+                    background: #1e1e1e !important;
+                    border: 1px solid #3e3e3e;
+                }
+                pre code {
+                    background: #1e1e1e !important;
+                }
+                code {
+                    background: #2d2d2d !important;
+                }
+                /* 引用块对比度 */
+                blockquote {
+                    background: #2d2d2d;
+                    border-left: 4px solid #4a9eff;
+                }
+            
+        
+        /* 通用代碼塊樣式 */
+        pre code {
+            display: block;
+            padding: 1.5em;
+            border-radius: 8px;
+            overflow-x: auto;
+            line-height: 1.6;
+        }
+
+        /* Mermaid 圖表樣式 */
+        
+        .mermaid {
+            margin: 2em 0;
+            padding: 1.5em;
+            text-align: center;
+            border-radius: 8px;
+        }
+        
+        .mermaid {
+            background: #2c3034;
+            border: 1px solid #444;
+        }
+            
+        
+        /* 響應式調整 */
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            .container, .markdown-body, .latex-body, .window-body, .nes-container {
+                padding: 15px;
+            }
+            pre code {
+                padding: 1em;
+            }
+        }
+        
+        
+    </style>
+</head>
+<body>
+    <div class="container"><!-- Path: General_python/CNN | Timestamp: 2025-10-07 16:00:00 | Version: README -->
+<h1>CNN 完整實戰指南 - 學習導覽</h1>
+<blockquote>
+<p><strong>從經典案例學習 CNN：手寫數字辨識與彩色影像分類完整實戰</strong></p>
+<p>一套完整的深度學習教材，涵蓋 MNIST 手寫數字辨識與 CIFAR-10 彩色影像分類，從基礎理論到進階實作。</p>
+</blockquote>
+<hr />
+<h2>📚 系列簡介</h2>
+<p>本系列教材共分為<strong>四個部分</strong>，總計超過 <strong>35,000 字</strong>，包含：</p>
+<ul>
+<li>✅ 完整的 CNN 理論基礎與數學推導</li>
+<li>✅ Keras 和 PyTorch 雙框架實作</li>
+<li>✅ MNIST 和 CIFAR-10 兩大經典資料集</li>
+<li>✅ 可直接在 Google Colab 執行的程式碼</li>
+<li>✅ 詳細的視覺化與 Mermaid 圖表</li>
+<li>✅ 實戰技巧與疑難排解</li>
+<li>✅ 系統化的理論總結</li>
+</ul>
+<hr />
+<h2>📖 文件結構</h2>
+<h3>Part 1: 基礎知識與 Keras 實作</h3>
+<p><strong>檔案</strong>: <code>CNN_intro_b07.html</code><br />
+<strong>字數</strong>: ~9,000 字<br />
+<strong>預計學習時間</strong>: 1-2 週</p>
+<p><strong>內容涵蓋</strong>:<br />
+- 🎯 <strong>第零部分：基礎知識</strong><br />
+  - MNIST 資料集完整介紹<br />
+  - CIFAR-10 資料集完整介紹<br />
+  - Keras vs PyTorch 框架對比<br />
+  - 專有名詞對照表（40+ 個術語）</p>
+<ul>
+<li>🎯 <strong>第一部分：Google Colab 環境設置</strong></li>
+<li>為什麼使用 Colab</li>
+<li>GPU/TPU 設置</li>
+<li>
+<p>環境檢查與驗證</p>
+</li>
+<li>
+<p>🎯 <strong>第二部分：MNIST + LeNet-5 (Keras)</strong></p>
+</li>
+<li>LeNet-5 經典架構</li>
+<li>完整實作程式碼</li>
+<li>達到 98%+ 準確率</li>
+<li>模型評估與視覺化</li>
+</ul>
+<p><strong>學習成果</strong>:<br />
+- ✅ 理解 CNN 基本概念<br />
+- ✅ 熟悉 Keras 框架<br />
+- ✅ 完成第一個 CNN 模型</p>
+<hr />
+<h3>Part 2: PyTorch 深度實戰</h3>
+<p><strong>檔案</strong>: <code>CNN_intro_b07_part2.html</code><br />
+<strong>字數</strong>: ~8,500 字<br />
+<strong>預計學習時間</strong>: 1-2 週</p>
+<p><strong>內容涵蓋</strong>:<br />
+- 🎯 <strong>第三部分：MNIST + SimpleCNN (PyTorch)</strong><br />
+  - PyTorch 核心概念<br />
+    - Tensor（張量）<br />
+    - nn.Module（模型基類）<br />
+    - DataLoader（資料載入器）<br />
+    - 訓練迴圈結構<br />
+  - SimpleCNN 現代化架構<br />
+  - 完整訓練迴圈手寫<br />
+  - 達到 99%+ 準確率</p>
+<ul>
+<li>🎯 <strong>程式碼深度解析</strong></li>
+<li><code>padding</code> 的作用</li>
+<li><code>model.train()</code> vs <code>model.eval()</code></li>
+<li><code>torch.no_grad()</code> 的重要性</li>
+<li><code>zero_grad()</code> 為什麼必須</li>
+<li>
+<p>CrossEntropyLoss 的細節</p>
+</li>
+<li>
+<p>🎯 <strong>Keras vs PyTorch 實作對比</strong></p>
+</li>
+<li>模型定義差異</li>
+<li>訓練流程差異</li>
+<li>資料格式差異</li>
+<li>完整對比表</li>
+</ul>
+<p><strong>學習成果</strong>:<br />
+- ✅ 深入理解深度學習原理<br />
+- ✅ 掌握 PyTorch 框架<br />
+- ✅ 手寫完整訓練迴圈</p>
+<hr />
+<h3>Part 3: CIFAR-10 進階實戰</h3>
+<p><strong>檔案</strong>: <code>CNN_intro_b07_part3.html</code><br />
+<strong>字數</strong>: ~10,000 字<br />
+<strong>預計學習時間</strong>: 2-3 週</p>
+<p><strong>內容涵蓋</strong>:<br />
+- 🎯 <strong>第四部分：CIFAR-10 進階實戰</strong><br />
+  - 從 MNIST 到 CIFAR-10 的挑戰<br />
+    - 挑戰對比表<br />
+    - 具體困難範例<br />
+    - 為什麼 CIFAR-10 更難</p>
+<ul>
+<li>🎯 <strong>資料增強技術 (Data Augmentation)</strong></li>
+<li>為什麼需要資料增強</li>
+<li>常用增強技術對比</li>
+<li>視覺化範例</li>
+<li>
+<p>效果對比實驗</p>
+</li>
+<li>
+<p>🎯 <strong>進階 CNN 架構：DeepCIFAR</strong></p>
+</li>
+<li>4 個卷積塊設計</li>
+<li>Batch Normalization 原理</li>
+<li>Global Average Pooling 技術</li>
+<li>
+<p>架構演進圖</p>
+</li>
+<li>
+<p>🎯 <strong>完整實作：Keras 與 PyTorch 雙版本</strong></p>
+</li>
+<li>Keras 完整實作（含資料增強）</li>
+<li>PyTorch 完整實作</li>
+<li>
+<p>達到 85-88% 準確率</p>
+</li>
+<li>
+<p>🎯 <strong>結果分析與對比</strong></p>
+</li>
+<li>各類別準確率分析</li>
+<li>混淆矩陣解讀</li>
+<li>錯誤案例分析</li>
+</ul>
+<p><strong>學習成果</strong>:<br />
+- ✅ 掌握資料增強技術<br />
+- ✅ 理解 Batch Normalization<br />
+- ✅ 完成彩色影像分類任務</p>
+<hr />
+<h3>Part 4: 實戰技巧與完整總結</h3>
+<p><strong>檔案</strong>: <code>CNN_intro_b07_part4.html</code><br />
+<strong>字數</strong>: ~15,000 字<br />
+<strong>預計學習時間</strong>: 2-3 週</p>
+<p><strong>內容涵蓋</strong>:<br />
+- 🎯 <strong>第五部分：實戰技巧與疑難排解</strong><br />
+  - 常見問題與解決方案<br />
+    - 準確率停滯<br />
+    - 過擬合問題<br />
+    - 訓練速度慢<br />
+    - CUDA Out of Memory<br />
+  - 模型不收斂的診斷流程<br />
+  - 過擬合與欠擬合理論<br />
+  - 超參數調整指南<br />
+  - 效能優化技巧</p>
+<ul>
+<li>🎯 <strong>進階主題導覽</strong></li>
+<li>遷移學習</li>
+<li>進階 CNN 架構（ResNet, DenseNet, EfficientNet）</li>
+<li>進階正規化技術（Mixup, Cutout, CutMix）</li>
+<li>模型壓縮與加速</li>
+<li>
+<p>實際應用領域</p>
+</li>
+<li>
+<p>🎯 <strong>完整學習路線圖</strong></p>
+</li>
+<li>階段式學習計畫</li>
+<li>學習時程建議</li>
+<li>
+<p>進度檢查清單</p>
+</li>
+<li>
+<p>🎯 <strong>CNN 理論與概念完整總結</strong>（新增！）</p>
+</li>
+<li>
+<ol>
+<li>卷積層的數學原理</li>
+<li>卷積運算定義與實例計算</li>
+<li>輸出尺寸計算公式</li>
+<li>參數共享與局部連接</li>
+</ol>
+</li>
+<li>
+<ol>
+<li>池化層的原理</li>
+<li>Max Pooling vs Average Pooling</li>
+<li>為什麼使用池化</li>
+</ol>
+</li>
+<li>
+<ol>
+<li>激活函數的深度分析</li>
+<li>各種激活函數對比（ReLU, Leaky ReLU, Sigmoid, Tanh, Softmax）</li>
+<li>數學性質表</li>
+<li>Dead ReLU 問題</li>
+</ol>
+</li>
+<li>
+<ol>
+<li>正規化技術的理論</li>
+<li>Batch Normalization 數學原理</li>
+<li>Dropout 理論基礎</li>
+</ol>
+</li>
+<li>
+<ol>
+<li>損失函數與優化器</li>
+<li>交叉熵損失詳解</li>
+<li>優化器數學原理（SGD, Momentum, Adam）</li>
+</ol>
+</li>
+<li>
+<ol>
+<li>反向傳播的數學原理</li>
+<li>鏈式法則</li>
+<li>卷積層的反向傳播</li>
+</ol>
+</li>
+<li>
+<ol>
+<li>超參數的系統性影響</li>
+<li>學習率的影響分析</li>
+<li>Batch Size 的理論影響</li>
+</ol>
+</li>
+<li>
+<ol>
+<li>過擬合與欠擬合的理論本質</li>
+<li>偏差-方差權衡</li>
+<li>模型容量理論（VC 維）</li>
+</ol>
+</li>
+<li>
+<ol>
+<li>深度學習的理論基礎</li>
+<li>萬有近似定理</li>
+<li>為什麼深度重要</li>
+</ol>
+</li>
+<li>
+<ol>
+<li>CNN 的數學性質總結</li>
+<li>平移不變性</li>
+<li>局部連接與稀疏交互</li>
+<li>感受野的遞增</li>
+</ol>
+</li>
+<li>
+<p>核心公式速查表</p>
+</li>
+<li>
+<p>🎯 <strong>總結與下一步</strong></p>
+</li>
+<li>完整學習成果回顧</li>
+<li>推薦學習資源</li>
+<li>實戰專案建議</li>
+<li>下一步行動計畫</li>
+</ul>
+<p><strong>學習成果</strong>:<br />
+- ✅ 掌握疑難排解技巧<br />
+- ✅ 理解完整的 CNN 理論體系<br />
+- ✅ 具備獨立開發 CNN 模型的能力</p>
+<hr />
+<h2>🎯 學習路徑建議</h2>
+<h3>路徑 1：初學者路徑（建議）</h3>
+<p><strong>總時長</strong>: 6-8 週（全職）或 12-20 週（兼職）</p>
+<div class="codehilite"><pre><span></span><code><span class="nx">Week</span><span class="w"> </span><span class="mi">1</span><span class="o">-</span><span class="mi">2</span><span class="p">:</span><span class="w"> </span><span class="nx">Part</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="nx">基礎知識</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nx">Keras</span><span class="w"> </span><span class="nx">實作</span>
+<span class="w">  </span><span class="err">├─</span><span class="w"> </span><span class="nx">認識</span><span class="w"> </span><span class="nx">MNIST</span><span class="w"> </span><span class="nx">和</span><span class="w"> </span><span class="nx">CIFAR</span><span class="o">-</span><span class="mi">10</span>
+<span class="w">  </span><span class="err">├─</span><span class="w"> </span><span class="nx">Google</span><span class="w"> </span><span class="nx">Colab</span><span class="w"> </span><span class="nx">設置</span>
+<span class="w">  </span><span class="err">└─</span><span class="w"> </span><span class="nx">LeNet</span><span class="o">-</span><span class="mi">5</span><span class="w"> </span><span class="nx">實作</span><span class="w"> </span><span class="p">(</span><span class="nx">目標</span><span class="p">:</span><span class="w"> </span><span class="mi">98</span><span class="o">%+</span><span class="w"> </span><span class="nx">準確率</span><span class="p">)</span>
+
+<span class="nx">Week</span><span class="w"> </span><span class="mi">3</span><span class="o">-</span><span class="mi">4</span><span class="p">:</span><span class="w"> </span><span class="nx">Part</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="nx">PyTorch</span><span class="w"> </span><span class="nx">深度實戰</span>
+<span class="w">  </span><span class="err">├─</span><span class="w"> </span><span class="nx">學習</span><span class="w"> </span><span class="nx">PyTorch</span><span class="w"> </span><span class="nx">核心概念</span>
+<span class="w">  </span><span class="err">├─</span><span class="w"> </span><span class="nx">手寫訓練迴圈</span>
+<span class="w">  </span><span class="err">└─</span><span class="w"> </span><span class="nx">SimpleCNN</span><span class="w"> </span><span class="nx">實作</span><span class="w"> </span><span class="p">(</span><span class="nx">目標</span><span class="p">:</span><span class="w"> </span><span class="mi">99</span><span class="o">%+</span><span class="w"> </span><span class="nx">準確率</span><span class="p">)</span>
+
+<span class="nx">Week</span><span class="w"> </span><span class="mi">5</span><span class="o">-</span><span class="mi">6</span><span class="p">:</span><span class="w"> </span><span class="nx">Part</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="nx">CIFAR</span><span class="o">-</span><span class="mi">10</span><span class="w"> </span><span class="nx">挑戰</span>
+<span class="w">  </span><span class="err">├─</span><span class="w"> </span><span class="nx">資料增強技術</span>
+<span class="w">  </span><span class="err">├─</span><span class="w"> </span><span class="nx">Batch</span><span class="w"> </span><span class="nx">Normalization</span>
+<span class="w">  </span><span class="err">└─</span><span class="w"> </span><span class="nx">DeepCIFAR</span><span class="w"> </span><span class="nx">實作</span><span class="w"> </span><span class="p">(</span><span class="nx">目標</span><span class="p">:</span><span class="w"> </span><span class="mi">85</span><span class="o">%+</span><span class="w"> </span><span class="nx">準確率</span><span class="p">)</span>
+
+<span class="nx">Week</span><span class="w"> </span><span class="mi">7</span><span class="o">-</span><span class="mi">8</span><span class="p">:</span><span class="w"> </span><span class="nx">Part</span><span class="w"> </span><span class="mi">4</span><span class="w"> </span><span class="nx">進階技巧與理論總結</span>
+<span class="w">  </span><span class="err">├─</span><span class="w"> </span><span class="nx">疑難排解</span>
+<span class="w">  </span><span class="err">├─</span><span class="w"> </span><span class="nx">超參數調整</span>
+<span class="w">  </span><span class="err">├─</span><span class="w"> </span><span class="nx">完整理論複習</span>
+<span class="w">  </span><span class="err">└─</span><span class="w"> </span><span class="nx">準備進階挑戰</span>
+</code></pre></div>
+
+<h3>路徑 2：快速入門路徑</h3>
+<p><strong>總時長</strong>: 3-4 週</p>
+<p>適合有程式經驗且時間有限的學習者：</p>
+<div class="codehilite"><pre><span></span><code>Week 1: Part 1 + Part 2 快速實作
+  └─ 重點：跑通所有程式碼，理解基本流程
+
+Week 2: Part 3 CIFAR-10
+  └─ 重點：資料增強、Batch Normalization
+
+Week 3-4: Part 4 理論總結 + 進階主題
+  └─ 重點：理論體系、疑難排解
+</code></pre></div>
+
+<h3>路徑 3：深入研究路徑</h3>
+<p><strong>總時長</strong>: 8-12 週</p>
+<p>適合想要深入理解的學習者：</p>
+<div class="codehilite"><pre><span></span><code>按照 Part 1-4 順序學習
+每個 Part 額外花時間:
+  ├─ 修改超參數進行實驗
+  ├─ 嘗試不同架構
+  ├─ 閱讀相關論文
+  ├─ 視覺化模型內部
+  └─ 完成額外練習
+</code></pre></div>
+
+<hr />
+<h2>📊 完整內容地圖</h2>
+<div class="codehilite"><pre><span></span><code><span class="nx">graph</span><span class="w"> </span><span class="nx">TB</span>
+<span class="w">    </span><span class="nx">Start</span><span class="p">([</span><span class="nx">開始</span><span class="w"> </span><span class="nx">CNN</span><span class="w"> </span><span class="nx">學習</span><span class="p">])</span>
+
+<span class="w">    </span><span class="nx">Start</span><span class="w"> </span><span class="o">--</span><span class="p">&gt;</span><span class="w"> </span><span class="nx">Part1</span><span class="p">[</span><span class="nx">Part</span><span class="w"> </span><span class="mi">1</span><span class="p">:</span><span class="w"> </span><span class="nx">基礎</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nx">Keras</span><span class="p">&lt;</span><span class="nx">br</span><span class="o">/</span><span class="p">&gt;</span><span class="nx">CNN_intro_b07</span><span class="p">.</span><span class="nx">md</span><span class="p">]</span>
+<span class="w">    </span><span class="nx">Part1</span><span class="w"> </span><span class="o">--</span><span class="p">&gt;</span><span class="w"> </span><span class="nx">P1_1</span><span class="p">[</span><span class="nx">第零部分</span><span class="p">:</span><span class="w"> </span><span class="nx">基礎知識</span><span class="p">]</span>
+<span class="w">    </span><span class="nx">Part1</span><span class="w"> </span><span class="o">--</span><span class="p">&gt;</span><span class="w"> </span><span class="nx">P1_2</span><span class="p">[</span><span class="nx">第一部分</span><span class="p">:</span><span class="w"> </span><span class="nx">Colab</span><span class="w"> </span><span class="nx">設置</span><span class="p">]</span>
+<span class="w">    </span><span class="nx">Part1</span><span class="w"> </span><span class="o">--</span><span class="p">&gt;</span><span class="w"> </span><span class="nx">P1_3</span><span class="p">[</span><span class="nx">第二部分</span><span class="p">:</span><span class="w"> </span><span class="nx">LeNet</span><span class="o">-</span><span class="mi">5</span><span class="p">]</span>
+
+<span class="w">    </span><span class="nx">P1_3</span><span class="w"> </span><span class="o">--</span><span class="p">&gt;</span><span class="w"> </span><span class="nx">Part2</span><span class="p">[</span><span class="nx">Part</span><span class="w"> </span><span class="mi">2</span><span class="p">:</span><span class="w"> </span><span class="nx">PyTorch</span><span class="w"> </span><span class="nx">實戰</span><span class="p">&lt;</span><span class="nx">br</span><span class="o">/</span><span class="p">&gt;</span><span class="nx">CNN_intro_b07_part2</span><span class="p">.</span><span class="nx">md</span><span class="p">]</span>
+<span class="w">    </span><span class="nx">Part2</span><span class="w"> </span><span class="o">--</span><span class="p">&gt;</span><span class="w"> </span><span class="nx">P2_1</span><span class="p">[</span><span class="nx">第三部分</span><span class="p">:</span><span class="w"> </span><span class="nx">SimpleCNN</span><span class="p">]</span>
+<span class="w">    </span><span class="nx">Part2</span><span class="w"> </span><span class="o">--</span><span class="p">&gt;</span><span class="w"> </span><span class="nx">P2_2</span><span class="p">[</span><span class="nx">PyTorch</span><span class="w"> </span><span class="nx">核心概念</span><span class="p">]</span>
+<span class="w">    </span><span class="nx">Part2</span><span class="w"> </span><span class="o">--</span><span class="p">&gt;</span><span class="w"> </span><span class="nx">P2_3</span><span class="p">[</span><span class="nx">程式碼深度解析</span><span class="p">]</span>
+
+<span class="w">    </span><span class="nx">P2_3</span><span class="w"> </span><span class="o">--</span><span class="p">&gt;</span><span class="w"> </span><span class="nx">Part3</span><span class="p">[</span><span class="nx">Part</span><span class="w"> </span><span class="mi">3</span><span class="p">:</span><span class="w"> </span><span class="nx">CIFAR</span><span class="o">-</span><span class="mi">10</span><span class="p">&lt;</span><span class="nx">br</span><span class="o">/</span><span class="p">&gt;</span><span class="nx">CNN_intro_b07_part3</span><span class="p">.</span><span class="nx">md</span><span class="p">]</span>
+<span class="w">    </span><span class="nx">Part3</span><span class="w"> </span><span class="o">--</span><span class="p">&gt;</span><span class="w"> </span><span class="nx">P3_1</span><span class="p">[</span><span class="nx">第四部分</span><span class="p">:</span><span class="w"> </span><span class="nx">進階實戰</span><span class="p">]</span>
+<span class="w">    </span><span class="nx">Part3</span><span class="w"> </span><span class="o">--</span><span class="p">&gt;</span><span class="w"> </span><span class="nx">P3_2</span><span class="p">[</span><span class="nx">資料增強技術</span><span class="p">]</span>
+<span class="w">    </span><span class="nx">Part3</span><span class="w"> </span><span class="o">--</span><span class="p">&gt;</span><span class="w"> </span><span class="nx">P3_3</span><span class="p">[</span><span class="nx">DeepCIFAR</span><span class="w"> </span><span class="nx">架構</span><span class="p">]</span>
+
+<span class="w">    </span><span class="nx">P3_3</span><span class="w"> </span><span class="o">--</span><span class="p">&gt;</span><span class="w"> </span><span class="nx">Part4</span><span class="p">[</span><span class="nx">Part</span><span class="w"> </span><span class="mi">4</span><span class="p">:</span><span class="w"> </span><span class="nx">技巧</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nx">總結</span><span class="p">&lt;</span><span class="nx">br</span><span class="o">/</span><span class="p">&gt;</span><span class="nx">CNN_intro_b07_part4</span><span class="p">.</span><span class="nx">md</span><span class="p">]</span>
+<span class="w">    </span><span class="nx">Part4</span><span class="w"> </span><span class="o">--</span><span class="p">&gt;</span><span class="w"> </span><span class="nx">P4_1</span><span class="p">[</span><span class="nx">第五部分</span><span class="p">:</span><span class="w"> </span><span class="nx">疑難排解</span><span class="p">]</span>
+<span class="w">    </span><span class="nx">Part4</span><span class="w"> </span><span class="o">--</span><span class="p">&gt;</span><span class="w"> </span><span class="nx">P4_2</span><span class="p">[</span><span class="nx">CNN</span><span class="w"> </span><span class="nx">理論總結</span><span class="p">]</span>
+<span class="w">    </span><span class="nx">Part4</span><span class="w"> </span><span class="o">--</span><span class="p">&gt;</span><span class="w"> </span><span class="nx">P4_3</span><span class="p">[</span><span class="nx">進階主題導覽</span><span class="p">]</span>
+
+<span class="w">    </span><span class="nx">P4_3</span><span class="w"> </span><span class="o">--</span><span class="p">&gt;</span><span class="w"> </span><span class="nx">End</span><span class="p">([</span><span class="nx">CNN</span><span class="w"> </span><span class="nx">專家</span><span class="p">])</span>
+
+<span class="w">    </span><span class="nx">style</span><span class="w"> </span><span class="nx">Start</span><span class="w"> </span><span class="nx">fill</span><span class="p">:</span><span class="err">#</span><span class="mi">90</span><span class="nx">EE90</span>
+<span class="w">    </span><span class="nx">style</span><span class="w"> </span><span class="nx">Part1</span><span class="w"> </span><span class="nx">fill</span><span class="p">:</span><span class="err">#</span><span class="nx">FFE4B5</span>
+<span class="w">    </span><span class="nx">style</span><span class="w"> </span><span class="nx">Part2</span><span class="w"> </span><span class="nx">fill</span><span class="p">:</span><span class="err">#</span><span class="mi">87</span><span class="nx">CEEB</span>
+<span class="w">    </span><span class="nx">style</span><span class="w"> </span><span class="nx">Part3</span><span class="w"> </span><span class="nx">fill</span><span class="p">:</span><span class="err">#</span><span class="nx">DDA0DD</span>
+<span class="w">    </span><span class="nx">style</span><span class="w"> </span><span class="nx">Part4</span><span class="w"> </span><span class="nx">fill</span><span class="p">:</span><span class="err">#</span><span class="nx">FFD700</span>
+<span class="w">    </span><span class="nx">style</span><span class="w"> </span><span class="nx">End</span><span class="w"> </span><span class="nx">fill</span><span class="p">:</span><span class="err">#</span><span class="nx">FFD700</span>
+</code></pre></div>
+
+<hr />
+<h2>🔍 快速查找指南</h2>
+<h3>我想學習...</h3>
+<table>
+<thead>
+<tr>
+<th>主題</th>
+<th>位置</th>
+<th>檔案</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>CNN_intro_b07.html</code></td>
+</tr>
+<tr>
+<td><strong>MNIST 資料集</strong></td>
+<td>Part 1 - 第零部分</td>
+<td><code>CNN_intro_b07.html</code></td>
+</tr>
+<tr>
+<td><strong>CIFAR-10 資料集</strong></td>
+<td>Part 1 - 第零部分</td>
+<td><code>CNN_intro_b07.html</code></td>
+</tr>
+<tr>
+<td><strong>Keras 實作</strong></td>
+<td>Part 1 - 第二部分</td>
+<td><code>CNN_intro_b07.html</code></td>
+</tr>
+<tr>
+<td><strong>PyTorch 實作</strong></td>
+<td>Part 2 - 第三部分</td>
+<td><code>CNN_intro_b07_part2.html</code></td>
+</tr>
+<tr>
+<td><strong>資料增強</strong></td>
+<td>Part 3 - 第四部分</td>
+<td><code>CNN_intro_b07_part3.html</code></td>
+</tr>
+<tr>
+<td><strong>Batch Normalization</strong></td>
+<td>Part 3 - 第四部分</td>
+<td><code>CNN_intro_b07_part3.html</code></td>
+</tr>
+<tr>
+<td><strong>過擬合問題</strong></td>
+<td>Part 4 - 第五部分</td>
+<td><code>CNN_intro_b07_part4.html</code></td>
+</tr>
+<tr>
+<td><strong>超參數調整</strong></td>
+<td>Part 4 - 第五部分</td>
+<td><code>CNN_intro_b07_part4.html</code></td>
+</tr>
+<tr>
+<td><strong>卷積數學原理</strong></td>
+<td>Part 4 - 理論總結</td>
+<td><code>CNN_intro_b07_part4.html</code></td>
+</tr>
+<tr>
+<td><strong>激活函數對比</strong></td>
+<td>Part 4 - 理論總結</td>
+<td><code>CNN_intro_b07_part4.html</code></td>
+</tr>
+<tr>
+<td><strong>優化器原理</strong></td>
+<td>Part 4 - 理論總結</td>
+<td><code>CNN_intro_b07_part4.html</code></td>
+</tr>
+<tr>
+<td><strong>反向傳播</strong></td>
+<td>Part 4 - 理論總結</td>
+<td><code>CNN_intro_b07_part4.html</code></td>
+</tr>
+</tbody>
+</table>
+<h3>我遇到問題...</h3>
+<table>
+<thead>
+<tr>
+<th>問題</th>
+<th>解決方案位置</th>
+<th>檔案</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>準確率停滯</strong></td>
+<td>Part 4 - 問題 1</td>
+<td><code>CNN_intro_b07_part4.html</code></td>
+</tr>
+<tr>
+<td><strong>過擬合</strong></td>
+<td>Part 4 - 問題 2</td>
+<td><code>CNN_intro_b07_part4.html</code></td>
+</tr>
+<tr>
+<td><strong>訓練太慢</strong></td>
+<td>Part 4 - 問題 3</td>
+<td><code>CNN_intro_b07_part4.html</code></td>
+</tr>
+<tr>
+<td><strong>記憶體不足</strong></td>
+<td>Part 4 - 問題 4</td>
+<td><code>CNN_intro_b07_part4.html</code></td>
+</tr>
+<tr>
+<td><strong>模型不收斂</strong></td>
+<td>Part 4 - 診斷流程</td>
+<td><code>CNN_intro_b07_part4.html</code></td>
+</tr>
+<tr>
+<td><strong>不知如何調參</strong></td>
+<td>Part 4 - 超參數指南</td>
+<td><code>CNN_intro_b07_part4.html</code></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>💡 學習建議</h2>
+<h3>1. 動手實作為主</h3>
+<div class="codehilite"><pre><span></span><code>❌ 只看不寫：理解度 30%
+✅ 邊看邊寫：理解度 70%
+🔥 修改實驗：理解度 95%
+</code></pre></div>
+
+<p><strong>推薦做法</strong>：<br />
+- 複製程式碼到 Colab<br />
+- 完整執行一遍<br />
+- 修改超參數觀察變化<br />
+- 嘗試不同架構</p>
+<h3>2. 循序漸進</h3>
+<div class="codehilite"><pre><span></span><code>Part 1 (98% 準確率) → Part 2 (99% 準確率) → Part 3 (85% 準確率)
+</code></pre></div>
+
+<p><strong>不要跳躍</strong>：<br />
+- Part 1 沒達到 98% → 先除錯<br />
+- Part 2 沒達到 99% → 先檢查<br />
+- 確保基礎扎實再進階</p>
+<h3>3. 理論與實作結合</h3>
+<p><strong>推薦順序</strong>：<br />
+1. 先跑程式碼（知道「是什麼」）<br />
+2. 再看理論（理解「為什麼」）<br />
+3. 最後實驗（驗證理解）</p>
+<h3>4. 視覺化理解</h3>
+<p>利用本系列的 <strong>Mermaid 圖表</strong>：<br />
+- 學習路徑圖<br />
+- 架構演進圖<br />
+- 診斷流程圖<br />
+- 理論體系圖</p>
+<h3>5. 做筆記與總結</h3>
+<p><strong>建議做法</strong>：<br />
+- 每完成一個 Part，寫下學習心得<br />
+- 遇到問題，記錄解決過程<br />
+- 定期回顧，整理知識體系</p>
+<hr />
+<h2>📈 評估標準</h2>
+<h3>Part 1 完成標準</h3>
+<ul>
+<li>✅ MNIST LeNet-5 達到 <strong>98%+</strong> 測試準確率</li>
+<li>✅ 理解 Keras Sequential API</li>
+<li>✅ 能夠解釋卷積、池化、全連接層</li>
+<li>✅ 能夠閱讀 <code>model.summary()</code> 輸出</li>
+</ul>
+<h3>Part 2 完成標準</h3>
+<ul>
+<li>✅ MNIST SimpleCNN 達到 <strong>99%+</strong> 測試準確率</li>
+<li>✅ 能夠手寫完整訓練迴圈</li>
+<li>✅ 理解 <code>zero_grad()</code>, <code>backward()</code>, <code>step()</code> 的作用</li>
+<li>✅ 能夠解釋 Keras 和 PyTorch 的差異</li>
+</ul>
+<h3>Part 3 完成標準</h3>
+<ul>
+<li>✅ CIFAR-10 DeepCIFAR 達到 <strong>85%+</strong> 測試準確率</li>
+<li>✅ 能夠實作資料增強</li>
+<li>✅ 理解 Batch Normalization 的原理</li>
+<li>✅ 能夠分析混淆矩陣</li>
+</ul>
+<h3>Part 4 完成標準</h3>
+<ul>
+<li>✅ 能夠診斷並解決常見問題</li>
+<li>✅ 理解過擬合與欠擬合</li>
+<li>✅ 能夠調整超參數</li>
+<li>✅ 掌握完整的 CNN 理論體系</li>
+</ul>
+<hr />
+<h2>🎓 學習成果</h2>
+<p>完成本系列後，你將能夠：</p>
+<h3>理論知識</h3>
+<ul>
+<li>✅ 深入理解卷積神經網路的數學原理</li>
+<li>✅ 掌握反向傳播與梯度下降</li>
+<li>✅ 理解各種激活函數、損失函數、優化器</li>
+<li>✅ 理解正規化技術（Dropout, Batch Normalization）</li>
+<li>✅ 理解過擬合與欠擬合的本質</li>
+</ul>
+<h3>實作能力</h3>
+<ul>
+<li>✅ 使用 Keras 快速建立 CNN 模型</li>
+<li>✅ 使用 PyTorch 從頭實作 CNN</li>
+<li>✅ 在 MNIST 達到 99%+ 準確率</li>
+<li>✅ 在 CIFAR-10 達到 85%+ 準確率</li>
+<li>✅ 實作資料增強技術</li>
+<li>✅ 調整超參數優化模型</li>
+</ul>
+<h3>問題解決</h3>
+<ul>
+<li>✅ 診斷模型訓練問題</li>
+<li>✅ 處理過擬合與欠擬合</li>
+<li>✅ 優化訓練速度與記憶體使用</li>
+<li>✅ 分析與改進模型效能</li>
+</ul>
+<hr />
+<h2>📚 延伸學習</h2>
+<h3>下一步學習建議</h3>
+<ol>
+<li><strong>進階 CNN 架構</strong></li>
+<li>ResNet (殘差網路)</li>
+<li>DenseNet (密集連接網路)</li>
+<li>
+<p>EfficientNet (高效網路)</p>
+</li>
+<li>
+<p><strong>遷移學習</strong></p>
+</li>
+<li>ImageNet 預訓練模型</li>
+<li>Fine-tuning 技巧</li>
+<li>
+<p>Domain Adaptation</p>
+</li>
+<li>
+<p><strong>物體偵測</strong></p>
+</li>
+<li>YOLO</li>
+<li>Faster R-CNN</li>
+<li>
+<p>SSD</p>
+</li>
+<li>
+<p><strong>影像分割</strong></p>
+</li>
+<li>U-Net</li>
+<li>Mask R-CNN</li>
+<li>
+<p>DeepLab</p>
+</li>
+<li>
+<p><strong>實際應用</strong></p>
+</li>
+<li>醫療影像診斷</li>
+<li>自動駕駛</li>
+<li>人臉識別</li>
+<li>工業檢測</li>
+</ol>
+<h3>推薦資源</h3>
+<p><strong>線上課程</strong>：<br />
+- Coursera: Deep Learning Specialization (Andrew Ng)<br />
+- Fast.ai: Practical Deep Learning<br />
+- Stanford CS231n</p>
+<p><strong>書籍</strong>：<br />
+- Deep Learning (Goodfellow, Bengio, Courville)<br />
+- Hands-On Machine Learning (Aurélien Géron)</p>
+<p><strong>論文</strong>：<br />
+- LeNet-5 (1998)<br />
+- AlexNet (2012)<br />
+- VGGNet (2014)<br />
+- ResNet (2015)</p>
+<p><strong>實戰平台</strong>：<br />
+- Kaggle 競賽<br />
+- Papers With Code<br />
+- GitHub 開源專案</p>
+<hr />
+<h2>❓ 常見問題</h2>
+<h3>Q1: 我需要什麼基礎？</h3>
+<p><strong>必須</strong>：<br />
+- Python 基礎語法<br />
+- NumPy 基本操作<br />
+- 基礎線性代數（矩陣乘法）</p>
+<p><strong>建議</strong>：<br />
+- 微積分基礎（導數概念）<br />
+- 機率統計基礎</p>
+<h3>Q2: 需要 GPU 嗎？</h3>
+<p><strong>答案</strong>：不需要購買 GPU！</p>
+<ul>
+<li>使用 <strong>Google Colab</strong> 免費 GPU</li>
+<li>本系列所有程式碼可在 Colab 執行</li>
+<li>GPU 訓練時間：2-20 分鐘</li>
+<li>CPU 訓練時間：10-90 分鐘</li>
+</ul>
+<h3>Q3: Keras 和 PyTorch 要學哪個？</h3>
+<p><strong>答案</strong>：兩個都學！</p>
+<ul>
+<li><strong>Keras</strong>：快速原型、生產部署</li>
+<li><strong>PyTorch</strong>：深入理解、學術研究</li>
+<li>本系列兩個都教，互補學習</li>
+</ul>
+<h3>Q4: 學完要多久？</h3>
+<p><strong>全職學習</strong>：6-8 週<br />
+<strong>兼職學習</strong>：12-20 週<br />
+<strong>快速入門</strong>：3-4 週</p>
+<h3>Q5: 如何確認學會了？</h3>
+<p><strong>檢查清單</strong>：<br />
+- ✅ MNIST 準確率 &gt; 99%<br />
+- ✅ CIFAR-10 準確率 &gt; 85%<br />
+- ✅ 能手寫訓練迴圈<br />
+- ✅ 能解釋核心概念<br />
+- ✅ 能獨立完成新專案</p>
+<hr />
+<h2>📞 聯絡與反饋</h2>
+<p>如果您在學習過程中有任何問題或建議，歡迎：</p>
+<ul>
+<li>📧 提出 Issue</li>
+<li>💬 參與討論</li>
+<li>🌟 給予反饋</li>
+<li>🤝 分享心得</li>
+</ul>
+<hr />
+<p><strong>文件版本</strong>: README<br />
+<strong>最後更新</strong>: 2025-10-07<br />
+<strong>系列狀態</strong>: 全四部分已完成 ✅</p></div>
+    
+    <!-- Highlight.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    
+    <!-- Mermaid -->
+    <script type="module">
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+        mermaid.initialize({
+            "startOnLoad": true,
+            "theme": "dark",
+            "securityLevel": "loose"
+});
+    </script>
+</body>
+</html>

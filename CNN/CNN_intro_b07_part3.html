@@ -1,0 +1,1554 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CNN_intro_b07_part3</title>
+    
+    <!-- CSS 框架 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/dark.min.css">
+    
+    <!-- 代碼高亮 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/base16/darcula.min.css">
+    
+    <!-- 自定義樣式 -->
+    <style>
+        
+                body {
+                    max-width: 900px;
+                    margin: 0 auto;
+                    padding: 20px;
+                }
+                /* 提升代码块对比度 */
+                pre {
+                    background: #1e1e1e !important;
+                    border: 1px solid #3e3e3e;
+                }
+                pre code {
+                    background: #1e1e1e !important;
+                }
+                code {
+                    background: #2d2d2d !important;
+                }
+                /* 引用块对比度 */
+                blockquote {
+                    background: #2d2d2d;
+                    border-left: 4px solid #4a9eff;
+                }
+            
+        
+        /* 通用代碼塊樣式 */
+        pre code {
+            display: block;
+            padding: 1.5em;
+            border-radius: 8px;
+            overflow-x: auto;
+            line-height: 1.6;
+        }
+
+        /* Mermaid 圖表樣式 */
+        
+        .mermaid {
+            margin: 2em 0;
+            padding: 1.5em;
+            text-align: center;
+            border-radius: 8px;
+        }
+        
+        .mermaid {
+            background: #2c3034;
+            border: 1px solid #444;
+        }
+            
+        
+        /* 響應式調整 */
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            .container, .markdown-body, .latex-body, .window-body, .nes-container {
+                padding: 15px;
+            }
+            pre code {
+                padding: 1em;
+            }
+        }
+        
+        
+    </style>
+</head>
+<body>
+    <div class="container"><!-- Path: General_python/CNN | Timestamp: 2025-10-07 13:36:00 | Version: b07_part3 -->
+<h1>從經典案例學習 CNN：CIFAR-10 進階實戰 (Part 3)</h1>
+<blockquote>
+<p>本文件是 CNN 完整實戰指南的第三部分，專注於 <strong>CIFAR-10 彩色影像分類</strong>。</p>
+<p><strong>前置閱讀</strong>：建議先完成 Part 1 (基礎知識) 和 Part 2 (PyTorch 實作)。</p>
+</blockquote>
+<hr />
+<h2>本文件內容</h2>
+<ul>
+<li><a href="#第四部分cifar-10-進階實戰">第四部分：CIFAR-10 進階實戰</a></li>
+<li><a href="#從-mnist-到-cifar-10-的挑戰">從 MNIST 到 CIFAR-10 的挑戰</a></li>
+<li><a href="#資料增強技術-data-augmentation">資料增強技術</a></li>
+<li><a href="#進階-cnn-架構">進階 CNN 架構</a></li>
+<li><a href="#完整實作keras-版本">完整實作：Keras 版本</a></li>
+<li><a href="#完整實作pytorch-版本">完整實作：PyTorch 版本</a></li>
+<li><a href="#結果分析與對比">結果分析與對比</a></li>
+</ul>
+<hr />
+<h2>第四部分：CIFAR-10 進階實戰</h2>
+<p>CIFAR-10 是從 MNIST 進階的重要一步，它帶來了真實世界影像分類的挑戰。</p>
+<h3>從 MNIST 到 CIFAR-10 的挑戰</h3>
+<h4>挑戰對比</h4>
+<table>
+<thead>
+<tr>
+<th>挑戰</th>
+<th>MNIST</th>
+<th>CIFAR-10</th>
+<th>難度提升</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>影像尺寸</strong></td>
+<td>28×28×1 = 784</td>
+<td>32×32×3 = 3,072</td>
+<td>資料量 ×4</td>
+</tr>
+<tr>
+<td><strong>背景複雜度</strong></td>
+<td>純黑色</td>
+<td>自然背景</td>
+<td>⭐⭐⭐⭐⭐</td>
+</tr>
+<tr>
+<td><strong>類內變異</strong></td>
+<td>筆跡差異</td>
+<td>角度、光照、品種</td>
+<td>⭐⭐⭐⭐⭐</td>
+</tr>
+<tr>
+<td><strong>類間相似</strong></td>
+<td>4 vs 9</td>
+<td>cat vs dog, car vs truck</td>
+<td>⭐⭐⭐⭐⭐</td>
+</tr>
+<tr>
+<td><strong>計算需求</strong></td>
+<td>低</td>
+<td>中等</td>
+<td>訓練時間 ×5-10</td>
+</tr>
+<tr>
+<td><strong>簡單模型準確率</strong></td>
+<td>98%+</td>
+<td>65-70%</td>
+<td>難度 ×5</td>
+</tr>
+<tr>
+<td><strong>SOTA 準確率</strong></td>
+<td>99.8%</td>
+<td>99%+</td>
+<td>天花板相似</td>
+</tr>
+</tbody>
+</table>
+<h4>具體困難範例</h4>
+<div class="codehilite"><pre><span></span><code><span class="nf">graph</span><span class="w"> </span><span class="n">TB</span>
+<span class="w">    </span><span class="n">subgraph</span><span class="w"> </span><span class="n">MNIST困難</span>
+<span class="w">        </span><span class="n">M1</span><span class="p">[</span><span class="err">數字</span><span class="w"> </span><span class="mi">4</span><span class="w"> </span><span class="n">vs</span><span class="w"> </span><span class="mi">9</span><span class="p">]</span>
+<span class="w">        </span><span class="n">M2</span><span class="p">[</span><span class="err">數字</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="n">vs</span><span class="w"> </span><span class="mi">8</span><span class="p">]</span>
+<span class="w">        </span><span class="n">M3</span><span class="p">[</span><span class="err">筆跡粗細</span><span class="p">]</span>
+<span class="w">        </span><span class="n">M4</span><span class="p">[</span><span class="err">輕微旋轉</span><span class="p">]</span>
+<span class="w">    </span><span class="kd">end</span>
+
+<span class="w">    </span><span class="n">subgraph</span><span class="w"> </span><span class="n">CIFAR</span><span class="o">-</span><span class="mi">10</span><span class="err">困難</span>
+<span class="w">        </span><span class="n">C1</span><span class="p">[</span><span class="err">貓</span><span class="w"> </span><span class="n">vs</span><span class="w"> </span><span class="err">狗</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="err">姿態變化</span><span class="p">]</span>
+<span class="w">        </span><span class="n">C2</span><span class="p">[</span><span class="err">汽車</span><span class="w"> </span><span class="n">vs</span><span class="w"> </span><span class="err">卡車</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="err">視角差異</span><span class="p">]</span>
+<span class="w">        </span><span class="n">C3</span><span class="p">[</span><span class="err">背景干擾</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="err">草地、道路</span><span class="p">]</span>
+<span class="w">        </span><span class="n">C4</span><span class="p">[</span><span class="err">光照變化</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="err">白天、夜晚</span><span class="p">]</span>
+<span class="w">        </span><span class="n">C5</span><span class="p">[</span><span class="err">遮擋問題</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="err">部分可見</span><span class="p">]</span>
+<span class="w">        </span><span class="n">C6</span><span class="p">[</span><span class="err">尺度變化</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="err">遠近不同</span><span class="p">]</span>
+<span class="w">    </span><span class="kd">end</span>
+
+<span class="w">    </span><span class="n">M1</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">Difficulty1</span><span class="p">[</span><span class="err">★★☆☆☆</span><span class="p">]</span>
+<span class="w">    </span><span class="n">M2</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">Difficulty1</span>
+<span class="w">    </span><span class="n">M3</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">Difficulty1</span>
+<span class="w">    </span><span class="n">M4</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">Difficulty1</span>
+
+<span class="w">    </span><span class="n">C1</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">Difficulty2</span><span class="p">[</span><span class="err">★★★★★</span><span class="p">]</span>
+<span class="w">    </span><span class="n">C2</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">Difficulty2</span>
+<span class="w">    </span><span class="n">C3</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">Difficulty2</span>
+<span class="w">    </span><span class="n">C4</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">Difficulty2</span>
+<span class="w">    </span><span class="n">C5</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">Difficulty2</span>
+<span class="w">    </span><span class="n">C6</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">Difficulty2</span>
+
+<span class="w">    </span><span class="n">style</span><span class="w"> </span><span class="n">Difficulty1</span><span class="w"> </span><span class="n">fill</span><span class="o">:</span><span class="err">#</span><span class="mi">90</span><span class="n">EE90</span>
+<span class="w">    </span><span class="n">style</span><span class="w"> </span><span class="n">Difficulty2</span><span class="w"> </span><span class="n">fill</span><span class="o">:</span><span class="err">#</span><span class="n">FFB6C1</span>
+</code></pre></div>
+
+<h4>為什麼 CIFAR-10 更難？</h4>
+<p><strong>1. 彩色影像的複雜性</strong></p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># MNIST: 單一亮度值</span>
+<span class="n">pixel</span> <span class="o">=</span> <span class="mi">128</span>  <span class="c1"># 灰階</span>
+
+<span class="c1"># CIFAR-10: RGB 三個通道</span>
+<span class="n">pixel</span> <span class="o">=</span> <span class="p">[</span><span class="mi">120</span><span class="p">,</span> <span class="mi">85</span><span class="p">,</span> <span class="mi">60</span><span class="p">]</span>  <span class="c1"># R, G, B</span>
+<span class="c1">#        紅   綠  藍</span>
+<span class="c1"># 組合出數百萬種顏色，背景干擾大</span>
+</code></pre></div>
+
+<p><strong>2. 類別語意複雜</strong></p>
+<div class="codehilite"><pre><span></span><code><span class="n">MNIST</span><span class="o">:</span><span class="w"> </span><span class="err">數字有標準形狀</span>
+<span class="w">    </span><span class="o">-</span><span class="w"> </span><span class="err">數字</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="err">永遠是直線</span>
+<span class="w">    </span><span class="o">-</span><span class="w"> </span><span class="err">數字</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="err">永遠是圓形</span>
+
+<span class="n">CIFAR</span><span class="o">-</span><span class="mi">10</span><span class="o">:</span><span class="w"> </span><span class="err">物體變化巨大</span>
+<span class="w">    </span><span class="o">-</span><span class="w"> </span><span class="err">狗：吉娃娃</span><span class="w"> </span><span class="n">vs</span><span class="w"> </span><span class="err">聖伯納（大小差</span><span class="w"> </span><span class="mi">10</span><span class="w"> </span><span class="err">倍）</span>
+<span class="w">    </span><span class="o">-</span><span class="w"> </span><span class="err">飛機：正面、側面、俯視（完全不同外觀）</span>
+<span class="w">    </span><span class="o">-</span><span class="w"> </span><span class="err">青蛙：綠色、棕色、水中、陸地（背景融合）</span>
+</code></pre></div>
+
+<p><strong>3. 解析度限制</strong></p>
+<p>32×32 = 1024 像素總共，放大後：</p>
+<div class="codehilite"><pre><span></span><code>一隻 32×32 的貓：
+- 眼睛：約 2×2 = 4 像素
+- 鬍鬚：約 1 像素寬
+- 細節嚴重損失
+
+對比：
+- 人類看 32×32 影像準確率：約 94%
+- 看 224×224 影像準確率：約 99%
+</code></pre></div>
+
+<hr />
+<h3>資料增強技術 (Data Augmentation)</h3>
+<p>由於 CIFAR-10 只有 50,000 張訓練影像，<strong>資料增強</strong>成為提升準確率的關鍵技術。</p>
+<h4>為什麼需要資料增強？</h4>
+<p><strong>問題</strong>：訓練集太小，模型容易過擬合</p>
+<div class="codehilite"><pre><span></span><code>訓練集：50,000 張
+每類別：5,000 張
+
+對比 ImageNet：
+訓練集：1,400,000 張
+每類別：1,000 張
+</code></pre></div>
+
+<p><strong>解決方案</strong>：透過轉換產生新的訓練樣本</p>
+<div class="codehilite"><pre><span></span><code><span class="nf">graph</span><span class="w"> </span><span class="n">LR</span>
+<span class="w">    </span><span class="n">Original</span><span class="p">[</span><span class="err">原始影像</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="mi">5</span><span class="p">,</span><span class="mo">000</span><span class="w"> </span><span class="err">張</span><span class="o">/</span><span class="err">類</span><span class="p">]</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">Aug1</span><span class="p">[</span><span class="err">水平翻轉</span><span class="p">]</span>
+<span class="w">    </span><span class="n">Original</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">Aug2</span><span class="p">[</span><span class="err">隨機裁剪</span><span class="p">]</span>
+<span class="w">    </span><span class="n">Original</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">Aug3</span><span class="p">[</span><span class="err">顏色抖動</span><span class="p">]</span>
+<span class="w">    </span><span class="n">Original</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">Aug4</span><span class="p">[</span><span class="err">旋轉</span><span class="p">]</span>
+
+<span class="w">    </span><span class="n">Aug1</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="kr">Virtual</span><span class="p">[</span><span class="err">虛擬樣本</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="mi">50</span><span class="p">,</span><span class="mo">000</span><span class="o">+</span><span class="w"> </span><span class="err">張</span><span class="o">/</span><span class="err">類</span><span class="p">]</span>
+<span class="w">    </span><span class="n">Aug2</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="kr">Virtual</span>
+<span class="w">    </span><span class="n">Aug3</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="kr">Virtual</span>
+<span class="w">    </span><span class="n">Aug4</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="kr">Virtual</span>
+
+<span class="w">    </span><span class="kr">Virtual</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">Better</span><span class="p">[</span><span class="err">更好的泛化能力</span><span class="p">]</span>
+
+<span class="w">    </span><span class="n">style</span><span class="w"> </span><span class="n">Original</span><span class="w"> </span><span class="n">fill</span><span class="o">:</span><span class="err">#</span><span class="n">FFE4B5</span>
+<span class="w">    </span><span class="n">style</span><span class="w"> </span><span class="kr">Virtual</span><span class="w"> </span><span class="n">fill</span><span class="o">:</span><span class="err">#</span><span class="mi">90</span><span class="n">EE90</span>
+<span class="w">    </span><span class="n">style</span><span class="w"> </span><span class="n">Better</span><span class="w"> </span><span class="n">fill</span><span class="o">:</span><span class="err">#</span><span class="n">FFD700</span>
+</code></pre></div>
+
+<h4>常用增強技術</h4>
+<table>
+<thead>
+<tr>
+<th>技術</th>
+<th>效果</th>
+<th>適用性</th>
+<th>CIFAR-10 推薦</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>水平翻轉</strong></td>
+<td>左右鏡射</td>
+<td>大多數類別</td>
+<td>✅ 強烈推薦</td>
+</tr>
+<tr>
+<td><strong>隨機裁剪</strong></td>
+<td>位置變化</td>
+<td>所有類別</td>
+<td>✅ 強烈推薦</td>
+</tr>
+<tr>
+<td><strong>顏色抖動</strong></td>
+<td>亮度、對比度、飽和度</td>
+<td>彩色影像</td>
+<td>✅ 推薦</td>
+</tr>
+<tr>
+<td><strong>旋轉</strong></td>
+<td>角度變化</td>
+<td>旋轉不變性物體</td>
+<td>⚠️ 小角度（±15°）</td>
+</tr>
+<tr>
+<td><strong>縮放</strong></td>
+<td>尺度變化</td>
+<td>所有類別</td>
+<td>✅ 推薦</td>
+</tr>
+<tr>
+<td><strong>Cutout</strong></td>
+<td>隨機遮擋</td>
+<td>提升魯棒性</td>
+<td>✅ 進階技巧</td>
+</tr>
+<tr>
+<td><strong>Mixup</strong></td>
+<td>混合兩張影像</td>
+<td>提升泛化</td>
+<td>✅ 進階技巧</td>
+</tr>
+</tbody>
+</table>
+<h4>視覺化範例</h4>
+<div class="codehilite"><pre><span></span><code><span class="c1"># Colab 視覺化程式碼</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tensorflow.keras.datasets</span><span class="w"> </span><span class="kn">import</span> <span class="n">cifar10</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tensorflow.keras.preprocessing.image</span><span class="w"> </span><span class="kn">import</span> <span class="n">ImageDataGenerator</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="c1"># 載入資料</span>
+<span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">),</span> <span class="n">_</span> <span class="o">=</span> <span class="n">cifar10</span><span class="o">.</span><span class="n">load_data</span><span class="p">()</span>
+
+<span class="c1"># 選擇一張飛機影像</span>
+<span class="n">airplane_idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">y_train</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">sample_img</span> <span class="o">=</span> <span class="n">X_train</span><span class="p">[</span><span class="n">airplane_idx</span><span class="p">]</span>
+
+<span class="c1"># 定義資料增強</span>
+<span class="n">datagen</span> <span class="o">=</span> <span class="n">ImageDataGenerator</span><span class="p">(</span>
+    <span class="n">rotation_range</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span>
+    <span class="n">width_shift_range</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
+    <span class="n">height_shift_range</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
+    <span class="n">horizontal_flip</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">zoom_range</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
+    <span class="n">brightness_range</span><span class="o">=</span><span class="p">[</span><span class="mf">0.8</span><span class="p">,</span> <span class="mf">1.2</span><span class="p">]</span>
+<span class="p">)</span>
+
+<span class="c1"># 產生增強樣本</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s1">&#39;資料增強範例（同一張飛機影像）&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+
+<span class="c1"># 原始影像</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">sample_img</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;原始影像&#39;</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;off&#39;</span><span class="p">)</span>
+
+<span class="c1"># 14 個增強版本</span>
+<span class="n">sample_img_4d</span> <span class="o">=</span> <span class="n">sample_img</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">1</span><span class="p">,)</span> <span class="o">+</span> <span class="n">sample_img</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="n">aug_iter</span> <span class="o">=</span> <span class="n">datagen</span><span class="o">.</span><span class="n">flow</span><span class="p">(</span><span class="n">sample_img_4d</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">14</span><span class="p">):</span>
+    <span class="n">aug_img</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">aug_iter</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;uint8&#39;</span><span class="p">)</span>
+    <span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">//</span><span class="mi">5</span><span class="p">,</span> <span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">%</span><span class="mi">5</span><span class="p">]</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">aug_img</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;增強 #</span><span class="si">{</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;off&#39;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div>
+
+<h4>效果對比</h4>
+<div class="codehilite"><pre><span></span><code><span class="c1"># 實驗對比（相同模型）</span>
+<span class="n">無資料增強</span><span class="err">：</span>
+  <span class="n">訓練準確率</span><span class="p">:</span> <span class="mi">95</span><span class="o">%</span>
+  <span class="n">測試準確率</span><span class="p">:</span> <span class="mi">72</span><span class="o">%</span>  <span class="err">←</span> <span class="n">嚴重過擬合</span>
+  <span class="n">準確率差距</span><span class="p">:</span> <span class="mi">23</span><span class="o">%</span>
+
+<span class="n">有資料增強</span><span class="err">：</span>
+  <span class="n">訓練準確率</span><span class="p">:</span> <span class="mi">88</span><span class="o">%</span>
+  <span class="n">測試準確率</span><span class="p">:</span> <span class="mi">85</span><span class="o">%</span>  <span class="err">←</span> <span class="n">良好泛化</span>
+  <span class="n">準確率差距</span><span class="p">:</span> <span class="mi">3</span><span class="o">%</span>
+</code></pre></div>
+
+<hr />
+<h3>進階 CNN 架構</h3>
+<p>針對 CIFAR-10 的挑戰，我們設計一個更深、更強的 CNN 架構。</p>
+<h4>DeepCIFAR 架構設計</h4>
+<div class="codehilite"><pre><span></span><code><span class="n">graph</span><span class="w"> </span><span class="n">TB</span>
+<span class="w">    </span><span class="n">Input</span><span class="p">[</span><span class="n">輸入</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="mi">32</span><span class="err">×</span><span class="mi">32</span><span class="err">×</span><span class="mi">3</span><span class="p">]</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">Block1</span><span class="p">[</span><span class="n">卷積塊</span><span class="w"> </span><span class="mi">1</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="mi">64</span><span class="w"> </span><span class="n">filters</span><span class="p">]</span>
+<span class="w">    </span><span class="n">Block1</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">Block2</span><span class="p">[</span><span class="n">卷積塊</span><span class="w"> </span><span class="mi">2</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="mi">128</span><span class="w"> </span><span class="n">filters</span><span class="p">]</span>
+<span class="w">    </span><span class="n">Block2</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">Block3</span><span class="p">[</span><span class="n">卷積塊</span><span class="w"> </span><span class="mi">3</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="mi">256</span><span class="w"> </span><span class="n">filters</span><span class="p">]</span>
+<span class="w">    </span><span class="n">Block3</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">Block4</span><span class="p">[</span><span class="n">卷積塊</span><span class="w"> </span><span class="mi">4</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="mi">512</span><span class="w"> </span><span class="n">filters</span><span class="p">]</span>
+<span class="w">    </span><span class="n">Block4</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">GAP</span><span class="p">[</span><span class="n">全局平均池化</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="n">GlobalAveragePooling</span><span class="p">]</span>
+<span class="w">    </span><span class="n">GAP</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">FC</span><span class="p">[</span><span class="n">全連接</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="mi">512</span><span class="w"> </span><span class="err">→</span><span class="w"> </span><span class="mi">10</span><span class="p">]</span>
+
+<span class="w">    </span><span class="n">subgraph</span><span class="w"> </span><span class="s">&quot;每個卷積塊&quot;</span>
+<span class="w">        </span><span class="n">direction</span><span class="w"> </span><span class="n">LR</span>
+<span class="w">        </span><span class="n">Conv1</span><span class="p">[</span><span class="n">Conv</span><span class="w"> </span><span class="mi">3</span><span class="err">×</span><span class="mi">3</span><span class="p">]</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">BN1</span><span class="p">[</span><span class="n">Batch</span><span class="w"> </span><span class="n">Norm</span><span class="p">]</span>
+<span class="w">        </span><span class="n">BN1</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">Act1</span><span class="p">[</span><span class="n">ReLU</span><span class="p">]</span>
+<span class="w">        </span><span class="n">Act1</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">Conv2</span><span class="p">[</span><span class="n">Conv</span><span class="w"> </span><span class="mi">3</span><span class="err">×</span><span class="mi">3</span><span class="p">]</span>
+<span class="w">        </span><span class="n">Conv2</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">BN2</span><span class="p">[</span><span class="n">Batch</span><span class="w"> </span><span class="n">Norm</span><span class="p">]</span>
+<span class="w">        </span><span class="n">BN2</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">Act2</span><span class="p">[</span><span class="n">ReLU</span><span class="p">]</span>
+<span class="w">        </span><span class="n">Act2</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">Pool</span><span class="p">[</span><span class="n">MaxPool</span><span class="w"> </span><span class="mi">2</span><span class="err">×</span><span class="mi">2</span><span class="p">]</span>
+<span class="w">        </span><span class="n">Pool</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">Drop</span><span class="p">[</span><span class="n">Dropout</span><span class="p">]</span>
+<span class="w">    </span><span class="n">end</span>
+
+<span class="w">    </span><span class="n">style</span><span class="w"> </span><span class="n">Input</span><span class="w"> </span><span class="n">fill</span><span class="o">:</span><span class="err">#</span><span class="mi">90</span><span class="n">EE90</span>
+<span class="w">    </span><span class="n">style</span><span class="w"> </span><span class="n">Block1</span><span class="w"> </span><span class="n">fill</span><span class="o">:</span><span class="err">#</span><span class="n">FFE4B5</span>
+<span class="w">    </span><span class="n">style</span><span class="w"> </span><span class="n">Block2</span><span class="w"> </span><span class="n">fill</span><span class="o">:</span><span class="err">#</span><span class="n">FFE4B5</span>
+<span class="w">    </span><span class="n">style</span><span class="w"> </span><span class="n">Block3</span><span class="w"> </span><span class="n">fill</span><span class="o">:</span><span class="err">#</span><span class="n">FFE4B5</span>
+<span class="w">    </span><span class="n">style</span><span class="w"> </span><span class="n">Block4</span><span class="w"> </span><span class="n">fill</span><span class="o">:</span><span class="err">#</span><span class="n">FFE4B5</span>
+<span class="w">    </span><span class="n">style</span><span class="w"> </span><span class="n">GAP</span><span class="w"> </span><span class="n">fill</span><span class="o">:</span><span class="err">#</span><span class="mi">87</span><span class="n">CEEB</span>
+<span class="w">    </span><span class="n">style</span><span class="w"> </span><span class="n">FC</span><span class="w"> </span><span class="n">fill</span><span class="o">:</span><span class="err">#</span><span class="n">FFD700</span>
+</code></pre></div>
+
+<h4>架構特色</h4>
+<table>
+<thead>
+<tr>
+<th>特性</th>
+<th>SimpleCNN (MNIST)</th>
+<th>DeepCIFAR (CIFAR-10)</th>
+<th>改進</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>卷積塊數</strong></td>
+<td>2</td>
+<td>4</td>
+<td>更深，學習更複雜特徵</td>
+</tr>
+<tr>
+<td><strong>濾波器數</strong></td>
+<td>32→64</td>
+<td>64→128→256→512</td>
+<td>漸進式增加容量</td>
+</tr>
+<tr>
+<td><strong>Batch Normalization</strong></td>
+<td>無</td>
+<td>每層都有</td>
+<td>加速訓練、穩定性</td>
+</tr>
+<tr>
+<td><strong>全局平均池化</strong></td>
+<td>無</td>
+<td>有</td>
+<td>減少參數、防過擬合</td>
+</tr>
+<tr>
+<td><strong>Dropout 率</strong></td>
+<td>0.25, 0.5</td>
+<td>0.3, 0.4, 0.5</td>
+<td>更積極的正規化</td>
+</tr>
+<tr>
+<td><strong>參數量</strong></td>
+<td>~140K</td>
+<td>~1.2M</td>
+<td>容量提升應對複雜任務</td>
+</tr>
+<tr>
+<td><strong>感受野</strong></td>
+<td>小</td>
+<td>大</td>
+<td>能看到更大範圍的上下文</td>
+</tr>
+</tbody>
+</table>
+<h4>關鍵技術：Batch Normalization</h4>
+<p><strong>什麼是 Batch Normalization？</strong></p>
+<p>在每層之後，將輸出正規化到均值 0、標準差 1：</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># 偽代碼</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">batch_norm</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="n">mean</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+    <span class="n">std</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">std</span><span class="p">()</span>
+    <span class="n">x_normalized</span> <span class="o">=</span> <span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="n">mean</span><span class="p">)</span> <span class="o">/</span> <span class="n">std</span>
+
+    <span class="c1"># 可學習的縮放和平移參數</span>
+    <span class="n">x_output</span> <span class="o">=</span> <span class="n">gamma</span> <span class="o">*</span> <span class="n">x_normalized</span> <span class="o">+</span> <span class="n">beta</span>
+    <span class="k">return</span> <span class="n">x_output</span>
+</code></pre></div>
+
+<p><strong>為什麼有效？</strong></p>
+<table>
+<thead>
+<tr>
+<th>問題</th>
+<th>無 BN</th>
+<th>有 BN</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>內部協變量偏移</strong></td>
+<td>每層輸入分布不斷變化</td>
+<td>穩定分布</td>
+</tr>
+<tr>
+<td><strong>梯度消失/爆炸</strong></td>
+<td>深層網路難訓練</td>
+<td>梯度流動順暢</td>
+</tr>
+<tr>
+<td><strong>學習率敏感</strong></td>
+<td>需精細調整</td>
+<td>可用較大學習率</td>
+</tr>
+<tr>
+<td><strong>訓練速度</strong></td>
+<td>慢</td>
+<td>快 2-3 倍</td>
+</tr>
+<tr>
+<td><strong>正規化效果</strong></td>
+<td>需額外 Dropout</td>
+<td>本身有正規化作用</td>
+</tr>
+</tbody>
+</table>
+<p><strong>實際效果</strong>：</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># CIFAR-10 實驗</span>
+<span class="n">無</span> <span class="n">BN</span><span class="err">：</span>
+  <span class="o">-</span> <span class="mi">20</span> <span class="n">epochs</span> <span class="n">達到</span> <span class="mi">75</span><span class="o">%</span> <span class="n">準確率</span>
+  <span class="o">-</span> <span class="n">最終</span><span class="p">:</span> <span class="mi">78</span><span class="o">%</span>
+
+<span class="n">有</span> <span class="n">BN</span><span class="err">：</span>
+  <span class="o">-</span> <span class="mi">10</span> <span class="n">epochs</span> <span class="n">達到</span> <span class="mi">80</span><span class="o">%</span> <span class="n">準確率</span>  <span class="err">←</span> <span class="n">快</span> <span class="mi">2</span> <span class="n">倍</span>
+  <span class="o">-</span> <span class="n">最終</span><span class="p">:</span> <span class="mi">87</span><span class="o">%</span>                 <span class="err">←</span> <span class="n">高</span> <span class="mi">9</span><span class="o">%</span>
+</code></pre></div>
+
+<h4>關鍵技術：Global Average Pooling (GAP)</h4>
+<p><strong>傳統方法</strong>：</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># Flatten + Dense</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">Flatten</span><span class="p">()(</span><span class="n">x</span><span class="p">)</span>           <span class="c1"># 8×8×512 → 32768</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">Dense</span><span class="p">(</span><span class="mi">512</span><span class="p">)(</span><span class="n">x</span><span class="p">)</span>          <span class="c1"># 32768 → 512</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">Dense</span><span class="p">(</span><span class="mi">10</span><span class="p">)(</span><span class="n">x</span><span class="p">)</span>           <span class="c1"># 512 → 10</span>
+
+<span class="n">參數量</span> <span class="o">=</span> <span class="mi">32768</span><span class="err">×</span><span class="mi">512</span> <span class="o">+</span> <span class="mi">512</span><span class="err">×</span><span class="mi">10</span> <span class="o">=</span> <span class="mi">16</span><span class="p">,</span><span class="mi">781</span><span class="p">,</span><span class="mi">824</span>  <span class="c1"># 1600 萬！</span>
+</code></pre></div>
+
+<p><strong>GAP 方法</strong>：</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># Global Average Pooling</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">GlobalAveragePooling2D</span><span class="p">()(</span><span class="n">x</span><span class="p">)</span>  <span class="c1"># 8×8×512 → 512</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">Dense</span><span class="p">(</span><span class="mi">10</span><span class="p">)(</span><span class="n">x</span><span class="p">)</span>                 <span class="c1"># 512 → 10</span>
+
+<span class="n">參數量</span> <span class="o">=</span> <span class="mi">512</span><span class="err">×</span><span class="mi">10</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span><span class="mi">120</span>  <span class="c1"># 僅 5 千！</span>
+</code></pre></div>
+
+<p><strong>優勢</strong>：</p>
+<div class="codehilite"><pre><span></span><code><span class="nf">graph</span><span class="w"> </span><span class="n">LR</span>
+<span class="w">    </span><span class="n">GAP</span><span class="p">[</span><span class="kr">Global</span><span class="w"> </span><span class="n">Average</span><span class="w"> </span><span class="n">Pooling</span><span class="p">]</span>
+
+<span class="w">    </span><span class="n">GAP</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">A1</span><span class="p">[</span><span class="err">減少參數</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="mi">1600</span><span class="err">萬</span><span class="w"> </span><span class="err">→</span><span class="w"> </span><span class="mi">5</span><span class="err">千</span><span class="p">]</span>
+<span class="w">    </span><span class="n">GAP</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">A2</span><span class="p">[</span><span class="err">防止過擬合</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="err">更強泛化能力</span><span class="p">]</span>
+<span class="w">    </span><span class="n">GAP</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">A3</span><span class="p">[</span><span class="err">空間不變性</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="err">物體位置不敏感</span><span class="p">]</span>
+<span class="w">    </span><span class="n">GAP</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">A4</span><span class="p">[</span><span class="err">更快訓練</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="err">記憶體需求低</span><span class="p">]</span>
+
+<span class="w">    </span><span class="n">style</span><span class="w"> </span><span class="n">GAP</span><span class="w"> </span><span class="n">fill</span><span class="o">:</span><span class="err">#</span><span class="n">FFE4B5</span>
+<span class="w">    </span><span class="n">style</span><span class="w"> </span><span class="n">A1</span><span class="w"> </span><span class="n">fill</span><span class="o">:</span><span class="err">#</span><span class="mi">90</span><span class="n">EE90</span>
+<span class="w">    </span><span class="n">style</span><span class="w"> </span><span class="n">A2</span><span class="w"> </span><span class="n">fill</span><span class="o">:</span><span class="err">#</span><span class="mi">90</span><span class="n">EE90</span>
+<span class="w">    </span><span class="n">style</span><span class="w"> </span><span class="n">A3</span><span class="w"> </span><span class="n">fill</span><span class="o">:</span><span class="err">#</span><span class="mi">90</span><span class="n">EE90</span>
+<span class="w">    </span><span class="n">style</span><span class="w"> </span><span class="n">A4</span><span class="w"> </span><span class="n">fill</span><span class="o">:</span><span class="err">#</span><span class="mi">90</span><span class="n">EE90</span>
+</code></pre></div>
+
+<hr />
+<h3>完整實作：Keras 版本</h3>
+<p>以下是完整的 CIFAR-10 實作（Keras），可直接在 Colab 執行。</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># ============================================</span>
+<span class="c1"># CIFAR-10 + DeepCIFAR 完整實作（Keras）</span>
+<span class="c1"># 執行環境：Google Colab (GPU)</span>
+<span class="c1"># 預期訓練時間：15-20 分鐘</span>
+<span class="c1"># 預期準確率：85-88%</span>
+<span class="c1"># ============================================</span>
+
+<span class="c1"># ========== 儲存格 1: 導入套件 ==========</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">seaborn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sns</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.metrics</span><span class="w"> </span><span class="kn">import</span> <span class="n">confusion_matrix</span><span class="p">,</span> <span class="n">classification_report</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">tensorflow</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">tf</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tensorflow</span><span class="w"> </span><span class="kn">import</span> <span class="n">keras</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tensorflow.keras.datasets</span><span class="w"> </span><span class="kn">import</span> <span class="n">cifar10</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tensorflow.keras.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">Sequential</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tensorflow.keras.layers</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">Conv2D</span><span class="p">,</span> <span class="n">MaxPooling2D</span><span class="p">,</span> <span class="n">BatchNormalization</span><span class="p">,</span> <span class="n">Dropout</span><span class="p">,</span>
+    <span class="n">GlobalAveragePooling2D</span><span class="p">,</span> <span class="n">Dense</span><span class="p">,</span> <span class="n">Activation</span>
+<span class="p">)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tensorflow.keras.preprocessing.image</span><span class="w"> </span><span class="kn">import</span> <span class="n">ImageDataGenerator</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tensorflow.keras.optimizers</span><span class="w"> </span><span class="kn">import</span> <span class="n">Adam</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tensorflow.keras.callbacks</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">EarlyStopping</span><span class="p">,</span> <span class="n">ReduceLROnPlateau</span><span class="p">,</span> <span class="n">ModelCheckpoint</span><span class="p">,</span> <span class="n">LearningRateScheduler</span>
+<span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;TensorFlow 版本: </span><span class="si">{</span><span class="n">tf</span><span class="o">.</span><span class="n">__version__</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;GPU 可用: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">list_physical_devices</span><span class="p">(</span><span class="s1">&#39;GPU&#39;</span><span class="p">))</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># 設定隨機種子</span>
+<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
+<span class="n">tf</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">set_seed</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
+
+<span class="c1"># ========== 儲存格 2: 載入並視覺化資料 ==========</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;載入 CIFAR-10 資料集...&quot;</span><span class="p">)</span>
+<span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">),</span> <span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)</span> <span class="o">=</span> <span class="n">cifar10</span><span class="o">.</span><span class="n">load_data</span><span class="p">()</span>
+
+<span class="c1"># 類別名稱</span>
+<span class="n">class_names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;airplane&#39;</span><span class="p">,</span> <span class="s1">&#39;automobile&#39;</span><span class="p">,</span> <span class="s1">&#39;bird&#39;</span><span class="p">,</span> <span class="s1">&#39;cat&#39;</span><span class="p">,</span> <span class="s1">&#39;deer&#39;</span><span class="p">,</span>
+               <span class="s1">&#39;dog&#39;</span><span class="p">,</span> <span class="s1">&#39;frog&#39;</span><span class="p">,</span> <span class="s1">&#39;horse&#39;</span><span class="p">,</span> <span class="s1">&#39;ship&#39;</span><span class="p">,</span> <span class="s1">&#39;truck&#39;</span><span class="p">]</span>
+<span class="n">class_names_zh</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;飛機&#39;</span><span class="p">,</span> <span class="s1">&#39;汽車&#39;</span><span class="p">,</span> <span class="s1">&#39;鳥&#39;</span><span class="p">,</span> <span class="s1">&#39;貓&#39;</span><span class="p">,</span> <span class="s1">&#39;鹿&#39;</span><span class="p">,</span>
+                  <span class="s1">&#39;狗&#39;</span><span class="p">,</span> <span class="s1">&#39;青蛙&#39;</span><span class="p">,</span> <span class="s1">&#39;馬&#39;</span><span class="p">,</span> <span class="s1">&#39;船&#39;</span><span class="p">,</span> <span class="s1">&#39;卡車&#39;</span><span class="p">]</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;訓練集形狀: </span><span class="si">{</span><span class="n">X_train</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>  <span class="c1"># (50000, 32, 32, 3)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;測試集形狀: </span><span class="si">{</span><span class="n">X_test</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>    <span class="c1"># (10000, 32, 32, 3)</span>
+
+<span class="c1"># 視覺化每個類別的範例</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">7</span><span class="p">))</span>
+<span class="n">y_train_flat</span> <span class="o">=</span> <span class="n">y_train</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span>
+    <span class="n">idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">y_train_flat</span> <span class="o">==</span> <span class="n">i</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="n">i</span><span class="o">//</span><span class="mi">5</span><span class="p">,</span> <span class="n">i</span><span class="o">%</span><span class="mi">5</span><span class="p">]</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">X_train</span><span class="p">[</span><span class="n">idx</span><span class="p">])</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">class_names</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="si">}</span><span class="se">\n</span><span class="si">{</span><span class="n">class_names_zh</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span>
+                <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;off&#39;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s1">&#39;CIFAR-10 十個類別範例&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="c1"># ========== 儲存格 3: 資料預處理 ==========</span>
+<span class="c1"># 正規化到 [0, 1]</span>
+<span class="n">X_train</span> <span class="o">=</span> <span class="n">X_train</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;float32&#39;</span><span class="p">)</span> <span class="o">/</span> <span class="mf">255.0</span>
+<span class="n">X_test</span> <span class="o">=</span> <span class="n">X_test</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;float32&#39;</span><span class="p">)</span> <span class="o">/</span> <span class="mf">255.0</span>
+
+<span class="c1"># One-Hot 編碼</span>
+<span class="n">y_train_cat</span> <span class="o">=</span> <span class="n">keras</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">to_categorical</span><span class="p">(</span><span class="n">y_train</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+<span class="n">y_test_cat</span> <span class="o">=</span> <span class="n">keras</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">to_categorical</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;正規化後像素範圍: [</span><span class="si">{</span><span class="n">X_train</span><span class="o">.</span><span class="n">min</span><span class="p">()</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">X_train</span><span class="o">.</span><span class="n">max</span><span class="p">()</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">]&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;標籤形狀: </span><span class="si">{</span><span class="n">y_train_cat</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># ========== 儲存格 4: 資料增強 ==========</span>
+<span class="n">datagen</span> <span class="o">=</span> <span class="n">ImageDataGenerator</span><span class="p">(</span>
+    <span class="n">rotation_range</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span>           <span class="c1"># 隨機旋轉 ±15 度</span>
+    <span class="n">width_shift_range</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>       <span class="c1"># 水平平移 10%</span>
+    <span class="n">height_shift_range</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>      <span class="c1"># 垂直平移 10%</span>
+    <span class="n">horizontal_flip</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>        <span class="c1"># 水平翻轉</span>
+    <span class="n">zoom_range</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>              <span class="c1"># 隨機縮放 10%</span>
+    <span class="n">fill_mode</span><span class="o">=</span><span class="s1">&#39;nearest&#39;</span>          <span class="c1"># 填充模式</span>
+<span class="p">)</span>
+
+<span class="c1"># 計算統計量（用於 featurewise normalization，此處未使用）</span>
+<span class="n">datagen</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;✓ 資料增強設定完成&quot;</span><span class="p">)</span>
+
+<span class="c1"># ========== 儲存格 5: 建立 DeepCIFAR 模型 ==========</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">create_deep_cifar_model</span><span class="p">(</span><span class="n">input_shape</span><span class="o">=</span><span class="p">(</span><span class="mi">32</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">num_classes</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    DeepCIFAR 架構</span>
+<span class="sd">    - 4 個卷積塊（每塊 2 層卷積 + BN + MaxPool + Dropout）</span>
+<span class="sd">    - Global Average Pooling</span>
+<span class="sd">    - Dense 輸出層</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">Sequential</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;DeepCIFAR&#39;</span><span class="p">)</span>
+
+    <span class="c1"># ===== 卷積塊 1: 32×32 → 16×16 =====</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Conv2D</span><span class="p">(</span><span class="mi">64</span><span class="p">,</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">padding</span><span class="o">=</span><span class="s1">&#39;same&#39;</span><span class="p">,</span> <span class="n">input_shape</span><span class="o">=</span><span class="n">input_shape</span><span class="p">))</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">BatchNormalization</span><span class="p">())</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Activation</span><span class="p">(</span><span class="s1">&#39;relu&#39;</span><span class="p">))</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Conv2D</span><span class="p">(</span><span class="mi">64</span><span class="p">,</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">padding</span><span class="o">=</span><span class="s1">&#39;same&#39;</span><span class="p">))</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">BatchNormalization</span><span class="p">())</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Activation</span><span class="p">(</span><span class="s1">&#39;relu&#39;</span><span class="p">))</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">MaxPooling2D</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)))</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Dropout</span><span class="p">(</span><span class="mf">0.3</span><span class="p">))</span>
+
+    <span class="c1"># ===== 卷積塊 2: 16×16 → 8×8 =====</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Conv2D</span><span class="p">(</span><span class="mi">128</span><span class="p">,</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">padding</span><span class="o">=</span><span class="s1">&#39;same&#39;</span><span class="p">))</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">BatchNormalization</span><span class="p">())</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Activation</span><span class="p">(</span><span class="s1">&#39;relu&#39;</span><span class="p">))</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Conv2D</span><span class="p">(</span><span class="mi">128</span><span class="p">,</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">padding</span><span class="o">=</span><span class="s1">&#39;same&#39;</span><span class="p">))</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">BatchNormalization</span><span class="p">())</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Activation</span><span class="p">(</span><span class="s1">&#39;relu&#39;</span><span class="p">))</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">MaxPooling2D</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)))</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Dropout</span><span class="p">(</span><span class="mf">0.4</span><span class="p">))</span>
+
+    <span class="c1"># ===== 卷積塊 3: 8×8 → 4×4 =====</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Conv2D</span><span class="p">(</span><span class="mi">256</span><span class="p">,</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">padding</span><span class="o">=</span><span class="s1">&#39;same&#39;</span><span class="p">))</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">BatchNormalization</span><span class="p">())</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Activation</span><span class="p">(</span><span class="s1">&#39;relu&#39;</span><span class="p">))</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Conv2D</span><span class="p">(</span><span class="mi">256</span><span class="p">,</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">padding</span><span class="o">=</span><span class="s1">&#39;same&#39;</span><span class="p">))</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">BatchNormalization</span><span class="p">())</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Activation</span><span class="p">(</span><span class="s1">&#39;relu&#39;</span><span class="p">))</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">MaxPooling2D</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)))</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Dropout</span><span class="p">(</span><span class="mf">0.4</span><span class="p">))</span>
+
+    <span class="c1"># ===== 卷積塊 4: 4×4 → 2×2 =====</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Conv2D</span><span class="p">(</span><span class="mi">512</span><span class="p">,</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">padding</span><span class="o">=</span><span class="s1">&#39;same&#39;</span><span class="p">))</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">BatchNormalization</span><span class="p">())</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Activation</span><span class="p">(</span><span class="s1">&#39;relu&#39;</span><span class="p">))</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Conv2D</span><span class="p">(</span><span class="mi">512</span><span class="p">,</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">padding</span><span class="o">=</span><span class="s1">&#39;same&#39;</span><span class="p">))</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">BatchNormalization</span><span class="p">())</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Activation</span><span class="p">(</span><span class="s1">&#39;relu&#39;</span><span class="p">))</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">MaxPooling2D</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)))</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Dropout</span><span class="p">(</span><span class="mf">0.5</span><span class="p">))</span>
+
+    <span class="c1"># ===== 全局平均池化 + 輸出 =====</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">GlobalAveragePooling2D</span><span class="p">())</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Dense</span><span class="p">(</span><span class="n">num_classes</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;softmax&#39;</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">model</span>
+
+<span class="c1"># 建立模型</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">create_deep_cifar_model</span><span class="p">()</span>
+
+<span class="c1"># 顯示架構</span>
+<span class="n">model</span><span class="o">.</span><span class="n">summary</span><span class="p">()</span>
+
+<span class="c1"># 計算參數量</span>
+<span class="n">total_params</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">count_params</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">總參數量: </span><span class="si">{</span><span class="n">total_params</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># ========== 儲存格 6: 編譯模型 ==========</span>
+<span class="c1"># 學習率調度：Cosine Annealing</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">cosine_annealing</span><span class="p">(</span><span class="n">epoch</span><span class="p">,</span> <span class="n">lr</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Cosine Annealing 學習率調度</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">math</span>
+    <span class="n">max_epochs</span> <span class="o">=</span> <span class="mi">100</span>
+    <span class="n">min_lr</span> <span class="o">=</span> <span class="mf">1e-6</span>
+    <span class="n">max_lr</span> <span class="o">=</span> <span class="mf">0.001</span>
+
+    <span class="k">if</span> <span class="n">epoch</span> <span class="o">&lt;</span> <span class="mi">10</span><span class="p">:</span>  <span class="c1"># Warm-up</span>
+        <span class="k">return</span> <span class="n">max_lr</span> <span class="o">*</span> <span class="p">(</span><span class="n">epoch</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="mi">10</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">progress</span> <span class="o">=</span> <span class="p">(</span><span class="n">epoch</span> <span class="o">-</span> <span class="mi">10</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">max_epochs</span> <span class="o">-</span> <span class="mi">10</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">min_lr</span> <span class="o">+</span> <span class="p">(</span><span class="n">max_lr</span> <span class="o">-</span> <span class="n">min_lr</span><span class="p">)</span> <span class="o">*</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">progress</span><span class="p">))</span>
+
+<span class="n">model</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span>
+    <span class="n">optimizer</span><span class="o">=</span><span class="n">Adam</span><span class="p">(</span><span class="n">learning_rate</span><span class="o">=</span><span class="mf">0.001</span><span class="p">),</span>
+    <span class="n">loss</span><span class="o">=</span><span class="s1">&#39;categorical_crossentropy&#39;</span><span class="p">,</span>
+    <span class="n">metrics</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;accuracy&#39;</span><span class="p">]</span>
+<span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;✓ 模型編譯完成&quot;</span><span class="p">)</span>
+
+<span class="c1"># ========== 儲存格 7: 設定 Callbacks ==========</span>
+<span class="n">callbacks</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="c1"># Early Stopping</span>
+    <span class="n">EarlyStopping</span><span class="p">(</span>
+        <span class="n">monitor</span><span class="o">=</span><span class="s1">&#39;val_accuracy&#39;</span><span class="p">,</span>
+        <span class="n">patience</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span>
+        <span class="n">restore_best_weights</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">verbose</span><span class="o">=</span><span class="mi">1</span>
+    <span class="p">),</span>
+
+    <span class="c1"># 學習率調度</span>
+    <span class="n">LearningRateScheduler</span><span class="p">(</span><span class="n">cosine_annealing</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span>
+
+    <span class="c1"># 儲存最佳模型</span>
+    <span class="n">ModelCheckpoint</span><span class="p">(</span>
+        <span class="s1">&#39;best_deepcifar.h5&#39;</span><span class="p">,</span>
+        <span class="n">monitor</span><span class="o">=</span><span class="s1">&#39;val_accuracy&#39;</span><span class="p">,</span>
+        <span class="n">save_best_only</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">verbose</span><span class="o">=</span><span class="mi">1</span>
+    <span class="p">)</span>
+<span class="p">]</span>
+
+<span class="c1"># ========== 儲存格 8: 訓練模型 ==========</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;開始訓練...&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;=&quot;</span> <span class="o">*</span> <span class="mi">70</span><span class="p">)</span>
+
+<span class="n">BATCH_SIZE</span> <span class="o">=</span> <span class="mi">128</span>
+<span class="n">EPOCHS</span> <span class="o">=</span> <span class="mi">100</span>
+
+<span class="n">history</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span>
+    <span class="n">datagen</span><span class="o">.</span><span class="n">flow</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train_cat</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="n">BATCH_SIZE</span><span class="p">),</span>
+    <span class="n">steps_per_epoch</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">X_train</span><span class="p">)</span> <span class="o">//</span> <span class="n">BATCH_SIZE</span><span class="p">,</span>
+    <span class="n">epochs</span><span class="o">=</span><span class="n">EPOCHS</span><span class="p">,</span>
+    <span class="n">validation_data</span><span class="o">=</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">y_test_cat</span><span class="p">),</span>
+    <span class="n">callbacks</span><span class="o">=</span><span class="n">callbacks</span><span class="p">,</span>
+    <span class="n">verbose</span><span class="o">=</span><span class="mi">1</span>
+<span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">✓ 訓練完成！&quot;</span><span class="p">)</span>
+
+<span class="c1"># ========== 儲存格 9: 評估模型 ==========</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="s2">&quot;=&quot;</span> <span class="o">*</span> <span class="mi">70</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;在測試集上評估模型&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;=&quot;</span> <span class="o">*</span> <span class="mi">70</span><span class="p">)</span>
+
+<span class="c1"># 載入最佳模型</span>
+<span class="n">model</span><span class="o">.</span><span class="n">load_weights</span><span class="p">(</span><span class="s1">&#39;best_deepcifar.h5&#39;</span><span class="p">)</span>
+
+<span class="n">test_loss</span><span class="p">,</span> <span class="n">test_accuracy</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">y_test_cat</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;測試集損失: </span><span class="si">{</span><span class="n">test_loss</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;測試集準確率: </span><span class="si">{</span><span class="n">test_accuracy</span><span class="o">*</span><span class="mi">100</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">%&quot;</span><span class="p">)</span>
+
+<span class="c1"># ========== 儲存格 10: 視覺化訓練歷史 ==========</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">18</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+
+<span class="c1"># 準確率</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">history</span><span class="o">.</span><span class="n">history</span><span class="p">[</span><span class="s1">&#39;accuracy&#39;</span><span class="p">],</span> <span class="s1">&#39;b-&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;訓練準確率&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">history</span><span class="o">.</span><span class="n">history</span><span class="p">[</span><span class="s1">&#39;val_accuracy&#39;</span><span class="p">],</span> <span class="s1">&#39;r-&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;驗證準確率&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;DeepCIFAR 訓練準確率&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Epoch&#39;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;準確率&#39;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+
+<span class="c1"># 損失</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">history</span><span class="o">.</span><span class="n">history</span><span class="p">[</span><span class="s1">&#39;loss&#39;</span><span class="p">],</span> <span class="s1">&#39;b-&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;訓練損失&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">history</span><span class="o">.</span><span class="n">history</span><span class="p">[</span><span class="s1">&#39;val_loss&#39;</span><span class="p">],</span> <span class="s1">&#39;r-&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;驗證損失&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;DeepCIFAR 訓練損失&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Epoch&#39;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;損失值&#39;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+
+<span class="c1"># 學習率</span>
+<span class="k">if</span> <span class="s1">&#39;lr&#39;</span> <span class="ow">in</span> <span class="n">history</span><span class="o">.</span><span class="n">history</span><span class="p">:</span>
+    <span class="n">axes</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">history</span><span class="o">.</span><span class="n">history</span><span class="p">[</span><span class="s1">&#39;lr&#39;</span><span class="p">],</span> <span class="s1">&#39;g-&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">axes</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;學習率調度&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">)</span>
+    <span class="n">axes</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Epoch&#39;</span><span class="p">)</span>
+    <span class="n">axes</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;學習率&#39;</span><span class="p">)</span>
+    <span class="n">axes</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">set_yscale</span><span class="p">(</span><span class="s1">&#39;log&#39;</span><span class="p">)</span>
+    <span class="n">axes</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="c1"># ========== 儲存格 11: 混淆矩陣 ==========</span>
+<span class="c1"># 預測</span>
+<span class="n">y_pred</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">y_pred_classes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">y_pred</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">y_true_classes</span> <span class="o">=</span> <span class="n">y_test</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+
+<span class="c1"># 混淆矩陣</span>
+<span class="n">cm</span> <span class="o">=</span> <span class="n">confusion_matrix</span><span class="p">(</span><span class="n">y_true_classes</span><span class="p">,</span> <span class="n">y_pred_classes</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">heatmap</span><span class="p">(</span><span class="n">cm</span><span class="p">,</span> <span class="n">annot</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;d&#39;</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;Blues&#39;</span><span class="p">,</span>
+            <span class="n">xticklabels</span><span class="o">=</span><span class="n">class_names_zh</span><span class="p">,</span>
+            <span class="n">yticklabels</span><span class="o">=</span><span class="n">class_names_zh</span><span class="p">,</span>
+            <span class="n">cbar_kws</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;label&#39;</span><span class="p">:</span> <span class="s1">&#39;數量&#39;</span><span class="p">})</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;DeepCIFAR 混淆矩陣&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;預測標籤&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;真實標籤&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xticks</span><span class="p">(</span><span class="n">rotation</span><span class="o">=</span><span class="mi">45</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">yticks</span><span class="p">(</span><span class="n">rotation</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="c1"># 分類報告</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">分類報告:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">classification_report</span><span class="p">(</span><span class="n">y_true_classes</span><span class="p">,</span> <span class="n">y_pred_classes</span><span class="p">,</span>
+                           <span class="n">target_names</span><span class="o">=</span><span class="n">class_names_zh</span><span class="p">))</span>
+
+<span class="c1"># ========== 儲存格 12: 每個類別的準確率分析 ==========</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">每個類別的詳細分析:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;=&quot;</span> <span class="o">*</span> <span class="mi">70</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span>
+    <span class="n">mask</span> <span class="o">=</span> <span class="n">y_true_classes</span> <span class="o">==</span> <span class="n">i</span>
+    <span class="n">total</span> <span class="o">=</span> <span class="n">mask</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+    <span class="n">correct</span> <span class="o">=</span> <span class="p">(</span><span class="n">y_pred_classes</span><span class="p">[</span><span class="n">mask</span><span class="p">]</span> <span class="o">==</span> <span class="n">y_true_classes</span><span class="p">[</span><span class="n">mask</span><span class="p">])</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+    <span class="n">accuracy</span> <span class="o">=</span> <span class="n">correct</span> <span class="o">/</span> <span class="n">total</span> <span class="o">*</span> <span class="mi">100</span>
+
+    <span class="c1"># 最常被誤判為哪個類別</span>
+    <span class="n">wrong_mask</span> <span class="o">=</span> <span class="n">y_pred_classes</span><span class="p">[</span><span class="n">mask</span><span class="p">]</span> <span class="o">!=</span> <span class="n">y_true_classes</span><span class="p">[</span><span class="n">mask</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">wrong_mask</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">wrong_preds</span> <span class="o">=</span> <span class="n">y_pred_classes</span><span class="p">[</span><span class="n">mask</span><span class="p">][</span><span class="n">wrong_mask</span><span class="p">]</span>
+        <span class="n">most_common_wrong</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">bincount</span><span class="p">(</span><span class="n">wrong_preds</span><span class="p">)</span><span class="o">.</span><span class="n">argmax</span><span class="p">()</span>
+        <span class="n">wrong_name</span> <span class="o">=</span> <span class="n">class_names_zh</span><span class="p">[</span><span class="n">most_common_wrong</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">wrong_name</span> <span class="o">=</span> <span class="s2">&quot;無&quot;</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">class_names_zh</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="si">:</span><span class="s2">4s</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">accuracy</span><span class="si">:</span><span class="s2">5.2f</span><span class="si">}</span><span class="s2">% (</span><span class="si">{</span><span class="n">correct</span><span class="si">:</span><span class="s2">4d</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">total</span><span class="si">:</span><span class="s2">4d</span><span class="si">}</span><span class="s2">)  &quot;</span>
+          <span class="sa">f</span><span class="s2">&quot;最常誤判為: </span><span class="si">{</span><span class="n">wrong_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># ========== 儲存格 13: 預測範例視覺化 ==========</span>
+<span class="c1"># 隨機選擇 20 張測試影像</span>
+<span class="n">indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">X_test</span><span class="p">),</span> <span class="mi">20</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">12</span><span class="p">))</span>
+
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">ax</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">axes</span><span class="o">.</span><span class="n">flat</span><span class="p">):</span>
+    <span class="n">idx</span> <span class="o">=</span> <span class="n">indices</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+
+    <span class="c1"># 原始影像</span>
+    <span class="n">img</span> <span class="o">=</span> <span class="n">X_test</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+    <span class="n">true_label</span> <span class="o">=</span> <span class="n">y_test</span><span class="p">[</span><span class="n">idx</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="c1"># 預測</span>
+    <span class="n">img_batch</span> <span class="o">=</span> <span class="n">img</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span>
+    <span class="n">pred</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">img_batch</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">pred_label</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">pred</span><span class="p">)</span>
+    <span class="n">confidence</span> <span class="o">=</span> <span class="n">pred</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">pred_label</span><span class="p">]</span> <span class="o">*</span> <span class="mi">100</span>
+
+    <span class="c1"># 顯示</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
+    <span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;green&#39;</span> <span class="k">if</span> <span class="n">pred_label</span> <span class="o">==</span> <span class="n">true_label</span> <span class="k">else</span> <span class="s1">&#39;red&#39;</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span>
+        <span class="sa">f</span><span class="s1">&#39;真實: </span><span class="si">{</span><span class="n">class_names_zh</span><span class="p">[</span><span class="n">true_label</span><span class="p">]</span><span class="si">}</span><span class="se">\n</span><span class="s1">&#39;</span>
+        <span class="sa">f</span><span class="s1">&#39;預測: </span><span class="si">{</span><span class="n">class_names_zh</span><span class="p">[</span><span class="n">pred_label</span><span class="p">]</span><span class="si">}</span><span class="se">\n</span><span class="s1">&#39;</span>
+        <span class="sa">f</span><span class="s1">&#39;信心度: </span><span class="si">{</span><span class="n">confidence</span><span class="si">:</span><span class="s1">.1f</span><span class="si">}</span><span class="s1">%&#39;</span><span class="p">,</span>
+        <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">9</span>
+    <span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;off&#39;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s1">&#39;DeepCIFAR 預測結果（綠色=正確，紅色=錯誤）&#39;</span><span class="p">,</span>
+             <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="c1"># ========== 儲存格 14: 錯誤案例分析 ==========</span>
+<span class="c1"># 找出信心度高但預測錯誤的案例</span>
+<span class="n">wrong_indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">y_pred_classes</span> <span class="o">!=</span> <span class="n">y_true_classes</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">wrong_confidences</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">y_pred</span><span class="p">[</span><span class="n">wrong_indices</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="c1"># 排序，取信心度最高的 16 個錯誤</span>
+<span class="n">top_wrong_indices</span> <span class="o">=</span> <span class="n">wrong_indices</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">wrong_confidences</span><span class="p">)[</span><span class="o">-</span><span class="mi">16</span><span class="p">:]]</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">12</span><span class="p">))</span>
+
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">ax</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">axes</span><span class="o">.</span><span class="n">flat</span><span class="p">):</span>
+    <span class="n">idx</span> <span class="o">=</span> <span class="n">top_wrong_indices</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+
+    <span class="n">img</span> <span class="o">=</span> <span class="n">X_test</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+    <span class="n">true_label</span> <span class="o">=</span> <span class="n">y_test</span><span class="p">[</span><span class="n">idx</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">pred_label</span> <span class="o">=</span> <span class="n">y_pred_classes</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+    <span class="n">confidence</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">y_pred</span><span class="p">[</span><span class="n">idx</span><span class="p">])</span> <span class="o">*</span> <span class="mi">100</span>
+
+    <span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span>
+        <span class="sa">f</span><span class="s1">&#39;真實: </span><span class="si">{</span><span class="n">class_names_zh</span><span class="p">[</span><span class="n">true_label</span><span class="p">]</span><span class="si">}</span><span class="se">\n</span><span class="s1">&#39;</span>
+        <span class="sa">f</span><span class="s1">&#39;預測: </span><span class="si">{</span><span class="n">class_names_zh</span><span class="p">[</span><span class="n">pred_label</span><span class="p">]</span><span class="si">}</span><span class="se">\n</span><span class="s1">&#39;</span>
+        <span class="sa">f</span><span class="s1">&#39;信心度: </span><span class="si">{</span><span class="n">confidence</span><span class="si">:</span><span class="s1">.1f</span><span class="si">}</span><span class="s1">%&#39;</span><span class="p">,</span>
+        <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">9</span>
+    <span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;off&#39;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s1">&#39;最自信但預測錯誤的案例（這些影像確實難以辨識）&#39;</span><span class="p">,</span>
+             <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">✓ 所有程式碼執行完成！&quot;</span><span class="p">)</span>
+</code></pre></div>
+
+<hr />
+<h3>完整實作：PyTorch 版本</h3>
+<p>以下是 PyTorch 版本的完整實作：</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># ============================================</span>
+<span class="c1"># CIFAR-10 + DeepCIFAR 完整實作（PyTorch）</span>
+<span class="c1"># 執行環境：Google Colab (GPU)</span>
+<span class="c1"># 預期訓練時間：15-20 分鐘</span>
+<span class="c1"># 預期準確率：85-88%</span>
+<span class="c1"># ============================================</span>
+
+<span class="c1"># ========== 儲存格 1: 導入套件 ==========</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch.nn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">nn</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch.optim</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">optim</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch.nn.functional</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">F</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">torch.utils.data</span><span class="w"> </span><span class="kn">import</span> <span class="n">DataLoader</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">torchvision</span><span class="w"> </span><span class="kn">import</span> <span class="n">datasets</span><span class="p">,</span> <span class="n">transforms</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">seaborn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sns</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.metrics</span><span class="w"> </span><span class="kn">import</span> <span class="n">confusion_matrix</span><span class="p">,</span> <span class="n">classification_report</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tqdm</span><span class="w"> </span><span class="kn">import</span> <span class="n">tqdm</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;PyTorch 版本: </span><span class="si">{</span><span class="n">torch</span><span class="o">.</span><span class="n">__version__</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;CUDA 可用: </span><span class="si">{</span><span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">is_available</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="n">device</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s1">&#39;cuda&#39;</span> <span class="k">if</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">is_available</span><span class="p">()</span> <span class="k">else</span> <span class="s1">&#39;cpu&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;使用裝置: </span><span class="si">{</span><span class="n">device</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># 設定隨機種子</span>
+<span class="n">torch</span><span class="o">.</span><span class="n">manual_seed</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">is_available</span><span class="p">():</span>
+    <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">manual_seed</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
+<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
+
+<span class="c1"># ========== 儲存格 2: 資料轉換與增強 ==========</span>
+<span class="c1"># 訓練集轉換（包含資料增強）</span>
+<span class="n">transform_train</span> <span class="o">=</span> <span class="n">transforms</span><span class="o">.</span><span class="n">Compose</span><span class="p">([</span>
+    <span class="n">transforms</span><span class="o">.</span><span class="n">RandomCrop</span><span class="p">(</span><span class="mi">32</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="mi">4</span><span class="p">),</span>      <span class="c1"># 隨機裁剪（padding=4 後裁回 32）</span>
+    <span class="n">transforms</span><span class="o">.</span><span class="n">RandomHorizontalFlip</span><span class="p">(),</span>         <span class="c1"># 水平翻轉（p=0.5）</span>
+    <span class="n">transforms</span><span class="o">.</span><span class="n">RandomRotation</span><span class="p">(</span><span class="mi">15</span><span class="p">),</span>             <span class="c1"># 隨機旋轉 ±15 度</span>
+    <span class="n">transforms</span><span class="o">.</span><span class="n">ColorJitter</span><span class="p">(</span>                    <span class="c1"># 顏色抖動</span>
+        <span class="n">brightness</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span>
+        <span class="n">contrast</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span>
+        <span class="n">saturation</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span>
+        <span class="n">hue</span><span class="o">=</span><span class="mf">0.1</span>
+    <span class="p">),</span>
+    <span class="n">transforms</span><span class="o">.</span><span class="n">ToTensor</span><span class="p">(),</span>
+    <span class="n">transforms</span><span class="o">.</span><span class="n">Normalize</span><span class="p">(</span>                      <span class="c1"># 標準化</span>
+        <span class="n">mean</span><span class="o">=</span><span class="p">[</span><span class="mf">0.4914</span><span class="p">,</span> <span class="mf">0.4822</span><span class="p">,</span> <span class="mf">0.4465</span><span class="p">],</span>
+        <span class="n">std</span><span class="o">=</span><span class="p">[</span><span class="mf">0.2470</span><span class="p">,</span> <span class="mf">0.2435</span><span class="p">,</span> <span class="mf">0.2616</span><span class="p">]</span>
+    <span class="p">)</span>
+<span class="p">])</span>
+
+<span class="c1"># 測試集轉換（僅標準化）</span>
+<span class="n">transform_test</span> <span class="o">=</span> <span class="n">transforms</span><span class="o">.</span><span class="n">Compose</span><span class="p">([</span>
+    <span class="n">transforms</span><span class="o">.</span><span class="n">ToTensor</span><span class="p">(),</span>
+    <span class="n">transforms</span><span class="o">.</span><span class="n">Normalize</span><span class="p">(</span>
+        <span class="n">mean</span><span class="o">=</span><span class="p">[</span><span class="mf">0.4914</span><span class="p">,</span> <span class="mf">0.4822</span><span class="p">,</span> <span class="mf">0.4465</span><span class="p">],</span>
+        <span class="n">std</span><span class="o">=</span><span class="p">[</span><span class="mf">0.2470</span><span class="p">,</span> <span class="mf">0.2435</span><span class="p">,</span> <span class="mf">0.2616</span><span class="p">]</span>
+    <span class="p">)</span>
+<span class="p">])</span>
+
+<span class="c1"># 載入資料集</span>
+<span class="n">train_dataset</span> <span class="o">=</span> <span class="n">datasets</span><span class="o">.</span><span class="n">CIFAR10</span><span class="p">(</span>
+    <span class="n">root</span><span class="o">=</span><span class="s1">&#39;./data&#39;</span><span class="p">,</span>
+    <span class="n">train</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">download</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">transform</span><span class="o">=</span><span class="n">transform_train</span>
+<span class="p">)</span>
+
+<span class="n">test_dataset</span> <span class="o">=</span> <span class="n">datasets</span><span class="o">.</span><span class="n">CIFAR10</span><span class="p">(</span>
+    <span class="n">root</span><span class="o">=</span><span class="s1">&#39;./data&#39;</span><span class="p">,</span>
+    <span class="n">train</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">download</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">transform</span><span class="o">=</span><span class="n">transform_test</span>
+<span class="p">)</span>
+
+<span class="c1"># 創建 DataLoader</span>
+<span class="n">BATCH_SIZE</span> <span class="o">=</span> <span class="mi">128</span>
+
+<span class="n">train_loader</span> <span class="o">=</span> <span class="n">DataLoader</span><span class="p">(</span>
+    <span class="n">train_dataset</span><span class="p">,</span>
+    <span class="n">batch_size</span><span class="o">=</span><span class="n">BATCH_SIZE</span><span class="p">,</span>
+    <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">num_workers</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+    <span class="n">pin_memory</span><span class="o">=</span><span class="kc">True</span>
+<span class="p">)</span>
+
+<span class="n">test_loader</span> <span class="o">=</span> <span class="n">DataLoader</span><span class="p">(</span>
+    <span class="n">test_dataset</span><span class="p">,</span>
+    <span class="n">batch_size</span><span class="o">=</span><span class="n">BATCH_SIZE</span><span class="p">,</span>
+    <span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">num_workers</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+    <span class="n">pin_memory</span><span class="o">=</span><span class="kc">True</span>
+<span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;訓練集大小: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">train_dataset</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;測試集大小: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">test_dataset</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;批次數: 訓練=</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">train_loader</span><span class="p">)</span><span class="si">}</span><span class="s2">, 測試=</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">test_loader</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># 類別名稱</span>
+<span class="n">class_names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;airplane&#39;</span><span class="p">,</span> <span class="s1">&#39;automobile&#39;</span><span class="p">,</span> <span class="s1">&#39;bird&#39;</span><span class="p">,</span> <span class="s1">&#39;cat&#39;</span><span class="p">,</span> <span class="s1">&#39;deer&#39;</span><span class="p">,</span>
+               <span class="s1">&#39;dog&#39;</span><span class="p">,</span> <span class="s1">&#39;frog&#39;</span><span class="p">,</span> <span class="s1">&#39;horse&#39;</span><span class="p">,</span> <span class="s1">&#39;ship&#39;</span><span class="p">,</span> <span class="s1">&#39;truck&#39;</span><span class="p">]</span>
+<span class="n">class_names_zh</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;飛機&#39;</span><span class="p">,</span> <span class="s1">&#39;汽車&#39;</span><span class="p">,</span> <span class="s1">&#39;鳥&#39;</span><span class="p">,</span> <span class="s1">&#39;貓&#39;</span><span class="p">,</span> <span class="s1">&#39;鹿&#39;</span><span class="p">,</span>
+                  <span class="s1">&#39;狗&#39;</span><span class="p">,</span> <span class="s1">&#39;青蛙&#39;</span><span class="p">,</span> <span class="s1">&#39;馬&#39;</span><span class="p">,</span> <span class="s1">&#39;船&#39;</span><span class="p">,</span> <span class="s1">&#39;卡車&#39;</span><span class="p">]</span>
+
+<span class="c1"># ========== 儲存格 3: 定義模型 ==========</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">ConvBlock</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;卷積塊：Conv → BN → ReLU → Conv → BN → ReLU → MaxPool → Dropout&quot;&quot;&quot;</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">in_channels</span><span class="p">,</span> <span class="n">out_channels</span><span class="p">,</span> <span class="n">dropout_rate</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">ConvBlock</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">conv1</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Conv2d</span><span class="p">(</span><span class="n">in_channels</span><span class="p">,</span> <span class="n">out_channels</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bn1</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">BatchNorm2d</span><span class="p">(</span><span class="n">out_channels</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">conv2</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Conv2d</span><span class="p">(</span><span class="n">out_channels</span><span class="p">,</span> <span class="n">out_channels</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bn2</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">BatchNorm2d</span><span class="p">(</span><span class="n">out_channels</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">pool</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">MaxPool2d</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dropout</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Dropout</span><span class="p">(</span><span class="n">dropout_rate</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">relu</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">bn1</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">conv1</span><span class="p">(</span><span class="n">x</span><span class="p">)))</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">relu</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">bn2</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">conv2</span><span class="p">(</span><span class="n">x</span><span class="p">)))</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pool</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dropout</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">x</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">DeepCIFAR</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    DeepCIFAR 架構（PyTorch 版本）</span>
+<span class="sd">    - 4 個卷積塊</span>
+<span class="sd">    - Global Average Pooling</span>
+<span class="sd">    - 全連接輸出層</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">num_classes</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">DeepCIFAR</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+
+        <span class="c1"># 4 個卷積塊</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">block1</span> <span class="o">=</span> <span class="n">ConvBlock</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">64</span><span class="p">,</span> <span class="n">dropout_rate</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>      <span class="c1"># 32 → 16</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">block2</span> <span class="o">=</span> <span class="n">ConvBlock</span><span class="p">(</span><span class="mi">64</span><span class="p">,</span> <span class="mi">128</span><span class="p">,</span> <span class="n">dropout_rate</span><span class="o">=</span><span class="mf">0.4</span><span class="p">)</span>    <span class="c1"># 16 → 8</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">block3</span> <span class="o">=</span> <span class="n">ConvBlock</span><span class="p">(</span><span class="mi">128</span><span class="p">,</span> <span class="mi">256</span><span class="p">,</span> <span class="n">dropout_rate</span><span class="o">=</span><span class="mf">0.4</span><span class="p">)</span>   <span class="c1"># 8 → 4</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">block4</span> <span class="o">=</span> <span class="n">ConvBlock</span><span class="p">(</span><span class="mi">256</span><span class="p">,</span> <span class="mi">512</span><span class="p">,</span> <span class="n">dropout_rate</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>   <span class="c1"># 4 → 2</span>
+
+        <span class="c1"># 全局平均池化（2×2 → 1×1）</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gap</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">AdaptiveAvgPool2d</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="c1"># 全連接層</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fc</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">512</span><span class="p">,</span> <span class="n">num_classes</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">block1</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">block2</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">block3</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">block4</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">gap</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>              <span class="c1"># (N, 512, 2, 2) → (N, 512, 1, 1)</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>    <span class="c1"># (N, 512, 1, 1) → (N, 512)</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fc</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>               <span class="c1"># (N, 512) → (N, 10)</span>
+
+        <span class="k">return</span> <span class="n">x</span>
+
+
+<span class="c1"># 創建模型</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">DeepCIFAR</span><span class="p">()</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+
+<span class="c1"># 顯示模型</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="s2">&quot;=&quot;</span> <span class="o">*</span> <span class="mi">70</span><span class="p">)</span>
+
+<span class="c1"># 計算參數量</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">count_parameters</span><span class="p">(</span><span class="n">model</span><span class="p">):</span>
+    <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">numel</span><span class="p">()</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">()</span> <span class="k">if</span> <span class="n">p</span><span class="o">.</span><span class="n">requires_grad</span><span class="p">)</span>
+
+<span class="n">total_params</span> <span class="o">=</span> <span class="n">count_parameters</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;總參數量: </span><span class="si">{</span><span class="n">total_params</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># 測試前向傳播</span>
+<span class="n">sample_input</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">32</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+<span class="n">sample_output</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">sample_input</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;輸入形狀: </span><span class="si">{</span><span class="n">sample_input</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;輸出形狀: </span><span class="si">{</span><span class="n">sample_output</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># ========== 儲存格 4: 定義損失函數、優化器、學習率調度 ==========</span>
+<span class="n">criterion</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">CrossEntropyLoss</span><span class="p">()</span>
+<span class="n">optimizer</span> <span class="o">=</span> <span class="n">optim</span><span class="o">.</span><span class="n">Adam</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="mf">0.001</span><span class="p">,</span> <span class="n">weight_decay</span><span class="o">=</span><span class="mf">1e-4</span><span class="p">)</span>
+
+<span class="c1"># Cosine Annealing 學習率調度</span>
+<span class="n">scheduler</span> <span class="o">=</span> <span class="n">optim</span><span class="o">.</span><span class="n">lr_scheduler</span><span class="o">.</span><span class="n">CosineAnnealingLR</span><span class="p">(</span>
+    <span class="n">optimizer</span><span class="p">,</span>
+    <span class="n">T_max</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>      <span class="c1"># 最大 epoch</span>
+    <span class="n">eta_min</span><span class="o">=</span><span class="mf">1e-6</span>    <span class="c1"># 最小學習率</span>
+<span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;損失函數: CrossEntropyLoss&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;優化器: Adam (lr=0.001, weight_decay=1e-4)&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;學習率調度: CosineAnnealingLR&quot;</span><span class="p">)</span>
+
+<span class="c1"># ========== 儲存格 5: 訓練與評估函數 ==========</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">train_epoch</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">train_loader</span><span class="p">,</span> <span class="n">criterion</span><span class="p">,</span> <span class="n">optimizer</span><span class="p">,</span> <span class="n">device</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;訓練一個 epoch&quot;&quot;&quot;</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">train</span><span class="p">()</span>
+
+    <span class="n">running_loss</span> <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="n">correct</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">total</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="n">pbar</span> <span class="o">=</span> <span class="n">tqdm</span><span class="p">(</span><span class="n">train_loader</span><span class="p">,</span> <span class="n">desc</span><span class="o">=</span><span class="s1">&#39;Training&#39;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">data</span><span class="p">,</span> <span class="n">target</span> <span class="ow">in</span> <span class="n">pbar</span><span class="p">:</span>
+        <span class="n">data</span><span class="p">,</span> <span class="n">target</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">),</span> <span class="n">target</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+
+        <span class="n">optimizer</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
+        <span class="n">output</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+        <span class="n">loss</span> <span class="o">=</span> <span class="n">criterion</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="n">target</span><span class="p">)</span>
+        <span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
+        <span class="n">optimizer</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
+
+        <span class="n">running_loss</span> <span class="o">+=</span> <span class="n">loss</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+        <span class="n">_</span><span class="p">,</span> <span class="n">predicted</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">output</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">total</span> <span class="o">+=</span> <span class="n">target</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">correct</span> <span class="o">+=</span> <span class="p">(</span><span class="n">predicted</span> <span class="o">==</span> <span class="n">target</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+
+        <span class="c1"># 更新進度條</span>
+        <span class="n">pbar</span><span class="o">.</span><span class="n">set_postfix</span><span class="p">({</span>
+            <span class="s1">&#39;loss&#39;</span><span class="p">:</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">running_loss</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">train_loader</span><span class="p">)</span><span class="si">:</span><span class="s1">.4f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;acc&#39;</span><span class="p">:</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="mf">100.</span><span class="o">*</span><span class="n">correct</span><span class="o">/</span><span class="n">total</span><span class="si">:</span><span class="s1">.2f</span><span class="si">}</span><span class="s1">%&#39;</span>
+        <span class="p">})</span>
+
+    <span class="n">epoch_loss</span> <span class="o">=</span> <span class="n">running_loss</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">train_loader</span><span class="p">)</span>
+    <span class="n">epoch_acc</span> <span class="o">=</span> <span class="mf">100.0</span> <span class="o">*</span> <span class="n">correct</span> <span class="o">/</span> <span class="n">total</span>
+
+    <span class="k">return</span> <span class="n">epoch_loss</span><span class="p">,</span> <span class="n">epoch_acc</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">evaluate</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">test_loader</span><span class="p">,</span> <span class="n">criterion</span><span class="p">,</span> <span class="n">device</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;評估模型&quot;&quot;&quot;</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
+
+    <span class="n">running_loss</span> <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="n">correct</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">total</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
+        <span class="k">for</span> <span class="n">data</span><span class="p">,</span> <span class="n">target</span> <span class="ow">in</span> <span class="n">test_loader</span><span class="p">:</span>
+            <span class="n">data</span><span class="p">,</span> <span class="n">target</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">),</span> <span class="n">target</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+
+            <span class="n">output</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+            <span class="n">loss</span> <span class="o">=</span> <span class="n">criterion</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="n">target</span><span class="p">)</span>
+
+            <span class="n">running_loss</span> <span class="o">+=</span> <span class="n">loss</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+            <span class="n">_</span><span class="p">,</span> <span class="n">predicted</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">output</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="n">total</span> <span class="o">+=</span> <span class="n">target</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+            <span class="n">correct</span> <span class="o">+=</span> <span class="p">(</span><span class="n">predicted</span> <span class="o">==</span> <span class="n">target</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+
+    <span class="n">epoch_loss</span> <span class="o">=</span> <span class="n">running_loss</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">test_loader</span><span class="p">)</span>
+    <span class="n">epoch_acc</span> <span class="o">=</span> <span class="mf">100.0</span> <span class="o">*</span> <span class="n">correct</span> <span class="o">/</span> <span class="n">total</span>
+
+    <span class="k">return</span> <span class="n">epoch_loss</span><span class="p">,</span> <span class="n">epoch_acc</span>
+
+<span class="c1"># ========== 儲存格 6: 訓練迴圈 ==========</span>
+<span class="n">NUM_EPOCHS</span> <span class="o">=</span> <span class="mi">100</span>
+
+<span class="c1"># 記錄歷史</span>
+<span class="n">history</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;train_loss&#39;</span><span class="p">:</span> <span class="p">[],</span>
+    <span class="s1">&#39;train_acc&#39;</span><span class="p">:</span> <span class="p">[],</span>
+    <span class="s1">&#39;test_loss&#39;</span><span class="p">:</span> <span class="p">[],</span>
+    <span class="s1">&#39;test_acc&#39;</span><span class="p">:</span> <span class="p">[],</span>
+    <span class="s1">&#39;lr&#39;</span><span class="p">:</span> <span class="p">[]</span>
+<span class="p">}</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;開始訓練...&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;=&quot;</span> <span class="o">*</span> <span class="mi">70</span><span class="p">)</span>
+
+<span class="n">best_acc</span> <span class="o">=</span> <span class="mf">0.0</span>
+
+<span class="k">for</span> <span class="n">epoch</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">NUM_EPOCHS</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Epoch </span><span class="si">{</span><span class="n">epoch</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">NUM_EPOCHS</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-&quot;</span> <span class="o">*</span> <span class="mi">70</span><span class="p">)</span>
+
+    <span class="c1"># 訓練</span>
+    <span class="n">train_loss</span><span class="p">,</span> <span class="n">train_acc</span> <span class="o">=</span> <span class="n">train_epoch</span><span class="p">(</span>
+        <span class="n">model</span><span class="p">,</span> <span class="n">train_loader</span><span class="p">,</span> <span class="n">criterion</span><span class="p">,</span> <span class="n">optimizer</span><span class="p">,</span> <span class="n">device</span>
+    <span class="p">)</span>
+
+    <span class="c1"># 評估</span>
+    <span class="n">test_loss</span><span class="p">,</span> <span class="n">test_acc</span> <span class="o">=</span> <span class="n">evaluate</span><span class="p">(</span>
+        <span class="n">model</span><span class="p">,</span> <span class="n">test_loader</span><span class="p">,</span> <span class="n">criterion</span><span class="p">,</span> <span class="n">device</span>
+    <span class="p">)</span>
+
+    <span class="c1"># 更新學習率</span>
+    <span class="n">current_lr</span> <span class="o">=</span> <span class="n">optimizer</span><span class="o">.</span><span class="n">param_groups</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;lr&#39;</span><span class="p">]</span>
+    <span class="n">scheduler</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
+
+    <span class="c1"># 記錄歷史</span>
+    <span class="n">history</span><span class="p">[</span><span class="s1">&#39;train_loss&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">train_loss</span><span class="p">)</span>
+    <span class="n">history</span><span class="p">[</span><span class="s1">&#39;train_acc&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">train_acc</span><span class="p">)</span>
+    <span class="n">history</span><span class="p">[</span><span class="s1">&#39;test_loss&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">test_loss</span><span class="p">)</span>
+    <span class="n">history</span><span class="p">[</span><span class="s1">&#39;test_acc&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">test_acc</span><span class="p">)</span>
+    <span class="n">history</span><span class="p">[</span><span class="s1">&#39;lr&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">current_lr</span><span class="p">)</span>
+
+    <span class="c1"># 儲存最佳模型</span>
+    <span class="k">if</span> <span class="n">test_acc</span> <span class="o">&gt;</span> <span class="n">best_acc</span><span class="p">:</span>
+        <span class="n">best_acc</span> <span class="o">=</span> <span class="n">test_acc</span>
+        <span class="n">torch</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">state_dict</span><span class="p">(),</span> <span class="s1">&#39;best_deepcifar_pytorch.pth&#39;</span><span class="p">)</span>
+        <span class="n">best_marker</span> <span class="o">=</span> <span class="s1">&#39;⭐ (Best)&#39;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">best_marker</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+
+    <span class="c1"># 顯示結果</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Train Loss: </span><span class="si">{</span><span class="n">train_loss</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2"> | Train Acc: </span><span class="si">{</span><span class="n">train_acc</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">%&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Test Loss:  </span><span class="si">{</span><span class="n">test_loss</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2"> | Test Acc:  </span><span class="si">{</span><span class="n">test_acc</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">% </span><span class="si">{</span><span class="n">best_marker</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Learning Rate: </span><span class="si">{</span><span class="n">current_lr</span><span class="si">:</span><span class="s2">.6f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="c1"># 早停檢查（簡化版，實際可用 patience）</span>
+    <span class="k">if</span> <span class="n">epoch</span> <span class="o">&gt;</span> <span class="mi">30</span> <span class="ow">and</span> <span class="n">test_acc</span> <span class="o">&lt;</span> <span class="n">best_acc</span> <span class="o">-</span> <span class="mi">5</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">早停：測試準確率下降超過 5%&quot;</span><span class="p">)</span>
+        <span class="k">break</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="s2">&quot;=&quot;</span> <span class="o">*</span> <span class="mi">70</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;✓ 訓練完成！最佳測試準確率: </span><span class="si">{</span><span class="n">best_acc</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">%&quot;</span><span class="p">)</span>
+
+<span class="c1"># ========== 儲存格 7: 視覺化訓練歷史 ==========</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">18</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+
+<span class="c1"># 準確率</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">history</span><span class="p">[</span><span class="s1">&#39;train_acc&#39;</span><span class="p">],</span> <span class="s1">&#39;b-&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;訓練準確率&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">history</span><span class="p">[</span><span class="s1">&#39;test_acc&#39;</span><span class="p">],</span> <span class="s1">&#39;r-&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;測試準確率&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;DeepCIFAR 訓練準確率 (PyTorch)&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Epoch&#39;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;準確率 (%)&#39;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+
+<span class="c1"># 損失</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">history</span><span class="p">[</span><span class="s1">&#39;train_loss&#39;</span><span class="p">],</span> <span class="s1">&#39;b-&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;訓練損失&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">history</span><span class="p">[</span><span class="s1">&#39;test_loss&#39;</span><span class="p">],</span> <span class="s1">&#39;r-&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;測試損失&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;DeepCIFAR 訓練損失 (PyTorch)&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Epoch&#39;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;損失值&#39;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+
+<span class="c1"># 學習率</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">history</span><span class="p">[</span><span class="s1">&#39;lr&#39;</span><span class="p">],</span> <span class="s1">&#39;g-&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;學習率調度 (Cosine Annealing)&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Epoch&#39;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;學習率&#39;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">set_yscale</span><span class="p">(</span><span class="s1">&#39;log&#39;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="c1"># ========== 儲存格 8: 詳細評估 ==========</span>
+<span class="c1"># 載入最佳模型</span>
+<span class="n">model</span><span class="o">.</span><span class="n">load_state_dict</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s1">&#39;best_deepcifar_pytorch.pth&#39;</span><span class="p">))</span>
+<span class="n">model</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
+
+<span class="c1"># 收集所有預測</span>
+<span class="n">all_preds</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">all_targets</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
+    <span class="k">for</span> <span class="n">data</span><span class="p">,</span> <span class="n">target</span> <span class="ow">in</span> <span class="n">test_loader</span><span class="p">:</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+        <span class="n">output</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+        <span class="n">_</span><span class="p">,</span> <span class="n">predicted</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">output</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+        <span class="n">all_preds</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">predicted</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">())</span>
+        <span class="n">all_targets</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">target</span><span class="o">.</span><span class="n">numpy</span><span class="p">())</span>
+
+<span class="n">all_preds</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">all_preds</span><span class="p">)</span>
+<span class="n">all_targets</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">all_targets</span><span class="p">)</span>
+
+<span class="c1"># 混淆矩陣</span>
+<span class="n">cm</span> <span class="o">=</span> <span class="n">confusion_matrix</span><span class="p">(</span><span class="n">all_targets</span><span class="p">,</span> <span class="n">all_preds</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">heatmap</span><span class="p">(</span><span class="n">cm</span><span class="p">,</span> <span class="n">annot</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;d&#39;</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;Blues&#39;</span><span class="p">,</span>
+            <span class="n">xticklabels</span><span class="o">=</span><span class="n">class_names_zh</span><span class="p">,</span>
+            <span class="n">yticklabels</span><span class="o">=</span><span class="n">class_names_zh</span><span class="p">,</span>
+            <span class="n">cbar_kws</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;label&#39;</span><span class="p">:</span> <span class="s1">&#39;數量&#39;</span><span class="p">})</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;DeepCIFAR 混淆矩陣 (PyTorch)&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;預測標籤&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;真實標籤&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xticks</span><span class="p">(</span><span class="n">rotation</span><span class="o">=</span><span class="mi">45</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">yticks</span><span class="p">(</span><span class="n">rotation</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="c1"># 分類報告</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">分類報告:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">classification_report</span><span class="p">(</span><span class="n">all_targets</span><span class="p">,</span> <span class="n">all_preds</span><span class="p">,</span>
+                           <span class="n">target_names</span><span class="o">=</span><span class="n">class_names_zh</span><span class="p">))</span>
+
+<span class="c1"># 每個類別的準確率</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">每個類別的詳細分析:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;=&quot;</span> <span class="o">*</span> <span class="mi">70</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span>
+    <span class="n">mask</span> <span class="o">=</span> <span class="n">all_targets</span> <span class="o">==</span> <span class="n">i</span>
+    <span class="n">total</span> <span class="o">=</span> <span class="n">mask</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+    <span class="n">correct</span> <span class="o">=</span> <span class="p">(</span><span class="n">all_preds</span><span class="p">[</span><span class="n">mask</span><span class="p">]</span> <span class="o">==</span> <span class="n">all_targets</span><span class="p">[</span><span class="n">mask</span><span class="p">])</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+    <span class="n">accuracy</span> <span class="o">=</span> <span class="n">correct</span> <span class="o">/</span> <span class="n">total</span> <span class="o">*</span> <span class="mi">100</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">class_names_zh</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="si">:</span><span class="s2">4s</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">accuracy</span><span class="si">:</span><span class="s2">5.2f</span><span class="si">}</span><span class="s2">% (</span><span class="si">{</span><span class="n">correct</span><span class="si">:</span><span class="s2">4d</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">total</span><span class="si">:</span><span class="s2">4d</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">✓ 所有程式碼執行完成！&quot;</span><span class="p">)</span>
+</code></pre></div>
+
+<hr />
+<h3>結果分析與對比</h3>
+<h4>預期結果</h4>
+<p><strong>Keras 版本</strong>：</p>
+<div class="codehilite"><pre><span></span><code>Epoch 50/100
+391/391 [======] - 12s - loss: 0.3421 - accuracy: 0.8821 - val_loss: 0.4123 - val_accuracy: 0.8652
+
+最終測試準確率: 86.52%
+</code></pre></div>
+
+<p><strong>PyTorch 版本</strong>：</p>
+<div class="codehilite"><pre><span></span><code><span class="c">Epoch </span><span class="k">[</span><span class="c">50/100</span><span class="k">]</span>
+<span class="nb">----------------------------------------------------------------------</span>
+<span class="c">Training: 100%|██████████| 391/391 </span><span class="k">[</span><span class="c">00:45</span><span class="nv">&lt;</span><span class="c">00:00</span><span class="nt">,</span><span class="c"> loss=0</span><span class="nt">.</span><span class="c">3398</span><span class="nt">,</span><span class="c"> acc=88</span><span class="nt">.</span><span class="c">35%</span><span class="k">]</span>
+<span class="c">Train Loss: 0</span><span class="nt">.</span><span class="c">3398 | Train Acc: 88</span><span class="nt">.</span><span class="c">35%</span>
+<span class="c">Test Loss:  0</span><span class="nt">.</span><span class="c">4089 | Test Acc:  86</span><span class="nt">.</span><span class="c">71% ⭐ (Best)</span>
+
+<span class="c">最終測試準確率: 86</span><span class="nt">.</span><span class="c">71%</span>
+</code></pre></div>
+
+<h4>各類別準確率分析</h4>
+<table>
+<thead>
+<tr>
+<th>類別</th>
+<th>準確率</th>
+<th>難度</th>
+<th>最常混淆對象</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>飛機</td>
+<td>89.2%</td>
+<td>★★☆☆☆</td>
+<td>船</td>
+</tr>
+<tr>
+<td>汽車</td>
+<td>93.5%</td>
+<td>★☆☆☆☆</td>
+<td>卡車</td>
+</tr>
+<tr>
+<td>鳥</td>
+<td>82.1%</td>
+<td>★★★★☆</td>
+<td>青蛙、飛機</td>
+</tr>
+<tr>
+<td>貓</td>
+<td>76.8%</td>
+<td>★★★★★</td>
+<td>狗</td>
+</tr>
+<tr>
+<td>鹿</td>
+<td>85.3%</td>
+<td>★★★☆☆</td>
+<td>馬</td>
+</tr>
+<tr>
+<td>狗</td>
+<td>78.5%</td>
+<td>★★★★★</td>
+<td>貓</td>
+</tr>
+<tr>
+<td>青蛙</td>
+<td>88.7%</td>
+<td>★★☆☆☆</td>
+<td>鳥</td>
+</tr>
+<tr>
+<td>馬</td>
+<td>90.1%</td>
+<td>★★☆☆☆</td>
+<td>鹿</td>
+</tr>
+<tr>
+<td>船</td>
+<td>91.8%</td>
+<td>★★☆☆☆</td>
+<td>飛機</td>
+</tr>
+<tr>
+<td>卡車</td>
+<td>89.4%</td>
+<td>★★☆☆☆</td>
+<td>汽車</td>
+</tr>
+</tbody>
+</table>
+<p><strong>觀察</strong>：<br />
+- <strong>最容易</strong>：汽車 (93.5%) - 輪廓清晰<br />
+- <strong>最困難</strong>：貓 (76.8%) vs 狗 (78.5%) - 高度相似</p>
+<h4>與 MNIST 對比</h4>
+<table>
+<thead>
+<tr>
+<th>指標</th>
+<th>MNIST</th>
+<th>CIFAR-10</th>
+<th>比例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>訓練時間</strong></td>
+<td>3 分鐘</td>
+<td>20 分鐘</td>
+<td>×7</td>
+</tr>
+<tr>
+<td><strong>參數量</strong></td>
+<td>140K</td>
+<td>1.2M</td>
+<td>×8.6</td>
+</tr>
+<tr>
+<td><strong>準確率（簡單模型）</strong></td>
+<td>99.4%</td>
+<td>70%</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>準確率（進階模型）</strong></td>
+<td>99.4%</td>
+<td>87%</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>提升空間</strong></td>
+<td>0.4%</td>
+<td>13%</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>人類表現</strong></td>
+<td>99.8%</td>
+<td>94%</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>SOTA</strong></td>
+<td>99.8%</td>
+<td>99%+</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>總結</h2>
+<h3>關鍵收穫</h3>
+<ol>
+<li><strong>CIFAR-10 的挑戰</strong>：</li>
+<li>彩色影像、複雜背景、類內變異大</li>
+<li>
+<p>需要更深的網路、更強的正規化</p>
+</li>
+<li>
+<p><strong>關鍵技術</strong>：</p>
+</li>
+<li><strong>資料增強</strong>：提升 10-15% 準確率</li>
+<li><strong>Batch Normalization</strong>：加速訓練、穩定性</li>
+<li>
+<p><strong>Global Average Pooling</strong>：減少參數、防過擬合</p>
+</li>
+<li>
+<p><strong>框架對比</strong>：</p>
+</li>
+<li>Keras：簡潔、快速原型</li>
+<li>PyTorch：靈活、細粒度控制</li>
+</ol>
+<h3>下一步學習</h3>
+<p>現在你已經掌握了 CNN 的核心技術，準備好進階挑戰了嗎？</p>
+<p><strong>請繼續閱讀</strong>：<code>CNN_intro_b07_part4.md</code> - 實戰技巧與疑難排解</p>
+<hr />
+<p><strong>本文件完成時間</strong>：2025-10-07 15:00:00<br />
+<strong>版本</strong>：b07_part3<br />
+<strong>下一部分</strong>：<code>CNN_intro_b07_part4.md</code> (實戰技巧與總結)</p></div>
+    
+    <!-- Highlight.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    
+    <!-- Mermaid -->
+    <script type="module">
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+        mermaid.initialize({
+            "startOnLoad": true,
+            "theme": "dark",
+            "securityLevel": "loose"
+});
+    </script>
+</body>
+</html>
