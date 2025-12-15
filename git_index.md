@@ -37,6 +37,12 @@
 
 | File Name | Last Updated | Link |
 |---|---|---|
+| index.html | 2025-12-15 | [index.html](https://joelhoty.github.io/ocgit/CNN/index.html) |
+| CNN_intro_b07.html | 2025-12-15 | [CNN_intro_b07.html](https://joelhoty.github.io/ocgit/CNN/CNN_intro_b07.html) |
+| CNN_intro_b07_part3.html | 2025-12-15 | [CNN_intro_b07_part3.html](https://joelhoty.github.io/ocgit/CNN/CNN_intro_b07_part3.html) |
+| CNN_intro_b07_part2.html | 2025-12-15 | [CNN_intro_b07_part2.html](https://joelhoty.github.io/ocgit/CNN/CNN_intro_b07_part2.html) |
+| CNN_intro_b07_part4.html | 2025-12-15 | [CNN_intro_b07_part4.html](https://joelhoty.github.io/ocgit/CNN/CNN_intro_b07_part4.html) |
+| CNN_Tutorial_README.html | 2025-12-15 | [CNN_Tutorial_README.html](https://joelhoty.github.io/ocgit/CNN/CNN_Tutorial_README.html) |
 | CNN_01_final.html | 2025-11-11 | [CNN_01_final.html](https://joelhoty.github.io/ocgit/CNN/CNN_01_final.html) |
 
 ## GeminiForDesignTeaching
