@@ -1,0 +1,1030 @@
+<!-- Path: 114A_EngineerDesign/NodeMcu32s | Timestamp: 2025-12-15 19:53:32 | Version: b01 -->
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NodeMcu32s_01_b07</title>
+
+    <!-- CSS 框架 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/dark.min.css">
+
+    <!-- 代碼高亮 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/base16/darcula.min.css">
+
+    <!-- 自定義樣式 -->
+    <style>
+        
+                body {
+                    max-width: 900px;
+                    margin: 0 auto;
+                    padding: 20px;
+                }
+                /* 提升代碼塊對比度 */
+                pre {
+                    background: #1e1e1e !important;
+                    border: 1px solid #3e3e3e;
+                }
+                pre code {
+                    background: #1e1e1e !important;
+                }
+                code {
+                    background: #2d2d2d !important;
+                }
+                /* 引用塊對比度 */
+                blockquote {
+                    background: #2d2d2d;
+                    border-left: 4px solid #4a9eff;
+                }
+            
+        /* 通用代碼塊樣式 */
+        pre code {
+            display: block;
+            padding: 1.5em;
+            border-radius: 8px;
+            overflow-x: auto;
+            line-height: 1.6;
+        }
+
+        /* Mermaid 圖表樣式 */
+        
+        .mermaid {
+            margin: 2em 0;
+            padding: 1.5em;
+            text-align: center;
+            border-radius: 8px;
+        }
+        .mermaid svg {
+            max-width: 100%;
+            height: auto;
+        }
+        /* 增強所有文字的可讀性 */
+        .mermaid svg text {
+            font-weight: 700 !important;  /* 加粗文字 */
+            font-size: 18px !important;  /* 增大字體 */
+        }
+        /* 特別加強節點標籤文字 */
+        .mermaid .nodeLabel,
+        .mermaid .edgeLabel {
+            font-weight: 700 !important;
+        }
+        /* 確保連線標籤清晰可見 */
+        .mermaid .edgeLabel text {
+            fill: inherit !important;
+            font-weight: 700 !important;
+        }
+        /* 加粗序列圖的文字 */
+        .mermaid .actor,
+        .mermaid .messageText {
+            font-weight: 700 !important;
+        }
+        /* 增強邊框可見度 */
+        .mermaid .edgePath path,
+        .mermaid .flowchart-link {
+            stroke-width: 2.5px !important;  /* 加粗連線 */
+        }
+        .mermaid .arrowheadPath {
+            stroke-width: 2.5px !important;
+        }
+        /* 確保節點邊框清晰 */
+        .mermaid .node rect,
+        .mermaid .node polygon,
+        .mermaid .node circle,
+        .mermaid .node ellipse {
+            stroke-width: 2.5px !important;
+        }
+        
+        .mermaid {
+            background: #1e293b;  /* 深藍灰色背景 */
+            border: 2px solid #475569;  /* 加粗邊框 */
+            color: #f1f5f9;  /* 亮色文字 */
+        }
+        /* 確保深色主題下文字始終可見 */
+        .mermaid svg text {
+            fill: #f1f5f9 !important;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);  /* 添加陰影增強可讀性 */
+        }
+        .mermaid .nodeLabel {
+            color: #ffffff !important;
+        }
+            
+
+        /* 響應式調整 */
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            .container, .markdown-body, .latex-body, .window-body, .nes-container {
+                padding: 15px;
+            }
+            pre code {
+                padding: 1em;
+            }
+            /* 移動設備上稍微縮小 Mermaid 文字 */
+            .mermaid svg text {
+                font-size: 16px !important;
+            }
+        }
+
+        
+    </style>
+</head>
+<body>
+    <div class="container"><!-- Path: 114A_EngineerDesign/NodeMcu32s | Timestamp: 2025-12-15 19:50:17 | Version: b07 -->
+<h1>NodeMCU-32S 網路連線：Wi-Fi（DHCP）+ OLED 顯示 IP + NTP 校時（延伸：RTC）</h1>
+<h2>0. 本單元學習目標（給學生）</h2>
+<ul>
+<li>知識（Know）：理解 <code>SSID</code>、<code>WPA2</code>、<code>STA/AP</code>、<code>DHCP</code>、<code>IP/Gateway/DNS</code>、<code>RSSI</code>、<code>I2C</code>、<code>NTP</code>、<code>時區</code> 的基本概念</li>
+<li>技能（Do）：讓 NodeMCU-32S（ESP32）成功連上 Wi-Fi、取得 IP、用 U8g2 在 OLED（SSD1306 I2C）顯示 IP 與目前時間</li>
+<li>素養（Think）：能閱讀並說明程式的流程，並用「檢查清單」排除常見連線/顯示問題</li>
+</ul>
+<h2>1. 情境與成果（你會做出什麼）</h2>
+<p>你將完成兩個可展示的小作品：<br />
+1. <strong>Wi-Fi 連線成功偵測器</strong>：連線後把 <code>IP 位址</code> 顯示在 OLED 上（同時也在序列埠顯示）<br />
+2. <strong>網路校時電子鐘</strong>：透過 <code>NTP</code> 取得時間，顯示在 OLED 上；延伸討論「沒網路怎麼辦？」（RTC）</p>
+<hr />
+<h2>2. 必備材料與前置準備（教師/學生）</h2>
+<h3>2.1 硬體</h3>
+<ul>
+<li>NodeMCU-32S（ESP32 開發板）</li>
+<li>OLED 0.96" SSD1306 I2C（常見 128×64）</li>
+<li>麵包板、杜邦線</li>
+</ul>
+<h3>2.2 軟體（Arduino IDE）</h3>
+<ul>
+<li>Arduino IDE（或 PlatformIO 亦可，但本教材以 Arduino IDE 為主）</li>
+<li>安裝 ESP32 開發板支援（Board Manager：ESP32 by Espressif Systems）</li>
+<li>安裝函式庫（Library Manager）：</li>
+<li><code>U8g2</code>（U8g2 by olikraus）</li>
+</ul>
+<h3>2.3 接線（I2C）</h3>
+<blockquote>
+<p>多數 SSD1306 I2C 模組只有 4 腳：<code>GND / VCC / SCL / SDA</code></p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>OLED 腳位</th>
+<th>NodeMCU-32S（ESP32）建議腳位</th>
+<th>說明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GND</td>
+<td>GND</td>
+<td>地</td>
+</tr>
+<tr>
+<td>VCC</td>
+<td>3V3</td>
+<td>建議 3.3V（避免 5V 造成不穩）</td>
+</tr>
+<tr>
+<td>SCL</td>
+<td>GPIO 22</td>
+<td>I2C 時脈</td>
+</tr>
+<tr>
+<td>SDA</td>
+<td>GPIO 21</td>
+<td>I2C 資料</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>3. 無線網路連線方式（Wi-Fi）</h2>
+<h3>3.1 為什麼要學 Wi-Fi？（Why）</h3>
+<p>IoT 裝置要「變聰明」，必須能把資料送到網路（或從網路取資料）。Wi-Fi 是最常見、最容易在教室實作的無線連線方式之一。</p>
+<h3>3.2 Wi-Fi 連線的關鍵名詞（What）</h3>
+<blockquote>
+<p>工程學習的重點：名詞不是背誦，而是理解「它在系統中負責什麼」與「如何驗證它有沒有正常工作」。</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>名詞</th>
+<th>工程語意（它負責什麼）</th>
+<th>你要怎麼驗證（可觀測訊號）</th>
+<th>常見問題</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>SSID</code></td>
+<td>AP 對外廣播的網路識別（你要連到哪個系統）</td>
+<td>手機/電腦掃描到的名稱</td>
+<td>連到錯的 SSID、SSID 含空白/特殊字元</td>
+</tr>
+<tr>
+<td><code>Password</code></td>
+<td>加密連線授權（你是否被允許加入）</td>
+<td><code>WiFi.status()</code> 是否為 <code>WL_CONNECTED</code></td>
+<td>密碼錯、路由器改密碼未更新</td>
+</tr>
+<tr>
+<td><code>STA</code>（Station）</td>
+<td>裝置端角色：當用戶端連到 AP</td>
+<td><code>WiFi.mode(WIFI_STA)</code></td>
+<td>忘了設 STA、或同時 AP+STA 造成混淆</td>
+</tr>
+<tr>
+<td><code>AP</code>（Access Point）</td>
+<td>網路入口：提供無線連線與上網路徑</td>
+<td>其他裝置能否上網</td>
+<td>AP 本身沒上網、或限制 UDP/NTP</td>
+</tr>
+<tr>
+<td><code>DHCP</code></td>
+<td>自動配置：分配 IP/Gateway/DNS（租約制）</td>
+<td><code>WiFi.localIP()</code> / <code>WiFi.gatewayIP()</code> / <code>WiFi.dnsIP()</code></td>
+<td>取得 IP 失敗、租約到期、IP 衝突</td>
+</tr>
+<tr>
+<td><code>IP</code></td>
+<td>你的位址：封包要找得到你</td>
+<td><code>WiFi.localIP()</code> 是否非 <code>0.0.0.0</code></td>
+<td>有 IP 但無法上網（多半是 DNS/GW）</td>
+</tr>
+<tr>
+<td><code>Gateway</code></td>
+<td>出入口：往外網的下一跳（通常是路由器）</td>
+<td><code>WiFi.gatewayIP()</code> 是否合理</td>
+<td>Gateway 錯會造成「有 IP 但出不去」</td>
+</tr>
+<tr>
+<td><code>DNS</code></td>
+<td>名稱解析：把網域名轉成 IP</td>
+<td>測試能否解析/連網域</td>
+<td>DNS 錯：能連 IP 但連不了網域</td>
+</tr>
+<tr>
+<td><code>RSSI</code></td>
+<td>無線鏈路品質指標（dBm，越接近 0 越強）</td>
+<td><code>WiFi.RSSI()</code></td>
+<td>訊號弱導致斷線、封包重傳</td>
+</tr>
+<tr>
+<td><code>MAC</code></td>
+<td>網卡硬體位址（L2 身分）</td>
+<td><code>WiFi.macAddress()</code></td>
+<td>校園網路可能做 MAC 管制</td>
+</tr>
+</tbody>
+</table>
+<h3>3.2.1 工程化視角：Wi-Fi 連線是「分層協作」</h3>
+<div class="mermaid">
+flowchart TB
+  A[應用層：你的程式] --&gt; B[網路層：IP / 路由 / DNS]
+  B --&gt; C[連線層：Wi-Fi STA / AP]
+  C --&gt; D[實體層：無線電訊號 RSSI]
+</div>
+<p>你寫的程式只是在「應用層」下指令，但故障常發生在更底層，所以除錯要會往下追：<strong>程式 -&gt; IP -&gt; Wi-Fi -&gt; 訊號</strong>。</p>
+<h3>3.3 WEP / WPA / WPA2 差異（常見安全性比較）</h3>
+<blockquote>
+<p>原檔寫「WEP, WAP, 與 WAP2」，實際應為 <code>WEP / WPA / WPA2</code>（WAP 通常指 Wireless Application Protocol，與 Wi-Fi 安全性不同）</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>名稱</th>
+<th>安全性</th>
+<th>現況</th>
+<th>教室建議</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>WEP</td>
+<td>很弱（已可被快速破解）</td>
+<td>幾乎淘汰</td>
+<td>不建議使用</td>
+</tr>
+<tr>
+<td>WPA</td>
+<td>比 WEP 好，但已過時</td>
+<td>逐步淘汰</td>
+<td>不建議使用</td>
+</tr>
+<tr>
+<td>WPA2</td>
+<td>目前最常見且相對安全</td>
+<td>主流</td>
+<td>建議使用</td>
+</tr>
+<tr>
+<td>WPA3</td>
+<td>更新、更安全</td>
+<td>逐步普及</td>
+<td>若環境支援可使用（但教室常以 WPA2 為主）</td>
+</tr>
+</tbody>
+</table>
+<h3>3.4 連線流程（Mermaid）</h3>
+<div class="mermaid">
+graph LR
+  A[ESP32 開機] --&gt; B[設定為 WiFi STA 模式]
+  B --&gt; C[開始連線 WiFi: SSID + 密碼]
+  C --&gt; D{連線成功?}
+  D -- 否 --&gt; C
+  D -- 是 --&gt; E[向 DHCP 取得 IP]
+  E --&gt; F[顯示 IP / 開始網路功能]
+</div>
+<hr />
+<h2>3.5 螺旋漸進的工程學習路徑（由簡而繁）</h2>
+<p>本單元建議用「可驗證、可累加」的方式練習：先做出最小可行版本（MVP），再逐步加功能；每一圈都要保留可觀測的證據（Serial/OLED）。</p>
+<div class="mermaid">
+graph LR
+  A[圈 1: 只做 WiFi 連線] --&gt; B[圈 2: 印出 IP 與基本狀態]
+  B --&gt; C[圈 3: 加 OLED 顯示 IP]
+  C --&gt; D[圈 4: 加 NTP 校時顯示時間]
+  D --&gt; E[圈 5: 斷線重連與穩定性]
+  E --&gt; F[圈 6: 離線 RTC 與資料紀錄]
+</div>
+<p>每一圈都用同一套「AI 協作」方式：<strong>提出明確需求 -&gt; 編譯/上傳 -&gt; 觀測輸出 -&gt; 用證據回饋 AI 修正</strong>。</p>
+<hr />
+<h2>4. 實作一：Wi-Fi 連線 + 序列埠顯示 IP（最小可行版）</h2>
+<h3>4.1 操作步驟（How）</h3>
+<ol>
+<li>Arduino IDE 選擇板子：<code>ESP32 Dev Module</code>（或你實際的 ESP32 板型）</li>
+<li>選擇正確序列埠（Port）</li>
+<li>貼上程式、填入你的 <code>SSID</code> 與 <code>PASSWORD</code></li>
+<li>上傳後開序列監控視窗（Serial Monitor，115200）</li>
+</ol>
+<h3>4.2 AI 協作 Prompt 範例（圈 1 → 圈 2）</h3>
+<blockquote>
+<p>目標：先只要求「會連線、看得到狀態」；成功後再加限制（超時、重試、顯示更多資訊）。</p>
+</blockquote>
+<h4>Prompt 4-A（最小可行：只連線 + Serial 印狀態）</h4>
+<div class="codehilite"><pre><span></span><code>請為 ESP32（NodeMCU-32S / ESP32 Dev Module）寫 Arduino IDE 完整程式（setup/loop）。
+需求（最小可行版本）：
+1) 以 WiFi STA 模式連線到 SSID=____，PASSWORD=____（使用 DHCP）
+2) Serial 速率 115200，印出：Connecting...、Connected、Local IP
+3) 程式要可編譯可上傳，不要使用額外函式庫
+請輸出完整程式。
+</code></pre></div>
+
+<h4>Prompt 4-B（加工程限制：10 秒超時 + 每 3 秒重試）</h4>
+<div class="codehilite"><pre><span></span><code>請在你剛剛的 ESP32 WiFi 程式上加入「工程化連線策略」並輸出完整程式。
+新增需求：
+1) 連線等待最多 10 秒，若失敗要印出 FAIL
+2) 失敗後每 3 秒重試一次（不要卡死在 while 迴圈）
+3) 連線成功後印出 Local IP、Gateway IP、DNS IP
+</code></pre></div>
+
+<h3>4.3 範例程式（Sketch 01：Wi-Fi + IP）</h3>
+<div class="codehilite"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;WiFi.h&gt;</span>
+
+<span class="c1">// TODO: 改成你的 Wi-Fi</span>
+<span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="o">*</span><span class="w"> </span><span class="n">WIFI_SSID</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;YOUR_SSID&quot;</span><span class="p">;</span>
+<span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="o">*</span><span class="w"> </span><span class="n">WIFI_PASS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;YOUR_PASSWORD&quot;</span><span class="p">;</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">connectWiFi</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">WiFi</span><span class="p">.</span><span class="n">mode</span><span class="p">(</span><span class="n">WIFI_STA</span><span class="p">);</span>
+<span class="w">  </span><span class="n">WiFi</span><span class="p">.</span><span class="n">begin</span><span class="p">(</span><span class="n">WIFI_SSID</span><span class="p">,</span><span class="w"> </span><span class="n">WIFI_PASS</span><span class="p">);</span>
+
+<span class="w">  </span><span class="n">Serial</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="s">&quot;Connecting to WiFi&quot;</span><span class="p">);</span>
+<span class="w">  </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">WiFi</span><span class="p">.</span><span class="n">status</span><span class="p">()</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">WL_CONNECTED</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">delay</span><span class="p">(</span><span class="mi">500</span><span class="p">);</span>
+<span class="w">    </span><span class="n">Serial</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="s">&quot;.&quot;</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="w">  </span><span class="n">Serial</span><span class="p">.</span><span class="n">println</span><span class="p">();</span>
+<span class="w">  </span><span class="n">Serial</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="s">&quot;WiFi connected!&quot;</span><span class="p">);</span>
+<span class="w">  </span><span class="n">Serial</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="s">&quot;IP: &quot;</span><span class="p">);</span>
+<span class="w">  </span><span class="n">Serial</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="n">WiFi</span><span class="p">.</span><span class="n">localIP</span><span class="p">());</span>
+<span class="p">}</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">setup</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">Serial</span><span class="p">.</span><span class="n">begin</span><span class="p">(</span><span class="mi">115200</span><span class="p">);</span>
+<span class="w">  </span><span class="n">delay</span><span class="p">(</span><span class="mi">500</span><span class="p">);</span>
+<span class="w">  </span><span class="n">connectWiFi</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">loop</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="c1">// 可延伸：定期顯示 RSSI、重連機制等</span>
+<span class="w">  </span><span class="n">delay</span><span class="p">(</span><span class="mi">1000</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<h3>4.4 讀懂程式做了什麼（Read）</h3>
+<p><strong>核心流程（偽代碼）</strong></p>
+<div class="codehilite"><pre><span></span><code>初始化序列埠
+設定 Wi-Fi 模式為 STA
+開始連線 (SSID, 密碼)
+重複檢查狀態直到連線成功
+印出 DHCP 分配的 IP 位址
+</code></pre></div>
+
+<hr />
+<h2>5. 實作二：Wi-Fi 連線 + OLED 顯示 IP（SSD1306 I2C）</h2>
+<h3>5.1 常見 OLED I2C 位址</h3>
+<ul>
+<li>最常見：<code>0x3C</code></li>
+<li>另一種：<code>0x3D</code></li>
+</ul>
+<p>如果你不確定位址，可先用 I2C Scanner 掃描（見 5.2）。</p>
+<blockquote>
+<p>提醒：I2C Scanner 顯示的是「7-bit 位址」。使用 U8g2 時，<code>setI2CAddress()</code> 需要 8-bit 位址，通常要做 <code>addr &lt;&lt; 1</code>。</p>
+</blockquote>
+<h3>5.1.1 工程化理解：I2C 位址、SDA/SCL 在做什麼？</h3>
+<table>
+<thead>
+<tr>
+<th>名詞</th>
+<th>它在系統中做什麼</th>
+<th>你要怎麼驗證</th>
+<th>常見錯誤</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>I2C</code></td>
+<td>兩線式匯流排：多個裝置共用同一組線</td>
+<td>I2C Scanner 能掃到裝置</td>
+<td>線太長/接觸不良導致通訊不穩</td>
+</tr>
+<tr>
+<td><code>SDA</code></td>
+<td>資料線（Data）</td>
+<td>Scanner 能回應</td>
+<td>SDA/SCL 接反</td>
+</tr>
+<tr>
+<td><code>SCL</code></td>
+<td>時脈線（Clock）</td>
+<td>Scanner 掃描穩定</td>
+<td>時脈太快/拉不動（通常線材問題）</td>
+</tr>
+<tr>
+<td><code>Address</code></td>
+<td>裝置的門牌號碼（同匯流排要唯一）</td>
+<td>掃描到 <code>0x3C/0x3D</code></td>
+<td>程式用錯位址、或忘記 U8g2 左移</td>
+</tr>
+<tr>
+<td><code>Pull-up</code></td>
+<td>I2C 使用開漏（open-drain），需要上拉電阻</td>
+<td>多數模組自帶</td>
+<td>罕見：上拉不足導致不穩（長線更明顯）</td>
+</tr>
+</tbody>
+</table>
+<h3>5.2 範例程式（可選：I2C Scanner）</h3>
+<div class="codehilite"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;Wire.h&gt;</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">setup</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">Serial</span><span class="p">.</span><span class="n">begin</span><span class="p">(</span><span class="mi">115200</span><span class="p">);</span>
+<span class="w">  </span><span class="n">Wire</span><span class="p">.</span><span class="n">begin</span><span class="p">(</span><span class="mi">21</span><span class="p">,</span><span class="w"> </span><span class="mi">22</span><span class="p">);</span><span class="w"> </span><span class="c1">// SDA, SCL</span>
+<span class="w">  </span><span class="n">Serial</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="s">&quot;I2C scan start...&quot;</span><span class="p">);</span>
+
+<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">addr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"> </span><span class="n">addr</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">127</span><span class="p">;</span><span class="w"> </span><span class="n">addr</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">Wire</span><span class="p">.</span><span class="n">beginTransmission</span><span class="p">(</span><span class="n">addr</span><span class="p">);</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">Wire</span><span class="p">.</span><span class="n">endTransmission</span><span class="p">()</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="n">Serial</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="s">&quot;Found I2C device at 0x&quot;</span><span class="p">);</span>
+<span class="w">      </span><span class="n">Serial</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="n">addr</span><span class="p">,</span><span class="w"> </span><span class="n">HEX</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="w">  </span><span class="n">Serial</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="s">&quot;I2C scan done.&quot;</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">loop</span><span class="p">()</span><span class="w"> </span><span class="p">{}</span>
+</code></pre></div>
+
+<h3>5.2.1 AI 協作 Prompt 範例（圈 2 → 圈 3）</h3>
+<blockquote>
+<p>目標：把「已驗證的 WiFi 連線」加上「可觀測的 OLED 顯示」，避免一次把所有需求混在一起。</p>
+</blockquote>
+<h4>Prompt 5-A（在 WiFi 成功版本上加 OLED 顯示 IP，使用 U8g2）</h4>
+<div class="codehilite"><pre><span></span><code>請基於「已能成功連上 WiFi 並印出 IP 的 ESP32 程式」，加入 OLED 顯示功能並輸出完整程式。
+硬體：SSD1306 I2C 128x64 OLED
+接線：SDA=21，SCL=22，I2C 位址=0x3C
+顯示需求：
+1) OLED 第 1 行顯示 WiFi OK
+2) OLED 第 2 行顯示 IP: x.x.x.x
+限制：
+- OLED 請使用 U8g2 by olikraus
+- 請提醒並正確處理 U8g2 setI2CAddress 需要 addr 左移 1 位
+</code></pre></div>
+
+<h4>Prompt 5-B（除錯導向：先給「只顯示 Hello」最小測試程式）</h4>
+<div class="codehilite"><pre><span></span><code>請給我一個最小 OLED 測試程式（Arduino IDE，ESP32）。
+條件：
+1) 使用 U8g2
+2) I2C：SDA=21、SCL=22、位址=0x3C
+3) OLED 顯示 Hello 並在 Serial 印出「OLED OK」
+請輸出完整程式，用來排除接線或位址問題。
+</code></pre></div>
+
+<h3>5.3 範例程式（Sketch 02：Wi-Fi + OLED 顯示 IP）</h3>
+<div class="codehilite"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;WiFi.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;Wire.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;U8g2lib.h&gt;</span>
+
+<span class="c1">// TODO: 改成你的 Wi-Fi</span>
+<span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="o">*</span><span class="w"> </span><span class="n">WIFI_SSID</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;YOUR_SSID&quot;</span><span class="p">;</span>
+<span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="o">*</span><span class="w"> </span><span class="n">WIFI_PASS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;YOUR_PASSWORD&quot;</span><span class="p">;</span>
+
+<span class="c1">// OLED（U8g2）</span>
+<span class="c1">// - SSD1306 128x64 常見型號 NONAME</span>
+<span class="c1">// - HW I2C：使用 Wire（ESP32 可先 Wire.begin(SDA,SCL)）</span>
+<span class="n">U8G2_SSD1306_128X64_NONAME_F_HW_I2C</span><span class="w"> </span><span class="nf">u8g2</span><span class="p">(</span><span class="n">U8G2_R0</span><span class="p">,</span><span class="w"> </span><span class="cm">/* reset=*/</span><span class="w"> </span><span class="n">U8X8_PIN_NONE</span><span class="p">);</span>
+
+<span class="c1">// I2C Scanner 看到的是「7-bit 位址」（0x3C / 0x3D）</span>
+<span class="c1">// 但 U8g2 的 setI2CAddress() 需要「8-bit 位址」：所以要左移 1 位</span>
+<span class="k">static</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">OLED_ADDR_7BIT</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x3C</span><span class="p">;</span><span class="w"> </span><span class="c1">// 若掃描到 0x3D，請改成 0x3D</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">show2Lines</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">String</span><span class="o">&amp;</span><span class="w"> </span><span class="n">line1</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">String</span><span class="o">&amp;</span><span class="w"> </span><span class="n">line2</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">u8g2</span><span class="p">.</span><span class="n">clearBuffer</span><span class="p">();</span>
+<span class="w">  </span><span class="n">u8g2</span><span class="p">.</span><span class="n">setFont</span><span class="p">(</span><span class="n">u8g2_font_6x10_tf</span><span class="p">);</span>
+<span class="w">  </span><span class="n">u8g2</span><span class="p">.</span><span class="n">drawStr</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">12</span><span class="p">,</span><span class="w"> </span><span class="n">line1</span><span class="p">.</span><span class="n">c_str</span><span class="p">());</span>
+<span class="w">  </span><span class="n">u8g2</span><span class="p">.</span><span class="n">drawStr</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">28</span><span class="p">,</span><span class="w"> </span><span class="n">line2</span><span class="p">.</span><span class="n">c_str</span><span class="p">());</span>
+<span class="w">  </span><span class="n">u8g2</span><span class="p">.</span><span class="n">sendBuffer</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">connectWiFi</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">WiFi</span><span class="p">.</span><span class="n">mode</span><span class="p">(</span><span class="n">WIFI_STA</span><span class="p">);</span>
+<span class="w">  </span><span class="n">WiFi</span><span class="p">.</span><span class="n">begin</span><span class="p">(</span><span class="n">WIFI_SSID</span><span class="p">,</span><span class="w"> </span><span class="n">WIFI_PASS</span><span class="p">);</span>
+
+<span class="w">  </span><span class="n">Serial</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="s">&quot;Connecting to WiFi&quot;</span><span class="p">);</span>
+<span class="w">  </span><span class="n">show2Lines</span><span class="p">(</span><span class="s">&quot;Connecting WiFi&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;...&quot;</span><span class="p">);</span>
+
+<span class="w">  </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">WiFi</span><span class="p">.</span><span class="n">status</span><span class="p">()</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">WL_CONNECTED</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">delay</span><span class="p">(</span><span class="mi">500</span><span class="p">);</span>
+<span class="w">    </span><span class="n">Serial</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="s">&quot;.&quot;</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="w">  </span><span class="n">Serial</span><span class="p">.</span><span class="n">println</span><span class="p">();</span>
+
+<span class="w">  </span><span class="n">Serial</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="s">&quot;WiFi connected!&quot;</span><span class="p">);</span>
+<span class="w">  </span><span class="n">Serial</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="s">&quot;IP: &quot;</span><span class="p">);</span>
+<span class="w">  </span><span class="n">Serial</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="n">WiFi</span><span class="p">.</span><span class="n">localIP</span><span class="p">());</span>
+
+<span class="w">  </span><span class="n">show2Lines</span><span class="p">(</span><span class="s">&quot;WiFi OK&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;IP: &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">WiFi</span><span class="p">.</span><span class="n">localIP</span><span class="p">().</span><span class="n">toString</span><span class="p">());</span>
+<span class="p">}</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">setup</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">Serial</span><span class="p">.</span><span class="n">begin</span><span class="p">(</span><span class="mi">115200</span><span class="p">);</span>
+<span class="w">  </span><span class="n">delay</span><span class="p">(</span><span class="mi">500</span><span class="p">);</span>
+
+<span class="w">  </span><span class="n">Wire</span><span class="p">.</span><span class="n">begin</span><span class="p">(</span><span class="mi">21</span><span class="p">,</span><span class="w"> </span><span class="mi">22</span><span class="p">);</span><span class="w"> </span><span class="c1">// SDA, SCL（依你的板子可調整）</span>
+<span class="w">  </span><span class="n">u8g2</span><span class="p">.</span><span class="n">setI2CAddress</span><span class="p">(</span><span class="n">OLED_ADDR_7BIT</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span>
+<span class="w">  </span><span class="n">u8g2</span><span class="p">.</span><span class="n">begin</span><span class="p">();</span>
+
+<span class="w">  </span><span class="n">show2Lines</span><span class="p">(</span><span class="s">&quot;OLED OK&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Booting...&quot;</span><span class="p">);</span>
+<span class="w">  </span><span class="n">connectWiFi</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">loop</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="c1">// 可延伸：顯示 RSSI、連線狀態、重新連線</span>
+<span class="w">  </span><span class="n">delay</span><span class="p">(</span><span class="mi">1000</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<h3>5.4 讀懂程式做了什麼（Read）</h3>
+<ul>
+<li><code>Wire.begin(21,22)</code>：指定 I2C 的 SDA/SCL 腳位（ESP32 可改）</li>
+<li><code>u8g2.setI2CAddress(OLED_ADDR_7BIT &lt;&lt; 1)</code>：把 7-bit 位址轉成 U8g2 需要的 8-bit 位址</li>
+<li><code>u8g2.begin()</code>：初始化 OLED（位址錯常見症狀：黑屏）</li>
+<li><code>WiFi.begin(...)</code>：開始連線；連線成功後 <code>WiFi.localIP()</code> 才有意義</li>
+</ul>
+<h3>5.5 工程學習補充：I2C / OLED 顯示的「最小除錯路徑」</h3>
+<ol>
+<li><strong>先確認匯流排</strong>：用 I2C Scanner 掃到位址（0x3C 或 0x3D）</li>
+<li><strong>再確認顯示流程</strong>：能否顯示 Hello（只做 <code>u8g2.begin()</code> + <code>drawStr</code>）</li>
+<li><strong>最後才整合 Wi-Fi</strong>：避免「連線問題」與「顯示問題」互相干擾</li>
+</ol>
+<hr />
+<h2>6. 測試連接網路取得資料：NTP 時間伺服器</h2>
+<h3>6.1 NTP 是什麼？（What）</h3>
+<p><code>NTP (Network Time Protocol)</code> 是透過網路同步時間的協定。對微控制器來說，NTP 能讓裝置取得「可靠的現在時間」，例如做資料紀錄（log）、排程（schedule）、或顯示電子鐘。</p>
+<h3>6.1.1 工程化理解：NTP 校時背後的關鍵名詞</h3>
+<table>
+<thead>
+<tr>
+<th>名詞</th>
+<th>它在系統中做什麼</th>
+<th>你要怎麼驗證</th>
+<th>常見錯誤</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>UTC</code></td>
+<td>世界協調時間（基準時間）</td>
+<td>NTP 取得的是 UTC</td>
+<td>把 UTC 當本地時間，顯示差 8 小時</td>
+</tr>
+<tr>
+<td><code>Time zone</code></td>
+<td>本地時間換算規則（例如台灣 UTC+8）</td>
+<td><code>GMT_OFFSET_SEC=8*3600</code></td>
+<td>時區設定錯、或誤用日光節約</td>
+</tr>
+<tr>
+<td><code>SNTP/NTP</code></td>
+<td>NTP 的簡化使用（裝置端常用）</td>
+<td><code>getLocalTime()</code> 成功</td>
+<td>路由器/校園網路阻擋 UDP</td>
+</tr>
+<tr>
+<td><code>UDP</code></td>
+<td>NTP 常用的傳輸協定（延遲較低）</td>
+<td>連網正常但 NTP 失敗要懷疑 UDP</td>
+<td>以為「能連 Wi-Fi」就一定能 NTP</td>
+</tr>
+<tr>
+<td><code>Stratum</code></td>
+<td>時間來源層級（越小越接近原子鐘）</td>
+<td>不必深究，但知道「來源品質」</td>
+<td>使用不可靠伺服器導致時間飄移</td>
+</tr>
+</tbody>
+</table>
+<p>工程提醒：不需要每秒跟 NTP 取時間，常見做法是「開機或每天校一次」，其餘時間由系統/RTC 維持。</p>
+<h3>6.2 NTP 校時流程（Mermaid）</h3>
+<div class="mermaid">
+sequenceDiagram
+  participant ESP32 as ESP32
+  participant AP as Wi-Fi AP
+  participant NTP as NTP Server
+  ESP32-&gt;&gt;AP: 連線並取得 IP via DHCP
+  ESP32-&gt;&gt;NTP: 發送時間請求 via UDP NTP
+  NTP--&gt;&gt;ESP32: 回傳 UTC 時間
+  ESP32-&gt;&gt;ESP32: 套用時區 UTC+8 並顯示
+</div>
+<h3>6.3 台灣常見 NTP 伺服器</h3>
+<ul>
+<li><code>tock.stdtime.gov.tw</code></li>
+<li><code>watch.stdtime.gov.tw</code></li>
+<li><code>time.stdtime.gov.tw</code></li>
+<li><code>clock.stdtime.gov.tw</code></li>
+<li><code>tick.stdtime.gov.tw</code></li>
+</ul>
+<h3>6.3.1 AI 協作 Prompt 範例（圈 3 → 圈 4）</h3>
+<blockquote>
+<p>目標：把「已能連網、OLED 正常」的作品升級成「可校時的時鐘」。</p>
+</blockquote>
+<h4>Prompt 6-A（在 WiFi+OLED 基礎上加 NTP 校時）</h4>
+<div class="codehilite"><pre><span></span><code>請在「ESP32 已能連 WiFi 並用 U8g2 OLED 顯示資訊」的基礎上，加入 NTP 校時並輸出完整程式。
+需求：
+1) NTP 伺服器依序使用：tock.stdtime.gov.tw、watch.stdtime.gov.tw、time.stdtime.gov.tw
+2) 時區：台灣 UTC+8，DAYLIGHT=0
+3) OLED 三行顯示：
+   - NTP Clock
+   - YYYY-MM-DD
+   - HH:MM:SS
+4) 若 NTP 10 秒內失敗：OLED 顯示 NTP FAIL，並每 5 秒重試一次
+限制：
+- 使用 configTime() 與 getLocalTime()
+- OLED 使用 U8g2（提醒：setI2CAddress 需 addr&lt;&lt;1）
+</code></pre></div>
+
+<h4>Prompt 6-B（效能與穩定性：避免每秒 NTP）</h4>
+<div class="codehilite"><pre><span></span><code>請改寫你的 ESP32 NTP 時鐘程式，符合工程化需求並輸出完整程式：
+1) NTP 只在開機成功連網時同步一次（或每 6 小時同步一次），不要每秒打 NTP
+2) OLED 仍每秒更新顯示時間
+3) Serial 印出：同步成功或失敗、下一次同步時間（用秒數或簡單計數即可）
+</code></pre></div>
+
+<h3>6.4 範例程式（Sketch 03：Wi-Fi + NTP + OLED 顯示時間）</h3>
+<blockquote>
+<p>這個版本使用 ESP32 內建的 <code>configTime()</code> + <code>getLocalTime()</code>，較簡潔。</p>
+</blockquote>
+<div class="codehilite"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;WiFi.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;Wire.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;U8g2lib.h&gt;</span>
+
+<span class="c1">// TODO: 改成你的 Wi-Fi</span>
+<span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="o">*</span><span class="w"> </span><span class="n">WIFI_SSID</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;YOUR_SSID&quot;</span><span class="p">;</span>
+<span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="o">*</span><span class="w"> </span><span class="n">WIFI_PASS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;YOUR_PASSWORD&quot;</span><span class="p">;</span>
+
+<span class="c1">// NTP 與時區（台灣 UTC+8）</span>
+<span class="k">static</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="n">GMT_OFFSET_SEC</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">8</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">3600</span><span class="p">;</span>
+<span class="k">static</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">DAYLIGHT_OFFSET_SEC</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+
+<span class="c1">// OLED（U8g2）</span>
+<span class="n">U8G2_SSD1306_128X64_NONAME_F_HW_I2C</span><span class="w"> </span><span class="nf">u8g2</span><span class="p">(</span><span class="n">U8G2_R0</span><span class="p">,</span><span class="w"> </span><span class="cm">/* reset=*/</span><span class="w"> </span><span class="n">U8X8_PIN_NONE</span><span class="p">);</span>
+<span class="k">static</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">OLED_ADDR_7BIT</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x3C</span><span class="p">;</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">drawClock</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">String</span><span class="o">&amp;</span><span class="w"> </span><span class="n">title</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">String</span><span class="o">&amp;</span><span class="w"> </span><span class="n">dateStr</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">String</span><span class="o">&amp;</span><span class="w"> </span><span class="n">timeStr</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">u8g2</span><span class="p">.</span><span class="n">clearBuffer</span><span class="p">();</span>
+<span class="w">  </span><span class="n">u8g2</span><span class="p">.</span><span class="n">setFont</span><span class="p">(</span><span class="n">u8g2_font_6x10_tf</span><span class="p">);</span>
+<span class="w">  </span><span class="n">u8g2</span><span class="p">.</span><span class="n">drawStr</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">12</span><span class="p">,</span><span class="w"> </span><span class="n">title</span><span class="p">.</span><span class="n">c_str</span><span class="p">());</span>
+<span class="w">  </span><span class="n">u8g2</span><span class="p">.</span><span class="n">drawStr</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">28</span><span class="p">,</span><span class="w"> </span><span class="n">dateStr</span><span class="p">.</span><span class="n">c_str</span><span class="p">());</span>
+<span class="w">  </span><span class="n">u8g2</span><span class="p">.</span><span class="n">drawStr</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">44</span><span class="p">,</span><span class="w"> </span><span class="n">timeStr</span><span class="p">.</span><span class="n">c_str</span><span class="p">());</span>
+<span class="w">  </span><span class="n">u8g2</span><span class="p">.</span><span class="n">sendBuffer</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">connectWiFi</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">WiFi</span><span class="p">.</span><span class="n">mode</span><span class="p">(</span><span class="n">WIFI_STA</span><span class="p">);</span>
+<span class="w">  </span><span class="n">WiFi</span><span class="p">.</span><span class="n">begin</span><span class="p">(</span><span class="n">WIFI_SSID</span><span class="p">,</span><span class="w"> </span><span class="n">WIFI_PASS</span><span class="p">);</span>
+<span class="w">  </span><span class="n">drawClock</span><span class="p">(</span><span class="s">&quot;Connecting WiFi&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;...&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;&quot;</span><span class="p">);</span>
+
+<span class="w">  </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">WiFi</span><span class="p">.</span><span class="n">status</span><span class="p">()</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">WL_CONNECTED</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">delay</span><span class="p">(</span><span class="mi">500</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="w">  </span><span class="n">drawClock</span><span class="p">(</span><span class="s">&quot;WiFi OK&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">WiFi</span><span class="p">.</span><span class="n">localIP</span><span class="p">().</span><span class="n">toString</span><span class="p">(),</span><span class="w"> </span><span class="s">&quot;&quot;</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span><span class="w"> </span><span class="nf">syncTimeByNTP</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="c1">// 依序使用多台伺服器，提高成功率</span>
+<span class="w">  </span><span class="n">configTime</span><span class="p">(</span>
+<span class="w">    </span><span class="n">GMT_OFFSET_SEC</span><span class="p">,</span>
+<span class="w">    </span><span class="n">DAYLIGHT_OFFSET_SEC</span><span class="p">,</span>
+<span class="w">    </span><span class="s">&quot;tock.stdtime.gov.tw&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="s">&quot;watch.stdtime.gov.tw&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="s">&quot;time.stdtime.gov.tw&quot;</span>
+<span class="w">  </span><span class="p">);</span>
+
+<span class="w">  </span><span class="k">struct</span><span class="w"> </span><span class="nc">tm</span><span class="w"> </span><span class="n">timeinfo</span><span class="p">;</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">getLocalTime</span><span class="p">(</span><span class="o">&amp;</span><span class="n">timeinfo</span><span class="p">,</span><span class="w"> </span><span class="mi">10000</span><span class="p">))</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="c1">// 最多等 10 秒</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">String</span><span class="w"> </span><span class="nf">nowTimeString</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">struct</span><span class="w"> </span><span class="nc">tm</span><span class="w"> </span><span class="n">timeinfo</span><span class="p">;</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">getLocalTime</span><span class="p">(</span><span class="o">&amp;</span><span class="n">timeinfo</span><span class="p">))</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="s">&quot;Time N/A&quot;</span><span class="p">;</span>
+
+<span class="w">  </span><span class="kt">char</span><span class="w"> </span><span class="n">buf</span><span class="p">[</span><span class="mi">32</span><span class="p">];</span>
+<span class="w">  </span><span class="c1">// 格式：YYYY-MM-DD HH:MM:SS</span>
+<span class="w">  </span><span class="n">strftime</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">buf</span><span class="p">),</span><span class="w"> </span><span class="s">&quot;%Y-%m-%d %H:%M:%S&quot;</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">timeinfo</span><span class="p">);</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">String</span><span class="p">(</span><span class="n">buf</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">setup</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">Wire</span><span class="p">.</span><span class="n">begin</span><span class="p">(</span><span class="mi">21</span><span class="p">,</span><span class="w"> </span><span class="mi">22</span><span class="p">);</span>
+<span class="w">  </span><span class="n">u8g2</span><span class="p">.</span><span class="n">setI2CAddress</span><span class="p">(</span><span class="n">OLED_ADDR_7BIT</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span>
+<span class="w">  </span><span class="n">u8g2</span><span class="p">.</span><span class="n">begin</span><span class="p">();</span>
+
+<span class="w">  </span><span class="n">connectWiFi</span><span class="p">();</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">syncTimeByNTP</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">drawClock</span><span class="p">(</span><span class="s">&quot;NTP FAIL&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Check network&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;&quot;</span><span class="p">);</span>
+<span class="w">    </span><span class="n">delay</span><span class="p">(</span><span class="mi">2000</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">loop</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">String</span><span class="w"> </span><span class="n">t</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">nowTimeString</span><span class="p">();</span>
+<span class="w">  </span><span class="n">String</span><span class="w"> </span><span class="n">dateStr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">t</span><span class="p">.</span><span class="n">length</span><span class="p">()</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">10</span><span class="p">)</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="n">t</span><span class="p">.</span><span class="n">substring</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="p">)</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="s">&quot;---- -- --&quot;</span><span class="p">;</span>
+<span class="w">  </span><span class="n">String</span><span class="w"> </span><span class="n">timeStr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">t</span><span class="p">.</span><span class="n">length</span><span class="p">()</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">19</span><span class="p">)</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="n">t</span><span class="p">.</span><span class="n">substring</span><span class="p">(</span><span class="mi">11</span><span class="p">,</span><span class="w"> </span><span class="mi">19</span><span class="p">)</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="s">&quot;--:--:--&quot;</span><span class="p">;</span>
+<span class="w">  </span><span class="n">drawClock</span><span class="p">(</span><span class="s">&quot;NTP Clock&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">dateStr</span><span class="p">,</span><span class="w"> </span><span class="n">timeStr</span><span class="p">);</span>
+<span class="w">  </span><span class="n">delay</span><span class="p">(</span><span class="mi">1000</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<h3>6.5 讀懂程式做了什麼（Read）</h3>
+<ul>
+<li><code>configTime(時區, 日光節約, server1, server2, server3)</code>：告訴系統去哪裡抓時間、如何換算成本地時間</li>
+<li><code>getLocalTime(&amp;timeinfo)</code>：從系統取得目前時間（已套用時區）</li>
+<li>顯示更新：每秒刷新 OLED</li>
+</ul>
+<hr />
+<h2>7. 延伸應用：沒網路怎麼辦？用 RTC 維持時間（DS3231 範例思路）</h2>
+<h3>7.1 為什麼需要 RTC？</h3>
+<p>NTP 必須「能上網」才抓得到時間；但很多裝置要在離線環境仍能計時（例如校園角落感測器、停電後重啟）。<code>RTC (Real-Time Clock)</code> 模組（常見 DS3231）可用電池維持走時。</p>
+<h3>7.2 建議策略（NTP 與 RTC 的分工）</h3>
+<ul>
+<li><strong>第一次/偶爾</strong>：用 NTP 把時間校準（sync）</li>
+<li><strong>平常/離線</strong>：用 RTC 提供現在時間</li>
+</ul>
+<p><strong>策略偽代碼</strong></p>
+<div class="codehilite"><pre><span></span><code>開機：
+  嘗試連 Wi-Fi
+  若 Wi-Fi 成功：
+    用 NTP 同步時間
+    把時間寫入 RTC
+  否則：
+    從 RTC 讀取時間
+循環：
+  顯示時間（RTC 或系統時間）
+</code></pre></div>
+
+<h3>7.3 實作提醒（教學重點）</h3>
+<ul>
+<li>RTC 也是 I2C 裝置：要避免 OLED 與 RTC 位址衝突（通常不會）</li>
+<li>RTC 需要鈕扣電池：沒裝電池會「斷電歸零」</li>
+<li>校時頻率：不用每秒 NTP，一天一次或每次連上網時校一次即可</li>
+</ul>
+<hr />
+<h2>8. 利用 AI 協作：Prompt 設計模板（更容易一次成功）</h2>
+<blockquote>
+<p>目標：讓 AI 回答「可直接上傳」的完整程式，同時避免常見缺漏（腳位/函式庫/位址/序列埠速率）。</p>
+<p>使用建議：前面實作階段（第 4~6 節）先用「Prompt 範例」帶學生跑完螺旋漸進；第 8 節模板則用於學生專題或變更需求時的快速套用。</p>
+</blockquote>
+<h3>8.1 Prompt 模板：Wi-Fi + DHCP + 顯示 IP（OLED SSD1306 I2C）</h3>
+<div class="codehilite"><pre><span></span><code>請用 Arduino IDE（C++）為 ESP32（NodeMCU-32S / ESP32 Dev Module）寫一個完整可編譯的範例。
+需求：
+1) 連線到 Wi-Fi：SSID=______，PASSWORD=______，使用 DHCP 取得 IP
+2) OLED：SSD1306 I2C 128x64，使用 U8g2（U8g2 by olikraus），SDA=GPIO21、SCL=GPIO22、I2C 位址 0x3C
+3) 連線成功後在 OLED 顯示 IP 位址，同時 Serial(115200) 也印出狀態
+4) 若連線失敗請顯示「Connecting...」並每 500ms 更新一次點點
+補充要求：請注意 U8g2 的 setI2CAddress() 使用 8-bit 位址（0x3C 需左移 1 位）。
+請附上需要安裝的函式庫名稱（U8g2 by olikraus）。
+</code></pre></div>
+
+<h3>8.2 Prompt 模板：Wi-Fi + NTP + 顯示時間（OLED）</h3>
+<div class="codehilite"><pre><span></span><code>請用 Arduino IDE（C++）為 ESP32（NodeMCU-32S）寫一個完整可編譯的範例。
+需求：
+1) 連線到 Wi-Fi：SSID=______，PASSWORD=______（DHCP）
+2) NTP 校時：使用 tock.stdtime.gov.tw / watch.stdtime.gov.tw / time.stdtime.gov.tw
+3) 時區：台灣 UTC+8（不使用日光節約）
+4) OLED：SSD1306 I2C 128x64，使用 U8g2（U8g2 by olikraus），SDA=GPIO21、SCL=GPIO22、位址 0x3C
+5) OLED 每秒顯示目前時間（YYYY-MM-DD HH:MM:SS）
+6) Serial(115200) 顯示除錯訊息
+補充要求：請注意 U8g2 的 setI2CAddress() 使用 8-bit 位址（0x3C 需左移 1 位）。
+請使用 configTime() 與 getLocalTime()，並列出需要的函式庫。
+</code></pre></div>
+
+<h3>8.3 AI 回答驗收清單（你要會看）</h3>
+<ul>
+<li>是否包含 <code>#include &lt;WiFi.h&gt;</code> 與 <code>#include &lt;U8g2lib.h&gt;</code></li>
+<li>是否有設定 <code>Wire.begin(SDA, SCL)</code>（ESP32 很重要）</li>
+<li>是否設定正確 OLED 7-bit 位址（0x3C/0x3D），且 U8g2 有做位址左移（<code>setI2CAddress(addr&lt;&lt;1)</code>）</li>
+<li>是否有 <code>Serial.begin(115200)</code> 方便除錯</li>
+<li>NTP 是否有設定 <code>GMT_OFFSET_SEC = 8*3600</code></li>
+</ul>
+<h3>8.4 Prompt 使用參考範例（從「描述需求」到「可上傳程式」）</h3>
+<blockquote>
+<p>教學用：讓學生知道「怎麼問」才會得到「能跑」的答案，並學會用回饋讓 AI 修正。</p>
+</blockquote>
+<h4>範例 A：第一次就要到「可編譯、可上傳」的 Wi-Fi + OLED（顯示 IP）</h4>
+<div class="codehilite"><pre><span></span><code>你是 Arduino/ESP32 助教。請輸出一個「可直接貼到 Arduino IDE 就能編譯上傳」的完整範例（含 setup/loop）。
+硬體：ESP32 NodeMCU-32S + OLED SSD1306 I2C 128x64
+接線：SDA=GPIO21，SCL=GPIO22，OLED I2C 位址=0x3C，供電=3V3
+需求：
+1) Wi-Fi STA 連線：SSID=你的SSID，PASSWORD=你的密碼（DHCP）
+2) Serial(115200) 印出連線進度與最後的 IP
+3) OLED 顯示兩行：第一行顯示 WiFi OK，第二行顯示 IP: x.x.x.x
+4) 若 10 秒內連不上，請在 OLED 顯示 FAIL 並每 3 秒重試一次
+5) 請使用 U8g2（U8g2 by olikraus），並列出必需安裝的函式庫名稱
+6) 請注意 U8g2 I2C 位址使用 8-bit（0x3C 需左移 1 位）
+請避免使用括號或特殊符號放在 Mermaid 圖內（本題不需要圖）。
+</code></pre></div>
+
+<h4>範例 B：Wi-Fi + NTP 校時 + OLED 顯示時間（台灣 UTC+8）</h4>
+<div class="codehilite"><pre><span></span><code>請為 ESP32（NodeMCU-32S）寫 Arduino IDE 完整範例。
+需求：
+1) 連 Wi-Fi（STA/DHCP）：SSID=____，PASSWORD=____
+2) NTP：依序使用 tock.stdtime.gov.tw、watch.stdtime.gov.tw、time.stdtime.gov.tw
+3) 時區：台灣 UTC+8，DAYLIGHT=0
+4) OLED SSD1306 I2C 128x64：使用 U8g2，SDA=21、SCL=22、位址=0x3C（提醒：U8g2 setI2CAddress 需 addr&lt;&lt;1）
+5) OLED 每秒顯示：
+   第 1 行：NTP Clock
+   第 2 行：YYYY-MM-DD
+   第 3 行：HH:MM:SS
+6) 若 NTP 10 秒內失敗，OLED 顯示 NTP FAIL，並每 5 秒再試一次
+請使用 configTime() 與 getLocalTime()，並加上必要的 Serial 除錯訊息。
+</code></pre></div>
+
+<h4>範例 C：加上「斷線自動重連」與「狀態列」（更像產品）</h4>
+<div class="codehilite"><pre><span></span><code>請在你剛剛提供的 Wi-Fi + OLED 程式上做增強（保留原功能）。
+新增需求：
+1) 每 2 秒檢查 WiFi.status()，若斷線就自動重連
+2) OLED 最底下一行顯示 RSSI（訊號強度，例如 RSSI:-55dBm）或顯示 DISCONNECTED
+3) 請用函式分工：connectWiFi()、drawStatus()，避免把所有邏輯塞在 loop
+請輸出完整程式（不要只給片段）。
+</code></pre></div>
+
+<h4>範例 D：編譯失敗時，怎麼「把錯誤訊息餵給 AI」讓它修正</h4>
+<blockquote>
+<p>規則：把「完整錯誤訊息」貼上，並告訴 AI 你的板子與你做過的嘗試。</p>
+</blockquote>
+<div class="codehilite"><pre><span></span><code>我在 Arduino IDE 編譯失敗，請你根據錯誤訊息修改程式，並告訴我還缺哪個函式庫要安裝。
+板子：ESP32 Dev Module
+我已安裝：U8g2 by olikraus
+錯誤訊息（請看這段原文）：
+---
+fatal error: WiFi.h: No such file or directory
+ #include &lt;WiFi.h&gt;
+          ^~~~~~~~
+compilation terminated.
+---
+請給我：
+1) 可能原因（用一句話）
+2) 如何在 Arduino IDE 安裝/選到正確的 ESP32 Board package
+3) 修正後的完整程式（若程式本身沒錯，也請確認相容的 include）
+</code></pre></div>
+
+<h4>範例 E：硬體沒反應時，怎麼問 AI「判斷是接線/位址/程式」哪裡錯</h4>
+<div class="codehilite"><pre><span></span><code>我照你的程式上傳後，Serial 看到 WiFi OK 也有 IP，但 OLED 仍然黑屏。
+已知資訊：
+1) I2C Scanner 掃描結果：Found I2C device at 0x3D
+2) OLED 供電接 3V3
+3) SDA=21、SCL=22
+4) 我使用的是 U8g2（提醒：U8g2 setI2CAddress 需要 8-bit 位址）
+請你：
+1) 說明最可能的原因
+2) 指出程式碼中哪個設定要改（給出具體值，例如 0x3D 與 setI2CAddress 左移）
+3) 給我一個最小測試程式：只初始化 OLED 並印出 Hello
+</code></pre></div>
+
+<h3>8.5 AI 協作的「三段式迭代流程」（教學生怎麼跟 AI 合作）</h3>
+<ol>
+<li><strong>一次把需求說清楚</strong>：板子型號、接線（SDA/SCL）、I2C 位址、輸出裝置（Serial/OLED）、成功條件（顯示什麼）</li>
+<li><strong>先跑最小可行版本（MVP）</strong>：先 Wi-Fi 成功＋印出 IP；再加 OLED；最後才加 NTP / 重連 / 額外功能</li>
+<li><strong>用證據回饋 AI 修正</strong>：貼上「錯誤訊息」或「Serial 輸出」，不要只說「不能用」</li>
+</ol>
+<h3>8.6 回饋 AI 的資訊模板（學生照抄填空）</h3>
+<div class="codehilite"><pre><span></span><code>我需要你幫我除錯/改進 ESP32 程式。
+環境：
+- IDE：Arduino IDE
+- Board：__________（例如 ESP32 Dev Module / NodeMCU-32S）
+- ESP32 core version：__________（若知道再填）
+硬體：
+- OLED：SSD1306 I2C 128x64
+- SDA：GPIO__
+- SCL：GPIO__
+- I2C address：0x__（用 I2C Scanner 測到的）
+我做了什麼：
+1) 我使用的程式版本：WiFi + OLED / WiFi + NTP / 其他：____
+2) 我期待看到的結果：____
+實際發生：
+- Serial 輸出（原文貼上）：____
+- 編譯錯誤（原文貼上）：____
+請你輸出：
+1) 你判斷的原因
+2) 你要我做的 2 個驗證步驟
+3) 修正後的完整程式
+</code></pre></div>
+
+<hr />
+<h2>9. 常見問題與排除（Q&amp;A / Troubleshooting）</h2>
+<ol>
+<li><strong>一直連不上 Wi-Fi</strong></li>
+<li>確認 SSID/密碼正確（注意大小寫、空白）</li>
+<li>確認是 2.4GHz Wi-Fi（很多 IoT 不支援 5GHz）</li>
+<li>手機分享網路時，確認有開啟「最大相容性」/ 2.4GHz 模式</li>
+<li><strong>序列埠顯示正常，但 OLED 沒畫面</strong></li>
+<li>檢查接線（SDA/SCL 是否接反、是否接到 3V3）</li>
+<li>先跑 I2C Scanner 確認位址（0x3C 或 0x3D）</li>
+<li>使用 U8g2 時，確認程式有設定 <code>setI2CAddress(addr&lt;&lt;1)</code>，且 <code>addr</code> 與掃描到的位址一致</li>
+<li><strong>OLED 有畫面，但顯示亂碼或閃爍</strong></li>
+<li>供電不足（換更穩的 USB、不要用 5V 給 3.3V 模組）</li>
+<li>I2C 線太長/接觸不良（縮短線材）</li>
+<li><strong>NTP 同步失敗</strong></li>
+<li>Wi-Fi 是否真的有上網（路由器可能阻擋 NTP/UDP）</li>
+<li>改用其他 NTP（例如 <code>pool.ntp.org</code>）測試（若網路策略允許）</li>
+<li><strong>時間不對</strong></li>
+<li>檢查時區偏移（台灣 <code>UTC+8</code>）</li>
+<li>檢查是否誤用日光節約（台灣通常設 <code>0</code>）</li>
+</ol>
+<hr />
+<h2>10. 練習任務（Practice）</h2>
+<ol>
+<li>在 OLED 顯示：<code>SSID</code>、<code>IP</code>、<code>RSSI</code>（訊號強度）</li>
+<li>連線成功後，改成每 5 秒更新一次畫面（降低閃爍與耗電）</li>
+<li>讓裝置「斷線自動重連」（提示：定期檢查 <code>WiFi.status()</code>）</li>
+<li>延伸挑戰：用 RTC DS3231 做離線時間顯示，並在有網路時自動校時</li>
+</ol>
+<hr />
+<h2>11. 學習總結（Summary）</h2>
+<ul>
+<li>你應該已經能說明：<code>SSID / WPA2 / STA/AP / DHCP / IP-Gateway-DNS / RSSI / I2C / NTP / 時區</code> 的用途</li>
+<li>你應該已經能完成：ESP32 連 Wi-Fi、顯示 IP、NTP 校時並顯示時間</li>
+<li>你應該具備基本除錯能力：用序列埠訊息 + I2C Scanner 排查連線與顯示問題</li>
+</ul></div>
+
+    <!-- Highlight.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+
+    <!-- Mermaid -->
+    <script type="module">
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+        mermaid.initialize({
+            "startOnLoad": true,
+            "theme": "dark",
+            "securityLevel": "loose",
+            "themeVariables": {
+                        "fontFamily": "system-ui, -apple-system, \"Segoe UI\", Roboto, Helvetica, Arial, \"Noto Sans\", sans-serif",
+                        "fontSize": "18px",
+                        "lineColor": "#e2e8f0",
+                        "primaryColor": "#2d3748",
+                        "primaryBorderColor": "#60a5fa",
+                        "primaryTextColor": "#ffffff",
+                        "secondaryColor": "#1e3a5f",
+                        "secondaryBorderColor": "#38bdf8",
+                        "secondaryTextColor": "#ffffff",
+                        "tertiaryColor": "#374151",
+                        "tertiaryBorderColor": "#c084fc",
+                        "tertiaryTextColor": "#ffffff",
+                        "textColor": "#f1f5f9",
+                        "background": "#1e293b",
+                        "noteBkgColor": "#1e3a5f",
+                        "noteTextColor": "#ffffff",
+                        "noteBorderColor": "#60a5fa",
+                        "edgeLabelBackground": "#1e293b",
+                        "labelTextColor": "#f1f5f9",
+                        "actorBkg": "#2d3748",
+                        "actorBorder": "#60a5fa",
+                        "actorTextColor": "#ffffff",
+                        "actorLineColor": "#e2e8f0",
+                        "signalColor": "#e2e8f0",
+                        "signalTextColor": "#f1f5f9",
+                        "classText": "#ffffff"
+            }
+});
+    </script>
+</body>
+</html>

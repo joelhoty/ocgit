@@ -10,6 +10,7 @@
 
 | File Name | Last Updated | Link |
 |---|---|---|
+| NodeMcu32s_01_b07_b01.html | 2025-12-17 | [NodeMcu32s_01_b07_b01.html](https://joelhoty.github.io/ocgit/104A_EngeeringDesign/NodeMcu32s_01_b07_b01.html) |
 | Arduino_IDE_03_final.html | 2025-11-05 | [Arduino_IDE_03_final.html](https://joelhoty.github.io/ocgit/104A_EngeeringDesign/Arduino_IDE_03_final.html) |
 | Arduino_IDE_01_b04.html | 2025-10-22 | [Arduino_IDE_01_b04.html](https://joelhoty.github.io/ocgit/104A_EngeeringDesign/Arduino_IDE_01_b04.html) |
 
