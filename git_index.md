@@ -69,6 +69,7 @@
 
 | File Name | Last Updated | Link |
 |---|---|---|
+| web_security_basic_b09.html | 2025-12-29 | [web_security_basic_b09.html](https://joelhoty.github.io/ocgit/LLM_web_security_agent/web_security_basic_b09.html) |
 | proposal_interaction_modes.html | 2025-10-21 | [proposal_interaction_modes.html](https://joelhoty.github.io/ocgit/LLM_web_security_agent/proposal_interaction_modes.html) |
 | proposal_implementation.html | 2025-10-21 | [proposal_implementation.html](https://joelhoty.github.io/ocgit/LLM_web_security_agent/proposal_implementation.html) |
 | proposal_all.html | 2025-10-21 | [proposal_all.html](https://joelhoty.github.io/ocgit/LLM_web_security_agent/proposal_all.html) |

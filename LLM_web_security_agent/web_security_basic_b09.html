@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>web_security_basic_b09</title>
+
+    <!-- CSS 框架 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.2.0/github-markdown.min.css">
+
+    <!-- 代碼高亮 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css">
+
+    <!-- 自定義樣式 -->
+    <style>
+        
+                body {
+                    background: #ffffff;
+                    padding: 20px;
+                }
+                .markdown-body {
+                    box-sizing: border-box;
+                    min-width: 200px;
+                    max-width: 980px;
+                    margin: 0 auto;
+                    padding: 45px;
+                }
+            
+        /* 通用代碼塊樣式 */
+        pre code {
+            display: block;
+            padding: 1.5em;
+            border-radius: 8px;
+            overflow-x: auto;
+            line-height: 1.6;
+        }
+
+        /* Mermaid 圖表樣式 */
+        
+        .mermaid {
+            margin: 2em 0;
+            padding: 1.5em;
+            text-align: center;
+            border-radius: 8px;
+        }
+        .mermaid svg {
+            max-width: 100%;
+            height: auto;
+        }
+        /* 增強所有文字的可讀性 */
+        .mermaid svg text {
+            font-weight: 700 !important;  /* 加粗文字 */
+            font-size: 18px !important;  /* 增大字體 */
+        }
+        /* 特別加強節點標籤文字 */
+        .mermaid .nodeLabel,
+        .mermaid .edgeLabel {
+            font-weight: 700 !important;
+        }
+        /* 確保連線標籤清晰可見 */
+        .mermaid .edgeLabel text {
+            fill: inherit !important;
+            font-weight: 700 !important;
+        }
+        /* 加粗序列圖的文字 */
+        .mermaid .actor,
+        .mermaid .messageText {
+            font-weight: 700 !important;
+        }
+        /* 增強邊框可見度 */
+        .mermaid .edgePath path,
+        .mermaid .flowchart-link {
+            stroke-width: 2.5px !important;  /* 加粗連線 */
+        }
+        .mermaid .arrowheadPath {
+            stroke-width: 2.5px !important;
+        }
+        /* 確保節點邊框清晰 */
+        .mermaid .node rect,
+        .mermaid .node polygon,
+        .mermaid .node circle,
+        .mermaid .node ellipse {
+            stroke-width: 2.5px !important;
+        }
+        
+        .mermaid {
+            background: #f8fafc;  /* 淺灰色背景 */
+            border: 2px solid #cbd5e1;  /* 加粗邊框 */
+            color: #0f172a;  /* 深色文字 */
+        }
+        /* 確保亮色主題下文字清晰 */
+        .mermaid svg text {
+            fill: #0f172a !important;
+            text-shadow: 0 1px 1px rgba(255, 255, 255, 0.8);  /* 添加淺色陰影 */
+        }
+        .mermaid .nodeLabel {
+            color: #0f172a !important;
+        }
+            
+
+        /* 響應式調整 */
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            .container, .markdown-body, .latex-body, .window-body, .nes-container {
+                padding: 15px;
+            }
+            pre code {
+                padding: 1em;
+            }
+            /* 移動設備上稍微縮小 Mermaid 文字 */
+            .mermaid svg text {
+                font-size: 16px !important;
+            }
+        }
+
+        
+    </style>
+</head>
+<body>
+    <div class="markdown-body"><!-- Path: 114A_AI_MIS/WEB_Secutiry | Timestamp: 2025-12-29 14:30:00 | Version: b09 -->
+
+<h1>網頁瀏覽安全檢查指南：給高中生的資安入門 (High School Edition)</h1>
+<p>歡迎來到網路安全的後台世界！你是否想過，當你在 IG 上滑動態、在 Steam 上買遊戲，或是登入學校系統查成績時，這些資料是如何在全世界的光纖網路中穿梭的？</p>
+<p>這份指南不只是一份講義，更是一套<strong>「數位防身術」</strong>。我們將帶你拆解網頁瀏覽的過程，分析潛藏的危機，並提供一套直觀的「工具對應表」，讓你學習如何像資安專家一樣使用工具來檢查網站的安全性。</p>
+<hr />
+<h2>第一部分：原理與威脅 (Theory &amp; Threats)</h2>
+<h3>第一章：點擊之後的隱形旅程 (The Invisible Journey)</h3>
+<p>當你在瀏覽器網址列輸入 <code>instagram.com</code> 並按下 Enter 時，其實你的電腦在短短不到一秒內，完成了一場跨越海洋的接力賽。理解這個流程，是資安檢測的基礎。</p>
+<h4>1.1 DNS：網路世界的電話簿</h4>
+<p>電腦看不懂 <code>instagram.com</code> 這種人類文字，它們只認得數字組成的 IP 位址（例如 <code>157.240.22.174</code>）。<br />
+*   <strong>比喻</strong>：DNS (Domain Name System) 就像你手機裡的通訊錄。你想打給「小明」（網域名稱），手機會去查通訊錄，找出他的「電話號碼」（IP 位址）並撥通。<br />
+*   <strong>運作流程</strong>：<br />
+    1.  <strong>詢問</strong>：你的電腦大喊：「誰知道 <code>google.com</code> 的 IP？」<br />
+    2.  <strong>解析</strong>：DNS 伺服器（通常由 ISP 或 Google 提供）回應：「我知道，是 <code>142.250.1.100</code>。」<br />
+    3.  <strong>連線</strong>：你的瀏覽器根據這個 IP 去敲 Google 的大門。<br />
+*   <strong>資安風險 - DNS 劫持 (DNS Hijacking)</strong>：<br />
+    *   如果壞人偷偷竄改了 DNS 紀錄（就像改了你通訊錄裡的號碼），當你輸入正確網址時，卻會被導向長得一模一樣的<strong>「假網站」</strong>。你以為連上了銀行，其實是進了駭客的大門，輸入的帳號密碼會直接落入駭客手中。</p>
+<h4>1.2 TCP/IP 連線與 TLS 加密</h4>
+<p>拿到 IP 後，瀏覽器與伺服器需要建立可靠且安全的連線。<br />
+*   <strong>TCP 三向交握 (3-Way Handshake)</strong>：<br />
+    *   這是電腦之間打招呼的方式：「你好 (SYN)」、「收到，你好 (SYN-ACK)」、「好，我們開始傳資料 (ACK)」。確認雙方都在線上且準備好。<br />
+*   <strong>TLS 加密握手 (TLS Handshake)</strong>：<br />
+    *   在傳輸資料前，雙方會交換<strong>「數位憑證」</strong>並協商加密鑰匙。<br />
+    *   <strong>HTTP (Port 80)</strong>：明文傳輸。就像寄明信片，路過的郵差（路由器、Wi-Fi 分享器）都能看到內容。<br />
+    *   <strong>HTTPS (Port 443)</strong>：加密傳輸。就像把信裝進上鎖的保險箱。即使駭客攔截了資料，看到的也只是一堆亂碼。</p>
+<h4>1.3 HTTP 請求與回應：你點餐，伺服器出菜</h4>
+<p>連線建立後，瀏覽器發送 <strong>Request (請求)</strong>，伺服器回傳 <strong>Response (回應)</strong>。伺服器會附上一張小紙條（狀態碼 Status Code）：<br />
+*   <code>200 OK</code>：✅ 點餐成功，菜來了。<br />
+*   <code>301 Moved Permanently</code>：🚚 餐廳搬家了（通常用於將 HTTP 自動導向安全的 HTTPS）。<br />
+*   <code>404 Not Found</code>：🤷‍♂️ 查無此人，網址不存在。<br />
+*   <code>500 Internal Server Error</code>：💥 廚房失火了（伺服器當機）。這對駭客來說是大肥肉，因為錯誤訊息常會洩露系統弱點。</p>
+<h3>第二章：瀏覽網頁的潛在風險 (Browsing Risks)</h3>
+<p>在享受網路便利的同時，有哪些陷阱在等著我們？</p>
+<h4>2.1 釣魚攻擊 (Phishing)</h4>
+<ul>
+<li><strong>同形異義字攻擊</strong>：駭客註冊 <code>goog1e.com</code> (數字1) 或使用外觀相似的西里爾字母混淆視聽。</li>
+<li><strong>防範</strong>：仔細檢查網址列拼字，不隨意點擊不明郵件或簡訊中的連結。</li>
+</ul>
+<h4>2.2 公共 Wi-Fi 的陷阱</h4>
+<ul>
+<li><strong>中間人攻擊 (Man-in-the-Middle, MitM)</strong>：駭客在星巴克或機場架設名稱很像的免費 Wi-Fi (Evil Twin)。如果你連上了，你所有的流量都會經過駭客的電腦。</li>
+<li><strong>防範</strong>：在公共網路避免登入網銀或輸入密碼，或全程使用 VPN 加密。</li>
+</ul>
+<h4>2.3 瀏覽器擴充套件風險</h4>
+<ul>
+<li>許多惡意軟體偽裝成實用插件（如「免費 PDF 轉檔」、「影片下載器」），實則竊取你的瀏覽紀錄或偷偷插入廣告。</li>
+<li><strong>防範</strong>：僅從官方商店下載，並定期檢查套件的權限設定。</li>
+</ul>
+<h4>2.4 隱私追蹤 (Tracking)</h4>
+<ul>
+<li><strong>第三方 Cookie</strong>：廣告商跨網站追蹤你的瀏覽習慣，你在 A 站看球鞋，B 站就全是球鞋廣告。</li>
+<li><strong>瀏覽器指紋 (Fingerprinting)</strong>：即使不登入，網站也能透過你的螢幕解析度、字型列表等特徵，識別出唯一的「你」。</li>
+</ul>
+<hr />
+<h2>第二部分：防護機制與檢測目標 (Defense &amp; Targets)</h2>
+<h3>第三章：網站的護身符 - 安全標頭 (Security Headers)</h3>
+<p>網站伺服器會透過 HTTP 標頭告訴瀏覽器該如何保護使用者。如果沒設定這些，瀏覽風險就會大增。以下是我們主要的檢測目標：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">標頭名稱</th>
+<th style="text-align: left;">這是什麼？(比喻)</th>
+<th style="text-align: left;">如果沒有會怎樣？(風險)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>Strict-Transport-Security (HSTS)</strong></td>
+<td style="text-align: left;"><strong>VIP 專屬通道</strong>。<br>強制瀏覽器：「以後只要來我家，絕對要走 HTTPS，不准走 HTTP 小巷子。」</td>
+<td style="text-align: left;"><strong>降級攻擊</strong>。<br>駭客可以在你第一次連線時把你騙去走 HTTP 通道，然後竊聽內容。</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Content-Security-Policy (CSP)</strong></td>
+<td style="text-align: left;"><strong>夜店保鑣</strong>。<br>嚴格檢查所有想進入網頁的圖片、腳本來源。「你是哪裡來的？不在名單上？滾！」</td>
+<td style="text-align: left;"><strong>XSS 攻擊</strong>。<br>駭客在網頁裡偷塞惡意程式碼（例如偷取 Cookie），沒有 CSP，瀏覽器就會笨笨地執行它。</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>X-Frame-Options</strong></td>
+<td style="text-align: left;"><strong>防護罩</strong>。<br>禁止別人把你的網站塞進一個小視窗 (<code>iframe</code>) 裡。</td>
+<td style="text-align: left;"><strong>點擊劫持 (Clickjacking)</strong>。<br>駭客用透明圖層蓋在按鈕上，你以為點了「領獎」，其實是點到透明視窗裡的「轉帳確認」。</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>X-Content-Type-Options</strong></td>
+<td style="text-align: left;"><strong>誠實豆沙包</strong>。<br>禁止瀏覽器自作聰明去「猜」檔案類型。是圖片就是圖片。</td>
+<td style="text-align: left;"><strong>MIME Sniffing</strong>。<br>駭客上傳偽裝成 <code>.jpg</code> 的惡意腳本，若瀏覽器自作聰明把它當程式執行，電腦就中毒了。</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Cookie: HttpOnly / Secure</strong></td>
+<td style="text-align: left;"><strong>保險箱裡的餅乾</strong>。<br>設定 Cookie 只能由伺服器讀取，或只能在 HTTPS 傳輸。</td>
+<td style="text-align: left;"><strong>Session Hijacking</strong>。<br>駭客透過惡意腳本讀取你的登入 Cookie，直接盜用你的身分。</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>第三部分：實戰檢測工具 (Hands-on Tools)</h2>
+<h3>第四章：資安偵探工具箱 (Cyber Toolkit)</h3>
+<p>不需要安裝昂貴軟體，你的電腦裡已經內建了強大的偵探工具。</p>
+<h4>4.1 資安檢測對照表 (Security Testing Matrix)</h4>
+<p>為了讓你更方便測試，我們將常見的安全機制與對應的檢測工具整理如下：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">想檢測的項目 (目標)</th>
+<th style="text-align: left;">關鍵標頭 / 特徵</th>
+<th style="text-align: left;">推薦工具與指令</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>1. 傳輸加密狀態</strong></td>
+<td style="text-align: left;">TLS 版本 (1.2/1.3)、憑證效期</td>
+<td style="text-align: left;"><code>curl -v</code> / 瀏覽器鎖頭</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>2. 強制使用加密連線</strong></td>
+<td style="text-align: left;"><code>Strict-Transport-Security</code></td>
+<td style="text-align: left;"><code>curl -I</code> / <code>Invoke-WebRequest</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>3. 防禦 XSS 腳本攻擊</strong></td>
+<td style="text-align: left;"><code>Content-Security-Policy</code> (CSP)</td>
+<td style="text-align: left;"><code>curl -I</code> / DevTools Network</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>4. 防禦點擊劫持</strong></td>
+<td style="text-align: left;"><code>X-Frame-Options</code></td>
+<td style="text-align: left;"><code>curl -I</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>5. 防禦惡意檔案偽裝</strong></td>
+<td style="text-align: left;"><code>X-Content-Type-Options</code></td>
+<td style="text-align: left;"><code>curl -I</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>6. 登入身分保護</strong></td>
+<td style="text-align: left;"><code>Set-Cookie</code> (HttpOnly; Secure)</td>
+<td style="text-align: left;"><code>curl -I</code> / DevTools Application</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>7. 自動安全跳轉</strong></td>
+<td style="text-align: left;"><code>301</code> 狀態碼 + <code>Location</code></td>
+<td style="text-align: left;"><code>curl -L -v</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>8. 本機連線監控</strong></td>
+<td style="text-align: left;">連線狀態 (ESTABLISHED)</td>
+<td style="text-align: left;"><code>netstat</code></td>
+</tr>
+</tbody>
+</table>
+<h4>4.2 DNS 偵察工具：nslookup 與 dig</h4>
+<p>這兩個工具是用來檢查「網路電話簿 (DNS)」是否正常的關鍵。如果 DNS 被劫持，你連到的網站可能就是假的。</p>
+<p><strong>A. nslookup (跨平台通用)</strong><br />
+這是 Windows 和 macOS 都有內建的基礎工具。<br />
+*   <strong>基本查詢</strong>：查出網址對應的 IP。<br />
+<code>bash
+    nslookup www.google.com</code><br />
+    *   <em>解讀</em>：<code>Non-authoritative answer</code> (非轉授權回答) 是正常的，代表這個答案來自你 ISP 的快取，而非 Google 本人。<br />
+*   <strong>指定 DNS 伺服器 (檢測污染)</strong>：<br />
+    如果你的電腦查出來的 IP 怪怪的，可以強制指定用 Google 的 DNS (8.8.8.8) 再查一次。如果兩次結果不一樣，可能你的預設 DNS 有問題！<br />
+<code>bash
+    nslookup www.google.com 8.8.8.8</code><br />
+*   <strong>查詢特定類型</strong>：<br />
+    想知道某個網域的郵件伺服器 (MX) 是誰？<br />
+<code>bash
+    nslookup -type=mx google.com</code></p>
+<p><strong>B. dig (macOS / Linux 專業神器)</strong><br />
+<code>dig</code> (Domain Information Groper) 是資安專家更愛用的工具，資訊比 <code>nslookup</code> 更詳細。<br />
+*   <strong>基本查詢</strong>：<br />
+<code>bash
+    dig google.com</code><br />
+    *   <em>觀察重點</em>：看 <strong><code>ANSWER SECTION</code></strong> 這一區，這才是真正的答案。<br />
+*   <strong>反向查詢 (查 IP 是誰的)</strong>：<br />
+    如果你發現連線紀錄有個可疑 IP <code>142.250.1.100</code>，想知道它是哪個網域的：<br />
+<code>bash
+    dig -x 142.250.1.100</code><br />
+*   <strong>追蹤解析路徑 (Trace)</strong>：<br />
+    從根網域 (.) 一層一層往下問，看是誰負責回答的，這對排查 DNS 劫持非常有用。<br />
+<code>bash
+    dig +trace google.com</code></p>
+<h4>4.3 連線監控神器：Netstat</h4>
+<p>當你懷疑電腦有沒有「偷偷」連線給駭客，或者想知道現在到底連了哪些網站，<code>netstat</code> (Network Statistics) 是你的好朋友。它能顯示電腦當下所有的網路連線狀態。</p>
+<p><strong>A. Windows 使用者</strong><br />
+*   <strong>列出所有連線與 PID (Process ID)</strong>：<br />
+<code>powershell
+    netstat -ano</code><br />
+    *   <code>-a</code>: 顯示所有連線 (All)。<br />
+    *   <code>-n</code>: 以數字顯示 IP 和 Port，不進行名稱解析 (Numeric)，速度較快。<br />
+    *   <code>-o</code>: 顯示是哪個程式 (PID) 建立了這個連線。<br />
+    *   <em>實戰技巧</em>：如果你看到一個怪異的 IP，記下它的 PID (例如 1234)，然後打開「工作管理員」-&gt;「詳細資料」，就能抓出是哪個程式在搞鬼。<br />
+*   <strong>尋找特定狀態 (如已建立連線)</strong>：<br />
+<code>powershell
+    netstat -ano | findstr "ESTABLISHED"</code></p>
+<p><strong>B. macOS / Linux 使用者</strong><br />
+*   <strong>列出所有 TCP 連線</strong>：<br />
+<code>bash
+    netstat -anv | grep "TCP"
+    # Linux 通常使用 netstat -anp 或 ss -tunlp</code><br />
+    *   <em>觀察重點</em>：查看 <code>State</code> 欄位為 <code>ESTABLISHED</code> 的連線。</p>
+<h4>4.4 路由追蹤：tracert / traceroute</h4>
+<ul>
+<li><strong>Windows</strong>: <code>tracert www.youtube.com</code></li>
+<li><strong>Mac/Linux</strong>: <code>traceroute www.youtube.com</code><ul>
+<li>用途：看封包經過了哪些國家和節點才到達目的地。若連國內網站卻繞去奇怪的國家，可能被中間人攻擊。</li>
+</ul>
+</li>
+</ul>
+<h4>4.5 進階神器：Curl 指令集 (依測試目標分類)</h4>
+<p><code>curl</code> 是能看到<strong>「未經瀏覽器渲染」</strong>原始資料的神器。</p>
+<p><strong>A. 標頭大掃描 (最常用)</strong></p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># 顯示所有標頭，一眼看完所有護身符 (HSTS, CSP, X-Frame 等)</span>
+curl<span class="w"> </span>-I<span class="w"> </span>https://www.google.com
+</code></pre></div>
+
+<p><strong>B. 追蹤加密與跳轉流程</strong></p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># 測試 http 是否會自動跳轉至 https，並觀察 TLS 握手細節</span>
+curl<span class="w"> </span>-L<span class="w"> </span>-v<span class="w"> </span>http://facebook.com
+</code></pre></div>
+
+<ul>
+<li><strong>觀察</strong>：尋找 <code>SSL connection using TLSv1.3</code> 與 <code>HTTP/1.1 301</code>。</li>
+</ul>
+<p><strong>C. 模擬行動裝置測試</strong></p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># 偽裝成 iPhone 手機，檢查手機版網頁是否有不同的安全設定</span>
+curl<span class="w"> </span>-A<span class="w"> </span><span class="s2">&quot;Mozilla/5.0 (iPhone; ...)&quot;</span><span class="w"> </span>-I<span class="w"> </span>https://example.com
+</code></pre></div>
+
+<hr />
+<h2>第四部分：自動化與日常習慣 (Automation &amp; Habits)</h2>
+<h3>第五章：一鍵檢測與自動化 (Automation)</h3>
+<p>當你要檢查多個網站時，手動打指令太慢了。這裡提供自動化檢測方案。</p>
+<h4>5.1 Python 檢測腳本</h4>
+<p>你可以使用 Google Colab 或本機 Python 環境執行此程式。</p>
+<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">requests</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">security_audit</span><span class="p">(</span><span class="n">url</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;🚀 開始資安檢測: </span><span class="si">{</span><span class="n">url</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-&quot;</span> <span class="o">*</span> <span class="mi">30</span><span class="p">)</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">headers</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;User-Agent&#39;</span><span class="p">:</span> <span class="s1">&#39;Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36&#39;</span><span class="p">}</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+
+        <span class="c1"># 建立「檢測項目 vs 關鍵標頭」的對應</span>
+        <span class="n">security_checks</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;強制加密 (HSTS)&quot;</span><span class="p">:</span> <span class="s2">&quot;Strict-Transport-Security&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;腳本防禦 (CSP)&quot;</span><span class="p">:</span> <span class="s2">&quot;Content-Security-Policy&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;點擊劫持防禦 (XFO)&quot;</span><span class="p">:</span> <span class="s2">&quot;X-Frame-Options&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;類型嗅探防禦 (XCTO)&quot;</span><span class="p">:</span> <span class="s2">&quot;X-Content-Type-Options&quot;</span>
+        <span class="p">}</span>
+
+        <span class="n">score</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">label</span><span class="p">,</span> <span class="n">header_name</span> <span class="ow">in</span> <span class="n">security_checks</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">header_name</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">headers</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[✅ 安全] </span><span class="si">{</span><span class="n">label</span><span class="si">}</span><span class="s2">: 已設定&quot;</span><span class="p">)</span>
+                <span class="n">score</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[⚠️ 風險] </span><span class="si">{</span><span class="n">label</span><span class="si">}</span><span class="s2">: 缺失！&quot;</span><span class="p">)</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-&quot;</span> <span class="o">*</span> <span class="mi">30</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;📊 綜合安全評分: </span><span class="si">{</span><span class="n">score</span><span class="si">}</span><span class="s2"> / </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">security_checks</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;💥 檢測失敗: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># 測試看看！</span>
+<span class="n">security_audit</span><span class="p">(</span><span class="s2">&quot;https://www.google.com&quot;</span><span class="p">)</span>
+</code></pre></div>
+
+<h4>5.2 跨平台快速檢測 (一鍵指令)</h4>
+<ul>
+<li><strong>Mac/Linux</strong>: <code>curl -sI https://google.com | grep -iE 'strict-transport|content-security|x-frame'</code></li>
+<li><strong>Windows (PowerShell)</strong>: <code>(Invoke-WebRequest https://google.com -Method Head).Headers | Select-String "Security|X-Frame|Content-Policy"</code></li>
+</ul>
+<hr />
+<h3>第六章：個人瀏覽安全檢查清單 (Checklist)</h3>
+<p>在進行重要操作（如網銀、輸入個資）前，請執行以下檢查：</p>
+<ol>
+<li>
+<p><strong>瀏覽前檢查</strong></p>
+<ul>
+<li>[ ] <strong>網址拼字正確</strong>：無拼寫錯誤或同形異義字。</li>
+<li>[ ] <strong>HTTPS 鎖頭</strong>：網址列有鎖頭圖示，無安全警告。</li>
+<li>[ ] <strong>憑證有效</strong>：點擊鎖頭確認憑證是由受信任機構簽發。</li>
+</ul>
+</li>
+<li>
+<p><strong>環境與設定</strong></p>
+<ul>
+<li>[ ] <strong>連線環境</strong>：不使用公共免費 Wi-Fi 傳輸敏感資料。</li>
+<li>[ ] <strong>DNS 設定</strong>：設定使用安全 DNS (如 1.1.1.1)。</li>
+<li>[ ] <strong>瀏覽器套件</strong>：已移除不明來源或權限過大的擴充功能。</li>
+</ul>
+</li>
+</ol>
+<hr />
+<h2>結語：資安意識是最好的防火牆</h2>
+<p>學會這些技術不是為了攻擊，而是為了建立防禦意識。<br />
+1.  <strong>保護自己</strong>：了解風險，做出安全的決策。<br />
+2.  <strong>識別詐騙</strong>：看穿釣魚網站的技術偽裝。<br />
+3.  <strong>職業探索</strong>：如果你對這些細節著迷，歡迎未來加入資安領域！</p>
+<blockquote>
+<p>⚠️ <strong>提醒</strong>：請僅在合法授權或公開網站上進行測試，嚴禁對他人系統進行未經許可的掃描。</p>
+</blockquote></div>
+
+    <!-- Highlight.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+
+    <!-- Mermaid -->
+    <script type="module">
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+        mermaid.initialize({
+            "startOnLoad": true,
+            "theme": "default",
+            "securityLevel": "loose",
+            "themeVariables": {
+                        "fontFamily": "system-ui, -apple-system, \"Segoe UI\", Roboto, Helvetica, Arial, \"Noto Sans\", sans-serif",
+                        "fontSize": "18px",
+                        "lineColor": "#475569",
+                        "primaryColor": "#ffffff",
+                        "primaryBorderColor": "#2563eb",
+                        "primaryTextColor": "#0f172a",
+                        "secondaryColor": "#f1f5f9",
+                        "secondaryBorderColor": "#0ea5e9",
+                        "secondaryTextColor": "#0f172a",
+                        "tertiaryColor": "#e2e8f0",
+                        "tertiaryBorderColor": "#6366f1",
+                        "tertiaryTextColor": "#0f172a",
+                        "textColor": "#0f172a",
+                        "background": "#ffffff",
+                        "noteBkgColor": "#fef3c7",
+                        "noteTextColor": "#0f172a",
+                        "noteBorderColor": "#f59e0b",
+                        "edgeLabelBackground": "#ffffff",
+                        "labelTextColor": "#0f172a",
+                        "actorBkg": "#f1f5f9",
+                        "actorBorder": "#2563eb",
+                        "actorTextColor": "#0f172a",
+                        "actorLineColor": "#475569",
+                        "signalColor": "#475569",
+                        "signalTextColor": "#0f172a",
+                        "classText": "#0f172a"
+            }
+});
+    </script>
+</body>
+</html>
