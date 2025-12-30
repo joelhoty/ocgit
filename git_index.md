@@ -50,7 +50,8 @@
 
 | File Name | Last Updated | Link |
 |---|---|---|
-| index_content.html | 2025-12-14 | [index_content.html](https://joelhoty.github.io/ocgit/GeminiForDesignTeaching/index_content.html) |
+| Gemini_CLI_Tutorial_b02.html | 2025-12-30 | [Gemini_CLI_Tutorial_b02.html](https://joelhoty.github.io/ocgit/GeminiForDesignTeaching/Gemini_CLI_Tutorial_b02.html) |
+| index_content.html | 2025-12-30 | [index_content.html](https://joelhoty.github.io/ocgit/GeminiForDesignTeaching/index_content.html) |
 | Environment_Setup_Guide_b06.html | 2025-12-14 | [Environment_Setup_Guide_b06.html](https://joelhoty.github.io/ocgit/GeminiForDesignTeaching/Environment_Setup_Guide_b06.html) |
 | unit01_first_ai_material_b02.html | 2025-12-09 | [unit01_first_ai_material_b02.html](https://joelhoty.github.io/ocgit/GeminiForDesignTeaching/unit01_first_ai_material_b02.html) |
 | AI_Agent_Cli_b13.html | 2025-11-18 | [AI_Agent_Cli_b13.html](https://joelhoty.github.io/ocgit/GeminiForDesignTeaching/AI_Agent_Cli_b13.html) |

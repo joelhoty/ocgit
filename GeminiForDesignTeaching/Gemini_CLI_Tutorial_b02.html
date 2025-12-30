@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gemini_CLI_Tutorial_b02</title>
+
+    <!-- CSS 框架 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/dark.min.css">
+
+    <!-- 代碼高亮 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/base16/darcula.min.css">
+
+    <!-- 自定義樣式 -->
+    <style>
+        
+                body {
+                    max-width: 900px;
+                    margin: 0 auto;
+                    padding: 20px;
+                }
+                /* 提升代碼塊對比度 */
+                pre {
+                    background: #1e1e1e !important;
+                    border: 1px solid #3e3e3e;
+                }
+                pre code {
+                    background: #1e1e1e !important;
+                }
+                code {
+                    background: #2d2d2d !important;
+                }
+                /* 引用塊對比度 */
+                blockquote {
+                    background: #2d2d2d;
+                    border-left: 4px solid #4a9eff;
+                }
+            
+        /* 通用代碼塊樣式 */
+        pre code {
+            display: block;
+            padding: 1.5em;
+            border-radius: 8px;
+            overflow-x: auto;
+            line-height: 1.6;
+        }
+
+        /* Mermaid 圖表樣式 */
+        
+        .mermaid {
+            margin: 2em 0;
+            padding: 1.5em;
+            text-align: center;
+            border-radius: 8px;
+        }
+        .mermaid svg {
+            max-width: 100%;
+            height: auto;
+        }
+        /* 增強所有文字的可讀性 */
+        .mermaid svg text {
+            font-weight: 700 !important;  /* 加粗文字 */
+            font-size: 18px !important;  /* 增大字體 */
+        }
+        /* 特別加強節點標籤文字 */
+        .mermaid .nodeLabel,
+        .mermaid .edgeLabel {
+            font-weight: 700 !important;
+        }
+        /* 確保連線標籤清晰可見 */
+        .mermaid .edgeLabel text {
+            fill: inherit !important;
+            font-weight: 700 !important;
+        }
+        /* 加粗序列圖的文字 */
+        .mermaid .actor,
+        .mermaid .messageText {
+            font-weight: 700 !important;
+        }
+        /* 增強邊框可見度 */
+        .mermaid .edgePath path,
+        .mermaid .flowchart-link {
+            stroke-width: 2.5px !important;  /* 加粗連線 */
+        }
+        .mermaid .arrowheadPath {
+            stroke-width: 2.5px !important;
+        }
+        /* 確保節點邊框清晰 */
+        .mermaid .node rect,
+        .mermaid .node polygon,
+        .mermaid .node circle,
+        .mermaid .node ellipse {
+            stroke-width: 2.5px !important;
+        }
+        
+        .mermaid {
+            background: #1e293b;  /* 深藍灰色背景 */
+            border: 2px solid #475569;  /* 加粗邊框 */
+            color: #f1f5f9;  /* 亮色文字 */
+        }
+        /* 確保深色主題下文字始終可見 */
+        .mermaid svg text {
+            fill: #f1f5f9 !important;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);  /* 添加陰影增強可讀性 */
+        }
+        .mermaid .nodeLabel {
+            color: #ffffff !important;
+        }
+            
+
+        /* 響應式調整 */
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            .container, .markdown-body, .latex-body, .window-body, .nes-container {
+                padding: 15px;
+            }
+            pre code {
+                padding: 1em;
+            }
+            /* 移動設備上稍微縮小 Mermaid 文字 */
+            .mermaid svg text {
+                font-size: 16px !important;
+            }
+        }
+
+        
+    </style>
+</head>
+<body>
+    <div class="container"><!-- Path: 114A_AI_intro | Timestamp: 2025-12-30 10:30:00 | Version: b02 -->
+
+<h1>Gemini CLI 實戰教學：讓 AI 駐紮在你的終端機</h1>
+<h2>1. 課程簡介 (Introduction)</h2>
+<p><strong>Gemini CLI</strong> 是 Google 推出的開源命令行工具，它將強大的 Gemini AI 模型直接帶入開發者最熟悉的環境——<strong>終端機 (Terminal)</strong>。</p>
+<h3>為什麼要學習 Gemini CLI？</h3>
+<p>不同於網頁版的 Chatbot，Gemini CLI 具備以下獨特優勢：<br />
+- <strong>情境感知 (Context Awareness)</strong>：可以直接讀取本地端的檔案 (<code>@filename</code>)，不需要複製貼上程式碼。<br />
+- <strong>直接行動 (Actionable)</strong>：可以直接在你的電腦上執行 Shell 指令 (<code>!command</code>)、建立檔案與修改程式碼。<br />
+- <strong>無縫整合 (Integration)</strong>：適合整合進開發工作流，無需在瀏覽器與編輯器間頻繁切換。</p>
+<hr />
+<h2>2. 環境建置 (Installation)</h2>
+<p>在開始之前，我們需要先準備好執行環境。</p>
+<h3>2.1. 前置需求：Node.js</h3>
+<p>Gemini CLI 是基於 Node.js 開發的，因此你的電腦必須先安裝 <strong>Node.js 18.0.0</strong> 或更高版本。</p>
+<ul>
+<li><strong>檢查是否已安裝</strong>：打開終端機輸入 <code>node -v</code></li>
+<li><strong>前往下載</strong>：如果未安裝，請至 <a href="https://nodejs.org/">Node.js 官網</a> 下載安裝 (建議安裝 LTS 版本)。</li>
+</ul>
+<h3>2.2. 安裝 Gemini CLI</h3>
+<p>打開終端機 (Terminal / PowerShell / CMD)，輸入以下指令進行全域安裝：</p>
+<div class="codehilite"><pre><span></span><code>npm<span class="w"> </span>install<span class="w"> </span>-g<span class="w"> </span>@google/gemini-cli
+</code></pre></div>
+
+<h3>2.3. 啟動與登入</h3>
+<p>安裝完成後，輸入以下指令啟動：</p>
+<div class="codehilite"><pre><span></span><code>gemini
+</code></pre></div>
+
+<p>首次啟動時，系統會引導你進行設定：<br />
+1.  <strong>選擇主題 (Theme)</strong>：依個人喜好選擇。<br />
+2.  <strong>身分驗證 (Auth Method)</strong>：<br />
+    *   推薦選擇 <strong><code>Login with Google</code></strong>。<br />
+    *   這會開啟瀏覽器視窗，請登入你的 Google 帳號授權。<br />
+    *   <em>註：此方式目前提供免費額度（每分鐘 60 次請求，每天 1000 次），適合個人學習使用。</em></p>
+<hr />
+<h2>3. 基礎操作指南 (Basic Operations)</h2>
+<p>啟動 <code>gemini</code> 後，你就可以用自然語言與它對話。以下是幾個最關鍵的操作符號：</p>
+<h3>3.1. 核心指令</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">符號/指令</th>
+<th style="text-align: left;">功能說明</th>
+<th style="text-align: left;">範例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong><code>@</code></strong></td>
+<td style="text-align: left;"><strong>引用檔案</strong>。讓 AI 讀取本地檔案內容作為上下文。</td>
+<td style="text-align: left;"><code>解釋 @app.py 的程式邏輯</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong><code>!</code></strong></td>
+<td style="text-align: left;"><strong>執行 Shell 指令</strong>。直接在終端機執行指令。</td>
+<td style="text-align: left;"><code>!ls -la</code> (列出檔案), <code>!python app.py</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong><code>/tools</code></strong></td>
+<td style="text-align: left;">查看目前可用的工具清單 (如 GoogleSearch, WebFetch 等)。</td>
+<td style="text-align: left;"><code>/tools</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong><code>/clear</code></strong></td>
+<td style="text-align: left;">清除當前對話歷史 (開啟新話題時使用)。</td>
+<td style="text-align: left;"><code>/clear</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong><code>/help</code></strong></td>
+<td style="text-align: left;">查看幫助選單。</td>
+<td style="text-align: left;"><code>/help</code></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>4. 實戰應用範例 (Hands-on Examples)</h2>
+<p>以下我們將透過 4 個不同層次的範例，帶你實際體驗 Gemini CLI 的強大之處。</p>
+<h3>🔰 Level 1: 程式碼解釋與學習 (Code Explanation)</h3>
+<p><strong>情境</strong>：你接手了一個陌生的 Python 專案，想快速了解某個檔案在做什麼。</p>
+<ol>
+<li>準備一個範例檔案 (或使用你現有的檔案)。假設有一個 <code>data_process.py</code>。</li>
+<li>在 Gemini CLI 中輸入：<br />
+<code>text
+    請解釋 @data_process.py 的主要功能，並用條列式列出它的輸入與輸出。</code></li>
+<li><strong>AI 行為</strong>：Gemini 會自動讀取該檔案內容，並根據程式碼邏輯生成清晰的解釋。這比複製貼上整段程式碼到網頁版快得多。</li>
+</ol>
+<h3>🔧 Level 2: 自動化重構與除錯 (Refactoring)</h3>
+<p><strong>情境</strong>：你的程式碼缺乏錯誤處理 (Error Handling)，希望 AI 幫你補強。</p>
+<ol>
+<li>輸入提示：<br />
+<code>text
+    @main.js 目前沒有錯誤處理機制。請幫我重構這段程式碼，加入 try-catch 區塊，並將錯誤記錄輸出到 console。請直接幫我修改檔案。</code></li>
+<li><strong>AI 行為</strong>：<ul>
+<li>Gemini 會分析程式碼。</li>
+<li>它會生成修改後的程式碼建議。</li>
+<li><strong>關鍵點</strong>：它會詢問你是否要套用變更 (Apply changes?)。輸入 <code>y</code> 確認後，它會直接使用 <code>replace</code> 或 <code>write_file</code> 工具修改你的本地檔案。</li>
+</ul>
+</li>
+</ol>
+<h3>🌐 Level 3: 聯網搜尋與生活應用 (Web Search &amp; Life Hacks)</h3>
+<p>除了寫程式，Gemini CLI 也是強大的生活助手。透過 <code>GoogleSearch</code> (搜尋) 與 <code>WebFetch</code> (讀取網頁內容)，你可以不用離開終端機就完成許多生活任務。</p>
+<h4>💡 情境 A：旅遊規劃助手 (Travel Planning)</h4>
+<p><strong>目標</strong>：不需要打開瀏覽器切換多個分頁，快速整理出台南一日遊的推薦景點與美食。</p>
+<ol>
+<li><strong>搜尋推薦</strong>：<br />
+<code>text
+    請幫我 Google 搜尋 "2025 台南 私房景點 美食"，並列出 5 個評分較高的地方。</code></li>
+<li><strong>深入讀取與整理</strong>：<ul>
+<li>Gemini 會列出搜尋結果。假設其中有一個結果是某篇部落格文章 <code>https://blog.example.com/tainan-trip</code>。</li>
+<li>你可以接著下指令讀取該文章細節：<br />
+<code>text
+請讀取這個網頁：https://blog.example.com/tainan-trip ，並幫我把裡面提到的所有店家整理成一個表格，包含「店名」、「地址」和「必點招牌」。</code></li>
+</ul>
+</li>
+</ol>
+<h4>💡 情境 B：購物決策與規格比較 (Shopping Comparison)</h4>
+<p><strong>目標</strong>：想買新的降噪耳機，但懶得看一堆評測影片，希望能直接看重點比較。</p>
+<ol>
+<li><strong>搜尋熱門產品</strong>：<br />
+<code>text
+    請搜尋 "Sony WH-1000XM5 vs Bose QC45 comparison review"，並告訴我它們主要的優缺點差異。</code></li>
+<li><strong>製作比較表</strong>：<br />
+<code>text
+    根據搜尋結果，請幫我製作一個 Markdown 表格，比較這兩款耳機的「價格」、「電池續航力」、「降噪能力」和「重量」。</code></li>
+</ol>
+<h4>💡 情境 C：高效率閱讀與學習 (Smart Reading)</h4>
+<p><strong>目標</strong>：看到一篇很長的技術文章或新聞報導，想先知道是不是自己需要的內容。</p>
+<ol>
+<li><strong>獲取文章重點</strong>：<br />
+<code>text
+    請讀取這篇關於 AI 發展的文章：https://www.example.com/ai-news ，並用繁體中文摘要出三個核心觀點，以及它對軟體工程師的影響。</code></li>
+<li><strong>翻譯與學習</strong>：<br />
+<code>text
+    這篇文章中有提到 "RAG (Retrieval-Augmented Generation)" 技術，請詳細解釋這個術語的意思，並舉一個生活中的例子來說明。</code></li>
+</ol>
+<h3>🚀 Level 4: 快速建立專案原型 (Prototyping)</h3>
+<p><strong>情境</strong>：你想做一個簡單的「待辦事項清單 (Todo List)」網頁，包含 HTML、CSS 和 JavaScript。</p>
+<ol>
+<li>
+<p><strong>建立專案資料夾</strong> (建議先在外部 Terminal 建立)：<br />
+<code>bash
+    mkdir todo_app &amp;&amp; cd todo_app
+    # 然後再輸入 gemini 啟動
+    gemini</code></p>
+</li>
+<li>
+<p><strong>下達指令生成原型</strong>：<br />
+    ```text<br />
+    請幫我建立一個簡單的 Todo List 應用程式。<br />
+    需求如下：</p>
+<ol>
+<li>一個 index.html，包含輸入框和新增按鈕。</li>
+<li>一個 style.css，使用現代化的簡約風格，按鈕要圓角的。</li>
+<li>一個 app.js，處理新增事項、點擊完成、刪除事項的邏輯。<br />
+請直接為我建立這些檔案。<br />
+```</li>
+</ol>
+</li>
+<li>
+<p><strong>AI 行為</strong>：</p>
+<ul>
+<li>Gemini 會規劃這三個檔案的內容。</li>
+<li>它會依序呼叫 <code>write_file</code> 工具來建立 <code>index.html</code>, <code>style.css</code>, <code>app.js</code>。</li>
+<li>每建立一個檔案，它都會請求你的確認。</li>
+</ul>
+</li>
+<li>
+<p><strong>驗證成果</strong>：</p>
+<ul>
+<li>檔案建立完成後，你可以直接打開 <code>index.html</code> 查看結果。</li>
+<li>如果不滿意（例如顏色不好看），可以直接說：「@style.css 的按鈕顏色太暗了，請改成活潑一點的藍色」，它會再次修改檔案。</li>
+</ul>
+</li>
+</ol>
+<hr />
+<h2>5. 進階技巧：專案專屬設定</h2>
+<p>你可以透過在專案根目錄建立一個 <code>GEMINI.md</code> 檔案，來「客製化」AI 在這個專案中的行為。這就像是給 AI 的「員工手冊」。</p>
+<p><strong>範例 <code>GEMINI.md</code> 內容：</strong></p>
+<div class="codehilite"><pre><span></span><code><span class="gh"># 專案指引</span>
+
+<span class="k">1.</span> <span class="gs">**程式風格**</span>：所有的變數命名請使用 snake_case (例如 user_name)。
+<span class="k">2.</span> <span class="gs">**語言**</span>：請一律使用繁體中文回答。
+<span class="k">3.</span> <span class="gs">**測試**</span>：每次修改程式碼後，請建議一個測試案例。
+</code></pre></div>
+
+<p>當 Gemini CLI 在這個目錄啟動時，它會自動讀取這個檔案，並遵循裡面的規則來協助你。</p>
+<hr />
+<h2>6. 學習總結</h2>
+<p>透過 Gemini CLI，我們改變了與電腦互動的方式：</p>
+<ul>
+<li><strong>不再是單向指令</strong>：而是雙向的自然語言溝通。</li>
+<li><strong>不再是複製貼上</strong>：AI 直接閱讀檔案、直接修改檔案。</li>
+<li><strong>整合力</strong>：將搜尋、寫碼、執行整合在同一個視窗中。</li>
+</ul>
+<h3>建議練習</h3>
+<ol>
+<li>安裝並登入 Gemini CLI。</li>
+<li>嘗試使用 <code>GoogleSearch</code> 查詢本週的熱門科技新聞。</li>
+<li>找一篇你感興趣的英文技術文章，用 <code>WebFetch</code> 請 AI 幫你翻譯並摘要。</li>
+<li>嘗試讓 AI 幫你寫一個簡單的 Python <code>Hello World</code> 腳本並存檔。</li>
+</ol>
+<p>祝你在終端機的 AI 之旅愉快！</p></div>
+
+    <!-- Highlight.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+
+    <!-- Mermaid -->
+    <script type="module">
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+        mermaid.initialize({
+            "startOnLoad": true,
+            "theme": "dark",
+            "securityLevel": "loose",
+            "themeVariables": {
+                        "fontFamily": "system-ui, -apple-system, \"Segoe UI\", Roboto, Helvetica, Arial, \"Noto Sans\", sans-serif",
+                        "fontSize": "18px",
+                        "lineColor": "#e2e8f0",
+                        "primaryColor": "#2d3748",
+                        "primaryBorderColor": "#60a5fa",
+                        "primaryTextColor": "#ffffff",
+                        "secondaryColor": "#1e3a5f",
+                        "secondaryBorderColor": "#38bdf8",
+                        "secondaryTextColor": "#ffffff",
+                        "tertiaryColor": "#374151",
+                        "tertiaryBorderColor": "#c084fc",
+                        "tertiaryTextColor": "#ffffff",
+                        "textColor": "#f1f5f9",
+                        "background": "#1e293b",
+                        "noteBkgColor": "#1e3a5f",
+                        "noteTextColor": "#ffffff",
+                        "noteBorderColor": "#60a5fa",
+                        "edgeLabelBackground": "#1e293b",
+                        "labelTextColor": "#f1f5f9",
+                        "actorBkg": "#2d3748",
+                        "actorBorder": "#60a5fa",
+                        "actorTextColor": "#ffffff",
+                        "actorLineColor": "#e2e8f0",
+                        "signalColor": "#e2e8f0",
+                        "signalTextColor": "#f1f5f9",
+                        "classText": "#ffffff"
+            }
+});
+    </script>
+</body>
+</html>
