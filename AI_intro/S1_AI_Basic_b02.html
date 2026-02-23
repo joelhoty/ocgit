@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>S1_AI_Basic_b02</title>
+
+    <!-- CSS 框架 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/dark.min.css">
+
+    <!-- 代碼高亮 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/base16/darcula.min.css">
+
+    <!-- 自定義樣式 -->
+    <style>
+        
+                body {
+                    max-width: 900px;
+                    margin: 0 auto;
+                    padding: 20px;
+                }
+                /* 提升代碼塊對比度 */
+                pre {
+                    background: #1e1e1e !important;
+                    border: 1px solid #3e3e3e;
+                }
+                pre code {
+                    background: #1e1e1e !important;
+                }
+                code {
+                    background: #2d2d2d !important;
+                }
+                /* 引用塊對比度 */
+                blockquote {
+                    background: #2d2d2d;
+                    border-left: 4px solid #4a9eff;
+                }
+            
+        /* 通用代碼塊樣式 */
+        pre code {
+            display: block;
+            padding: 1.5em;
+            border-radius: 8px;
+            overflow-x: auto;
+            line-height: 1.6;
+        }
+
+        /* Mermaid 圖表樣式 */
+        
+        .mermaid {
+            margin: 2em 0;
+            padding: 1.5em;
+            text-align: center;
+            border-radius: 8px;
+        }
+        .mermaid svg {
+            max-width: 100%;
+            height: auto;
+        }
+        /* 增強所有文字的可讀性 */
+        .mermaid svg text {
+            font-weight: 700 !important;  /* 加粗文字 */
+            font-size: 18px !important;  /* 增大字體 */
+        }
+        /* 特別加強節點標籤文字 */
+        .mermaid .nodeLabel,
+        .mermaid .edgeLabel {
+            font-weight: 700 !important;
+        }
+        /* 確保連線標籤清晰可見 */
+        .mermaid .edgeLabel text {
+            fill: inherit !important;
+            font-weight: 700 !important;
+        }
+        /* 加粗序列圖的文字 */
+        .mermaid .actor,
+        .mermaid .messageText {
+            font-weight: 700 !important;
+        }
+        /* 增強邊框可見度 */
+        .mermaid .edgePath path,
+        .mermaid .flowchart-link {
+            stroke-width: 2.5px !important;  /* 加粗連線 */
+        }
+        .mermaid .arrowheadPath {
+            stroke-width: 2.5px !important;
+        }
+        /* 確保節點邊框清晰 */
+        .mermaid .node rect,
+        .mermaid .node polygon,
+        .mermaid .node circle,
+        .mermaid .node ellipse {
+            stroke-width: 2.5px !important;
+        }
+        
+        .mermaid {
+            background: #1e293b;  /* 深藍灰色背景 */
+            border: 2px solid #475569;  /* 加粗邊框 */
+            color: #f1f5f9;  /* 亮色文字 */
+        }
+        /* 確保深色主題下文字始終可見 */
+        .mermaid svg text {
+            fill: #f1f5f9 !important;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);  /* 添加陰影增強可讀性 */
+        }
+        .mermaid .nodeLabel {
+            color: #ffffff !important;
+        }
+            
+
+        /* 響應式調整 */
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            .container, .markdown-body, .latex-body, .window-body, .nes-container {
+                padding: 15px;
+            }
+            pre code {
+                padding: 1em;
+            }
+            /* 移動設備上稍微縮小 Mermaid 文字 */
+            .mermaid svg text {
+                font-size: 16px !important;
+            }
+        }
+
+        
+    </style>
+</head>
+<body>
+    <div class="container"><!-- Path: 114B_AI_intro/S1 | Timestamp: 2026-02-23 10:00:00 | Version: b02 -->
+<h1>階段一：現階段的AI發展概況與應用</h1>
+<h2>AI的最新發展概況</h2>
+<p>近年來，人工智慧（AI）的發展已經從實驗室走向了大眾的日常生活。最新的發展概況主要集中在以下幾個面向：<br />
+1. <strong>多模態（Multimodal）模型的崛起</strong>：現在的 AI 不僅能處理文字，還能同時理解圖像、聲音甚至是影片。我們可以直接對著 AI 說話，或上傳一張圖片讓它進行分析。<br />
+2. <strong>代理式工作流程（Agentic Workflow）</strong>：AI 不再只是一問一答的聊天機器人，而是能夠自主規劃步驟、使用工具（如搜尋網路、執行程式碼），進一步解決複雜問題的「智慧代理人（Agent）」。<br />
+3. <strong>終端裝置 AI（Edge AI）</strong>：越來越多 AI 模型被壓縮並內建於我們的手機、平板和個人電腦中，不僅提升了運算速度，也能在不連網的狀態下保護使用者的隱私。</p>
+<h2>AI的最新發展應用</h2>
+<ul>
+<li><strong>教育領域</strong>：成為學生的個人專屬家教，針對不懂的知識點進行耐心講解；協助老師自動出題與批改考卷。</li>
+<li><strong>醫療健康</strong>：輔助醫生判讀 X 光片、分析病歷，甚至加速新藥物的研發過程。</li>
+<li><strong>程式開發</strong>：開發者只需用自然語言描述需求，AI 就能自動生成程式碼，或幫忙找出程式裡的 Bug（臭蟲）。</li>
+<li><strong>娛樂與藝術</strong>：透過一句話生成精美的畫作、製作音樂特效，甚至是一段栩栩如生的電影畫面。</li>
+</ul>
+<hr />
+<h1>階段二：生成式AI的概念與應用</h1>
+<h2>生成式AI的概念與傳統AI的差異</h2>
+<p><strong>生成式 AI (Generative AI)</strong> 是人工智慧的一個分支，其核心能力在於「創造新內容」。<br />
+傳統 AI 大多用來「分類」或「預測」（例如：判斷這張圖是不是貓），而生成式 AI 則是學習了大量的資料後，能夠「生成」全新的內容（例如：畫出一隻正在喝咖啡的機器貓）。</p>
+<p>下面是傳統 AI 與生成式 AI 的差異比較表：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">比較項目</th>
+<th style="text-align: left;">傳統 AI (分析與判別式 AI)</th>
+<th style="text-align: left;">生成式 AI (Generative AI)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>主要功能</strong></td>
+<td style="text-align: left;">分類、辨識、預測趨勢</td>
+<td style="text-align: left;">創造、生成全新的內容</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>運作方式</strong></td>
+<td style="text-align: left;">尋找資料中的規則與特徵</td>
+<td style="text-align: left;">學習資料的分佈與結構，生成相似但不一樣的新結果</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>常見應用</strong></td>
+<td style="text-align: left;">垃圾郵件過濾、人臉解鎖、天氣預測</td>
+<td style="text-align: left;">文章撰寫、圖像生成、音樂創作、影片生成</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>舉例說明</strong></td>
+<td style="text-align: left;">「這張照片裡有狗嗎？」</td>
+<td style="text-align: left;">「請幫我畫一張在太空漫步的黃金獵犬照片。」</td>
+</tr>
+</tbody>
+</table>
+<p>我們也可以透過以下的 Mermaid 概念圖來理解它們的關係：</p>
+<div class="mermaid">
+graph TD
+    A[人工智慧 AI] --&gt; B(機器學習 Machine Learning)
+    B --&gt; C(深度學習 Deep Learning)
+    C --&gt; D{生成式 AI Generative AI}
+    
+    A --&gt; E[傳統/判別式 AI]
+    E --&gt; F[分類貓狗圖片]
+    E --&gt; G[預測股票走向]
+    
+    D --&gt; H[文字生成: ChatGPT/Gemini]
+    D --&gt; I[圖像生成: Midjourney/Imagen]
+    D --&gt; J[音訊/影片生成: Sora/Veo]
+</div>
+<h2>生成式AI的應用</h2>
+<p>生成式 AI 已經廣泛應用於多種媒體形式中：<br />
+- <strong>文字 (Text)</strong>：撰寫報告、寫詩、翻譯語言、總結長篇文章。<br />
+- <strong>圖像 (Image)</strong>：設計 Logo、製作遊戲素材、畫插畫。<br />
+- <strong>音訊 (Audio)</strong>：文字轉語音（TTS）、生成背景音樂、模仿特定人聲。<br />
+- <strong>影片 (Video)</strong>：將文字腳本轉換為短影音、生成動畫。<br />
+- <strong>程式碼 (Code)</strong>：自動撰寫網頁 HTML/CSS、Python 腳本或資料庫查詢語言 (SQL)。</p>
+<hr />
+<h1>階段三：商用生成式AI介紹</h1>
+<p>目前市面上有多家科技巨頭推出了強大的生成式 AI 模型：</p>
+<ol>
+<li><strong>Google 的 Gemini</strong></li>
+<li><strong>特色與最新模型</strong>：Google 最強大的多模態模型。目前最新為 <strong>Gemini 3</strong> 與 <strong>Gemini 3 Flash</strong> 系列，進一步提升了推理能力與運算速度。它擁有極長的「上下文窗口（Context Window）」，可以一次塞入好幾本電子書或一部長影片讓它分析，並且與 Google 服務（如 Workspace、Android）深度整合。</li>
+<li><strong>OpenAI 的 ChatGPT (GPT / o 系列)</strong></li>
+<li><strong>特色與最新模型</strong>：ChatGPT 的幕後推手，也是目前最普及的 AI。最新的推理模型包含 <strong>o3</strong>、<strong>o3-mini</strong> 甚至 <strong>o4-mini</strong>，針對複雜的數學與程式問題強化了「深度推理（Reasoning）」能力。而在一般語言與多模態模型上，<strong>GPT-5.2</strong> 則在程式編寫與代理任務 (Agentic workflow) 上提供了頂尖的表現。</li>
+<li><strong>Anthropic 的 Claude</strong></li>
+<li><strong>特色與最新模型</strong>：由 OpenAI 前員工創立，極度重視「AI 安全性」。目前的最新版本已推進到 <strong>Claude 4.6 Sonnet</strong> 以及 <strong>Claude 4.5 Opus</strong>。它在撰寫程式碼和自然語言寫作上表現卓越，並且擁有 Artifacts 功能，可以直接在旁邊的視窗預覽它寫出來的網頁或圖表。</li>
+<li><strong>xAI 的 Grok</strong></li>
+<li><strong>特色與最新模型</strong>：由 Elon Musk 的 xAI 團隊開發。目前最新版本為 <strong>Grok 4.1</strong>。其最大特色是能夠即時存取 X (前 Twitter) 平台上的最新推文資訊，回答風格較為幽默、不受傳統框架侷限，適合尋找即時的新聞動態與社群風向。</li>
+</ol>
+<hr />
+<h1>階段四：Google Gemini 的實驗遊樂場</h1>
+<h2>AI Studio的介紹</h2>
+<p><strong>Google AI Studio</strong> 是一個專為開發者和學習者設計的「網頁版實驗室」。<br />
+在這裡，你可以直接呼叫 Google 最新的 Gemini 模型，調整各種參數（如溫度），甚至可以在不寫程式碼的情況下，測試不同 Prompt (提示詞) 的效果。它非常適合高中生用來了解 AI 模型的底層邏輯與運作原理。</p>
+<h2>Gemini的最新模型</h2>
+<p>在 AI Studio 中，我們可以選擇不同量級的模型來達成任務：<br />
+- <strong>Gemini Flash 系列</strong>：速度極快、成本低，適合處理大量的日常簡單任務。<br />
+- <strong>Gemini Pro 系列</strong>：效能與速度的完美平衡，擁有優異的長文本處理能力與推理能力。</p>
+<hr />
+<blockquote>
+<p>💡 <strong>以下是 Gemini 各項功能的應用說明與「範例 Prompt」設計。請在 AI Studio 中親自嘗試這些 Prompt，觀察 AI 的回應！</strong></p>
+</blockquote>
+<h2>1. 問答 (Q&amp;A)</h2>
+<ul>
+<li><strong>說明</strong>：AI 可以作為你的知識庫，進行深度問答與邏輯推演。如果問題太複雜，可以引導它一步步思考（Chain of Thought）。</li>
+<li><strong>範例 Prompt</strong>：<br />
+<code>text
+  你現在是一位幽默的高中物理老師。請用高中生聽得懂的生活例子，並且以「一步一步思考」的方式，解釋什麼是「量子力學中的薛丁格的貓」。字數控制在 300 字以內。</code></li>
+</ul>
+<h2>2. 文本生成 (Text Generation)</h2>
+<ul>
+<li><strong>說明</strong>：不論是寫作靈感、翻譯還是摘要，AI 都能根據你給定的角色與語氣快速生成高品質的文本。</li>
+<li><strong>範例 Prompt</strong>：<br />
+<code>text
+  我需要寫一篇關於「減少校園塑膠垃圾」的短篇演講稿。對象是全校師生。
+  請幫我擬定 3 個吸睛的開場白，並撰寫一段大約 200 字的結語，語氣要充滿熱血與號召力。</code></li>
+</ul>
+<h2>3. 圖像生成 (Image Generation)</h2>
+<ul>
+<li><strong>說明</strong>：利用 Google 的 Imagen 模型，你可以用文字描述腦海中的畫面，AI 會將其渲染成高品質圖片。描述越精準（包含風格、光影、主體細節），圖片越符合預期。</li>
+<li><strong>範例 Prompt</strong>：<br />
+<code>text
+  生成一張高畫質圖片：一隻穿著太空衣的可愛柴犬，正漂浮在火星表面。背景是璀璨的銀河，風格是 3D 動畫皮克斯風格 (Pixar style)，光線明亮。</code></li>
+</ul>
+<h2>4. 影片生成 (Video Generation)</h2>
+<ul>
+<li><strong>說明</strong>：Google 的 Veo 技術可以生成短秒數的高畫質影片。這對於製作簡報動畫或影音素材非常有幫助。</li>
+<li><strong>範例 Prompt</strong>：<br />
+<code>text
+  生成一段 5 秒的影片：鏡頭從高空俯瞰一座被熱帶雨林包圍的古代神廟，接著一隻色彩斑斕的鸚鵡從鏡頭前飛過。電影級運鏡。</code></li>
+</ul>
+<h2>5. 各種程式 (Coding &amp; Debugging)</h2>
+<ul>
+<li><strong>說明</strong>：AI 是你寫程式的最強副手，不管是解讀看不懂的程式碼，或是幫忙找 Bug，它都能給出詳細的解釋。</li>
+<li><strong>範例 Prompt</strong>：<br />
+<code>text
+  我是一個剛學 Python 的高中生。請幫我寫一個簡單的「猜數字遊戲」程式碼 (1 到 100 之間)。
+  請在每一行程式碼加上清楚的中文註解，並且在最後教我如果想把範圍改成 1 到 500 應該改哪裡。</code></li>
+</ul>
+<h2>6. 讀取與整理資料 (Data Processing)</h2>
+<ul>
+<li><strong>說明</strong>：Gemini 擁有極大的上下文窗口，你可以上傳一份長篇的 PDF 或 CSV 檔案，讓它幫你找出重點，或是重新排版成表格。</li>
+<li><strong>範例 Prompt</strong>：<br />
+<code>text
+  (請先上傳一份關於氣候變遷的 PDF 報告)
+  請閱讀這份報告，幫我總結出「全球暖化對海洋生態造成的三大主要影響」，並將這三個影響以及對應的解決方案，整理成一個 Markdown 格式的表格。</code></li>
+</ul>
+<h2>7. 其他功能 (Advanced Settings)</h2>
+<ul>
+<li><strong>說明</strong>：在 AI Studio 中，你還可以調整右側的進階設定。</li>
+<li><strong>System Instructions (系統指令)</strong>：設定 AI 的根本角色與規則（例如：設定它永遠只能用文言文回答）。</li>
+<li><strong>Temperature (溫度)</strong>：設定 AI 的創意程度。數值接近 0 時，回答最精準死板；數值接近 1 甚至 2 時，回答最具創意但可能出現幻覺（Hallucination）。</li>
+<li><strong>範例 Prompt (搭配系統指令測試)</strong>：</li>
+<li><em>在 System Instructions 輸入</em>：「你是一個脾氣暴躁但內心善良的程式設計大師。回答問題前都要先嘆氣。」</li>
+<li><em>在聊天框輸入</em>：「請問什麼是 HTML？」</li>
+</ul>
+<hr />
+<h1>學習總結</h1>
+<p>恭喜你完成了生成式 AI 的基礎學習！<br />
+經過這個章節，你應該已經獲得了以下的知識與技能：</p>
+<ul>
+<li><strong>知識 (Knowledge)</strong>：</li>
+<li>清楚知道傳統 AI 與生成式 AI 的核心差異與運作原理。</li>
+<li>認識目前市場上主流的大型語言模型（Gemini, GPT, Claude, Grok）及其特色與最新模型資訊。</li>
+<li><strong>技能 (Skills)</strong>：</li>
+<li>能夠登入並操作 Google AI Studio 環境。</li>
+<li>具備基本的 <strong>Prompt Engineering (提示詞工程)</strong> 技巧，懂得如何設計具體的指令來引導 AI 完成問答、寫作、圖片生成與程式除錯等實用任務。</li>
+</ul></div>
+
+    <!-- Highlight.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+
+    <!-- Mermaid -->
+    <script type="module">
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+        mermaid.initialize({
+            "startOnLoad": true,
+            "theme": "dark",
+            "securityLevel": "loose",
+            "themeVariables": {
+                        "fontFamily": "system-ui, -apple-system, \"Segoe UI\", Roboto, Helvetica, Arial, \"Noto Sans\", sans-serif",
+                        "fontSize": "18px",
+                        "lineColor": "#e2e8f0",
+                        "primaryColor": "#2d3748",
+                        "primaryBorderColor": "#60a5fa",
+                        "primaryTextColor": "#ffffff",
+                        "secondaryColor": "#1e3a5f",
+                        "secondaryBorderColor": "#38bdf8",
+                        "secondaryTextColor": "#ffffff",
+                        "tertiaryColor": "#374151",
+                        "tertiaryBorderColor": "#c084fc",
+                        "tertiaryTextColor": "#ffffff",
+                        "textColor": "#f1f5f9",
+                        "background": "#1e293b",
+                        "noteBkgColor": "#1e3a5f",
+                        "noteTextColor": "#ffffff",
+                        "noteBorderColor": "#60a5fa",
+                        "edgeLabelBackground": "#1e293b",
+                        "labelTextColor": "#f1f5f9",
+                        "actorBkg": "#2d3748",
+                        "actorBorder": "#60a5fa",
+                        "actorTextColor": "#ffffff",
+                        "actorLineColor": "#e2e8f0",
+                        "signalColor": "#e2e8f0",
+                        "signalTextColor": "#f1f5f9",
+                        "classText": "#ffffff"
+            }
+});
+    </script>
+</body>
+</html>

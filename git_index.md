@@ -14,6 +14,12 @@
 | Arduino_IDE_03_final.html | 2025-11-05 | [Arduino_IDE_03_final.html](https://joelhoty.github.io/ocgit/104A_EngeeringDesign/Arduino_IDE_03_final.html) |
 | Arduino_IDE_01_b04.html | 2025-10-22 | [Arduino_IDE_01_b04.html](https://joelhoty.github.io/ocgit/104A_EngeeringDesign/Arduino_IDE_01_b04.html) |
 
+## AI_intro
+
+| File Name | Last Updated | Link |
+|---|---|---|
+| S1_AI_Basic_b02.html | 2026-02-23 | [S1_AI_Basic_b02.html](https://joelhoty.github.io/ocgit/AI_intro/S1_AI_Basic_b02.html) |
+
 ## AI_intro/History
 
 | File Name | Last Updated | Link |
