@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>教學資料共享平台｜OC Learning Hub</title>
+  <style>
+    :root {
+      --bg: #f0f4f8;
+      --surface: #ffffff;
+      --text: #1e293b;
+      --muted: #64748b;
+      --border: #e2e8f0;
+      --primary: #3b82f6;
+      --primary-dark: #2563eb;
+      --primary-soft: #eff6ff;
+      --accent: #10b981;
+      --accent-soft: #ecfdf5;
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.06);
+      --shadow-md: 0 8px 24px rgba(0,0,0,0.08);
+      --shadow-lg: 0 20px 50px rgba(0,0,0,0.1);
+      --radius: 16px;
+      --radius-sm: 10px;
+      --sans: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", system-ui, sans-serif;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--sans);
+      color: var(--text);
+      background: var(--bg);
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    /* Hero */
+    .hero {
+      background: linear-gradient(135deg, #1e3a5f 0%, #2563eb 50%, #3b82f6 100%);
+      color: #fff;
+      padding: 3rem 1.5rem 2.5rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -50%; left: -50%;
+      width: 200%; height: 200%;
+      background: radial-gradient(circle at 30% 40%, rgba(255,255,255,0.08), transparent 50%),
+                  radial-gradient(circle at 70% 60%, rgba(16,185,129,0.1), transparent 40%);
+      pointer-events: none;
+    }
+    .hero h1 {
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      font-weight: 800;
+      margin-bottom: 0.5rem;
+      position: relative;
+    }
+    .hero p {
+      font-size: 1.1rem;
+      opacity: 0.9;
+      max-width: 600px;
+      margin: 0 auto;
+      position: relative;
+    }
+    .hero .badge {
+      display: inline-block;
+      background: rgba(255,255,255,0.15);
+      backdrop-filter: blur(4px);
+      border: 1px solid rgba(255,255,255,0.2);
+      padding: 0.3rem 1rem;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      margin-bottom: 1rem;
+      position: relative;
+    }
+
+    /* Nav */
+    .nav-bar {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 0.8rem 1.5rem;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: var(--shadow-sm);
+    }
+    .nav-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .nav-inner a {
+      text-decoration: none;
+      color: var(--muted);
+      font-size: 0.85rem;
+      padding: 0.35rem 0.75rem;
+      border-radius: 8px;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+    .nav-inner a:hover {
+      color: var(--primary);
+      background: var(--primary-soft);
+    }
+
+    /* Main */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem 1.5rem 4rem;
+    }
+
+    /* Section */
+    .section {
+      margin-bottom: 2.5rem;
+    }
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 1rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 2px solid var(--border);
+    }
+    .section-header .icon {
+      width: 42px; height: 42px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+      flex-shrink: 0;
+    }
+    .section-header h2 {
+      font-size: 1.3rem;
+      font-weight: 700;
+    }
+    .section-header .count {
+      background: var(--primary-soft);
+      color: var(--primary);
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 0.2rem 0.6rem;
+      border-radius: 12px;
+      margin-left: auto;
+    }
+
+    /* Card Grid */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 1rem;
+    }
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 1rem 1.2rem;
+      text-decoration: none;
+      color: var(--text);
+      transition: all 0.25s;
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+    }
+    .card:hover {
+      border-color: var(--primary);
+      box-shadow: var(--shadow-md);
+      transform: translateY(-2px);
+    }
+    .card .title {
+      font-weight: 600;
+      font-size: 0.95rem;
+      color: var(--text);
+    }
+    .card .meta {
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+    .card .path {
+      font-size: 0.75rem;
+      color: var(--primary);
+      opacity: 0.7;
+    }
+
+    /* Subsection */
+    .subsection {
+      margin-top: 1rem;
+      margin-left: 1rem;
+      padding-left: 1rem;
+      border-left: 3px solid var(--border);
+    }
+    .subsection h3 {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--muted);
+      margin-bottom: 0.75rem;
+    }
+
+    /* Color themes for icons */
+    .icon-blue { background: #eff6ff; color: #3b82f6; }
+    .icon-green { background: #ecfdf5; color: #10b981; }
+    .icon-orange { background: #fff7ed; color: #f97316; }
+    .icon-purple { background: #faf5ff; color: #a855f7; }
+    .icon-red { background: #fef2f2; color: #ef4444; }
+    .icon-teal { background: #f0fdfa; color: #14b8a6; }
+    .icon-yellow { background: #fefce8; color: #eab308; }
+    .icon-pink { background: #fdf2f8; color: #ec4899; }
+    .icon-indigo { background: #eef2ff; color: #6366f1; }
+    .icon-cyan { background: #ecfeff; color: #06b6d4; }
+    .icon-slate { background: #f1f5f9; color: #475569; }
+
+    /* Footer */
+    .footer {
+      text-align: center;
+      padding: 2rem 1rem;
+      color: var(--muted);
+      font-size: 0.85rem;
+      border-top: 1px solid var(--border);
+    }
+    .footer a { color: var(--primary); text-decoration: none; }
+    .footer a:hover { text-decoration: underline; }
+
+    /* Responsive */
+    @media (max-width: 640px) {
+      .card-grid { grid-template-columns: 1fr; }
+      .hero { padding: 2rem 1rem 1.5rem; }
+      .nav-inner { gap: 0.25rem; }
+      .nav-inner a { font-size: 0.78rem; padding: 0.3rem 0.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Hero -->
+<header class="hero">
+  <div class="badge">📚 GitHub Pages 教學平台</div>
+  <h1>OC 教學資料共享平台</h1>
+  <p>涵蓋 AI、程式設計、機器人、電腦視覺等多元課程的開放學習資源</p>
+</header>
+
+<!-- Nav -->
+<nav class="nav-bar">
+  <div class="nav-inner">
+    <a href="#gemini">🎨 Gemini 設計教學</a>
+    <a href="#ai-intro">🤖 AI 導論</a>
+    <a href="#git">🔀 Git 版控</a>
+    <a href="#b11">🌐 網頁開發</a>
+    <a href="#cnn">🧠 CNN 深度學習</a>
+    <a href="#opencv">👁️ OpenCV</a>
+    <a href="#robots">🤖 機器人</a>
+    <a href="#engineering">⚡ 工程設計</a>
+    <a href="#security">🔒 資安</a>
+    <a href="#others">📦 其他</a>
+  </div>
+</nav>
+
+<main class="container">
+
+  <!-- GeminiForDesignTeaching -->
+  <section class="section" id="gemini">
+    <div class="section-header">
+      <div class="icon icon-purple">🎨</div>
+      <h2>Gemini AI 設計教學</h2>
+      <span class="count">13 篇</span>
+    </div>
+    <div class="card-grid">
+      <a class="card" href="GeminiForDesignTeaching/index_content.html">
+        <span class="title">📋 課程總覽索引</span>
+        <span class="meta">更新：2025-12-30</span>
+      </a>
+      <a class="card" href="GeminiForDesignTeaching/unit01_first_ai_material_b02.html">
+        <span class="title">Unit 01：初識 AI 教材</span>
+        <span class="meta">更新：2025-12-09</span>
+      </a>
+      <a class="card" href="GeminiForDesignTeaching/unit02_ai_image_generation_b02.html">
+        <span class="title">Unit 02：AI 圖像生成</span>
+        <span class="meta">更新：2025-10-18</span>
+      </a>
+      <a class="card" href="GeminiForDesignTeaching/unit03_notebooklm_b02.html">
+        <span class="title">Unit 03：NotebookLM 應用</span>
+        <span class="meta">更新：2025-10-18</span>
+      </a>
+      <a class="card" href="GeminiForDesignTeaching/unit04_local_ai_setup_b02.html">
+        <span class="title">Unit 04：本地 AI 環境建置</span>
+        <span class="meta">更新：2025-10-18</span>
+      </a>
+      <a class="card" href="GeminiForDesignTeaching/unit04_supplement_additions.html">
+        <span class="title">Unit 04：補充教材</span>
+        <span class="meta">更新：2025-10-18</span>
+      </a>
+      <a class="card" href="GeminiForDesignTeaching/unit05_gemini_md_customization_b01.html">
+        <span class="title">Unit 05：Gemini Markdown 客製化</span>
+        <span class="meta">更新：2025-10-18</span>
+      </a>
+      <a class="card" href="GeminiForDesignTeaching/unit06_practical_lesson_plan_b02.html">
+        <span class="title">Unit 06：實務教案設計</span>
+        <span class="meta">更新：2025-10-18</span>
+      </a>
+      <a class="card" href="GeminiForDesignTeaching/unit06_supplement_additions.html">
+        <span class="title">Unit 06：補充教材</span>
+        <span class="meta">更新：2025-10-18</span>
+      </a>
+      <a class="card" href="GeminiForDesignTeaching/Gemini_CLI_Tutorial_b02.html">
+        <span class="title">Gemini CLI 教學</span>
+        <span class="meta">更新：2025-12-30</span>
+      </a>
+      <a class="card" href="GeminiForDesignTeaching/AI_Agent_Cli_b13.html">
+        <span class="title">AI Agent CLI 應用</span>
+        <span class="meta">更新：2025-11-18</span>
+      </a>
+      <a class="card" href="GeminiForDesignTeaching/Environment_Setup_Guide_b06.html">
+        <span class="title">環境安裝指南</span>
+        <span class="meta">更新：2025-12-14</span>
+      </a>
+      <a class="card" href="GeminiForDesignTeaching/literacy_b02.html">
+        <span class="title">AI 素養探討</span>
+        <span class="meta">更新：2025-10-20</span>
+      </a>
+    </div>
+    <div class="subsection">
+      <h3>📝 延伸閱讀</h3>
+      <div class="card-grid">
+        <a class="card" href="GeminiForDesignTeaching/literacy_chatgpt_revise_b06.html">
+          <span class="title">ChatGPT 修改與反思</span>
+          <span class="meta">更新：2025-10-20</span>
+        </a>
+        <a class="card" href="GeminiForDesignTeaching/literacy_research.html">
+          <span class="title">AI 素養研究</span>
+          <span class="meta">更新：2025-10-20</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- AI_intro -->
+  <section class="section" id="ai-intro">
+    <div class="section-header">
+      <div class="icon icon-blue">🤖</div>
+      <h2>AI 導論</h2>
+      <span class="count">15 篇</span>
+    </div>
+    <div class="card-grid">
+      <a class="card" href="AI_intro/S1_AI_Basic_b02.html">
+        <span class="title">S1：AI 基礎概念</span>
+        <span class="meta">更新：2026-02-23</span>
+      </a>
+    </div>
+    <div class="subsection">
+      <h3>📖 AI 發展史</h3>
+      <div class="card-grid">
+        <a class="card" href="AI_intro/History/index.html">
+          <span class="title">📋 AI 發展史索引</span>
+          <span class="meta">更新：2025-10-28</span>
+        </a>
+        <a class="card" href="AI_intro/History/Chapter_01_Introduction_b02.html">
+          <span class="title">Ch01：導論</span>
+          <span class="meta">更新：2025-10-28</span>
+        </a>
+        <a class="card" href="AI_intro/History/Chapter_02_KeywordMap_b02.html">
+          <span class="title">Ch02：關鍵詞地圖</span>
+          <span class="meta">更新：2025-10-28</span>
+        </a>
+        <a class="card" href="AI_intro/History/Chapter_03_TwoParadigms_b01.html">
+          <span class="title">Ch03：兩大典範</span>
+          <span class="meta">更新：2025-10-28</span>
+        </a>
+        <a class="card" href="AI_intro/History/Chapter_04_EarlyFoundations_b02.html">
+          <span class="title">Ch04：早期基礎</span>
+          <span class="meta">更新：2025-10-28</span>
+        </a>
+        <a class="card" href="AI_intro/History/Chapter_05_ClassicalPeriod_b05.html">
+          <span class="title">Ch05：古典時期</span>
+          <span class="meta">更新：2025-10-28</span>
+        </a>
+        <a class="card" href="AI_intro/History/Chapter_06_WinterAndRevival_b05.html">
+          <span class="title">Ch06：AI 寒冬與復興</span>
+          <span class="meta">更新：2025-10-28</span>
+        </a>
+        <a class="card" href="AI_intro/History/Chapter_07_DeepLearning_b05.html">
+          <span class="title">Ch07：深度學習</span>
+          <span class="meta">更新：2025-10-28</span>
+        </a>
+        <a class="card" href="AI_intro/History/Chapter_08_GenerativeAI_b05.html">
+          <span class="title">Ch08：生成式 AI</span>
+          <span class="meta">更新：2025-10-28</span>
+        </a>
+        <a class="card" href="AI_intro/History/Chapter_09_Conclusion_b01.html">
+          <span class="title">Ch09：結語</span>
+          <span class="meta">更新：2025-10-28</span>
+        </a>
+        <a class="card" href="AI_intro/History/Glossary_b01.html">
+          <span class="title">📝 詞彙表</span>
+          <span class="meta">更新：2025-10-28</span>
+        </a>
+        <a class="card" href="AI_intro/History/References_b01.html">
+          <span class="title">📚 參考文獻</span>
+          <span class="meta">更新：2025-11-03</span>
+        </a>
+        <a class="card" href="AI_intro/History/jigsaw_inquiry_notebooklm_b06.html">
+          <span class="title">拼圖式探究學習（NotebookLM）</span>
+          <span class="meta">更新：2025-10-28</span>
+        </a>
+        <a class="card" href="AI_intro/History/README_b06.html">
+          <span class="title">📋 專案說明</span>
+          <span class="meta">更新：2025-10-28</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Git -->
+  <section class="section" id="git">
+    <div class="section-header">
+      <div class="icon icon-red">🔀</div>
+      <h2>Git 版本管理與 GitHub 協作</h2>
+      <span class="count">12 篇</span>
+    </div>
+    <div class="card-grid">
+      <a class="card" href="Git/index.html">
+        <span class="title">📋 Git 課程總覽</span>
+        <span class="meta">更新：2026-03-19</span>
+      </a>
+    </div>
+    <div class="subsection">
+      <h3>📖 V1 教材</h3>
+      <div class="card-grid">
+        <a class="card" href="Git/v1/index.html">
+          <span class="title">📋 V1 課程索引</span>
+          <span class="meta">更新：2026-03-19</span>
+        </a>
+        <a class="card" href="Git/v1/pages/01-repo-concept.html">
+          <span class="title">01：Repository 概念</span>
+          <span class="meta">更新：2026-03-19</span>
+        </a>
+        <a class="card" href="Git/v1/pages/02-git-init.html">
+          <span class="title">02：Git Init 初始化</span>
+          <span class="meta">更新：2026-03-19</span>
+        </a>
+        <a class="card" href="Git/v1/pages/03-commit.html">
+          <span class="title">03：Commit 提交</span>
+          <span class="meta">更新：2026-03-19</span>
+        </a>
+        <a class="card" href="Git/v1/pages/04-github-collaboration.html">
+          <span class="title">04：GitHub 協作</span>
+          <span class="meta">更新：2026-03-19</span>
+        </a>
+        <a class="card" href="Git/v1/pages/05-pr-issue-branch.html">
+          <span class="title">05：PR / Issue / Branch</span>
+          <span class="meta">更新：2026-03-19</span>
+        </a>
+        <a class="card" href="Git/v1/pages/06-advanced-usage.html">
+          <span class="title">06：進階使用</span>
+          <span class="meta">更新：2026-03-19</span>
+        </a>
+        <a class="card" href="Git/v1/pages/07-github-pages-actions.html">
+          <span class="title">07：GitHub Pages & Actions</span>
+          <span class="meta">更新：2026-03-19</span>
+        </a>
+        <a class="card" href="Git/v1/pages/08-runner-advanced.html">
+          <span class="title">08：Runner 進階</span>
+          <span class="meta">更新：2026-03-19</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- b11 Web Dev -->
+  <section class="section" id="b11">
+    <div class="section-header">
+      <div class="icon icon-teal">🌐</div>
+      <h2>網頁開發技術</h2>
+      <span class="count">12 篇</span>
+    </div>
+    <div class="card-grid">
+      <a class="card" href="b11/index_b11.html">
+        <span class="title">📋 課程總覽索引</span>
+        <span class="meta">更新：2026-03-19</span>
+      </a>
+      <a class="card" href="b11/pages/01-tcp-ip-foundation_b11.html">
+        <span class="title">01：TCP/IP 基礎</span>
+        <span class="meta">更新：2026-03-19</span>
+      </a>
+      <a class="card" href="b11/pages/02-web-service-lifecycle_b11.html">
+        <span class="title">02：Web 服務生命週期</span>
+        <span class="meta">更新：2026-03-19</span>
+      </a>
+      <a class="card" href="b11/pages/03-http-protocol_b11.html">
+        <span class="title">03：HTTP 協定</span>
+        <span class="meta">更新：2026-03-19</span>
+      </a>
+      <a class="card" href="b11/pages/04-html-css-foundation_b11.html">
+        <span class="title">04：HTML/CSS 基礎</span>
+        <span class="meta">更新：2026-03-19</span>
+      </a>
+      <a class="card" href="b11/pages/05-javascript-dom-css_b11.html">
+        <span class="title">05：JavaScript DOM & CSS</span>
+        <span class="meta">更新：2026-03-19</span>
+      </a>
+      <a class="card" href="b11/pages/06-web-server-examples_b11.html">
+        <span class="title">06：Web Server 範例</span>
+        <span class="meta">更新：2026-03-19</span>
+      </a>
+      <a class="card" href="b11/pages/07-modern-frameworks_b11.html">
+        <span class="title">07：現代前端框架</span>
+        <span class="meta">更新：2026-03-19</span>
+      </a>
+      <a class="card" href="b11/pages/08-javascript-fullstack-architecture_b11.html">
+        <span class="title">08：JavaScript 全端架構</span>
+        <span class="meta">更新：2026-03-19</span>
+      </a>
+      <a class="card" href="b11/pages/09-jquery-detailed-guide_b11.html">
+        <span class="title">09：jQuery 詳細指南</span>
+        <span class="meta">更新：2026-03-19</span>
+      </a>
+      <a class="card" href="b11/pages/10-ajax-fundamentals_b11.html">
+        <span class="title">10：AJAX 基礎</span>
+        <span class="meta">更新：2026-03-19</span>
+      </a>
+      <a class="card" href="b11/pages/11-practical-stack-case_b11.html">
+        <span class="title">11：實務技術堆疊案例</span>
+        <span class="meta">更新：2026-03-19</span>
+      </a>
+    </div>
+  </section>
+
+  <!-- CNN -->
+  <section class="section" id="cnn">
+    <div class="section-header">
+      <div class="icon icon-indigo">🧠</div>
+      <h2>CNN 卷積神經網路</h2>
+      <span class="count">6 篇</span>
+    </div>
+    <div class="card-grid">
+      <a class="card" href="CNN/index.html">
+        <span class="title">📋 CNN 課程索引</span>
+        <span class="meta">更新：2025-12-15</span>
+      </a>
+      <a class="card" href="CNN/CNN_Tutorial_README.html">
+        <span class="title">CNN 教學說明</span>
+        <span class="meta">更新：2025-12-15</span>
+      </a>
+      <a class="card" href="CNN/CNN_01_final.html">
+        <span class="title">CNN 第一課（完整版）</span>
+        <span class="meta">更新：2025-11-11</span>
+      </a>
+      <a class="card" href="CNN/CNN_intro_b07.html">
+        <span class="title">CNN 入門介紹</span>
+        <span class="meta">更新：2025-12-15</span>
+      </a>
+      <a class="card" href="CNN/CNN_intro_b07_part2.html">
+        <span class="title">CNN 入門（Part 2）</span>
+        <span class="meta">更新：2025-12-15</span>
+      </a>
+      <a class="card" href="CNN/CNN_intro_b07_part3.html">
+        <span class="title">CNN 入門（Part 3）</span>
+        <span class="meta">更新：2025-12-15</span>
+      </a>
+      <a class="card" href="CNN/CNN_intro_b07_part4.html">
+        <span class="title">CNN 入門（Part 4）</span>
+        <span class="meta">更新：2025-12-15</span>
+      </a>
+    </div>
+  </section>
+
+  <!-- OpenCV -->
+  <section class="section" id="opencv">
+    <div class="section-header">
+      <div class="icon icon-green">👁️</div>
+      <h2>OpenCV 影像處理</h2>
+      <span class="count">8 篇</span>
+    </div>
+    <div class="card-grid">
+      <a class="card" href="OpenCV/opencv_task.html">
+        <span class="title">📋 OpenCV 任務總覽</span>
+        <span class="meta">更新：2025-12-08</span>
+      </a>
+      <a class="card" href="OpenCV/opencv_imageclassfy_task1_b01.html">
+        <span class="title">Task 1：影像分類基礎</span>
+        <span class="meta">更新：2025-10-25</span>
+      </a>
+      <a class="card" href="OpenCV/opencv_imageclassfy_task2_b08.html">
+        <span class="title">Task 2：影像分類進階</span>
+        <span class="meta">更新：2025-11-09</span>
+      </a>
+      <a class="card" href="OpenCV/opencv_imageclassfy_task3_b01.html">
+        <span class="title">Task 3：影像分類應用</span>
+        <span class="meta">更新：2025-10-25</span>
+      </a>
+      <a class="card" href="OpenCV/opencv_imageclassfy_task4_b02.html">
+        <span class="title">Task 4：影像分類實作</span>
+        <span class="meta">更新：2025-12-08</span>
+      </a>
+      <a class="card" href="OpenCV/opencv_objects_detection_b08.html">
+        <span class="title">物件偵測</span>
+        <span class="meta">更新：2025-11-03</span>
+      </a>
+      <a class="card" href="OpenCV/kernel_morphology_explanation.html">
+        <span class="title">Kernel 與形態學運算</span>
+        <span class="meta">更新：2025-11-09</span>
+      </a>
+      <a class="card" href="OpenCV/after_task_b07.html">
+        <span class="title">課後任務</span>
+        <span class="meta">更新：2025-12-08</span>
+      </a>
+    </div>
+  </section>
+
+  <!-- Robots -->
+  <section class="section" id="robots">
+    <div class="section-header">
+      <div class="icon icon-orange">🤖</div>
+      <h2>機器人程式設計</h2>
+      <span class="count">5 篇</span>
+    </div>
+    <div class="card-grid">
+      <a class="card" href="Robots/Mindstorm_US_ACC_b09.html">
+        <span class="title">Mindstorm 超音波感測器 ACC</span>
+        <span class="meta">更新：2025-10-26</span>
+      </a>
+      <a class="card" href="Robots/Mindstorm_ColorSensor_b03.html">
+        <span class="title">Mindstorm 顏色感測器</span>
+        <span class="meta">更新：2025-10-27</span>
+      </a>
+      <a class="card" href="Robots/Arduino_motor_b08.html">
+        <span class="title">Arduino 馬達控制（進階）</span>
+        <span class="meta">更新：2025-11-10</span>
+      </a>
+      <a class="card" href="Robots/Arduino_motor_b06.html">
+        <span class="title">Arduino 馬達控制（基礎）</span>
+        <span class="meta">更新：2025-11-10</span>
+      </a>
+      <a class="card" href="Robots/motor_b5.html">
+        <span class="title">馬達原理與控制</span>
+        <span class="meta">更新：2025-11-10</span>
+      </a>
+    </div>
+  </section>
+
+  <!-- 104A Engineering Design -->
+  <section class="section" id="engineering">
+    <div class="section-header">
+      <div class="icon icon-yellow">⚡</div>
+      <h2>工程設計（Arduino / NodeMCU）</h2>
+      <span class="count">3 篇</span>
+    </div>
+    <div class="card-grid">
+      <a class="card" href="104A_EngeeringDesign/Arduino_IDE_01_b04.html">
+        <span class="title">Arduino IDE 入門（一）</span>
+        <span class="meta">更新：2025-10-22</span>
+      </a>
+      <a class="card" href="104A_EngeeringDesign/Arduino_IDE_03_final.html">
+        <span class="title">Arduino IDE 進階（三）</span>
+        <span class="meta">更新：2025-11-05</span>
+      </a>
+      <a class="card" href="104A_EngeeringDesign/NodeMcu32s_01_b07_b01.html">
+        <span class="title">NodeMCU-32S 入門</span>
+        <span class="meta">更新：2025-12-15</span>
+      </a>
+    </div>
+  </section>
+
+  <!-- LLM Web Security -->
+  <section class="section" id="security">
+    <div class="section-header">
+      <div class="icon icon-pink">🔒</div>
+      <h2>LLM 網頁安全代理</h2>
+      <span class="count">7 篇</span>
+    </div>
+    <div class="card-grid">
+      <a class="card" href="LLM_web_security_agent/web_security_basic_b09.html">
+        <span class="title">網頁安全基礎</span>
+        <span class="meta">更新：2025-12-29</span>
+      </a>
+      <a class="card" href="LLM_web_security_agent/proposal_all.html">
+        <span class="title">完整提案文件</span>
+        <span class="meta">更新：2025-10-21</span>
+      </a>
+      <a class="card" href="LLM_web_security_agent/proposal_architecture.html">
+        <span class="title">系統架構設計</span>
+        <span class="meta">更新：2025-10-21</span>
+      </a>
+      <a class="card" href="LLM_web_security_agent/proposal_core_values.html">
+        <span class="title">核心價值</span>
+        <span class="meta">更新：2025-10-21</span>
+      </a>
+      <a class="card" href="LLM_web_security_agent/proposal_workflow.html">
+        <span class="title">工作流程</span>
+        <span class="meta">更新：2025-10-21</span>
+      </a>
+      <a class="card" href="LLM_web_security_agent/proposal_implementation.html">
+        <span class="title">實作方案</span>
+        <span class="meta">更新：2025-10-21</span>
+      </a>
+      <a class="card" href="LLM_web_security_agent/proposal_interaction_modes.html">
+        <span class="title">互動模式</span>
+        <span class="meta">更新：2025-10-21</span>
+      </a>
+    </div>
+  </section>
+
+  <!-- Others -->
+  <section class="section" id="others">
+    <div class="section-header">
+      <div class="icon icon-slate">📦</div>
+      <h2>其他資源</h2>
+      <span class="count">7 篇</span>
+    </div>
+
+    <div class="card-grid">
+      <a class="card" href="Coreldraw/CD_shape_1_b03.html">
+        <span class="title">🎨 CorelDraw 形狀繪製</span>
+        <span class="meta">更新：2026-03-01｜Coreldraw</span>
+      </a>
+      <a class="card" href="VideCoding/VibeCoding_Python_Tutorial_b01.html">
+        <span class="title">💻 Vibe Coding Python 教學</span>
+        <span class="meta">更新：2025-12-14｜VideCoding</span>
+      </a>
+      <a class="card" href="TaigiSpeaking/taigiSpeaking.html">
+        <span class="title">🗣️ 台語語音應用</span>
+        <span class="meta">更新：2025-10-22｜TaigiSpeaking</span>
+      </a>
+      <a class="card" href="anaQ/demo_site/index.html">
+        <span class="title">📊 問卷分析 Demo</span>
+        <span class="meta">更新：2025-11-25｜anaQ</span>
+      </a>
+      <a class="card" href="Youtube_sub/plan.html">
+        <span class="title">🎬 YouTube 字幕計畫</span>
+        <span class="meta">更新：2025-11-04｜Youtube_sub</span>
+      </a>
+      <a class="card" href="Youtube_sub/WhisperUI_plan.html">
+        <span class="title">🎤 WhisperUI 計畫</span>
+        <span class="meta">更新：2025-11-05｜Youtube_sub</span>
+      </a>
+      <a class="card" href="unit01_first_ai_material_b02_default.html">
+        <span class="title">🤖 AI 教材預設版</span>
+        <span class="meta">更新：2025-10-18｜根目錄</span>
+      </a>
+    </div>
+  </section>
+
+</main>
+
+<footer class="footer">
+  <p>OC 教學資料共享平台 — 以 <a href="https://pages.github.com/" target="_blank">GitHub Pages</a> 驅動</p>
+  <p style="margin-top:0.3rem;">
+    <a href="https://github.com/joelhoty/ocgit" target="_blank">📂 GitHub Repo</a>
+  </p>
+</footer>
+
+</body>
+</html>
