@@ -1,0 +1,675 @@
+# 📝 Repository Change Log
+
+此檔案記錄本專案所有 git commit 變更歷史，由 post-commit hook 自動更新。
+
+---
+
+[2025-10-05] 6e1dd60 Initial commit: Add opencv image classification documentation
+  Author: 宗穎何 <joelho@zongyinghedeMac-mini.local>
+
+ opencv_imageclassfy_b02.md | 446 +++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 446 insertions(+)
+---
+
+[2025-10-06] a861bf4 Add OpenCV image classification documentation
+  Author: 宗穎何 <joelho@zongyinghedeMac-mini.local>
+
+ opencv_imageclassfy_b05.md | 2024 ++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 2024 insertions(+)
+---
+
+[2025-10-06] 0a267b6 Add additional OpenCV image classification documentation files
+  Author: 宗穎何 <joelho@zongyinghedeMac-mini.local>
+
+ opencv_imageclassfy_inquiry_b02.md | 1449 ++++++++++++++++++++++++++++++++++++
+ opencv_imageclassfy_task1_b01.md   |  791 ++++++++++++++++++++
+ opencv_imageclassfy_task2_b02.md   | 1187 +++++++++++++++++++++++++++++
+ opencv_imageclassfy_task3_b01.md   | 1225 ++++++++++++++++++++++++++++++
+ 4 files changed, 4652 insertions(+)
+---
+
+[2025-10-16] f9f5396 Add files via upload
+  Author: Ho Chung-ying <146186595+joelhoty@users.noreply.github.com>
+
+ unit01_first_ai_material_b02_default.html | 662 ++++++++++++++++++++++++++++++
+ 1 file changed, 662 insertions(+)
+---
+
+[2025-10-18] 35275a0 Add Gemini for Design Teaching course materials
+  Author: 宗穎何 <joelho@zongyinghedeMac-mini.local>
+
+ .DS_Store                                          | Bin 0 -> 8196 bytes
+ .../unit01_first_ai_material_b02.html              | 662 +++++++++++++++
+ .../unit01_first_ai_material_b02.md                | 632 +++++++++++++++
+ .../unit02_ai_image_generation_b02.html            | 533 ++++++++++++
+ .../unit02_ai_image_generation_b02.md              | 447 ++++++++++
+ GeminiForDesignTeaching/unit03_notebooklm_b02.html | 879 ++++++++++++++++++++
+ GeminiForDesignTeaching/unit03_notebooklm_b02.md   | 832 +++++++++++++++++++
+ .../unit04_local_ai_setup_b02.html                 | 560 +++++++++++++
+ .../unit04_local_ai_setup_b02.md                   | 504 ++++++++++++
+ .../unit04_supplement_additions.html               | 719 +++++++++++++++++
+ .../unit04_supplement_additions.md                 | 623 ++++++++++++++
+ .../unit05_gemini_md_customization_b01.html        | 676 ++++++++++++++++
+ .../unit05_gemini_md_customization_b01.md          | 622 ++++++++++++++
+ .../unit06_practical_lesson_plan_b02.html          | 726 +++++++++++++++++
+ .../unit06_practical_lesson_plan_b02.md            | 708 ++++++++++++++++
+ .../unit06_supplement_additions.html               | 888 ++++++++++++++++++++
+ .../unit06_supplement_additions.md                 | 898 +++++++++++++++++++++
+ 17 files changed, 10909 insertions(+)
+---
+
+[2025-10-18] 3bfd0f6 Add course index page for Gemini Design Teaching materials
+  Author: 宗穎何 <joelho@zongyinghedeMac-mini.local>
+
+ GeminiForDesignTeaching/index_content.html | 277 +++++++++++++++++++++++++++++
+ 1 file changed, 277 insertions(+)
+---
+
+[2025-10-20] 8e86ff2 Add literacy and media literacy course materials
+  Author: 宗穎何 <joelho@zongyinghedeMac-mini.local>
+
+ GeminiForDesignTeaching/index_content.html         |  48 +++-
+ GeminiForDesignTeaching/literacy_b02.html          | 253 ++++++++++++++++++
+ .../literacy_chatgpt_revise_b06.html               | 293 +++++++++++++++++++++
+ GeminiForDesignTeaching/literacy_research.html     | 225 ++++++++++++++++
+ GeminiForDesignTeaching/literacy_research.md       | 203 ++++++++++++++
+ 5 files changed, 1021 insertions(+), 1 deletion(-)
+---
+
+[2025-10-21] 673434c Add LLM-driven web security scanner research proposal
+  Author: 宗穎何 <joelho@zongyinghedeMac-mini.local>
+
+ LLM_web_security_agent/proposal_all.html           |  313 ++++++
+ LLM_web_security_agent/proposal_architecture.html  |  883 +++++++++++++++
+ LLM_web_security_agent/proposal_core_values.html   |  517 +++++++++
+ .../proposal_implementation.html                   |  992 +++++++++++++++++
+ .../proposal_interaction_modes.html                | 1017 ++++++++++++++++++
+ LLM_web_security_agent/proposal_workflow.html      | 1119 ++++++++++++++++++++
+ 6 files changed, 4841 insertions(+)
+---
+
+[2025-10-22] 47d63e3 Add files via upload
+  Author: Ho Chung-ying <146186595+joelhoty@users.noreply.github.com>
+
+ plan.html | 3475 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 3475 insertions(+)
+---
+
+[2025-10-22] 1ff6a38 Update and rename plan.html to taigiSpeaking.htm
+  Author: Ho Chung-ying <146186595+joelhoty@users.noreply.github.com>
+
+ plan.html => taigiSpeaking.html | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+---
+
+[2025-10-22] f247cb2 Add Engineering Design course materials
+  Author: 宗穎何 <joelho@zongyinghedeMac-mini.local>
+
+ .DS_Store                                    | Bin 8196 -> 14340 bytes
+ 104A_EngeeringDesign/Arduino_IDE_01_b04.html | 251 +++++++++++++++++++++++++++
+ 2 files changed, 251 insertions(+)
+---
+
+[2025-10-22] 5735872 Add .gitignore and remove .DS_Store from tracking
+  Author: 宗穎何 <joelho@zongyinghedeMac-mini.local>
+
+ .DS_Store  | Bin 14340 -> 0 bytes
+ .gitignore |   1 +
+ 2 files changed, 1 insertion(+)
+---
+
+[2025-10-22] ccf14af Reorganize OpenCV and TaigiSpeaking files into directories
+  Author: 宗穎何 <joelho@zongyinghedeMac-mini.local>
+
+ opencv_imageclassfy_b02.md => OpenCV/opencv_imageclassfy_b02.md        | 0
+ opencv_imageclassfy_b05.md => OpenCV/opencv_imageclassfy_b05.md        | 0
+ .../opencv_imageclassfy_inquiry_b02.md                                 | 0
+ .../opencv_imageclassfy_task1_b01.md                                   | 0
+ .../opencv_imageclassfy_task2_b02.md                                   | 0
+ .../opencv_imageclassfy_task3_b01.md                                   | 0
+ taigiSpeaking.html => TaigiSpeaking/taigiSpeaking.html                 | 0
+ 7 files changed, 0 insertions(+), 0 deletions(-)
+---
+
+[2025-10-25] 97d9dc6 Add OpenCV task HTML files and index page
+  Author: 宗穎何 <joelho@zongyinghedeMac-mini.local>
+
+ OpenCV/opencv_imageclassfy_task1_b01.html |  843 +++++++++++++++++++
+ OpenCV/opencv_imageclassfy_task2_b02.html | 1260 ++++++++++++++++++++++++++++
+ OpenCV/opencv_imageclassfy_task3_b01.html | 1295 +++++++++++++++++++++++++++++
+ OpenCV/opencv_task.html                   |   64 ++
+ 4 files changed, 3462 insertions(+)
+---
+
+[2025-10-26] df07b02 Add Robots directory
+  Author: 宗穎何 <joelho@zongyinghedeMac-mini.local>
+
+ Robots/Mindstorm_US_ACC_b09.html | 371 +++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 371 insertions(+)
+---
+
+[2025-10-26] 472eb0d Create index of HTML files
+  Author: 宗穎何 <joelho@zongyinghedeMac-mini.local>
+
+ git_index.md | 28 ++++++++++++++++++++++++++++
+ 1 file changed, 28 insertions(+)
+---
+
+[2025-10-26] 2c73181 Create GEMINI.md with instructions for updating git_index.md
+  Author: 宗穎何 <joelho@zongyinghedeMac-mini.local>
+
+ GEMINI.md | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
+---
+
+[2025-10-26] df0b7db Improve git_index.md format and update GEMINI.md
+  Author: 宗穎何 <joelho@zongyinghedeMac-mini.local>
+
+ GEMINI.md    | 18 ++++++++++++
+ git_index.md | 92 ++++++++++++++++++++++++++++++++++++++++++------------------
+ 2 files changed, 82 insertions(+), 28 deletions(-)
+---
+
+[2025-10-26] fda7c1d Add script to automatically update git_index.md
+  Author: 宗穎何 <joelho@zongyinghedeMac-mini.local>
+
+ git_index.md    |  3 ++-
+ update_index.py | 45 +++++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 47 insertions(+), 1 deletion(-)
+---
+
+[2025-10-27] 966401f Add Mindstorm_ColorSensor_b03.html and update index
+  Author: 宗穎何 <joelho@zongyinghedeMac-mini.local>
+
+ Robots/Mindstorm_ColorSensor_b03.html | 1452 +++++++++++++++++++++++++++++++++
+ git_index.md                          |    1 +
+ 2 files changed, 1453 insertions(+)
+---
+
+[2025-10-28] 7b4296e Update opencv_imageclassfy_b05.md
+  Author: Ho Chung-ying <146186595+joelhoty@users.noreply.github.com>
+
+ OpenCV/opencv_imageclassfy_b05.md | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+---
+
+[2025-10-28] 7bff14d Update AI_intro/History content and add new files
+  Author: 宗穎何 <joelho@zongyinghedeMac-mini.local>
+
+ AI_intro/History/Chapter_01_Introduction_b02.html  |  507 +++++
+ AI_intro/History/Chapter_01_Introduction_b02.md    |  397 ++++
+ AI_intro/History/Chapter_02_KeywordMap_b02.html    |  798 +++++++
+ AI_intro/History/Chapter_02_KeywordMap_b02.md      |  420 ++++
+ AI_intro/History/Chapter_03_TwoParadigms_b01.html  |  782 +++++++
+ AI_intro/History/Chapter_03_TwoParadigms_b01.md    |  520 +++++
+ .../History/Chapter_04_EarlyFoundations_b02.html   |  658 ++++++
+ .../History/Chapter_04_EarlyFoundations_b02.md     |  578 ++++++
+ .../History/Chapter_05_ClassicalPeriod_b05.html    |  707 +++++++
+ AI_intro/History/Chapter_05_ClassicalPeriod_b05.md |  635 ++++++
+ .../History/Chapter_06_WinterAndRevival_b05.html   |  260 +++
+ .../History/Chapter_06_WinterAndRevival_b05.md     |  197 ++
+ AI_intro/History/Chapter_07_DeepLearning_b05.html  |  255 +++
+ AI_intro/History/Chapter_07_DeepLearning_b05.md    |  188 ++
+ AI_intro/History/Chapter_08_GenerativeAI_b05.html  |  215 ++
+ AI_intro/History/Chapter_08_GenerativeAI_b05.md    |  159 ++
+ AI_intro/History/Chapter_09_Conclusion_b01.html    |  216 ++
+ AI_intro/History/Chapter_09_Conclusion_b01.md      |  122 ++
+ AI_intro/History/Glossary_b01.html                 |  242 +++
+ AI_intro/History/Glossary_b01.md                   |  119 ++
+ AI_intro/History/README_b06.html                   |  269 +++
+ AI_intro/History/README_b06.md                     |  219 ++
+ AI_intro/History/References_b01.html               |  567 +++++
+ AI_intro/History/References_b01.md                 |  493 +++++
+ AI_intro/History/index copy.html                   |  147 ++
+ AI_intro/History/index.html                        |  272 +++
+ .../History/jigsaw_inquiry_notebooklm_b06.html     | 2190 ++++++++++++++++++++
+ AI_intro/History/jigsaw_inquiry_notebooklm_b06.md  | 1947 +++++++++++++++++
+ md2htmlv2.py                                       | 1091 ++++++++++
+ 29 files changed, 15170 insertions(+)
+---
+
+[2025-10-28] 9f5b238 Update git_index.md
+  Author: 宗穎何 <joelho@zongyinghedeMac-mini.local>
+
+ git_index.md | 20 ++++++++++++++++++++
+ 1 file changed, 20 insertions(+)
+---
+
+[2025-10-28] d97f783 Update git_index.md
+  Author: 宗穎何 <joelho@zongyinghedeMac-mini.local>
+
+ git_index.md | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
+---
+
+[2025-10-29] 21e0bc1 Update video link for AI history resource
+  Author: Ho Chung-ying <146186595+joelhoty@users.noreply.github.com>
+
+ AI_intro/History/References_b01.html | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+---
+
+[2025-11-03] 9b9d163 Update git_index.md and add update script
+  Author: 宗穎何 <joelho@zongyinghedeMac-mini.local>
+
+ git_index.md    | 119 ++++++++++++++++++++++++++------------------------------
+ update_index.py | 109 ++++++++++++++++++++++++++++++++++-----------------
+ 2 files changed, 129 insertions(+), 99 deletions(-)
+---
+
+[2025-11-03] 9d9aa73 Update git_index.md after pulling from remote
+  Author: 宗穎何 <joelho@zongyinghedeMac-mini.local>
+
+ git_index.md | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+---
+
+[2025-11-03] 3660c0a Remove update_index.py script
+  Author: 宗穎何 <joelho@zongyinghedeMac-mini.local>
+
+ update_index.py | 84 ---------------------------------------------------------
+ 1 file changed, 84 deletions(-)
+---
+
+[2025-11-03] be14204 Update git_index.md and restore update_index.py
+  Author: 宗穎何 <joelho@zongyinghedeMac-mini.local>
+
+ update_index.py | 84 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 84 insertions(+)
+---
+
+[2025-11-03] 7fd5962 Add opencv_objects_detection_b08 files
+  Author: 宗穎何 <joelho@zongyinghedeMac-mini.local>
+
+ OpenCV/opencv_objects_detection_b08.html | 1956 ++++++++++++++++++++++++++++++
+ OpenCV/opencv_objects_detection_b08.md   | 1844 ++++++++++++++++++++++++++++
+ 2 files changed, 3800 insertions(+)
+---
+
+[2025-11-04] 2412fd0 Add Youtube_sub directory and ignore .env file
+  Author: 宗穎何 <joelho@zongyinghedeMac-mini.local>
+
+ .gitignore            |   1 +
+ Youtube_sub/plan.html | 109 ++++++++++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 110 insertions(+)
+---
+
+[2025-11-04] c9d4cfe Update git_index.md
+  Author: 宗穎何 <joelho@zongyinghedeMac-mini.local>
+
+ git_index.md | 5 +++++
+ 1 file changed, 5 insertions(+)
+---
+
+[2025-11-05] 740a20e Add files via upload
+  Author: Ho Chung-ying <146186595+joelhoty@users.noreply.github.com>
+
+ Youtube_sub/WhisperUI_plan.html | 306 ++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 306 insertions(+)
+---
+
+[2025-11-05] 4b9c157 Add GitHub Actions workflow for static site deployment
+  Author: Ho Chung-ying <146186595+joelhoty@users.noreply.github.com>
+
+ .github/workflows/static.yml | 43 +++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 43 insertions(+)
+---
+
+[2025-11-05] 6fcb231 Add GitHub Actions workflow for Jekyll deployment
+  Author: Ho Chung-ying <146186595+joelhoty@users.noreply.github.com>
+
+ .github/workflows/jekyll-gh-pages.yml | 51 +++++++++++++++++++++++++++++++++++
+ 1 file changed, 51 insertions(+)
+---
+
+[2025-11-05] 19b8b91 docs: update git_index.md
+  Author: 宗穎何 <joelho@zongyinghedeMac-mini.local>
+
+ git_index.md | 80 +++++++++++++++++++++++++++++++++---------------------------
+ 1 file changed, 44 insertions(+), 36 deletions(-)
+---
+
+[2025-11-05] 78f40a1 docs: update git_index.md
+  Author: 宗穎何 <joelho@zongyinghedeMac-mini.local>
+
+ git_index.md | 80 +++++++++++++++++++++++++++---------------------------------
+ 1 file changed, 36 insertions(+), 44 deletions(-)
+---
+
+[2025-11-05] 5e5cbe6 docs: update git_index.md with script
+  Author: 宗穎何 <joelho@zongyinghedeMac-mini.local>
+
+ git_index.md | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+---
+
+[2025-11-05] 63eaf9a docs: update git_index.md and add new HTML file
+  Author: 宗穎何 <joelho@zongyinghedeMac-mini.local>
+
+ 104A_EngeeringDesign/Arduino_IDE_03_final.html | 721 +++++++++++++++++++++++++
+ git_index.md                                   | 107 ++--
+ 2 files changed, 779 insertions(+), 49 deletions(-)
+---
+
+[2025-11-05] 246762a docs: regenerate index after pull
+  Author: 宗穎何 <joelho@zongyinghedeMac-mini.local>
+
+ git_index.md | 108 +++++++++++++++++++++++++++--------------------------------
+ 1 file changed, 50 insertions(+), 58 deletions(-)
+---
+
+[2025-11-09] c52ae79 Update OpenCV tasks and add new explanation files.
+  Author: 宗穎何 <joelho@zongyinghedeMac-mini.local>
+
+ OpenCV/kernel_morphology_explanation.html |  625 ++++++++
+ OpenCV/kernel_morphology_explanation.md   |  586 +++++++
+ OpenCV/opencv_imageclassfy_task2_b08.html | 2395 +++++++++++++++++++++++++++++
+ OpenCV/opencv_task.html                   |    5 +-
+ git_index.md                              |    6 +-
+ 5 files changed, 3614 insertions(+), 3 deletions(-)
+---
+
+[2025-11-10] a7ecf69 docs: Update git_index.md and add new robot files
+  Author: 宗穎何 <joelho@zongyinghedeMac-mini.local>
+
+ Robots/Arduino_motor_b06.html | 537 ++++++++++++++++++++++++++++++
+ Robots/motor_b5.html          | 742 ++++++++++++++++++++++++++++++++++++++++++
+ git_index.md                  |   4 +-
+ 3 files changed, 1282 insertions(+), 1 deletion(-)
+---
+
+[2025-11-10] 093a143 docs: Update git_index.md and add Arduino_motor_b08.html
+  Author: 宗穎何 <joelho@zongyinghedeMac-mini.local>
+
+ Robots/Arduino_motor_b08.html | 587 ++++++++++++++++++++++++++++++++++++++++++
+ git_index.md                  |   1 +
+ 2 files changed, 588 insertions(+)
+---
+
+[2025-11-11] bed1156 docs: update git_index.md with latest changes
+  Author: 宗穎何 <joelho@zongyinghedeMac-mini.local>
+
+ CNN/CNN_01_final.html | 887 ++++++++++++++++++++++++++++++++++++++++++++++++++
+ git_index.md          | 119 ++++---
+ 2 files changed, 954 insertions(+), 52 deletions(-)
+---
+
+[2025-11-11] 581d426 docs: update git_index.md with update_index.py script
+  Author: 宗穎何 <joelho@zongyinghedeMac-mini.local>
+
+ git_index.md | 116 +++++++++++++++++++++++++++--------------------------------
+ 1 file changed, 53 insertions(+), 63 deletions(-)
+---
+
+[2025-11-18] ed84cbc feat(GeminiForDesignTeaching): add AI Agent Cli lesson
+  Author: 宗穎何 <joelho@zongyinghedeMac-mini.local>
+
+ GeminiForDesignTeaching/AI_Agent_Cli_b13.html | 551 ++++++++++++++++++++++++++
+ GeminiForDesignTeaching/index_content.html    |  14 +
+ 2 files changed, 565 insertions(+)
+---
+
+[2025-11-18] 38a94b4 docs: update git_index.md
+  Author: 宗穎何 <joelho@zongyinghedeMac-mini.local>
+
+ git_index.md | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
+---
+
+[2025-11-25] e24a319 Update git_index.md with latest HTML file index
+  Author: 宗穎何 <joelho@zongyinghedeMac-mini.local>
+
+ git_index.md | 46 ++++++++++++++++++++++++++++++++++++----------
+ 1 file changed, 36 insertions(+), 10 deletions(-)
+---
+
+[2025-11-25] 7d5cdd4 Add anaQ directory and update_index.py changes
+  Author: 宗穎何 <joelho@zongyinghedeMac-mini.local>
+
+ anaQ/demo_site/README.md                           |  209 ++
+ anaQ/demo_site/index.html                          | 1301 +++++++
+ .../results/analysis_summary_20250609_134217.html  |  131 +
+ .../results/code_cooccurrence_heatmap.png          |  Bin 0 -> 108884 bytes
+ anaQ/demo_site/results/coding_analysis_charts.png  |  Bin 0 -> 114717 bytes
+ anaQ/demo_site/results/coding_evolution.png        |  Bin 0 -> 136611 bytes
+ anaQ/demo_site/results/correlation_analysis.png    |  Bin 0 -> 46880 bytes
+ anaQ/demo_site/results/interaction_flow_chart.png  |  Bin 0 -> 86851 bytes
+ .../results/interactive_temporal_dashboard.html    | 3885 ++++++++++++++++++++
+ .../interactive_temporal_dashboard_main.html       | 3885 ++++++++++++++++++++
+ .../results/interactive_timeline_main.html         | 3885 ++++++++++++++++++++
+ .../results/interactive_timeline_original.html     | 3885 ++++++++++++++++++++
+ .../results/speaker_distribution_chart.png         |  Bin 0 -> 81042 bytes
+ anaQ/demo_site/results/temporal_visualizations.png |  Bin 0 -> 262701 bytes
+ anaQ/demo_site/results/wordcloud_analysis.png      |  Bin 0 -> 414123 bytes
+ update_index.py                                    |    2 +-
+ 16 files changed, 17182 insertions(+), 1 deletion(-)
+---
+
+[2025-12-08] f1d624e Add OpenCV Task 4 and After Task materials (docs & html) and update index
+  Author: 宗穎何 <joelho@zongyinghedeMac-mini.local>
+
+ OpenCV/after_task_b07.html                | 255 +++++++++++++++++++++++
+ OpenCV/after_task_b07.md                  | 108 ++++++++++
+ OpenCV/opencv_imageclassfy_task4_b02.html | 325 ++++++++++++++++++++++++++++++
+ OpenCV/opencv_imageclassfy_task4_b02.md   | 258 ++++++++++++++++++++++++
+ OpenCV/opencv_task.html                   |   6 +
+ 5 files changed, 952 insertions(+)
+---
+
+[2025-12-08] e99e49a Update git_index.md
+  Author: 宗穎何 <joelho@zongyinghedeMac-mini.local>
+
+ git_index.md | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+---
+
+[2025-12-09] c939298 Update unit01 text regarding AI thinking capabilities
+  Author: 宗穎何 <joelho@zongyinghedeMac-mini.local>
+
+ GeminiForDesignTeaching/unit01_first_ai_material_b02.html | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+---
+
+[2025-12-09] 19c7749 Update git_index.md
+  Author: 宗穎何 <joelho@zongyinghedeMac-mini.local>
+
+ git_index.md | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+---
+
+[2025-12-10] 2c269cd docs: add subject survey file link to index_content.html
+  Author: 宗穎何 <joelho@zongyinghedeMac-mini.local>
+
+ GeminiForDesignTeaching/index_content.html | 1 +
+ 1 file changed, 1 insertion(+)
+---
+
+[2025-12-10] ede1b3b chore: update git_index.md
+  Author: 宗穎何 <joelho@zongyinghedeMac-mini.local>
+
+ git_index.md | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+---
+
+[2025-12-14] 72ff4d0 feat: add Environment Setup Guide and update course index
+  Author: 宗穎何 <joelho@zongyinghedeMac-mini.local>
+
+ .../Environment_Setup_Guide_b06.html               | 256 +++++++++++++++++++++
+ GeminiForDesignTeaching/index_content.html         |  16 +-
+ git_index.md                                       |   3 +-
+ 3 files changed, 273 insertions(+), 2 deletions(-)
+---
+
+[2025-12-14] 069486c Update git_index.md and add new files
+  Author: 宗穎何 <joelho@zongyinghedeMac-mini.local>
+
+ VideCoding/VibeCoding_Python_Tutorial_b01.html | 237 +++++++++++++++++++++++++
+ git_index.md                                   |   6 +
+ 2 files changed, 243 insertions(+)
+---
+
+[2025-12-15] b8d1d19 Add CNN tutorial HTML files
+  Author: 宗穎何 <joelho@zongyinghedeMac-mini.local>
+
+ CNN/CNN_Tutorial_README.html |  759 ++++++++++++++
+ CNN/CNN_intro_b07.html       | 2240 +++++++++++++++++++++++++++++++++++++++++
+ CNN/CNN_intro_b07_part2.html | 1263 +++++++++++++++++++++++
+ CNN/CNN_intro_b07_part3.html | 1554 +++++++++++++++++++++++++++++
+ CNN/CNN_intro_b07_part4.html | 2252 ++++++++++++++++++++++++++++++++++++++++++
+ CNN/index.html               |  146 +++
+ 6 files changed, 8214 insertions(+)
+---
+
+[2025-12-15] 1b63819 Update git_index.md
+  Author: 宗穎何 <joelho@zongyinghedeMac-mini.local>
+
+ git_index.md | 6 ++++++
+ 1 file changed, 6 insertions(+)
+---
+
+[2025-12-15] 1c64505 Update CNN tutorial HTML file references in README and other files.
+  Author: 宗穎何 <joelho@zongyinghedeMac-mini.local>
+
+ CNN/CNN_Tutorial_README.html |  65 ++---
+ CNN/CNN_intro_b07.html       | 293 ++++++++++----------
+ CNN/CNN_intro_b07_part2.html |  67 +++--
+ CNN/CNN_intro_b07_part3.html | 197 +++++++------
+ CNN/CNN_intro_b07_part4.html | 638 ++++++++++++++++++++++---------------------
+ 5 files changed, 633 insertions(+), 627 deletions(-)
+---
+
+[2025-12-17] 126d2d3 Add new files and update git_index.md
+  Author: 宗穎何 <joelho@zongyinghedeMac-mini.local>
+
+ 104A_EngeeringDesign/NodeMcu32s_01_b07_b01.html | 1030 +++++++++++++++++++++++
+ git_index.md                                    |    1 +
+ 2 files changed, 1031 insertions(+)
+---
+
+[2025-12-29] d121038 Update git_index.md and add new HTML content
+  Author: 宗穎何 <joelho@zongyinghedeMac-mini.local>
+
+ LLM_web_security_agent/web_security_basic_b09.html | 470 +++++++++++++++++++++
+ git_index.md                                       |   1 +
+ 2 files changed, 471 insertions(+)
+---
+
+[2025-12-30] 8fa3612 Add Gemini CLI Tutorial and update index
+  Author: 宗穎何 <joelho@zongyinghedeMac-mini.local>
+
+ .../Gemini_CLI_Tutorial_b02.html                   | 378 +++++++++++++++++++++
+ GeminiForDesignTeaching/index_content.html         |  14 +
+ git_index.md                                       |   3 +-
+ 3 files changed, 394 insertions(+), 1 deletion(-)
+---
+
+[2026-02-23] e9e57a1 Add new AI Basic HTML file and update git index
+  Author: joelho <joelho@com>
+
+ AI_intro/S1_AI_Basic_b02.html | 340 ++++++++++++++++++++++++++++++++++++++++++
+ git_index.md                  |   6 +
+ 2 files changed, 346 insertions(+)
+---
+
+[2026-03-02] f870cda Add files via upload
+  Author: Ho Chung-ying <146186595+joelhoty@users.noreply.github.com>
+
+ CD_shape_1_b03.md | 112 ++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 112 insertions(+)
+---
+
+[2026-03-20] df4b9d8 feat: 建立根目錄 index.html 教學資料入口頁面
+  Author: joelho <joelho@com>
+
+ index.html | 757 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 757 insertions(+)
+---
+
+[2026-03-20] 939fca0 docs: 更新 git_index.md 索引
+  Author: joelho <joelho@com>
+
+ git_index.md | 58 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 58 insertions(+)
+---
+
+[2026-03-20] 92bed74 feat: 加入 Coreldraw、Git、b11 教材資料夾
+  Author: joelho <joelho@com>
+
+ Coreldraw/CD_shape_1_b03.html                      |  284 ++++
+ Git/index.html                                     |  170 +++
+ Git/plan.md                                        |  137 ++
+ Git/v1/assets/app_b01.js                           |  104 ++
+ Git/v1/assets/app_b02.js                           |  105 ++
+ Git/v1/assets/app_b03.js                           |  106 ++
+ Git/v1/assets/styles_b01.css                       |  597 ++++++++
+ Git/v1/index.html                                  |  189 +++
+ Git/v1/index_b02.html                              |  199 +++
+ Git/v1/index_b03.html                              |  217 +++
+ Git/v1/pages/01-repo-concept.html                  |  321 +++++
+ Git/v1/pages/02-git-init.html                      |  339 +++++
+ Git/v1/pages/03-commit.html                        |  407 ++++++
+ Git/v1/pages/04-github-collaboration.html          |  364 +++++
+ Git/v1/pages/05-pr-issue-branch.html               |  386 +++++
+ Git/v1/pages/06-advanced-usage.html                |  497 +++++++
+ Git/v1/pages/07-github-pages-actions.html          |  545 +++++++
+ Git/v1/pages/07-github-pages-actions_b02.html      | 1328 +++++++++++++++++
+ Git/v1/pages/07-github-pages-actions_b03.html      | 1522 ++++++++++++++++++++
+ Git/v1/pages/08-runner-advanced.html               |  674 +++++++++
+ b11/assets/app_b11.js                              |  109 ++
+ b11/assets/styles_b01.css                          |  618 ++++++++
+ b11/index_b11.html                                 |  249 ++++
+ b11/pages/01-tcp-ip-foundation_b11.html            |  265 ++++
+ b11/pages/02-web-service-lifecycle_b11.html        |  255 ++++
+ b11/pages/03-http-protocol_b11.html                |  341 +++++
+ b11/pages/04-html-css-foundation_b11.html          |  977 +++++++++++++
+ b11/pages/05-javascript-dom-css_b11.html           |  580 ++++++++
+ b11/pages/06-web-server-examples_b11.html          |  490 +++++++
+ b11/pages/07-modern-frameworks_b11.html            |  576 ++++++++
+ .../08-javascript-fullstack-architecture_b11.html  |  443 ++++++
+ b11/pages/09-jquery-detailed-guide_b11.html        |  367 +++++
+ b11/pages/10-ajax-fundamentals_b11.html            |  409 ++++++
+ b11/pages/11-practical-stack-case_b11.html         |  274 ++++
+ 34 files changed, 14444 insertions(+)
+---
+
+[2026-03-20] db1a578 docs: 更新 git_index.md 索引
+  Author: joelho <joelho@com>
+
+ git_index.md | 54 +++++++++++++++++++++++++++---------------------------
+ 1 file changed, 27 insertions(+), 27 deletions(-)
+---
+
+[2026-03-20] 2f1528b refactor: 將 b11/ 搬移至 WEB_HTML_JAVACCRIPT/b11/
+  Author: joelho <joelho@com>
+
+ {b11 => WEB_HTML_JAVACCRIPT/b11}/assets/app_b11.js                     | 0
+ {b11 => WEB_HTML_JAVACCRIPT/b11}/assets/styles_b01.css                 | 0
+ {b11 => WEB_HTML_JAVACCRIPT/b11}/index_b11.html                        | 0
+ {b11 => WEB_HTML_JAVACCRIPT/b11}/pages/01-tcp-ip-foundation_b11.html   | 0
+ .../b11}/pages/02-web-service-lifecycle_b11.html                       | 0
+ {b11 => WEB_HTML_JAVACCRIPT/b11}/pages/03-http-protocol_b11.html       | 0
+ {b11 => WEB_HTML_JAVACCRIPT/b11}/pages/04-html-css-foundation_b11.html | 0
+ {b11 => WEB_HTML_JAVACCRIPT/b11}/pages/05-javascript-dom-css_b11.html  | 0
+ {b11 => WEB_HTML_JAVACCRIPT/b11}/pages/06-web-server-examples_b11.html | 0
+ {b11 => WEB_HTML_JAVACCRIPT/b11}/pages/07-modern-frameworks_b11.html   | 0
+ .../b11}/pages/08-javascript-fullstack-architecture_b11.html           | 0
+ .../b11}/pages/09-jquery-detailed-guide_b11.html                       | 0
+ {b11 => WEB_HTML_JAVACCRIPT/b11}/pages/10-ajax-fundamentals_b11.html   | 0
+ .../b11}/pages/11-practical-stack-case_b11.html                        | 0
+ 14 files changed, 0 insertions(+), 0 deletions(-)
+---
+
+[2026-03-20] 7e70332 docs: 重建索引，修正 b11 → WEB_HTML_JAVACCRIPT/b11 路徑
+  Author: joelho <joelho@com>
+
+ git_index.md | 44 ++++++++++++++++++++++----------------------
+ index.html   | 26 +++++++++++++-------------
+ 2 files changed, 35 insertions(+), 35 deletions(-)
+---
+
+[2026-03-20] 3d83981 docs: 新增 README.md 與 CONTRIBUTING.md
+  Author: joelho <joelho@com>
+
+ CONTRIBUTING.md |  88 +++++++++++++++++++++++++++++++++
+ README.md       | 148 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 236 insertions(+)
