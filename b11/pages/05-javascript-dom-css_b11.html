@@ -1,0 +1,580 @@
+<!-- Path: Network/WEB Service/Content/b11/pages | Timestamp: 2026-03-19 20:18:24 | Version: b11 -->
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>05 JavaScript DOM 與 CSS 互動｜WEB Service 教學網站</title>
+  <link rel="stylesheet" href="../assets/styles_b01.css">
+</head>
+<body data-root=".." data-page="js-dom">
+  <div class="site-shell">
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <small>Chapter 05</small>
+        <h2>JavaScript、DOM 與 CSS 互動</h2>
+        <p class="sidebar-intro">當頁面不再只是靜態展示，而要回應點擊、輸入與狀態改變時，就需要 JavaScript 操作 DOM，並讓 CSS 跟著更新。</p>
+      </div>
+      <nav id="site-nav"></nav>
+      <section class="sidebar-tips">
+        <h3>本章重點</h3>
+        <ul>
+          <li>理解 HTML 原始碼、DOM 樹與畫面之間的差異。</li>
+          <li>掌握選取節點、更新文字、切換 class 與改寫 style。</li>
+          <li>知道為什麼重新整理後，DOM 修改會恢復原狀。</li>
+          <li>理解學會原生 API 後，為什麼下一步會接到常用 library / toolkit。</li>
+        </ul>
+      </section>
+    </aside>
+
+    <main class="content">
+      <section class="hero">
+        <span class="eyebrow">Chapter 05 / JavaScript + DOM + CSS</span>
+        <h1>讓網頁從靜態畫面變成會回應使用者的互動系統</h1>
+        <p>
+          HTML 提供結構，CSS 負責樣式，而 JavaScript 會在使用者操作時讀取 DOM、改變內容、切換 class 或更新 CSS 變數。
+          <strong>理解這條鏈路，才算真正學會前端互動。</strong>
+          這也是之後閱讀 React、Vue、Angular 等框架時最重要的底層基礎。
+        </p>
+      </section>
+
+      <section class="content-section">
+        <h2>Why：為什麼學完 HTML / CSS 之後要接著學 DOM？</h2>
+        <p>
+          如果 HTML 與 CSS 只能決定「一開始長什麼樣子」，那 JavaScript 與 DOM 就負責「使用者操作之後會發生什麼事」。
+          例如按鈕被點擊後改字、表單輸入後即時預覽、卡片被選取後套用高亮樣式，背後都不是新畫一張畫面，而是改變既有 DOM 節點與 CSS 狀態。
+        </p>
+        <div class="comparison">
+          <article class="comparison-card">
+            <h4>HTML：放入元素</h4>
+            <p>先決定頁面裡有哪些標題、按鈕、清單、卡片與表單欄位。</p>
+          </article>
+          <article class="comparison-card">
+            <h4>CSS：定義外觀</h4>
+            <p>設定顏色、間距、字體、版面與不同狀態時的外觀規則。</p>
+          </article>
+          <article class="comparison-card">
+            <h4>DOM：可被操作的結構</h4>
+            <p>瀏覽器把 HTML 解析成節點樹，JavaScript 才有東西可以選取與修改。</p>
+          </article>
+          <article class="comparison-card">
+            <h4>JavaScript：互動邏輯</h4>
+            <p>監聽事件、執行規則、改動 DOM 與 class，讓畫面隨狀態改變。</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="content-section">
+        <h2>What：DOM、CSS 與畫面更新流程</h2>
+        <div class="mermaid">
+flowchart LR
+    A[HTML 原始碼] --> B[Browser 建立 DOM]
+    C[CSS 規則] --> D[Browser 建立樣式規則]
+    B --> E[畫面初始渲染]
+    D --> E
+    F[使用者事件 click input submit] --> G[JavaScript 事件處理器]
+    G --> H[修改文字 / 屬性 / class / style]
+    H --> I[重新計算樣式與畫面]
+    I --> J[看到新的結果]
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>概念</th>
+                <th>它是什麼</th>
+                <th>常見操作</th>
+                <th>你會看到的效果</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>DOM</td>
+                <td>瀏覽器把 HTML 解析後建立的節點樹</td>
+                <td><code>querySelector()</code>、<code>textContent</code>、<code>append()</code></td>
+                <td>內容改變、節點新增或刪除</td>
+              </tr>
+              <tr>
+                <td>CSS 規則</td>
+                <td>決定元素不同狀態的外觀</td>
+                <td><code>classList.toggle()</code>、<code>style.setProperty()</code></td>
+                <td>顏色、間距、版面、動畫狀態改變</td>
+              </tr>
+              <tr>
+                <td>事件</td>
+                <td>瀏覽器通知「某件事發生了」</td>
+                <td><code>addEventListener("click", ...)</code></td>
+                <td>點擊、輸入、送出等操作可以觸發程式</td>
+              </tr>
+              <tr>
+                <td>重新渲染</td>
+                <td>瀏覽器根據新狀態更新畫面</td>
+                <td>通常由前面三者連動產生</td>
+                <td>畫面看起來立即變化</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="note">
+          <strong>重點：</strong>
+          JavaScript 並不是直接「畫圖」，而是透過 DOM 與 CSS 規則改變瀏覽器要呈現的狀態。
+        </div>
+      </section>
+
+      <section class="content-section">
+        <h2>先看懂：HTML 原始碼、DOM 樹與畫面不是同一件事</h2>
+        <div class="grid-3">
+          <article class="summary-card">
+            <h3>1. HTML 原始碼</h3>
+            <pre><code>&lt;h1&gt;Hello&lt;/h1&gt;
+&lt;p&gt;這是一段說明。&lt;/p&gt;</code></pre>
+            <p>這是你存在檔案裡的文字內容。</p>
+          </article>
+          <article class="summary-card">
+            <h3>2. DOM 樹</h3>
+            <pre><code>document
+└─ body
+   ├─ h1
+   └─ p</code></pre>
+            <p>瀏覽器把 HTML 解析後，會在記憶體裡建立節點關係。</p>
+          </article>
+          <article class="summary-card">
+            <h3>3. 畫面結果</h3>
+            <p>你真正看到的是瀏覽器根據 DOM + CSS 渲染出來的畫面。</p>
+            <p>JavaScript 改的是 DOM 狀態，不是直接改硬碟裡的 HTML 檔。</p>
+          </article>
+        </div>
+        <div class="note">
+          <strong>關鍵差異：</strong>
+          HTML 檔是磁碟上的文字，DOM 是瀏覽器記憶體裡的節點樹。當你用 JavaScript 改 <code>textContent</code> 或 <code>classList</code>，改的是 DOM；重新整理頁面後，瀏覽器會依原始 HTML 重新建立 DOM。
+        </div>
+      </section>
+
+      <section class="content-section">
+        <h2>迷你實驗：為什麼重新整理後會恢復原狀？</h2>
+        <div class="grid-2">
+          <article class="summary-card">
+            <h3>實驗步驟</h3>
+            <ul class="summary-list">
+              <li>先看下面 Example 1 的結果頁籤。</li>
+              <li>點一次按鈕，觀察文字改變。</li>
+              <li>重新整理頁面或重新載入 iframe，看看文字是否恢復。</li>
+            </ul>
+          </article>
+          <article class="summary-card">
+            <h3>你會學到什麼</h3>
+            <ul class="summary-list">
+              <li>JavaScript 改變的是「目前這次載入的 DOM」。</li>
+              <li>除非你把資料存起來，否則重整後會回到原始 HTML 的狀態。</li>
+              <li>這也是前端狀態管理與資料持久化為什麼重要的起點。</li>
+            </ul>
+          </article>
+        </div>
+      </section>
+
+      <section class="content-section">
+        <h2>How：最常用的 DOM API 與樣式控制方式</h2>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>API / 寫法</th>
+                <th>用途</th>
+                <th>典型情境</th>
+                <th>說明</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>document.getElementById("id")</code></td>
+                <td>用 id 取得單一節點</td>
+                <td>表單欄位、重要按鈕</td>
+                <td>速度快，但只能找 id。</td>
+              </tr>
+              <tr>
+                <td><code>document.querySelector("selector")</code></td>
+                <td>用 CSS selector 取得第一個符合的節點</td>
+                <td>找 class、屬性、巢狀節點</td>
+                <td>最常用，也最接近 CSS 思維。</td>
+              </tr>
+              <tr>
+                <td><code>document.querySelectorAll("selector")</code></td>
+                <td>取得多個節點</td>
+                <td>一組按鈕、清單項目</td>
+                <td>通常搭配 <code>forEach()</code> 使用。</td>
+              </tr>
+              <tr>
+                <td><code>element.textContent = "..."</code></td>
+                <td>改變純文字內容</td>
+                <td>提示訊息、計數器、標題更新</td>
+                <td>安全、直覺，優先於 <code>innerHTML</code>。</td>
+              </tr>
+              <tr>
+                <td><code>element.innerHTML = "..."</code></td>
+                <td>插入 HTML 片段</td>
+                <td>真的需要插入結構化標籤時</td>
+                <td>要留意安全性與 XSS 風險。</td>
+              </tr>
+              <tr>
+                <td><code>element.classList.add/remove/toggle()</code></td>
+                <td>切換 CSS class</td>
+                <td>深色模式、選取狀態、顯示 / 隱藏</td>
+                <td>最推薦的樣式切換方式。</td>
+              </tr>
+              <tr>
+                <td><code>element.style.property = value</code></td>
+                <td>直接改 inline style</td>
+                <td>少量動態樣式</td>
+                <td>適合簡單情況，但大型專案通常 prefer class。</td>
+              </tr>
+              <tr>
+                <td><code>element.addEventListener(type, handler)</code></td>
+                <td>監聽事件</td>
+                <td>click、input、submit、change</td>
+                <td>所有互動幾乎都從這裡開始。</td>
+              </tr>
+              <tr>
+                <td><code>document.createElement()</code> + <code>append()</code></td>
+                <td>建立新節點並加入 DOM</td>
+                <td>新增清單、卡片、訊息列</td>
+                <td>讓內容可以由程式動態擴充。</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="callout">
+          <strong>安全提醒：</strong>
+          如果只是更新文字，請優先用 <code>textContent</code>。
+          只有在你確定內容安全，而且真的需要插入標籤時，才使用 <code>innerHTML</code>。
+        </div>
+      </section>
+
+      <section class="content-section">
+        <h2>Example 1：點擊按鈕後更新 DOM 文字</h2>
+        <div class="example-showcase" data-example>
+          <div class="example-head">
+            <h3>最基本的事件 + DOM 更新</h3>
+            <p>請試著在結果頁籤點按鈕，再重新整理頁面觀察，這會幫你理解 DOM 修改與原始 HTML 的差異。</p>
+          </div>
+          <div class="example-tabs" role="tablist">
+            <button class="example-tab is-active" type="button" aria-selected="true" data-tab-target="code">語法</button>
+            <button class="example-tab" type="button" aria-selected="false" data-tab-target="result">結果</button>
+            <button class="example-tab" type="button" aria-selected="false" data-tab-target="explain">解說</button>
+          </div>
+          <div class="example-panel is-active" data-tab-panel="code">
+<pre><code>&lt;button id="hello-btn"&gt;點我&lt;/button&gt;
+&lt;p id="message"&gt;尚未互動&lt;/p&gt;
+
+&lt;script&gt;
+  const btn = document.querySelector("#hello-btn");
+  const message = document.querySelector("#message");
+
+  btn.addEventListener("click", () =&gt; {
+    message.textContent = "按鈕已被點擊，DOM 已更新。";
+  });
+&lt;/script&gt;</code></pre>
+          </div>
+          <div class="example-panel" data-tab-panel="result">
+            <iframe sandbox="allow-scripts" srcdoc='<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8"><style>body{font-family:Arial,sans-serif;padding:20px;background:#f8fafc}button{padding:10px 14px;border:none;border-radius:12px;background:#2563eb;color:#fff;cursor:pointer}p{margin-top:16px;color:#0f172a}</style></head><body><button id="hello-btn">點我</button><p id="message">尚未互動</p><script>const btn=document.querySelector("#hello-btn");const message=document.querySelector("#message");btn.addEventListener("click",()=>{message.textContent="按鈕已被點擊，DOM 已更新。";});</script></body></html>'></iframe>
+          </div>
+          <div class="example-panel" data-tab-panel="explain">
+            <ul class="plain-list">
+              <li><code>querySelector()</code> 先找到按鈕與段落節點。</li>
+              <li><code>addEventListener("click", ...)</code> 代表「有人點按鈕時，執行這段程式」。</li>
+              <li><code>textContent</code> 會直接改變段落中的文字內容。</li>
+              <li>重新整理頁面後，文字會回到原本狀態，因為 DOM 會依原始 HTML 重新建立。</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="content-section">
+        <h2>Example 2：用 classList 切換 CSS 樣式</h2>
+        <div class="example-showcase" data-example>
+          <div class="example-head">
+            <h3>把「邏輯」與「外觀」分開</h3>
+            <p>JavaScript 不需要自己決定每個顏色值，只要切換 class，CSS 就能接手完成樣式變化。</p>
+          </div>
+          <div class="example-tabs" role="tablist">
+            <button class="example-tab is-active" type="button" aria-selected="true" data-tab-target="code">語法</button>
+            <button class="example-tab" type="button" aria-selected="false" data-tab-target="result">結果</button>
+            <button class="example-tab" type="button" aria-selected="false" data-tab-target="explain">解說</button>
+          </div>
+          <div class="example-panel is-active" data-tab-panel="code">
+<pre><code>&lt;div class="card" id="lesson-card"&gt;
+  DOM 互動練習卡片
+&lt;/div&gt;
+&lt;button id="toggle-style"&gt;切換重點樣式&lt;/button&gt;
+
+&lt;style&gt;
+  .card {
+    padding: 18px;
+    border-radius: 16px;
+    background: #e2e8f0;
+    transition: all .2s ease;
+  }
+
+  .card.is-highlight {
+    background: #dbeafe;
+    color: #1d4ed8;
+    transform: translateY(-4px);
+    box-shadow: 0 12px 24px rgba(37, 99, 235, .18);
+  }
+&lt;/style&gt;
+
+&lt;script&gt;
+  const card = document.querySelector("#lesson-card");
+  const toggleButton = document.querySelector("#toggle-style");
+
+  toggleButton.addEventListener("click", () =&gt; {
+    card.classList.toggle("is-highlight");
+  });
+&lt;/script&gt;</code></pre>
+          </div>
+          <div class="example-panel" data-tab-panel="result">
+            <iframe sandbox="allow-scripts" srcdoc='<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8"><style>body{font-family:Arial,sans-serif;padding:20px;background:#f8fafc}.card{padding:18px;border-radius:16px;background:#e2e8f0;transition:all .2s ease}.card.is-highlight{background:#dbeafe;color:#1d4ed8;transform:translateY(-4px);box-shadow:0 12px 24px rgba(37,99,235,.18)}button{margin-top:14px;padding:10px 14px;border:none;border-radius:12px;background:#1d4ed8;color:#fff;cursor:pointer}</style></head><body><div class="card" id="lesson-card">DOM 互動練習卡片</div><button id="toggle-style">切換重點樣式</button><script>const card=document.querySelector("#lesson-card");const toggleButton=document.querySelector("#toggle-style");toggleButton.addEventListener("click",()=>{card.classList.toggle("is-highlight");});</script></body></html>'></iframe>
+          </div>
+          <div class="example-panel" data-tab-panel="explain">
+            <ul class="plain-list">
+              <li>JavaScript 只負責切換 <code>is-highlight</code> 這個 class。</li>
+              <li>實際的顏色、陰影、位移與過渡效果都交給 CSS 控制。</li>
+              <li>這種分工比直接在 JavaScript 裡一條一條改 style 更容易維護。</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="content-section">
+        <h2>Example 3：用 JavaScript 改變 CSS 變數</h2>
+        <div class="example-showcase" data-example>
+          <div class="example-head">
+            <h3>把互動值交給 CSS Custom Properties</h3>
+            <p>如果想要讓主題色、圓角或間距隨使用者操作變化，CSS 變數會非常好用。</p>
+          </div>
+          <div class="example-tabs" role="tablist">
+            <button class="example-tab is-active" type="button" aria-selected="true" data-tab-target="code">語法</button>
+            <button class="example-tab" type="button" aria-selected="false" data-tab-target="result">結果</button>
+            <button class="example-tab" type="button" aria-selected="false" data-tab-target="explain">解說</button>
+          </div>
+          <div class="example-panel is-active" data-tab-panel="code">
+<pre><code>&lt;style&gt;
+  :root {
+    --accent-hue: 220;
+  }
+
+  .demo-panel {
+    padding: 18px;
+    border-radius: 18px;
+    background: hsl(var(--accent-hue) 95% 96%);
+    border: 2px solid hsl(var(--accent-hue) 70% 45%);
+    color: hsl(var(--accent-hue) 70% 28%);
+  }
+&lt;/style&gt;
+
+&lt;input id="accent" type="range" min="180" max="340" value="220"&gt;
+&lt;div class="demo-panel"&gt;主題卡片會跟著顏色改變&lt;/div&gt;
+
+&lt;script&gt;
+  const accent = document.querySelector("#accent");
+
+  accent.addEventListener("input", (event) =&gt; {
+    document.documentElement.style.setProperty("--accent-hue", event.target.value);
+  });
+&lt;/script&gt;</code></pre>
+          </div>
+          <div class="example-panel" data-tab-panel="result">
+            <iframe sandbox="allow-scripts" srcdoc='<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8"><style>:root{--accent-hue:220}body{font-family:Arial,sans-serif;padding:20px;background:#f8fafc}input{width:100%;margin-bottom:16px}.demo-panel{padding:18px;border-radius:18px;background:hsl(var(--accent-hue) 95% 96%);border:2px solid hsl(var(--accent-hue) 70% 45%);color:hsl(var(--accent-hue) 70% 28%)}</style></head><body><label for="accent">拖曳改變主題色</label><input id="accent" type="range" min="180" max="340" value="220"><div class="demo-panel">主題卡片會跟著顏色改變</div><script>const accent=document.querySelector("#accent");accent.addEventListener("input",(event)=>{document.documentElement.style.setProperty("--accent-hue",event.target.value);});</script></body></html>'></iframe>
+          </div>
+          <div class="example-panel" data-tab-panel="explain">
+            <ul class="plain-list">
+              <li>CSS 變數讓樣式值可以被集中管理。</li>
+              <li><code>style.setProperty()</code> 能直接改寫變數值，影響所有使用該變數的地方。</li>
+              <li>這種方法很適合做主題色、深色模式或互動式控制面板。</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="content-section">
+        <h2>常見事件與互動情境</h2>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>事件類型</th>
+                <th>常見綁定元素</th>
+                <th>用途</th>
+                <th>範例</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>click</code></td>
+                <td>按鈕、連結、卡片</td>
+                <td>處理點擊行為</td>
+                <td>顯示資訊、開關區塊、切換 class</td>
+              </tr>
+              <tr>
+                <td><code>input</code></td>
+                <td>文字欄、range、textarea</td>
+                <td>即時回應輸入</td>
+                <td>即時搜尋、主題調整、字數統計</td>
+              </tr>
+              <tr>
+                <td><code>change</code></td>
+                <td>select、checkbox、radio</td>
+                <td>值確定改變後才觸發</td>
+                <td>篩選器、設定選單</td>
+              </tr>
+              <tr>
+                <td><code>submit</code></td>
+                <td>form</td>
+                <td>處理表單送出</td>
+                <td>驗證輸入、送到 API</td>
+              </tr>
+              <tr>
+                <td><code>keydown</code></td>
+                <td>整份文件、輸入欄</td>
+                <td>偵測鍵盤操作</td>
+                <td>快捷鍵、Enter 送出、Esc 關閉</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="content-section">
+        <h2>Troubleshooting：為什麼 JavaScript 改了卻沒反應？</h2>
+        <div class="grid-2">
+          <article class="summary-card">
+            <h3>問題 1：選不到元素</h3>
+            <ul class="summary-list">
+              <li>先確認 selector 是否真的對應到 HTML。</li>
+              <li>檢查 id 與 class 是否拼錯。</li>
+              <li>如果腳本在 HTML 前面執行，節點可能尚未建立。</li>
+            </ul>
+          </article>
+          <article class="summary-card">
+            <h3>問題 2：事件沒有綁上去</h3>
+            <ul class="summary-list">
+              <li>確認有沒有寫 <code>addEventListener()</code>。</li>
+              <li>確認事件類型是否正確，例如按鈕常用 <code>click</code>。</li>
+              <li>若是表單，必要時用 <code>event.preventDefault()</code> 避免整頁重整。</li>
+            </ul>
+          </article>
+          <article class="summary-card">
+            <h3>問題 3：class 切了但畫面沒變</h3>
+            <ul class="summary-list">
+              <li>確認 CSS 裡真的有寫對應的 class 規則。</li>
+              <li>檢查是否被更高優先權的樣式覆蓋。</li>
+              <li>先用簡單明顯的背景色做測試最容易除錯。</li>
+            </ul>
+          </article>
+          <article class="summary-card">
+            <h3>問題 4：腳本執行時機太早</h3>
+            <ul class="summary-list">
+              <li>建議在外部 script 加上 <code>defer</code>。</li>
+              <li>或把程式放在 <code>DOMContentLoaded</code> 事件中。</li>
+              <li>這樣可確保 DOM 建好後才開始操作。</li>
+            </ul>
+          </article>
+        </div>
+      </section>
+
+      <section class="content-section">
+        <h2>從原生 DOM API 走向常用 Library / Toolkit</h2>
+        <p>
+          當你已經理解 <code>querySelector()</code>、<code>addEventListener()</code>、<code>classList</code> 與 <code>fetch()</code>，
+          下一步就比較容易看懂各種 JavaScript 套件到底在幫你省什麼工。
+          它們通常不是取代原生能力，而是把常見任務包裝得更快、更一致、更容易維護。
+        </p>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>工具 / 類型</th>
+                <th>它在幫你做什麼</th>
+                <th>典型使用情境</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>jQuery</code></td>
+                <td>簡化 DOM 操作、事件綁定與 AJAX</td>
+                <td>舊專案維護、快速操作頁面元素</td>
+              </tr>
+              <tr>
+                <td><code>Axios</code></td>
+                <td>更一致地發送 HTTP 請求</td>
+                <td>前端呼叫 API、處理攔截器與錯誤格式</td>
+              </tr>
+              <tr>
+                <td><code>Lodash</code></td>
+                <td>整理陣列、物件與資料轉換</td>
+                <td>資料清理、排序、去重複、節流</td>
+              </tr>
+              <tr>
+                <td><code>Alpine.js</code></td>
+                <td>用接近 HTML 的方式做輕量互動</td>
+                <td>選單、摺疊區、簡單狀態切換</td>
+              </tr>
+              <tr>
+                <td><code>Bootstrap</code></td>
+                <td>提供現成 UI 元件、版型與部分互動元件</td>
+                <td>快速建立後台介面、表單與響應式版面</td>
+              </tr>
+              <tr>
+                <td><code>Chart.js</code></td>
+                <td>快速把資料畫成圖表</td>
+                <td>儀表板、成績分析、資料視覺化</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="note">
+          <strong>學習建議：</strong>
+          先把原生 DOM 與事件觀念打穩，再學 library / toolkit，才不會只記得套件寫法卻不知道底層發生什麼事。
+          如果你想把 JavaScript 的發展歷史、常用套件、生態與後端角色一次串起來，接著可看
+          <a href="./08-javascript-fullstack-architecture_b11.html">第 08 章：JavaScript 全貌</a>；如果你想看 jQuery 如何把這些原生操作包裝成更短的寫法，也可以接著讀 <a href="./09-jquery-detailed-guide_b11.html">第 09 章：jQuery 詳解</a>；若要把 <code>fetch()</code>、API 與局部更新的原理一次補清楚，可再讀 <a href="./10-ajax-fundamentals_b11.html">第 10 章：AJAX 原理</a>。
+        </div>
+      </section>
+
+      <section class="content-section">
+        <h2>Practice：可以讓學生實作什麼？</h2>
+        <div class="grid-3">
+          <article class="definition-card">
+            <h3>練習 1：課程卡片高亮</h3>
+            <p>做三張課程卡片，點選哪一張，就把那一張加上高亮 class。</p>
+          </article>
+          <article class="definition-card">
+            <h3>練習 2：即時輸入預覽</h3>
+            <p>讓使用者在 input 輸入課程名稱，旁邊的預覽卡片即時同步文字。</p>
+          </article>
+          <article class="definition-card">
+            <h3>練習 3：主題切換器</h3>
+            <p>用 checkbox 或 button 切換深色 / 淺色模式，觀察 class 與 CSS 變數如何配合。</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="content-section">
+  <h2>Summary：本章結論</h2>
+  <div class="summary-card">
+    <ul class="summary-list">
+      <li>JavaScript 的核心工作之一，是回應事件並操作 DOM。</li>
+      <li>HTML 原始碼、DOM 樹與畫面結果不是同一件事；JavaScript 改的是瀏覽器記憶體中的 DOM。</li>
+      <li>改變畫面時，最推薦的做法通常是切換 class，讓 CSS 負責樣式細節。</li>
+      <li>重新整理後 DOM 會重新建立，因此理解 DOM、事件與 CSS 狀態的分工，會直接影響你之後是否能順利學會框架。</li>
+      <li>當你理解原生 API 後，再學 jQuery、Axios、Alpine.js、Bootstrap 這類工具，會更清楚它們是在幫你省哪些重複工作；整體生態可接著看第 08 章；若要看經典 library 的實作寫法與範例，可再讀第 09 章；若要把 AJAX 的功能、流程與局部更新機制補完整，可再讀第 10 章。</li>
+    </ul>
+  </div>
+</section>
+
+      <div id="page-nav"></div>
+    </main>
+  </div>
+
+  <script src="../../../../../node_modules/mermaid/dist/mermaid.min.js"></script>
+  <script defer src="../assets/app_b11.js"></script>
+</body>
+</html>

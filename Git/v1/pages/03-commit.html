@@ -1,0 +1,407 @@
+<!-- Path: Network/Git/v1/pages | Timestamp: 2026-03-19 19:17:37 | Version: b01 -->
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>03 Commit 提交｜Git 教學</title>
+  <link rel="stylesheet" href="../assets/styles_b01.css">
+</head>
+<body data-root=".." data-page="commit">
+  <div class="site-shell">
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <small>Git &amp; GitHub Teaching Site</small>
+        <h2>Git 版本管理與 GitHub 協作</h2>
+        <p class="sidebar-intro">系統介紹 Git 的核心概念、基本操作與 GitHub 平台的協作流程。</p>
+      </div>
+      <nav id="site-nav"></nav>
+    </aside>
+
+    <main class="content">
+      <section class="hero">
+        <span class="eyebrow">第 03 章</span>
+        <h1>Commit 提交</h1>
+        <p>Commit 是 Git 的核心操作——每一次 commit 就是為專案拍一張「快照」。本章帶你理解 commit 的概念、內部結構、歷史查閱與版本回溯。</p>
+      </section>
+
+      <!-- 3.1 Commit 的概念 -->
+      <section class="content-section">
+        <h2>Commit 的概念與用途</h2>
+        <p><strong>Commit（提交）</strong>是 Git 中最基本的版本紀錄單位。每一次 commit 會記錄：</p>
+        <div class="grid-2">
+          <article class="stat-card">
+            <h3>📸 完整的專案快照</h3>
+            <p>不是只記錄「哪些行改了」，而是記錄整個專案在該時刻的完整狀態。Git 透過 tree 物件指向所有檔案的 blob。</p>
+          </article>
+          <article class="stat-card">
+            <h3>📝 提交的後設資料</h3>
+            <p>包含作者（Author）、提交者（Committer）、時間戳記、提交訊息（Commit Message），以及父 commit 的指標。</p>
+          </article>
+        </div>
+
+        <div class="note">
+          <strong>快照 vs 差異：</strong>很多人以為 Git 像 SVN 一樣儲存「每次修改的差異（diff）」，但實際上 Git 儲存的是<strong>完整的快照</strong>。如果某個檔案沒有變更，Git 不會重複儲存，而是重複引用同一個 blob 物件。
+        </div>
+      </section>
+
+      <!-- 3.2 git add + git commit 流程 -->
+      <section class="content-section">
+        <h2>git add + git commit 完整流程</h2>
+        <p>要建立一筆 commit，需要兩個步驟：</p>
+
+        <div class="mermaid">
+flowchart LR
+    A["編輯檔案"] --> B["git add<br/>加入暫存區"]
+    B --> C["git commit<br/>建立快照"]
+    C --> D["新的 Commit 物件<br/>寫入 objects/"]
+        </div>
+
+        <div class="example-showcase" data-example>
+          <div class="example-head">
+            <h3>第一次 Commit 的完整操作</h3>
+          </div>
+          <div class="example-tabs">
+            <button class="example-tab is-active" data-tab-target="first-commit" aria-selected="true">操作步驟</button>
+            <button class="example-tab" data-tab-target="first-status" aria-selected="false">過程中的 status</button>
+            <button class="example-tab" data-tab-target="first-explain" aria-selected="false">解說</button>
+          </div>
+          <div class="example-panel is-active" data-tab-panel="first-commit">
+            <pre><code># 建立第一個檔案
+$ echo "# My Project" > README.md
+
+# 查看狀態
+$ git status
+
+# 將檔案加入暫存區
+$ git add README.md
+
+# 建立 commit
+$ git commit -m "初始提交：新增 README"
+
+# 查看歷史紀錄
+$ git log</code></pre>
+          </div>
+          <div class="example-panel" data-tab-panel="first-status">
+            <pre><code># git add 之前
+$ git status
+On branch main
+No commits yet
+Untracked files:
+  (use "git add &lt;file&gt;..." to include in what will be committed)
+        README.md
+
+# git add 之後
+$ git status
+On branch main
+No commits yet
+Changes to be committed:
+  (use "git rm --cached &lt;file&gt;..." to unstage)
+        new file:   README.md
+
+# git commit 之後
+$ git status
+On branch main
+nothing to commit, working tree clean</code></pre>
+          </div>
+          <div class="example-panel" data-tab-panel="first-explain">
+            <ul>
+              <li><strong>Untracked</strong>：新建的檔案，Git 還不知道它的存在。</li>
+              <li><strong>Staged</strong>：用 <code>git add</code> 把檔案加入暫存區後，Git 知道「下次 commit 要包含它」。</li>
+              <li><strong>Committed</strong>：<code>git commit</code> 把暫存區的內容打包成一個快照，寫入物件資料庫。</li>
+              <li><strong>working tree clean</strong>：工作目錄和最新 commit 完全一致，沒有未提交的變更。</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- 3.3 Commit ID -->
+      <section class="content-section">
+        <h2>Commit ID（SHA-1）</h2>
+        <p>每一筆 commit 都有一個唯一的 <strong>SHA-1 雜湊值</strong>作為 ID。這個 ID 是根據 commit 的完整內容（包含 tree、parent、author、message）計算出來的。</p>
+
+        <pre><code>$ git log --oneline
+c3a2f1b (HEAD -> main) 新增 style.css
+a7d8e9f 新增 index.html
+b1c2d3e 初始提交：新增 README</code></pre>
+
+        <div class="grid-3">
+          <article class="mini-card">
+            <p><strong>完整 ID</strong><br><code>c3a2f1b4e5d6f7...</code><br>40 字元</p>
+          </article>
+          <article class="mini-card">
+            <p><strong>短 ID</strong><br><code>c3a2f1b</code><br>通常 7 字元就夠用</p>
+          </article>
+          <article class="mini-card">
+            <p><strong>唯一性</strong><br>內容不同 → ID 不同<br>內容相同 → ID 相同</p>
+          </article>
+        </div>
+      </section>
+
+      <!-- 3.4 Commit 內部結構 -->
+      <section class="content-section">
+        <h2>Commit 物件的內部結構</h2>
+        <p>一個 commit 物件包含以下資訊：</p>
+
+        <div class="example-showcase" data-example>
+          <div class="example-head">
+            <h3>用 git cat-file 查看 commit 物件</h3>
+          </div>
+          <div class="example-tabs">
+            <button class="example-tab is-active" data-tab-target="cat-raw" aria-selected="true">原始內容</button>
+            <button class="example-tab" data-tab-target="cat-diagram" aria-selected="false">結構圖</button>
+            <button class="example-tab" data-tab-target="cat-explain" aria-selected="false">欄位說明</button>
+          </div>
+          <div class="example-panel is-active" data-tab-panel="cat-raw">
+            <pre><code>$ git cat-file -p c3a2f1b
+tree 4b825dc642cb6eb9a060e54bf899d31b8fc28e3b
+parent a7d8e9f1234567890abcdef1234567890abcdef12
+author Alice &lt;alice@example.com&gt; 1710849600 +0800
+committer Alice &lt;alice@example.com&gt; 1710849600 +0800
+
+新增 style.css</code></pre>
+          </div>
+          <div class="example-panel" data-tab-panel="cat-diagram">
+            <div class="mermaid">
+flowchart TD
+    C["Commit c3a2f1b<br/>新增 style.css"]
+    C --> T["Tree 4b825d...<br/>（專案目錄快照）"]
+    C --> P["Parent a7d8e9f<br/>（上一個 commit）"]
+    T --> B1["blob: README.md"]
+    T --> B2["blob: index.html"]
+    T --> B3["blob: style.css ← 新增"]
+            </div>
+          </div>
+          <div class="example-panel" data-tab-panel="cat-explain">
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr><th>欄位</th><th>說明</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td><code>tree</code></td><td>指向一個 tree 物件，代表這次 commit 時整個專案的目錄結構快照。</td></tr>
+                  <tr><td><code>parent</code></td><td>指向上一個 commit 的 SHA-1。第一筆 commit 沒有 parent；merge commit 有兩個以上的 parent。</td></tr>
+                  <tr><td><code>author</code></td><td>原始程式碼的作者名稱、email 與時間戳記。</td></tr>
+                  <tr><td><code>committer</code></td><td>實際執行 commit 的人（通常和 author 相同，但在 cherry-pick 或 rebase 時可能不同）。</td></tr>
+                  <tr><td>空行後的文字</td><td>提交訊息（Commit Message）。</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 3.5 Commit 歷史紀錄 -->
+      <section class="content-section">
+        <h2>Commit 的歷史紀錄與查閱</h2>
+        <p>Git 的提交歷史形成一條<strong>鏈狀結構</strong>——每個 commit 指向它的 parent，組成一條時間線。</p>
+
+        <div class="mermaid">
+flowchart RL
+    C4["Commit 4<br/>HEAD → main"] --> C3["Commit 3"]
+    C3 --> C2["Commit 2"]
+    C2 --> C1["Commit 1<br/>（初始提交）"]
+        </div>
+
+        <h3>常用的 git log 參數</h3>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>指令</th><th>效果</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><code>git log</code></td><td>顯示完整的提交歷史（按時間倒序）</td></tr>
+              <tr><td><code>git log --oneline</code></td><td>每筆 commit 只顯示一行（短 ID + 訊息）</td></tr>
+              <tr><td><code>git log --graph</code></td><td>用 ASCII 圖形顯示分支結構</td></tr>
+              <tr><td><code>git log --oneline --graph --all</code></td><td>圖形化顯示所有分支的歷史</td></tr>
+              <tr><td><code>git log -n 5</code></td><td>只顯示最近 5 筆 commit</td></tr>
+              <tr><td><code>git log --stat</code></td><td>顯示每筆 commit 修改了哪些檔案</td></tr>
+              <tr><td><code>git log -p</code></td><td>顯示每筆 commit 的詳細 diff</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>git diff：比較差異</h3>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>指令</th><th>比較對象</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><code>git diff</code></td><td>工作目錄 vs 暫存區（尚未 add 的變更）</td></tr>
+              <tr><td><code>git diff --staged</code></td><td>暫存區 vs 最新 commit（已 add 但尚未 commit 的變更）</td></tr>
+              <tr><td><code>git diff HEAD</code></td><td>工作目錄 vs 最新 commit</td></tr>
+              <tr><td><code>git diff a7d8e9f c3a2f1b</code></td><td>兩筆 commit 之間的差異</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- 3.6 版本回溯 -->
+      <section class="content-section">
+        <h2>版本回溯</h2>
+        <p>Git 最大的優勢之一就是可以隨時回到過去的版本。以下是幾種常見的回溯方式：</p>
+
+        <div class="grid-2">
+          <article class="definition-card">
+            <h3>git checkout（查看舊版本）</h3>
+            <p>暫時跳到某個歷史 commit 查看內容，不影響現有分支。</p>
+            <pre><code>$ git checkout a7d8e9f
+# 進入 Detached HEAD 狀態
+# 查看完畢後回到分支
+$ git checkout main</code></pre>
+          </article>
+          <article class="definition-card">
+            <h3>git restore（還原檔案）</h3>
+            <p>將工作目錄或暫存區的檔案還原到特定版本。</p>
+            <pre><code># 還原工作目錄中的檔案
+$ git restore index.html
+
+# 取消暫存（unstage）
+$ git restore --staged index.html
+
+# 還原到特定 commit 的版本
+$ git restore --source=a7d8e9f index.html</code></pre>
+          </article>
+        </div>
+
+        <div class="warning-note">
+          <strong>⚠️ 注意：</strong><code>git restore</code> 會直接覆蓋工作目錄的檔案，這個操作無法復原。如果有尚未提交的重要修改，請先 commit 或 stash。
+        </div>
+      </section>
+
+      <!-- 3.7 commit 背後的完整流程 -->
+      <section class="content-section">
+        <h2>git commit 背後做了哪些動作？</h2>
+        <p>當你執行 <code>git commit</code> 時，Git 在內部依序完成以下步驟：</p>
+
+        <div class="mermaid">
+flowchart TD
+    A["git commit -m '...'"] --> B["讀取暫存區 (.git/index)"]
+    B --> C["為每個暫存的檔案建立 blob 物件"]
+    C --> D["建立 tree 物件<br/>（記錄目錄結構）"]
+    D --> E["建立 commit 物件<br/>（指向 tree + parent + metadata）"]
+    E --> F["更新分支指標<br/>refs/heads/main → 新 commit"]
+    F --> G["更新 HEAD<br/>（仍指向 main）"]
+        </div>
+
+        <div class="note">
+          <strong>重要觀念：</strong>Commit 完成後，暫存區不會被清空。暫存區會保持和最新 commit 一致的狀態。只有當你再次 <code>git add</code> 新的變更時，暫存區才會和工作目錄有差異。
+        </div>
+      </section>
+
+      <!-- 3.8 好的 Commit Message -->
+      <section class="content-section">
+        <h2>撰寫好的 Commit Message</h2>
+        <p>好的提交訊息讓團隊成員（包括未來的你）能快速理解每筆變更的目的。</p>
+
+        <div class="comparison">
+          <article class="comparison-card">
+            <h4>❌ 不好的訊息</h4>
+            <pre><code>fix bug
+update
+修改
+asdflkj
+WIP</code></pre>
+          </article>
+          <article class="comparison-card">
+            <h4>✅ 好的訊息</h4>
+            <pre><code>修正登入頁面密碼驗證的錯誤邊界條件
+新增使用者註冊的 Email 格式驗證
+重構購物車計算邏輯，提取折扣計算為獨立函式
+更新 README 安裝說明，補充 Node.js 18+ 需求</code></pre>
+          </article>
+        </div>
+
+        <h3>Commit Message 格式建議</h3>
+        <pre><code># 格式
+&lt;類型&gt;: &lt;簡短描述&gt;（50 字以內）
+
+&lt;詳細說明&gt;（可選，72 字換行）
+
+# 常見類型
+feat:     新功能
+fix:      修正 bug
+docs:     文件修改
+style:    格式調整（不影響邏輯）
+refactor: 重構（不改功能也不修 bug）
+test:     測試相關
+chore:    雜事（建置、設定等）</code></pre>
+      </section>
+
+      <!-- 3.9 練習 -->
+      <section class="content-section">
+        <h2>🔧 動手練習</h2>
+        <div class="grid-2">
+          <article class="practice-card">
+            <h3>練習 1：建立多筆 Commit</h3>
+            <pre><code>$ echo "# My Project" > README.md
+$ git add README.md
+$ git commit -m "feat: 新增 README"
+
+$ echo "&lt;h1&gt;Hello&lt;/h1&gt;" > index.html
+$ git add index.html
+$ git commit -m "feat: 新增首頁"
+
+$ echo "body { margin: 0; }" > style.css
+$ git add style.css
+$ git commit -m "feat: 新增樣式表"
+
+$ git log --oneline</code></pre>
+          </article>
+          <article class="practice-card">
+            <h3>練習 2：查看 Commit 內部</h3>
+            <pre><code># 查看最近一筆 commit 的 SHA-1
+$ git log --oneline -1
+
+# 用 cat-file 查看 commit 物件
+$ git cat-file -p HEAD
+
+# 用 cat-file 查看 tree 物件
+$ git cat-file -p HEAD^{tree}
+
+# 比較兩筆 commit 的差異
+$ git diff HEAD~2 HEAD</code></pre>
+          </article>
+        </div>
+      </section>
+
+      <!-- 3.10 小結 -->
+      <section class="content-section">
+        <h2>本章小結</h2>
+        <div class="grid-2">
+          <article class="summary-card">
+            <h3>知識重點</h3>
+            <ul class="summary-list">
+              <li>Commit 是專案的完整快照，不是差異檔。</li>
+              <li>每筆 commit 有唯一的 SHA-1 ID。</li>
+              <li>Commit 物件包含 tree、parent、author、committer 與 message。</li>
+              <li>提交歷史形成鏈狀結構，可以用 <code>git log</code> 查閱。</li>
+              <li>版本回溯可用 <code>git checkout</code> 或 <code>git restore</code>。</li>
+              <li>撰寫清晰的 Commit Message 是重要的團隊協作習慣。</li>
+            </ul>
+          </article>
+          <article class="summary-card">
+            <h3>下一章預告</h3>
+            <ul class="summary-list">
+              <li>認識 GitHub 協作平台的核心功能。</li>
+              <li>學習 Remote（遠端版本庫）的概念。</li>
+              <li>操作 <code>git push</code>、<code>git pull</code>、<code>git clone</code>。</li>
+            </ul>
+          </article>
+        </div>
+      </section>
+
+      <footer class="page-footer">
+        <strong>學習提示：</strong>
+        <code>git add</code> + <code>git commit</code> 是你每天都會用到的操作。建議現在就打開終端機，建立一個測試 Repo 並實際操作幾輪，直到你對整個流程感到自然為止。
+      </footer>
+
+      <div id="page-nav"></div>
+    </main>
+  </div>
+
+  <script src="../../../../node_modules/mermaid/dist/mermaid.min.js"></script>
+  <script defer src="../assets/app_b01.js"></script>
+</body>
+</html>

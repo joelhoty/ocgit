@@ -1,0 +1,490 @@
+<!-- Path: Network/WEB Service/Content/b11/pages | Timestamp: 2026-03-19 20:18:24 | Version: b11 -->
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>06 Web Server 範例｜WEB Service 教學網站</title>
+  <link rel="stylesheet" href="../assets/styles_b01.css">
+</head>
+<body data-root=".." data-page="server">
+  <div class="site-shell">
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <small>Chapter 06</small>
+        <h2>Web Server 範例</h2>
+        <p class="sidebar-intro">用最小範例把理論落地，特別從傳統 HTTP server 管理者熟悉的視角，理解 Node.js Runtime 與後續框架的分工。</p>
+      </div>
+      <nav id="site-nav"></nav>
+      <section class="sidebar-tips">
+        <h3>本章重點</h3>
+        <ul>
+          <li>初學者可先走 Python → Express 的理解路線。</li>
+          <li>想補底層再回頭看原生 Node.js Runtime 範例。</li>
+          <li>若熟悉 Apache / Nginx，可對照傳統管理觀點閱讀。</li>
+        </ul>
+      </section>
+    </aside>
+
+    <main class="content">
+      <section class="hero">
+        <span class="eyebrow">Chapter 06</span>
+        <h1>用最小範例看懂 Web server 到底在做什麼</h1>
+        <p>
+          真正的學習通常發生在「理論與範例接起來」的那一刻。
+          本章會用兩種常見語言的最小伺服器範例，讓你看到：程式如何接住 request、決定回應內容、設定 <code>Content-Type</code>，最後把結果交給瀏覽器；如果你原本習慣從 Apache 或 Nginx 的設定檔來理解網站，這一章會幫你把 <strong>Web server、Node.js Runtime 與 Framework</strong> 的位置重新排好。
+        </p>
+      </section>
+
+      <section class="content-section">
+  <h2>先選你的閱讀路徑</h2>
+  <div class="grid-3">
+    <article class="summary-card">
+      <h3>純初學者</h3>
+      <ul class="summary-list">
+        <li>先看 Python 最小伺服器。</li>
+        <li>接著直接看 Express 範例。</li>
+        <li>最後再回頭補原生 Node.js 的底層版本。</li>
+      </ul>
+    </article>
+    <article class="summary-card">
+      <h3>想看底層怎麼運作</h3>
+      <ul class="summary-list">
+        <li>依序看 Python → 原生 Node.js → Express。</li>
+        <li>比較 <code>http.createServer()</code> 與 <code>app.get()</code> 的差異。</li>
+        <li>再看三層拆解總結觀念。</li>
+      </ul>
+    </article>
+    <article class="summary-card">
+      <h3>熟悉 Apache / Nginx</h3>
+      <ul class="summary-list">
+        <li>先看傳統觀念對照表。</li>
+        <li>再看 Nginx / Apache 與 Express 的分工想像。</li>
+        <li>最後回頭看原生 Node.js 與 Express 的差異。</li>
+      </ul>
+    </article>
+  </div>
+</section>
+
+      <section class="content-section">
+  <h2>如果你原本熟悉 Apache / Nginx，該怎麼重新理解？</h2>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>你熟悉的傳統觀念</th>
+          <th>在現代 Web 架構中的對應</th>
+          <th>例子</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>VirtualHost / server block</td>
+          <td>站點入口與反向代理設定</td>
+          <td><code>server_name</code>、<code>listen</code>、<code>location /api</code></td>
+        </tr>
+        <tr>
+          <td>CGI / FastCGI / PHP-FPM / uWSGI</td>
+          <td>讓應用程式跑起來的執行層（Runtime / Process）</td>
+          <td><code>node server.js</code>、<code>uvicorn app:app</code></td>
+        </tr>
+        <tr>
+          <td>Rewrite / ProxyPass</td>
+          <td>把特定路徑轉送到應用服務</td>
+          <td><code>proxy_pass http://127.0.0.1:3000</code></td>
+        </tr>
+        <tr>
+          <td>應用程式框架</td>
+          <td>真正處理路由、驗證與商業邏輯的層</td>
+          <td>Express、NestJS、FastAPI、Django</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="note">
+    <strong>對照記憶法：</strong>
+    如果你熟悉 <code>Apache / Nginx + PHP-FPM</code>，可以把 <code>Node.js</code> 想成「讓 JavaScript 應用能跑起來的執行環境」；
+    而 <code>Express / NestJS</code> 的角色，更接近 <code>Laravel / Symfony</code> 這類框架，負責組織路由、驗證與商業邏輯。
+  </div>
+</section>
+
+      <section class="content-section">
+        <h2>Web server 的基本職責</h2>
+        <div class="grid-3">
+          <article class="definition-card">
+            <h3>接收請求</h3>
+            <p>在固定 IP / Port 上等待 request 進來。</p>
+          </article>
+          <article class="definition-card">
+            <h3>判斷路徑</h3>
+            <p>根據 URL path 判斷要回傳檔案、資料或錯誤訊息。</p>
+          </article>
+          <article class="definition-card">
+            <h3>回傳正確內容</h3>
+            <p>設定狀態碼與 <code>Content-Type</code>，讓瀏覽器知道如何處理。</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="content-section">
+        <h2>MIME Types：瀏覽器如何知道你回了什麼？</h2>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>內容</th>
+                <th>MIME Type</th>
+                <th>常見用途</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>HTML</td>
+                <td><code>text/html</code></td>
+                <td>網頁結構</td>
+              </tr>
+              <tr>
+                <td>CSS</td>
+                <td><code>text/css</code></td>
+                <td>樣式表</td>
+              </tr>
+              <tr>
+                <td>JavaScript</td>
+                <td><code>text/javascript</code></td>
+                <td>前端腳本</td>
+              </tr>
+              <tr>
+                <td>JSON</td>
+                <td><code>application/json</code></td>
+                <td>API 回應資料</td>
+              </tr>
+              <tr>
+                <td>PNG</td>
+                <td><code>image/png</code></td>
+                <td>圖片資源</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="content-section">
+        <h2>Example 1：Python 最小 HTTP Server</h2>
+        <div class="example-showcase" data-example>
+          <div class="example-head">
+            <h3>用 Python 直接回傳 HTML</h3>
+            <p>這個例子很適合教學，因為它夠短，但已經能看出 request 與 response 的結構。</p>
+          </div>
+          <div class="example-tabs" role="tablist">
+            <button class="example-tab is-active" type="button" aria-selected="true" data-tab-target="code">語法</button>
+            <button class="example-tab" type="button" aria-selected="false" data-tab-target="result">結果</button>
+            <button class="example-tab" type="button" aria-selected="false" data-tab-target="explain">解說</button>
+          </div>
+          <div class="example-panel is-active" data-tab-panel="code">
+<pre><code>from http.server import BaseHTTPRequestHandler, HTTPServer
+
+class DemoHandler(BaseHTTPRequestHandler):
+    def do_GET(self):
+        self.send_response(200)
+        self.send_header("Content-Type", "text/html; charset=utf-8")
+        self.end_headers()
+        self.wfile.write(b"&lt;h1&gt;Hello from Python&lt;/h1&gt;")
+
+server = HTTPServer(("127.0.0.1", 8000), DemoHandler)
+print("Serving on http://127.0.0.1:8000")
+server.serve_forever()</code></pre>
+          </div>
+          <div class="example-panel" data-tab-panel="result">
+            <div class="grid-2">
+              <div class="terminal-window">$ python app.py
+Serving on http://127.0.0.1:8000</div>
+              <div class="browser-window">
+                <div class="browser-chrome"><span></span><span></span><span></span></div>
+                <div class="preview-window">
+                  <h1>Hello from Python</h1>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="example-panel" data-tab-panel="explain">
+            <ul class="plain-list">
+              <li><code>send_response(200)</code> 設定狀態碼。</li>
+              <li><code>send_header()</code> 告訴瀏覽器回傳的是 HTML。</li>
+              <li><code>wfile.write()</code> 寫出真正的回應內容。</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="content-section">
+        <h2>進階補充：原生 Node.js Runtime 建立最小伺服器</h2>
+        <div class="example-showcase" data-example>
+          <div class="example-head">
+            <h3>使用內建 <code>http</code> 模組</h3>
+            <p>如果你想知道 Express 背後更底層的作法，再回來看這個版本。純初學者可以先看下一個 Express 範例，再回頭比較兩者差異。</p>
+          </div>
+          <div class="example-tabs" role="tablist">
+            <button class="example-tab is-active" type="button" aria-selected="true" data-tab-target="code">語法</button>
+            <button class="example-tab" type="button" aria-selected="false" data-tab-target="result">結果</button>
+            <button class="example-tab" type="button" aria-selected="false" data-tab-target="explain">解說</button>
+          </div>
+          <div class="example-panel is-active" data-tab-panel="code">
+<pre><code>const http = require("http");
+
+const server = http.createServer((request, response) =&gt; {
+  response.writeHead(200, {
+    "Content-Type": "application/json"
+  });
+
+  response.end(JSON.stringify({
+    message: "Hello from Node.js"
+  }));
+});
+
+server.listen(3000, () =&gt; {
+  console.log("Server on http://127.0.0.1:3000");
+});</code></pre>
+          </div>
+          <div class="example-panel" data-tab-panel="result">
+            <div class="response-grid">
+              <div class="terminal-window">$ node server.js
+Server on http://127.0.0.1:3000</div>
+              <div class="response-window">
+                <strong>瀏覽器 / API 工具看到的回應</strong>
+                <pre><code>{
+  "message": "Hello from Node.js"
+}</code></pre>
+              </div>
+            </div>
+          </div>
+          <div class="example-panel" data-tab-panel="explain">
+            <ul class="plain-list">
+              <li>這裡不是回 HTML，而是回傳 JSON。</li>
+              <li><code>node server.js</code> 的意思，是由 Node.js 這個 Runtime 去執行你的程式檔。</li>
+              <li><code>http.createServer()</code> 代表你在 Runtime 裡建立了一個會處理 HTTP 的應用程式。</li>
+              <li>只要 <code>Content-Type</code> 正確，瀏覽器或前端程式就知道怎麼處理。</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="content-section">
+  <div class="callout">
+    <strong>一句話記住：</strong>
+    Node.js 是讓 JavaScript 可以在伺服器端執行的 <em>Runtime</em>；Express、NestJS 等才是建立在 Node.js 之上的框架或框架式工具。
+  </div>
+  <p>
+    更詳細地說，Node.js 本身提供的是伺服器端 JavaScript 執行環境，以及檔案系統、網路、計時器、<code>http</code> 等 API。
+    當你執行 <code>node server.js</code> 時，是 Node.js 這個 Runtime 在執行你的應用程式；
+    如果你的程式裡再使用 Express 或 NestJS，才是把「如何定義路由、如何插入 middleware、如何切分 controller / service」這些工作交給框架來整理。
+  </p>
+</section>
+
+      <section class="content-section">
+  <h2>為什麼還要 Express？因為需求一多，手寫就會亂</h2>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>情境</th>
+          <th>原生 Node.js</th>
+          <th>Express</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>只有 1 條路由</td>
+          <td>還算容易，手寫 <code>if (req.url === ...)</code> 就能完成。</td>
+          <td>也很簡單，但結構會稍微多一點。</td>
+        </tr>
+        <tr>
+          <td>有 10 條以上路由</td>
+          <td>容易變成很長的條件判斷，維護困難。</td>
+          <td>可用 <code>app.get()</code>、<code>app.post()</code> 與 router 拆分。</td>
+        </tr>
+        <tr>
+          <td>需要 middleware / 驗證</td>
+          <td>很多流程要自己手寫。</td>
+          <td>框架式工具通常已有成熟寫法與慣例。</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="note">
+    <strong>教學重點：</strong>
+    原生 Node.js 很適合看懂底層，但真正寫多路徑 API 時，Express 這種框架式工具會讓程式更清楚，也更接近實務開發。
+  </div>
+</section>
+
+      <section class="content-section">
+        <h2>Example 2：先學會用 Express 宣告 API 路由</h2>
+        <div class="example-showcase" data-example>
+          <div class="example-head">
+            <h3>把路由宣告交給框架式工具</h3>
+            <p>對多數初學者來說，這會比原生 Node.js 更像真正的應用開發，也更容易讀懂。</p>
+          </div>
+          <div class="example-tabs" role="tablist">
+            <button class="example-tab is-active" type="button" aria-selected="true" data-tab-target="code">語法</button>
+            <button class="example-tab" type="button" aria-selected="false" data-tab-target="result">結果</button>
+            <button class="example-tab" type="button" aria-selected="false" data-tab-target="explain">解說</button>
+          </div>
+          <div class="example-panel is-active" data-tab-panel="code">
+<pre><code>const express = require("express");
+
+const app = express();
+
+app.get("/api/status", (req, res) =&gt; {
+  res.json({
+    service: "ok",
+    runtime: "Node.js",
+    framework: "Express"
+  });
+});
+
+app.listen(3000, () =&gt; {
+  console.log("Express on http://127.0.0.1:3000");
+});</code></pre>
+          </div>
+          <div class="example-panel" data-tab-panel="result">
+            <div class="response-grid">
+              <div class="terminal-window">$ node app.js
+Express on http://127.0.0.1:3000</div>
+              <div class="response-window">
+                <strong>GET /api/status</strong>
+                <pre><code>{
+  "service": "ok",
+  "runtime": "Node.js",
+  "framework": "Express"
+}</code></pre>
+              </div>
+            </div>
+          </div>
+          <div class="example-panel" data-tab-panel="explain">
+            <ul class="plain-list">
+              <li>Node.js 仍然是底層的 Runtime，並沒有消失。</li>
+              <li>Express 幫你把 <code>if (request.url === ...)</code> 這種手動判斷包裝成更清楚的路由 API。</li>
+              <li><code>res.json()</code>、middleware、router 等慣例，都是框架式工具帶來的便利。</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="content-section">
+        <h2>Example 3：沒有框架時，要自己手動判斷路由</h2>
+        <div class="example-showcase" data-example>
+          <div class="example-head">
+            <h3>同一個 server，依路徑回不同內容</h3>
+            <p>這一段是讓你回頭對照：如果不用框架，原來每一條路由都要自己手動判斷與回應。</p>
+          </div>
+          <div class="example-tabs" role="tablist">
+            <button class="example-tab is-active" type="button" aria-selected="true" data-tab-target="code">語法</button>
+            <button class="example-tab" type="button" aria-selected="false" data-tab-target="result">結果</button>
+            <button class="example-tab" type="button" aria-selected="false" data-tab-target="explain">解說</button>
+          </div>
+          <div class="example-panel is-active" data-tab-panel="code">
+<pre><code>if (request.url === "/") {
+  response.end("&lt;h1&gt;Home Page&lt;/h1&gt;");
+} else if (request.url === "/about") {
+  response.end("&lt;h1&gt;About Page&lt;/h1&gt;");
+} else {
+  response.writeHead(404, { "Content-Type": "text/plain" });
+  response.end("Not Found");
+}</code></pre>
+          </div>
+          <div class="example-panel" data-tab-panel="result">
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Request URL</th>
+                    <th>回應結果</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><code>/</code></td>
+                    <td>Home Page</td>
+                  </tr>
+                  <tr>
+                    <td><code>/about</code></td>
+                    <td>About Page</td>
+                  </tr>
+                  <tr>
+                    <td><code>/missing</code></td>
+                    <td>404 Not Found</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="example-panel" data-tab-panel="explain">
+            <ul class="plain-list">
+              <li>「根據 URL 決定回應」就是最基本的 routing。</li>
+              <li>框架把這件事包裝得更有結構，例如檔案式路由或裝飾器式路由。</li>
+              <li>但本質上，它仍然是 request 進來後，選擇一個對應的處理方式。</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="content-section">
+  <h2>從傳統 HTTP server 管理，到框架式服務的三層拆解</h2>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>層次</th>
+          <th>代表工具</th>
+          <th>主要責任</th>
+          <th>對傳統管理者最容易混淆的點</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>入口層 Web server</td>
+          <td>Nginx、Apache</td>
+          <td>接收連線、TLS、靜態檔、反向代理</td>
+          <td>它仍然存在，並沒有被 Node.js 取代。</td>
+        </tr>
+        <tr>
+          <td>執行層 Runtime</td>
+          <td>Node.js、Python</td>
+          <td>讓應用程式碼能跑起來</td>
+          <td>它負責「執行程式」，不是幫你定義整個應用架構。</td>
+        </tr>
+        <tr>
+          <td>應用層 Framework</td>
+          <td>Express、NestJS、FastAPI、Django</td>
+          <td>整理路由、驗證、middleware、模組與商業邏輯</td>
+          <td>這一層才是你從「手寫 server」進入「框架化開發」的地方。</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="callout">
+    <strong>給傳統 HTTP server 管理者的重點翻譯：</strong>
+    以前你可能習慣把很多事都看成 Apache / Nginx 的工作；現在要把「入口層」與「應用層」分開看。
+    Nginx / Apache 管入口與轉送，Node.js 負責跑程式，Express / NestJS 則負責把應用程式寫得有結構。
+  </div>
+</section>
+
+      <section class="content-section">
+  <h2>Summary：本章結論</h2>
+  <div class="summary-card">
+    <ul class="summary-list">
+      <li>Web server 的工作包含接收 request、判斷路徑、回傳狀態碼與正確的內容型別。</li>
+      <li>純初學者可先用 Python → Express 建立整體印象，再回頭看原生 Node.js 的底層寫法。</li>
+      <li>Node.js 是 Runtime，不是 Framework；當你寫 <code>http.createServer()</code> 時，是你的應用程式利用 Runtime 建立了一個 server。</li>
+      <li>對傳統 HTTP server 管理者來說，可以把 Nginx / Apache 視為入口層，把 Express / NestJS 視為應用層架構，中間由 Node.js 或 Python 這類 Runtime 承接執行。</li>
+    </ul>
+  </div>
+</section>
+
+      <div id="page-nav"></div>
+    </main>
+  </div>
+
+  <script src="../../../../../node_modules/mermaid/dist/mermaid.min.js"></script>
+  <script defer src="../assets/app_b11.js"></script>
+</body>
+</html>

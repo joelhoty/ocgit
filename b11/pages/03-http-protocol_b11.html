@@ -1,0 +1,341 @@
+<!-- Path: Network/WEB Service/Content/b11/pages | Timestamp: 2026-03-19 20:18:24 | Version: b11 -->
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>03 HTTP 協定｜WEB Service 教學網站</title>
+  <link rel="stylesheet" href="../assets/styles_b01.css">
+</head>
+<body data-root=".." data-page="http">
+  <div class="site-shell">
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <small>Chapter 03</small>
+        <h2>HTTP 協定</h2>
+        <p class="sidebar-intro">理解 Request、Response、Methods、Headers 與 HTTPS，是理解 Web 的核心。</p>
+      </div>
+      <nav id="site-nav"></nav>
+      <section class="sidebar-tips">
+        <h3>本章重點</h3>
+        <ul>
+          <li>讀懂一段原始 HTTP 訊息。</li>
+          <li>知道方法、狀態碼與標頭的用途。</li>
+          <li>能用 DevTools 或 curl 觀察一次真實的 HTTP 往返。</li>
+        </ul>
+      </section>
+    </aside>
+
+    <main class="content">
+      <section class="hero">
+        <span class="eyebrow">Chapter 03</span>
+        <h1>HTTP：Web 世界中資料往返的共同語言</h1>
+        <p>
+          HTTP（HyperText Transfer Protocol）是瀏覽器與伺服器對話時最重要的規則。
+          它規定了 request 長什麼樣子、response 該怎麼回、回傳狀態代表什麼，以及資料要用什麼格式描述。
+        </p>
+      </section>
+
+      <section class="content-section">
+        <h2>What：HTTP Request / Response 的基本結構</h2>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>部分</th>
+                <th>內容</th>
+                <th>例子</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Start Line</td>
+                <td>說明方法、路徑、版本，或狀態碼與版本</td>
+                <td><code>GET / HTTP/1.1</code> / <code>HTTP/1.1 200 OK</code></td>
+              </tr>
+              <tr>
+                <td>Headers</td>
+                <td>描述請求或回應的附加資訊</td>
+                <td><code>Host</code>、<code>Content-Type</code>、<code>Cache-Control</code></td>
+              </tr>
+              <tr>
+                <td>Body</td>
+                <td>真正傳送的資料</td>
+                <td>HTML、JSON、表單資料、圖片</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="note">
+          <strong>重點：</strong>
+          HTTP 本身只是傳輸規則，它不在乎 body 裡面裝的是 HTML、JSON 還是圖片，只要有正確標頭就能處理。
+        </div>
+      </section>
+
+      <section class="content-section">
+        <h2>Methods、Status Codes、Headers</h2>
+        <div class="grid-3">
+          <article class="definition-card">
+            <h3>Methods</h3>
+            <p><code>GET</code> 取得資料、<code>POST</code> 新增、<code>PUT</code> 覆蓋、<code>PATCH</code> 局部更新、<code>DELETE</code> 刪除。</p>
+          </article>
+          <article class="definition-card">
+            <h3>Status Codes</h3>
+            <p>200 成功、301 重新導向、404 找不到、500 伺服器錯誤，是最常見的回應訊號。</p>
+          </article>
+          <article class="definition-card">
+            <h3>Headers</h3>
+            <p>補充描述資料內容、快取策略、授權資訊、Cookie、來源等，是 HTTP 的控制面板。</p>
+          </article>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>類別</th>
+                <th>代表狀態碼</th>
+                <th>意義</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>1xx</td>
+                <td>101</td>
+                <td>資訊性回應，流程仍在進行中</td>
+              </tr>
+              <tr>
+                <td>2xx</td>
+                <td>200、201、204</td>
+                <td>請求成功</td>
+              </tr>
+              <tr>
+                <td>3xx</td>
+                <td>301、302、304</td>
+                <td>需要重新導向或可使用快取</td>
+              </tr>
+              <tr>
+                <td>4xx</td>
+                <td>400、401、403、404</td>
+                <td>用戶端請求有問題</td>
+              </tr>
+              <tr>
+                <td>5xx</td>
+                <td>500、502、503</td>
+                <td>伺服器處理失敗</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="content-section">
+        <h2>HTTPS：在 HTTP 外再加上一層保護</h2>
+        <p>
+          HTTPS = HTTP + TLS。它的目標是讓資料在網路中傳輸時具備：
+          <strong>加密性、完整性、身分驗證</strong>。
+          換句話說，別人不容易偷看內容、亂改內容，也能確認你連到的是正確的網站。
+        </p>
+      </section>
+
+      <section class="content-section">
+        <h2>Example 1：讀懂一段 GET Request / Response</h2>
+        <div class="example-showcase" data-example>
+          <div class="example-head">
+            <h3>要求首頁 HTML</h3>
+            <p>這是最典型、也最值得學生先學會閱讀的一組 HTTP 對話。</p>
+          </div>
+          <div class="example-tabs" role="tablist">
+            <button class="example-tab is-active" type="button" aria-selected="true" data-tab-target="code">語法</button>
+            <button class="example-tab" type="button" aria-selected="false" data-tab-target="result">結果</button>
+            <button class="example-tab" type="button" aria-selected="false" data-tab-target="explain">解說</button>
+          </div>
+          <div class="example-panel is-active" data-tab-panel="code">
+<pre><code>GET /index.html HTTP/1.1
+Host: web.demo
+Accept: text/html
+Accept-Language: zh-TW
+
+HTTP/1.1 200 OK
+Content-Type: text/html; charset=utf-8
+Cache-Control: max-age=60
+Content-Length: 128
+
+&lt;h1&gt;Welcome&lt;/h1&gt;
+&lt;p&gt;This page is served by a web server.&lt;/p&gt;</code></pre>
+          </div>
+          <div class="example-panel" data-tab-panel="result">
+            <div class="browser-window">
+              <div class="browser-chrome"><span></span><span></span><span></span></div>
+              <div class="preview-window">
+                <h1>Welcome</h1>
+                <p>This page is served by a web server.</p>
+              </div>
+            </div>
+          </div>
+          <div class="example-panel" data-tab-panel="explain">
+            <ul class="plain-list">
+              <li><code>Host</code> 告訴伺服器你要連的是哪個網站。</li>
+              <li><code>Accept</code> 表示瀏覽器偏好接收的內容類型。</li>
+              <li><code>Content-Type</code> 告訴瀏覽器 body 裡面是 HTML。</li>
+              <li><code>Cache-Control</code> 影響瀏覽器是否可以暫存內容。</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="content-section">
+        <h2>Example 2：POST JSON 到 API</h2>
+        <div class="example-showcase" data-example>
+          <div class="example-head">
+            <h3>送出資料給伺服器</h3>
+            <p>API 不一定回 HTML，它也常回傳 JSON 給前端 JavaScript 使用。</p>
+          </div>
+          <div class="example-tabs" role="tablist">
+            <button class="example-tab is-active" type="button" aria-selected="true" data-tab-target="code">語法</button>
+            <button class="example-tab" type="button" aria-selected="false" data-tab-target="result">結果</button>
+            <button class="example-tab" type="button" aria-selected="false" data-tab-target="explain">解說</button>
+          </div>
+          <div class="example-panel is-active" data-tab-panel="code">
+<pre><code>POST /api/messages HTTP/1.1
+Host: api.demo
+Content-Type: application/json
+
+{
+  "author": "Student",
+  "message": "Hello server"
+}
+
+HTTP/1.1 201 Created
+Content-Type: application/json
+
+{
+  "id": 101,
+  "status": "saved"
+}</code></pre>
+          </div>
+          <div class="example-panel" data-tab-panel="result">
+            <div class="response-window">
+              <strong>API 回應</strong>
+              <pre><code>{
+  "id": 101,
+  "status": "saved"
+}</code></pre>
+            </div>
+          </div>
+          <div class="example-panel" data-tab-panel="explain">
+            <ul class="plain-list">
+              <li>這裡的 body 是 JSON，所以 <code>Content-Type</code> 要寫成 <code>application/json</code>。</li>
+              <li><code>201 Created</code> 表示伺服器成功建立了一筆新資料。</li>
+              <li>很多現代前端框架都靠這種 API 形式和伺服器交換資料。</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="content-section">
+        <h2>Hands-on：用 DevTools 與 curl 真的看到 HTTP</h2>
+        <div class="grid-2">
+          <article class="summary-card">
+            <h3>方法 1：Chrome DevTools</h3>
+            <ul class="summary-list">
+              <li>打開瀏覽器開發者工具，切到 <code>Network</code>。</li>
+              <li>重新整理頁面，點選第一筆文件請求。</li>
+              <li>對照 <code>Headers</code>、<code>Status Code</code>、<code>Response</code> 與本章學的名詞。</li>
+            </ul>
+          </article>
+          <article class="summary-card">
+            <h3>方法 2：curl 指令</h3>
+            <ul class="summary-list">
+              <li>在終端機輸入 <code>curl -i http://127.0.0.1:8000/</code>。</li>
+              <li><code>-i</code> 會把 response headers 一起印出來。</li>
+              <li>你會清楚看到「空白行前是 header，空白行後是 body」。</li>
+            </ul>
+          </article>
+        </div>
+        <div class="example-showcase" data-example>
+          <div class="example-head">
+            <h3>用 curl 看 HTTP 回應長什麼樣子</h3>
+            <p>這是把課本上的 HTTP 變成你真的看得到的最短路徑。</p>
+          </div>
+          <div class="example-tabs" role="tablist">
+            <button class="example-tab is-active" type="button" aria-selected="true" data-tab-target="code">語法</button>
+            <button class="example-tab" type="button" aria-selected="false" data-tab-target="result">結果</button>
+            <button class="example-tab" type="button" aria-selected="false" data-tab-target="explain">解說</button>
+          </div>
+          <div class="example-panel is-active" data-tab-panel="code">
+<pre><code>curl -i http://127.0.0.1:8000/</code></pre>
+          </div>
+          <div class="example-panel" data-tab-panel="result">
+            <div class="response-window">
+              <pre><code>HTTP/1.1 200 OK
+Content-Type: text/html; charset=utf-8
+Content-Length: 42
+
+&lt;h1&gt;Hello&lt;/h1&gt;
+&lt;p&gt;Served by HTTP server.&lt;/p&gt;</code></pre>
+            </div>
+          </div>
+          <div class="example-panel" data-tab-panel="explain">
+            <ul class="plain-list">
+              <li><code>HTTP/1.1 200 OK</code> 是 status line，代表這次請求成功。</li>
+              <li>中間的幾行是 response headers，用來描述資料格式與長度。</li>
+              <li>空白行後面就是 body，也就是伺服器真正送回來的內容。</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="content-section">
+        <h2>Practice：快速判讀</h2>
+        <div class="grid-2">
+          <article class="practice-card">
+            <h3>問題 1</h3>
+            <p>如果伺服器回傳 404，通常表示是哪一層出了問題？是網路、伺服器還是資源路徑？</p>
+          </article>
+          <article class="practice-card">
+            <h3>問題 2</h3>
+            <p>為什麼 JSON API 的回應不能標成 <code>text/html</code>？</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="content-section">
+        <h2>HTTP 與 AJAX 的關係</h2>
+        <div class="grid-2">
+          <article class="summary-card">
+            <h3>AJAX 不是新協定</h3>
+            <p>AJAX 底層仍然是 HTTP request / response；差別只在於請求是由頁面中的 JavaScript 主動發出，不一定要整頁重新整理。</p>
+          </article>
+          <article class="summary-card">
+            <h3>AJAX 常拿來做什麼？</h3>
+            <p>例如送出表單後只更新部分內容、讀取 JSON API、即時搜尋建議、儀表板自動刷新等，都是 HTTP 在互動頁面中的延伸應用。</p>
+          </article>
+        </div>
+        <div class="note">
+          <strong>延伸閱讀：</strong>
+          如果你想把 HTTP、JavaScript、DOM 更新與非同步流程一起看懂，可接著讀
+          <a href="./10-ajax-fundamentals_b11.html">第 10 章：AJAX 原理</a>。
+        </div>
+      </section>
+
+      <section class="content-section">
+  <h2>Summary：本章結論</h2>
+  <div class="summary-card">
+    <ul class="summary-list">
+      <li>HTTP 由 start line、headers、body 組成。</li>
+      <li>Methods 表示「想做什麼」，Status Codes 表示「結果如何」，Headers 表示「補充條件與描述」。</li>
+      <li>HTTPS 讓資料在傳輸過程中更安全，是現代網站的基本配置。</li>
+      <li>除了讀範例，你也應該能用 DevTools 或 curl 實際觀察一次 HTTP request / response。</li>
+      <li>AJAX 並不是另一套通訊協定，而是把本章的 HTTP 規則交給 JavaScript 來主動使用。</li>
+    </ul>
+  </div>
+</section>
+
+      <div id="page-nav"></div>
+    </main>
+  </div>
+
+  <script src="../../../../../node_modules/mermaid/dist/mermaid.min.js"></script>
+  <script defer src="../assets/app_b11.js"></script>
+</body>
+</html>

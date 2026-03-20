@@ -1,0 +1,443 @@
+<!-- Path: Network/WEB Service/Content/b11/pages | Timestamp: 2026-03-19 20:18:24 | Version: b11 -->
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>08 JavaScript 全貌｜WEB Service 教學網站</title>
+  <link rel="stylesheet" href="../assets/styles_b01.css">
+</head>
+<body data-root=".." data-page="js-architecture">
+  <div class="site-shell">
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <small>Chapter 08</small>
+        <h2>JavaScript：從前端到後端的整體架構</h2>
+        <p class="sidebar-intro">把 JavaScript 的歷史、瀏覽器端角色、常用套件、Node.js Runtime 與前後端資料流放進同一張學習地圖。</p>
+      </div>
+      <nav id="site-nav"></nav>
+      <section class="sidebar-tips">
+        <h3>本章重點</h3>
+        <ul>
+          <li>看懂 JavaScript 為什麼會從瀏覽器腳本演變成全端語言。</li>
+          <li>理解 Library、Toolkit、Framework、Runtime 的分工。</li>
+          <li>把 DOM、API、Node.js 與畫面更新串成完整流程。</li>
+        </ul>
+      </section>
+    </aside>
+
+    <main class="content">
+      <section class="hero">
+        <span class="eyebrow">Chapter 08 / JavaScript 全貌</span>
+        <h1>從瀏覽器腳本到全端開發：把 JavaScript 的整體架構一次看懂</h1>
+        <p>
+          如果第 05 章教你 JavaScript 怎麼操作 DOM，第 06 章教你 Web server 怎麼回應請求，第 07 章教你框架為什麼存在，
+          那這一章就是把這三件事重新串起來：<strong>JavaScript 為什麼會一路從前端走到後端？各種 library、toolkit、framework 到底差在哪裡？</strong>
+        </p>
+      </section>
+
+      <section class="content-section">
+        <h2>Why：為什麼需要一章專門整理 JavaScript 全貌？</h2>
+        <p>
+          很多學生會分段學到 HTML / CSS、DOM、HTTP、Node.js、React 或 Express，但腦中卻沒有一張完整地圖。
+          結果常常會知道工具名稱，卻不知道它們在同一套 Web 架構中的位置。
+          這一章的目標，就是把「歷史演進」與「技術分工」一起講清楚。
+        </p>
+        <div class="callout">
+          <strong>一句話先記住：</strong>
+          JavaScript 不只是一種語法，它已經發展成一個跨越瀏覽器、伺服器、套件管理、前端框架與全端整合的完整生態系。
+        </div>
+      </section>
+
+      <section class="content-section">
+        <h2>發展歷史：JavaScript 為什麼會一路擴張？</h2>
+        <div class="mermaid">
+flowchart LR
+    A[1995 瀏覽器腳本
+處理表單與簡單互動] --> B[2005 AJAX / Web 2.0
+jQuery 簡化 DOM 與跨瀏覽器問題]
+    B --> C[2009 Node.js
+JavaScript 進入伺服器端]
+    C --> D[2015 ES6+ / npm
+模組化與語法現代化]
+    D --> E[SPA / 元件化
+React Vue Angular]
+    E --> F[現代全端整合
+Next.js Nuxt NestJS]
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>時代</th>
+                <th>主要痛點</th>
+                <th>代表演進</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>早期瀏覽器腳本</td>
+                <td>只能做簡單互動，功能較零散</td>
+                <td>表單驗證、alert、簡單事件處理</td>
+              </tr>
+              <tr>
+                <td>AJAX / jQuery 時代</td>
+                <td>DOM 操作繁瑣、跨瀏覽器差異大</td>
+                <td>jQuery 讓選取節點、事件、AJAX 更簡單</td>
+              </tr>
+              <tr>
+                <td>Node.js 興起</td>
+                <td>前後端語言分離，工具鏈分散</td>
+                <td>JavaScript 能在伺服器端執行，形成全端可能</td>
+              </tr>
+              <tr>
+                <td>ES6+ 與 npm 生態</td>
+                <td>大型專案需要更好的模組化與重用</td>
+                <td>import / export、套件管理、建構工具普及</td>
+              </tr>
+              <tr>
+                <td>框架 / 全端整合</td>
+                <td>大型應用的狀態、路由、部署更複雜</td>
+                <td>React / Vue / Next.js / NestJS 等生態成熟</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="content-section">
+        <h2>JavaScript 在瀏覽器中扮演什麼角色？</h2>
+        <div class="grid-3">
+          <article class="definition-card">
+            <h3>操作 DOM</h3>
+            <p>改文字、切換 class、建立節點，讓畫面在不重整整頁的情況下更新。</p>
+          </article>
+          <article class="definition-card">
+            <h3>回應事件</h3>
+            <p>接住 click、input、submit 等事件，決定使用者操作後要做什麼。</p>
+          </article>
+          <article class="definition-card">
+            <h3>呼叫 API</h3>
+            <p>透過 <code>fetch()</code>、Axios 等工具向伺服器拿資料，再把結果渲染到頁面上。</p>
+          </article>
+        </div>
+        <div class="note">
+          <strong>對照前面章節：</strong>
+          如果你想複習 DOM、事件與 CSS 互動，請回看 <a href="./05-javascript-dom-css_b11.html">第 05 章</a>；
+          如果你想理解伺服器如何接住請求，可對照 <a href="./06-web-server-examples_b11.html">第 06 章</a>。
+        </div>
+      </section>
+
+      <section class="content-section">
+        <h2>先用階層順序看：Web server、Runtime、Framework、Toolkit、Library</h2>
+        <p class="section-intro">
+          這裡先不用急著背工具名稱，而是先用教學上最容易理解的「由外到內」順序來看：
+          <strong>Web server → Runtime → Framework → Toolkit → Library</strong>。
+          這樣比較容易把不同名詞放回同一張架構圖裡。
+        </p>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>層次</th>
+                <th>類型</th>
+                <th>核心概念</th>
+                <th>誰主導流程？</th>
+                <th>例子</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>入口層</td>
+                <td>Web server</td>
+                <td>負責接 HTTP request、回應資源或轉送請求</td>
+                <td>入口流程為主，不負責你的應用邏輯結構</td>
+                <td>Nginx、Apache、Node 內建 <code>http</code> server</td>
+              </tr>
+              <tr>
+                <td>執行層</td>
+                <td>Runtime</td>
+                <td>讓程式碼真的跑起來的執行環境</td>
+                <td>不負責你的商業邏輯結構</td>
+                <td>Node.js、Python、JVM</td>
+              </tr>
+              <tr>
+                <td>應用結構層</td>
+                <td>Framework</td>
+                <td>提供整體結構、生命週期與慣例</td>
+                <td>框架主導較多流程</td>
+                <td>Angular、Next.js、NestJS、Django</td>
+              </tr>
+              <tr>
+                <td>介面工具層</td>
+                <td>Toolkit / UI framework</td>
+                <td>提供現成元件、樣式與輕量互動模式</td>
+                <td>多半仍由你控制畫面流程</td>
+                <td>Bootstrap、Alpine.js</td>
+              </tr>
+              <tr>
+                <td>功能輔助層</td>
+                <td>Library</td>
+                <td>預先寫好的功能集合</td>
+                <td>通常由你的程式主動呼叫</td>
+                <td>jQuery、Axios、Lodash、D3.js</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="callout">
+          <strong>教學上常見誤區：</strong>
+          這裡的順序是「方便理解整體架構」的教學順序，不代表所有工具都會形成單一、固定的技術依賴鏈。<br>
+          Node.js 是 Runtime，不是 Framework；Bootstrap 比較接近 UI toolkit / CSS framework；React 常被叫做 UI library，但實務上又常和框架生態一起討論，所以教學時要特別說明它所處的層次。
+        </div>
+      </section>
+
+      <section class="content-section">
+        <h2>熱門 JavaScript 工具與應用領域</h2>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>分類</th>
+                <th>代表工具</th>
+                <th>常見用途</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>DOM 操作 / 經典入門</td>
+                <td>jQuery</td>
+                <td>簡化 DOM 選取、事件與 AJAX</td>
+              </tr>
+              <tr>
+                <td>HTTP / AJAX</td>
+                <td>Axios</td>
+                <td>呼叫 API、設定攔截器、統一錯誤處理</td>
+              </tr>
+              <tr>
+                <td>資料處理工具庫</td>
+                <td>Lodash</td>
+                <td>陣列、物件、節流、防抖與資料轉換</td>
+              </tr>
+              <tr>
+                <td>動畫效果</td>
+                <td>Anime.js、GSAP</td>
+                <td>互動動畫、時間軸、進階動態效果</td>
+              </tr>
+              <tr>
+                <td>資料視覺化</td>
+                <td>D3.js、Chart.js</td>
+                <td>圖表、儀表板、互動資料展示</td>
+              </tr>
+              <tr>
+                <td>3D / WebGL</td>
+                <td>Three.js</td>
+                <td>3D 場景、模型展示、互動視覺</td>
+              </tr>
+              <tr>
+                <td>輕量互動</td>
+                <td>Alpine.js</td>
+                <td>在 HTML 中快速加入簡單狀態與互動</td>
+              </tr>
+              <tr>
+                <td>UI toolkit / CSS framework</td>
+                <td>Bootstrap</td>
+                <td>快速建立版型、元件與響應式介面</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="content-section">
+        <h2>延伸閱讀：如果想更深入理解 jQuery</h2>
+        <div class="note">
+          <strong>為什麼還要專門學 jQuery？</strong>
+          因為它不只是「一個舊 library」，更代表一整個 AJAX / Web 2.0 時代的開發思維。
+          如果你想看 jQuery 如何用更短的語法做 DOM 選取、事件綁定與 AJAX，並理解它為什麼在舊專案裡仍然常見，請接著看
+          <a href="./09-jquery-detailed-guide_b11.html">第 09 章：jQuery 詳解</a>；若想從通用原理理解 AJAX 的功能、流程與底層運作，可再讀 <a href="./10-ajax-fundamentals_b11.html">第 10 章：AJAX 原理</a>；若想看這些術語如何一起出現在真實網站描述中，可再讀 <a href="./11-practical-stack-case_b11.html">第 11 章：實務技術堆疊解讀</a>。
+        </div>
+      </section>
+
+      <section class="content-section">
+        <h2>模組化與套件管理：為什麼 npm 會變重要？</h2>
+        <div class="grid-3">
+          <article class="summary-card">
+            <h3>CDN 載入</h3>
+            <p>適合快速示範、教材實驗與簡單頁面，把套件直接用 <code>&lt;script&gt;</code> 載入。</p>
+          </article>
+          <article class="summary-card">
+            <h3>npm 安裝</h3>
+            <p>適合正式專案，能管理版本、依賴與建構流程，例如 <code>npm install axios</code>。</p>
+          </article>
+          <article class="summary-card">
+            <h3>ES Modules</h3>
+            <p>讓程式碼可分檔、重用與維護，是現代 JavaScript 專案的重要基礎。</p>
+          </article>
+        </div>
+        <div class="note">
+          <strong>重點：</strong>
+          當 JavaScript 不再只是幾行嵌在 HTML 裡的小腳本，而是成長為多頁面、多模組、多人協作的專案時，模組化與套件管理就變成必要條件。
+        </div>
+      </section>
+
+      <section class="content-section">
+        <h2>Example：前端 JavaScript 如何呼叫後端 API？</h2>
+        <div class="example-showcase" data-example>
+          <div class="example-head">
+            <h3>Browser fetch + Express API</h3>
+            <p>這個例子把瀏覽器端與伺服器端 JavaScript 串在一起，是最典型的前後端互動模型。</p>
+          </div>
+          <div class="example-tabs" role="tablist">
+            <button class="example-tab is-active" type="button" aria-selected="true" data-tab-target="code">語法</button>
+            <button class="example-tab" type="button" aria-selected="false" data-tab-target="result">結果</button>
+            <button class="example-tab" type="button" aria-selected="false" data-tab-target="explain">解說</button>
+          </div>
+          <div class="example-panel is-active" data-tab-panel="code">
+<pre><code>// Browser
+async function loadStatus() {
+  const response = await fetch("/api/status");
+  const data = await response.json();
+  document.querySelector("#status").textContent = data.message;
+}
+
+loadStatus();
+
+// Express
+const express = require("express");
+const app = express();
+
+app.get("/api/status", (req, res) => {
+  res.json({ message: "JavaScript 已串起前端與後端" });
+});
+
+app.listen(3000);</code></pre>
+          </div>
+          <div class="example-panel" data-tab-panel="result">
+            <div class="response-window">
+              <strong>頁面看到的結果</strong>
+              <p id="status">JavaScript 已串起前端與後端</p>
+            </div>
+          </div>
+          <div class="example-panel" data-tab-panel="explain">
+            <ul class="plain-list">
+              <li>瀏覽器端 JavaScript 負責發送請求並更新 DOM，這正是 AJAX 互動的核心模式。</li>
+              <li>Node.js Runtime 裡執行的 Express 負責接收請求與回傳 JSON。</li>
+              <li>同樣都是 JavaScript，但一端跑在瀏覽器，一端跑在伺服器。</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="content-section">
+        <h2>JavaScript 在後端中的角色</h2>
+        <div class="mermaid">
+flowchart LR
+    A[Browser UI] --> B[fetch / Axios]
+    B --> C[HTTP API]
+    C --> D[Node.js Runtime]
+    D --> E[Express / NestJS]
+    E --> F[(Database)]
+    E --> G[JSON / HTML Response]
+    G --> A
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>層次</th>
+                <th>主要責任</th>
+                <th>代表工具</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Browser</td>
+                <td>顯示畫面、接事件、更新 DOM</td>
+                <td>原生 JS、React、Vue、Alpine.js</td>
+              </tr>
+              <tr>
+                <td>HTTP / API</td>
+                <td>交換資料格式與狀態碼</td>
+                <td>fetch、Axios、HTTP</td>
+              </tr>
+              <tr>
+                <td>Runtime</td>
+                <td>執行伺服器端 JavaScript</td>
+                <td>Node.js</td>
+              </tr>
+              <tr>
+                <td>Backend Framework</td>
+                <td>管理路由、驗證、模組、商業邏輯</td>
+                <td>Express、NestJS</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="content-section">
+        <h2>從前端到後端的完整請求流程</h2>
+        <div class="mermaid">
+sequenceDiagram
+    participant User as 使用者
+    participant Browser as Browser JavaScript
+    participant Server as Node.js / Framework
+    participant DB as Database
+    User->>Browser: 點擊按鈕 / 輸入資料
+    Browser->>Server: fetch / Axios 發送 HTTP Request
+    Server->>DB: 查詢或寫入資料
+    DB-->>Server: 回傳資料結果
+    Server-->>Browser: JSON / HTML Response
+    Browser->>Browser: 更新 DOM / 狀態 / 畫面
+    Browser-->>User: 顯示新內容
+        </div>
+        <div class="note">
+          <strong>這就是全端視角：</strong>
+          使用者看到的是一個畫面，但背後其實是瀏覽器端 JavaScript、HTTP、伺服器端 JavaScript 與資料層協同運作的結果。
+        </div>
+      </section>
+
+      <section class="content-section">
+        <h2>學習路徑建議：應該先學什麼？</h2>
+        <div class="grid-3">
+          <article class="summary-card">
+            <h3>第 1 步：先學原生</h3>
+            <p>先會 HTML、CSS、DOM、事件與 <code>fetch()</code>，才能知道套件幫你省了什麼。</p>
+          </article>
+          <article class="summary-card">
+            <h3>第 2 步：再學工具</h3>
+            <p>根據需求選擇 jQuery、Axios、Chart.js、Bootstrap 等工具，不要一次全背。</p>
+          </article>
+          <article class="summary-card">
+            <h3>第 3 步：最後學框架</h3>
+            <p>當畫面、路由、模組與團隊協作需求變大，再進入 React / Next.js / NestJS 等生態。</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="content-section">
+        <h2>Summary：本章結論</h2>
+        <div class="summary-card">
+          <ul class="summary-list">
+            <li>JavaScript 的發展歷史，解釋了為什麼會先有 jQuery，再有 Node.js、現代框架與全端工具鏈。</li>
+            <li>Library 是預先寫好的功能集合；Toolkit 強調現成元件與樣式；Framework 則提供整體結構；Runtime 負責讓程式跑起來。</li>
+            <li>JavaScript 不只存在瀏覽器，也能在 Node.js 中負責伺服器端邏輯，因此能形成前後端共享語言的開發模式。</li>
+            <li>如果你能把 DOM、API、Runtime、Framework 與資料流串在一起，就比較不會把工具名稱背成一堆零散名詞。</li>
+          </ul>
+        </div>
+      </section>
+
+      <footer class="page-footer">
+        <strong>閱讀建議：</strong>
+        如果你已經讀完第 05、06、07 章，這一章就是把它們整合成「JavaScript 全貌」的收束頁；之後回頭看框架或套件選型時，會更有脈絡。
+      </footer>
+
+      <div id="page-nav"></div>
+    </main>
+  </div>
+
+  <script src="../../../../../node_modules/mermaid/dist/mermaid.min.js"></script>
+  <script defer src="../assets/app_b11.js"></script>
+</body>
+</html>

@@ -1,0 +1,409 @@
+<!-- Path: Network/WEB Service/Content/b11/pages | Timestamp: 2026-03-19 20:18:24 | Version: b11 -->
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>10 AJAX：非同步請求與局部更新原理｜WEB Service 教學網站</title>
+  <link rel="stylesheet" href="../assets/styles_b01.css">
+</head>
+<body data-root=".." data-page="ajax-guide">
+  <div class="site-shell">
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <small>Chapter 10</small>
+        <h2>AJAX：從 HTTP 到頁面局部更新</h2>
+        <p class="sidebar-intro">把 AJAX 看懂，就能把 HTTP、JavaScript、DOM 與 API 串成一條真正會動的資料流。</p>
+      </div>
+      <nav id="site-nav"></nav>
+      <section class="sidebar-tips">
+        <h3>本章重點</h3>
+        <ul>
+          <li>理解 AJAX 不是新協定，而是一種互動模式。</li>
+          <li>掌握它的功能、運作流程與底層原理。</li>
+          <li>看懂 <code>fetch()</code>、<code>$.ajax()</code> 與 WebSocket 之間的差異。</li>
+        </ul>
+      </section>
+    </aside>
+
+    <main class="content">
+      <section class="hero">
+        <span class="eyebrow">Chapter 10 / AJAX</span>
+        <h1>AJAX 是什麼？它如何讓網頁不用整頁重載也能更新資料？</h1>
+        <p>
+          AJAX 是 <strong>Asynchronous JavaScript and XML</strong> 的縮寫。
+          雖然名稱裡有 XML，但今天更常見的回應格式其實是 JSON。
+          它的核心觀念不是一個全新的通訊協定，而是：<strong>讓瀏覽器中的 JavaScript 主動發送 HTTP 請求，等伺服器回應後，再只更新需要改變的那一部分 DOM</strong>。
+        </p>
+      </section>
+
+      <section class="content-section">
+        <h2>What：AJAX 到底是什麼？</h2>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>字詞</th>
+                <th>原本意思</th>
+                <th>今天應該怎麼理解</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Asynchronous</td>
+                <td>非同步</td>
+                <td>送出請求後，頁面不必卡住或整頁刷新；等回應回來時，再執行後續更新。</td>
+              </tr>
+              <tr>
+                <td>JavaScript</td>
+                <td>瀏覽器端腳本</td>
+                <td>由頁面中的 JavaScript 主動發送請求、處理回應、更新 DOM。</td>
+              </tr>
+              <tr>
+                <td>XML</td>
+                <td>早期常見資料格式</td>
+                <td>今天多半改用 JSON，但 AJAX 這個名稱仍沿用下來。</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="callout">
+          <strong>一句話理解：</strong>
+          AJAX = <strong>HTTP + JavaScript + DOM 更新</strong> 的組合式互動模型，而不是另一套獨立於 HTTP 之外的新網路協定。
+        </div>
+      </section>
+
+      <section class="content-section">
+        <h2>Why：AJAX 有什麼功能？為什麼重要？</h2>
+        <div class="grid-3">
+          <article class="definition-card">
+            <h3>局部更新畫面</h3>
+            <p>只更新通知數、留言區、查詢結果、購物車數量，不必整頁重新整理。</p>
+          </article>
+          <article class="definition-card">
+            <h3>前端可直接呼叫 API</h3>
+            <p>瀏覽器能請求 JSON 資料，再由 JavaScript 決定怎麼呈現到畫面上。</p>
+          </article>
+          <article class="definition-card">
+            <h3>互動更流暢</h3>
+            <p>即時搜尋、表單驗證、儀表板刷新、聊天室訊息載入等，都仰賴這種非同步請求模式。</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="content-section">
+        <h2>How：AJAX 的運作方式</h2>
+        <div class="mermaid">
+sequenceDiagram
+    participant U as 使用者
+    participant B as Browser UI
+    participant J as JavaScript
+    participant S as Server / API
+    U->>B: 點按按鈕 / 輸入查詢
+    B->>J: 觸發 click / input / submit 事件
+    J->>S: fetch / $.ajax() 發送 HTTP request
+    S-->>J: 回傳 JSON / XML / HTML 片段
+    J->>B: 更新 DOM 的局部區塊
+        </div>
+        <div class="grid-2">
+          <article class="summary-card">
+            <h3>步驟 1：事件觸發</h3>
+            <p>使用者點按按鈕、送出表單或輸入文字後，瀏覽器觸發 JavaScript 事件處理函式。</p>
+          </article>
+          <article class="summary-card">
+            <h3>步驟 2：發送請求</h3>
+            <p>JavaScript 用 <code>fetch()</code>、Axios、<code>XMLHttpRequest</code> 或 <code>$.ajax()</code> 把 HTTP request 送到 API。</p>
+          </article>
+          <article class="summary-card">
+            <h3>步驟 3：收到資料</h3>
+            <p>伺服器回傳 JSON、文字、HTML 片段或其他格式，JavaScript 再把資料解析出來。</p>
+          </article>
+          <article class="summary-card">
+            <h3>步驟 4：局部更新 DOM</h3>
+            <p>JavaScript 只改需要更新的節點，因此畫面變化較快，也保留使用者目前的操作上下文。</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="content-section">
+        <h2>Principle：AJAX 的底層原理其實靠哪些東西？</h2>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>底層要素</th>
+                <th>它負責什麼</th>
+                <th>你在畫面上看到的效果</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>HTTP</td>
+                <td>提供 request / response 規則、方法、狀態碼與標頭</td>
+                <td>前端能送出 <code>GET</code>、<code>POST</code> 等請求，伺服器能回傳 JSON / HTML</td>
+              </tr>
+              <tr>
+                <td>JavaScript</td>
+                <td>負責發送請求、等待回應、解析資料</td>
+                <td>可寫 <code>fetch()</code>、Promise、<code>async/await</code> 等非同步程式</td>
+              </tr>
+              <tr>
+                <td>DOM</td>
+                <td>作為頁面可被操作的結構</td>
+                <td>可只更新某個列表、數字、表格、訊息區塊，而非整頁刷新</td>
+              </tr>
+              <tr>
+                <td>API / Server</td>
+                <td>接收請求、處理邏輯、回傳資料</td>
+                <td>頁面能取得最新資料並同步畫面狀態</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="note">
+          <strong>重要：</strong>
+          所謂「非同步」不代表請求會憑空完成，而是代表 JavaScript 不必用「整頁停住等結果」的方式工作；回應回來後，再執行 callback、Promise 或 <code>async/await</code> 後面的程式。
+        </div>
+      </section>
+
+      <section class="content-section">
+        <h2>Example 1：用 <code>fetch()</code> 讀取狀態並更新畫面</h2>
+        <div class="example-showcase" data-example>
+          <div class="example-head">
+            <h3>最常見的 AJAX 讀取流程</h3>
+            <p>這個例子同時示範了：事件 → HTTP 請求 → JSON 回應 → DOM 更新。</p>
+          </div>
+          <div class="example-tabs" role="tablist">
+            <button class="example-tab is-active" type="button" aria-selected="true" data-tab-target="code">語法</button>
+            <button class="example-tab" type="button" aria-selected="false" data-tab-target="result">結果</button>
+            <button class="example-tab" type="button" aria-selected="false" data-tab-target="explain">解說</button>
+          </div>
+          <div class="example-panel is-active" data-tab-panel="code">
+<pre><code>&lt;button id="load-status"&gt;讀取狀態&lt;/button&gt;
+&lt;p id="status"&gt;尚未讀取&lt;/p&gt;
+
+&lt;script&gt;
+async function loadStatus() {
+  const response = await fetch("/api/status");
+  const data = await response.json();
+  document.querySelector("#status").textContent = data.message;
+}
+
+document
+  .querySelector("#load-status")
+  .addEventListener("click", loadStatus);
+&lt;/script&gt;</code></pre>
+          </div>
+          <div class="example-panel" data-tab-panel="result">
+            <div class="browser-window">
+              <div class="browser-chrome"><span></span><span></span><span></span></div>
+              <div class="preview-window">
+                <button style="padding:10px 14px;border:none;border-radius:12px;background:#2563eb;color:#fff;">讀取狀態</button>
+                <p style="margin-top:16px;color:#0f172a;font-weight:700;">服務狀態：ok，資料已載入。</p>
+              </div>
+            </div>
+          </div>
+          <div class="example-panel" data-tab-panel="explain">
+            <ul class="plain-list">
+              <li><code>fetch()</code> 送出的是 HTTP request，不是特殊的 AJAX 專用協定。</li>
+              <li><code>await response.json()</code> 代表把回傳的 JSON body 解析成 JavaScript 物件。</li>
+              <li>最後再用 DOM API 把資料放回畫面，這就是「局部更新」的核心。</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="content-section">
+        <h2>Example 2：送出表單後，只更新留言列表</h2>
+        <div class="example-showcase" data-example>
+          <div class="example-head">
+            <h3>AJAX 最典型的使用情境之一</h3>
+            <p>如果不用 AJAX，傳統作法常常是整頁重新整理；用 AJAX 則可以只補上新資料。</p>
+          </div>
+          <div class="example-tabs" role="tablist">
+            <button class="example-tab is-active" type="button" aria-selected="true" data-tab-target="code">語法</button>
+            <button class="example-tab" type="button" aria-selected="false" data-tab-target="result">結果</button>
+            <button class="example-tab" type="button" aria-selected="false" data-tab-target="explain">解說</button>
+          </div>
+          <div class="example-panel is-active" data-tab-panel="code">
+<pre><code>const form = document.querySelector("#message-form");
+const list = document.querySelector("#message-list");
+
+form.addEventListener("submit", async (event) =&gt; {
+  event.preventDefault();
+
+  const message = document.querySelector("#message-input").value;
+  const response = await fetch("/api/messages", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ message })
+  });
+
+  const data = await response.json();
+  list.insertAdjacentHTML("beforeend", `&lt;li&gt;${data.message}&lt;/li&gt;`);
+});</code></pre>
+          </div>
+          <div class="example-panel" data-tab-panel="result">
+            <div class="response-window">
+              <strong>畫面結果</strong>
+              <ul class="plain-list">
+                <li>原本留言 1</li>
+                <li>原本留言 2</li>
+                <li>新留言已加入列表</li>
+              </ul>
+            </div>
+          </div>
+          <div class="example-panel" data-tab-panel="explain">
+            <ul class="plain-list">
+              <li><code>event.preventDefault()</code> 讓表單先不要用傳統方式整頁送出。</li>
+              <li>JavaScript 自己接手送出 <code>POST</code> 請求，拿到伺服器回應後再更新列表。</li>
+              <li>這種模式常見於留言板、購物車、後台表單與即時驗證。</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="content-section">
+        <h2>AJAX、jQuery、fetch、Axios 之間的關係</h2>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>工具 / 名詞</th>
+                <th>它是什麼</th>
+                <th>和 AJAX 的關係</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>AJAX</td>
+                <td>互動模式 / 概念</td>
+                <td>描述「用 JavaScript 非同步發送 HTTP 請求並更新畫面」這件事</td>
+              </tr>
+              <tr>
+                <td><code>XMLHttpRequest</code></td>
+                <td>早期瀏覽器 API</td>
+                <td>最早常用來實作 AJAX 的原生方法</td>
+              </tr>
+              <tr>
+                <td><code>$.ajax()</code></td>
+                <td>jQuery 提供的方法</td>
+                <td>把早期 AJAX 寫法包裝得更短、更一致</td>
+              </tr>
+              <tr>
+                <td><code>fetch()</code></td>
+                <td>現代原生 API</td>
+                <td>今天最常見的 AJAX 實作方式之一</td>
+              </tr>
+              <tr>
+                <td>Axios</td>
+                <td>HTTP library</td>
+                <td>用更一致的介面處理 AJAX / API 請求，常見於正式專案</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="note">
+          <strong>教學上可這樣理解：</strong>
+          AJAX 是「要做的事」，<code>fetch()</code> / Axios / <code>$.ajax()</code> 則是「完成這件事的工具」。
+        </div>
+      </section>
+
+      <section class="content-section">
+        <h2>AJAX vs fetch vs WebSocket：比較圖</h2>
+        <div class="mermaid">
+flowchart LR
+    A[AJAX
+互動概念] --> B[fetch / Axios / $.ajax()
+常見實作工具]
+    B --> C[HTTP request / response
+一次一個往返]
+    C --> D[收到回應後更新 DOM]
+    E[WebSocket
+持續連線協定] --> F[建立 persistent connection]
+    F --> G[Client / Server 可雙向傳資料]
+    G --> H[聊天室 / 即時通知 / 協作編輯]
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>名詞</th>
+                <th>本質</th>
+                <th>通訊方式</th>
+                <th>典型用途</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>AJAX</td>
+                <td>互動模式 / 概念</td>
+                <td>通常建立在 HTTP request / response 上</td>
+                <td>局部更新畫面、表單送出、查詢 API</td>
+              </tr>
+              <tr>
+                <td><code>fetch()</code></td>
+                <td>瀏覽器原生 API</td>
+                <td>用 HTTP 發送單次請求，再等待單次回應</td>
+                <td>今天最常見的 AJAX 寫法之一</td>
+              </tr>
+              <tr>
+                <td>WebSocket</td>
+                <td>持續連線協定</td>
+                <td>建立一次連線後，雙方都能主動推送訊息</td>
+                <td>聊天室、即時通知、多人同步、遊戲狀態</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="note">
+          <strong>關鍵判斷：</strong>
+          <code>fetch()</code> 不是 AJAX 的對手，而是 AJAX 的常用做法；WebSocket 則不是「比較快的 AJAX」，而是適用於<strong>持續雙向通訊</strong>的另一種模型。
+        </div>
+      </section>
+
+      <section class="content-section">
+        <h2>常見誤解與補充</h2>
+        <div class="grid-3">
+          <article class="summary-card">
+            <h3>誤解 1：AJAX = XML</h3>
+            <p>不是。名字保留了歷史，但今天多數 API 都回 JSON。</p>
+          </article>
+          <article class="summary-card">
+            <h3>誤解 2：AJAX = jQuery</h3>
+            <p>不是。jQuery 只是曾經很流行的 AJAX 實作工具之一。</p>
+          </article>
+          <article class="summary-card">
+            <h3>誤解 3：AJAX = WebSocket</h3>
+            <p>也不是。AJAX 仍是 request / response；WebSocket 則是持續連線、雙向通訊。</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="content-section">
+        <h2>Summary：本章結論</h2>
+        <div class="summary-card">
+          <ul class="summary-list">
+            <li>AJAX 不是新協定，而是把 HTTP request / response 交給 JavaScript 主動運用的一種互動模式。</li>
+            <li>它的核心價值是：不用整頁重新整理，也能向伺服器取資料並局部更新 DOM。</li>
+            <li><code>fetch()</code>、Axios、<code>$.ajax()</code> 都可以用來實作 AJAX；差別在 API 風格與時代背景。</li>
+            <li>要真正看懂 AJAX，必須同時理解 HTTP、JavaScript 非同步流程、API 回應格式與 DOM 更新之間的分工。</li>
+          </ul>
+        </div>
+      </section>
+
+      <footer class="page-footer">
+        <strong>閱讀建議：</strong>
+        如果你要把這章和前面內容串起來，可回看 <a href="./03-http-protocol_b11.html">第 03 章 HTTP</a>、<a href="./05-javascript-dom-css_b11.html">第 05 章 DOM 與互動</a>、<a href="./09-jquery-detailed-guide_b11.html">第 09 章 jQuery</a> 的 <code>$.ajax()</code> 範例，以及 <a href="./11-practical-stack-case_b11.html">第 11 章實務技術堆疊</a>。
+      </footer>
+
+      <div id="page-nav"></div>
+    </main>
+  </div>
+
+  <script src="../../../../../node_modules/mermaid/dist/mermaid.min.js"></script>
+  <script defer src="../assets/app_b11.js"></script>
+</body>
+</html>

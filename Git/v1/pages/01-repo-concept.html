@@ -1,0 +1,321 @@
+<!-- Path: Network/Git/v1/pages | Timestamp: 2026-03-19 19:17:37 | Version: b01 -->
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>01 Repository 概念與原理｜Git 教學</title>
+  <link rel="stylesheet" href="../assets/styles_b01.css">
+</head>
+<body data-root=".." data-page="repo">
+  <div class="site-shell">
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <small>Git &amp; GitHub Teaching Site</small>
+        <h2>Git 版本管理與 GitHub 協作</h2>
+        <p class="sidebar-intro">系統介紹 Git 的核心概念、基本操作與 GitHub 平台的協作流程。</p>
+      </div>
+      <nav id="site-nav"></nav>
+    </aside>
+
+    <main class="content">
+      <section class="hero">
+        <span class="eyebrow">第 01 章</span>
+        <h1>Repository 概念與原理</h1>
+        <p>在學任何 Git 指令之前，先搞清楚「Repository」到底是什麼——它不只是一個資料夾，而是 Git 記錄所有版本歷史的核心資料庫。</p>
+      </section>
+
+      <!-- 1.1 為什麼需要版本控制 -->
+      <section class="content-section">
+        <h2>為什麼需要版本控制？</h2>
+        <p>想像你正在寫一份報告，你可能會這樣做：</p>
+        <div class="terminal-window">
+報告_v1.docx
+報告_v2_修正.docx
+報告_v3_老師回饋.docx
+報告_final.docx
+報告_final_真的最終版.docx
+報告_final_final_交出去的.docx
+        </div>
+        <p>這種「手動版本管理」有幾個致命問題：</p>
+        <div class="grid-3">
+          <article class="stat-card">
+            <h3>❌ 無法追蹤差異</h3>
+            <p>你無法快速知道 v2 和 v3 之間到底改了哪幾行。</p>
+          </article>
+          <article class="stat-card">
+            <h3>❌ 無法安全回溯</h3>
+            <p>刪錯東西後，如果沒有備份就永遠找不回來。</p>
+          </article>
+          <article class="stat-card">
+            <h3>❌ 無法多人協作</h3>
+            <p>兩個人同時修改同一份檔案時，誰的版本為準？</p>
+          </article>
+        </div>
+        <div class="note">
+          <strong>版本控制系統（VCS, Version Control System）</strong>就是為了解決這些問題而誕生的工具。Git 是目前最流行的分散式版本控制系統，由 Linux 之父 Linus Torvalds 在 2005 年開發。
+        </div>
+      </section>
+
+      <!-- 1.2 Repository 的定義 -->
+      <section class="content-section">
+        <h2>Repository 的定義與用途</h2>
+        <p><strong>Repository（版本庫，簡稱 Repo）</strong>是 Git 用來儲存專案所有檔案與版本歷史的地方。一個 Repo 包含：</p>
+        <div class="grid-2">
+          <article class="definition-card">
+            <h3>工作目錄 Working Directory</h3>
+            <p>你實際看到、編輯的檔案所在的資料夾。這是你日常操作的地方。</p>
+          </article>
+          <article class="definition-card">
+            <h3>.git 目錄</h3>
+            <p>隱藏在專案根目錄下的資料夾，存放了 Git 的所有版本資料、設定與物件資料庫。這才是 Repo 的「本體」。</p>
+          </article>
+        </div>
+
+        <div class="mermaid">
+flowchart TB
+    subgraph "你的專案資料夾 (my-project/)"
+        WD["📁 工作目錄<br/>index.html<br/>style.css<br/>app.js"]
+        GIT["📁 .git/<br/>（版本庫本體）<br/>objects/<br/>refs/<br/>HEAD"]
+    end
+    WD -.- GIT
+    style GIT fill:#fde8e4,stroke:#f05033
+        </div>
+
+        <div class="note">
+          <strong>關鍵觀念：</strong>如果你刪除了 <code>.git</code> 資料夾，所有的版本歷史都會消失，但工作目錄中的檔案不會受影響。反過來說，只要 <code>.git</code> 還在，你就能還原任何一個歷史版本。
+        </div>
+      </section>
+
+      <!-- 1.3 Git 物件資料庫 -->
+      <section class="content-section">
+        <h2>Git 的物件資料庫</h2>
+        <p>Git 在 <code>.git/objects/</code> 中儲存了所有版本資料。這個資料庫由三種基本物件組成：</p>
+
+        <div class="grid-3">
+          <article class="definition-card">
+            <h3>Blob 物件</h3>
+            <p>儲存單一檔案的內容（不含檔名）。每個不同版本的檔案內容都會產生一個新的 blob。</p>
+            <div class="tag-row">
+              <span class="tag">檔案內容</span>
+              <span class="tag">二進位儲存</span>
+            </div>
+          </article>
+          <article class="definition-card">
+            <h3>Tree 物件</h3>
+            <p>類似資料夾，記錄了檔名與對應的 blob 或子 tree 的關聯。一個 tree 代表某一時刻的目錄結構。</p>
+            <div class="tag-row">
+              <span class="tag">目錄結構</span>
+              <span class="tag">檔名對應</span>
+            </div>
+          </article>
+          <article class="definition-card">
+            <h3>Commit 物件</h3>
+            <p>記錄一次提交，指向一個 tree（專案快照）、作者資訊、時間戳記與提交訊息，以及父 commit 的指標。</p>
+            <div class="tag-row">
+              <span class="tag">版本快照</span>
+              <span class="tag">歷史鏈結</span>
+            </div>
+          </article>
+        </div>
+
+        <h3>物件之間的關係</h3>
+        <div class="mermaid">
+flowchart TD
+    C1["Commit c3a2f...<br/>author: Alice<br/>date: 2026-03-19<br/>message: 'init project'"] --> T1["Tree a1b2c..."]
+    T1 --> B1["Blob e4f5g...<br/>index.html 的內容"]
+    T1 --> B2["Blob h6i7j...<br/>style.css 的內容"]
+    T1 --> T2["Tree k8l9m...<br/>（子目錄 src/）"]
+    T2 --> B3["Blob n0o1p...<br/>app.js 的內容"]
+        </div>
+      </section>
+
+      <!-- 1.4 SHA-1 雜湊 -->
+      <section class="content-section">
+        <h2>SHA-1 雜湊與物件 ID</h2>
+        <p>Git 中的每一個物件都有一個唯一的身份標識——<strong>SHA-1 雜湊值</strong>，這是一個 40 字元的十六進位字串。</p>
+
+        <div class="example-showcase" data-example>
+          <div class="example-head">
+            <h3>SHA-1 如何產生？</h3>
+            <p>Git 會對物件的「類型 + 大小 + 內容」進行 SHA-1 雜湊運算。</p>
+          </div>
+          <div class="example-tabs">
+            <button class="example-tab is-active" data-tab-target="sha-concept" aria-selected="true">概念</button>
+            <button class="example-tab" data-tab-target="sha-demo" aria-selected="false">實際操作</button>
+            <button class="example-tab" data-tab-target="sha-explain" aria-selected="false">解說</button>
+          </div>
+          <div class="example-panel is-active" data-tab-panel="sha-concept">
+            <div class="mermaid">
+flowchart LR
+    A["檔案內容<br/>'hello world'"] --> B["SHA-1 運算"]
+    B --> C["95d09f2b10...<br/>（40字元）"]
+            </div>
+            <p>相同的內容永遠產生相同的雜湊值；內容只要差一個字元，雜湊值就完全不同。</p>
+          </div>
+          <div class="example-panel" data-tab-panel="sha-demo">
+            <p>你可以用以下指令驗證 Git 的雜湊運算：</p>
+            <pre><code>$ echo "hello world" | git hash-object --stdin
+95d09f2b10159347eece71399a7e2e907ea3df4f
+
+$ echo "hello world!" | git hash-object --stdin
+cd0875583aabe89ee197ea133980a9085d08e497</code></pre>
+            <p>只多了一個驚嘆號，雜湊值就完全改變了。</p>
+          </div>
+          <div class="example-panel" data-tab-panel="sha-explain">
+            <p><strong>為什麼用 SHA-1？</strong></p>
+            <ul>
+              <li><strong>唯一性</strong>：不同的內容幾乎不可能產生相同的雜湊值（碰撞機率極低）。</li>
+              <li><strong>完整性</strong>：如果檔案被竄改，雜湊值會改變，Git 馬上就能偵測到。</li>
+              <li><strong>效率</strong>：只需比對 40 字元的字串，就能判斷兩個物件是否相同。</li>
+            </ul>
+            <div class="note">
+              <strong>補充：</strong>在日常使用中，你通常只需要看 SHA-1 的前 7 個字元（短 ID），例如 <code>c3a2f1b</code>，Git 會自動找到對應的完整 ID。
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 1.5 Index 暫存區 -->
+      <section class="content-section">
+        <h2>Index（暫存區 / Staging Area）</h2>
+        <p>在工作目錄和版本庫之間，Git 還有一個中間層——<strong>Index（暫存區）</strong>。它扮演「打包區」的角色：你先選擇要提交哪些變更，然後再一次 commit。</p>
+
+        <h3>Git 的三層架構</h3>
+        <div class="mermaid">
+flowchart LR
+    WD["📂 工作目錄<br/>Working Directory<br/>（你編輯檔案的地方）"]
+    IDX["📋 暫存區<br/>Index / Staging Area<br/>（準備要 commit 的內容）"]
+    REPO["🗄️ 版本庫<br/>Repository (.git)<br/>（永久保存的歷史紀錄）"]
+    WD -->|"git add"| IDX
+    IDX -->|"git commit"| REPO
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>層級</th>
+                <th>位置</th>
+                <th>說明</th>
+                <th>對應指令</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>工作目錄</td>
+                <td>你看到的檔案</td>
+                <td>你平常編輯、新增、刪除檔案的地方</td>
+                <td>一般檔案操作</td>
+              </tr>
+              <tr>
+                <td>暫存區（Index）</td>
+                <td><code>.git/index</code></td>
+                <td>暫時存放「這次要 commit」的變更清單</td>
+                <td><code>git add</code></td>
+              </tr>
+              <tr>
+                <td>版本庫</td>
+                <td><code>.git/objects/</code></td>
+                <td>所有已提交的版本快照，永久保存</td>
+                <td><code>git commit</code></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="note">
+          <strong>為什麼需要暫存區？</strong>因為你可能同時改了 5 個檔案，但只想先提交其中 2 個。暫存區讓你可以精確控制「這次 commit 包含哪些變更」。
+        </div>
+      </section>
+
+      <!-- 1.6 Local vs Remote -->
+      <section class="content-section">
+        <h2>Local Repository vs Remote Repository</h2>
+        <p>Git 是<strong>分散式版本控制</strong>，每個開發者的電腦上都有一份完整的版本庫。</p>
+
+        <div class="comparison">
+          <article class="comparison-card">
+            <h4>Local Repository（本地版本庫）</h4>
+            <p>存在你自己電腦上的 <code>.git</code> 目錄。你可以在完全離線的情況下進行 commit、查閱歷史、建立分支。</p>
+          </article>
+          <article class="comparison-card">
+            <h4>Remote Repository（遠端版本庫）</h4>
+            <p>存在伺服器上（例如 GitHub）的版本庫。用來同步團隊成員的工作成果，透過 <code>push</code> 與 <code>pull</code> 進行交換。</p>
+          </article>
+        </div>
+
+        <div class="mermaid">
+flowchart TB
+    subgraph "你的電腦"
+        L["Local Repo<br/>.git/"]
+    end
+    subgraph "GitHub 伺服器"
+        R["Remote Repo<br/>github.com/user/project"]
+    end
+    L -->|"git push"| R
+    R -->|"git pull"| L
+    R -->|"git clone"| L
+        </div>
+      </section>
+
+      <!-- 1.7 練習 -->
+      <section class="content-section">
+        <h2>🔧 動手練習</h2>
+        <div class="grid-2">
+          <article class="practice-card">
+            <h3>練習 1：觀察 .git 目錄</h3>
+            <p>建立一個新資料夾，執行 <code>git init</code>，然後觀察 <code>.git</code> 目錄中有哪些東西。</p>
+            <pre><code>$ mkdir my-first-repo
+$ cd my-first-repo
+$ git init
+$ ls -la .git/</code></pre>
+          </article>
+          <article class="practice-card">
+            <h3>練習 2：測試 SHA-1 雜湊</h3>
+            <p>用 <code>git hash-object</code> 測試不同內容產生的雜湊值，驗證「相同內容 = 相同 ID」。</p>
+            <pre><code>$ echo "test" | git hash-object --stdin
+$ echo "test" | git hash-object --stdin
+$ echo "test2" | git hash-object --stdin</code></pre>
+          </article>
+        </div>
+      </section>
+
+      <!-- 1.8 小結 -->
+      <section class="content-section">
+        <h2>本章小結</h2>
+        <div class="grid-2">
+          <article class="summary-card">
+            <h3>知識重點</h3>
+            <ul class="summary-list">
+              <li>Repository 是 Git 儲存版本歷史的核心單位。</li>
+              <li>Git 使用三種物件（blob、tree、commit）組成物件資料庫。</li>
+              <li>SHA-1 雜湊值是每個物件的唯一 ID。</li>
+              <li>Git 的三層架構：工作目錄 → 暫存區 → 版本庫。</li>
+              <li>Git 是分散式系統，本地與遠端各有一份完整的版本庫。</li>
+            </ul>
+          </article>
+          <article class="summary-card">
+            <h3>下一章預告</h3>
+            <ul class="summary-list">
+              <li>了解 <code>git init</code> 指令背後做了什麼。</li>
+              <li>深入探索 <code>.git</code> 目錄的每一個子目錄與檔案。</li>
+              <li>理解 HEAD、refs、config 等設定檔的用途。</li>
+            </ul>
+          </article>
+        </div>
+      </section>
+
+      <footer class="page-footer">
+        <strong>學習提示：</strong>
+        這一章的概念是後續所有操作的基礎。如果你能理解「Git 是用物件資料庫記錄快照」這個核心觀念，後面的指令學起來會非常順暢。
+      </footer>
+
+      <div id="page-nav"></div>
+    </main>
+  </div>
+
+  <script src="../../../../node_modules/mermaid/dist/mermaid.min.js"></script>
+  <script defer src="../assets/app_b01.js"></script>
+</body>
+</html>

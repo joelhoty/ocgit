@@ -1,0 +1,367 @@
+<!-- Path: Network/WEB Service/Content/b11/pages | Timestamp: 2026-03-19 20:18:24 | Version: b11 -->
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>09 jQuery 詳解｜WEB Service 教學網站</title>
+  <link rel="stylesheet" href="../assets/styles_b01.css">
+</head>
+<body data-root=".." data-page="jquery-guide">
+  <div class="site-shell">
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <small>Chapter 09</small>
+        <h2>jQuery：經典 JavaScript Library 詳解</h2>
+        <p class="sidebar-intro">理解 jQuery 為什麼流行、它幫你解決了哪些早期痛點，以及在今天應該怎麼看待它。</p>
+      </div>
+      <nav id="site-nav"></nav>
+      <section class="sidebar-tips">
+        <h3>本章重點</h3>
+        <ul>
+          <li>看懂 jQuery 在 AJAX / Web 2.0 時代為何重要。</li>
+          <li>掌握選取器、事件、class 操作與 AJAX 的典型寫法。</li>
+          <li>知道今天什麼情境仍然會遇到 jQuery。</li>
+        </ul>
+      </section>
+    </aside>
+
+    <main class="content">
+      <section class="hero">
+        <span class="eyebrow">Chapter 09 / jQuery</span>
+        <h1>從經典寫法理解 jQuery：它為什麼紅過？現在又該怎麼學？</h1>
+        <p>
+          在 React、Vue 與現代框架普及之前，很多互動網頁、後台管理介面、CMS 外掛與舊型商業網站，
+          幾乎都靠 jQuery 來處理 DOM、事件、動畫與 AJAX。理解它，不只是學一個舊工具，更是在理解 Web 前端曾經怎麼解決真實問題。
+        </p>
+      </section>
+
+      <section class="content-section">
+        <h2>Why：為什麼現在還值得學 jQuery？</h2>
+        <div class="grid-3">
+          <article class="definition-card">
+            <h3>理解歷史脈絡</h3>
+            <p>jQuery 幾乎定義了 AJAX / Web 2.0 時代的前端開發習慣，是 JavaScript 演進史的重要一段。</p>
+          </article>
+          <article class="definition-card">
+            <h3>維護舊專案</h3>
+            <p>許多舊網站、CMS 模板、教學範例與企業內部系統，現在仍然大量使用 jQuery。</p>
+          </article>
+          <article class="definition-card">
+            <h3>看懂抽象化</h3>
+            <p>jQuery 幫你把 DOM、事件與 AJAX 包裝成較短語法，能幫助你理解 library 在幫你省什麼工。</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="content-section">
+        <h2>What：jQuery 到底在幫你做什麼？</h2>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>能力</th>
+                <th>jQuery 幫你簡化什麼</th>
+                <th>典型寫法</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>選取元素</td>
+                <td>用類似 CSS selector 的方式快速找到 DOM 節點</td>
+                <td><code>$(".card")</code></td>
+              </tr>
+              <tr>
+                <td>事件處理</td>
+                <td>用簡短語法綁定 click、input、submit 等事件</td>
+                <td><code>$("#btn").on("click", ...)</code></td>
+              </tr>
+              <tr>
+                <td>樣式 / class 操作</td>
+                <td>快速切換 class、顯示 / 隱藏、做簡單動畫</td>
+                <td><code>addClass()</code>、<code>toggleClass()</code></td>
+              </tr>
+              <tr>
+                <td>AJAX</td>
+                <td>簡化非同步請求與回應處理</td>
+                <td><code>$.ajax()</code>、<code>$.get()</code></td>
+              </tr>
+              <tr>
+                <td>鏈式寫法</td>
+                <td>讓多個操作可以串在一起</td>
+                <td><code>$(...).addClass(...).text(...)</code></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="callout">
+          <strong>一句話理解：</strong>
+          jQuery 是一個 JavaScript Library，特別擅長把早期前端最常見的 DOM、事件與 AJAX 工作包裝成比較短、比較一致、跨瀏覽器差異較少的寫法。
+        </div>
+      </section>
+
+      <section class="content-section">
+        <h2>核心觀念：<code>$()</code> 是入口，鏈式寫法是特色</h2>
+        <div class="grid-2">
+          <article class="summary-card">
+            <h3>入口：<code>$()</code></h3>
+            <p>你通常會先用 <code>$()</code> 找到元素，再對它做文字、樣式、事件或動畫操作。</p>
+            <pre><code>$("#message")
+$(".menu-item")
+$(document)</code></pre>
+          </article>
+          <article class="summary-card">
+            <h3>特色：鏈式操作</h3>
+            <p>jQuery 常把多個動作串成一行，這也是它當年讓人覺得很順手的原因之一。</p>
+            <pre><code>$("#status")
+  .addClass("is-ready")
+  .text("載入完成")
+  .show();</code></pre>
+          </article>
+        </div>
+      </section>
+
+      <section class="content-section">
+        <h2>原生 JavaScript vs jQuery：差別在哪裡？</h2>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>任務</th>
+                <th>原生 JavaScript</th>
+                <th>jQuery</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>選取單一元素</td>
+                <td><code>document.querySelector("#title")</code></td>
+                <td><code>$("#title")</code></td>
+              </tr>
+              <tr>
+                <td>綁定 click 事件</td>
+                <td><code>button.addEventListener("click", handler)</code></td>
+                <td><code>$("#btn").on("click", handler)</code></td>
+              </tr>
+              <tr>
+                <td>改變文字</td>
+                <td><code>el.textContent = "Hello"</code></td>
+                <td><code>$("#msg").text("Hello")</code></td>
+              </tr>
+              <tr>
+                <td>發送 AJAX</td>
+                <td><code>fetch("/api/status")</code></td>
+                <td><code>$.get("/api/status")</code></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="note">
+          <strong>現在怎麼看這件事？</strong>
+          現代瀏覽器已經讓原生 JavaScript 變強很多，所以今天學 jQuery，不是因為它一定更先進，而是因為它能幫你理解前端 library 曾經如何解決真實痛點。
+        </div>
+      </section>
+
+      <section class="content-section">
+        <h2>Example 1：點擊按鈕後更新文字與 class</h2>
+        <div class="example-showcase" data-example>
+          <div class="example-head">
+            <h3>jQuery 版 DOM 互動</h3>
+            <p>這個例子最能看出 jQuery 和第 05 章原生 DOM 寫法的差異：語法更短、操作集中。</p>
+          </div>
+          <div class="example-tabs" role="tablist">
+            <button class="example-tab is-active" type="button" aria-selected="true" data-tab-target="code">語法</button>
+            <button class="example-tab" type="button" aria-selected="false" data-tab-target="result">結果</button>
+            <button class="example-tab" type="button" aria-selected="false" data-tab-target="explain">解說</button>
+          </div>
+          <div class="example-panel is-active" data-tab-panel="code">
+<pre><code>&lt;button id="hello-btn"&gt;點我&lt;/button&gt;
+&lt;p id="message" class="message"&gt;尚未互動&lt;/p&gt;
+
+&lt;script&gt;
+  $("#hello-btn").on("click", function () {
+    $("#message")
+      .text("按鈕已被點擊，jQuery 已更新內容。")
+      .addClass("is-highlight");
+  });
+&lt;/script&gt;</code></pre>
+          </div>
+          <div class="example-panel" data-tab-panel="result">
+            <div class="browser-window">
+              <div class="browser-chrome"><span></span><span></span><span></span></div>
+              <div class="preview-window">
+                <button style="padding:10px 14px;border:none;border-radius:12px;background:#2563eb;color:#fff;">點我</button>
+                <p style="margin-top:16px;color:#1d4ed8;font-weight:700;">按鈕已被點擊，jQuery 已更新內容。</p>
+              </div>
+            </div>
+          </div>
+          <div class="example-panel" data-tab-panel="explain">
+            <ul class="plain-list">
+              <li><code>$("#hello-btn")</code> 代表用 selector 找到按鈕。</li>
+              <li><code>.on("click", ...)</code> 用來綁定事件。</li>
+              <li><code>.text()</code> 和 <code>.addClass()</code> 可直接接在同一串鏈式語法後面。</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="content-section">
+        <h2>Example 2：用 jQuery 切換提示區塊顯示狀態</h2>
+        <div class="example-showcase" data-example>
+          <div class="example-head">
+            <h3>顯示 / 隱藏與樣式切換</h3>
+            <p>很多舊型互動元件、摺疊面板與後台 UI 都很常看到這類寫法。</p>
+          </div>
+          <div class="example-tabs" role="tablist">
+            <button class="example-tab is-active" type="button" aria-selected="true" data-tab-target="code">語法</button>
+            <button class="example-tab" type="button" aria-selected="false" data-tab-target="result">結果</button>
+            <button class="example-tab" type="button" aria-selected="false" data-tab-target="explain">解說</button>
+          </div>
+          <div class="example-panel is-active" data-tab-panel="code">
+<pre><code>$("#toggle-help").on("click", function () {
+  $("#help-box").toggleClass("is-open");
+  $("#help-box").slideToggle();
+});</code></pre>
+          </div>
+          <div class="example-panel" data-tab-panel="result">
+            <div class="browser-window">
+              <div class="browser-chrome"><span></span><span></span><span></span></div>
+              <div class="preview-window">
+                <button style="padding:10px 14px;border:none;border-radius:12px;background:#0f172a;color:#fff;">顯示說明</button>
+                <div style="margin-top:16px;padding:16px;border-radius:16px;background:#dbeafe;color:#1d4ed8;">這是一個被展開的提示區塊。</div>
+              </div>
+            </div>
+          </div>
+          <div class="example-panel" data-tab-panel="explain">
+            <ul class="plain-list">
+              <li><code>toggleClass()</code> 常用來切換狀態樣式。</li>
+              <li><code>slideToggle()</code> 是 jQuery 經典動畫方法之一。</li>
+              <li>這類寫法在舊版後台模板、Bootstrap 4 時代的周邊範例裡很常見。</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="content-section">
+        <h2>Example 3：用 <code>$.ajax()</code> 呼叫 API</h2>
+        <div class="example-showcase" data-example>
+          <div class="example-head">
+            <h3>AJAX 時代的代表寫法</h3>
+            <p>在 <code>fetch()</code> 普及前，很多非同步請求就是靠 <code>$.ajax()</code> 來完成。</p>
+          </div>
+          <div class="example-tabs" role="tablist">
+            <button class="example-tab is-active" type="button" aria-selected="true" data-tab-target="code">語法</button>
+            <button class="example-tab" type="button" aria-selected="false" data-tab-target="result">結果</button>
+            <button class="example-tab" type="button" aria-selected="false" data-tab-target="explain">解說</button>
+          </div>
+          <div class="example-panel is-active" data-tab-panel="code">
+<pre><code>$.ajax({
+  url: "/api/status",
+  method: "GET",
+  dataType: "json",
+  success: function (data) {
+    $("#status").text(data.message);
+  },
+  error: function () {
+    $("#status").text("讀取失敗");
+  }
+});</code></pre>
+          </div>
+          <div class="example-panel" data-tab-panel="result">
+            <div class="response-window">
+              <strong>畫面結果</strong>
+              <p id="status">服務狀態：ok，資料已載入。</p>
+              <pre><code>{
+  "message": "服務狀態：ok，資料已載入。"
+}</code></pre>
+            </div>
+          </div>
+          <div class="example-panel" data-tab-panel="explain">
+            <ul class="plain-list">
+              <li><code>$.ajax()</code> 可以明確指定網址、方法、資料格式與成功 / 失敗處理。</li>
+              <li>這是 jQuery 非常經典的一塊，也直接推動了 AJAX 型互動網站的普及。</li>
+              <li>今天很多新專案會改用 <code>fetch()</code> 或 Axios，但讀懂舊寫法仍然很有價值；若要補上通用原理，可再讀第 10 章。</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="content-section">
+        <h2>今天什麼情況還會遇到 jQuery？</h2>
+        <div class="grid-3">
+          <article class="summary-card">
+            <h3>維護舊網站</h3>
+            <p>企業內部系統、舊型活動網站、CMS 模板或長年未重構的管理後台。</p>
+          </article>
+          <article class="summary-card">
+            <h3>閱讀舊教學 / 外掛</h3>
+            <p>許多舊文章、舊版 Bootstrap 周邊範例與 jQuery plugin 仍然能在網路上找到。</p>
+          </article>
+          <article class="summary-card">
+            <h3>理解前端抽象化</h3>
+            <p>jQuery 是理解「library 幫你包裝原生能力」最經典的入門案例之一。</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="content-section">
+        <h2>jQuery 的限制與今天的定位</h2>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>面向</th>
+                <th>jQuery 的優勢</th>
+                <th>今天的限制</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>DOM 操作</td>
+                <td>語法短、跨瀏覽器差異處理成熟</td>
+                <td>現代原生 DOM API 已經強很多</td>
+              </tr>
+              <tr>
+                <td>AJAX</td>
+                <td>在早期非常方便</td>
+                <td>現在 <code>fetch()</code>、Axios 更常見</td>
+              </tr>
+              <tr>
+                <td>大型應用</td>
+                <td>適合小型互動與逐步加料</td>
+                <td>不擅長像現代框架那樣管理複雜狀態與元件化</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="note">
+          <strong>所以今天怎麼教最合理？</strong>
+          把 jQuery 放在「JavaScript 發展史 + library 抽象化」的位置最合適：它非常值得學來理解歷史與維護舊專案，但不一定是新專案的第一選擇。
+        </div>
+      </section>
+
+      <section class="content-section">
+        <h2>Summary：本章結論</h2>
+        <div class="summary-card">
+          <ul class="summary-list">
+            <li>jQuery 是 JavaScript Library，不是 Framework；它主要幫你簡化 DOM、事件、動畫與 AJAX。</li>
+            <li>它在 AJAX / Web 2.0 時代之所以爆紅，是因為當時跨瀏覽器問題多、原生 DOM API 也比較不方便。</li>
+            <li>今天學 jQuery 的主要價值，在於理解歷史脈絡、看懂舊專案、以及理解 library 如何包裝原生能力。</li>
+            <li>如果你先讀過第 05 章原生 DOM 與第 08 章 JavaScript 全貌，再回來讀這一章，會最容易理解它的位置；若要把 <code>$.ajax()</code> 放回一般原理，可再接著讀第 10 章。</li>
+          </ul>
+        </div>
+      </section>
+
+      <footer class="page-footer">
+        <strong>閱讀建議：</strong>
+        如果你之後遇到舊型網站、CMS 模板或長期維護的商業後台，看見 <code>$(...)</code>、<code>.on()</code>、<code>$.ajax()</code> 這些寫法時，就不會再只覺得它是「過時語法」，而能理解它當年解決了什麼問題；若要回到更通用的 HTTP + JavaScript + DOM 視角，下一步可讀 <a href="./10-ajax-fundamentals_b11.html">第 10 章：AJAX 原理</a>。
+      </footer>
+
+      <div id="page-nav"></div>
+    </main>
+  </div>
+
+  <script src="../../../../../node_modules/mermaid/dist/mermaid.min.js"></script>
+  <script defer src="../assets/app_b11.js"></script>
+</body>
+</html>

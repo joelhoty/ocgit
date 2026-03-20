@@ -1,0 +1,339 @@
+<!-- Path: Network/Git/v1/pages | Timestamp: 2026-03-19 19:17:37 | Version: b01 -->
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>02 Git Init 指令｜Git 教學</title>
+  <link rel="stylesheet" href="../assets/styles_b01.css">
+</head>
+<body data-root=".." data-page="init">
+  <div class="site-shell">
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <small>Git &amp; GitHub Teaching Site</small>
+        <h2>Git 版本管理與 GitHub 協作</h2>
+        <p class="sidebar-intro">系統介紹 Git 的核心概念、基本操作與 GitHub 平台的協作流程。</p>
+      </div>
+      <nav id="site-nav"></nav>
+    </aside>
+
+    <main class="content">
+      <section class="hero">
+        <span class="eyebrow">第 02 章</span>
+        <h1>Git Init 指令</h1>
+        <p>一切從 <code>git init</code> 開始。這個指令看似簡單，但它在背後建立了一整套物件資料庫與追蹤機制。本章帶你看清楚它到底做了什麼。</p>
+      </section>
+
+      <!-- 2.1 指令概念 -->
+      <section class="content-section">
+        <h2>git init 的指令概念</h2>
+        <p><code>git init</code> 的作用是：<strong>在當前目錄（或指定目錄）中建立一個新的 Git 版本庫</strong>。執行後，這個目錄就從「普通資料夾」變成了「Git 追蹤的專案」。</p>
+
+        <div class="example-showcase" data-example>
+          <div class="example-head">
+            <h3>基本使用方式</h3>
+            <p>兩種常見的初始化方式。</p>
+          </div>
+          <div class="example-tabs">
+            <button class="example-tab is-active" data-tab-target="init-current" aria-selected="true">在現有目錄初始化</button>
+            <button class="example-tab" data-tab-target="init-new" aria-selected="false">建立新目錄並初始化</button>
+          </div>
+          <div class="example-panel is-active" data-tab-panel="init-current">
+            <pre><code># 進入你已有的專案資料夾
+$ cd my-project
+
+# 初始化 Git
+$ git init
+Initialized empty Git repository in /Users/you/my-project/.git/</code></pre>
+            <p>Git 會在 <code>my-project/</code> 下建立 <code>.git</code> 隱藏目錄。</p>
+          </div>
+          <div class="example-panel" data-tab-panel="init-new">
+            <pre><code># 直接指定新目錄名稱
+$ git init my-new-project
+Initialized empty Git repository in /Users/you/my-new-project/.git/
+
+$ cd my-new-project</code></pre>
+            <p>Git 會自動建立 <code>my-new-project</code> 資料夾，並在裡面初始化版本庫。</p>
+          </div>
+        </div>
+
+        <div class="warning-note">
+          <strong>⚠️ 注意：</strong><code>git init</code> 不會影響目錄中已有的檔案。它只是加上了 <code>.git</code> 資料夾，讓 Git 開始追蹤這個目錄。已有的檔案需要用 <code>git add</code> 加入追蹤。
+        </div>
+      </section>
+
+      <!-- 2.2 git init 做了什麼 -->
+      <section class="content-section">
+        <h2>git init 後，程式做了哪些動作？</h2>
+        <p>當你執行 <code>git init</code>，Git 實際上在背後完成了以下步驟：</p>
+
+        <div class="mermaid">
+flowchart TD
+    A["執行 git init"] --> B["建立 .git/ 目錄"]
+    B --> C["建立 objects/ 物件資料庫"]
+    B --> D["建立 refs/ 參考目錄"]
+    B --> E["建立 HEAD 檔案"]
+    B --> F["建立 config 設定檔"]
+    B --> G["建立 hooks/ 鉤子目錄"]
+    B --> H["建立 info/ 資訊目錄"]
+        </div>
+      </section>
+
+      <!-- 2.3 .git 目錄結構 -->
+      <section class="content-section">
+        <h2>.git 目錄結構詳解</h2>
+        <p>讓我們逐一檢視 <code>.git</code> 目錄中的每個項目：</p>
+
+        <div class="example-showcase" data-example>
+          <div class="example-head">
+            <h3>實際觀察 .git 目錄</h3>
+            <p>初始化後，用 <code>ls</code> 或 <code>tree</code> 指令查看結構。</p>
+          </div>
+          <div class="example-tabs">
+            <button class="example-tab is-active" data-tab-target="dir-list" aria-selected="true">目錄列表</button>
+            <button class="example-tab" data-tab-target="dir-tree" aria-selected="false">樹狀結構</button>
+          </div>
+          <div class="example-panel is-active" data-tab-panel="dir-list">
+            <pre><code>$ ls -la .git/
+total 24
+drwxr-xr-x   9 user  staff  288  3 19 19:00 .
+drwxr-xr-x   3 user  staff   96  3 19 19:00 ..
+-rw-r--r--   1 user  staff   23  3 19 19:00 HEAD
+-rw-r--r--   1 user  staff  137  3 19 19:00 config
+-rw-r--r--   1 user  staff   73  3 19 19:00 description
+drwxr-xr-x  15 user  staff  480  3 19 19:00 hooks
+drwxr-xr-x   3 user  staff   96  3 19 19:00 info
+drwxr-xr-x   4 user  staff  128  3 19 19:00 objects
+drwxr-xr-x   4 user  staff  128  3 19 19:00 refs</code></pre>
+          </div>
+          <div class="example-panel" data-tab-panel="dir-tree">
+            <pre><code>.git/
+├── HEAD              ← 指向目前所在的分支
+├── config            ← 本地版本庫的設定
+├── description       ← GitWeb 用的描述（通常不用）
+├── hooks/            ← Git 事件鉤子腳本
+│   ├── pre-commit.sample
+│   ├── post-commit.sample
+│   └── ...
+├── info/
+│   └── exclude       ← 本地排除規則（類似 .gitignore）
+├── objects/          ← 物件資料庫（blob, tree, commit）
+│   ├── info/
+│   └── pack/
+└── refs/             ← 分支與標籤的參考指標
+    ├── heads/        ← 本地分支
+    └── tags/         ← 標籤</code></pre>
+          </div>
+        </div>
+
+        <h3>各項目詳細說明</h3>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>項目</th>
+                <th>類型</th>
+                <th>用途</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>HEAD</code></td>
+                <td>檔案</td>
+                <td>記錄目前所在的分支。內容通常是 <code>ref: refs/heads/main</code>，表示你正在 main 分支上。</td>
+              </tr>
+              <tr>
+                <td><code>config</code></td>
+                <td>檔案</td>
+                <td>這個 Repo 的專屬設定，例如 remote URL、merge 策略等。優先順序高於全域設定。</td>
+              </tr>
+              <tr>
+                <td><code>objects/</code></td>
+                <td>目錄</td>
+                <td>物件資料庫。所有的 blob、tree、commit 物件都存在這裡，用 SHA-1 前 2 字元做子目錄。</td>
+              </tr>
+              <tr>
+                <td><code>refs/heads/</code></td>
+                <td>目錄</td>
+                <td>每個本地分支是一個檔案，內容是該分支最新 commit 的 SHA-1。</td>
+              </tr>
+              <tr>
+                <td><code>refs/tags/</code></td>
+                <td>目錄</td>
+                <td>每個標籤是一個檔案，指向特定的 commit。</td>
+              </tr>
+              <tr>
+                <td><code>hooks/</code></td>
+                <td>目錄</td>
+                <td>Git 事件的鉤子腳本。例如在 commit 前自動執行程式碼檢查。預設提供 <code>.sample</code> 範例。</td>
+              </tr>
+              <tr>
+                <td><code>info/exclude</code></td>
+                <td>檔案</td>
+                <td>功能同 <code>.gitignore</code>，但不會被 commit，只在本地生效。</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- 2.4 HEAD 深入 -->
+      <section class="content-section">
+        <h2>HEAD 是什麼？</h2>
+        <p><code>HEAD</code> 是 Git 中最重要的指標之一。它告訴 Git「你目前在哪裡」。</p>
+
+        <div class="example-showcase" data-example>
+          <div class="example-head">
+            <h3>查看 HEAD 的內容</h3>
+          </div>
+          <div class="example-tabs">
+            <button class="example-tab is-active" data-tab-target="head-branch" aria-selected="true">指向分支</button>
+            <button class="example-tab" data-tab-target="head-detached" aria-selected="false">分離狀態</button>
+          </div>
+          <div class="example-panel is-active" data-tab-panel="head-branch">
+            <pre><code>$ cat .git/HEAD
+ref: refs/heads/main</code></pre>
+            <p>正常情況下，HEAD 指向一個分支名稱（如 <code>main</code>）。當你 commit 時，這個分支的指標會自動往前移動。</p>
+            <div class="mermaid">
+flowchart LR
+    HEAD["HEAD"] --> main["main"]
+    main --> C3["Commit 3"]
+    C3 --> C2["Commit 2"]
+    C2 --> C1["Commit 1"]
+            </div>
+          </div>
+          <div class="example-panel" data-tab-panel="head-detached">
+            <pre><code>$ git checkout c3a2f1b
+$ cat .git/HEAD
+c3a2f1b4e5d6f7a8b9c0d1e2f3a4b5c6d7e8f9a0</code></pre>
+            <p>如果你直接 checkout 到某個 commit（而非分支），HEAD 就會進入「分離狀態（Detached HEAD）」，直接指向一個 commit SHA-1。</p>
+            <div class="warning-note">
+              <strong>⚠️ Detached HEAD 下的 commit 不屬於任何分支</strong>，如果你離開這個狀態而沒有建立分支來保留它們，這些 commit 可能會遺失。
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 2.5 git init 的完整流程 -->
+      <section class="content-section">
+        <h2>git init 的完整流程圖</h2>
+        <p>從執行指令到開始工作的完整流程：</p>
+
+        <div class="mermaid">
+flowchart TD
+    A["使用者執行 git init"] --> B{"目錄中是否已有 .git？"}
+    B -->|"沒有"| C["建立 .git/ 及所有子目錄"]
+    B -->|"已有"| D["重新初始化<br/>（不會刪除已有資料）"]
+    C --> E["設定 HEAD → refs/heads/main"]
+    C --> F["建立空的 objects/ 與 refs/"]
+    C --> G["寫入預設 config"]
+    E --> H["版本庫就緒<br/>可以開始 git add & commit"]
+    F --> H
+    G --> H
+    D --> H
+        </div>
+
+        <div class="note">
+          <strong>安全性：</strong>對已經有 <code>.git</code> 的目錄再次執行 <code>git init</code> 是安全的。Git 不會刪除任何已有的物件或參考，只會重新初始化設定。
+        </div>
+      </section>
+
+      <!-- 2.6 常用初始設定 -->
+      <section class="content-section">
+        <h2>初始化後的常用設定</h2>
+        <p>執行 <code>git init</code> 後，通常你還需要做以下設定：</p>
+
+        <h3>1. 設定使用者資訊</h3>
+        <pre><code># 全域設定（適用所有 Repo）
+$ git config --global user.name "你的名字"
+$ git config --global user.email "your@email.com"
+
+# 本地設定（僅限此 Repo）
+$ git config user.name "專案特定名字"
+$ git config user.email "project@email.com"</code></pre>
+
+        <h3>2. 設定預設分支名稱</h3>
+        <pre><code># 將預設分支改為 main（而非舊版的 master）
+$ git config --global init.defaultBranch main</code></pre>
+
+        <h3>3. 建立 .gitignore</h3>
+        <p><code>.gitignore</code> 告訴 Git 哪些檔案不需要追蹤：</p>
+        <pre><code># .gitignore 範例
+node_modules/
+.DS_Store
+*.log
+.env
+dist/
+__pycache__/</code></pre>
+
+        <div class="note">
+          <strong>提示：</strong>GitHub 提供了各種語言的 <code>.gitignore</code> 範本，你可以在 <a href="https://github.com/github/gitignore" target="_blank">github/gitignore</a> 找到。
+        </div>
+      </section>
+
+      <!-- 2.7 練習 -->
+      <section class="content-section">
+        <h2>🔧 動手練習</h2>
+        <div class="grid-2">
+          <article class="practice-card">
+            <h3>練習 1：完整初始化流程</h3>
+            <p>從零開始建立一個 Git 專案：</p>
+            <pre><code>$ mkdir practice-repo
+$ cd practice-repo
+$ git init
+$ git config user.name "Student"
+$ git config user.email "student@school.edu"
+$ cat .git/config</code></pre>
+          </article>
+          <article class="practice-card">
+            <h3>練習 2：探索 .git 內部</h3>
+            <p>觀察初始化後的各個檔案內容：</p>
+            <pre><code>$ cat .git/HEAD
+$ ls .git/objects/
+$ ls .git/refs/heads/
+$ cat .git/config</code></pre>
+            <p>試著用你自己的話描述每個檔案的作用。</p>
+          </article>
+        </div>
+      </section>
+
+      <!-- 2.8 小結 -->
+      <section class="content-section">
+        <h2>本章小結</h2>
+        <div class="grid-2">
+          <article class="summary-card">
+            <h3>知識重點</h3>
+            <ul class="summary-list">
+              <li><code>git init</code> 會建立 <code>.git/</code> 目錄及其子結構。</li>
+              <li><code>.git/objects/</code> 是物件資料庫的所在位置。</li>
+              <li><code>HEAD</code> 檔案指向你目前所在的分支。</li>
+              <li><code>.git/refs/</code> 存放分支和標籤的 commit 指標。</li>
+              <li>對已有 Repo 再次 init 是安全的，不會破壞資料。</li>
+            </ul>
+          </article>
+          <article class="summary-card">
+            <h3>下一章預告</h3>
+            <ul class="summary-list">
+              <li>學習 <code>git add</code> 與 <code>git commit</code> 的完整流程。</li>
+              <li>理解 commit 物件的內部結構。</li>
+              <li>使用 <code>git log</code> 查閱提交歷史。</li>
+              <li>學習版本回溯的基本方法。</li>
+            </ul>
+          </article>
+        </div>
+      </section>
+
+      <footer class="page-footer">
+        <strong>學習提示：</strong>
+        現在你知道了 <code>.git</code> 目錄裡有什麼。下一章開始，我們會往裡面放入真正的內容——用 <code>git add</code> 和 <code>git commit</code> 建立第一筆版本紀錄。
+      </footer>
+
+      <div id="page-nav"></div>
+    </main>
+  </div>
+
+  <script src="../../../../node_modules/mermaid/dist/mermaid.min.js"></script>
+  <script defer src="../assets/app_b01.js"></script>
+</body>
+</html>

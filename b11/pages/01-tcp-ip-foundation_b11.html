@@ -1,0 +1,265 @@
+<!-- Path: Network/WEB Service/Content/b11/pages | Timestamp: 2026-03-19 20:18:24 | Version: b11 -->
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>01 TCP/IP 與 Client-Server｜WEB Service 教學網站</title>
+  <link rel="stylesheet" href="../assets/styles_b01.css">
+</head>
+<body data-root=".." data-page="tcp-ip">
+  <div class="site-shell">
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <small>Chapter 01</small>
+        <h2>TCP/IP 與 Client-Server</h2>
+        <p class="sidebar-intro">先把網路結構搞清楚，才會知道 Web server 為什麼能提供服務。</p>
+      </div>
+      <nav id="site-nav"></nav>
+      <section class="sidebar-tips">
+        <h3>本章重點</h3>
+        <ul>
+          <li>TCP/IP 分層與 Web 服務的位置。</li>
+          <li>IP、Port、Socket、Daemon 的角色。</li>
+          <li>Client-Server 架構如何建立連線。</li>
+        </ul>
+      </section>
+    </aside>
+
+    <main class="content">
+      <section class="hero">
+        <span class="eyebrow">Chapter 01</span>
+        <h1>從網路分層開始理解 Web server</h1>
+        <p>
+          當你在瀏覽器輸入網址時，畫面上只看到一個網頁，但背後其實是一條經過
+          <strong>網路位址、連線埠、傳輸協定與應用層服務</strong> 的完整路徑。
+          本章的任務，就是把這條路徑中的底層角色先認清楚。
+        </p>
+      </section>
+
+      <section class="content-section">
+        <h2>Why：為什麼要先學 TCP/IP？</h2>
+        <p>
+          很多人一開始學網頁會直接從 HTML 或 JavaScript 開始，但一旦碰到「為什麼 localhost 可以打開？」
+          「為什麼要用 80、443、3000、8000 這些 port？」就會開始混亂。原因是頁面只是 Web 技術最上層的呈現，
+          真正讓資料流動的底層，是整套 TCP/IP 協定族。
+        </p>
+        <div class="callout">
+          <strong>一句話先記住：</strong>
+          Web server 是「應用層服務」，但它一定要依賴下層的 IP、Port、TCP 連線，才能和瀏覽器交換資料。
+        </div>
+      </section>
+
+      <section class="content-section">
+        <h2>What：TCP/IP 分層與 Web 服務的位置</h2>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>層級</th>
+                <th>主要工作</th>
+                <th>常見協定 / 技術</th>
+                <th>與 Web 的關係</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Application Layer</td>
+                <td>處理應用程式的資料格式與服務邏輯</td>
+                <td>HTTP、HTTPS、DNS、SMTP</td>
+                <td>Web server 就在這一層提供服務</td>
+              </tr>
+              <tr>
+                <td>Transport Layer</td>
+                <td>端到端傳輸、排序、重送、連線控制</td>
+                <td>TCP、UDP</td>
+                <td>HTTP/1.1 與 HTTP/2 通常建立在 TCP 之上</td>
+              </tr>
+              <tr>
+                <td>Internet Layer</td>
+                <td>位址與封包路由</td>
+                <td>IP、ICMP</td>
+                <td>負責讓資料包知道要送去哪一台主機</td>
+              </tr>
+              <tr>
+                <td>Link / Hardware Layer</td>
+                <td>實體媒介、網卡、區域網路傳輸</td>
+                <td>Ethernet、Wi-Fi、MAC</td>
+                <td>負責資料在實際硬體上的移動</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="mermaid">
+flowchart TB
+    A[Browser / Client] --> B[HTTP Request]
+    B --> C[TCP Connection]
+    C --> D[IP Routing]
+    D --> E[Web Server Process]
+    E --> F[HTTP Response]
+    F --> A
+        </div>
+      </section>
+
+      <section class="content-section">
+        <h2>核心概念：IP、Port、Socket、Daemon</h2>
+        <div class="definition-grid">
+          <article class="definition-card">
+            <h3>IP</h3>
+            <p>主機在網路上的位址。它回答的是「要把封包送到哪一台電腦」。</p>
+          </article>
+          <article class="definition-card">
+            <h3>Port</h3>
+            <p>同一台電腦中的「服務入口」。它回答的是「資料進來後要交給哪個程式」。</p>
+          </article>
+          <article class="definition-card">
+            <h3>Socket</h3>
+            <p>把 IP 與 Port 綁在一起後，用來建立網路通訊端點的介面。</p>
+          </article>
+          <article class="definition-card">
+            <h3>Daemon</h3>
+            <p>在背景持續執行、等待請求的服務程式，例如 Nginx、Apache、資料庫服務。</p>
+          </article>
+          <article class="definition-card">
+            <h3>Client</h3>
+            <p>主動發出要求的一方，最常見的例子就是瀏覽器。</p>
+          </article>
+          <article class="definition-card">
+            <h3>Server</h3>
+            <p>被動等待連線、接到要求後回應的一方，也就是 Web server。</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="content-section">
+        <h2>How：Client-Server 架構如何運作？</h2>
+        <p>
+          Client-Server 架構的核心很簡單：<strong>Client 主動請求，Server 被動等待並回應</strong>。
+          但實際上，這個「請求」會先經過 DNS 找到主機、經過 TCP 建立連線，最後才輪到 HTTP 傳送資料。
+        </p>
+        <div class="mermaid">
+sequenceDiagram
+    participant Client as Browser Client
+    participant Server as Web Server
+    Client->>Server: 連到 203.0.113.10:80
+    Server-->>Client: 接受 TCP 連線
+    Client->>Server: 傳送 HTTP Request
+    Server-->>Client: 回傳 HTTP Response
+    Client->>Client: 解析 HTML / CSS / JS
+        </div>
+        <div class="note">
+          <strong>關鍵觀念：</strong>
+          Web server 不是「把頁面存在某個神祕地方」就好，而是必須在一個可被連線的 IP / Port 上持續等待，
+          並且能理解收到的協定格式。
+        </div>
+      </section>
+
+      <section class="content-section">
+        <h2>Example：最小 Socket Server 例子</h2>
+        <div class="example-showcase" data-example>
+          <div class="example-head">
+            <h3>Python Socket 伺服器</h3>
+            <p>這個範例不是完整 Web server，但能幫你看到「程式綁定 IP / Port 並等待連線」的本質。</p>
+          </div>
+          <div class="example-tabs" role="tablist">
+            <button class="example-tab is-active" type="button" aria-selected="true" data-tab-target="code">語法</button>
+            <button class="example-tab" type="button" aria-selected="false" data-tab-target="result">結果</button>
+            <button class="example-tab" type="button" aria-selected="false" data-tab-target="explain">解說</button>
+          </div>
+          <div class="example-panel is-active" data-tab-panel="code">
+<pre><code>import socket
+
+server = socket.socket()
+server.bind(("127.0.0.1", 9000))
+server.listen(1)
+
+print("Server is listening on 127.0.0.1:9000")
+
+client, address = server.accept()
+print("Connected by", address)
+
+client.sendall(b"hello from socket server")
+client.close()
+server.close()</code></pre>
+          </div>
+          <div class="example-panel" data-tab-panel="result">
+            <div class="terminal-window">$ python socket_demo.py
+Server is listening on 127.0.0.1:9000
+Connected by ('127.0.0.1', 53410)</div>
+          </div>
+          <div class="example-panel" data-tab-panel="explain">
+            <ul class="plain-list">
+              <li><code>bind()</code> 把程式綁到某個 IP 與 Port。</li>
+              <li><code>listen()</code> 讓伺服器進入等待連線的狀態。</li>
+              <li><code>accept()</code> 表示真的有 client 連進來了。</li>
+              <li>Web server 也是類似的概念，只是它懂得處理 HTTP，而不是只送出簡單字串。</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="content-section">
+        <h2>Practice：練習與思考</h2>
+        <div class="grid-2">
+          <article class="practice-card">
+            <h3>練習 1</h3>
+            <p>請說明網址 <code>http://127.0.0.1:8000/index.html</code> 中，IP、Port、Path 分別是什麼。</p>
+          </article>
+          <article class="practice-card">
+            <h3>練習 2</h3>
+            <p>如果同一台主機上有兩個服務都想用 8000 port，會發生什麼事？為什麼？</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="content-section">
+        <h2>Troubleshooting：常見迷思</h2>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>迷思</th>
+                <th>正確理解</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>有網頁就代表有 HTML 檔案</td>
+                <td>不一定，伺服器也可能即時產生內容，回傳動態頁面或 API 資料。</td>
+              </tr>
+              <tr>
+                <td>IP 就等於網站名稱</td>
+                <td>網站名稱通常是網域，仍需要 DNS 轉成 IP 才能連線。</td>
+              </tr>
+              <tr>
+                <td>Port 是檔案夾</td>
+                <td>Port 是服務的入口，不是檔案位置。</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="content-section">
+        <h2>Summary：本章結論</h2>
+        <div class="summary-card">
+          <ul class="summary-list">
+            <li>Web server 位於應用層，但一定依賴底層 IP、Port 與 TCP 連線。</li>
+            <li>IP 負責找到主機，Port 負責找到服務，Socket 則是建立通訊端點。</li>
+            <li>Daemon 是背景等待請求的服務程式，Client-Server 則是最基本的互動架構。</li>
+          </ul>
+        </div>
+      </section>
+
+      <footer class="page-footer">
+        下一章會接著回答：<strong>從瀏覽器輸入網址到看到畫面，中間到底發生了什麼？</strong>
+      </footer>
+
+      <div id="page-nav"></div>
+    </main>
+  </div>
+
+  <script src="../../../../../node_modules/mermaid/dist/mermaid.min.js"></script>
+  <script defer src="../assets/app_b11.js"></script>
+</body>
+</html>

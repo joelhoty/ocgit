@@ -1,0 +1,364 @@
+<!-- Path: Network/Git/v1/pages | Timestamp: 2026-03-19 19:17:37 | Version: b01 -->
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>04 GitHub 協作平台｜Git 教學</title>
+  <link rel="stylesheet" href="../assets/styles_b01.css">
+</head>
+<body data-root=".." data-page="github">
+  <div class="site-shell">
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <small>Git &amp; GitHub Teaching Site</small>
+        <h2>Git 版本管理與 GitHub 協作</h2>
+        <p class="sidebar-intro">系統介紹 Git 的核心概念、基本操作與 GitHub 平台的協作流程。</p>
+      </div>
+      <nav id="site-nav"></nav>
+    </aside>
+
+    <main class="content">
+      <section class="hero">
+        <span class="eyebrow">第 04 章</span>
+        <h1>GitHub 協作平台</h1>
+        <p>Git 讓你在本地管理版本，而 GitHub 讓你把版本庫放上雲端，與全世界的開發者協作。本章介紹 GitHub 的核心功能與遠端操作。</p>
+      </section>
+
+      <!-- 4.1 GitHub 是什麼 -->
+      <section class="content-section">
+        <h2>GitHub 是什麼？</h2>
+        <p><strong>GitHub</strong> 是全球最大的程式碼託管平台，基於 Git 版本控制系統。它不只是存放程式碼的地方，更提供了完整的協作工具。</p>
+
+        <div class="grid-3">
+          <article class="stat-card">
+            <h3>📦 程式碼託管</h3>
+            <p>將你的 Git Repository 存放在雲端，任何裝置都能存取。</p>
+          </article>
+          <article class="stat-card">
+            <h3>🤝 團隊協作</h3>
+            <p>透過 Pull Request、Issue、Code Review 等功能進行團隊開發。</p>
+          </article>
+          <article class="stat-card">
+            <h3>🌐 開源社群</h3>
+            <p>數百萬個開源專案在 GitHub 上開發，你可以學習、使用、甚至貢獻程式碼。</p>
+          </article>
+        </div>
+
+        <div class="note">
+          <strong>Git ≠ GitHub：</strong>Git 是版本控制<em>工具</em>，可以完全在本地使用。GitHub 是基於 Git 的雲端<em>平台</em>。其他類似平台還有 GitLab、Bitbucket 等。
+        </div>
+      </section>
+
+      <!-- 4.2 帳號註冊與設定 -->
+      <section class="content-section">
+        <h2>GitHub 帳號註冊與設定</h2>
+
+        <h3>註冊流程</h3>
+        <ol>
+          <li>前往 <a href="https://github.com" target="_blank">github.com</a> 點擊「Sign up」。</li>
+          <li>輸入 Email、密碼與使用者名稱（username）。</li>
+          <li>完成 Email 驗證。</li>
+          <li>選擇免費方案（Free plan 已包含無限公開/私有 Repo）。</li>
+        </ol>
+
+        <h3>SSH Key 設定（推薦）</h3>
+        <p>使用 SSH Key 可以免去每次 push/pull 都要輸入密碼的麻煩。</p>
+        <div class="example-showcase" data-example>
+          <div class="example-head">
+            <h3>產生並設定 SSH Key</h3>
+          </div>
+          <div class="example-tabs">
+            <button class="example-tab is-active" data-tab-target="ssh-gen" aria-selected="true">步驟 1：產生金鑰</button>
+            <button class="example-tab" data-tab-target="ssh-copy" aria-selected="false">步驟 2：複製公鑰</button>
+            <button class="example-tab" data-tab-target="ssh-add" aria-selected="false">步驟 3：加到 GitHub</button>
+            <button class="example-tab" data-tab-target="ssh-test" aria-selected="false">步驟 4：測試連線</button>
+          </div>
+          <div class="example-panel is-active" data-tab-panel="ssh-gen">
+            <pre><code># 產生 SSH Key（使用你的 GitHub email）
+$ ssh-keygen -t ed25519 -C "your@email.com"
+
+# 連按 Enter 使用預設路徑與空密碼（或設定密碼）
+Generating public/private ed25519 key pair.
+Enter file in which to save the key: [按 Enter]
+Enter passphrase: [按 Enter 或設定密碼]</code></pre>
+          </div>
+          <div class="example-panel" data-tab-panel="ssh-copy">
+            <pre><code># macOS
+$ pbcopy &lt; ~/.ssh/id_ed25519.pub
+
+# Linux
+$ cat ~/.ssh/id_ed25519.pub
+# 手動複製輸出的內容
+
+# Windows (Git Bash)
+$ clip &lt; ~/.ssh/id_ed25519.pub</code></pre>
+          </div>
+          <div class="example-panel" data-tab-panel="ssh-add">
+            <ol>
+              <li>登入 GitHub → 右上角頭像 → <strong>Settings</strong></li>
+              <li>左側選單 → <strong>SSH and GPG keys</strong></li>
+              <li>點擊 <strong>New SSH key</strong></li>
+              <li>Title 輸入描述（如 "My Laptop"），Key 貼上公鑰</li>
+              <li>點擊 <strong>Add SSH key</strong></li>
+            </ol>
+          </div>
+          <div class="example-panel" data-tab-panel="ssh-test">
+            <pre><code>$ ssh -T git@github.com
+Hi username! You've successfully authenticated,
+but GitHub does not provide shell access.</code></pre>
+            <p>看到這個訊息就表示 SSH Key 設定成功。</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- 4.3 Remote 操作 -->
+      <section class="content-section">
+        <h2>Remote（遠端版本庫）操作</h2>
+        <p>Remote 是指存放在網路上（如 GitHub）的版本庫。你的本地 Repo 可以連結一個或多個 remote。</p>
+
+        <h3>核心指令</h3>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>指令</th><th>用途</th><th>說明</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>git clone &lt;url&gt;</code></td>
+                <td>複製遠端 Repo</td>
+                <td>下載完整的版本庫到本地，自動設定 remote 為 <code>origin</code>。</td>
+              </tr>
+              <tr>
+                <td><code>git remote add origin &lt;url&gt;</code></td>
+                <td>新增遠端連結</td>
+                <td>將本地已有的 Repo 連結到 GitHub 上的遠端 Repo。</td>
+              </tr>
+              <tr>
+                <td><code>git push origin main</code></td>
+                <td>推送到遠端</td>
+                <td>把本地的 commit 上傳到 GitHub 的 main 分支。</td>
+              </tr>
+              <tr>
+                <td><code>git pull origin main</code></td>
+                <td>拉取遠端更新</td>
+                <td>下載遠端的最新 commit 並合併到本地分支。</td>
+              </tr>
+              <tr>
+                <td><code>git fetch origin</code></td>
+                <td>下載但不合併</td>
+                <td>只下載遠端的更新資訊，不自動合併。</td>
+              </tr>
+              <tr>
+                <td><code>git remote -v</code></td>
+                <td>查看遠端設定</td>
+                <td>列出所有已設定的 remote 名稱與 URL。</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- 4.4 兩種起手流程 -->
+      <section class="content-section">
+        <h2>兩種常見的起手流程</h2>
+
+        <div class="comparison">
+          <article class="comparison-card">
+            <h4>流程 A：本地先建，再推上 GitHub</h4>
+            <pre><code># 1. 本地建立 Repo
+$ mkdir my-project && cd my-project
+$ git init
+$ echo "# My Project" > README.md
+$ git add . && git commit -m "初始提交"
+
+# 2. 在 GitHub 建立空 Repo（不勾選 README）
+
+# 3. 連結並推送
+$ git remote add origin git@github.com:user/my-project.git
+$ git push -u origin main</code></pre>
+          </article>
+          <article class="comparison-card">
+            <h4>流程 B：GitHub 先建，再 clone 到本地</h4>
+            <pre><code># 1. 在 GitHub 建立 Repo（可勾選 README）
+
+# 2. Clone 到本地
+$ git clone git@github.com:user/my-project.git
+$ cd my-project
+
+# 3. 開始工作
+$ echo "Hello" > index.html
+$ git add . && git commit -m "新增首頁"
+$ git push</code></pre>
+          </article>
+        </div>
+
+        <div class="note">
+          <strong>建議初學者使用流程 B</strong>，因為 <code>git clone</code> 會自動設定好 remote，減少設定步驟出錯的機會。
+        </div>
+      </section>
+
+      <!-- 4.5 push / pull 流程圖 -->
+      <section class="content-section">
+        <h2>Push / Pull 的運作流程</h2>
+
+        <div class="mermaid">
+sequenceDiagram
+    participant L as 本地 Repo
+    participant R as GitHub (Remote)
+    Note over L: 編輯 → git add → git commit
+    L->>R: git push origin main
+    Note over R: 遠端更新到最新 commit
+    Note over R: 其他人推送了新 commit
+    R->>L: git pull origin main
+    Note over L: 本地合併遠端的變更
+        </div>
+
+        <h3>push 被拒絕怎麼辦？</h3>
+        <p>如果遠端有你本地沒有的 commit，<code>git push</code> 會被拒絕：</p>
+        <pre><code>$ git push origin main
+! [rejected]        main -> main (non-fast-forward)
+error: failed to push some refs to 'github.com:user/my-project.git'
+hint: Updates were rejected because the remote contains work that you do not have locally.</code></pre>
+        <p><strong>解決方式：</strong></p>
+        <pre><code># 先拉取遠端更新，再推送
+$ git pull origin main
+$ git push origin main</code></pre>
+      </section>
+
+      <!-- 4.6 GitHub 上的 Repo 管理 -->
+      <section class="content-section">
+        <h2>GitHub 上的 Repo 管理</h2>
+
+        <div class="grid-2">
+          <article class="definition-card">
+            <h3>Public vs Private</h3>
+            <p><strong>Public</strong>：任何人都能看到程式碼（適合開源專案）。<br>
+            <strong>Private</strong>：只有你和被邀請的協作者能存取。</p>
+          </article>
+          <article class="definition-card">
+            <h3>README.md</h3>
+            <p>專案的首頁文件。GitHub 會自動渲染 Markdown 格式，通常包含專案介紹、安裝方式與使用說明。</p>
+          </article>
+          <article class="definition-card">
+            <h3>License</h3>
+            <p>授權條款，告訴別人可以怎麼使用你的程式碼。常見選項：MIT、Apache 2.0、GPL。</p>
+          </article>
+          <article class="definition-card">
+            <h3>.gitignore</h3>
+            <p>告訴 Git 哪些檔案不需要追蹤。GitHub 提供各語言的範本。</p>
+          </article>
+        </div>
+      </section>
+
+      <!-- 4.7 GitHub 協作功能總覽 -->
+      <section class="content-section">
+        <h2>GitHub 的協作功能總覽</h2>
+        <p>GitHub 不只是存放程式碼，它提供了完整的專案管理與協作工具：</p>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>功能</th><th>說明</th><th>適用場景</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Pull Request (PR)</strong></td>
+                <td>提出程式碼變更的請求，讓其他人審查後合併。</td>
+                <td>多人協作、程式碼審查。</td>
+              </tr>
+              <tr>
+                <td><strong>Issue</strong></td>
+                <td>追蹤 bug、功能需求或待辦事項。</td>
+                <td>專案管理、問題回報。</td>
+              </tr>
+              <tr>
+                <td><strong>Branch Protection</strong></td>
+                <td>保護特定分支，強制要求 PR 審查才能合併。</td>
+                <td>保護 main 分支的穩定性。</td>
+              </tr>
+              <tr>
+                <td><strong>Actions (CI/CD)</strong></td>
+                <td>自動化工作流程，如自動測試、自動部署。</td>
+                <td>持續整合與部署。</td>
+              </tr>
+              <tr>
+                <td><strong>Projects</strong></td>
+                <td>看板式的專案管理工具（類似 Trello）。</td>
+                <td>任務追蹤與進度管理。</td>
+              </tr>
+              <tr>
+                <td><strong>Wiki</strong></td>
+                <td>專案的 Wiki 文件空間。</td>
+                <td>撰寫詳細的技術文件。</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="note">
+          <strong>下一章預告：</strong>Pull Request、Issue 與 Branch 是最常用的三個協作功能，我們會在第五章深入介紹。
+        </div>
+      </section>
+
+      <!-- 4.8 練習 -->
+      <section class="content-section">
+        <h2>🔧 動手練習</h2>
+        <div class="grid-2">
+          <article class="practice-card">
+            <h3>練習 1：將本地 Repo 推上 GitHub</h3>
+            <ol class="practice-list">
+              <li>在 GitHub 建立一個新 Repo（不勾選 Initialize with README）。</li>
+              <li>在本地用前幾章練習的 Repo，新增 remote 並 push。</li>
+              <li>在 GitHub 網頁上確認檔案都已上傳。</li>
+            </ol>
+          </article>
+          <article class="practice-card">
+            <h3>練習 2：Clone 並修改</h3>
+            <ol class="practice-list">
+              <li>用另一個資料夾 <code>git clone</code> 你剛才的 Repo。</li>
+              <li>修改一個檔案，commit 並 push。</li>
+              <li>回到原始資料夾，用 <code>git pull</code> 拉取更新。</li>
+            </ol>
+          </article>
+        </div>
+      </section>
+
+      <!-- 4.9 小結 -->
+      <section class="content-section">
+        <h2>本章小結</h2>
+        <div class="grid-2">
+          <article class="summary-card">
+            <h3>知識重點</h3>
+            <ul class="summary-list">
+              <li>GitHub 是基於 Git 的雲端協作平台。</li>
+              <li>SSH Key 可以免除每次操作都要輸入密碼的麻煩。</li>
+              <li><code>clone</code>、<code>push</code>、<code>pull</code>、<code>fetch</code> 是遠端操作的核心指令。</li>
+              <li>GitHub 提供 PR、Issue、Actions 等豐富的協作工具。</li>
+            </ul>
+          </article>
+          <article class="summary-card">
+            <h3>下一章預告</h3>
+            <ul class="summary-list">
+              <li>深入學習 Branch 分支的建立與切換。</li>
+              <li>完整操作 Pull Request 的提出與審查流程。</li>
+              <li>學習 Issue 的標籤管理與指派。</li>
+              <li>理解 Merge 的運作原理。</li>
+            </ul>
+          </article>
+        </div>
+      </section>
+
+      <footer class="page-footer">
+        <strong>學習提示：</strong>
+        從這一章開始，你的操作已經涉及網路和他人的 Repo。在正式專案中操作前，建議先用自己的測試 Repo 練習，避免意外覆蓋別人的工作。
+      </footer>
+
+      <div id="page-nav"></div>
+    </main>
+  </div>
+
+  <script src="../../../../node_modules/mermaid/dist/mermaid.min.js"></script>
+  <script defer src="../assets/app_b01.js"></script>
+</body>
+</html>

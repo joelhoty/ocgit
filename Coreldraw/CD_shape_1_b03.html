@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CD_shape_1_b03</title>
+
+    <!-- CSS 框架 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/dark.min.css">
+
+    <!-- 代碼高亮 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/base16/darcula.min.css">
+
+    <!-- 自定義樣式 -->
+    <style>
+        
+                body {
+                    max-width: 900px;
+                    margin: 0 auto;
+                    padding: 20px;
+                }
+                /* 提升代碼塊對比度 */
+                pre {
+                    background: #1e1e1e !important;
+                    border: 1px solid #3e3e3e;
+                }
+                pre code {
+                    background: #1e1e1e !important;
+                }
+                code {
+                    background: #2d2d2d !important;
+                }
+                /* 引用塊對比度 */
+                blockquote {
+                    background: #2d2d2d;
+                    border-left: 4px solid #4a9eff;
+                }
+            
+        /* 通用代碼塊樣式 */
+        pre code {
+            display: block;
+            padding: 1.5em;
+            border-radius: 8px;
+            overflow-x: auto;
+            line-height: 1.6;
+        }
+
+        /* Mermaid 圖表樣式 */
+        
+        .mermaid {
+            margin: 2em 0;
+            padding: 1.5em;
+            text-align: center;
+            border-radius: 8px;
+        }
+        .mermaid svg {
+            max-width: 100%;
+            height: auto;
+        }
+        /* 增強所有文字的可讀性 */
+        .mermaid svg text {
+            font-weight: 700 !important;  /* 加粗文字 */
+            font-size: 18px !important;  /* 增大字體 */
+        }
+        /* 特別加強節點標籤文字 */
+        .mermaid .nodeLabel,
+        .mermaid .edgeLabel {
+            font-weight: 700 !important;
+        }
+        /* 確保連線標籤清晰可見 */
+        .mermaid .edgeLabel text {
+            fill: inherit !important;
+            font-weight: 700 !important;
+        }
+        /* 加粗序列圖的文字 */
+        .mermaid .actor,
+        .mermaid .messageText {
+            font-weight: 700 !important;
+        }
+        /* 增強邊框可見度 */
+        .mermaid .edgePath path,
+        .mermaid .flowchart-link {
+            stroke-width: 2.5px !important;  /* 加粗連線 */
+        }
+        .mermaid .arrowheadPath {
+            stroke-width: 2.5px !important;
+        }
+        /* 確保節點邊框清晰 */
+        .mermaid .node rect,
+        .mermaid .node polygon,
+        .mermaid .node circle,
+        .mermaid .node ellipse {
+            stroke-width: 2.5px !important;
+        }
+        
+        .mermaid {
+            background: #1e293b;  /* 深藍灰色背景 */
+            border: 2px solid #475569;  /* 加粗邊框 */
+            color: #f1f5f9;  /* 亮色文字 */
+        }
+        /* 確保深色主題下文字始終可見 */
+        .mermaid svg text {
+            fill: #f1f5f9 !important;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);  /* 添加陰影增強可讀性 */
+        }
+        .mermaid .nodeLabel {
+            color: #ffffff !important;
+        }
+            
+
+        /* 響應式調整 */
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            .container, .markdown-body, .latex-body, .window-body, .nes-container {
+                padding: 15px;
+            }
+            pre code {
+                padding: 1em;
+            }
+            /* 移動設備上稍微縮小 Mermaid 文字 */
+            .mermaid svg text {
+                font-size: 16px !important;
+            }
+        }
+
+        
+    </style>
+</head>
+<body>
+    <div class="container"><!-- Path: 114A_lifetech/CorelDraw | Timestamp: 2026-02-28 10:00:00 | Version: b03 -->
+<h1>CorelDRAW 向量繪圖核心：從曲線到封閉形狀 (Shape)</h1>
+<h2>1. 發展歷程與背景 (Why)</h2>
+<p>在電腦繪圖的世界裡，主要分為「點陣圖 (Bitmap)」與「向量圖 (Vector)」。<br />
+*   <strong>點陣圖</strong>：像是馬賽克拼圖，由一個個像素（方塊）組成，放大後會看到鋸齒狀（失真），例如照片。<br />
+*   <strong>向量圖</strong>：CorelDRAW 的核心。它是利用數學公式來記錄點與點之間的位置、方向與曲率。因為是數學運算，所以<strong>無論放大多少倍，邊緣永遠保持平滑清晰</strong>。</p>
+<p>掌握「向量曲線」是學習 CorelDRAW 的第一步，因為所有的圖形（常見的路徑、形狀，甚至文字），拆解到最後，都是由一條條的曲線所構成的。</p>
+<blockquote>
+<p><strong>💡 思考：如果用「純文字」來檢視向量圖會是什麼樣子？</strong></p>
+<p>實際上，向量圖在電腦底層就是一堆數學公式與程式碼！這就是為什麼向量圖可以無限放大且檔案很小，因為它不記錄每一個像素的顏色，而是記錄「畫出這個圖形的指令」。</p>
+<p>以網頁常用的 SVG (Scalable Vector Graphics) 格式為例，我們來看看不同曲線與形狀在純文字程式碼中是如何被描述的：</p>
+<ol>
+<li>
+<p><strong>基本形狀 (圓形)</strong>：<br />
+   只需要記錄圓心座標 <code>(cx, cy)</code>、半徑 <code>r</code>，以及外框和填色。<br />
+<code>xml
+   &lt;circle cx="50" cy="50" r="40" stroke="black" fill="red" /&gt;</code></p>
+</li>
+<li>
+<p><strong>開放曲線 (直線路徑)</strong>：<br />
+   使用 <code>&lt;path&gt;</code> 標籤。<code>d</code> 代表 data。<code>M</code> 表示移動畫筆到起點 (Move to)，<code>L</code> 表示畫直線到終點 (Line to)。<br />
+<code>xml
+   &lt;path d="M 10 10 L 90 90" stroke="blue" fill="none" /&gt;</code></p>
+</li>
+<li>
+<p><strong>複雜曲線 (貝茲曲線)</strong>：<br />
+   這是最能體現 CorelDRAW 中「控制柄」概念的例子。<code>C</code> 表示貝茲曲線 (Curve to)。它後面跟著三組座標：<strong>控制點 1</strong>、<strong>控制點 2</strong>、以及<strong>終點</strong>。<br />
+<code>xml
+   &lt;!-- 從 (10,50) 出發，受到控制點 (10,10) 和 (90,10) 的拉扯，最後到達 (90,50) --&gt;
+   &lt;path d="M 10 50 C 10 10, 90 10, 90 50" stroke="green" fill="none" /&gt;</code><br />
+<em>說明：電腦只要知道這幾個「關鍵節點與控制柄」的座標，就能在每次畫面縮放時，重新「計算」出那條平滑的完美曲線，完全不會產生馬賽克格子。</em></p>
+</li>
+</ol>
+</blockquote>
+<h2>2. 核心理論與架構 (What)</h2>
+<p>在 CorelDRAW 中，曲線是由一系列的<strong>節點 (Nodes)</strong> 和<strong>控制柄 (Handles)</strong> 組成的。這些節點和控制柄定義了曲線的形狀和方向。當你使用工具繪製曲線時，CorelDRAW 會自動生成這些節點和控制柄，讓你可以進一步編輯和調整曲線。</p>
+<h3>2.1 曲線的三大要素</h3>
+<ul>
+<li><strong>節點 (Node)</strong>：曲線上的駐點，用來固定線段的位置。</li>
+<li><strong>控制柄 (Handle)</strong>：從節點延伸出來的虛擬線條與箭頭，讓你進一步編輯、決定曲線的「彎曲方向」與「彎曲程度」。</li>
+<li><strong>線段 (Segment)</strong>：連接兩個節點之間的線條。</li>
+</ul>
+<div class="mermaid">
+graph LR
+    A((節點 A)) ---|線段| B((節點 B))
+    A -.-&gt;|控制柄| C[調整彎曲度]
+    B -.-&gt;|控制柄| D[調整彎曲度]
+    style A fill:#f9f,stroke:#333,stroke-width:2px
+    style B fill:#f9f,stroke:#333,stroke-width:2px
+</div>
+<h3>2.2 從曲線到形狀物件 (開放 vs. 封閉)</h3>
+<p>我們暫時下一個定義：<br />
+*   <strong>開放曲線 (路徑 Path)</strong>：起點與終點沒有連接在一起。它只有線條屬性（寬度、顏色、樣式），<strong>無法</strong>填滿內部顏色。<br />
+*   <strong>封閉曲線 (形狀物件 Shape)</strong>：起點與終點完美連接，形成一個無縫的區域。當你將一條曲線封閉起來時，它就成為一個「形狀物件」，可以填充顏色、套用效果等。</p>
+<h2>3. 封閉曲線的物件屬性有哪些？</h2>
+<p>一旦成為封閉的形狀物件，它將具備比開放路徑更豐富的屬性：</p>
+<ol>
+<li><strong>填充顏色</strong>：你可以為封閉的曲線選擇內部填充顏色，這樣它就會成為一個有顏色的形狀物件。</li>
+<li><strong>線條屬性</strong>：封閉的曲線仍然保留線條屬性，你可以調整線條的顏色、寬度和樣式（如虛線）。</li>
+<li><strong>效果應用</strong>：封閉的曲線可以套用各種效果，如陰影、漸層、透明度等，讓你的設計更加豐富和有層次感。</li>
+<li><strong>群組與排列</strong>：封閉的曲線可以與其他物件群組在一起，並且可以進行排列和對齊，這樣你就可以更方便地管理和編輯你的設計。</li>
+<li><strong>轉換為其他格式</strong>：封閉的曲線可以轉換為其他格式，如位圖或向量圖，這樣你就可以在不同的軟體中使用你的設計。</li>
+</ol>
+<h2>4. 實作方法與技術：繪製各種不同形狀的封閉曲線 (How)</h2>
+<p>要產生一個封閉的形狀物件，CorelDRAW 提供了多元的方法。<strong>對於初學者來說，強烈建議從「B-Spline (B-雲形線) 工具」開始練習</strong>，因為它比傳統的貝茲曲線更容易操作且平滑。</p>
+<ol>
+<li><strong>使用基本形狀工具</strong>：最快的方式。CorelDRAW 提供了多種基本形狀工具，如矩形、圓形、多邊形等，你可以直接使用這些工具來繪製封閉的曲線。</li>
+<li><strong>✨ 使用 B-Spline (B-雲形線) 工具</strong>：<strong>（最推薦的自訂曲線工具）</strong>。B-Spline 允許你繪製更複雜的封閉曲線，你可以通過點擊和拖動來創建你想要的形狀。系統會自動在點與點之間運算出極度平滑的曲線。</li>
+<li><strong>由其他物件構成</strong>：你可以將多個物件組合在一起，形成一個封閉的曲線。<ul>
+<li><strong>A.</strong> 利用物件的排列與群組功能，將多個物件組合成一個整體。</li>
+<li><strong>B.</strong> 使用布林運算工具（如聯集、交集、差集）— 對應（交叉、焊接、修剪與建立界線）。</li>
+</ul>
+</li>
+<li><strong>使用路徑工具</strong>：你可以使用路徑工具（如貝茲線）來繪製開放的曲線，然後將其封閉起來，這樣它就成為一個形狀物件。</li>
+<li><strong>使用文字工具</strong>：你可以使用文字工具輸入文字後，將文字轉換為形狀物件（轉換成曲線），並且進行進一步的編輯和調整。</li>
+<li><strong>使用匯入功能</strong>：你可以從其他軟體中匯入封閉的曲線，這樣你就可以在 CorelDRAW 中進行編輯和調整。</li>
+<li><strong>特殊用法</strong>：將點陣圖描繪成物件，或是使用影像追蹤功能（Trace Bitmap）將位圖轉換為向量圖，這樣你就可以得到封閉的曲線物件。</li>
+</ol>
+<h2>5. 實作練習 (Practice)</h2>
+<h3>任務一：使用 B-Spline 工具描繪一片葉子 (推薦做法)</h3>
+<ol>
+<li><strong>工具準備</strong>：在左側工具列找到「B-Spline (B-雲形線)」工具（通常藏在「手繪」或「貝茲線」工具的群組選單裡）。</li>
+<li><strong>點擊描繪</strong>：在畫布上點擊第一點（起點），接著移動滑鼠點擊第二點、第三點... 繞出葉子的輪廓。你會發現曲線會自動跟著點的位置變得非常平滑圓潤。</li>
+<li><strong>封閉曲線</strong>：繞完一圈後，將游標移動回「第一點」，當游標旁邊出現一個小圓圈的提示時，點擊滑鼠左鍵。這時曲線就成功封閉了。</li>
+<li><strong>填色與編輯</strong>：為封閉好的葉子填上綠色。如果形狀不夠完美，切換到「形狀工具 (F10)」，微調剛才點擊的控制點。</li>
+</ol>
+<h3>任務二：將文字轉換為形狀 (文字設計基礎)</h3>
+<ol>
+<li><strong>輸入文字</strong>：使用「文字工具 (F8)」，輸入你的英文名字，字體選粗一點。</li>
+<li><strong>轉換曲線</strong>：選取文字，按下快捷鍵 <code>Ctrl + Q</code>（或右鍵 &gt; 轉換成曲線）。此時文字不再能用鍵盤修改錯字，因為它已經變成圖形了。</li>
+<li><strong>玩轉節點</strong>：使用「形狀工具 (F10)」，隨意拉長某個字母的節點（例如把 L 的尾巴拉長），嘗試做出有個人風格的文字 Logo！</li>
+</ol>
+<h2>6. 常見問題與解決方案 (Q&amp;A / Troubleshooting)</h2>
+<ul>
+<li><strong>Q: 為什麼我用 B-Spline 工具畫到一半想畫直線，但它一直是彎的？</strong><ul>
+<li><strong>A:</strong> B-Spline 預設會畫出平滑曲線。如果要在某個點產生銳角的折角（或直線段），請在點擊時<strong>按住鍵盤的 <code>V</code> 鍵</strong>，這樣就可以畫出尖角。</li>
+</ul>
+</li>
+<li><strong>Q: 為什麼我畫完一個複雜的圖形卻無法填色？</strong><ul>
+<li><strong>A:</strong> 這是新手最常遇到的問題。表示你的圖形是「開放曲線」，起點和終點沒有確實「接合」。請用「形狀工具 (F10)」框選靠近起點與終點的區域，點擊上方屬性列的「接合兩個節點」，確實封閉後就能填色了。</li>
+</ul>
+</li>
+</ul>
+<h2>7. 學習總結 (Summary)</h2>
+<p>完成本章節後，你已經具備以下能力：</p>
+<ul>
+<li><strong>知識</strong>：理解所有向量圖案（包含路徑、形狀與文字）的本質都是由曲線與節點所組成，並清楚知道封閉物件具備的五大屬性（填色、外框、效果、群組、格式轉換）。了解向量圖底層運作原理（如 SVG 程式碼與貝茲曲線控制點）。</li>
+<li><strong>技能</strong>：能熟練使用最推薦的「B-Spline 工具」輕鬆畫出平滑的封閉曲線，並了解 7 種在 CorelDRAW 中產生形狀物件的方法（包含文字轉曲線與點陣圖描繪），作為日後設計創作的強大基礎。</li>
+</ul></div>
+
+    <!-- Highlight.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+
+    <!-- Mermaid -->
+    <script type="module">
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+        mermaid.initialize({
+            "startOnLoad": true,
+            "theme": "dark",
+            "securityLevel": "loose",
+            "themeVariables": {
+                        "fontFamily": "system-ui, -apple-system, \"Segoe UI\", Roboto, Helvetica, Arial, \"Noto Sans\", sans-serif",
+                        "fontSize": "18px",
+                        "lineColor": "#e2e8f0",
+                        "primaryColor": "#2d3748",
+                        "primaryBorderColor": "#60a5fa",
+                        "primaryTextColor": "#ffffff",
+                        "secondaryColor": "#1e3a5f",
+                        "secondaryBorderColor": "#38bdf8",
+                        "secondaryTextColor": "#ffffff",
+                        "tertiaryColor": "#374151",
+                        "tertiaryBorderColor": "#c084fc",
+                        "tertiaryTextColor": "#ffffff",
+                        "textColor": "#f1f5f9",
+                        "background": "#1e293b",
+                        "noteBkgColor": "#1e3a5f",
+                        "noteTextColor": "#ffffff",
+                        "noteBorderColor": "#60a5fa",
+                        "edgeLabelBackground": "#1e293b",
+                        "labelTextColor": "#f1f5f9",
+                        "actorBkg": "#2d3748",
+                        "actorBorder": "#60a5fa",
+                        "actorTextColor": "#ffffff",
+                        "actorLineColor": "#e2e8f0",
+                        "signalColor": "#e2e8f0",
+                        "signalTextColor": "#f1f5f9",
+                        "classText": "#ffffff"
+            }
+});
+    </script>
+</body>
+</html>

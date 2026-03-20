@@ -1,0 +1,274 @@
+<!-- Path: Network/WEB Service/Content/b11/pages | Timestamp: 2026-03-19 20:18:24 | Version: b11 -->
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>11 實務技術堆疊解讀｜WEB Service 教學網站</title>
+  <link rel="stylesheet" href="../assets/styles_b01.css">
+</head>
+<body data-root=".." data-page="stack-case">
+  <div class="site-shell">
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <small>Chapter 11</small>
+        <h2>看懂真實網站技術堆疊貼文</h2>
+        <p class="sidebar-intro">把一段充滿術語的網站描述拆回層次與角色，理解每個名詞在同一個專案裡到底在做什麼。</p>
+      </div>
+      <nav id="site-nav"></nav>
+      <section class="sidebar-tips">
+        <h3>本章重點</h3>
+        <ul>
+          <li>看懂 Laravel、PostgreSQL、Tailwind CSS、Vue、Vanilla JS 分別在哪一層。</li>
+          <li>理解為什麼同一個網站可以同時混用 Vue 與原生 JavaScript。</li>
+          <li>理解「做自動生成給 SEO 跟 AI 看」在實務上通常代表什麼。</li>
+        </ul>
+      </section>
+    </aside>
+
+    <main class="content">
+      <section class="hero">
+        <span class="eyebrow">Chapter 11 / Practical Stack</span>
+        <h1>把一段 Facebook 技術貼文翻譯成架構圖：Laravel + PostgreSQL + Tailwind CSS + Vue + Vanilla JS</h1>
+        <p>
+          很多實務貼文一開口就丟出一串名詞，如果沒有分層地圖，很容易只剩下「我好像都聽過，但不知道它們怎麼一起工作」。
+          本章就用一句真實風格的網站描述，帶你把後端框架、資料庫、樣式系統、前端互動、SEO 與 AI 可讀內容放回同一個網站架構中。
+        </p>
+      </section>
+
+      <section class="content-section">
+        <h2>案例原文與白話翻譯</h2>
+        <div class="callout">
+          <strong>案例貼文：</strong>
+          <p>「個人網站是用 Laravel + PostgreSQL + Tailwind CSS，js 因為都是叫 AI 自己寫所以有 Vue 也有 Vanilla JS，因為也有做自動生成給 SEO 跟 AI 看的東西」</p>
+        </div>
+        <div class="note">
+          <strong>白話翻譯：</strong>
+          這個網站用 <strong>Laravel</strong> 當主要後端框架，<strong>PostgreSQL</strong> 當資料庫，<strong>Tailwind CSS</strong> 當樣式系統；互動功能有些用 <strong>Vue</strong>，有些只用 <strong>原生 JavaScript（Vanilla JS）</strong>。同時，網站還特別做了較容易被搜尋引擎與 AI crawler 讀取的內容輸出方式，例如伺服器端產生的 HTML、結構化頁面與可索引內容。
+        </div>
+      </section>
+
+      <section class="content-section">
+        <h2>先把所有術語放到架構圖中</h2>
+        <div class="mermaid">
+flowchart TB
+    DB[(PostgreSQL
+資料庫)] --> L[Laravel
+路由 / 模板 / API / 內容生成]
+    L --> HTML[伺服器端輸出 HTML
+SEO / AI 可讀頁面]
+    L --> API[JSON API]
+    API --> V[Vue
+較複雜互動]
+    API --> J[Vanilla JS
+輕量互動]
+    T[Tailwind CSS
+樣式系統] --> HTML
+    T --> V
+    T --> J
+    U[使用者 Browser] --> HTML
+    U --> V
+    U --> J
+    C[Search Engine / AI Crawler] --> HTML
+        </div>
+        <div class="note">
+          <strong>先抓大意：</strong>
+          Laravel 與 PostgreSQL 負責網站的資料與伺服器邏輯；Tailwind CSS 管畫面風格；Vue 與 Vanilla JS 管前端互動；而「給 SEO 與 AI 看」通常意味著網站不只提供互動 UI，也會提供<strong>結構清楚、可直接被讀取的內容輸出</strong>。
+        </div>
+      </section>
+
+      <section class="content-section">
+        <h2>術語逐一拆解</h2>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>名詞</th>
+                <th>類型</th>
+                <th>主要責任</th>
+                <th>在這個案例中的角色</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Laravel</td>
+                <td>後端 Framework（PHP）</td>
+                <td>處理路由、模板、驗證、後台邏輯、內容生成、API</td>
+                <td>網站主體，很可能同時負責頁面輸出與資料介面</td>
+              </tr>
+              <tr>
+                <td>PostgreSQL</td>
+                <td>關聯式資料庫</td>
+                <td>儲存文章、標籤、用戶、設定、SEO 欄位等資料</td>
+                <td>內容與網站資料的長期儲存層</td>
+              </tr>
+              <tr>
+                <td>Tailwind CSS</td>
+                <td>CSS framework / utility-first toolkit</td>
+                <td>快速組裝版型、間距、色彩與響應式設計</td>
+                <td>統一畫面風格，讓頁面與元件都能快速成形</td>
+              </tr>
+              <tr>
+                <td>Vue</td>
+                <td>前端 Framework / UI layer</td>
+                <td>處理較複雜的互動、狀態變化與元件邏輯</td>
+                <td>例如搜尋面板、即時篩選、互動卡片、後台小工具</td>
+              </tr>
+              <tr>
+                <td>Vanilla JS</td>
+                <td>原生 JavaScript</td>
+                <td>做較小型、較直接的瀏覽器互動</td>
+                <td>例如選單開合、複製按鈕、簡單表單驗證、class 切換</td>
+              </tr>
+              <tr>
+                <td>AI 自己寫 JS</td>
+                <td>開發流程 / 工作方式</td>
+                <td>代表程式碼是 AI 協作產出，不是網站執行時的技術層</td>
+                <td>這會影響程式風格是否混用，但不改變網站真正使用的執行技術</td>
+              </tr>
+              <tr>
+                <td>SEO / AI 可讀內容</td>
+                <td>內容輸出策略</td>
+                <td>讓搜尋引擎與 AI crawler 更穩定讀到主要內容、結構與 metadata</td>
+                <td>通常會搭配伺服器端 HTML、語意化標題、結構化資料與 sitemap</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="content-section">
+        <h2>為什麼同一個網站會同時有 Vue 與 Vanilla JS？</h2>
+        <div class="grid-2">
+          <article class="summary-card">
+            <h3>Vue 適合的情境</h3>
+            <ul class="summary-list">
+              <li>需要元件化的 UI。</li>
+              <li>畫面狀態很多，會跟著資料變動。</li>
+              <li>互動邏輯較長，想維持結構化管理。</li>
+            </ul>
+          </article>
+          <article class="summary-card">
+            <h3>Vanilla JS 適合的情境</h3>
+            <ul class="summary-list">
+              <li>只是切換 class、開合選單、綁定按鈕。</li>
+              <li>功能很小，不值得引入整個框架元件。</li>
+              <li>頁面本來就是 Laravel 伺服器端輸出的 HTML。</li>
+            </ul>
+          </article>
+        </div>
+        <div class="callout">
+          <strong>這種混用其實很常見：</strong>
+          很多網站不是從零開始就是 SPA，而是以伺服器端頁面為主，只有某些局部區塊需要比較強的互動，因此會同時存在 Vue 與原生 JS。
+        </div>
+        <div class="note">
+          <strong>AI 協作的提醒：</strong>
+          如果 JavaScript 常由 AI 協助產出，就更需要事先規定邊界，例如「Vue 只用在互動元件」、「Vanilla JS 只做小功能」，否則專案很容易變成寫法混雜、難以維護。
+        </div>
+      </section>
+
+      <section class="content-section">
+        <h2>「做自動生成給 SEO 跟 AI 看」通常代表什麼？</h2>
+        <div class="grid-3">
+          <article class="definition-card">
+            <h3>伺服器端產生 HTML</h3>
+            <p>讓 crawler 一打開頁面就能看到主要文字內容，而不是只看到空殼與大量前端腳本。</p>
+          </article>
+          <article class="definition-card">
+            <h3>結構清楚的內容頁</h3>
+            <p>使用語意化標題、摘要、FAQ、分類頁與內部連結，讓搜尋引擎與 AI 系統更容易理解主題。</p>
+          </article>
+          <article class="definition-card">
+            <h3>metadata 與索引輔助</h3>
+            <p>例如 title、description、Open Graph、sitemap、結構化資料（JSON-LD / Schema.org）。</p>
+          </article>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>做法</th>
+                <th>目的</th>
+                <th>對 SEO / AI 可讀性的幫助</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>預先生成文章頁 / 主題頁</td>
+                <td>讓內容可直接被索引</td>
+                <td>比完全靠 client-side render 更穩定</td>
+              </tr>
+              <tr>
+                <td>輸出語意化 HTML</td>
+                <td>讓內容結構清楚</td>
+                <td>方便 crawler 判讀標題層次與段落重點</td>
+              </tr>
+              <tr>
+                <td>提供 sitemap 與 metadata</td>
+                <td>幫助發現頁面與描述內容</td>
+                <td>提高索引效率，也讓摘要資訊更完整</td>
+              </tr>
+              <tr>
+                <td>保留摘要、FAQ、分類</td>
+                <td>讓主題被更清楚整理</td>
+                <td>方便搜尋引擎與 AI 系統擷取與引用</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="content-section">
+        <h2>這句貼文背後的完整實務流程</h2>
+        <div class="mermaid">
+sequenceDiagram
+    participant User as 使用者 / Crawler
+    participant Browser as Browser
+    participant Laravel as Laravel App
+    participant DB as PostgreSQL
+    User->>Browser: 開啟文章頁 / 主題頁
+    Browser->>Laravel: 請求 HTML 頁面
+    Laravel->>DB: 讀取內容、摘要、SEO 欄位
+    DB-->>Laravel: 回傳資料
+    Laravel-->>Browser: 輸出 HTML + Tailwind 樣式
+    Browser-->>User: 顯示可讀內容
+    User->>Browser: 點選互動元件 / 篩選功能
+    Browser->>Laravel: fetch / AJAX 請求 API
+    Laravel->>DB: 查詢互動資料
+    DB-->>Laravel: 回傳資料
+    Laravel-->>Browser: JSON 回應
+    Browser->>Browser: Vue / Vanilla JS 更新局部畫面
+        </div>
+        <div class="note">
+          <strong>這張圖很重要：</strong>
+          它說明了一件事——<strong>SEO / AI 可讀內容</strong> 與 <strong>前端互動</strong> 不是二選一。很多網站會同時保留可索引的 HTML 內容，再另外用 AJAX、Vue 或 Vanilla JS 做局部互動增強。
+        </div>
+      </section>
+
+      <section class="content-section">
+        <h2>如果要把這個案例講給學生聽，可以怎麼總結？</h2>
+        <div class="summary-card">
+          <ul class="summary-list">
+            <li><strong>Laravel</strong> 是網站的後端主體，負責把資料與頁面組織起來。</li>
+            <li><strong>PostgreSQL</strong> 是資料儲存層，網站內容通常放在這裡。</li>
+            <li><strong>Tailwind CSS</strong> 是畫面樣式工具，不負責資料與商業邏輯。</li>
+            <li><strong>Vue</strong> 與 <strong>Vanilla JS</strong> 可以共存：前者做較複雜互動，後者做輕量增強。</li>
+            <li>「<strong>AI 幫忙寫 JS</strong>」描述的是開發流程，不是部署到網站上的執行環境。</li>
+            <li>「<strong>做給 SEO 跟 AI 看</strong>」通常代表網站會額外重視可索引、可閱讀、結構清楚的內容輸出。</li>
+          </ul>
+        </div>
+      </section>
+
+      <footer class="page-footer">
+        <strong>延伸閱讀：</strong>
+        如果你想先補底層地圖，可回看 <a href="./08-javascript-fullstack-architecture_b11.html">第 08 章：JavaScript 全貌</a>；若想理解互動資料流，可回看 <a href="./10-ajax-fundamentals_b11.html">第 10 章：AJAX 原理</a>。
+      </footer>
+
+      <div id="page-nav"></div>
+    </main>
+  </div>
+
+  <script src="../../../../../node_modules/mermaid/dist/mermaid.min.js"></script>
+  <script defer src="../assets/app_b11.js"></script>
+</body>
+</html>

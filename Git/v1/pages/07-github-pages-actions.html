@@ -1,0 +1,545 @@
+<!-- Path: Network/Git/v1/pages | Timestamp: 2026-03-19 19:49:22 | Version: b01 -->
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>07 GitHub Pages、Actions 與進階應用｜Git 教學</title>
+  <link rel="stylesheet" href="../assets/styles_b01.css">
+</head>
+<body data-root=".." data-page="github-advanced">
+  <div class="site-shell">
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <small>Git &amp; GitHub Teaching Site</small>
+        <h2>Git 版本管理與 GitHub 協作</h2>
+        <p class="sidebar-intro">系統介紹 Git 的核心概念、基本操作與 GitHub 平台的協作流程。</p>
+      </div>
+      <nav id="site-nav"></nav>
+    </aside>
+
+    <main class="content">
+      <section class="hero">
+        <span class="eyebrow">第 07 章</span>
+        <h1>GitHub Pages、Actions 與進階應用</h1>
+        <p>GitHub 不只是放程式碼的地方——你可以用 GitHub Pages 免費部署靜態網站，用 Actions 自動化測試與部署流程，還有更多進階功能幫助你提升開發效率。</p>
+      </section>
+
+      <!-- 7.1 GitHub Pages -->
+      <section class="content-section">
+        <h2>GitHub Pages（靜態網站部署）</h2>
+        <p><strong>GitHub Pages</strong> 讓你直接從 GitHub Repository 部署靜態網站，完全免費。適合個人網站、專案文件、作品集與教學教材。</p>
+
+        <div class="grid-3">
+          <article class="stat-card">
+            <h3>🆓 完全免費</h3>
+            <p>Public Repo 可免費使用 GitHub Pages，自動提供 <code>username.github.io</code> 網域。</p>
+          </article>
+          <article class="stat-card">
+            <h3>🔄 自動部署</h3>
+            <p>每次 push 到指定分支，GitHub 會自動重新建置並部署你的網站。</p>
+          </article>
+          <article class="stat-card">
+            <h3>🌐 自訂網域</h3>
+            <p>支援自訂網域名稱（Custom Domain），並自動提供 HTTPS 憑證。</p>
+          </article>
+        </div>
+
+        <h3>啟用 GitHub Pages 的步驟</h3>
+        <div class="example-showcase" data-example>
+          <div class="example-head">
+            <h3>三種部署方式</h3>
+            <p>根據你的需求選擇最適合的方式。</p>
+          </div>
+          <div class="example-tabs">
+            <button class="example-tab is-active" data-tab-target="pages-branch" aria-selected="true">方式 A：從分支部署</button>
+            <button class="example-tab" data-tab-target="pages-docs" aria-selected="false">方式 B：docs 資料夾</button>
+            <button class="example-tab" data-tab-target="pages-actions" aria-selected="false">方式 C：用 Actions 部署</button>
+          </div>
+          <div class="example-panel is-active" data-tab-panel="pages-branch">
+            <p><strong>最簡單的方式</strong>——將整個 main 分支的根目錄作為網站。</p>
+            <ol>
+              <li>在 Repo 中準備好 <code>index.html</code>。</li>
+              <li>前往 Repo → <strong>Settings</strong> → <strong>Pages</strong>。</li>
+              <li>Source 選擇 <strong>Deploy from a branch</strong>。</li>
+              <li>Branch 選擇 <strong>main</strong>，路徑選 <strong>/ (root)</strong>。</li>
+              <li>點擊 Save，等待幾分鐘後即可訪問。</li>
+            </ol>
+            <pre><code># 網站 URL 格式
+https://&lt;username&gt;.github.io/&lt;repo-name&gt;/
+
+# 範例
+https://alice.github.io/my-portfolio/</code></pre>
+          </div>
+          <div class="example-panel" data-tab-panel="pages-docs">
+            <p><strong>適合程式碼與文件分開管理</strong>——只部署 <code>docs/</code> 資料夾的內容。</p>
+            <pre><code>my-project/
+├── src/           ← 程式碼（不會被部署）
+├── docs/          ← 網站內容（會被部署）
+│   ├── index.html
+│   ├── style.css
+│   └── guide.html
+├── README.md
+└── package.json</code></pre>
+            <ol>
+              <li>將網站檔案放在 <code>docs/</code> 資料夾中。</li>
+              <li>Settings → Pages → Branch: main, 路徑: <strong>/docs</strong>。</li>
+            </ol>
+          </div>
+          <div class="example-panel" data-tab-panel="pages-actions">
+            <p><strong>最靈活的方式</strong>——用 GitHub Actions 自訂建置流程。適合需要編譯的框架（如 React、Vue、Jekyll）。</p>
+            <ol>
+              <li>Settings → Pages → Source 選擇 <strong>GitHub Actions</strong>。</li>
+              <li>GitHub 會建議適合你專案的 workflow 範本。</li>
+              <li>或自行建立 <code>.github/workflows/deploy.yml</code>。</li>
+            </ol>
+            <p>（詳見本章後半的 Actions 段落。）</p>
+          </div>
+        </div>
+
+        <h3>GitHub Pages 的限制</h3>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>項目</th><th>限制</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Repo 大小</td><td>建議不超過 1 GB</td></tr>
+              <tr><td>網站大小</td><td>不超過 1 GB</td></tr>
+              <tr><td>每月流量</td><td>100 GB soft limit</td></tr>
+              <tr><td>建置頻率</td><td>每小時最多 10 次</td></tr>
+              <tr><td>支援內容</td><td>僅靜態內容（HTML/CSS/JS），無法執行後端程式</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- 7.2 實作：部署你的第一個 Pages 網站 -->
+      <section class="content-section">
+        <h2>🔧 實作：部署你的第一個 GitHub Pages 網站</h2>
+
+        <div class="example-showcase" data-example>
+          <div class="example-head">
+            <h3>從零到上線的完整流程</h3>
+          </div>
+          <div class="example-tabs">
+            <button class="example-tab is-active" data-tab-target="pages-step1" aria-selected="true">步驟 1：準備內容</button>
+            <button class="example-tab" data-tab-target="pages-step2" aria-selected="false">步驟 2：推送到 GitHub</button>
+            <button class="example-tab" data-tab-target="pages-step3" aria-selected="false">步驟 3：啟用 Pages</button>
+          </div>
+          <div class="example-panel is-active" data-tab-panel="pages-step1">
+            <pre><code># 建立專案
+$ mkdir my-site && cd my-site
+$ git init
+
+# 建立簡單的網頁
+$ cat > index.html &lt;&lt;'EOF'
+&lt;!DOCTYPE html&gt;
+&lt;html lang="zh-Hant"&gt;
+&lt;head&gt;
+  &lt;meta charset="utf-8"&gt;
+  &lt;title&gt;我的第一個 GitHub Pages 網站&lt;/title&gt;
+  &lt;style&gt;
+    body { font-family: sans-serif; max-width: 600px; margin: 2rem auto; padding: 0 1rem; }
+    h1 { color: #f05033; }
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;h1&gt;Hello, GitHub Pages!&lt;/h1&gt;
+  &lt;p&gt;這是我用 Git 部署的第一個網站。&lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+EOF
+
+$ git add . && git commit -m "feat: 建立首頁"</code></pre>
+          </div>
+          <div class="example-panel" data-tab-panel="pages-step2">
+            <pre><code># 在 GitHub 建立一個新的 Public Repo（名稱如 my-site）
+
+# 連結遠端並推送
+$ git remote add origin git@github.com:你的帳號/my-site.git
+$ git push -u origin main</code></pre>
+          </div>
+          <div class="example-panel" data-tab-panel="pages-step3">
+            <ol>
+              <li>在 GitHub Repo 頁面 → <strong>Settings</strong> → <strong>Pages</strong>。</li>
+              <li>Source: <strong>Deploy from a branch</strong>。</li>
+              <li>Branch: <strong>main</strong>，路徑: <strong>/ (root)</strong>。</li>
+              <li>點擊 <strong>Save</strong>。</li>
+              <li>等候 1-2 分鐘，頁面上方會出現網站的 URL。</li>
+              <li>點擊連結，你的網站就上線了！🎉</li>
+            </ol>
+          </div>
+        </div>
+      </section>
+
+      <!-- 7.3 GitHub Actions -->
+      <section class="content-section">
+        <h2>GitHub Actions（自動化工作流程）</h2>
+        <p><strong>GitHub Actions</strong> 是 GitHub 內建的 CI/CD（持續整合 / 持續部署）平台。它能在特定事件發生時（如 push、PR 建立）自動執行你定義的工作流程。</p>
+
+        <div class="grid-2">
+          <article class="definition-card">
+            <h3>什麼是 CI/CD？</h3>
+            <p><strong>CI（Continuous Integration）</strong>：每次提交程式碼後，自動執行測試，確保新程式碼不會破壞現有功能。</p>
+            <p><strong>CD（Continuous Deployment）</strong>：測試通過後，自動部署到正式環境。</p>
+          </article>
+          <article class="definition-card">
+            <h3>為什麼要用 Actions？</h3>
+            <ul class="summary-list">
+              <li>自動執行測試，避免人為疏忽。</li>
+              <li>自動部署網站或應用程式。</li>
+              <li>自動檢查程式碼風格與品質。</li>
+              <li>自動產生文件或報告。</li>
+            </ul>
+          </article>
+        </div>
+
+        <h3>Actions 的核心概念</h3>
+        <div class="mermaid">
+flowchart TD
+    E["事件 Event<br/>push / PR / schedule"] --> W["工作流程 Workflow<br/>.github/workflows/xxx.yml"]
+    W --> J1["Job 1: 測試"]
+    W --> J2["Job 2: 部署"]
+    J1 --> S1["Step 1: Checkout 程式碼"]
+    J1 --> S2["Step 2: 安裝依賴"]
+    J1 --> S3["Step 3: 執行測試"]
+    J2 --> S4["Step 4: 建置專案"]
+    J2 --> S5["Step 5: 部署到 Pages"]
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>概念</th><th>說明</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>Workflow</strong></td><td>一個自動化流程，定義在 <code>.github/workflows/</code> 目錄下的 YAML 檔案中。</td></tr>
+              <tr><td><strong>Event（觸發事件）</strong></td><td>觸發 workflow 的事件，如 <code>push</code>、<code>pull_request</code>、<code>schedule</code>（定時）。</td></tr>
+              <tr><td><strong>Job</strong></td><td>workflow 中的一組任務。多個 job 預設平行執行，也可設定依賴順序。</td></tr>
+              <tr><td><strong>Step</strong></td><td>job 中的單一步驟，可以執行指令或使用別人寫好的 Action。</td></tr>
+              <tr><td><strong>Action</strong></td><td>可重用的步驟模組，GitHub Marketplace 上有數千個現成的 Action 可用。</td></tr>
+              <tr><td><strong>Runner</strong></td><td>執行 workflow 的虛擬機器。GitHub 提供免費的 Ubuntu、macOS、Windows runner。</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- 7.4 Workflow 寫法 -->
+      <section class="content-section">
+        <h2>撰寫你的第一個 Workflow</h2>
+        <p>Workflow 使用 YAML 格式定義，存放在 <code>.github/workflows/</code> 目錄下。</p>
+
+        <div class="example-showcase" data-example>
+          <div class="example-head">
+            <h3>範例 Workflow</h3>
+            <p>從簡單到實用的三個範例。</p>
+          </div>
+          <div class="example-tabs">
+            <button class="example-tab is-active" data-tab-target="wf-hello" aria-selected="true">Hello World</button>
+            <button class="example-tab" data-tab-target="wf-test" aria-selected="false">自動測試</button>
+            <button class="example-tab" data-tab-target="wf-pages" aria-selected="false">部署 Pages</button>
+            <button class="example-tab" data-tab-target="wf-explain" aria-selected="false">語法解說</button>
+          </div>
+          <div class="example-panel is-active" data-tab-panel="wf-hello">
+            <pre><code># .github/workflows/hello.yml
+name: Hello World
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  greet:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Say Hello
+        run: echo "Hello from GitHub Actions!"
+
+      - name: Show Date
+        run: date
+
+      - name: Show Git Version
+        run: git --version</code></pre>
+            <p>每次 push 到 main 分支時，這個 workflow 會在 Ubuntu 虛擬機上執行三個指令。</p>
+          </div>
+          <div class="example-panel" data-tab-panel="wf-test">
+            <pre><code># .github/workflows/test.yml
+name: Run Tests
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout 程式碼
+        uses: actions/checkout@v4
+
+      - name: 安裝 Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: 安裝依賴
+        run: npm ci
+
+      - name: 執行測試
+        run: npm test</code></pre>
+            <p>push 或建立 PR 時自動執行 Node.js 測試。<code>uses</code> 引用的是 GitHub Marketplace 上的現成 Action。</p>
+          </div>
+          <div class="example-panel" data-tab-panel="wf-pages">
+            <pre><code># .github/workflows/deploy-pages.yml
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [ main ]
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: '.'
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4</code></pre>
+            <p>這是使用 Actions 部署 GitHub Pages 的官方推薦方式。</p>
+          </div>
+          <div class="example-panel" data-tab-panel="wf-explain">
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr><th>語法</th><th>說明</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td><code>name:</code></td><td>workflow 的名稱，會顯示在 GitHub Actions 頁面。</td></tr>
+                  <tr><td><code>on:</code></td><td>定義觸發條件。可以是事件（push、PR）或定時（cron）。</td></tr>
+                  <tr><td><code>jobs:</code></td><td>定義一個或多個 job。</td></tr>
+                  <tr><td><code>runs-on:</code></td><td>指定 runner 的作業系統（ubuntu-latest、macos-latest、windows-latest）。</td></tr>
+                  <tr><td><code>steps:</code></td><td>job 中的步驟列表，依序執行。</td></tr>
+                  <tr><td><code>uses:</code></td><td>使用現成的 Action（格式：<code>owner/repo@version</code>）。</td></tr>
+                  <tr><td><code>run:</code></td><td>直接執行 shell 指令。</td></tr>
+                  <tr><td><code>with:</code></td><td>傳入 Action 需要的參數。</td></tr>
+                  <tr><td><code>permissions:</code></td><td>設定 workflow 的權限（安全性考量）。</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 7.5 Actions 的常見用途 -->
+      <section class="content-section">
+        <h2>Actions 的常見用途</h2>
+
+        <div class="grid-3">
+          <article class="definition-card">
+            <h3>🧪 自動化測試</h3>
+            <p>每次 push 或 PR 自動跑測試，確保程式碼品質。測試不過就不能 merge。</p>
+            <div class="tag-row">
+              <span class="tag">CI</span>
+              <span class="tag">品質保證</span>
+            </div>
+          </article>
+          <article class="definition-card">
+            <h3>🚀 自動部署</h3>
+            <p>測試通過後自動部署到 GitHub Pages、Vercel、AWS 等平台。</p>
+            <div class="tag-row">
+              <span class="tag">CD</span>
+              <span class="tag">部署</span>
+            </div>
+          </article>
+          <article class="definition-card">
+            <h3>📏 程式碼品質</h3>
+            <p>自動執行 ESLint、Prettier 等工具，統一程式碼風格。</p>
+            <div class="tag-row">
+              <span class="tag">Linting</span>
+              <span class="tag">格式化</span>
+            </div>
+          </article>
+          <article class="definition-card">
+            <h3>🏷️ 自動 Release</h3>
+            <p>根據 tag 自動建立 GitHub Release 並產生 changelog。</p>
+            <div class="tag-row">
+              <span class="tag">版本發行</span>
+            </div>
+          </article>
+          <article class="definition-card">
+            <h3>📋 Issue 管理</h3>
+            <p>自動為新 Issue 加標籤、指派人員、回覆範本訊息。</p>
+            <div class="tag-row">
+              <span class="tag">自動化</span>
+            </div>
+          </article>
+          <article class="definition-card">
+            <h3>⏰ 定時任務</h3>
+            <p>用 cron 語法定時執行，例如每天自動備份或更新資料。</p>
+            <div class="tag-row">
+              <span class="tag">排程</span>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!-- 7.6 其他 GitHub 進階功能 -->
+      <section class="content-section">
+        <h2>其他 GitHub 進階功能</h2>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>功能</th><th>說明</th><th>適用場景</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>GitHub Codespaces</strong></td>
+                <td>雲端開發環境，在瀏覽器中直接開啟 VS Code 編輯器，免安裝任何工具。</td>
+                <td>快速開始開發、教學環境、遠端協作。</td>
+              </tr>
+              <tr>
+                <td><strong>GitHub Copilot</strong></td>
+                <td>AI 程式碼助手，在編輯器中即時提供程式碼建議與自動完成。</td>
+                <td>提升程式碼撰寫效率、學習新語言。</td>
+              </tr>
+              <tr>
+                <td><strong>GitHub Discussions</strong></td>
+                <td>Repo 專屬的討論區，像論壇一樣的問答與交流空間。</td>
+                <td>社群互動、Q&amp;A、功能投票。</td>
+              </tr>
+              <tr>
+                <td><strong>GitHub Packages</strong></td>
+                <td>託管套件（npm、Docker、Maven 等），與 Repo 整合。</td>
+                <td>發布與管理套件、Docker Image。</td>
+              </tr>
+              <tr>
+                <td><strong>GitHub Projects</strong></td>
+                <td>進階看板工具，支援自訂欄位、自動化規則與多種視圖（表格、看板、時間軸）。</td>
+                <td>專案管理、Sprint 規劃。</td>
+              </tr>
+              <tr>
+                <td><strong>Branch Protection Rules</strong></td>
+                <td>保護分支的規則：強制 PR 審查、必須通過 CI 測試才能合併。</td>
+                <td>保護 main 分支穩定性。</td>
+              </tr>
+              <tr>
+                <td><strong>Dependabot</strong></td>
+                <td>自動偵測專案依賴的安全漏洞，並建立 PR 更新到安全版本。</td>
+                <td>依賴管理、安全維護。</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- 7.7 Actions 的免費額度 -->
+      <section class="content-section">
+        <h2>GitHub Actions 的免費額度</h2>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>方案</th><th>每月免費額度</th><th>Storage</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Free</td><td>2,000 分鐘（Linux runner）</td><td>500 MB</td></tr>
+              <tr><td>Pro</td><td>3,000 分鐘</td><td>1 GB</td></tr>
+              <tr><td>Team</td><td>3,000 分鐘</td><td>2 GB</td></tr>
+              <tr><td>Enterprise</td><td>50,000 分鐘</td><td>50 GB</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="note">
+          <strong>注意：</strong>Public Repo 的 Actions 使用完全免費，不計入額度。上述額度限制僅適用於 Private Repo。macOS 和 Windows runner 的消耗速率比 Linux 高（macOS = 10x，Windows = 2x）。
+        </div>
+      </section>
+
+      <!-- 7.8 練習 -->
+      <section class="content-section">
+        <h2>🔧 動手練習</h2>
+        <div class="grid-2">
+          <article class="practice-card">
+            <h3>練習 1：部署 GitHub Pages</h3>
+            <ol class="practice-list">
+              <li>建立一個 Public Repo。</li>
+              <li>新增一個簡單的 <code>index.html</code>。</li>
+              <li>在 Settings → Pages 啟用部署。</li>
+              <li>等待幾分鐘，訪問你的網站！</li>
+              <li>修改內容 → push → 確認網站自動更新。</li>
+            </ol>
+          </article>
+          <article class="practice-card">
+            <h3>練習 2：建立第一個 Workflow</h3>
+            <ol class="practice-list">
+              <li>在 Repo 中建立 <code>.github/workflows/hello.yml</code>。</li>
+              <li>複製 Hello World 範例的內容。</li>
+              <li>Commit 並 push。</li>
+              <li>在 GitHub Repo → <strong>Actions</strong> 頁面查看執行結果。</li>
+              <li>嘗試修改 workflow 加入更多步驟。</li>
+            </ol>
+          </article>
+        </div>
+      </section>
+
+      <!-- 7.9 小結 -->
+      <section class="content-section">
+        <h2>本章小結</h2>
+        <div class="grid-2">
+          <article class="summary-card">
+            <h3>知識重點</h3>
+            <ul class="summary-list">
+              <li>GitHub Pages 可以免費部署靜態網站，三種部署方式可選。</li>
+              <li>GitHub Actions 是內建的 CI/CD 平台，用 YAML 定義 workflow。</li>
+              <li>Workflow 由 Event → Job → Step 組成，可使用 Marketplace 的 Action。</li>
+              <li>Public Repo 的 Actions 免費、Pages 免費。</li>
+              <li>GitHub 還提供 Codespaces、Copilot、Projects 等進階工具。</li>
+            </ul>
+          </article>
+          <article class="summary-card">
+            <h3>整門課程回顧</h3>
+            <ul class="summary-list">
+              <li><strong>Ch01-03</strong>：Git 核心（Repo、Init、Commit）。</li>
+              <li><strong>Ch04</strong>：GitHub 平台與遠端操作。</li>
+              <li><strong>Ch05</strong>：Branch、PR、Issue 協作流程。</li>
+              <li><strong>Ch06</strong>：Rebase、Revert、Reset、Stash 進階操作。</li>
+              <li><strong>Ch07</strong>：GitHub Pages、Actions 與進階應用。</li>
+            </ul>
+          </article>
+        </div>
+      </section>
+
+      <footer class="page-footer">
+        <strong>🎉 恭喜你完成了全部課程！</strong>
+        從 Repository 的基本概念到 GitHub Actions 的自動化部署，你已經建立了完整的 Git 與 GitHub 知識體系。
+        接下來，最好的學習方式就是在實際的專案中不斷練習。祝你開發順利！
+      </footer>
+
+      <div id="page-nav"></div>
+    </main>
+  </div>
+
+  <script src="../../../../node_modules/mermaid/dist/mermaid.min.js"></script>
+  <script defer src="../assets/app_b02.js"></script>
+</body>
+</html>

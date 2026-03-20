@@ -1,0 +1,170 @@
+<!-- Path: Network/Git | Timestamp: 2026-03-19 19:49:22 | Version: b01 -->
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Git 版本管理與 GitHub 協作｜版本總覽</title>
+  <style>
+    :root {
+      --bg: #f5f7fb;
+      --surface: #ffffff;
+      --text: #1e293b;
+      --muted: #475569;
+      --border: #dbe4f0;
+      --primary: #f05033;
+      --primary-soft: #fde8e4;
+      --accent: #14b8a6;
+      --shadow: 0 18px 40px rgba(15, 23, 42, 0.08);
+      --radius-lg: 22px;
+      --radius-md: 16px;
+      --sans: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif;
+      --mono: "SFMono-Regular", "Cascadia Code", Consolas, monospace;
+    }
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0; font-family: var(--sans); color: var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(240,80,51,0.07), transparent 28%),
+        radial-gradient(circle at bottom right, rgba(20,184,166,0.07), transparent 22%),
+        var(--bg);
+      line-height: 1.75;
+    }
+    a { color: var(--primary); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .wrapper {
+      max-width: 960px; margin: 0 auto;
+      padding: 2rem clamp(1rem, 3vw, 3rem) 4rem;
+    }
+    .hero {
+      padding: 2.5rem 2rem; border-radius: var(--radius-lg);
+      background: linear-gradient(135deg, rgba(240,80,51,0.1), rgba(20,184,166,0.1)), var(--surface);
+      border: 1px solid rgba(219,228,240,0.95); box-shadow: var(--shadow);
+    }
+    .eyebrow {
+      display: inline-flex; padding: 0.35rem 0.8rem; border-radius: 999px;
+      background: rgba(255,255,255,0.9); color: #c0392b; font-weight: 700; font-size: 0.88rem;
+    }
+    .hero h1 { margin: 1rem 0 0.8rem; font-size: clamp(2rem,4vw,2.8rem); line-height: 1.2; }
+    .hero p { margin: 0; color: var(--muted); font-size: 1.02rem; }
+    .section {
+      margin-top: 1.5rem; padding: 1.6rem; border-radius: var(--radius-lg);
+      background: var(--surface); border: 1px solid rgba(219,228,240,0.95); box-shadow: var(--shadow);
+    }
+    .section h2 { margin-top: 0; font-size: 1.4rem; }
+    .version-grid { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); margin-top: 1rem; }
+    .version-card {
+      padding: 1.25rem; border-radius: var(--radius-md);
+      border: 1px solid var(--border); background: var(--surface); box-shadow: var(--shadow);
+      transition: transform 0.18s ease, box-shadow 0.18s ease;
+    }
+    .version-card:hover { transform: translateY(-3px); box-shadow: 0 22px 48px rgba(15,23,42,0.12); }
+    .version-card h3 { margin: 0 0 0.4rem; }
+    .version-card p { margin: 0 0 0.8rem; color: var(--muted); font-size: 0.95rem; }
+    .version-card .meta { font-size: 0.85rem; color: var(--muted); margin-bottom: 0.6rem; }
+    .tag-row { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 0.8rem; }
+    .tag {
+      display: inline-flex; padding: 0.25rem 0.6rem; border-radius: 999px;
+      background: var(--primary-soft); color: #c0392b; font-size: 0.82rem; font-weight: 700;
+    }
+    .tag.green { background: #d1fae5; color: #065f46; }
+    .btn {
+      display: inline-flex; align-items: center; padding: 0.7rem 1rem;
+      border-radius: 12px; font-weight: 700; border: 1px solid transparent;
+      background: var(--primary); color: #fff; font-size: 0.95rem;
+    }
+    .btn:hover { text-decoration: none; opacity: 0.9; }
+    .btn.secondary { background: rgba(255,255,255,0.8); border-color: rgba(240,80,51,0.2); color: var(--text); }
+    .note {
+      margin-top: 1rem; padding: 1rem 1.1rem; color: var(--muted);
+      border-left: 5px solid var(--accent); background: #f0fdfa; border-radius: 0 14px 14px 0;
+    }
+    .chapter-list { margin: 0.4rem 0 0; padding-left: 1.1rem; color: var(--muted); }
+    .chapter-list li { margin-bottom: 0.2rem; }
+    .footer {
+      margin-top: 2rem; padding: 1.15rem 1.25rem; border-radius: var(--radius-lg);
+      background: var(--surface); border: 1px solid rgba(219,228,240,0.95);
+      box-shadow: var(--shadow); color: var(--muted);
+    }
+    code {
+      padding: 0.15rem 0.4rem; border-radius: 6px;
+      background: #eef4ff; font-family: var(--mono); font-size: 0.92em;
+    }
+    @media (max-width: 600px) { .hero, .section { padding: 1.2rem; } }
+  </style>
+</head>
+<body>
+  <div class="wrapper">
+    <section class="hero">
+      <span class="eyebrow">Git &amp; GitHub Teaching Site</span>
+      <h1>Git 版本管理與 GitHub 協作</h1>
+      <p>
+        這個教學網站以多頁結構系統介紹 Git 版本控制的核心概念、基本操作與 GitHub 平台的協作流程。
+        教材以版本資料夾管理，你可以在下方選擇不同版本進入學習。
+      </p>
+    </section>
+
+    <section class="section">
+      <h2>教材版本</h2>
+      <p style="color: var(--muted);">每個版本是一份獨立完整的教材，新版本會根據回饋與需求持續擴充。</p>
+
+      <div class="version-grid">
+        <article class="version-card">
+          <h3>v1 — 初版教材</h3>
+          <div class="meta">建立日期：2026-03-19</div>
+          <div class="tag-row">
+            <span class="tag">7 章節</span>
+            <span class="tag green">最新版本</span>
+          </div>
+          <p>涵蓋 Git 核心觀念（Repo、Init、Commit）、GitHub 協作（Push/Pull、SSH）、分支與 PR 流程、進階操作（Rebase/Reset/Revert/Stash）、GitHub Pages/Actions，以及 Runner 進階應用（Docker、Self-hosted、快取策略）。</p>
+          <ul class="chapter-list">
+            <li>01 Repository 概念與原理</li>
+            <li>02 Git Init 指令</li>
+            <li>03 Commit 提交</li>
+            <li>04 GitHub 協作平台</li>
+            <li>05 PR、Issue 與 Branch</li>
+            <li>06 進階操作</li>
+            <li>07 GitHub Pages、Actions 與進階應用</li>
+            <li>08 Runner 進階應用與虛擬機實戰</li>
+          </ul>
+          <div style="margin-top: 1rem;">
+            <a class="btn" href="./v1/index_b03.html">進入 v1 教材</a>
+          </div>
+        </article>
+      </div>
+
+      <div class="note">
+        <strong>版本管理說明：</strong>
+        每個版本以獨立資料夾（<code>v1/</code>、<code>v2/</code>...）管理。
+        版本內的檔案迭代使用 <code>_bXX</code> 後綴。
+        所有變更紀錄請參閱 <a href="./plan.md">plan.md</a>。
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>課程目標</h2>
+      <p style="color: var(--muted);">學習 Git 基本操作並了解運作原理及邏輯，掌握 GitHub 協作流程。</p>
+      <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 1rem; margin-top: 1rem;">
+        <div style="padding: 1rem; border: 1px solid var(--border); border-radius: var(--radius-md);">
+          <h3 style="margin: 0 0 0.4rem;">🗃️ 版本控制基礎</h3>
+          <p style="margin: 0; color: var(--muted); font-size: 0.95rem;">理解 Repository、物件模型、Commit 快照與三層架構。</p>
+        </div>
+        <div style="padding: 1rem; border: 1px solid var(--border); border-radius: var(--radius-md);">
+          <h3 style="margin: 0 0 0.4rem;">🤝 團隊協作</h3>
+          <p style="margin: 0; color: var(--muted); font-size: 0.95rem;">掌握 Branch、PR、Issue 與 GitHub 平台的協作流程。</p>
+        </div>
+        <div style="padding: 1rem; border: 1px solid var(--border); border-radius: var(--radius-md);">
+          <h3 style="margin: 0 0 0.4rem;">⚡ 進階技巧</h3>
+          <p style="margin: 0; color: var(--muted); font-size: 0.95rem;">運用 Rebase、Reset、Stash 與 GitHub Actions 提升開發效率。</p>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <strong>使用提示：</strong>
+      建議在學習過程中同步操作終端機，每一章的範例都可以在本機直接練習。
+    </footer>
+  </div>
+</body>
+</html>

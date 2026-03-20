@@ -1,0 +1,249 @@
+<!-- Path: Network/WEB Service/Content/b11 | Timestamp: 2026-03-19 20:18:24 | Version: b11 -->
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>WEB Service 教學網站｜目錄首頁</title>
+  <link rel="stylesheet" href="./assets/styles_b01.css">
+</head>
+<body data-root="." data-page="index">
+  <div class="site-shell">
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <small>WEB Service Teaching Site</small>
+        <h2>從 TCP/IP 到 DOM 與現代框架</h2>
+        <p class="sidebar-intro">這個網站以多頁結構系統介紹 Web server 的運作原理、核心協定、前端互動與框架思維。</p>
+      </div>
+      <nav id="site-nav"></nav>
+      <section class="sidebar-tips">
+        <h3>閱讀方式</h3>
+        <ul>
+          <li>第一次學 Web，建議至少依序閱讀第 03 → 04 → 05 章。</li>
+          <li>第 03 章可搭配 DevTools 或 curl，第 06 章提供不同背景的閱讀路徑。</li>
+          <li>若只想快速查資料，也能直接從側邊目錄跳章。</li>
+        </ul>
+      </section>
+    </aside>
+
+    <main class="content">
+      <section class="hero">
+        <span class="eyebrow">目錄首頁 / index_b11.html</span>
+        <h1>完整而系統地理解 Web server、前端互動、JavaScript 全貌、AJAX 與實務技術堆疊</h1>
+        <p>
+          這個網站不是只教你「怎麼寫網頁」，而是幫你建立一條完整的理解路徑：
+          <strong>網路分層 → Client-Server → HTTP → HTML / CSS → JavaScript / DOM / CSS 互動 → Web server 範例 → 現代框架 → JavaScript 前後端整體架構 → jQuery 詳解 → AJAX 非同步請求與局部更新 → 真實網站技術堆疊解讀</strong>。
+          當你知道資料怎麼在網路中傳輸、瀏覽器怎麼建立畫面、JavaScript 又怎麼改變 DOM，才算真正理解 Web 技術的整體脈絡。
+        </p>
+        <div class="hero-actions">
+          <a class="button-link primary" href="./pages/01-tcp-ip-foundation_b11.html">從第一章開始</a>
+          <a class="button-link secondary" href="./pages/11-practical-stack-case_b11.html">查看實務技術堆疊</a>
+        </div>
+      </section>
+
+      <section class="content-section">
+        <h2>這個網站會回答哪些核心問題？</h2>
+        <div class="grid-3">
+          <article class="stat-card">
+            <h3>為什麼網址能打開網頁？</h3>
+            <p>你會看到 DNS、TCP 連線、HTTP Request、伺服器回應與瀏覽器渲染之間的完整流程。</p>
+          </article>
+          <article class="stat-card">
+            <h3>瀏覽器如何把程式碼變成畫面？</h3>
+            <p>你會理解 HTML、CSS、DOM、事件與 JavaScript 如何一起作用，讓畫面不只顯示內容，也能回應操作。</p>
+          </article>
+          <article class="stat-card">
+            <h3>為什麼還要用框架？</h3>
+            <p>當網站越來越大，框架會提供路由、元件、狀態管理、伺服器整合與團隊協作所需的結構。</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="content-section">
+        <h2>學習路徑總覽</h2>
+        <p class="section-intro">你可以把整套內容想成從「資料如何走過網路」到「如何建立互動網站」的一條連續路徑。</p>
+        <div class="mermaid">
+flowchart LR
+    A[TCP/IP 與網路基礎] --> B[Client-Server 與 Web 服務流程]
+    B --> C[HTTP 協定]
+    C --> D[HTML 與 CSS 基礎]
+    D --> E[JavaScript DOM 與 CSS 互動]
+    E --> F[Web Server 實作範例]
+    F --> G[現代框架與應用選型]
+    G --> H[JavaScript 前後端整體架構]
+    H --> I[jQuery 詳解與實務]
+    I --> J[AJAX 原理與非同步請求]
+    J --> K[實務技術堆疊解析]
+        </div>
+        <div class="note">
+          <strong>閱讀建議：</strong>
+          如果你是第一次系統學習 Web 技術，建議從第一章依序閱讀。
+          如果你已經會做靜態頁面，但對 JavaScript 與 DOM 的互動還不熟，可以直接接著看第五章；若想理解整體生態可看第八章，若要看經典 library 實作可讀第九章，若要補清非同步請求原理可讀第十章，若想把一串術語放回真實網站場景，可再讀第十一章。
+        </div>
+      </section>
+
+      <section class="content-section">
+  <h2>依你的背景選擇閱讀方式</h2>
+  <div class="grid-3">
+    <article class="summary-card">
+      <h3>第一次學 Web</h3>
+      <ul class="summary-list">
+        <li>先讀第 03 章，用 DevTools / curl 看 HTTP。</li>
+        <li>再讀第 04、05 章，把 HTML / CSS / DOM 打穩。</li>
+        <li>最後讀第 06、07、08、09、10、11 章，把 server、框架、JavaScript 全貌、AJAX 與實務技術堆疊串起來。</li>
+      </ul>
+    </article>
+    <article class="summary-card">
+      <h3>已會做靜態頁面</h3>
+      <ul class="summary-list">
+        <li>先讀第 05 章，把 DOM 與事件操作補完整。</li>
+        <li>接著看第 06 章的 Express 範例。</li>
+        <li>最後用第 07、08、09、10、11 章理解框架、JavaScript 生態、經典 library、AJAX 與實務網站堆疊的關係。</li>
+      </ul>
+    </article>
+    <article class="summary-card">
+      <h3>熟悉 Apache / Nginx</h3>
+      <ul class="summary-list">
+        <li>直接看第 06 章的傳統觀念對照表。</li>
+        <li>接著看第 07 章的 Nginx + Express 分工範例。</li>
+        <li>之後接著看第 08、09、10、11 章，會更容易把 JavaScript 前後端、舊專案寫法、AJAX 與真實網站堆疊串起來。</li>
+      </ul>
+    </article>
+  </div>
+</section>
+
+      <section class="content-section">
+        <h2>章節目錄</h2>
+        <div class="chapter-grid">
+          <article class="chapter-card">
+            <span class="pill">01</span>
+            <h3>TCP/IP 與 Client-Server</h3>
+            <p>理解 IP、Port、Socket、Daemon 與 Client-Server 的角色分工，建立網路服務的底層觀念。</p>
+            <a class="button-link secondary" href="./pages/01-tcp-ip-foundation_b11.html">進入章節</a>
+          </article>
+          <article class="chapter-card">
+            <span class="pill">02</span>
+            <h3>Web 服務完整流程</h3>
+            <p>從輸入網址開始，追蹤 DNS、TCP、TLS、HTTP 到瀏覽器顯示內容的完整生命週期。</p>
+            <a class="button-link secondary" href="./pages/02-web-service-lifecycle_b11.html">進入章節</a>
+          </article>
+          <article class="chapter-card">
+            <span class="pill">03</span>
+            <h3>HTTP 協定</h3>
+            <p>掌握 Request / Response 結構，並真的用 DevTools 與 curl 觀察一次 HTTP 往返。</p>
+            <a class="button-link secondary" href="./pages/03-http-protocol_b11.html">進入章節</a>
+          </article>
+          <article class="chapter-card">
+            <span class="pill">04</span>
+            <h3>HTML 與 CSS 基礎</h3>
+            <p>先用 5 個最常用標籤做出第一頁，再逐步擴展到屬性、語意化標籤與 CSS 版型。</p>
+            <a class="button-link secondary" href="./pages/04-html-css-foundation_b11.html">進入章節</a>
+          </article>
+          <article class="chapter-card">
+            <span class="pill">05</span>
+            <h3>JavaScript、DOM 與 CSS 互動</h3>
+            <p>先看懂 HTML 原始碼、DOM 樹與畫面的差異，再學事件、節點選取與互動更新。</p>
+            <a class="button-link secondary" href="./pages/05-javascript-dom-css_b11.html">進入章節</a>
+          </article>
+          <article class="chapter-card">
+            <span class="pill">06</span>
+            <h3>Web Server 範例與 MIME</h3>
+            <p>用 Python、Express 與原生 Node.js 三個層次理解伺服器，並提供初學者與傳統管理者的雙路徑閱讀方式。</p>
+            <a class="button-link secondary" href="./pages/06-web-server-examples_b11.html">進入章節</a>
+          </article>
+          <article class="chapter-card">
+            <span class="pill">07</span>
+            <h3>現代框架與為什麼要用它們</h3>
+            <p>釐清 Web server、Runtime、Library、Framework 的差異，並補上「不用框架時，專案會先卡在哪裡」。</p>
+            <a class="button-link secondary" href="./pages/07-modern-frameworks_b11.html">進入章節</a>
+          </article>
+          <article class="chapter-card">
+            <span class="pill">08</span>
+            <h3>JavaScript：從前端到後端的整體架構</h3>
+            <p>從發展歷史、DOM、常用 library、生態工具到 Node.js 與 API 流程，一次整理 JavaScript 的全貌。</p>
+            <a class="button-link secondary" href="./pages/08-javascript-fullstack-architecture_b11.html">進入章節</a>
+          </article>
+          <article class="chapter-card">
+            <span class="pill">09</span>
+            <h3>jQuery：經典 JavaScript Library 詳解</h3>
+            <p>理解 jQuery 為何流行、核心語法怎麼寫、它幫你省了哪些工，並透過 DOM、事件與 AJAX 範例建立實作感。</p>
+            <a class="button-link secondary" href="./pages/09-jquery-detailed-guide_b11.html">進入章節</a>
+          </article>
+          <article class="chapter-card">
+            <span class="pill">10</span>
+            <h3>AJAX：非同步請求與局部更新原理</h3>
+            <p>補上 AJAX 是什麼、能做什麼、如何依靠 HTTP 與 JavaScript 運作，並用 fetch / jQuery 對照理解非同步資料流。</p>
+            <a class="button-link secondary" href="./pages/10-ajax-fundamentals_b11.html">進入章節</a>
+          </article>
+          <article class="chapter-card">
+            <span class="pill">11</span>
+            <h3>實務技術堆疊解讀：Laravel、Vue、SEO 與 AI 可讀內容</h3>
+            <p>把一段真實網站描述拆成框架、資料庫、樣式層、互動層與內容分發層，理解術語如何在同一個網站裡協同工作。</p>
+            <a class="button-link secondary" href="./pages/11-practical-stack-case_b11.html">進入章節</a>
+          </article>
+        </div>
+      </section>
+
+      <section class="content-section">
+        <h2>這個網站如何呈現範例？</h2>
+        <p class="section-intro">
+          因為你要求同時顧及「語法」與「結果」，本站採用統一的 <strong>Example Showcase</strong> 設計。
+          每一組範例都有三個頁籤，讓學生能切換視角而不迷路。
+        </p>
+        <div class="comparison">
+          <article class="comparison-card">
+            <h4>語法</h4>
+            <p>顯示完整原始碼、原始 HTTP 訊息、伺服器設定或終端指令。</p>
+          </article>
+          <article class="comparison-card">
+            <h4>結果</h4>
+            <p>顯示瀏覽器畫面、回應內容、終端輸出、流程效果或預期 UI 呈現。</p>
+          </article>
+          <article class="comparison-card">
+            <h4>解說</h4>
+            <p>逐段說明這組範例在教什麼，幫助學生從「看得到」過渡到「理解為什麼」。</p>
+          </article>
+          <article class="comparison-card">
+            <h4>設計考量</h4>
+            <p>比起左右並排，頁籤切換更適合行動裝置與長篇教材，不會因過寬版面壓縮文字。</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="content-section">
+        <h2>完成後你應該獲得的能力</h2>
+        <div class="grid-2">
+          <article class="summary-card">
+            <h3>知識面</h3>
+            <ul class="summary-list">
+              <li>理解 TCP/IP 分層與 Web 服務在應用層的位置。</li>
+              <li>理解 HTTP 為何是 Web 的核心傳輸協定。</li>
+              <li>理解 HTML、CSS、JavaScript、DOM 與 Web server 的分工。</li>
+              <li>理解框架如何建立在底層標準與伺服器能力之上。</li>
+            </ul>
+          </article>
+          <article class="summary-card">
+            <h3>技能面</h3>
+            <ul class="summary-list">
+              <li>能閱讀基本的 HTTP Request / Response。</li>
+              <li>能看懂並修改 HTML / CSS / JavaScript 範例。</li>
+              <li>能用 DOM API 與 class 切換做出基礎互動。</li>
+              <li>能根據需求思考何時用原生技術、何時用 Web server 或框架。</li>
+            </ul>
+          </article>
+        </div>
+      </section>
+
+      <footer class="page-footer">
+        <strong>使用提示：</strong>
+        如果你要把這個網站拿來課堂教學，可以先讓學生閱讀第一到三章，再搭配第四、第五章做前端互動實作，最後再回到伺服器與框架章節。
+      </footer>
+
+      <div id="page-nav"></div>
+    </main>
+  </div>
+
+  <script src="../../../../node_modules/mermaid/dist/mermaid.min.js"></script>
+  <script defer src="./assets/app_b11.js"></script>
+</body>
+</html>

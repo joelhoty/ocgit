@@ -1,0 +1,576 @@
+<!-- Path: Network/WEB Service/Content/b11/pages | Timestamp: 2026-03-19 20:18:24 | Version: b11 -->
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>07 現代框架｜WEB Service 教學網站</title>
+  <link rel="stylesheet" href="../assets/styles_b01.css">
+</head>
+<body data-root=".." data-page="frameworks">
+  <div class="site-shell">
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <small>Chapter 07</small>
+        <h2>現代框架與應用選型</h2>
+        <p class="sidebar-intro">對熟悉傳統 HTTP server 管理的人來說，最難的是把入口層、執行層與應用層分開。這一章會用你熟悉的角度，把 Runtime 與 Framework 的位置重新講清楚。</p>
+      </div>
+      <nav id="site-nav"></nav>
+      <section class="sidebar-tips">
+        <h3>本章重點</h3>
+        <ul>
+          <li>Node.js 是 Runtime，不是 Framework；並用傳統 HTTP server 管理視角重新理解它。</li>
+          <li>為什麼專案越大越常需要框架。</li>
+          <li>先理解不用框架時，專案會先卡在哪裡。</li>
+          <li>搭配第 08 章，會更容易理解 JavaScript library 與 framework 的位置。</li>
+        </ul>
+      </section>
+    </aside>
+
+    <main class="content">
+      <section class="hero">
+        <span class="eyebrow">Chapter 07</span>
+        <h1>為什麼使用框架？以及近年常見的最新主流框架</h1>
+        <p>
+          當網站變成多人協作、需要路由、狀態管理、伺服器整合、SEO、部署與測試時，
+          只靠零散的原生語法往往很快就失控。框架的角色，就是把這些重複問題整理成一套結構與慣例；但在往下看之前，必須先把 <strong>Web server、Runtime、Library、Toolkit 與 Framework</strong> 的層次分清楚。
+        </p>
+      </section>
+
+      <section class="content-section">
+        <h2>框架是什麼？它和 Library、Runtime、Web server 有什麼不同？</h2>
+        <p class="section-intro">
+          若先用教學上最容易建立整體概念的「由外到內」階層來看，可以先理解成：
+          <strong>Web server（入口層）→ Runtime（執行層）→ Framework（應用結構層）→ Library（功能輔助層）</strong>。
+          這不是唯一的技術依賴圖，但對初學者最容易建立分層感。
+        </p>
+        <div class="mermaid">
+flowchart LR
+    A[Web server
+入口層] --> B[Runtime
+執行層]
+    B --> C[Framework
+應用結構層]
+    C --> D[Library
+功能輔助層]
+    C --> E[Toolkit / UI framework
+介面工具層]
+        </div>
+        <div class="note">
+          <strong>先看圖，再看表：</strong>
+          架構圖幫你先抓整體層次；表格則補上每一層的角色與例子。兩者一起看，比只背名詞更容易建立空間感。
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>層次</th>
+                <th>名詞</th>
+                <th>角色</th>
+                <th>例子</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>入口層</td>
+                <td>Web server</td>
+                <td>接收 HTTP request、回應資源，或把請求轉送到後端應用服務</td>
+                <td>Nginx、Apache、Node 內建 <code>http</code> server、Python <code>http.server</code></td>
+              </tr>
+              <tr>
+                <td>執行層</td>
+                <td>Runtime</td>
+                <td>讓程式碼可以執行的環境</td>
+                <td>Node.js（JavaScript Runtime）、Python、Java JVM</td>
+              </tr>
+              <tr>
+                <td>應用結構層</td>
+                <td>Framework</td>
+                <td>提供整體結構、規則與慣例，由它主導較多流程</td>
+                <td>Express、Angular、Django、NestJS、Next.js</td>
+              </tr>
+              <tr>
+                <td>功能輔助層</td>
+                <td>Library</td>
+                <td>提供函式或元件，由你主動呼叫</td>
+                <td>jQuery、Axios、Lodash、D3.js、Alpine.js</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="callout">
+          <strong>重要觀念：</strong>
+          這張表採用的是「教學上的理解順序」，也就是先看入口與執行，再看應用結構與功能輔助。<br>其中 <strong>Node.js 是 Runtime，不是 Framework</strong>；Express、NestJS、Next.js 才是建立在 Node.js 之上的框架或相關工具。<br>如果你原本熟悉 Apache / Nginx，可以把這理解成：Web server 管入口，Runtime 管執行，Framework 管應用結構，而 Library 則是在應用裡幫你處理特定功能。
+        </div>
+      </section>
+
+      <section class="content-section">
+        <h2>如果只看應用程式內部：Framework、Toolkit、Library 到底差在哪裡？</h2>
+        <p class="section-intro">
+          如果把 Web server 與 Runtime 先放到外層，再只看應用程式內部，就可以再用「由大到小」的方式理解成：
+          <strong>Framework → Toolkit / UI framework → Library</strong>。
+        </p>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>類型</th>
+                <th>誰控制流程？</th>
+                <th>主要價值</th>
+                <th>例子</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Framework</td>
+                <td>框架提供整體結構與生命週期</td>
+                <td>幫你管理路由、模組、資料流與專案慣例</td>
+                <td>Angular、Next.js、NestJS、Django</td>
+              </tr>
+              <tr>
+                <td>Toolkit / UI framework</td>
+                <td>多半仍由你主導畫面流程</td>
+                <td>提供現成元件、樣式與互動模式</td>
+                <td>Bootstrap、Tailwind UI、Alpine.js（偏輕量互動）</td>
+              </tr>
+              <tr>
+                <td>Library</td>
+                <td>通常由你的程式主動呼叫</td>
+                <td>把常見功能封裝好，讓你少寫重複程式</td>
+                <td>jQuery、Axios、Lodash、D3.js</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="note">
+          <strong>容易混淆的點：</strong>
+          React 常被稱為 UI library，但實務上常和 Vue、Angular 一起放在前端框架生態討論；
+          Bootstrap 則更接近 UI toolkit / CSS framework，而不是通用 JavaScript library。
+          如果你想看 JavaScript 從歷史演進到前後端整體架構的完整地圖，可以接著看
+          <a href="./08-javascript-fullstack-architecture_b11.html">第 08 章</a>；如果你想看經典 library 的代表案例，則可再看
+          <a href="./09-jquery-detailed-guide_b11.html">第 09 章：jQuery 詳解</a>。
+        </div>
+      </section>
+
+      <section class="content-section">
+  <h2>如果你是從傳統 HTTP server 管理者角度切入</h2>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>你熟悉的傳統世界</th>
+          <th>角色</th>
+          <th>Node.js / Framework 世界的對應</th>
+          <th>該怎麼理解</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Apache / Nginx VirtualHost</td>
+          <td>網站入口</td>
+          <td>Nginx / Apache 依然可以是入口</td>
+          <td>框架化之後，入口層並沒有消失。</td>
+        </tr>
+        <tr>
+          <td>PHP-FPM / uWSGI</td>
+          <td>執行應用程式</td>
+          <td>Node.js Process / Python Process</td>
+          <td>這一層更接近 Runtime，而不是 Framework。</td>
+        </tr>
+        <tr>
+          <td>Laravel / Symfony</td>
+          <td>應用框架</td>
+          <td>Express / NestJS / FastAPI / Django</td>
+          <td>這一層負責路由、驗證、模組與商業邏輯。</td>
+        </tr>
+        <tr>
+          <td>Rewrite / ProxyPass</td>
+          <td>路徑轉送</td>
+          <td>Nginx 反向代理 + Framework Route</td>
+          <td>一部分在 Web server，一部分在應用框架。</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="note">
+    <strong>最容易卡住的地方：</strong>
+    很多人會把 Node.js 誤當成 Nginx / Apache 的替代品。其實更精確的理解是：
+    Nginx / Apache 仍然可以在前面接請求，而 Node.js 是後面讓 JavaScript 應用跑起來的 Runtime。
+  </div>
+</section>
+
+      <section class="content-section">
+        <h2>傳統 Web server 與框架式 Web service 的差別</h2>
+        <div class="mermaid">
+flowchart LR
+    Client[Browser / App] --> Entry[Nginx / Apache]
+    Entry --> Static[直接回應靜態檔]
+    Entry --> Proxy[反向代理動態請求]
+    Proxy --> Runtime[Node.js / Python Runtime]
+    Runtime --> Service[Express / FastAPI / Django / NestJS]
+    Service --> DB[(Database)]
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>面向</th>
+                <th>傳統 Web server</th>
+                <th>框架式 Web service</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>主要角色</td>
+                <td>接請求、回靜態檔、反向代理</td>
+                <td>處理商業邏輯、API、資料驗證、模組化</td>
+              </tr>
+              <tr>
+                <td>路由能力</td>
+                <td>通常偏基礎，或以設定檔為主</td>
+                <td>通常提供結構化路由、middleware、controller</td>
+              </tr>
+              <tr>
+                <td>動態資料</td>
+                <td>能做，但管理起來較原始</td>
+                <td>更適合整合資料庫、認證、權限與 API 文件</td>
+              </tr>
+              <tr>
+                <td>部署位置</td>
+                <td>常位於最前面，作為入口或 reverse proxy</td>
+                <td>常在 Runtime 裡執行，作為真正處理業務的服務</td>
+              </tr>
+              <tr>
+                <td>常見組合</td>
+                <td colspan="2">Nginx / Apache + Node.js Runtime + Express / NestJS，或 Nginx / Apache + Python + FastAPI / Django</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="note">
+          <strong>教學上最重要的觀念：</strong>
+          「傳統 Web server」與「框架式 Web service」不是二選一，而是經常一起出現：前者負責入口與傳送，後者負責應用邏輯。
+        </div>
+      </section>
+
+      <section class="content-section">
+        <h2>Example：Nginx 反向代理到 Express，分工到底在哪裡？</h2>
+        <div class="example-showcase" data-example>
+          <div class="example-head">
+            <h3>把入口層與應用層拆開看</h3>
+            <p>這個例子最適合傳統 HTTP server 管理者，因為它直接把 Nginx 設定與 Express 應用放在一起比較。</p>
+          </div>
+          <div class="example-tabs" role="tablist">
+            <button class="example-tab is-active" type="button" aria-selected="true" data-tab-target="code">語法</button>
+            <button class="example-tab" type="button" aria-selected="false" data-tab-target="result">結果</button>
+            <button class="example-tab" type="button" aria-selected="false" data-tab-target="explain">解說</button>
+          </div>
+          <div class="example-panel is-active" data-tab-panel="code">
+<pre><code># Nginx：負責入口與反向代理
+server {
+  listen 80;
+  server_name demo.school.tw;
+
+  location / {
+    root /var/www/site;
+    index index.html;
+  }
+
+  location /api/ {
+    proxy_pass http://127.0.0.1:3000;
+  }
+}
+
+// Express：負責應用程式邏輯
+const express = require("express");
+const app = express();
+
+app.get("/api/status", (req, res) =&gt; {
+  res.json({ service: "ok", owner: "framework service" });
+});
+
+app.listen(3000);</code></pre>
+          </div>
+          <div class="example-panel" data-tab-panel="result">
+            <div class="response-window">
+              <ol class="plain-list">
+                <li>瀏覽器先連到 Nginx。</li>
+                <li>Nginx 發現 <code>/api/</code> 開頭的請求，轉送到 <code>127.0.0.1:3000</code>。</li>
+                <li>Node.js Runtime 執行中的 Express 應用接手處理。</li>
+                <li>Express 根據 <code>app.get("/api/status")</code> 回傳 JSON。</li>
+              </ol>
+            </div>
+          </div>
+          <div class="example-panel" data-tab-panel="explain">
+            <ul class="plain-list">
+              <li>Nginx 沒有消失，它仍然可以是網站入口、TLS 終結點與靜態檔伺服器。</li>
+              <li>Node.js 是 Express 所依附的 Runtime，負責把這個應用跑起來。</li>
+              <li>Express 讓你不用在 server 程式裡手動拆每個 URL，而是以更高層次的路由 API 來寫。</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="content-section">
+        <h2>同一個 <code>/api/status</code>，在原生 Node、Express、NestJS 各寫在哪裡？</h2>
+        <div class="grid-3">
+          <article class="framework-card">
+            <h3>原生 Node.js</h3>
+            <pre><code>if (req.url === "/api/status") {
+  res.end("ok");
+}</code></pre>
+            <p>你要自己處理 request / response 細節，最能看見底層。</p>
+          </article>
+          <article class="framework-card">
+            <h3>Express</h3>
+            <pre><code>app.get("/api/status", (req, res) =&gt; {
+  res.json({ service: "ok" });
+});</code></pre>
+            <p>用較少程式碼宣告路由，是很多 Node.js Web 專案的起點。</p>
+          </article>
+          <article class="framework-card">
+            <h3>NestJS</h3>
+            <pre><code>@Controller("api")
+export class StatusController {
+  @Get("status")
+  getStatus() {
+    return { service: "ok" };
+  }
+}</code></pre>
+            <p>再往上走一步，把路由、模組與服務分層，適合大型團隊與大型後端。</p>
+          </article>
+        </div>
+        <div class="note">
+          <strong>理解順序：</strong>
+          原生 Node.js 幫你看見底層；Express 幫你減少重複勞務；NestJS 幫你在大型專案中維持架構秩序。
+        </div>
+      </section>
+
+      <section class="content-section">
+  <h2>如果不用框架，通常會先卡在哪裡？</h2>
+  <div class="grid-3">
+    <article class="definition-card">
+      <h3>路由越來越多</h3>
+      <p>一開始只有 1、2 條路由沒問題，但需求一多，<code>if / else</code> 很快會失控。</p>
+    </article>
+    <article class="definition-card">
+      <h3>重複工作變多</h3>
+      <p>參數驗證、錯誤格式、回應格式、權限檢查，常常每支 API 都要重寫一次。</p>
+    </article>
+    <article class="definition-card">
+      <h3>團隊協作混亂</h3>
+      <p>當檔案、模組、命名與資料流沒有慣例時，專案規模一大就很難維護。</p>
+    </article>
+  </div>
+  <div class="note">
+    <strong>這就是框架存在的動機：</strong>
+    框架不是因為「比較潮」，而是因為當專案規模變大，重複勞務與結構混亂會比語法本身更快拖慢開發。
+  </div>
+</section>
+
+      <section class="content-section">
+        <h2>為什麼要使用框架？</h2>
+        <div class="grid-3">
+          <article class="definition-card">
+            <h3>提升效率</h3>
+            <p>常見問題已經有現成結構可用，例如路由、元件、表單、驗證、狀態管理。</p>
+          </article>
+          <article class="definition-card">
+            <h3>統一架構</h3>
+            <p>團隊成員能用相同方式命名、拆模組、放頁面與管理資料流。</p>
+          </article>
+          <article class="definition-card">
+            <h3>方便整合</h3>
+            <p>框架通常能和 SSR、資料庫、API、測試工具與部署平台更容易接軌。</p>
+          </article>
+        </div>
+        <div class="note">
+          <strong>不是所有專案都要框架：</strong>
+          如果是簡單靜態頁面，純 HTML / CSS / JavaScript 就很夠用。
+          但如果要做大型站點、互動儀表板、後端 API、全端專案，框架通常會大幅降低混亂程度。
+        </div>
+      </section>
+
+      <section class="content-section">
+        <h2>近年常見的主流框架與定位（截至 2026 年前後）</h2>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>分類</th>
+                <th>代表工具</th>
+                <th>定位</th>
+                <th>常見應用</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>前端 UI / Framework</td>
+                <td>React、Vue、Angular、Svelte、Qwik</td>
+                <td>專注畫面與互動邏輯，建立元件化前端</td>
+                <td>SPA、互動後台、產品介面</td>
+              </tr>
+              <tr>
+                <td>Meta / Full-stack</td>
+                <td>Next.js、Nuxt、Remix、SvelteKit、Astro</td>
+                <td>整合頁面路由、SSR/SSG、API 與部署策略</td>
+                <td>內容網站、SEO 專案、全端應用</td>
+              </tr>
+              <tr>
+                <td>後端 Framework</td>
+                <td>NestJS、FastAPI、Django、Laravel、Spring Boot</td>
+                <td>處理 API、資料庫、驗證、權限與伺服器架構</td>
+                <td>後台服務、API 平台、企業系統</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="grid-2">
+          <article class="framework-card">
+            <h3>前端代表</h3>
+            <p>React 生態成熟；Vue 易學且靈活；Angular 結構完整；Svelte 與 Qwik 強調輕量與效能。</p>
+          </article>
+          <article class="framework-card">
+            <h3>全端代表</h3>
+            <p>Next.js 與 Nuxt 是全端主流；Astro 特別適合內容網站；Remix 與 SvelteKit 著重 Web fundamentals 與開發體驗。</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="content-section">
+        <h2>Example 1：React 元件寫法與預期畫面</h2>
+        <div class="example-showcase" data-example>
+          <div class="example-head">
+            <h3>元件化思維</h3>
+            <p>框架常把 UI 拆成可重用元件。這個例子只是一張卡片，但已經能看出元件思維。</p>
+          </div>
+          <div class="example-tabs" role="tablist">
+            <button class="example-tab is-active" type="button" aria-selected="true" data-tab-target="code">語法</button>
+            <button class="example-tab" type="button" aria-selected="false" data-tab-target="result">結果</button>
+            <button class="example-tab" type="button" aria-selected="false" data-tab-target="explain">解說</button>
+          </div>
+          <div class="example-panel is-active" data-tab-panel="code">
+<pre><code>function CourseCard({ title, level }) {
+  return (
+    &lt;article className="card"&gt;
+      &lt;h2&gt;{title}&lt;/h2&gt;
+      &lt;p&gt;難度：{level}&lt;/p&gt;
+    &lt;/article&gt;
+  );
+}</code></pre>
+          </div>
+          <div class="example-panel" data-tab-panel="result">
+            <div class="preview-window" style="padding:24px;background:#f8fafc;">
+              <article style="max-width:320px;padding:18px;border-radius:18px;background:linear-gradient(135deg,#dbeafe,#eef2ff);box-shadow:0 12px 24px rgba(15,23,42,.12);">
+                <h2 style="margin-top:0;">HTTP 進階</h2>
+                <p>難度：中階</p>
+              </article>
+            </div>
+          </div>
+          <div class="example-panel" data-tab-panel="explain">
+            <ul class="plain-list">
+              <li>框架把 UI 切成可重用元件，之後同樣樣式只要改資料就能重複使用。</li>
+              <li>這比手動拼很多重複 HTML 更容易維護。</li>
+              <li>當畫面越複雜，元件化的好處越明顯。</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="content-section">
+        <h2>Example 2：FastAPI / Backend Route 的思維</h2>
+        <div class="example-showcase" data-example>
+          <div class="example-head">
+            <h3>後端框架幫你更有結構地處理 API</h3>
+            <p>後端框架通常讓路由、驗證、型別與文件生成更有系統。</p>
+          </div>
+          <div class="example-tabs" role="tablist">
+            <button class="example-tab is-active" type="button" aria-selected="true" data-tab-target="code">語法</button>
+            <button class="example-tab" type="button" aria-selected="false" data-tab-target="result">結果</button>
+            <button class="example-tab" type="button" aria-selected="false" data-tab-target="explain">解說</button>
+          </div>
+          <div class="example-panel is-active" data-tab-panel="code">
+<pre><code>from fastapi import FastAPI
+
+app = FastAPI()
+
+@app.get("/api/status")
+def get_status():
+    return {"service": "ok", "version": "1.0"}</code></pre>
+          </div>
+          <div class="example-panel" data-tab-panel="result">
+            <div class="response-window">
+              <strong>GET /api/status</strong>
+              <pre><code>{
+  "service": "ok",
+  "version": "1.0"
+}</code></pre>
+            </div>
+          </div>
+          <div class="example-panel" data-tab-panel="explain">
+            <ul class="plain-list">
+              <li>框架把「路徑對應到函式」這件事寫得更清楚。</li>
+              <li>很多後端框架還會幫你處理參數驗證、文件與錯誤格式。</li>
+              <li>這就是為什麼大型 API 專案很少從零手寫每一層細節。</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="content-section">
+        <h2>框架怎麼選？</h2>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>考量面</th>
+                <th>問題</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>學習門檻</td>
+                <td>團隊成員是否熟悉這個語言與生態？</td>
+              </tr>
+              <tr>
+                <td>SEO 與內容導向</td>
+                <td>是否需要 SSR / SSG？內容是否比互動更重要？</td>
+              </tr>
+              <tr>
+                <td>互動複雜度</td>
+                <td>畫面狀態是否很多？是否需要元件化與狀態管理？</td>
+              </tr>
+              <tr>
+                <td>後端需求</td>
+                <td>是否要同時做 API、權限、資料庫整合？</td>
+              </tr>
+              <tr>
+                <td>部署與效能</td>
+                <td>是否要支援靜態部署、Edge、Serverless 或企業級環境？</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="content-section">
+  <h2>Summary：本章結論</h2>
+  <div class="summary-card">
+    <ul class="summary-list">
+      <li>框架是為了處理大型專案中的重複問題與結構問題，不是為了取代 Web 的底層原理。</li>
+      <li>Library 常是你主動呼叫；Framework 更像是提供一套規範與工作流程。</li>
+      <li>如果你熟悉 Apache / Nginx + PHP-FPM 的思維，可以用同樣的分層方式去理解 Node.js Runtime 與 Express / NestJS 這類框架。</li>
+      <li>真正推動你使用框架的原因，通常不是語法比較短，而是路由、驗證、模組與團隊協作在規模變大後需要一致的結構。</li>
+      <li>若要把 library、toolkit、runtime 與前後端流程放在同一張地圖理解，可再讀第 08 章的 JavaScript 全貌。</li>
+    </ul>
+  </div>
+</section>
+
+      <div id="page-nav"></div>
+    </main>
+  </div>
+
+  <script src="../../../../../node_modules/mermaid/dist/mermaid.min.js"></script>
+  <script defer src="../assets/app_b11.js"></script>
+</body>
+</html>

@@ -1,0 +1,189 @@
+<!-- Path: Network/Git/v1 | Timestamp: 2026-03-19 19:17:37 | Version: b01 -->
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Git 版本管理與 GitHub 協作｜目錄首頁</title>
+  <link rel="stylesheet" href="./assets/styles_b01.css">
+</head>
+<body data-root="." data-page="index">
+  <div class="site-shell">
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <small>Git &amp; GitHub Teaching Site</small>
+        <h2>Git 版本管理與 GitHub 協作</h2>
+        <p class="sidebar-intro">這個網站以多頁結構系統介紹 Git 的核心概念、基本操作與 GitHub 平台的協作流程。</p>
+      </div>
+      <nav id="site-nav"></nav>
+      <section class="sidebar-tips">
+        <h3>閱讀方式</h3>
+        <ul>
+          <li>第一次接觸 Git，建議依序閱讀第 01 → 02 → 03 章。</li>
+          <li>已會基本操作者，可直接跳到第 04 章了解 GitHub 協作。</li>
+          <li>需要進階技巧時，參考第 06 章的 rebase、reset 等操作。</li>
+        </ul>
+      </section>
+    </aside>
+
+    <main class="content">
+      <section class="hero">
+        <span class="eyebrow">目錄首頁 / index.html</span>
+        <h1>學習 Git 基本操作，理解版本控制的運作原理</h1>
+        <p>
+          這個網站不只教你「怎麼打指令」，而是幫你建立一條完整的理解路徑：
+          <strong>Repository 概念 → 初始化 → Commit 快照 → GitHub 遠端協作 → 分支與合併 → 進階操作</strong>。
+          當你知道 Git 在背後做了什麼，才能真正掌握版本控制的核心邏輯。
+        </p>
+        <div class="hero-actions">
+          <a class="button-link primary" href="./pages/01-repo-concept.html">從第一章開始</a>
+          <a class="button-link secondary" href="./pages/04-github-collaboration.html">直接查閱 GitHub 協作</a>
+        </div>
+      </section>
+
+      <section class="content-section">
+        <h2>這個網站會回答哪些核心問題？</h2>
+        <div class="grid-3">
+          <article class="stat-card">
+            <h3>為什麼需要版本控制？</h3>
+            <p>你會理解 Git 如何用快照（Snapshot）而非差異（Diff）來記錄專案的每一個狀態，以及為什麼這比「複製資料夾改名」更可靠。</p>
+          </article>
+          <article class="stat-card">
+            <h3>Git 在背後做了什麼？</h3>
+            <p>你會看到 <code>.git</code> 目錄的結構、物件資料庫（blob、tree、commit）與 SHA-1 雜湊如何協同運作。</p>
+          </article>
+          <article class="stat-card">
+            <h3>如何與他人協作？</h3>
+            <p>你會學會透過 GitHub 的 Branch、Pull Request 與 Issue 進行團隊開發，並理解 merge 與 rebase 的差異。</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="content-section">
+        <h2>學習路徑總覽</h2>
+        <p class="section-intro">整套內容從「什麼是版本庫」到「進階 Git 操作」，構成一條連續的學習路徑。</p>
+        <div class="mermaid">
+flowchart LR
+    A["01 Repository\n概念與原理"] --> B["02 Git Init\n初始化"]
+    B --> C["03 Commit\n提交與快照"]
+    C --> D["04 GitHub\n協作平台"]
+    D --> E["05 PR / Issue\nBranch"]
+    E --> F["06 進階操作\nrebase / reset"]
+        </div>
+        <div class="note">
+          <strong>閱讀建議：</strong>
+          如果你是第一次學習版本控制，建議從第一章依序閱讀。
+          如果你已經會 commit 但對分支協作還不熟，可以直接從第四章開始。
+        </div>
+      </section>
+
+      <section class="content-section">
+        <h2>依你的背景選擇閱讀方式</h2>
+        <div class="grid-3">
+          <article class="summary-card">
+            <h3>完全初學者</h3>
+            <ul class="summary-list">
+              <li>先讀第 01 章理解 Repository 的概念。</li>
+              <li>再讀第 02、03 章，親手操作 init 與 commit。</li>
+              <li>最後讀第 04 章，把專案推上 GitHub。</li>
+            </ul>
+          </article>
+          <article class="summary-card">
+            <h3>會基本操作</h3>
+            <ul class="summary-list">
+              <li>直接看第 03 章補齊 commit 的原理知識。</li>
+              <li>接著看第 05 章學習分支與 PR 流程。</li>
+              <li>用第 06 章理解 rebase 與 reset 的差異。</li>
+            </ul>
+          </article>
+          <article class="summary-card">
+            <h3>團隊協作需求</h3>
+            <ul class="summary-list">
+              <li>從第 04 章開始理解 GitHub 平台功能。</li>
+              <li>第 05 章學會 Branch 策略與 PR 審查流程。</li>
+              <li>第 06 章掌握 rebase 保持歷史線性。</li>
+            </ul>
+          </article>
+        </div>
+      </section>
+
+      <section class="content-section">
+        <h2>章節目錄</h2>
+        <div class="chapter-grid">
+          <article class="chapter-card">
+            <span class="pill">01</span>
+            <h3>Repository 概念與原理</h3>
+            <p>理解版本庫的定義、物件資料庫（blob / tree / commit）、SHA-1 雜湊與索引（Index）的運作方式。</p>
+            <a class="button-link secondary" href="./pages/01-repo-concept.html">進入章節</a>
+          </article>
+          <article class="chapter-card">
+            <span class="pill">02</span>
+            <h3>Git Init 指令</h3>
+            <p>了解 <code>git init</code> 做了什麼、<code>.git</code> 目錄的結構，以及工作目錄、暫存區與版本庫的三層架構。</p>
+            <a class="button-link secondary" href="./pages/02-git-init.html">進入章節</a>
+          </article>
+          <article class="chapter-card">
+            <span class="pill">03</span>
+            <h3>Commit 提交</h3>
+            <p>掌握 commit 的概念、SHA-1 ID、物件結構、歷史紀錄查閱與版本回溯操作。</p>
+            <a class="button-link secondary" href="./pages/03-commit.html">進入章節</a>
+          </article>
+          <article class="chapter-card">
+            <span class="pill">04</span>
+            <h3>GitHub 協作平台</h3>
+            <p>GitHub 帳號設定、Remote 操作（push / pull / clone）、以及平台上的協作功能總覽。</p>
+            <a class="button-link secondary" href="./pages/04-github-collaboration.html">進入章節</a>
+          </article>
+          <article class="chapter-card">
+            <span class="pill">05</span>
+            <h3>PR、Issue 與 Branch</h3>
+            <p>深入了解分支（Branch）開發模式、Pull Request 審查流程、Issue 追蹤與 Merge 操作。</p>
+            <a class="button-link secondary" href="./pages/05-pr-issue-branch.html">進入章節</a>
+          </article>
+          <article class="chapter-card">
+            <span class="pill">06</span>
+            <h3>進階操作</h3>
+            <p>學習 rebase 重整歷史、revert 安全撤銷、reset 回退指標、stash 暫存工作的使用時機與差異。</p>
+            <a class="button-link secondary" href="./pages/06-advanced-usage.html">進入章節</a>
+          </article>
+        </div>
+      </section>
+
+      <section class="content-section">
+        <h2>完成後你應該獲得的能力</h2>
+        <div class="grid-2">
+          <article class="summary-card">
+            <h3>知識面</h3>
+            <ul class="summary-list">
+              <li>理解 Git 的分散式版本控制架構與物件模型。</li>
+              <li>理解 commit 是一個完整的專案快照，而非差異檔。</li>
+              <li>理解 Branch、Merge、Rebase 的原理與適用情境。</li>
+              <li>理解 GitHub 作為協作平台的核心功能與工作流程。</li>
+            </ul>
+          </article>
+          <article class="summary-card">
+            <h3>技能面</h3>
+            <ul class="summary-list">
+              <li>能使用 <code>git init</code>、<code>git add</code>、<code>git commit</code> 建立版本紀錄。</li>
+              <li>能使用 <code>git log</code>、<code>git diff</code> 查閱歷史與比較差異。</li>
+              <li>能透過 GitHub 進行 push / pull / clone 與 PR 協作。</li>
+              <li>能根據情境選擇 rebase、revert 或 reset 來處理版本問題。</li>
+            </ul>
+          </article>
+        </div>
+      </section>
+
+      <footer class="page-footer">
+        <strong>使用提示：</strong>
+        建議在學習過程中同步操作終端機，每一章的範例都可以在本機直接練習。
+        如果遇到問題，可以用 <code>git status</code> 查看目前狀態，這是最常用的除錯起點。
+      </footer>
+
+      <div id="page-nav"></div>
+    </main>
+  </div>
+
+  <script src="../../../node_modules/mermaid/dist/mermaid.min.js"></script>
+  <script defer src="./assets/app_b01.js"></script>
+</body>
+</html>

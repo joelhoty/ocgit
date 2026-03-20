@@ -1,0 +1,255 @@
+<!-- Path: Network/WEB Service/Content/b11/pages | Timestamp: 2026-03-19 20:18:24 | Version: b11 -->
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>02 Web 服務流程｜WEB Service 教學網站</title>
+  <link rel="stylesheet" href="../assets/styles_b01.css">
+</head>
+<body data-root=".." data-page="lifecycle">
+  <div class="site-shell">
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <small>Chapter 02</small>
+        <h2>Web 服務完整流程</h2>
+        <p class="sidebar-intro">從輸入網址到顯示畫面，中間每一步都會經過不同的網路角色與協定。</p>
+      </div>
+      <nav id="site-nav"></nav>
+      <section class="sidebar-tips">
+        <h3>本章重點</h3>
+        <ul>
+          <li>瀏覽器、DNS、Server 的接力關係。</li>
+          <li>靜態內容與動態內容的不同。</li>
+          <li>同一個頁面其實會發出很多次 HTTP Request。</li>
+        </ul>
+      </section>
+    </aside>
+
+    <main class="content">
+      <section class="hero">
+        <span class="eyebrow">Chapter 02</span>
+        <h1>從輸入網址到看到網頁：Web 服務的生命週期</h1>
+        <p>
+          你在網址列輸入的是一個短短的 URL，但背後發生的事情遠比你看到的多。
+          伺服器並不是收到網址就「直接把畫面送過來」，而是要經過查詢、連線、請求、回應與瀏覽器解析等多個步驟。
+        </p>
+      </section>
+
+      <section class="content-section">
+        <h2>Why：理解流程比背名詞更重要</h2>
+        <p>
+          如果只背 HTTP、HTML、CSS 的定義，很容易在遇到錯誤時不知道問題出在哪一層。
+          但一旦你知道完整流程，就能快速判斷：究竟是 DNS 找不到、伺服器沒開、路由錯誤、資源不存在，
+          還是瀏覽器拿到資料卻渲染失敗。
+        </p>
+      </section>
+
+      <section class="content-section">
+        <h2>How：從 URL 到畫面的完整流程</h2>
+        <div class="mermaid">
+sequenceDiagram
+    participant User as 使用者
+    participant Browser as Browser
+    participant DNS as DNS
+    participant Server as Web Server
+    User->>Browser: 輸入 https://example.com
+    Browser->>DNS: 查詢網域對應的 IP
+    DNS-->>Browser: 回覆 203.0.113.15
+    Browser->>Server: 建立 TCP/TLS 連線
+    Browser->>Server: 傳送 HTTP Request
+    Server-->>Browser: 回傳 HTML
+    Browser->>Server: 再請求 CSS / JS / 圖片
+    Server-->>Browser: 回傳各種資源
+    Browser->>User: 組合並顯示頁面
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>步驟</th>
+                <th>發生了什麼事</th>
+                <th>常見問題</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>1. 輸入網址</td>
+                <td>瀏覽器解析 URL，知道協定、主機、路徑</td>
+                <td>網址拼錯、協定不正確</td>
+              </tr>
+              <tr>
+                <td>2. DNS 查詢</td>
+                <td>將網域名稱轉成 IP 位址</td>
+                <td>找不到網域、DNS 設定錯誤</td>
+              </tr>
+              <tr>
+                <td>3. 建立連線</td>
+                <td>TCP 三向交握，若是 HTTPS 再加上 TLS</td>
+                <td>port 未開、TLS 憑證問題</td>
+              </tr>
+              <tr>
+                <td>4. 傳送 Request</td>
+                <td>瀏覽器用 HTTP 發送請求</td>
+                <td>路由錯誤、Header 不完整</td>
+              </tr>
+              <tr>
+                <td>5. 接收 Response</td>
+                <td>伺服器回傳 HTML 或其他資源</td>
+                <td>404、500、MIME 錯誤</td>
+              </tr>
+              <tr>
+                <td>6. 瀏覽器渲染</td>
+                <td>解析 HTML、載入 CSS、執行 JS</td>
+                <td>CSS / JS 路徑錯誤、腳本失敗</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="content-section">
+        <h2>靜態內容 vs 動態內容</h2>
+        <div class="comparison">
+          <article class="comparison-card">
+            <h4>靜態內容</h4>
+            <p>伺服器直接把現成檔案回傳，例如 <code>index.html</code>、圖片、CSS。</p>
+          </article>
+          <article class="comparison-card">
+            <h4>動態內容</h4>
+            <p>伺服器根據資料庫、時間、使用者身份，現場產生回應，例如儀表板、登入後畫面。</p>
+          </article>
+          <article class="comparison-card">
+            <h4>優點</h4>
+            <p>靜態頁快、簡單；動態頁可客製化、可讀寫資料。</p>
+          </article>
+          <article class="comparison-card">
+            <h4>教學提示</h4>
+            <p>不要把「看起來像一個頁面」與「背後只發一個請求」畫上等號。現代網站通常會載入很多資源。</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="content-section">
+        <h2>Example 1：請求靜態 HTML 檔案</h2>
+        <div class="example-showcase" data-example>
+          <div class="example-head">
+            <h3>瀏覽器向伺服器要求首頁</h3>
+            <p>這組範例展示最經典的靜態頁面請求：伺服器把現成的 HTML 檔案回傳給瀏覽器。</p>
+          </div>
+          <div class="example-tabs" role="tablist">
+            <button class="example-tab is-active" type="button" aria-selected="true" data-tab-target="code">語法</button>
+            <button class="example-tab" type="button" aria-selected="false" data-tab-target="result">結果</button>
+            <button class="example-tab" type="button" aria-selected="false" data-tab-target="explain">解說</button>
+          </div>
+          <div class="example-panel is-active" data-tab-panel="code">
+<pre><code>GET /index.html HTTP/1.1
+Host: example.com
+User-Agent: Browser Demo
+Accept: text/html
+
+HTTP/1.1 200 OK
+Content-Type: text/html; charset=utf-8
+Content-Length: 284
+
+&lt;!doctype html&gt;
+&lt;html&gt;
+  &lt;body&gt;
+    &lt;h1&gt;Hello Web&lt;/h1&gt;
+  &lt;/body&gt;
+&lt;/html&gt;</code></pre>
+          </div>
+          <div class="example-panel" data-tab-panel="result">
+            <div class="browser-window">
+              <div class="browser-chrome"><span></span><span></span><span></span></div>
+              <div class="preview-window">
+                <h1>Hello Web</h1>
+                <p>瀏覽器收到 HTML 後開始解析，之後可能還會繼續請求 CSS、JavaScript 與圖片。</p>
+              </div>
+            </div>
+          </div>
+          <div class="example-panel" data-tab-panel="explain">
+            <ul class="plain-list">
+              <li><code>GET /index.html</code> 表示要取得某個資源。</li>
+              <li>伺服器若找到檔案，就回傳 <code>200 OK</code> 與對應內容。</li>
+              <li>如果 HTML 中還有 <code>&lt;link&gt;</code>、<code>&lt;script&gt;</code> 或 <code>&lt;img&gt;</code>，瀏覽器會再發出新的請求。</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="content-section">
+        <h2>Example 2：伺服器動態產生回應</h2>
+        <div class="example-showcase" data-example>
+          <div class="example-head">
+            <h3>同一個路徑，不一定回傳固定檔案</h3>
+            <p>很多網站頁面是由伺服器依據資料即時組裝後再回傳，而不是讀取現成 HTML 檔案。</p>
+          </div>
+          <div class="example-tabs" role="tablist">
+            <button class="example-tab is-active" type="button" aria-selected="true" data-tab-target="code">語法</button>
+            <button class="example-tab" type="button" aria-selected="false" data-tab-target="result">結果</button>
+            <button class="example-tab" type="button" aria-selected="false" data-tab-target="explain">解說</button>
+          </div>
+          <div class="example-panel is-active" data-tab-panel="code">
+<pre><code>GET /time HTTP/1.1
+Host: school.local
+
+HTTP/1.1 200 OK
+Content-Type: text/html; charset=utf-8
+
+&lt;h1&gt;現在時間&lt;/h1&gt;
+&lt;p&gt;2026-03-15 13:10:42&lt;/p&gt;</code></pre>
+          </div>
+          <div class="example-panel" data-tab-panel="result">
+            <div class="browser-window">
+              <div class="browser-chrome"><span></span><span></span><span></span></div>
+              <div class="preview-window">
+                <h1>現在時間</h1>
+                <p>2026-03-15 13:10:42</p>
+                <p class="muted">每次重新整理，內容都可能不同。</p>
+              </div>
+            </div>
+          </div>
+          <div class="example-panel" data-tab-panel="explain">
+            <ul class="plain-list">
+              <li>路徑雖然看起來像頁面，但內容其實是伺服器現場產生的。</li>
+              <li>這類頁面常來自模板引擎、資料庫查詢或 API 整合。</li>
+              <li>這也是為什麼學會 Web server 與框架後，可以做登入系統、後台、儀表板。</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="content-section">
+        <h2>Practice：本章練習</h2>
+        <div class="grid-2">
+          <article class="practice-card">
+            <h3>練習 1</h3>
+            <p>請寫出瀏覽器打開首頁後，除了 HTML 之外，還可能再請求哪些資源？</p>
+          </article>
+          <article class="practice-card">
+            <h3>練習 2</h3>
+            <p>請比較靜態首頁與動態首頁在伺服器端的差異。</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="content-section">
+        <h2>Summary：本章結論</h2>
+        <div class="summary-card">
+          <ul class="summary-list">
+            <li>一個網頁的出現，背後至少經過網址解析、DNS、連線、HTTP 請求與瀏覽器渲染。</li>
+            <li>同一個頁面可能伴隨多個資源請求。</li>
+            <li>靜態內容是現成檔案，動態內容則是伺服器根據條件即時生成。</li>
+          </ul>
+        </div>
+      </section>
+
+      <div id="page-nav"></div>
+    </main>
+  </div>
+
+  <script src="../../../../../node_modules/mermaid/dist/mermaid.min.js"></script>
+  <script defer src="../assets/app_b11.js"></script>
+</body>
+</html>

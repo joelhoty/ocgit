@@ -1,0 +1,977 @@
+<!-- Path: Network/WEB Service/Content/b11/pages | Timestamp: 2026-03-19 20:18:24 | Version: b11 -->
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>04 HTML 與 CSS 基礎｜WEB Service 教學網站</title>
+  <link rel="stylesheet" href="../assets/styles_b01.css">
+</head>
+<body data-root=".." data-page="html-css">
+  <div class="site-shell">
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <small>Chapter 04</small>
+        <h2>HTML 與 CSS 基礎</h2>
+        <p class="sidebar-intro">本章先把 HTML 結構與 CSS 樣式打穩，下一章再專講 JavaScript、DOM 與 CSS 互動。</p>
+      </div>
+      <nav id="site-nav"></nav>
+      <section class="sidebar-tips">
+        <h3>本章重點</h3>
+        <ul>
+          <li>先記住 5 個最常用標籤，再擴展到完整文件骨架。</li>
+          <li>CSS 基本語法、選擇器、常見屬性與版型。</li>
+          <li>後半段參考表可查閱，不需要一次全部背起來。</li>
+        </ul>
+      </section>
+    </aside>
+
+    <main class="content">
+      <section class="hero">
+        <span class="eyebrow">Chapter 04 / HTML + CSS 基礎</span>
+        <h1>先把 HTML 結構與 CSS 樣式打好基礎</h1>
+        <p>
+          前面的章節已經說明了資料如何經過網路與 HTTP 送到瀏覽器，而這一章先專注在
+          <strong>瀏覽器拿到 HTML 後，如何建立內容結構，並用 CSS 把畫面排好。</strong>
+          你會先打穩標籤、屬性、選擇器與版型觀念；下一章再接著學 JavaScript、DOM 與 CSS 互動。
+        </p>
+      </section>
+
+      <section class="content-section">
+        <h2>Why：為什麼 HTML 與 CSS 需要分開學？</h2>
+        <p>
+          新手最常見的困惑，是把「內容結構」和「外觀樣式」混在一起。其實 HTML 與 CSS 的責任完全不同：
+          HTML 負責定義頁面裡<strong>有什麼</strong>，CSS 負責定義它們<strong>看起來怎樣</strong>。
+          先分清楚這兩者，之後再學 JavaScript 或框架才不會混亂。
+        </p>
+        <div class="comparison">
+          <article class="comparison-card">
+            <h4>HTML 像骨架</h4>
+            <p>它決定這頁有標題、段落、圖片、連結、表格、表單、區塊等結構。</p>
+          </article>
+          <article class="comparison-card">
+            <h4>CSS 像外觀與排版</h4>
+            <p>它決定字體、顏色、間距、大小、欄位排列、卡片風格與響應式版面。</p>
+          </article>
+          <article class="comparison-card">
+            <h4>JavaScript 像互動行為</h4>
+            <p>它處理點擊、輸入、資料更新與 DOM 改變，讓畫面變得可互動。</p>
+          </article>
+          <article class="comparison-card">
+            <h4>學習策略</h4>
+            <p>先理解 HTML / CSS，再學 DOM 與 JavaScript，最後再進入框架，會更有脈絡。</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="content-section">
+        <h2>What：三種前端技術的角色分工</h2>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>技術</th>
+                <th>主要角色</th>
+                <th>常見語法</th>
+                <th>你會看到的結果</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>HTML</td>
+                <td>定義內容結構與語意</td>
+                <td><code>&lt;h1&gt;</code>、<code>&lt;p&gt;</code>、<code>&lt;a&gt;</code>、<code>&lt;section&gt;</code></td>
+                <td>頁面有哪些區塊與元素</td>
+              </tr>
+              <tr>
+                <td>CSS</td>
+                <td>控制樣式、排版與視覺效果</td>
+                <td><code>.card { ... }</code>、<code>display: flex;</code></td>
+                <td>畫面好不好看、排版是否整齊</td>
+              </tr>
+              <tr>
+                <td>JavaScript</td>
+                <td>控制互動與邏輯</td>
+                <td><code>addEventListener()</code>、<code>fetch()</code></td>
+                <td>按鈕點擊、內容切換、資料更新</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="mermaid">
+flowchart LR
+    A[Server 回傳 HTML] --> B[Browser 建立 DOM]
+    B --> C[載入 CSS]
+    B --> D[執行 JavaScript]
+    C --> E[形成畫面]
+    D --> E
+        </div>
+        <div class="note">
+          <strong>DOM 是什麼？</strong>
+          DOM（Document Object Model）是瀏覽器把 HTML 解析後建立的一棵文件樹。之後 CSS 會套用到這棵樹上，JavaScript 則可以操作這棵樹；下一章會用實際範例拆解這件事。
+        </div>
+      </section>
+
+      <section class="content-section">
+        <h2>第一次做網頁，先學最常用的 5 個標籤</h2>
+        <p class="section-intro">
+          如果你是第一次接觸 HTML，不需要先把所有標籤背起來。先掌握 <code>h1</code>、<code>p</code>、<code>div</code>、<code>a</code>、<code>button</code>，就已經能做出第一個簡單頁面。
+        </p>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>標籤</th>
+                <th>你可以拿來做什麼</th>
+                <th>最小語法</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>&lt;h1&gt;</code></td>
+                <td>主標題</td>
+                <td><code>&lt;h1&gt;課程首頁&lt;/h1&gt;</code></td>
+              </tr>
+              <tr>
+                <td><code>&lt;p&gt;</code></td>
+                <td>段落說明</td>
+                <td><code>&lt;p&gt;這是一段介紹文字。&lt;/p&gt;</code></td>
+              </tr>
+              <tr>
+                <td><code>&lt;div&gt;</code></td>
+                <td>把一組內容包成區塊</td>
+                <td><code>&lt;div&gt;...&lt;/div&gt;</code></td>
+              </tr>
+              <tr>
+                <td><code>&lt;a&gt;</code></td>
+                <td>建立連結</td>
+                <td><code>&lt;a href="#lesson"&gt;查看課程&lt;/a&gt;</code></td>
+              </tr>
+              <tr>
+                <td><code>&lt;button&gt;</code></td>
+                <td>放置可點擊操作</td>
+                <td><code>&lt;button&gt;開始學習&lt;/button&gt;</code></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="example-showcase" data-example>
+          <div class="example-head">
+            <h3>只用 5 個標籤做第一個頁面</h3>
+            <p>這個例子故意很簡單，目的是讓你先有「我做得出來」的成就感。</p>
+          </div>
+          <div class="example-tabs" role="tablist">
+            <button class="example-tab is-active" type="button" aria-selected="true" data-tab-target="code">語法</button>
+            <button class="example-tab" type="button" aria-selected="false" data-tab-target="result">結果</button>
+            <button class="example-tab" type="button" aria-selected="false" data-tab-target="explain">解說</button>
+          </div>
+          <div class="example-panel is-active" data-tab-panel="code">
+<pre><code>&lt;div&gt;
+  &lt;h1&gt;AI 與 Web 入門&lt;/h1&gt;
+  &lt;p&gt;先學會 HTML、CSS、DOM 與 Web server 的基本觀念。&lt;/p&gt;
+  &lt;a href="#lesson-list"&gt;查看章節&lt;/a&gt;
+  &lt;button&gt;開始學習&lt;/button&gt;
+&lt;/div&gt;</code></pre>
+          </div>
+          <div class="example-panel" data-tab-panel="result">
+            <iframe sandbox="allow-scripts" srcdoc='<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8"></head><body style="font-family:Arial,sans-serif;padding:24px;"><div><h1>AI 與 Web 入門</h1><p>先學會 HTML、CSS、DOM 與 Web server 的基本觀念。</p><a href="#lesson-list">查看章節</a><br><br><button>開始學習</button></div></body></html>'></iframe>
+          </div>
+          <div class="example-panel" data-tab-panel="explain">
+            <ul class="plain-list">
+              <li><code>div</code> 只是先把內容包在一起，之後就能一起套用樣式。</li>
+              <li><code>h1</code> 與 <code>p</code> 已經足以做出標題與介紹文字。</li>
+              <li><code>a</code> 與 <code>button</code> 讓頁面從純文字變成可操作介面。</li>
+            </ul>
+          </div>
+        </div>
+        <div class="note">
+          <strong>學習策略：</strong>
+          先會用這 5 個標籤做出第一頁，後面的表格再當查表工具，不需要一開始就全部背起來。
+        </div>
+      </section>
+
+      <section class="content-section">
+        <h2>HTML 基本語法：先看完整文件骨架</h2>
+        <p class="section-intro">
+          在學個別標籤前，先認識一份 HTML 文件最基本的結構。這就像一篇作文要有標題、段落與內容區一樣，HTML 也有固定骨架。
+        </p>
+        <div class="example-showcase" data-example>
+          <div class="example-head">
+            <h3>一份最基本的 HTML 文件</h3>
+            <p>這是日後所有頁面的起點，理解它就能知道每個標籤在文件中的位置。</p>
+          </div>
+          <div class="example-tabs" role="tablist">
+            <button class="example-tab is-active" type="button" aria-selected="true" data-tab-target="code">語法</button>
+            <button class="example-tab" type="button" aria-selected="false" data-tab-target="result">結果</button>
+            <button class="example-tab" type="button" aria-selected="false" data-tab-target="explain">解說</button>
+          </div>
+          <div class="example-panel is-active" data-tab-panel="code">
+<pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang="zh-Hant"&gt;
+&lt;head&gt;
+  &lt;meta charset="utf-8"&gt;
+  &lt;meta name="viewport" content="width=device-width, initial-scale=1"&gt;
+  &lt;title&gt;我的第一個網頁&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;h1&gt;Hello HTML&lt;/h1&gt;
+  &lt;p&gt;這是第一段內容。&lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+          </div>
+          <div class="example-panel" data-tab-panel="result">
+            <iframe sandbox="allow-scripts" srcdoc='<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8"><title>demo</title></head><body style="font-family:Arial,sans-serif;padding:24px;"><h1>Hello HTML</h1><p>這是第一段內容。</p></body></html>'></iframe>
+          </div>
+          <div class="example-panel" data-tab-panel="explain">
+            <ul class="plain-list">
+              <li><code>&lt;!DOCTYPE html&gt;</code> 告訴瀏覽器這是一份 HTML5 文件。</li>
+              <li><code>&lt;html&gt;</code> 是整份文件的根元素，<code>lang</code> 屬性可以告訴瀏覽器頁面語言。</li>
+              <li><code>&lt;head&gt;</code> 放的是設定資訊，不直接顯示在頁面中。</li>
+              <li><code>&lt;body&gt;</code> 才是使用者真正會看到的內容區。</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="content-section">
+        <h2>HTML 文件與中繼標籤詳解</h2>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>標籤</th>
+                <th>基本語法</th>
+                <th>用途</th>
+                <th>說明與注意事項</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>&lt;!DOCTYPE html&gt;</code></td>
+                <td><code>&lt;!DOCTYPE html&gt;</code></td>
+                <td>宣告文件型別</td>
+                <td>通常放在第一行，讓瀏覽器用標準模式解析。</td>
+              </tr>
+              <tr>
+                <td><code>&lt;html&gt;</code></td>
+                <td><code>&lt;html lang="zh-Hant"&gt;...&lt;/html&gt;</code></td>
+                <td>整份 HTML 文件的根元素</td>
+                <td><code>lang</code> 有助於搜尋引擎與輔助工具理解語言。</td>
+              </tr>
+              <tr>
+                <td><code>&lt;head&gt;</code></td>
+                <td><code>&lt;head&gt;...&lt;/head&gt;</code></td>
+                <td>放置中繼資訊</td>
+                <td>例如標題、字元編碼、樣式表、腳本連結。</td>
+              </tr>
+              <tr>
+                <td><code>&lt;meta&gt;</code></td>
+                <td><code>&lt;meta charset="utf-8"&gt;</code></td>
+                <td>設定文件資訊</td>
+                <td>常見用途是字元編碼與 viewport。這是 void element，不需要結尾標籤。</td>
+              </tr>
+              <tr>
+                <td><code>&lt;title&gt;</code></td>
+                <td><code>&lt;title&gt;網站標題&lt;/title&gt;</code></td>
+                <td>設定瀏覽器分頁標題</td>
+                <td>也會影響搜尋結果顯示文字。</td>
+              </tr>
+              <tr>
+                <td><code>&lt;link&gt;</code></td>
+                <td><code>&lt;link rel="stylesheet" href="style.css"&gt;</code></td>
+                <td>連結外部資源</td>
+                <td>最常見用途是引入 CSS 檔案。也是 void element。</td>
+              </tr>
+              <tr>
+                <td><code>&lt;script&gt;</code></td>
+                <td><code>&lt;script src="app.js" defer&gt;&lt;/script&gt;</code></td>
+                <td>載入 JavaScript</td>
+                <td><code>defer</code> 代表先解析 HTML，再執行腳本。</td>
+              </tr>
+              <tr>
+                <td><code>&lt;body&gt;</code></td>
+                <td><code>&lt;body&gt;...&lt;/body&gt;</code></td>
+                <td>顯示內容的主區域</td>
+                <td>所有會出現在頁面上的標題、段落、圖片、表格多半都在這裡。</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="content-section">
+        <h2>更多常見 HTML 標籤（查表用）</h2>
+        <p class="section-intro">如果你是第一次學 HTML，這一段先當參考表使用；先能熟練前面的 5 個常用標籤即可。</p>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>標籤</th>
+                <th>基本語法</th>
+                <th>用途</th>
+                <th>補充說明</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>&lt;h1&gt; ~ &lt;h6&gt;</code></td>
+                <td><code>&lt;h1&gt;主標題&lt;/h1&gt;</code></td>
+                <td>標題層級</td>
+                <td><code>h1</code> 最重要，數字越大層級越低，不只是字變小而已。</td>
+              </tr>
+              <tr>
+                <td><code>&lt;p&gt;</code></td>
+                <td><code>&lt;p&gt;段落文字&lt;/p&gt;</code></td>
+                <td>一般段落</td>
+                <td>適合放敘述文字，瀏覽器會自帶上下間距。</td>
+              </tr>
+              <tr>
+                <td><code>&lt;strong&gt;</code></td>
+                <td><code>&lt;strong&gt;重要&lt;/strong&gt;</code></td>
+                <td>強調重要內容</td>
+                <td>預設常以粗體呈現，但語意重點是「重要」。</td>
+              </tr>
+              <tr>
+                <td><code>&lt;em&gt;</code></td>
+                <td><code>&lt;em&gt;語氣強調&lt;/em&gt;</code></td>
+                <td>語氣強調</td>
+                <td>預設常以斜體呈現，語意與 <code>strong</code> 不同。</td>
+              </tr>
+              <tr>
+                <td><code>&lt;span&gt;</code></td>
+                <td><code>&lt;span&gt;行內文字&lt;/span&gt;</code></td>
+                <td>行內區塊</td>
+                <td>常用來搭配 CSS 對一句話中的局部內容加樣式。</td>
+              </tr>
+              <tr>
+                <td><code>&lt;div&gt;</code></td>
+                <td><code>&lt;div&gt;區塊內容&lt;/div&gt;</code></td>
+                <td>一般區塊容器</td>
+                <td>本身沒有特殊語意，但方便分組與排版。</td>
+              </tr>
+              <tr>
+                <td><code>&lt;br&gt;</code></td>
+                <td><code>&lt;br&gt;</code></td>
+                <td>換行</td>
+                <td>是 void element，適合短句換行，不要拿來替代段落。</td>
+              </tr>
+              <tr>
+                <td><code>&lt;hr&gt;</code></td>
+                <td><code>&lt;hr&gt;</code></td>
+                <td>水平分隔線</td>
+                <td>適合區隔段落或主題。</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="content-section">
+        <h2>HTML 連結、圖片、清單與媒體標籤</h2>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>標籤</th>
+                <th>基本語法</th>
+                <th>用途</th>
+                <th>關鍵屬性</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>&lt;a&gt;</code></td>
+                <td><code>&lt;a href="https://example.com"&gt;前往網站&lt;/a&gt;</code></td>
+                <td>建立超連結</td>
+                <td><code>href</code> 是目標網址；<code>target="_blank"</code> 可開新分頁。</td>
+              </tr>
+              <tr>
+                <td><code>&lt;img&gt;</code></td>
+                <td><code>&lt;img src="photo.jpg" alt="範例圖片"&gt;</code></td>
+                <td>顯示圖片</td>
+                <td><code>src</code> 指定來源，<code>alt</code> 是替代文字，對無障礙很重要。</td>
+              </tr>
+              <tr>
+                <td><code>&lt;ul&gt;</code></td>
+                <td><code>&lt;ul&gt;&lt;li&gt;項目&lt;/li&gt;&lt;/ul&gt;</code></td>
+                <td>無序清單</td>
+                <td>常用於選單、重點條列。</td>
+              </tr>
+              <tr>
+                <td><code>&lt;ol&gt;</code></td>
+                <td><code>&lt;ol&gt;&lt;li&gt;步驟一&lt;/li&gt;&lt;/ol&gt;</code></td>
+                <td>有序清單</td>
+                <td>適合流程與步驟說明。</td>
+              </tr>
+              <tr>
+                <td><code>&lt;li&gt;</code></td>
+                <td><code>&lt;li&gt;清單項目&lt;/li&gt;</code></td>
+                <td>清單項目</td>
+                <td>要放在 <code>ul</code> 或 <code>ol</code> 裡面。</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="content-section">
+        <h2>HTML 語意化區塊：讓頁面更有結構</h2>
+        <p>
+          除了 <code>div</code> 之外，HTML5 提供了一批更有語意的區塊標籤，讓人與機器都更容易理解頁面結構。
+        </p>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>標籤</th>
+                <th>用途</th>
+                <th>典型位置</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>&lt;header&gt;</code></td>
+                <td>頁首區</td>
+                <td>網站標題、Logo、頁首資訊</td>
+              </tr>
+              <tr>
+                <td><code>&lt;nav&gt;</code></td>
+                <td>導覽區</td>
+                <td>主選單、麵包屑、頁面連結</td>
+              </tr>
+              <tr>
+                <td><code>&lt;main&gt;</code></td>
+                <td>頁面主要內容</td>
+                <td>每頁最重要、最核心的內容</td>
+              </tr>
+              <tr>
+                <td><code>&lt;section&gt;</code></td>
+                <td>主題區塊</td>
+                <td>一章、一段主題內容</td>
+              </tr>
+              <tr>
+                <td><code>&lt;article&gt;</code></td>
+                <td>獨立內容單元</td>
+                <td>文章、卡片、貼文、新聞</td>
+              </tr>
+              <tr>
+                <td><code>&lt;aside&gt;</code></td>
+                <td>側邊補充資訊</td>
+                <td>側欄、補充欄、推薦閱讀</td>
+              </tr>
+              <tr>
+                <td><code>&lt;footer&gt;</code></td>
+                <td>頁尾區</td>
+                <td>版權、聯絡資訊、頁尾導覽</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="example-showcase" data-example>
+          <div class="example-head">
+            <h3>語意化頁面骨架範例</h3>
+            <p>下面這個例子可作為網站版面的通用骨架。</p>
+          </div>
+          <div class="example-tabs" role="tablist">
+            <button class="example-tab is-active" type="button" aria-selected="true" data-tab-target="code">語法</button>
+            <button class="example-tab" type="button" aria-selected="false" data-tab-target="result">結果</button>
+            <button class="example-tab" type="button" aria-selected="false" data-tab-target="explain">解說</button>
+          </div>
+          <div class="example-panel is-active" data-tab-panel="code">
+<pre><code>&lt;header&gt;網站標題&lt;/header&gt;
+&lt;nav&gt;首頁 / 課程 / 聯絡&lt;/nav&gt;
+&lt;main&gt;
+  &lt;section&gt;
+    &lt;article&gt;第一篇內容&lt;/article&gt;
+  &lt;/section&gt;
+&lt;/main&gt;
+&lt;footer&gt;版權資訊&lt;/footer&gt;</code></pre>
+          </div>
+          <div class="example-panel" data-tab-panel="result">
+            <iframe sandbox="allow-scripts" srcdoc='<!doctype html><html lang="zh-Hant"><body style="font-family:Arial,sans-serif;padding:0;margin:0;background:#f8fafc;"><header style="background:#0f172a;color:#fff;padding:14px 18px;">網站標題</header><nav style="background:#dbeafe;padding:10px 18px;">首頁 / 課程 / 聯絡</nav><main style="padding:18px;"><section><article style="background:#fff;padding:16px;border-radius:12px;box-shadow:0 8px 16px rgba(15,23,42,.08);">第一篇內容</article></section></main><footer style="padding:12px 18px;background:#e2e8f0;">版權資訊</footer></body></html>'></iframe>
+          </div>
+          <div class="example-panel" data-tab-panel="explain">
+            <ul class="plain-list">
+              <li>這些標籤讓頁面不只「能顯示」，也更容易被搜尋引擎與輔助技術理解。</li>
+              <li>若只是單純為了排版，<code>div</code> 仍可使用；但有明確語意時，優先使用語意化標籤。</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="content-section">
+        <h2>HTML 常見屬性：標籤上的附加設定</h2>
+        <p class="section-intro">標籤本身定義元素類型，屬性（attribute）則補充元素的設定。常見格式是 <code>名稱="值"</code>。</p>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>屬性</th>
+                <th>常見搭配</th>
+                <th>用途</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>class</code></td>
+                <td>大多數標籤</td>
+                <td>讓 CSS / JavaScript 可以選取一群元素。</td>
+              </tr>
+              <tr>
+                <td><code>id</code></td>
+                <td>大多數標籤</td>
+                <td>給元素唯一識別名稱，常用於 JS 與頁內連結。</td>
+              </tr>
+              <tr>
+                <td><code>href</code></td>
+                <td><code>&lt;a&gt;</code></td>
+                <td>設定連結目標。</td>
+              </tr>
+              <tr>
+                <td><code>src</code></td>
+                <td><code>&lt;img&gt;</code>、<code>&lt;script&gt;</code></td>
+                <td>設定外部資源來源。</td>
+              </tr>
+              <tr>
+                <td><code>alt</code></td>
+                <td><code>&lt;img&gt;</code></td>
+                <td>圖片無法顯示時的替代文字，也影響無障礙。</td>
+              </tr>
+              <tr>
+                <td><code>type</code></td>
+                <td><code>&lt;input&gt;</code>、<code>&lt;button&gt;</code></td>
+                <td>指定輸入框或按鈕型態。</td>
+              </tr>
+              <tr>
+                <td><code>placeholder</code></td>
+                <td><code>&lt;input&gt;</code>、<code>&lt;textarea&gt;</code></td>
+                <td>顯示提示文字。</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="content-section">
+        <h2>HTML 表單與表格標籤</h2>
+        <div class="grid-2">
+          <article class="summary-card">
+            <h3>表單常見標籤</h3>
+            <ul class="summary-list">
+              <li><code>&lt;form&gt;</code>：包住整份表單。</li>
+              <li><code>&lt;label&gt;</code>：欄位說明文字。</li>
+              <li><code>&lt;input&gt;</code>：單行輸入框。</li>
+              <li><code>&lt;textarea&gt;</code>：多行輸入。</li>
+              <li><code>&lt;select&gt;</code> / <code>&lt;option&gt;</code>：下拉選單。</li>
+              <li><code>&lt;button&gt;</code>：提交或操作按鈕。</li>
+            </ul>
+          </article>
+          <article class="summary-card">
+            <h3>表格常見標籤</h3>
+            <ul class="summary-list">
+              <li><code>&lt;table&gt;</code>：整張表格。</li>
+              <li><code>&lt;thead&gt;</code>：表頭區。</li>
+              <li><code>&lt;tbody&gt;</code>：資料區。</li>
+              <li><code>&lt;tr&gt;</code>：列。</li>
+              <li><code>&lt;th&gt;</code>：標題儲存格。</li>
+              <li><code>&lt;td&gt;</code>：資料儲存格。</li>
+            </ul>
+          </article>
+        </div>
+      </section>
+
+      <section class="content-section">
+        <h2>CSS 基本語法：一條樣式規則長什麼樣子？</h2>
+        <div class="example-showcase" data-example>
+          <div class="example-head">
+            <h3>CSS 規則的基本結構</h3>
+            <p>每一條 CSS 規則都由「選擇器 + 宣告區塊」構成。</p>
+          </div>
+          <div class="example-tabs" role="tablist">
+            <button class="example-tab is-active" type="button" aria-selected="true" data-tab-target="code">語法</button>
+            <button class="example-tab" type="button" aria-selected="false" data-tab-target="result">結果</button>
+            <button class="example-tab" type="button" aria-selected="false" data-tab-target="explain">解說</button>
+          </div>
+          <div class="example-panel is-active" data-tab-panel="code">
+<pre><code>selector {
+  property: value;
+  property: value;
+}
+
+/* 範例 */
+h1 {
+  color: #1d4ed8;
+  font-size: 32px;
+}</code></pre>
+          </div>
+          <div class="example-panel" data-tab-panel="result">
+            <div class="preview-window">
+              <h1 style="color:#1d4ed8;font-size:32px;margin:0;">這是一個藍色大標題</h1>
+            </div>
+          </div>
+          <div class="example-panel" data-tab-panel="explain">
+            <ul class="plain-list">
+              <li><strong>selector</strong>：要選哪個元素。</li>
+              <li><strong>property</strong>：要改哪個樣式屬性。</li>
+              <li><strong>value</strong>：要改成什麼值。</li>
+              <li>每條屬性建議以分號結尾，便於維護與擴充。</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="content-section">
+        <h2>CSS 選擇器完整入門</h2>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>類型</th>
+                <th>語法</th>
+                <th>用途</th>
+                <th>範例說明</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>元素選擇器</td>
+                <td><code>p</code></td>
+                <td>選取所有同類型標籤</td>
+                <td><code>p { color: gray; }</code> 會套用到所有段落。</td>
+              </tr>
+              <tr>
+                <td>類別選擇器</td>
+                <td><code>.card</code></td>
+                <td>選取 class 為 card 的元素</td>
+                <td>最常用於共用樣式。</td>
+              </tr>
+              <tr>
+                <td>ID 選擇器</td>
+                <td><code>#banner</code></td>
+                <td>選取 id 為 banner 的元素</td>
+                <td>通常一頁只對應一個元素。</td>
+              </tr>
+              <tr>
+                <td>後代選擇器</td>
+                <td><code>.card p</code></td>
+                <td>選取 card 裡面的所有 p</td>
+                <td>常用於限定範圍。</td>
+              </tr>
+              <tr>
+                <td>群組選擇器</td>
+                <td><code>h1, h2, h3</code></td>
+                <td>同時套用多種元素</td>
+                <td>適合統一標題樣式。</td>
+              </tr>
+              <tr>
+                <td>Pseudo-class</td>
+                <td><code>a:hover</code></td>
+                <td>選取特殊狀態</td>
+                <td>例如滑鼠移上去時改顏色。</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="content-section">
+        <h2>CSS 常見屬性：先學最常用的四大類</h2>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>類別</th>
+                <th>常見屬性</th>
+                <th>用途</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>文字與顏色</td>
+                <td><code>color</code>、<code>font-size</code>、<code>font-weight</code>、<code>line-height</code>、<code>text-align</code></td>
+                <td>控制字的顏色、大小、粗細、行高與對齊。</td>
+              </tr>
+              <tr>
+                <td>盒模型</td>
+                <td><code>width</code>、<code>height</code>、<code>margin</code>、<code>padding</code>、<code>border</code></td>
+                <td>控制元素大小與內外距離。</td>
+              </tr>
+              <tr>
+                <td>背景與裝飾</td>
+                <td><code>background</code>、<code>border-radius</code>、<code>box-shadow</code></td>
+                <td>控制背景色、圓角、陰影與視覺層次。</td>
+              </tr>
+              <tr>
+                <td>版面配置</td>
+                <td><code>display</code>、<code>position</code>、<code>flex</code>、<code>grid</code>、<code>gap</code></td>
+                <td>控制區塊如何排列、對齊與響應式調整。</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="content-section">
+        <h2>CSS 單位與顏色表示法</h2>
+        <div class="grid-2">
+          <article class="summary-card">
+            <h3>常用長度單位</h3>
+            <ul class="summary-list">
+              <li><code>px</code>：像素，最直覺。</li>
+              <li><code>%</code>：相對於父元素比例。</li>
+              <li><code>rem</code>：相對於根字級，適合整體縮放。</li>
+              <li><code>vh</code> / <code>vw</code>：相對於視窗高寬。</li>
+            </ul>
+          </article>
+          <article class="summary-card">
+            <h3>常用顏色寫法</h3>
+            <ul class="summary-list">
+              <li><code>#2563eb</code>：十六進位色碼。</li>
+              <li><code>rgb(37, 99, 235)</code>：RGB。</li>
+              <li><code>rgba(37, 99, 235, 0.2)</code>：含透明度。</li>
+              <li><code>hsl(217, 82%, 54%)</code>：以色相、飽和度、亮度表示。</li>
+            </ul>
+          </article>
+        </div>
+      </section>
+
+      <section class="content-section">
+        <h2>CSS 盒模型（Box Model）</h2>
+        <p>
+          每個 HTML 元素都可以想成一個盒子，而盒子通常由 <strong>content → padding → border → margin</strong> 四層組成。
+          如果你不知道元素為什麼看起來太擠、太寬或沒對齊，通常問題就在盒模型。
+        </p>
+        <div class="mermaid">
+flowchart LR
+    A[content 內容] --> B[padding 內距]
+    B --> C[border 邊框]
+    C --> D[margin 外距]
+        </div>
+        <div class="example-showcase" data-example>
+          <div class="example-head">
+            <h3>盒模型範例</h3>
+            <p>同一個元素的大小，常常不只由 <code>width</code> 決定。</p>
+          </div>
+          <div class="example-tabs" role="tablist">
+            <button class="example-tab is-active" type="button" aria-selected="true" data-tab-target="code">語法</button>
+            <button class="example-tab" type="button" aria-selected="false" data-tab-target="result">結果</button>
+            <button class="example-tab" type="button" aria-selected="false" data-tab-target="explain">解說</button>
+          </div>
+          <div class="example-panel is-active" data-tab-panel="code">
+<pre><code>.box {
+  width: 220px;
+  padding: 20px;
+  border: 4px solid #2563eb;
+  margin: 16px;
+  background: #dbeafe;
+}</code></pre>
+          </div>
+          <div class="example-panel" data-tab-panel="result">
+            <div class="preview-window" style="background:#f8fafc;">
+              <div style="width:220px;padding:20px;border:4px solid #2563eb;margin:16px;background:#dbeafe;">這是一個盒模型範例</div>
+            </div>
+          </div>
+          <div class="example-panel" data-tab-panel="explain">
+            <ul class="plain-list">
+              <li>內容寬度是 220px，但實際占位還要加上 padding、border、margin。</li>
+              <li>這也是為什麼排版常需要搭配 <code>box-sizing: border-box;</code> 使用。</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="content-section">
+        <h2>CSS 版面語法：Flexbox 與 Grid</h2>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>技術</th>
+                <th>常見語法</th>
+                <th>適合情境</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Flexbox</td>
+                <td><code>display: flex;</code>、<code>justify-content</code>、<code>align-items</code>、<code>gap</code></td>
+                <td>一維排列：一列卡片、工具列、按鈕列</td>
+              </tr>
+              <tr>
+                <td>Grid</td>
+                <td><code>display: grid;</code>、<code>grid-template-columns</code>、<code>gap</code></td>
+                <td>二維排列：卡片牆、儀表板、首頁分欄</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="example-showcase" data-example>
+          <div class="example-head">
+            <h3>Flexbox 橫向排列卡片</h3>
+            <p>這是最常用的版面語法之一，很適合教學網站與導覽列。</p>
+          </div>
+          <div class="example-tabs" role="tablist">
+            <button class="example-tab is-active" type="button" aria-selected="true" data-tab-target="code">語法</button>
+            <button class="example-tab" type="button" aria-selected="false" data-tab-target="result">結果</button>
+            <button class="example-tab" type="button" aria-selected="false" data-tab-target="explain">解說</button>
+          </div>
+          <div class="example-panel is-active" data-tab-panel="code">
+<pre><code>.card-row {
+  display: flex;
+  gap: 16px;
+}
+
+.card-row article {
+  flex: 1;
+  padding: 16px;
+  border-radius: 14px;
+  background: #eef4ff;
+}</code></pre>
+          </div>
+          <div class="example-panel" data-tab-panel="result">
+            <iframe srcdoc='<!doctype html><html lang="zh-Hant"><body style="font-family:Arial,sans-serif;padding:18px;background:#f8fafc;"><section style="display:flex;gap:16px;"><article style="flex:1;padding:16px;border-radius:14px;background:#eef4ff;">HTML</article><article style="flex:1;padding:16px;border-radius:14px;background:#eef4ff;">CSS</article><article style="flex:1;padding:16px;border-radius:14px;background:#eef4ff;">JS</article></section></body></html>'></iframe>
+          </div>
+          <div class="example-panel" data-tab-panel="explain">
+            <ul class="plain-list">
+              <li><code>display: flex</code> 讓子元素排成一列或一欄。</li>
+              <li><code>gap</code> 是元素之間的間距。</li>
+              <li><code>flex: 1</code> 代表每個子元素平均分配空間。</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="content-section">
+        <h2>CSS 響應式語法：為什麼同一頁在手機與桌機不一樣？</h2>
+        <p>
+          響應式設計（Responsive Design）的核心，是讓畫面依螢幕尺寸調整。
+          最常見的做法是使用 <code>@media</code> 條件判斷。
+        </p>
+        <div class="example-showcase" data-example>
+          <div class="example-head">
+            <h3>Media Query 範例</h3>
+            <p>畫面寬度夠大時用兩欄，小螢幕時改為單欄。</p>
+          </div>
+          <div class="example-tabs" role="tablist">
+            <button class="example-tab is-active" type="button" aria-selected="true" data-tab-target="code">語法</button>
+            <button class="example-tab" type="button" aria-selected="false" data-tab-target="result">結果</button>
+            <button class="example-tab" type="button" aria-selected="false" data-tab-target="explain">解說</button>
+          </div>
+          <div class="example-panel is-active" data-tab-panel="code">
+<pre><code>.layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+@media (max-width: 768px) {
+  .layout {
+    grid-template-columns: 1fr;
+  }
+}</code></pre>
+          </div>
+          <div class="example-panel" data-tab-panel="result">
+            <div class="response-window">
+              <strong>桌機：</strong> 兩欄並排<br>
+              <strong>手機：</strong> 改成單欄，避免內容過擠。
+            </div>
+          </div>
+          <div class="example-panel" data-tab-panel="explain">
+            <ul class="plain-list">
+              <li><code>@media</code> 是 CSS 中用來根據條件切換樣式的語法。</li>
+              <li>教學網站若沒有響應式調整，在手機上會很難閱讀。</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="content-section">
+        <h2>HTML 與 CSS 的關係：同一份結構，不同外觀</h2>
+        <div class="example-showcase" data-example>
+          <div class="example-head">
+            <h3>把同一份 HTML 套上 CSS 後的差異</h3>
+            <p>這組範例特別適合讓學生理解：HTML 是內容，CSS 是樣式。</p>
+          </div>
+          <div class="example-tabs" role="tablist">
+            <button class="example-tab is-active" type="button" aria-selected="true" data-tab-target="code">語法</button>
+            <button class="example-tab" type="button" aria-selected="false" data-tab-target="result">結果</button>
+            <button class="example-tab" type="button" aria-selected="false" data-tab-target="explain">解說</button>
+          </div>
+          <div class="example-panel is-active" data-tab-panel="code">
+<pre><code>&lt;section class="notice"&gt;
+  &lt;h2&gt;課程提醒&lt;/h2&gt;
+  &lt;p&gt;今天記得完成 HTML 與 CSS 練習。&lt;/p&gt;
+&lt;/section&gt;
+
+.notice {
+  padding: 18px;
+  border-left: 6px solid #2563eb;
+  background: #eff6ff;
+}</code></pre>
+          </div>
+          <div class="example-panel" data-tab-panel="result">
+            <iframe srcdoc='<!doctype html><html lang="zh-Hant"><body style="font-family:Arial,sans-serif;padding:18px;background:#f8fafc;"><section style="padding:18px;border-left:6px solid #2563eb;background:#eff6ff;"><h2 style="margin-top:0;">課程提醒</h2><p>今天記得完成 HTML 與 CSS 練習。</p></section></body></html>'></iframe>
+          </div>
+          <div class="example-panel" data-tab-panel="explain">
+            <ul class="plain-list">
+              <li>HTML 只描述一個提醒區塊，CSS 決定它長得像通知卡片。</li>
+              <li>日後框架做的事情，也仍然離不開這種「結構 + 樣式」的組合。</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="content-section">
+        <h2>JavaScript 在這一章的位置</h2>
+        <p>
+          雖然你這次要求重點補強 HTML 與 CSS，但仍要記住：真正讓畫面產生互動的，是 JavaScript。
+          它會操作 DOM、監聽事件、向伺服器發送請求，並把資料更新到頁面上。
+        </p>
+        <div class="callout">
+          <strong>學習順序建議：</strong>
+          先把 HTML 標籤與 CSS 基本語法學紮實，再進入 JavaScript，會更容易理解 DOM 與框架。
+        </div>
+      </section>
+
+      <section class="content-section">
+        <h2>Practice：本章練習</h2>
+        <div class="grid-2">
+          <article class="practice-card">
+            <h3>練習 1：HTML 標籤辨識</h3>
+            <p>請用 <code>header</code>、<code>nav</code>、<code>main</code>、<code>section</code>、<code>footer</code> 組出一個簡單頁面骨架。</p>
+          </article>
+          <article class="practice-card">
+            <h3>練習 2：CSS 樣式設計</h3>
+            <p>請把一個 <code>div</code> 改造成卡片，至少使用 <code>padding</code>、<code>background</code>、<code>border-radius</code>、<code>box-shadow</code> 四個屬性。</p>
+          </article>
+          <article class="practice-card">
+            <h3>練習 3：選擇器比較</h3>
+            <p>請說明元素選擇器、class 選擇器與 id 選擇器的差異，並各寫一個範例。</p>
+          </article>
+          <article class="practice-card">
+            <h3>練習 4：響應式思考</h3>
+            <p>如果卡片在手機上太擠，應該優先調整什麼？是 HTML 結構、CSS 版型，還是 JavaScript？</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="content-section">
+  <h2>Summary：本章結論</h2>
+  <div class="summary-card">
+    <ul class="summary-list">
+      <li>HTML 負責結構與語意，CSS 負責外觀與版面，兩者需要分開理解。</li>
+      <li>第一次做網頁時，先學會 <code>h1</code>、<code>p</code>、<code>div</code>、<code>a</code>、<code>button</code> 這 5 個常用標籤最有效率。</li>
+      <li>學會文件骨架、常見屬性與 CSS 基礎後，再把後面的標籤表當查表工具使用即可。</li>
+      <li>JavaScript 與框架仍然建立在 HTML / CSS 之上，因此這一章是所有前端學習的基礎。</li>
+    </ul>
+  </div>
+</section>
+
+      <div id="page-nav"></div>
+    </main>
+  </div>
+
+  <script src="../../../../../node_modules/mermaid/dist/mermaid.min.js"></script>
+  <script defer src="../assets/app_b11.js"></script>
+</body>
+</html>

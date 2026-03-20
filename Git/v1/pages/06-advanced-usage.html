@@ -1,0 +1,497 @@
+<!-- Path: Network/Git/v1/pages | Timestamp: 2026-03-19 19:17:37 | Version: b01 -->
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>06 進階操作｜Git 教學</title>
+  <link rel="stylesheet" href="../assets/styles_b01.css">
+</head>
+<body data-root=".." data-page="advanced">
+  <div class="site-shell">
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <small>Git &amp; GitHub Teaching Site</small>
+        <h2>Git 版本管理與 GitHub 協作</h2>
+        <p class="sidebar-intro">系統介紹 Git 的核心概念、基本操作與 GitHub 平台的協作流程。</p>
+      </div>
+      <nav id="site-nav"></nav>
+    </aside>
+
+    <main class="content">
+      <section class="hero">
+        <span class="eyebrow">第 06 章</span>
+        <h1>進階操作</h1>
+        <p>當你已經熟悉基本的 commit、branch、merge 後，這一章將帶你掌握四個進階工具：rebase、revert、reset 與 stash。理解它們的差異與適用時機，是從 Git 初學者進階到熟練使用者的關鍵。</p>
+      </section>
+
+      <!-- 6.1 Rebase -->
+      <section class="content-section">
+        <h2>Rebase（變基）</h2>
+        <p><strong>Rebase</strong> 的核心作用是：把一個分支的 commit「搬到」另一個分支的最新 commit 之後，讓歷史看起來像一條直線。</p>
+
+        <h3>Rebase vs Merge 的差異</h3>
+        <div class="comparison">
+          <article class="comparison-card">
+            <h4>Merge 的結果</h4>
+            <p>保留完整的分支歷史，建立一個 merge commit。</p>
+            <div class="mermaid">
+gitGraph
+    commit id: "C1"
+    commit id: "C2"
+    branch feature
+    commit id: "C3"
+    commit id: "C4"
+    checkout main
+    commit id: "C5"
+    merge feature id: "M"
+            </div>
+          </article>
+          <article class="comparison-card">
+            <h4>Rebase 的結果</h4>
+            <p>將 feature 的 commit 「接」在 main 的最新 commit 之後，形成線性歷史。</p>
+            <div class="mermaid">
+flowchart LR
+    C1 --> C2 --> C5 --> C3'["C3'"] --> C4'["C4'"]
+            </div>
+            <p class="muted">C3' 和 C4' 是重新建立的 commit（內容相同但 SHA-1 不同）。</p>
+          </article>
+        </div>
+
+        <h3>Rebase 的操作步驟</h3>
+        <div class="example-showcase" data-example>
+          <div class="example-head">
+            <h3>在 feature 分支上 rebase main</h3>
+          </div>
+          <div class="example-tabs">
+            <button class="example-tab is-active" data-tab-target="rebase-cmd" aria-selected="true">指令操作</button>
+            <button class="example-tab" data-tab-target="rebase-flow" aria-selected="false">流程圖</button>
+            <button class="example-tab" data-tab-target="rebase-warn" aria-selected="false">注意事項</button>
+          </div>
+          <div class="example-panel is-active" data-tab-panel="rebase-cmd">
+            <pre><code># 確保在 feature 分支上
+$ git checkout feature/login
+
+# 將 feature 的 commit rebase 到 main 的最新點
+$ git rebase main
+
+# 如果有衝突，解決後繼續
+$ git add &lt;resolved-file&gt;
+$ git rebase --continue
+
+# 如果想放棄 rebase
+$ git rebase --abort
+
+# rebase 完成後，切回 main 合併（此時會 fast-forward）
+$ git checkout main
+$ git merge feature/login</code></pre>
+          </div>
+          <div class="example-panel" data-tab-panel="rebase-flow">
+            <div class="mermaid">
+flowchart TD
+    A["在 feature 分支上"] --> B["git rebase main"]
+    B --> C{"有衝突嗎？"}
+    C -->|"沒有"| D["rebase 完成<br/>feature 的 commit 已移到 main 後方"]
+    C -->|"有"| E["手動解決衝突"]
+    E --> F["git add + git rebase --continue"]
+    F --> C
+    D --> G["git checkout main"]
+    G --> H["git merge feature<br/>（fast-forward）"]
+            </div>
+          </div>
+          <div class="example-panel" data-tab-panel="rebase-warn">
+            <div class="warning-note">
+              <strong>⚠️ 黃金守則：不要 rebase 已經推送到遠端的共享分支。</strong>
+              <p>Rebase 會改寫 commit 的 SHA-1（因為 parent 改變了）。如果別人已經基於舊的 commit 工作，rebase 會造成歷史不一致的問題。</p>
+            </div>
+            <p><strong>安全使用 rebase 的時機：</strong></p>
+            <ul>
+              <li>✅ 在你個人的 feature 分支上 rebase main（push 前整理歷史）。</li>
+              <li>✅ 用 <code>git pull --rebase</code> 取代預設的 merge pull。</li>
+              <li>❌ 對 main、develop 等共享分支做 rebase。</li>
+              <li>❌ 對已經推送給別人的 commit 做 rebase。</li>
+            </ul>
+          </div>
+        </div>
+
+        <h3>Interactive Rebase（互動式 Rebase）</h3>
+        <p>用 <code>git rebase -i</code> 可以在 rebase 的過程中編輯、合併或重新排列 commit。</p>
+        <pre><code># 對最近 3 筆 commit 進行互動式 rebase
+$ git rebase -i HEAD~3
+
+# 編輯器會顯示：
+pick a1b2c3d feat: 新增登入頁面
+pick e4f5g6h fix: 修正登入驗證
+pick i7j8k9l style: 調整登入頁樣式
+
+# 可以修改 pick 為其他動作：
+# pick   = 保留 commit
+# reword = 修改 commit message
+# squash = 合併到前一個 commit
+# drop   = 刪除 commit</code></pre>
+      </section>
+
+      <!-- 6.2 Revert -->
+      <section class="content-section">
+        <h2>Revert（安全撤銷）</h2>
+        <p><strong><code>git revert</code></strong> 是「安全撤銷」的方式——它不會刪除歷史，而是建立一個<strong>新的 commit 來反轉指定 commit 的變更</strong>。</p>
+
+        <div class="mermaid">
+flowchart LR
+    C1 --> C2 --> C3["C3<br/>（有 bug）"] --> C4["Revert C3<br/>（撤銷 C3 的變更）"]
+        </div>
+
+        <pre><code># 撤銷最近一筆 commit
+$ git revert HEAD
+
+# 撤銷指定的 commit
+$ git revert a1b2c3d
+
+# 撤銷但不自動 commit（先看看結果）
+$ git revert --no-commit a1b2c3d</code></pre>
+
+        <div class="note">
+          <strong>Revert 的優點：</strong>歷史紀錄完整保留，不會影響其他人已經 pull 的 commit。適合撤銷已經推送到遠端的變更。
+        </div>
+      </section>
+
+      <!-- 6.3 Reset -->
+      <section class="content-section">
+        <h2>Reset（回退指標）</h2>
+        <p><strong><code>git reset</code></strong> 會把分支指標移動到指定的 commit，效果是「讓歷史倒退」。根據模式不同，對工作目錄和暫存區的影響也不同。</p>
+
+        <h3>三種 Reset 模式</h3>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>模式</th><th>分支指標</th><th>暫存區 (Index)</th><th>工作目錄</th><th>適用場景</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>--soft</code></td>
+                <td>✅ 移動</td>
+                <td>❌ 不變</td>
+                <td>❌ 不變</td>
+                <td>想重新寫 commit message 或合併 commit</td>
+              </tr>
+              <tr>
+                <td><code>--mixed</code>（預設）</td>
+                <td>✅ 移動</td>
+                <td>✅ 重設</td>
+                <td>❌ 不變</td>
+                <td>想重新選擇要 add 的檔案</td>
+              </tr>
+              <tr>
+                <td><code>--hard</code></td>
+                <td>✅ 移動</td>
+                <td>✅ 重設</td>
+                <td>✅ 重設</td>
+                <td>想完全丟棄變更，回到乾淨狀態</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="example-showcase" data-example>
+          <div class="example-head">
+            <h3>三種 Reset 模式的效果比較</h3>
+          </div>
+          <div class="example-tabs">
+            <button class="example-tab is-active" data-tab-target="reset-soft" aria-selected="true">--soft</button>
+            <button class="example-tab" data-tab-target="reset-mixed" aria-selected="false">--mixed</button>
+            <button class="example-tab" data-tab-target="reset-hard" aria-selected="false">--hard</button>
+          </div>
+          <div class="example-panel is-active" data-tab-panel="reset-soft">
+            <pre><code># 回退一筆 commit，但保留所有變更在暫存區
+$ git reset --soft HEAD~1
+
+# 效果：
+# - 最後一筆 commit 被移除
+# - 那些變更仍在暫存區（可直接 commit）
+# - 工作目錄不變
+
+# 常見用途：重新寫 commit message
+$ git commit -m "更好的提交訊息"</code></pre>
+          </div>
+          <div class="example-panel" data-tab-panel="reset-mixed">
+            <pre><code># 回退一筆 commit，變更從暫存區移回工作目錄
+$ git reset HEAD~1
+# 等同於 git reset --mixed HEAD~1
+
+# 效果：
+# - 最後一筆 commit 被移除
+# - 變更存在工作目錄中（但未 staged）
+# - 你可以重新選擇要 add 的檔案
+
+$ git add file1.js    # 只 add 部分檔案
+$ git commit -m "只提交 file1 的變更"</code></pre>
+          </div>
+          <div class="example-panel" data-tab-panel="reset-hard">
+            <pre><code># 回退一筆 commit，同時丟棄所有變更
+$ git reset --hard HEAD~1
+
+# 效果：
+# - 最後一筆 commit 被移除
+# - 暫存區重設
+# - 工作目錄也被還原到 HEAD~1 的狀態
+# - 所有未提交的變更都會遺失！</code></pre>
+            <div class="warning-note">
+              <strong>⚠️ --hard 會永久丟失工作目錄中未提交的變更。</strong>操作前請確認已經備份或不需要這些變更。
+            </div>
+          </div>
+        </div>
+
+        <h3>Revert vs Reset 怎麼選？</h3>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th></th><th>revert</th><th>reset</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>是否改寫歷史</strong></td><td>不改寫（新增一筆反轉 commit）</td><td>改寫（移除 commit）</td></tr>
+              <tr><td><strong>已推送到遠端？</strong></td><td>✅ 安全使用</td><td>❌ 危險（需 force push）</td></tr>
+              <tr><td><strong>適用場景</strong></td><td>撤銷已公開的 commit</td><td>整理尚未公開的本地歷史</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- 6.4 Stash -->
+      <section class="content-section">
+        <h2>Stash（暫存工作）</h2>
+        <p><strong><code>git stash</code></strong> 讓你把「做到一半」的變更暫時存起來，讓工作目錄回到乾淨狀態。等你處理完其他事情後，再把暫存的變更取回來。</p>
+
+        <h3>使用情境</h3>
+        <div class="grid-3">
+          <article class="stat-card">
+            <h3>🔀 臨時切分支</h3>
+            <p>正在開發 feature，老闆突然要你修一個 bug。先 stash，切到 hotfix 分支處理，再回來。</p>
+          </article>
+          <article class="stat-card">
+            <h3>🔄 拉取更新</h3>
+            <p>想 <code>git pull</code> 但工作目錄有未提交的變更會衝突。先 stash，pull 完再取回。</p>
+          </article>
+          <article class="stat-card">
+            <h3>🧪 測試乾淨環境</h3>
+            <p>想在沒有自己修改的情況下測試某些功能。先 stash 清空，測完再恢復。</p>
+          </article>
+        </div>
+
+        <h3>Stash 操作指令</h3>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>指令</th><th>用途</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><code>git stash</code></td><td>暫存當前的工作目錄和暫存區變更</td></tr>
+              <tr><td><code>git stash push -m "描述"</code></td><td>暫存並加上描述（推薦）</td></tr>
+              <tr><td><code>git stash list</code></td><td>列出所有暫存的工作</td></tr>
+              <tr><td><code>git stash pop</code></td><td>取回最近一筆暫存並刪除它</td></tr>
+              <tr><td><code>git stash apply</code></td><td>取回最近一筆暫存但不刪除</td></tr>
+              <tr><td><code>git stash drop</code></td><td>刪除最近一筆暫存</td></tr>
+              <tr><td><code>git stash clear</code></td><td>清空所有暫存</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="example-showcase" data-example>
+          <div class="example-head">
+            <h3>Stash 實際操作</h3>
+          </div>
+          <div class="example-tabs">
+            <button class="example-tab is-active" data-tab-target="stash-basic" aria-selected="true">基本用法</button>
+            <button class="example-tab" data-tab-target="stash-multi" aria-selected="false">管理多筆 Stash</button>
+          </div>
+          <div class="example-panel is-active" data-tab-panel="stash-basic">
+            <pre><code># 正在開發 feature...
+$ echo "WIP: login form" >> login.html
+$ git status
+Changes not staged for commit:
+  modified:   login.html
+
+# 老闆說：先修 bug！
+$ git stash push -m "login 頁面做到一半"
+Saved working directory and index state On feature: login 頁面做到一半
+
+# 工作目錄現在乾淨了
+$ git status
+nothing to commit, working tree clean
+
+# 切去修 bug...
+$ git checkout main
+$ git checkout -b hotfix/fix-typo
+# ...修完 bug，合併回 main...
+
+# 回到 feature 分支
+$ git checkout feature/login
+
+# 取回暫存的工作
+$ git stash pop
+# login.html 的變更回來了！</code></pre>
+          </div>
+          <div class="example-panel" data-tab-panel="stash-multi">
+            <pre><code># 可以暫存多次
+$ git stash push -m "功能 A 的修改"
+$ git stash push -m "功能 B 的修改"
+
+# 列出所有暫存
+$ git stash list
+stash@{0}: On feature: 功能 B 的修改
+stash@{1}: On feature: 功能 A 的修改
+
+# 取回特定的暫存
+$ git stash apply stash@{1}  # 取回功能 A
+
+# 刪除特定的暫存
+$ git stash drop stash@{0}   # 刪除功能 B</code></pre>
+          </div>
+        </div>
+      </section>
+
+      <!-- 6.5 總結比較 -->
+      <section class="content-section">
+        <h2>四個指令的比較總覽</h2>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>指令</th><th>作用</th><th>改寫歷史？</th><th>安全性</th><th>適用場景</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>rebase</code></td>
+                <td>將 commit 移到另一個基準點</td>
+                <td>✅ 是</td>
+                <td>⚠️ 注意</td>
+                <td>整理本地分支歷史</td>
+              </tr>
+              <tr>
+                <td><code>revert</code></td>
+                <td>建立反轉 commit</td>
+                <td>❌ 否</td>
+                <td>✅ 安全</td>
+                <td>撤銷已公開的 commit</td>
+              </tr>
+              <tr>
+                <td><code>reset</code></td>
+                <td>移動分支指標</td>
+                <td>✅ 是</td>
+                <td>⚠️ 注意</td>
+                <td>整理未公開的本地 commit</td>
+              </tr>
+              <tr>
+                <td><code>stash</code></td>
+                <td>暫時保存工作</td>
+                <td>❌ 否</td>
+                <td>✅ 安全</td>
+                <td>臨時切換分支或清理環境</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="mermaid">
+flowchart TD
+    A{"你想做什麼？"} --> B["撤銷已推送的 commit"]
+    A --> C["整理本地未推送的歷史"]
+    A --> D["暫時保存做到一半的工作"]
+    A --> E["讓分支歷史變成線性"]
+    B --> B1["git revert"]
+    C --> C1["git reset"]
+    D --> D1["git stash"]
+    E --> E1["git rebase"]
+    style B1 fill:#d4edda
+    style C1 fill:#fde8e4
+    style D1 fill:#d4edda
+    style E1 fill:#fde8e4
+        </div>
+      </section>
+
+      <!-- 6.6 練習 -->
+      <section class="content-section">
+        <h2>🔧 動手練習</h2>
+        <div class="grid-2">
+          <article class="practice-card">
+            <h3>練習 1：Reset 三種模式</h3>
+            <pre><code># 建立 3 筆 commit
+$ echo "a" > a.txt && git add . && git commit -m "add a"
+$ echo "b" > b.txt && git add . && git commit -m "add b"
+$ echo "c" > c.txt && git add . && git commit -m "add c"
+
+# 測試 --soft
+$ git reset --soft HEAD~1
+$ git status   # c.txt 在暫存區
+
+# 恢復後測試 --mixed
+$ git commit -m "add c"
+$ git reset HEAD~1
+$ git status   # c.txt 在工作目錄但未 staged
+
+# 恢復後測試 --hard
+$ git add . && git commit -m "add c"
+$ git reset --hard HEAD~1
+$ ls           # c.txt 消失了</code></pre>
+          </article>
+          <article class="practice-card">
+            <h3>練習 2：Stash 操作</h3>
+            <pre><code># 做一些修改
+$ echo "work in progress" >> README.md
+
+# 暫存
+$ git stash push -m "README 修改中"
+
+# 確認乾淨
+$ git status
+
+# 查看 stash 清單
+$ git stash list
+
+# 取回
+$ git stash pop
+
+# 確認修改回來了
+$ cat README.md</code></pre>
+          </article>
+        </div>
+      </section>
+
+      <!-- 6.7 小結 -->
+      <section class="content-section">
+        <h2>本章小結</h2>
+        <div class="grid-2">
+          <article class="summary-card">
+            <h3>知識重點</h3>
+            <ul class="summary-list">
+              <li><code>rebase</code> 讓歷史線性化，但會改寫 commit SHA-1。</li>
+              <li>不要 rebase 已推送的共享分支（黃金守則）。</li>
+              <li><code>revert</code> 安全地撤銷 commit，適合已公開的變更。</li>
+              <li><code>reset</code> 三種模式：soft（保留暫存）、mixed（保留工作目錄）、hard（全部重設）。</li>
+              <li><code>stash</code> 暫存工作，臨時切換場景後再取回。</li>
+            </ul>
+          </article>
+          <article class="summary-card">
+            <h3>課程總結</h3>
+            <ul class="summary-list">
+              <li>你已經學完了 Git 的核心觀念與主要操作。</li>
+              <li>從 Repository 概念、init、commit、到 GitHub 協作與進階操作。</li>
+              <li>建議在實際專案中持續練習，遇到問題時回頭查閱對應章節。</li>
+              <li>記住：<code>git status</code> 是你永遠的好朋友。</li>
+            </ul>
+          </article>
+        </div>
+      </section>
+
+      <footer class="page-footer">
+        <strong>恭喜完成所有章節！</strong>
+        Git 的學習曲線前期較陡，但一旦掌握了核心觀念，你會發現它是開發工作中最可靠的夥伴。
+        建議接下來在實際的小專案中使用 Git + GitHub 工作流程，讓這些知識內化為直覺。
+      </footer>
+
+      <div id="page-nav"></div>
+    </main>
+  </div>
+
+  <script src="../../../../node_modules/mermaid/dist/mermaid.min.js"></script>
+  <script defer src="../assets/app_b01.js"></script>
+</body>
+</html>
