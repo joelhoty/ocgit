@@ -673,3 +673,11 @@
  CONTRIBUTING.md |  88 +++++++++++++++++++++++++++++++++
  README.md       | 148 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++
  2 files changed, 236 insertions(+)
+
+---
+
+[2026-03-20] cd2d561 docs: 建立 repo.log 完整變更紀錄，新增 post-commit hook 自動追加
+  Author: joelho <joelho@com>
+
+ repo.log | 675 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 675 insertions(+)
