@@ -156,6 +156,28 @@
 |---|---|---|
 | VibeCoding_Python_Tutorial_b01.html | 2025-12-14 | [VibeCoding_Python_Tutorial_b01.html](https://joelhoty.github.io/ocgit/VideCoding/VibeCoding_Python_Tutorial_b01.html) |
 
+## WEB_HTML_JAVACCRIPT/b11
+
+| File Name | Last Updated | Link |
+|---|---|---|
+| index_b11.html | 2026-03-20 | [index_b11.html](https://joelhoty.github.io/ocgit/WEB_HTML_JAVACCRIPT/b11/index_b11.html) |
+
+## WEB_HTML_JAVACCRIPT/b11/pages
+
+| File Name | Last Updated | Link |
+|---|---|---|
+| 11-practical-stack-case_b11.html | 2026-03-20 | [11-practical-stack-case_b11.html](https://joelhoty.github.io/ocgit/WEB_HTML_JAVACCRIPT/b11/pages/11-practical-stack-case_b11.html) |
+| 09-jquery-detailed-guide_b11.html | 2026-03-20 | [09-jquery-detailed-guide_b11.html](https://joelhoty.github.io/ocgit/WEB_HTML_JAVACCRIPT/b11/pages/09-jquery-detailed-guide_b11.html) |
+| 01-tcp-ip-foundation_b11.html | 2026-03-20 | [01-tcp-ip-foundation_b11.html](https://joelhoty.github.io/ocgit/WEB_HTML_JAVACCRIPT/b11/pages/01-tcp-ip-foundation_b11.html) |
+| 02-web-service-lifecycle_b11.html | 2026-03-20 | [02-web-service-lifecycle_b11.html](https://joelhoty.github.io/ocgit/WEB_HTML_JAVACCRIPT/b11/pages/02-web-service-lifecycle_b11.html) |
+| 05-javascript-dom-css_b11.html | 2026-03-20 | [05-javascript-dom-css_b11.html](https://joelhoty.github.io/ocgit/WEB_HTML_JAVACCRIPT/b11/pages/05-javascript-dom-css_b11.html) |
+| 04-html-css-foundation_b11.html | 2026-03-20 | [04-html-css-foundation_b11.html](https://joelhoty.github.io/ocgit/WEB_HTML_JAVACCRIPT/b11/pages/04-html-css-foundation_b11.html) |
+| 10-ajax-fundamentals_b11.html | 2026-03-20 | [10-ajax-fundamentals_b11.html](https://joelhoty.github.io/ocgit/WEB_HTML_JAVACCRIPT/b11/pages/10-ajax-fundamentals_b11.html) |
+| 06-web-server-examples_b11.html | 2026-03-20 | [06-web-server-examples_b11.html](https://joelhoty.github.io/ocgit/WEB_HTML_JAVACCRIPT/b11/pages/06-web-server-examples_b11.html) |
+| 08-javascript-fullstack-architecture_b11.html | 2026-03-20 | [08-javascript-fullstack-architecture_b11.html](https://joelhoty.github.io/ocgit/WEB_HTML_JAVACCRIPT/b11/pages/08-javascript-fullstack-architecture_b11.html) |
+| 07-modern-frameworks_b11.html | 2026-03-20 | [07-modern-frameworks_b11.html](https://joelhoty.github.io/ocgit/WEB_HTML_JAVACCRIPT/b11/pages/07-modern-frameworks_b11.html) |
+| 03-http-protocol_b11.html | 2026-03-20 | [03-http-protocol_b11.html](https://joelhoty.github.io/ocgit/WEB_HTML_JAVACCRIPT/b11/pages/03-http-protocol_b11.html) |
+
 ## Youtube_sub
 
 | File Name | Last Updated | Link |
@@ -178,26 +200,4 @@
 | analysis_summary_20250609_134217.html | 2025-11-25 | [analysis_summary_20250609_134217.html](https://joelhoty.github.io/ocgit/anaQ/demo_site/results/analysis_summary_20250609_134217.html) |
 | interactive_timeline_main.html | 2025-11-25 | [interactive_timeline_main.html](https://joelhoty.github.io/ocgit/anaQ/demo_site/results/interactive_timeline_main.html) |
 | interactive_temporal_dashboard.html | 2025-11-25 | [interactive_temporal_dashboard.html](https://joelhoty.github.io/ocgit/anaQ/demo_site/results/interactive_temporal_dashboard.html) |
-
-## b11
-
-| File Name | Last Updated | Link |
-|---|---|---|
-| index_b11.html | 2026-03-20 | [index_b11.html](https://joelhoty.github.io/ocgit/b11/index_b11.html) |
-
-## b11/pages
-
-| File Name | Last Updated | Link |
-|---|---|---|
-| 11-practical-stack-case_b11.html | 2026-03-20 | [11-practical-stack-case_b11.html](https://joelhoty.github.io/ocgit/b11/pages/11-practical-stack-case_b11.html) |
-| 09-jquery-detailed-guide_b11.html | 2026-03-20 | [09-jquery-detailed-guide_b11.html](https://joelhoty.github.io/ocgit/b11/pages/09-jquery-detailed-guide_b11.html) |
-| 01-tcp-ip-foundation_b11.html | 2026-03-20 | [01-tcp-ip-foundation_b11.html](https://joelhoty.github.io/ocgit/b11/pages/01-tcp-ip-foundation_b11.html) |
-| 02-web-service-lifecycle_b11.html | 2026-03-20 | [02-web-service-lifecycle_b11.html](https://joelhoty.github.io/ocgit/b11/pages/02-web-service-lifecycle_b11.html) |
-| 05-javascript-dom-css_b11.html | 2026-03-20 | [05-javascript-dom-css_b11.html](https://joelhoty.github.io/ocgit/b11/pages/05-javascript-dom-css_b11.html) |
-| 04-html-css-foundation_b11.html | 2026-03-20 | [04-html-css-foundation_b11.html](https://joelhoty.github.io/ocgit/b11/pages/04-html-css-foundation_b11.html) |
-| 10-ajax-fundamentals_b11.html | 2026-03-20 | [10-ajax-fundamentals_b11.html](https://joelhoty.github.io/ocgit/b11/pages/10-ajax-fundamentals_b11.html) |
-| 06-web-server-examples_b11.html | 2026-03-20 | [06-web-server-examples_b11.html](https://joelhoty.github.io/ocgit/b11/pages/06-web-server-examples_b11.html) |
-| 08-javascript-fullstack-architecture_b11.html | 2026-03-20 | [08-javascript-fullstack-architecture_b11.html](https://joelhoty.github.io/ocgit/b11/pages/08-javascript-fullstack-architecture_b11.html) |
-| 07-modern-frameworks_b11.html | 2026-03-20 | [07-modern-frameworks_b11.html](https://joelhoty.github.io/ocgit/b11/pages/07-modern-frameworks_b11.html) |
-| 03-http-protocol_b11.html | 2026-03-20 | [03-http-protocol_b11.html](https://joelhoty.github.io/ocgit/b11/pages/03-http-protocol_b11.html) |
 
