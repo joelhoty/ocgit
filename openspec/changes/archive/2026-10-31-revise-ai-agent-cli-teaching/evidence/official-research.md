@@ -1,0 +1,23 @@
+# Official research notes
+
+Checked: 2026-10-31. Read-only documentation research; no CLI installation, authentication, model request or payment performed.
+
+## Codex
+- CLI landing: https://learn.chatgpt.com/docs/codex/cli . Standalone install/update macOS/Linux: `curl -fsSL https://chatgpt.com/codex/install.sh | sh`; Windows/npm/Homebrew tabs exist. Startup `codex`, then browser sign-in. `/status`, `/permissions`, `/model`, `/review`, `/init` are session commands.
+- Windows installer: https://learn.chatgpt.com/docs/enterprise/windows-deployment . Download `https://chatgpt.com/codex/install.ps1`, execute in a new PowerShell window. `-Release` pins a release; omitted defaults latest. Per-user runtime/PATH; installation as SYSTEM does not magically become all-users.
+- Reference: https://learn.chatgpt.com/docs/developer-commands?surface=cli . `codex resume --last` resumes latest chat scoped to cwd; `--all` broadens it. `codex update` depends on installed release supporting self-update. `codex exec --skip-git-repo-check` allows non-Git directories. `--sandbox read-only|workspace-write` controls model-generated shell operations; `-p` means profile, not print.
+- Automation: https://learn.chatgpt.com/docs/non-interactive-mode . `codex exec "task"` final response stdout, progress stderr; `-o path` stores final response. `--json` is JSONL events. By default read-only; explicit `--sandbox workspace-write` permits scoped edits. `--full-auto` is no longer supported. Piped stdin can accompany a prompt argument.
+- Auth: https://learn.chatgpt.com/docs/auth . `codex login`, `codex login status`, `codex logout`; subscription versus usage-billed API authentication differ. API key login via stdin `printenv OPENAI_API_KEY | codex login --with-api-key`. Do not insert literal keys in examples.
+- Windows: https://learn.chatgpt.com/docs/windows/windows-sandbox . Native Windows is supported. MXC preferred on compatible systems, legacy elevated fallback requires admin setup; unelevated has weaker isolation. Avoid claiming WSL mandatory or native Windows experimental universally.
+
+## Claude Code
+- Install: https://code.claude.com/docs/en/setup . Native recommended; macOS/Linux/WSL `curl -fsSL https://claude.ai/install.sh | bash`; PowerShell `irm https://claude.ai/install.ps1 | iex`; native updates automatically. `claude --version`, `claude doctor`. Homebrew `brew install --cask claude-code` stable versus `claude-code@latest`; manual package-manager upgrades. WinGet `winget install Anthropic.ClaudeCode`. Windows Git for Windows is optional/recommended; without it Claude uses PowerShell. Native Windows has no Claude sandbox; WSL2 does. npm requires Node22+ at installation, downloads native binary not Node at runtime.
+- CLI: https://code.claude.com/docs/en/cli-reference . `claude` interactive; `claude -p "task"` print then exit; `claude -c` continues most recent cwd conversation; `claude -r` selector or session argument. `claude auth login`, `claude auth status --text`, `claude auth logout`; `claude update`. `--output-format text|json|stream-json`; `--permission-mode plan` for planning; do not invent `claude chat` or `config set api_key`.
+- Instructions: https://code.claude.com/docs/en/memory . AGENTS.md native support v2.1.277+. Default loads AGENTS.md only if no CLAUDE.md/.claude/CLAUDE.md/CLAUDE.local.md in cwd or ancestor. Global user/managed CLAUDE.md does not suppress it. `/config` Project instructions can load both. Built-in plugin disabled/older versions/first upgrade session can prevent support. Portable course pattern: CLAUDE.md containing `@AGENTS.md`. `/context` verifies memory files. AGENTS.override.md is not read by Claude. Text instructions are context, not enforced permissions.
+- Permissions: https://code.claude.com/docs/en/permissions . `/permissions` shows rules; deny before ask before allow. Manual/default, acceptEdits, plan, auto, dontAsk, bypass modes differ. Plan reads/explores without source edits; not a guarantee of zero actions. Avoid teaching bypass flags as setup.
+
+## Supporting toolchains
+- https://code.visualstudio.com/docs/cpp/config-mingw : C/C++ extension does not install compiler; use documented MSYS2 UCRT64 toolchain; PATH and g++/gdb version checks.
+- https://code.visualstudio.com/docs/python/python-tutorial : Python extension and interpreter separate; select project interpreter.
+- https://docs.astral.sh/uv/getting-started/installation/ : standalone uv independent of preinstalled Python.
+- https://docs.astral.sh/uv/guides/projects/ : uv init/add/run with pyproject and lockfile; do not replace project dependency declaration with global pip freeze.

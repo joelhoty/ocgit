@@ -61,7 +61,7 @@ git push
 
 | Section ID | 資料夾 | 說明 |
 |------------|--------|------|
-| `#gemini` | `GeminiForDesignTeaching/` | Gemini AI 設計教學 |
+| `#gemini` | `AI_Agent_CLi/` | AI Agent CLI 設計教學 |
 | `#ai-intro` | `AI_intro/`, `AI_intro/History/` | AI 導論 |
 | `#git` | `Git/`, `Git/v1/` | Git 版本管理 |
 | `#b11` | `WEB_HTML_JAVACCRIPT/b11/` | 網頁開發技術 |

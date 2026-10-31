@@ -1,0 +1,30 @@
+{
+  "task_id": "task-5",
+  "subject_hash": "sha256:c23260507879c2b814941cb13e9feb1f9e824d68b7b915bcc2423e2ce8239b1c",
+  "static": {
+    "status": "PASS",
+    "counts": {
+      "html": 16,
+      "local_links": 262,
+      "redirects": 15,
+      "markdown_pairs": 10
+    },
+    "errors": []
+  },
+  "review_payloads": [
+    {
+      "path": "openspec/changes/archive/2026-10-31-revise-ai-agent-cli-teaching/evidence/final-content-review.md",
+      "sha256": "452977741496d8635946f098451228a278d9a0bb5b0ad63444afce17e66428ee"
+    }
+  ],
+  "browser_payload": "openspec/changes/archive/2026-10-31-revise-ai-agent-cli-teaching/evidence/browser-results-3.json",
+  "browser_sha256": "3ec069867914c3632abe4879cd218e5cf88db4e0979c6b68d3f5c7ce20d31901",
+  "browser_cases": 47,
+  "browser_result": "PASS",
+  "captured_at": "2026-10-31T13:47:10.666116+00:00",
+  "limits": [
+    "No paid CLI execution or account login",
+    "No cross-platform installer execution",
+    "External CDN resources require network"
+  ]
+}

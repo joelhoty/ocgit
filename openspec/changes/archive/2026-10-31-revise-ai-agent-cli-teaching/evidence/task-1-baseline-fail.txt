@@ -1,0 +1,19 @@
+{
+  "kind": "documentation-adapted baseline",
+  "requirements": [
+    "REQ-TEACH-001",
+    "REQ-TEACH-003",
+    "REQ-TEACH-008"
+  ],
+  "checks": {
+    "html_exists": false,
+    "source_log_exists": false,
+    "missing_outline_link_removed": false,
+    "dual_route_explicit": false,
+    "claude_min_version_explicit": false
+  },
+  "result": "fail",
+  "original_bytes": 93984,
+  "original_sha256": "13693f77856d1a85729c13a85d20007ad530863ec1005761aade39bce5277a6b",
+  "svg_sha256": "70dd9b32a71c66fc21e7070750f2043e8acdf6ba623d9a395ea33aeb1d67b677"
+}

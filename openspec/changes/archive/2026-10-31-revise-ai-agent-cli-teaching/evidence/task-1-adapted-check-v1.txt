@@ -1,0 +1,38 @@
+{
+  "kind": "documentation-adapted pass",
+  "requirements": [
+    "REQ-TEACH-001",
+    "REQ-TEACH-003",
+    "REQ-TEACH-008"
+  ],
+  "checks": {
+    "html_exists": true,
+    "source_log_exists": true,
+    "missing_outline_link_removed": true,
+    "dual_route_explicit": true,
+    "claude_min_version_explicit": true,
+    "svg_unchanged": true,
+    "all_16_numeric_chapters": true,
+    "full_material_retained": true,
+    "mermaid_render_targets": true,
+    "historical_test_scope_explicit": true,
+    "shell_distinction": true,
+    "local_links_valid": true,
+    "all_fenced_blocks_preserved": false
+  },
+  "local_link_errors": [],
+  "mermaid_count": 6,
+  "code_fence_count": 72,
+  "result": "fail",
+  "limitations": [
+    "Full course index/navigation is parent Task4 responsibility.",
+    "No CLI installation, authentication or model invocation executed.",
+    "Visual browser inspection remains parent integration verification."
+  ],
+  "files": {
+    "AI_Agent_CLi/AI_working_env_b05.md": "369d453c3674a6277a978ec049fe90b61686cd55f92cb2bbf42a0b684ab3448f",
+    "AI_Agent_CLi/AI_working_env_b05.html": "21bb573d405ebc259978eb12a19f7052ed06bf80197dce136833568732d77da3",
+    "AI_Agent_CLi/assets/agent_layers_b01.svg": "70dd9b32a71c66fc21e7070750f2043e8acdf6ba623d9a395ea33aeb1d67b677",
+    "openspec/changes/revise-ai-agent-cli-teaching/sources.md": "a8a87c87a288d2a72e54e99985370bbfc9c0316a1763dcfe37ccc2d9f0399f7a"
+  }
+}

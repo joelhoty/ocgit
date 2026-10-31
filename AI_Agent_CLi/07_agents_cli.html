@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+
+<html lang="zh-TW">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>AI Agent 與 AI CLI 應用</title>
+<!-- CSS 框架 -->
+<link href="https://cdn.jsdelivr.net/npm/water.css@2/out/dark.min.css" rel="stylesheet"/>
+<!-- 代碼高亮 -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/base16/darcula.min.css" rel="stylesheet"/>
+<!-- 自定義樣式 -->
+<style>
+        
+                body {
+                    max-width: 900px;
+                    margin: 0 auto;
+                    padding: 20px;
+                }
+                /* 提升代码块对比度 */
+                pre {
+                    background: #1e1e1e !important;
+                    border: 1px solid #3e3e3e;
+                }
+                pre code {
+                    background: #1e1e1e !important;
+                }
+                code {
+                    background: #2d2d2d !important;
+                }
+                /* 引用块对比度 */
+                blockquote {
+                    background: #2d2d2d;
+                    border-left: 4px solid #4a9eff;
+                }
+            
+        
+        /* 通用代碼塊樣式 */
+        pre code {
+            display: block;
+            padding: 1.5em;
+            border-radius: 8px;
+            overflow-x: auto;
+            line-height: 1.6;
+        }
+
+        /* Mermaid 圖表樣式 */
+        
+        .mermaid {
+            margin: 2em 0;
+            padding: 1.5em;
+            text-align: center;
+            border-radius: 8px;
+        }
+        
+        .mermaid {
+            background: #2c3034;
+            border: 1px solid #444;
+        }
+            
+        
+        /* 響應式調整 */
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            .container, .markdown-body, .latex-body, .window-body, .nes-container {
+                padding: 15px;
+            }
+            pre code {
+                padding: 1em;
+            }
+        }
+        
+        
+    </style>
+<style>table{display:block;overflow-x:auto;max-width:100%}pre{overflow-x:auto}img,svg{max-width:100%;height:auto}p,li,td{overflow-wrap:anywhere}code{white-space:pre-wrap}</style><style id="course-navigation-style">
+html{scroll-behavior:smooth}body{box-sizing:border-box}img{max-width:100%;height:auto}pre{max-width:100%;overflow-x:auto}table{display:block;max-width:100%;overflow-x:auto}td,th{min-width:7em}.course-nav{display:flex;flex-wrap:wrap;gap:.65em;align-items:center;padding:1em 0;margin:1em 0;border-bottom:1px solid #3e3e3e;font-size:.95rem}.course-nav a{color:#66b3ff}.course-nav span{color:#aaa}.course-toc{margin:1.5em 0;padding:1em;background:#222831;border-radius:8px}.course-toc a{overflow-wrap:anywhere}h1,h2,h3,p,li{overflow-wrap:break-word}.mermaid svg{max-width:100%;height:auto}@media(max-width:600px){body{padding:14px!important}h1{font-size:1.65em}pre code{padding:1em}.course-nav{line-height:1.8}}
+</style></head>
+<body><nav aria-label="課程導覽" class="course-nav"><a href="index.html">課程目錄</a><a href="00_intro.html">前導章</a><span>雙 CLI 教材 · 2026-10-31</span></nav>
+<div class="container"><h1 id="ai-agent-ai-cli">AI Agent 與 AI CLI 應用</h1><details class="course-toc"><summary>本頁章節</summary><ul><li><a href="#ai-agent">AI Agent 是什麼？</a></li><li><a href="#ai-cli">AI CLI 是什麼？</a></li><li><a href="#ai-cli-ai-agent">AI CLI 與 AI Agent 的關係</a></li><li><a href="#ai-cli_3">AI CLI 的獨特優勢：與本機環境整合</a></li><li><a href="#codex-cli-claude-code">以 Codex CLI 與 Claude Code 為例（詳細指南）</a></li><li><a href="#_10">維護與學習驗收</a></li></ul></details>
+<blockquote>
+<p>AI_Agent_CLi 雙工具改版｜查核日期：2026-10-31。先讀 <a href="00_intro.html">Agent 基本概念與工作環境</a>，本篇再用程式、研究與教材案例理解 CLI 的實作方式。Codex CLI 與 Claude Code 選一款即可。</p>
+</blockquote>
+<h2 id="ai-agent">AI Agent 是什麼？</h2>
+<p>AI Agent 是由模型、context、工具與執行控制組成的系統：根據目標提出下一步，工具執行後把結果回傳，再決定繼續或交付。自主程度由任務、權限與 harness 決定；它會犯錯，完成宣告不等於已通過驗收。</p>
+<p>典型組件包括感知（讀到的輸入與工具結果）、規劃（拆成可執行步驟）、記憶／context 管理（本次可用資訊與持久指引）、工具使用（讀寫檔案、執行命令或連接服務）。並非每種 Agent 都有完整長期記憶；硬碟上存在的資料也不表示模型已經讀取。</p>
+<h3 id="ai-agent_1">AI Agent 可以做些什麼？</h3>
+<ul>
+<li><strong>軟體開發：</strong>閱讀專案、提出修改、實作及執行測試，讓人依差異與結果驗收。</li>
+<li><strong>資料分析：</strong>清理已授權資料，列出統計假設、程式與輸出，人工抽查原始列。</li>
+<li><strong>研究整理：</strong>在可用的搜尋工具與網路權限下讀來源，分清資料支持的結論與推論。</li>
+<li><strong>個人助理：</strong>透過另外設定的工具處理行程或草稿；發信、發布等外部動作需明確授權。</li>
+</ul>
+<h3 id="ai-agent_2">常見的 AI Agent 應用場景</h3>
+<table>
+<thead>
+<tr>
+<th>場景</th>
+<th>適合交付的任務</th>
+<th>人的驗收責任</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>軟體工程</td>
+<td>一個有測試條件的修正</td>
+<td>測試、差異與相容性</td>
+</tr>
+<tr>
+<td>客戶服務</td>
+<td>根據政策整理回覆草稿</td>
+<td>核對政策與必要的人工核准</td>
+</tr>
+<tr>
+<td>科學研究</td>
+<td>整理資料、比較假說</td>
+<td>檢查來源、設計與推論限制</td>
+</tr>
+<tr>
+<td>智慧家庭</td>
+<td>在已設定的裝置權限內調整排程</td>
+<td>裝置安全、例外狀況及人員需求</td>
+</tr>
+</tbody>
+</table>
+<p>這是工作方式的例子，不代表安裝任一 CLI 後就自動取得上述服務與權限。</p>
+<h2 id="ai-cli">AI CLI 是什麼？</h2>
+<p>CLI 是命令列介面。Codex CLI 與 Claude Code 讓使用者在專案目錄中交付自然語言任務，再由產品整合的模型與工具處理。shell 仍以固定語法執行指令；AI 會產生命令或工具請求，不會讓任意中文變成有效的 PowerShell 語法。</p>
+<h3 id="ai-cli_1">AI CLI 可以做些什麼？</h3>
+<p>自然語言可用於產生腳本、解釋程式、搜尋檔案、修改教材與診斷錯誤。例如「列出這個專案最大的五個檔案」需要先選正確 shell、指定目錄及排除 <code>.git</code>；應要求回報命令與結果，不能只看一張沒有來源的表格。</p>
+<h3 id="ai-cli_2">常見的 AI CLI 應用場景</h3>
+<p>開發者可撰寫測試與文件；系統管理員可先產生維運腳本再審閱；資料工作者可建立 Python／SQL 分析；學習者可要求解釋錯誤並建立最小可重現案例。CLI 本身不包含所有編譯器、Python 套件或外部服務，任務依賴仍須配置。</p>
+<h3 id="openai-codex-cli-claude-code">OpenAI Codex CLI 與 Claude Code</h3>
+<p>兩者都是可在終端機操作的 Agent 產品，不是單一模型的名稱。前者以 <code>codex</code> 啟動，後者以 <code>claude</code> 啟動。本課先練共通的「目標、資料、限制、產物、驗收」，再比較各自命令，避免把一家參數套到另一家。</p>
+<h2 id="ai-cli-ai-agent">AI CLI 與 AI Agent 的關係</h2>
+<p>CLI 描述操作入口，Agent 描述工作方式，兩者不是自主程度的高低排名。具有工具回饋迴圈的 CLI 可以執行多步任務；網頁產品也可能連接 Agent 與遠端環境。真正要問的是：模型看到了哪些資料、工具在哪裡執行、誰核准動作、如何證明完成。</p>
+<h2 id="ai-cli_3">AI CLI 的獨特優勢：與本機環境整合</h2>
+<p>一般未連接本機工具的聊天視窗，需要人工上傳或貼上資料；CLI 能在授權範圍內直接讀寫專案並呼叫測試工具。這不是「網頁永遠無法讀檔」：網頁也可能提供檔案上傳、連接器或遠端執行環境。本機執行工具亦不等於模型離線運算；送給服務的 context 仍需遵守資料規範。</p>
+<h3 id="_1">應用場景：自動化專案重構與驗證</h3>
+<p><strong>情境：</strong>JavaScript 專案把 <code>getUserProfile()</code> 換成 <code>src/utils/api.js</code> 的 <code>fetchUserProfile()</code>。先確認新函式參數與回傳值相容，檢查 Git 狀態並留存版本，再進入 <code>codex</code> 或 <code>claude</code> 貼上：</p>
+<pre><code class="language-text">先閱讀 package.json、舊函式與新函式實作，列出受影響的呼叫位置。
+比較參數、回傳值及非同步行為，再提出最小修改。
+依各檔案位置加入正確的相對 import，不要硬套 /src 絕對路徑。
+完成後執行專案現有測試；回報命令、退出碼、修改檔案與剩餘風險。
+若依賴尚未安裝，先說明缺項，不要宣稱測試通過。
+</code></pre>
+<p>工作流程是理解相容性、搜尋引用、逐檔修改、執行驗證、回報差異。工具呼叫由 CLI 根據可用能力與權限決定；提示中不需要虛構 <code>@shell</code> 指令。驗收時看 <code>git diff</code>、測試結果及未追蹤檔案，不能只因文字看起來合理就提交。</p>
+<h2 id="codex-cli-claude-code">以 Codex CLI 與 Claude Code 為例（詳細指南）</h2>
+<h3 id="_2">核心特色</h3>
+<p>兩者都能協助讀寫檔案、執行專案命令及延續會話；搜尋、MCP 與其他整合依設定與帳號而異。價格與配額會變動，本教材不承諾固定免費額度。先確認登入方式、方案及組織權限，再安排課堂實作。</p>
+<h3 id="0">0. 安裝前置需求：依安裝路線選擇</h3>
+<p>原生安裝路線不要求先裝 Node.js；npm 路線需要 Node.js/npm。Python、C++ 編譯器是執行相應作業所需，不是兩款 CLI 的共同安裝先決條件。Windows 以 PowerShell 為主，macOS 使用 Terminal；命令應與 shell 相符。</p>
+<h3 id="1-codex-cli-claude-code">1. 安裝 Codex CLI 或 Claude Code</h3>
+<h4 id="a">a) 官方原生安裝（課程主線）</h4>
+<table>
+<thead>
+<tr>
+<th>系統／安裝方式</th>
+<th>Codex CLI</th>
+<th>Claude Code</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Windows PowerShell（新視窗）</td>
+<td><code>powershell -ExecutionPolicy Bypass -c "irm https://chatgpt.com/codex/install.ps1 | iex"</code></td>
+<td><code>irm https://claude.ai/install.ps1 | iex</code></td>
+</tr>
+<tr>
+<td>macOS／Linux／WSL 終端機</td>
+<td><code>curl -fsSL https://chatgpt.com/codex/install.sh | sh</code></td>
+<td><code>curl -fsSL https://claude.ai/install.sh | bash</code></td>
+</tr>
+<tr>
+<td>macOS Homebrew（替代）</td>
+<td><code>brew install --cask codex</code></td>
+<td><code>brew install --cask claude-code</code></td>
+</tr>
+<tr>
+<td>Windows WinGet（Claude 替代）</td>
+<td>本課不列未查核的 CLI 套件名稱</td>
+<td><code>winget install Anthropic.ClaudeCode</code></td>
+</tr>
+</tbody>
+</table>
+<p>表格的 <code>|</code> 是管線字元。每款工具只選一種安裝方法，避免多份執行檔搶用 PATH。下載腳本會在本機執行；學校電腦請使用管理員核准的安裝路線。這些指令在 shell 執行，不貼到 AI 對話中。</p>
+<p>安裝後重新開終端機，選所用工具檢查：</p>
+<pre><code class="language-powershell">codex --version
+# 或選 Claude Code：
+claude --version
+</code></pre>
+<p>查核：2026-10-31。<a href="https://learn.chatgpt.com/docs/codex/cli">Codex 安裝</a>、<a href="https://learn.chatgpt.com/docs/enterprise/windows-deployment">Windows CLI 部署</a>、<a href="https://code.claude.com/docs/en/setup">Claude Code 安裝</a>。</p>
+<h4 id="b-npm-node">b) 使用 npm（已有 Node 環境時的替代）</h4>
+<p>先確認 <code>node --version</code> 與 <code>npm --version</code>；選受支援的 Node LTS，Claude npm 安裝目前要求 Node 22+。只執行所選工具的一行：</p>
+<pre><code class="language-bash">npm install -g @openai/codex@latest
+# 或
+npm install -g @anthropic-ai/claude-code@latest
+</code></pre>
+<p>更新 npm 安裝也使用同一行。npm 管理的是套件安裝；Claude 目前下載原生執行檔，執行時不依賴你的 Node。不要由「npm 安裝」推論所有 CLI 的 runtime 都一樣。</p>
+<h4 id="c-homebrewmacos">c) 使用 Homebrew（macOS 替代）</h4>
+<p>使用上表 cask。更新時執行 <code>brew upgrade --cask codex</code> 或 <code>brew upgrade --cask claude-code</code>。Claude <code>claude-code</code> 追蹤 stable；如果選 <code>claude-code@latest</code>，安裝與更新都應使用同一 cask 名稱。不要混用原生與套件管理器的更新方式。</p>
+<h3 id="2">2. 設定與驗證</h3>
+<h4 id="a_1">a) 帳號與登入方式</h4>
+<p>Codex 可透過 ChatGPT 登入或 API key；Claude 可使用具資格的 Claude 帳號、Console 或組織提供的服務。訂閱授權與 API 計費不相同；模型清單與功能以登入後實際可用內容為準。<a href="https://learn.chatgpt.com/docs/auth">Codex 認證</a>、<a href="https://code.claude.com/docs/en/quickstart">Claude 入門</a>。</p>
+<h4 id="b">b) 啟動與驗證登入</h4>
+<pre><code class="language-powershell">mkdir teaching-project
+cd teaching-project
+git init
+codex
+# 或在同一專案選用：claude
+</code></pre>
+<p>第一次啟動依提示完成瀏覽器登入。需要重新登入時，在 shell 用 <code>codex login</code> 或 <code>claude auth login</code>；不要使用舊教材中的 <code>config set api_key</code>。成功判準：能看見正確專案目錄並完成一個讀檔任務。版本號印出僅代表指令可執行，不代表帳號已授權。</p>
+<h3 id="3">3. 基本用法</h3>
+<h4 id="a-prompt">a) 直接提問（Prompt）</h4>
+<p>指定輸入、輸出與驗收：「讀 README.md，列出三個重點，每點註明來源章節，不修改檔案」。下表區分互動與非互動模式。</p>
+<table>
+<thead>
+<tr>
+<th>工作</th>
+<th>Codex CLI（shell）</th>
+<th>Claude Code（shell）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>互動對話</td>
+<td><code>codex</code></td>
+<td><code>claude</code></td>
+</tr>
+<tr>
+<td>帶入起始任務並互動</td>
+<td><code>codex "說明這個專案"</code></td>
+<td><code>claude "說明這個專案"</code></td>
+</tr>
+<tr>
+<td>單次完成後離開</td>
+<td><code>codex exec "摘要 README.md"</code></td>
+<td><code>claude -p "摘要 README.md"</code></td>
+</tr>
+<tr>
+<td>接續最近工作</td>
+<td><code>codex resume --last</code></td>
+<td><code>claude -c</code></td>
+</tr>
+<tr>
+<td>選擇歷史工作</td>
+<td><code>codex resume</code></td>
+<td><code>claude -r</code></td>
+</tr>
+<tr>
+<td>檢查登入</td>
+<td><code>codex login status</code></td>
+<td><code>claude auth status --text</code></td>
+</tr>
+<tr>
+<td>顯示版本／參數</td>
+<td><code>codex --version</code>／<code>codex --help</code></td>
+<td><code>claude --version</code>／<code>claude --help</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>會話內命令：</strong>啟動後才輸入 <code>/model</code> 選模型、<code>/permissions</code> 檢查權限；Codex 用 <code>/status</code> 檢查會話，Claude 用 <code>/context</code> 檢查載入情境、<code>/memory</code> 管理指引。CLI 的可用模型依帳號、版本與組織設定而變，不把教材中的模型名稱視為最新保證。</p>
+<p><code>codex exec</code> 預設採唯讀沙箱；確實需要改檔時，明確指定 <code>codex exec --sandbox workspace-write "任務"</code>。先在專案執行 <code>git init</code> 建立版本追蹤；刻意在非 Git 目錄做一次性任務時才使用 <code>--skip-git-repo-check</code>。<code>claude -p</code> 受既有權限控制，不能把無人互動解讀成自動授予所有工具；初學者先用互動模式處理寫檔要求。不要將 Codex 的 <code>-p</code> 當成 Claude 的 print：Codex 的 <code>-p</code> 是設定 profile。</p>
+<p>來源：<a href="https://learn.chatgpt.com/docs/developer-commands?surface=cli">Codex 命令</a>、<a href="https://learn.chatgpt.com/docs/non-interactive-mode">非互動模式</a>、<a href="https://code.claude.com/docs/en/cli-reference">Claude CLI</a>。</p>
+<h4 id="b-chat">b) 互動式聊天（Chat）</h4>
+<p>在專案目錄啟動 <code>codex</code> 或 <code>claude</code> 後，可以先讀資料、追問、再同意修改。離開再續接時，檢查工作目錄與實際檔案是否已變動；歷史對話不一定反映當下狀態。使用 <code>codex resume --last</code> 或 <code>claude -c</code>，仍需交代新的驗收目標。</p>
+<h4 id="c-piping">c) 結合管道（Piping）與檔案</h4>
+<p>macOS／Linux／WSL 的 shell 示例：</p>
+<pre><code class="language-bash">cat script.sh | codex exec "解釋傳入腳本，不執行它"
+cat script.sh | claude -p "解釋傳入腳本，不執行它"
+</code></pre>
+<p>PowerShell 的同一用途：</p>
+<pre><code class="language-powershell">Get-Content -Raw -Encoding utf8 script.sh | codex exec "解釋傳入腳本，不執行它"
+Get-Content -Raw -Encoding utf8 script.sh | claude -p "解釋傳入腳本，不執行它"
+</code></pre>
+<p>輸出存檔可用 <code>codex exec -o summary.md "摘要 README.md"</code>；Claude 文字輸出可在 PowerShell 7 使用 <code>claude -p "摘要 README.md，只輸出 Markdown" | Set-Content -Encoding utf8 summary.md</code>。先確認目標檔不存在或可覆寫；重導向會覆寫既有檔案。文字生成的 Dockerfile 必須再檢查原始碼與執行環境，不是直接可信的部署成果。</p>
+<h3 id="4">4. 進階應用範例</h3>
+<h4 id="_3">範例一：程式碼生成與解釋</h4>
+<p>準備 <code>main.cpp</code>：</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+#include &lt;vector&gt;
+#include &lt;numeric&gt;
+int main() {
+    std::vector&lt;int&gt; values{1, 2, 3, 4, 5};
+    int sum = std::accumulate(values.begin(), values.end(), 0);
+    std::cout &lt;&lt; "Sum: " &lt;&lt; sum &lt;&lt; '\n';
+    return 0;
+}
+</code></pre>
+<p>進入任一 CLI，請它解釋 <code>std::accumulate</code> 的三個參數、初始值的作用與空陣列結果；再要求預測輸出後編譯驗證。<strong>驗收：</strong>輸出應為 <code>Sum: 15</code>，空陣列則為 0；無編譯器時只能做閱讀與預測，不能聲稱實測成功。編譯環境見附錄。</p>
+<h4 id="_4">範例二：整合網路搜尋進行研究</h4>
+<p><strong>情境：</strong>比較目前前端框架的入門方式。Codex 可用 <code>codex --search</code> 開啟即時搜尋；Claude 在網路工具可用時可要求搜尋官方資料。進入會話後貼上：</p>
+<pre><code class="language-text">比較 React、Vue 與 Svelte 的官方入門文件。
+逐項列出來源網址、查核日期、適合的教學情境及目前不能確認之處。
+不要以搜尋摘要取代閱讀，也不要將喜好排名寫成客觀事實。
+若沒有可用搜尋工具，停止查詢並列出需要我提供的來源。
+</code></pre>
+<p><strong>驗收：</strong>至少三個可開啟的官方來源，各列有對應依據。搜尋不是 <code>@google</code> 魔法字串；輸入網址也不保證已成功擷取。</p>
+<h4 id="_5">範例三：操作檔案系統</h4>
+<p><strong>情境：</strong>找出專案中尚待處理的註解。在專案加入含 <code>TODO</code> 的練習檔與不含的對照檔，再請任一 CLI：</p>
+<pre><code class="language-text">只搜尋 src/ 內的 .js 檔，不修改檔案。
+列出含 TODO 的檔名、行號與原文；若沒有結果就明說。
+不要搜尋 .git、node_modules 或機密設定。
+</code></pre>
+<p><strong>驗收：</strong>手動開啟至少兩個結果核對行號；無結果不能臆造任務。需讀檔時使用 CLI 實際提供的工具，不使用不存在的 <code>@file</code> 通用呼叫語法。</p>
+<h4 id="_6">範例四：專案管理與自動化</h4>
+<p><strong>情境：</strong>整理 Python 依賴。先辨識現有 <code>pyproject.toml</code>、<code>uv.lock</code> 與專案環境；不要將全域 <code>pip freeze</code> 當成實際直接依賴清單。</p>
+<pre><code class="language-text">讀取 pyproject.toml 與程式中的 import，列出已宣告及可能缺少的依賴。
+先提議變更，經確認後使用 uv add 更新專案，保留 lockfile。
+執行 uv run python 的代表測試並回報結果；不要改全域 Python。
+</code></pre>
+<p><strong>產物：</strong>依賴說明、更新後設定及測試紀錄。<strong>驗收：</strong>另一個專案環境不受影響；缺少來源或套件時明確報錯。</p>
+<h4 id="meta">範例五：結合工具進行研究與文件整理（Meta 範例）</h4>
+<p><strong>情境：</strong>根據官方 CLI 文件建立學生可用的安裝說明。先提供 <a href="https://learn.chatgpt.com/docs/codex/cli">Codex 官方頁</a> 或 <a href="https://code.claude.com/docs/en/setup">Claude 官方頁</a>，再下達：</p>
+<pre><code class="language-text">實際開啟這份官方文件，擷取與 Windows／macOS 初學者相關的安裝及更新方式。
+產出 setup-notes.md，分開終端機命令、登入操作與成功判準。
+每一組命令附來源與查核日期；取不到頁面時列為待查，不猜指令。
+</code></pre>
+<p>流程是確認工具能取來源、閱讀相關段落、整理成教學步驟、核對指令與限制。網站內容是資料，不是授權指令。若只能讀本地檔案，可由教師先保存已查核的摘錄，並保留來源 URL。</p>
+<h4 id="_7">範例六：迭代式內容生成與專案演進（教學模擬）</h4>
+<p>下列是示範流程，不宣稱本頁曾由某一次特定對話自動生成。把初始大綱放入 <code>outline.md</code>，在 Codex 或 Claude 的同一會話依序給四段提示：</p>
+<ol>
+<li>「讀 outline.md，依標題擴寫解說與練習，另存 draft01.md；不覆寫大綱。」</li>
+<li>「讀 draft01.md，加入 CLI 與 Agent 的關係，保留其餘段落，另存 draft02.md。」</li>
+<li>「核對指定官方來源，修訂 draft02.md 的安裝步驟，另存 draft03.md，附修改理由。」</li>
+<li>「比較三版差異，檢查來源、程式碼與格式；修正後產出 final.md 及查核紀錄。」</li>
+</ol>
+<p><strong>驗收：</strong>每版檔案存在、原始大綱保留、差異符合要求。長會話也會受 context 長度限制，應把穩定規則寫入專案指引，不能只依賴聊天記憶。網頁搭配工具也能實作類似流程；本例的便利在本地檔案與版本管理整合。</p>
+<h3 id="5-agentsmdclaudemd">5. 善用 AGENTS.md／CLAUDE.md 的指引規範</h3>
+<h4 id="_8">運作原理</h4>
+<table>
+<thead>
+<tr>
+<th>工具</th>
+<th>本課指引檔</th>
+<th>載入確認</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Codex CLI</td>
+<td>專案根目錄 <code>AGENTS.md</code></td>
+<td>在該目錄開始新會話，請它列出實際載入的指引與適用規則；再用一個可核對的小任務驗證</td>
+</tr>
+<tr>
+<td>Claude Code</td>
+<td>專案根目錄 <code>CLAUDE.md</code></td>
+<td>用 <code>/context</code> 檢查 Memory files，並測試輸出；共用規則時在 CLAUDE.md 寫入 <code>@AGENTS.md</code></td>
+</tr>
+</tbody>
+</table>
+<p>Codex 還有使用者層與子目錄的規則，<code>AGENTS.override.md</code> 可覆蓋同層預設檔案。Claude Code v2.1.277+ 可直接讀 AGENTS.md，但預設只有在工作目錄及其上層沒有 CLAUDE.md、.claude/CLAUDE.md 或 CLAUDE.local.md 時才採用；內建支援被停用、舊版或部分升級後首次會話也可能不可用。<code>/config</code> 的 Project instructions 可設定同時載入兩者。本課採 CLAUDE.md 匯入 AGENTS.md，兼顧既有版本與 Windows，不依賴 symlink。</p>
+<p>這些文字提供 context，不是系統權限，更不保證模型每次都遵守。<code>/permissions</code>、實際 sandbox、檔案權限與人工驗收分別負責授權、隔離與品質。不要在規則內放 API 金鑰或學生個資。</p>
+<p>來源：<a href="https://learn.chatgpt.com/docs/agent-configuration/agents-md">Codex AGENTS.md</a>、<a href="https://code.claude.com/docs/en/memory">Claude 專案記憶</a>、<a href="https://code.claude.com/docs/en/permissions">Claude 權限</a>。</p>
+<h4 id="_9">應用場景與範例</h4>
+<p><strong>範例一：Python 資深開發者。</strong>將以下內容寫入 AGENTS.md；Claude 使用相鄰 CLAUDE.md 匯入。</p>
+<pre><code class="language-markdown"># Python 協作指引
+- 公開函式使用型別提示與 docstring，描述輸入、輸出及可預期錯誤。
+- 依專案風格撰寫；複雜邏輯以繁體中文解釋原因。
+- 不用寬泛 except 隱藏錯誤；針對可恢復的例外處理。
+- 使用專案 uv 環境，修改後執行現有測試並回報命令與結果。
+</code></pre>
+<p>測試任務：「寫一個讀 CSV 並驗證欄位的函式」。驗收型別、錯誤訊息及正常／缺欄位案例，不只看格式。</p>
+<p><strong>範例二：技術文件寫手。</strong></p>
+<pre><code class="language-markdown"># 技術文件協作指引
+- 使用繁體中文，對象為初學者；必要術語第一次出現時解釋。
+- 操作步驟用有序清單，命令使用對應 shell 的程式碼區塊。
+- 每段操作附成功判準；不確定的版本資訊列出官方來源。
+- 保留引用與原始資料，更新內容時記錄查核日期。
+</code></pre>
+<p>測試任務：「根據現有 README 說明如何設定資料庫連線」。不輸出真實憑證，先核對專案實際使用的設定名稱。</p>
+<p><strong>範例三：React／TypeScript 前端開發者。</strong></p>
+<pre><code class="language-markdown"># 前端專案協作指引
+- 先閱讀 package.json 與既有元件，沿用現有框架、樣式及目錄慣例。
+- 優先使用型別明確的 props；不要為小修改任意新增依賴。
+- 互動元件提供可操作的標籤、鍵盤焦點與錯誤回饋。
+- 修改後執行專案的 typecheck／test／build，缺少腳本時明說。
+</code></pre>
+<p><strong>課堂練習：</strong>同一份需求在有規則與無規則的新會話各執行一次，比較產物；若差異不明顯，先檢查規則有無載入及條件是否可測，而不是增加更多模糊形容詞。完整教師範本見 <a href="05_instructions.html">單元五</a>。</p>
+<h3 id="vs-code-c-python">附錄：設定 VS Code 的 C++ 與 Python 開發環境</h3>
+<p>這是程式教學選讀；純文件任務不必安裝所有語言工具。擴充套件提供編輯與除錯介面，編譯器／直譯器負責執行，CLI 則協助操作專案。</p>
+<h4 id="1-python">1. Python 環境設定</h4>
+<ol>
+<li>在 VS Code 擴充套件搜尋 Microsoft 的 Python，安裝；Notebook 工作另外確認 Jupyter 擴充套件。</li>
+<li>依 <a href="08_environment.html">環境建置指南</a> 用 uv 建立專案，選定課程使用的 Python 版本。</li>
+<li>開啟命令選擇區，執行 <code>Python: Select Interpreter</code>，選本專案 <code>.venv</code>。</li>
+<li>執行 <code>uv run python -c "import sys; print(sys.executable)"</code>，核對它與 VS Code 選到的路徑一致。</li>
+<li>在程式設中斷點並以 Python Debugger 執行；格式化與 lint 工具依專案另外安裝配置，不保證 Python 擴充套件已包含所有工具。</li>
+</ol>
+<p>來源：<a href="https://code.visualstudio.com/docs/python/python-tutorial">VS Code Python 教學</a>。</p>
+<h4 id="2-c-windows">2. C++ 環境設定（Windows 選讀流程）</h4>
+<p><strong>步驟一：安裝工具鏈。</strong>依 <a href="https://code.visualstudio.com/docs/cpp/config-mingw">VS Code MinGW 教學</a> 安裝 MSYS2。開啟 MSYS2 UCRT64 終端機，依官方提示更新套件後安裝：</p>
+<pre><code class="language-bash">pacman -S --needed base-devel mingw-w64-ucrt-x86_64-toolchain
+</code></pre>
+<p>這不是 PowerShell 指令。依實際安裝位置將 <code>C:\msys64\ucrt64\bin</code> 加入使用者 PATH；重開終端機，檢查 <code>g++ --version</code> 與 <code>gdb --version</code>。ARM 或其他平台請選官方對應工具鏈，不照貼 x86_64 套件。</p>
+<p><strong>步驟二：安裝擴充套件。</strong>在 VS Code 安裝 Microsoft C/C++，或需要時使用 C/C++ Extension Pack；擴充套件不會替你安裝 GCC。</p>
+<p><strong>步驟三：建立專案。</strong>建立 <code>cpp_test</code> 資料夾，用 VS Code 開啟，新增上方範例的 <code>main.cpp</code>。先在 PowerShell 編譯與執行：</p>
+<pre><code class="language-powershell">g++ -std=c++17 -g main.cpp -o main.exe
+.\main.exe
+</code></pre>
+<p><strong>步驟四：設定偵錯。</strong>於輸出行設中斷點，使用右上角執行／偵錯選單選 <code>C/C++: g++.exe build and debug active file</code>（名稱依版本）。需要時依官方指引建立 <code>.vscode/tasks.json</code>／<code>launch.json</code>，確認 compiler/debugger 的實際路徑；不是每版都會同時自動建立兩個檔案。</p>
+<p><strong>步驟五：選用快速執行。</strong>Code Runner 是另一個擴充套件，不是本課必要條件；若使用它，需自行核對工作目錄、編譯旗標與終端機輸入設定，仍以明確命令作驗收基準。</p>
+<p><strong>步驟六：排錯。</strong>找不到 g++ 時先確認是否安裝工具鏈、PATH 是否正確、是否重開終端機；編譯失敗則閱讀完整錯誤與檔名行號。執行成功後，再讓 CLI 解釋實際結果，不讓 AI 猜測編譯器是否已存在。</p>
+<h2 id="_10">維護與學習驗收</h2>
+<p>原生 Codex 以重跑官方安裝命令更新；支援 self-update 的 release 也可用 <code>codex update</code>。原生 Claude 自動更新，也可依官方 <code>claude update</code>；Homebrew／WinGet／npm 安裝依相應套件管理方式更新。課前重查官方來源與版本，不以本教材日期取代當日驗證。</p>
+<p>完成後應能：辨識 CLI 與模型、選一款工具登入、正確切換互動與單次任務、建立專案指引，並用真實檔案與測試驗收一個完整任務。下一步到 <a href="index.html">課程索引</a> 選擇適合的漸進單元。</p></div>
+<!-- Highlight.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+<script>hljs.highlightAll();</script>
+<!-- Mermaid -->
+<script type="module">
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+        mermaid.initialize({
+            "startOnLoad": true,
+            "theme": "dark",
+            "securityLevel": "loose"
+});
+    </script>
+<nav aria-label="課程導覽" class="course-nav"><a href="index.html">課程目錄</a><a href="00_intro.html">前導章</a><span>雙 CLI 教材 · 2026-10-31</span></nav></body>
+</html>

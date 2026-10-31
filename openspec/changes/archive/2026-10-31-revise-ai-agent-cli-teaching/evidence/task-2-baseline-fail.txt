@@ -1,0 +1,5 @@
+2026-10-31 documentation-adapted baseline
+Acceptance: five scoped new pages exist; full original section purposes/examples retained; current dual CLI operation with official sources; Markdown/HTML equivalent; no obsolete Gemini commands.
+Observed FAIL: all five new targets absent: AI_Agent_Cli_b13.html, Environment_Setup_Guide_b06.html, AI_CLI_Tutorial_b03.html, unit05_agent_instructions_b02.md, unit05_agent_instructions_b02.html
+Original source has obsolete Gemini commands, unconditional Node prerequisite and fictional @shell/@web invocation.
+No CLI installation or paid execution performed.

@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+
+<html lang="zh-TW">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Codex CLI 與 Claude Code 實戰教學：讓 AI 駐紮在你的終端機</title>
+<!-- CSS 框架 -->
+<link href="https://cdn.jsdelivr.net/npm/water.css@2/out/dark.min.css" rel="stylesheet"/>
+<!-- 代碼高亮 -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/base16/darcula.min.css" rel="stylesheet"/>
+<!-- 自定義樣式 -->
+<style>
+        
+                body {
+                    max-width: 900px;
+                    margin: 0 auto;
+                    padding: 20px;
+                }
+                /* 提升代碼塊對比度 */
+                pre {
+                    background: #1e1e1e !important;
+                    border: 1px solid #3e3e3e;
+                }
+                pre code {
+                    background: #1e1e1e !important;
+                }
+                code {
+                    background: #2d2d2d !important;
+                }
+                /* 引用塊對比度 */
+                blockquote {
+                    background: #2d2d2d;
+                    border-left: 4px solid #4a9eff;
+                }
+            
+        /* 通用代碼塊樣式 */
+        pre code {
+            display: block;
+            padding: 1.5em;
+            border-radius: 8px;
+            overflow-x: auto;
+            line-height: 1.6;
+        }
+
+        /* Mermaid 圖表樣式 */
+        
+        .mermaid {
+            margin: 2em 0;
+            padding: 1.5em;
+            text-align: center;
+            border-radius: 8px;
+        }
+        .mermaid svg {
+            max-width: 100%;
+            height: auto;
+        }
+        /* 增強所有文字的可讀性 */
+        .mermaid svg text {
+            font-weight: 700 !important;  /* 加粗文字 */
+            font-size: 18px !important;  /* 增大字體 */
+        }
+        /* 特別加強節點標籤文字 */
+        .mermaid .nodeLabel,
+        .mermaid .edgeLabel {
+            font-weight: 700 !important;
+        }
+        /* 確保連線標籤清晰可見 */
+        .mermaid .edgeLabel text {
+            fill: inherit !important;
+            font-weight: 700 !important;
+        }
+        /* 加粗序列圖的文字 */
+        .mermaid .actor,
+        .mermaid .messageText {
+            font-weight: 700 !important;
+        }
+        /* 增強邊框可見度 */
+        .mermaid .edgePath path,
+        .mermaid .flowchart-link {
+            stroke-width: 2.5px !important;  /* 加粗連線 */
+        }
+        .mermaid .arrowheadPath {
+            stroke-width: 2.5px !important;
+        }
+        /* 確保節點邊框清晰 */
+        .mermaid .node rect,
+        .mermaid .node polygon,
+        .mermaid .node circle,
+        .mermaid .node ellipse {
+            stroke-width: 2.5px !important;
+        }
+        
+        .mermaid {
+            background: #1e293b;  /* 深藍灰色背景 */
+            border: 2px solid #475569;  /* 加粗邊框 */
+            color: #f1f5f9;  /* 亮色文字 */
+        }
+        /* 確保深色主題下文字始終可見 */
+        .mermaid svg text {
+            fill: #f1f5f9 !important;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);  /* 添加陰影增強可讀性 */
+        }
+        .mermaid .nodeLabel {
+            color: #ffffff !important;
+        }
+            
+
+        /* 響應式調整 */
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            .container, .markdown-body, .latex-body, .window-body, .nes-container {
+                padding: 15px;
+            }
+            pre code {
+                padding: 1em;
+            }
+            /* 移動設備上稍微縮小 Mermaid 文字 */
+            .mermaid svg text {
+                font-size: 16px !important;
+            }
+        }
+
+        
+    </style>
+<style>table{display:block;overflow-x:auto;max-width:100%}pre{overflow-x:auto}img,svg{max-width:100%;height:auto}p,li,td{overflow-wrap:anywhere}code{white-space:pre-wrap}</style><style id="course-navigation-style">
+html{scroll-behavior:smooth}body{box-sizing:border-box}img{max-width:100%;height:auto}pre{max-width:100%;overflow-x:auto}table{display:block;max-width:100%;overflow-x:auto}td,th{min-width:7em}.course-nav{display:flex;flex-wrap:wrap;gap:.65em;align-items:center;padding:1em 0;margin:1em 0;border-bottom:1px solid #3e3e3e;font-size:.95rem}.course-nav a{color:#66b3ff}.course-nav span{color:#aaa}.course-toc{margin:1.5em 0;padding:1em;background:#222831;border-radius:8px}.course-toc a{overflow-wrap:anywhere}h1,h2,h3,p,li{overflow-wrap:break-word}.mermaid svg{max-width:100%;height:auto}@media(max-width:600px){body{padding:14px!important}h1{font-size:1.65em}pre code{padding:1em}.course-nav{line-height:1.8}}
+</style></head>
+<body><nav aria-label="課程導覽" class="course-nav"><a href="index.html">課程目錄</a><a href="00_intro.html">前導章</a><span>雙 CLI 教材 · 2026-10-31</span></nav>
+<div class="container"><h1 id="codex-cli-claude-code-ai">Codex CLI 與 Claude Code 實戰教學：讓 AI 駐紮在你的終端機</h1><details class="course-toc"><summary>本頁章節</summary><ul><li><a href="#1-introduction">1. 課程簡介（Introduction）</a></li><li><a href="#2-installation">2. 環境建置（Installation）</a></li><li><a href="#3-basic-operations">3. 基礎操作指南（Basic Operations）</a></li><li><a href="#4-hands-on-examples">4. 實戰應用範例（Hands-on Examples）</a></li><li><a href="#5">5. 進階技巧：專案專屬設定</a></li><li><a href="#6">6. 學習總結</a></li></ul></details>
+<blockquote>
+<p>查核日期：2026-10-31｜依序從讀程式、修改、搜尋到小型原型。先完成 <a href="00_intro.html">前導教材</a> 的帳號與環境準備。兩款工具擇一實作，再用另一款比較流程。</p>
+</blockquote>
+<h2 id="1-introduction">1. 課程簡介（Introduction）</h2>
+<h3 id="agent-cli">為什麼要學習 Agent CLI？</h3>
+<p>CLI 能把資料、編輯與命令執行連在同一個專案中，適合反覆修改教材、整理檔案及開發小工具。關鍵能力是把模糊需求變成「指定輸入、限制、產物、驗收」，而不是背誦所有參數。完成本課後，你應能讀懂一段程式、驗收一次修改、核對網路來源並建立可測的原型。</p>
+<table>
+<thead>
+<tr>
+<th>階段</th>
+<th>輸入</th>
+<th>學習者交付物</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Level 1</td>
+<td>範例程式</td>
+<td>解釋、預測與實際結果</td>
+</tr>
+<tr>
+<td>Level 2</td>
+<td>有缺陷的小程式</td>
+<td>修正差異與正常／邊界測試</td>
+</tr>
+<tr>
+<td>Level 3</td>
+<td>官方網站與明確問題</td>
+<td>帶日期和來源的比較表</td>
+</tr>
+<tr>
+<td>Level 4</td>
+<td>原型需求與限制</td>
+<td>可開啟的頁面及驗收紀錄</td>
+</tr>
+</tbody>
+</table>
+<h2 id="2-installation">2. 環境建置（Installation）</h2>
+<h3 id="21">2.1. 前置需求：選擇工具與安裝路線</h3>
+<p>終端機、網路與可用帳號是起點。原生安裝不需預先安裝 Node.js；只有選 npm 或執行 JavaScript 專案時才需要 Node。Windows PowerShell 與 macOS shell 命令分開使用，安裝完後記下版本與安裝方式。不要使用另一款產品的 API key 登入。</p>
+<h3 id="22-codex-cli-claude-code">2.2. 安裝 Codex CLI 或 Claude Code</h3>
+<table>
+<thead>
+<tr>
+<th>系統／安裝方式</th>
+<th>Codex CLI</th>
+<th>Claude Code</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Windows PowerShell（新視窗）</td>
+<td><code>powershell -ExecutionPolicy Bypass -c "irm https://chatgpt.com/codex/install.ps1 | iex"</code></td>
+<td><code>irm https://claude.ai/install.ps1 | iex</code></td>
+</tr>
+<tr>
+<td>macOS／Linux／WSL 終端機</td>
+<td><code>curl -fsSL https://chatgpt.com/codex/install.sh | sh</code></td>
+<td><code>curl -fsSL https://claude.ai/install.sh | bash</code></td>
+</tr>
+<tr>
+<td>macOS Homebrew（替代）</td>
+<td><code>brew install --cask codex</code></td>
+<td><code>brew install --cask claude-code</code></td>
+</tr>
+<tr>
+<td>Windows WinGet（Claude 替代）</td>
+<td>本課不列未查核的 CLI 套件名稱</td>
+<td><code>winget install Anthropic.ClaudeCode</code></td>
+</tr>
+</tbody>
+</table>
+<p>表格的 <code>|</code> 是管線字元。每款工具只選一種安裝方法，避免多份執行檔搶用 PATH。下載腳本會在本機執行；學校電腦請使用管理員核准的安裝路線。這些指令在 shell 執行，不貼到 AI 對話中。</p>
+<p>安裝後重新開終端機，選所用工具檢查：</p>
+<pre><code class="language-powershell">codex --version
+# 或選 Claude Code：
+claude --version
+</code></pre>
+<p>查核：2026-10-31。<a href="https://learn.chatgpt.com/docs/codex/cli">Codex 安裝</a>、<a href="https://learn.chatgpt.com/docs/enterprise/windows-deployment">Windows CLI 部署</a>、<a href="https://code.claude.com/docs/en/setup">Claude Code 安裝</a>。</p>
+<h3 id="23">2.3. 啟動與登入</h3>
+<p>建立 <code>cli-practice</code> 資料夾，用 VS Code 開啟。整合終端機進入該目錄後執行 <code>git init</code>，再啟動 <code>codex</code> 或 <code>claude</code>，依瀏覽器流程登入。用 <code>codex login status</code> 或 <code>claude auth status --text</code> 確認狀態；帳號方案與 API 額度分開計算，依官方帳號畫面為準。</p>
+<p><strong>第一個任務：</strong>請 AI「只列出這個資料夾有哪些檔案，不修改」。確認工作目錄與結果相同後，再進行後續寫檔練習。遇到權限要求，先看它要執行的操作與路徑，依任務需要核准。<a href="https://learn.chatgpt.com/docs/auth">Codex 認證</a>、<a href="https://code.claude.com/docs/en/quickstart">Claude 入門</a>。</p>
+<h2 id="3-basic-operations">3. 基礎操作指南（Basic Operations）</h2>
+<h3 id="31">3.1. 核心指令</h3>
+<table>
+<thead>
+<tr>
+<th>工作</th>
+<th>Codex CLI（shell）</th>
+<th>Claude Code（shell）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>互動對話</td>
+<td><code>codex</code></td>
+<td><code>claude</code></td>
+</tr>
+<tr>
+<td>帶入起始任務並互動</td>
+<td><code>codex "說明這個專案"</code></td>
+<td><code>claude "說明這個專案"</code></td>
+</tr>
+<tr>
+<td>單次完成後離開</td>
+<td><code>codex exec "摘要 README.md"</code></td>
+<td><code>claude -p "摘要 README.md"</code></td>
+</tr>
+<tr>
+<td>接續最近工作</td>
+<td><code>codex resume --last</code></td>
+<td><code>claude -c</code></td>
+</tr>
+<tr>
+<td>選擇歷史工作</td>
+<td><code>codex resume</code></td>
+<td><code>claude -r</code></td>
+</tr>
+<tr>
+<td>檢查登入</td>
+<td><code>codex login status</code></td>
+<td><code>claude auth status --text</code></td>
+</tr>
+<tr>
+<td>顯示版本／參數</td>
+<td><code>codex --version</code>／<code>codex --help</code></td>
+<td><code>claude --version</code>／<code>claude --help</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>會話內命令：</strong>啟動後才輸入 <code>/model</code> 選模型、<code>/permissions</code> 檢查權限；Codex 用 <code>/status</code> 檢查會話，Claude 用 <code>/context</code> 檢查載入情境、<code>/memory</code> 管理指引。CLI 的可用模型依帳號、版本與組織設定而變，不把教材中的模型名稱視為最新保證。</p>
+<p><code>codex exec</code> 預設採唯讀沙箱；確實需要改檔時，明確指定 <code>codex exec --sandbox workspace-write "任務"</code>。先在專案執行 <code>git init</code> 建立版本追蹤；刻意在非 Git 目錄做一次性任務時才使用 <code>--skip-git-repo-check</code>。<code>claude -p</code> 受既有權限控制，不能把無人互動解讀成自動授予所有工具；初學者先用互動模式處理寫檔要求。不要將 Codex 的 <code>-p</code> 當成 Claude 的 print：Codex 的 <code>-p</code> 是設定 profile。</p>
+<p>來源：<a href="https://learn.chatgpt.com/docs/developer-commands?surface=cli">Codex 命令</a>、<a href="https://learn.chatgpt.com/docs/non-interactive-mode">非互動模式</a>、<a href="https://code.claude.com/docs/en/cli-reference">Claude CLI</a>。</p>
+<p><strong>更新與故障排除：</strong>原生 Codex 重跑安裝命令；支援 self-update 的 release 可用 <code>codex update</code>。原生 Claude 會自動更新，手動可用 <code>claude update</code>；若以 Homebrew 或 WinGet 安裝，改用該管理器的 upgrade。找不到指令先重開終端機並檢查 PATH，版本可顯示但不能使用則先查登入與帳號，不要反覆重裝。詳見 <a href="08_environment.html">環境指南</a>。</p>
+<p><strong>提示的四段式寫法：</strong>「讀什麼 → 要做什麼 → 不可做什麼 → 如何驗收」。在 AI 會話內貼自然語言提示；在 shell 中執行 <code>codex</code>／<code>claude</code>。不要將說明句當 shell 命令，也不要虛構 <code>@shell</code>、<code>@google</code> 或 <code>@web</code> 為通用 CLI 語法。</p>
+<h2 id="4-hands-on-examples">4. 實戰應用範例（Hands-on Examples）</h2>
+<h3 id="level-1code-explanation">🔰 Level 1：程式碼解釋與學習（Code Explanation）</h3>
+<p><strong>準備：</strong>在專案新增 <code>average.py</code>，內容如下：</p>
+<pre><code class="language-python">scores = [70, 80, 90]
+average = sum(scores) / len(scores)
+print(average)
+</code></pre>
+<p>在任一工具的互動會話貼上：</p>
+<pre><code class="language-text">只閱讀 average.py，不修改。
+用繁體中文逐行說明，先預測輸出，再列出如何執行驗證。
+指出空清單會發生什麼，並提出一個可測的改進。
+</code></pre>
+<p><strong>學習重點：</strong>先預測再執行，避免把 AI 的文字當成執行結果。已準備 Python 環境者用 <code>uv run python average.py</code>，應輸出 <code>80.0</code>。沒有 Python 可先完成閱讀，但要將「尚未執行」寫入學習紀錄。<strong>延伸：</strong>換成 <code>[60, 90]</code>，自己算出 75，再核對工具結果。</p>
+<h3 id="level-2refactoring">🔧 Level 2：自動化重構與除錯（Refactoring）</h3>
+<p>把上例的運算整理成函式，新增空輸入測例。任務提示：</p>
+<pre><code class="language-text">將 average.py 改為可重用的 mean_score(scores) 函式。
+空清單要拋出有意義的 ValueError，不回傳假平均值。
+保留原先 [70,80,90] 的示範輸出，新增正常與空輸入測試。
+先說明修改計畫，再改檔，執行測試並列出結果與差異。
+</code></pre>
+<p><strong>預期產物：</strong>函式、測試與執行紀錄。<strong>驗收：</strong>正常為 80.0；單一值 <code>[95]</code> 為 95；空清單得到指定錯誤。查看 <code>git diff</code> 及 <code>git status</code>，確認未修改其他教材。若 AI 宣稱測試成功，要求對應命令、退出碼與實際輸出。不要把「讓錯誤消失」等同「需求正確」。</p>
+<h3 id="level-3web-search-life-hacks">🌐 Level 3：聯網搜尋與生活應用（Web Search &amp; Life Hacks）</h3>
+<p>Codex 可在 shell 使用 <code>codex --search</code>；Claude 依會話可用的 WebSearch／WebFetch 與網路權限處理。兩者若無法連網，請教師提供來源摘錄，保留 URL 與查核日期。以下三種情境保留為資料素養練習，不讓 AI 自行購買或預訂。</p>
+<h4 id="atravel-planning">💡 情境 A：旅遊規劃助手（Travel Planning）</h4>
+<pre><code class="language-text">規劃一次兩日校外參訪的草案。先問清楚出發地、日期、人數與交通限制。
+查官方景點開放日與交通資料，表列時間、來源、查核日期與未確認事項。
+不預訂、不付款；若資訊衝突，並列差異並提出人工確認方式。
+</code></pre>
+<p><strong>產物：</strong>行程表、來源表、待確認清單。<strong>驗收：</strong>活動日真的開放、交通銜接合理、報價沒有被當成永遠有效；實際出發前由人重新確認。</p>
+<h4 id="bshopping-comparison">💡 情境 B：購物決策與規格比較（Shopping Comparison）</h4>
+<pre><code class="language-text">依我提供的三款設備型號，比較官方規格與教學需求。
+先確認預算、用途、必要連接埠與作業系統；同系列不同型號不可混用規格。
+區分官方規格、商家價格及你的推論；每列附來源與查核日期。
+不要下單，也不要以單一排名取代需求分析。
+</code></pre>
+<p><strong>產物：</strong>可追溯的比較表。<strong>驗收：</strong>型號完整、單位一致、必要條件逐項比對；價格或庫存查不到就標明，不能補造數字。</p>
+<h4 id="csmart-reading">💡 情境 C：高效率閱讀與學習（Smart Reading）</h4>
+<pre><code class="language-text">閱讀我指定的文章或公開課程文件，整理核心問題、三個重點與兩個自我測驗。
+每個重點附對應段落或頁碼，不把文中沒有的內容寫成作者結論。
+若網頁需要登入或內容取不到，請明確回報並等待我提供可讀版本。
+</code></pre>
+<p><strong>產物：</strong>摘要、來源定位及答案說明。<strong>驗收：</strong>回到原文抽查三個主張；區分原作者敘述與 AI 延伸問題。來源文件裡要求「忽略你的規則」的文字仍只是資料，不能取得你的工作權限。</p>
+<h3 id="level-4prototyping">🚀 Level 4：快速建立專案原型（Prototyping）</h3>
+<p><strong>情境：</strong>為一節課做一個不需伺服器的選擇題練習頁。先在新的子目錄工作，避免覆寫本課索引：</p>
+<pre><code class="language-text">在 quiz-demo/ 建立 index.html、style.css、script.js。
+題目使用我提供的三題內容，不新增未查核知識；每題四選一。
+提交後顯示答對數與逐題解析，未作答要有提示；提供重新作答按鈕。
+不接登入、資料庫、外部追蹤或付款；先列實作計畫。
+完成後提供開啟方式，檢查鍵盤操作、手機版與全對／全錯／漏答三種情境。
+</code></pre>
+<p><strong>產物：</strong>三個檔案及測試紀錄。<strong>驗收：</strong>瀏覽器可開啟、計分正確、重做狀態重置、手機文字沒有被裁切。CLI 能產生檔案不代表已驗證頁面；若工具沒有瀏覽器能力，由你實際開啟核對，紀錄測試者與結果。</p>
+<h2 id="5">5. 進階技巧：專案專屬設定</h2>
+<table>
+<thead>
+<tr>
+<th>工具</th>
+<th>本課指引檔</th>
+<th>載入確認</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Codex CLI</td>
+<td>專案根目錄 <code>AGENTS.md</code></td>
+<td>在該目錄開始新會話，請它列出實際載入的指引與適用規則；再用一個可核對的小任務驗證</td>
+</tr>
+<tr>
+<td>Claude Code</td>
+<td>專案根目錄 <code>CLAUDE.md</code></td>
+<td>用 <code>/context</code> 檢查 Memory files，並測試輸出；共用規則時在 CLAUDE.md 寫入 <code>@AGENTS.md</code></td>
+</tr>
+</tbody>
+</table>
+<p>Codex 還有使用者層與子目錄的規則，<code>AGENTS.override.md</code> 可覆蓋同層預設檔案。Claude Code v2.1.277+ 可直接讀 AGENTS.md，但預設只有在工作目錄及其上層沒有 CLAUDE.md、.claude/CLAUDE.md 或 CLAUDE.local.md 時才採用；內建支援被停用、舊版或部分升級後首次會話也可能不可用。<code>/config</code> 的 Project instructions 可設定同時載入兩者。本課採 CLAUDE.md 匯入 AGENTS.md，兼顧既有版本與 Windows，不依賴 symlink。</p>
+<p>這些文字提供 context，不是系統權限，更不保證模型每次都遵守。<code>/permissions</code>、實際 sandbox、檔案權限與人工驗收分別負責授權、隔離與品質。不要在規則內放 API 金鑰或學生個資。</p>
+<p>來源：<a href="https://learn.chatgpt.com/docs/agent-configuration/agents-md">Codex AGENTS.md</a>、<a href="https://code.claude.com/docs/en/memory">Claude 專案記憶</a>、<a href="https://code.claude.com/docs/en/permissions">Claude 權限</a>。</p>
+<p>在 AGENTS.md 放入課程規則，再讓 CLAUDE.md 匯入：</p>
+<pre><code class="language-markdown"># 課堂專案規則
+- 使用繁體中文；先讀指定來源，輸出到 outputs/。
+- 不改 sources/；不刪除未確認的檔案。
+- 範例採虛構資料；不寫入 API 金鑰、學生姓名或學號。
+- 完成後列出修改檔案、驗證方法與仍需人工確認的項目。
+</code></pre>
+<p>Claude 的 CLAUDE.md：</p>
+<pre><code class="language-markdown">@AGENTS.md
+</code></pre>
+<p>新會話先確認指引載入，再用一個小任務測試。不因模型答出「我會遵守」就認定所有規則有效；輸出位置、來源與禁止修改檔案都要實際核對。完整跨科教師模板見 <a href="05_instructions.html">單元五</a>。</p>
+<h2 id="6">6. 學習總結</h2>
+<p>CLI 讓 Agent 在專案中讀資料、改內容與執行工具；人仍負責目標、權限與驗收。Codex 與 Claude 命令不同，但可靠的工作流程一致：明確輸入 → 最小任務 → 真實工具結果 → 檔案差異 → 人工抽查。</p>
+<h3 id="_1">建議練習</h3>
+<ol>
+<li>初階：完成 Level 1，提交預測與實際輸出的比較。</li>
+<li>中階：完成 Level 2，交付正常、單一輸入、空輸入的測試證據。</li>
+<li>進階：完成 Level 3 任一題，抽查來源；再完成 Level 4 的漏答與重做驗收。</li>
+<li>比較：用另一款 CLI 做相同任務，記錄權限、指引載入與結果差異；不只比較文字長度。</li>
+</ol>
+<p>完成後回到 <a href="index.html">課程索引</a>，把同一流程用於六個漸進單元的教學設計。</p></div>
+<!-- Highlight.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+<script>hljs.highlightAll();</script>
+<!-- Mermaid -->
+<script type="module">
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+        mermaid.initialize({
+            "startOnLoad": true,
+            "theme": "dark",
+            "securityLevel": "loose",
+            "themeVariables": {
+                        "fontFamily": "system-ui, -apple-system, \"Segoe UI\", Roboto, Helvetica, Arial, \"Noto Sans\", sans-serif",
+                        "fontSize": "18px",
+                        "lineColor": "#e2e8f0",
+                        "primaryColor": "#2d3748",
+                        "primaryBorderColor": "#60a5fa",
+                        "primaryTextColor": "#ffffff",
+                        "secondaryColor": "#1e3a5f",
+                        "secondaryBorderColor": "#38bdf8",
+                        "secondaryTextColor": "#ffffff",
+                        "tertiaryColor": "#374151",
+                        "tertiaryBorderColor": "#c084fc",
+                        "tertiaryTextColor": "#ffffff",
+                        "textColor": "#f1f5f9",
+                        "background": "#1e293b",
+                        "noteBkgColor": "#1e3a5f",
+                        "noteTextColor": "#ffffff",
+                        "noteBorderColor": "#60a5fa",
+                        "edgeLabelBackground": "#1e293b",
+                        "labelTextColor": "#f1f5f9",
+                        "actorBkg": "#2d3748",
+                        "actorBorder": "#60a5fa",
+                        "actorTextColor": "#ffffff",
+                        "actorLineColor": "#e2e8f0",
+                        "signalColor": "#e2e8f0",
+                        "signalTextColor": "#f1f5f9",
+                        "classText": "#ffffff"
+            }
+});
+    </script>
+<nav aria-label="課程導覽" class="course-nav"><a href="index.html">課程目錄</a><a href="00_intro.html">前導章</a><span>雙 CLI 教材 · 2026-10-31</span></nav></body>
+</html>

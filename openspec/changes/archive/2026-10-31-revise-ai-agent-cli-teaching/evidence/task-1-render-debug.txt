@@ -1,0 +1,7 @@
+2026-10-31 documentation rendering investigation
+Observed: code-block fidelity check failed for 2 of 72 blocks.
+Root cause: existing converter unescapes Mermaid HTML, turning label <br/> into DOM br elements. BeautifulSoup text extraction loses those markup tokens; parsing should receive the complete Mermaid source.
+Pattern: other 70 blocks have identical text; only Mermaid labels containing br differ.
+Minimal hypothesis test: serialize Mermaid source with HTML escaping in div.mermaid. DOM text then equals fenced source.
+Fix: only generated front-matter HTML Mermaid div contents escaped from source; root converter unchanged.
+Verification: rerun code fidelity check and all local resource checks in task-1-adapted-check-v2.txt.

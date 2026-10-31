@@ -1,0 +1,5 @@
+route 1: failed cd stops without success message; exit=1
+route 1: failed CLI surrogate stops without success message; exit=1
+route 2: failed cd stops without success message; exit=1
+route 2: failed CLI surrogate stops without success message; exit=1
+This tests shell control flow with false substituted for the CLI, not actual CLI execution.

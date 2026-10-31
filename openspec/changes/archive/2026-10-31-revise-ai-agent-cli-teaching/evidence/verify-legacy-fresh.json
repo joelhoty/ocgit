@@ -1,0 +1,202 @@
+{
+  "status": "PASS",
+  "browser_version": "156.0.8078.74",
+  "cases": 30,
+  "results": [
+    {
+      "legacy": "AI_Agent_Cli_b13.html",
+      "mode": "no JavaScript and meta refresh suppressed; clicked visible manual link",
+      "target": "../AI_Agent_CLi/07_agents_cli.html",
+      "final": "http://127.0.0.1:60387/AI_Agent_CLi/07_agents_cli.html",
+      "pass": true
+    },
+    {
+      "legacy": "Environment_Setup_Guide_b06.html",
+      "mode": "no JavaScript and meta refresh suppressed; clicked visible manual link",
+      "target": "../AI_Agent_CLi/08_environment.html",
+      "final": "http://127.0.0.1:60387/AI_Agent_CLi/08_environment.html",
+      "pass": true
+    },
+    {
+      "legacy": "Gemini_CLI_Tutorial_b02.html",
+      "mode": "no JavaScript and meta refresh suppressed; clicked visible manual link",
+      "target": "../AI_Agent_CLi/09_cli_practice.html",
+      "final": "http://127.0.0.1:60387/AI_Agent_CLi/09_cli_practice.html",
+      "pass": true
+    },
+    {
+      "legacy": "index_content.html",
+      "mode": "no JavaScript and meta refresh suppressed; clicked visible manual link",
+      "target": "../AI_Agent_CLi/index.html",
+      "final": "http://127.0.0.1:60387/AI_Agent_CLi/index.html",
+      "pass": true
+    },
+    {
+      "legacy": "literacy_b02.html",
+      "mode": "no JavaScript and meta refresh suppressed; clicked visible manual link",
+      "target": "../AI_Agent_CLi/10_literacy.html",
+      "final": "http://127.0.0.1:60387/AI_Agent_CLi/10_literacy.html",
+      "pass": true
+    },
+    {
+      "legacy": "literacy_chatgpt_revise_b06.html",
+      "mode": "no JavaScript and meta refresh suppressed; clicked visible manual link",
+      "target": "../AI_Agent_CLi/11_literacy_practice.html",
+      "final": "http://127.0.0.1:60387/AI_Agent_CLi/11_literacy_practice.html",
+      "pass": true
+    },
+    {
+      "legacy": "literacy_research.html",
+      "mode": "no JavaScript and meta refresh suppressed; clicked visible manual link",
+      "target": "../AI_Agent_CLi/12_literacy_research.html",
+      "final": "http://127.0.0.1:60387/AI_Agent_CLi/12_literacy_research.html",
+      "pass": true
+    },
+    {
+      "legacy": "unit01_first_ai_material_b02.html",
+      "mode": "no JavaScript and meta refresh suppressed; clicked visible manual link",
+      "target": "../AI_Agent_CLi/01_materials.html",
+      "final": "http://127.0.0.1:60387/AI_Agent_CLi/01_materials.html",
+      "pass": true
+    },
+    {
+      "legacy": "unit02_ai_image_generation_b02.html",
+      "mode": "no JavaScript and meta refresh suppressed; clicked visible manual link",
+      "target": "../AI_Agent_CLi/02_images.html",
+      "final": "http://127.0.0.1:60387/AI_Agent_CLi/02_images.html",
+      "pass": true
+    },
+    {
+      "legacy": "unit03_notebooklm_b02.html",
+      "mode": "no JavaScript and meta refresh suppressed; clicked visible manual link",
+      "target": "../AI_Agent_CLi/03_notebooklm.html",
+      "final": "http://127.0.0.1:60387/AI_Agent_CLi/03_notebooklm.html",
+      "pass": true
+    },
+    {
+      "legacy": "unit04_local_ai_setup_b02.html",
+      "mode": "no JavaScript and meta refresh suppressed; clicked visible manual link",
+      "target": "../AI_Agent_CLi/04_workspace.html",
+      "final": "http://127.0.0.1:60387/AI_Agent_CLi/04_workspace.html",
+      "pass": true
+    },
+    {
+      "legacy": "unit04_supplement_additions.html",
+      "mode": "no JavaScript and meta refresh suppressed; clicked visible manual link",
+      "target": "../AI_Agent_CLi/04a_workflows.html",
+      "final": "http://127.0.0.1:60387/AI_Agent_CLi/04a_workflows.html",
+      "pass": true
+    },
+    {
+      "legacy": "unit05_gemini_md_customization_b01.html",
+      "mode": "no JavaScript and meta refresh suppressed; clicked visible manual link",
+      "target": "../AI_Agent_CLi/05_instructions.html",
+      "final": "http://127.0.0.1:60387/AI_Agent_CLi/05_instructions.html",
+      "pass": true
+    },
+    {
+      "legacy": "unit06_practical_lesson_plan_b02.html",
+      "mode": "no JavaScript and meta refresh suppressed; clicked visible manual link",
+      "target": "../AI_Agent_CLi/06_lesson_plans.html",
+      "final": "http://127.0.0.1:60387/AI_Agent_CLi/06_lesson_plans.html",
+      "pass": true
+    },
+    {
+      "legacy": "unit06_supplement_additions.html",
+      "mode": "no JavaScript and meta refresh suppressed; clicked visible manual link",
+      "target": "../AI_Agent_CLi/06a_assessment.html",
+      "final": "http://127.0.0.1:60387/AI_Agent_CLi/06a_assessment.html",
+      "pass": true
+    },
+    {
+      "legacy": "AI_Agent_Cli_b13.html",
+      "mode": "JavaScript redirect with obsolete fragment",
+      "final": "http://127.0.0.1:60387/AI_Agent_CLi/07_agents_cli.html#legacy-bookmark",
+      "pass": true
+    },
+    {
+      "legacy": "Environment_Setup_Guide_b06.html",
+      "mode": "JavaScript redirect with obsolete fragment",
+      "final": "http://127.0.0.1:60387/AI_Agent_CLi/08_environment.html#legacy-bookmark",
+      "pass": true
+    },
+    {
+      "legacy": "Gemini_CLI_Tutorial_b02.html",
+      "mode": "JavaScript redirect with obsolete fragment",
+      "final": "http://127.0.0.1:60387/AI_Agent_CLi/09_cli_practice.html#legacy-bookmark",
+      "pass": true
+    },
+    {
+      "legacy": "index_content.html",
+      "mode": "JavaScript redirect with obsolete fragment",
+      "final": "http://127.0.0.1:60387/AI_Agent_CLi/index.html#legacy-bookmark",
+      "pass": true
+    },
+    {
+      "legacy": "literacy_b02.html",
+      "mode": "JavaScript redirect with obsolete fragment",
+      "final": "http://127.0.0.1:60387/AI_Agent_CLi/10_literacy.html#legacy-bookmark",
+      "pass": true
+    },
+    {
+      "legacy": "literacy_chatgpt_revise_b06.html",
+      "mode": "JavaScript redirect with obsolete fragment",
+      "final": "http://127.0.0.1:60387/AI_Agent_CLi/11_literacy_practice.html#legacy-bookmark",
+      "pass": true
+    },
+    {
+      "legacy": "literacy_research.html",
+      "mode": "JavaScript redirect with obsolete fragment",
+      "final": "http://127.0.0.1:60387/AI_Agent_CLi/12_literacy_research.html#legacy-bookmark",
+      "pass": true
+    },
+    {
+      "legacy": "unit01_first_ai_material_b02.html",
+      "mode": "JavaScript redirect with obsolete fragment",
+      "final": "http://127.0.0.1:60387/AI_Agent_CLi/01_materials.html#legacy-bookmark",
+      "pass": true
+    },
+    {
+      "legacy": "unit02_ai_image_generation_b02.html",
+      "mode": "JavaScript redirect with obsolete fragment",
+      "final": "http://127.0.0.1:60387/AI_Agent_CLi/02_images.html#legacy-bookmark",
+      "pass": true
+    },
+    {
+      "legacy": "unit03_notebooklm_b02.html",
+      "mode": "JavaScript redirect with obsolete fragment",
+      "final": "http://127.0.0.1:60387/AI_Agent_CLi/03_notebooklm.html#legacy-bookmark",
+      "pass": true
+    },
+    {
+      "legacy": "unit04_local_ai_setup_b02.html",
+      "mode": "JavaScript redirect with obsolete fragment",
+      "final": "http://127.0.0.1:60387/AI_Agent_CLi/04_workspace.html#legacy-bookmark",
+      "pass": true
+    },
+    {
+      "legacy": "unit04_supplement_additions.html",
+      "mode": "JavaScript redirect with obsolete fragment",
+      "final": "http://127.0.0.1:60387/AI_Agent_CLi/04a_workflows.html#legacy-bookmark",
+      "pass": true
+    },
+    {
+      "legacy": "unit05_gemini_md_customization_b01.html",
+      "mode": "JavaScript redirect with obsolete fragment",
+      "final": "http://127.0.0.1:60387/AI_Agent_CLi/05_instructions.html#legacy-bookmark",
+      "pass": true
+    },
+    {
+      "legacy": "unit06_practical_lesson_plan_b02.html",
+      "mode": "JavaScript redirect with obsolete fragment",
+      "final": "http://127.0.0.1:60387/AI_Agent_CLi/06_lesson_plans.html#legacy-bookmark",
+      "pass": true
+    },
+    {
+      "legacy": "unit06_supplement_additions.html",
+      "mode": "JavaScript redirect with obsolete fragment",
+      "final": "http://127.0.0.1:60387/AI_Agent_CLi/06a_assessment.html#legacy-bookmark",
+      "pass": true
+    }
+  ]
+}

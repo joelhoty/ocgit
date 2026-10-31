@@ -1,0 +1,10 @@
+{
+  "status": "PASS",
+  "counts": {
+    "html": 16,
+    "local_links": 262,
+    "redirects": 15,
+    "markdown_pairs": 10
+  },
+  "errors": []
+}

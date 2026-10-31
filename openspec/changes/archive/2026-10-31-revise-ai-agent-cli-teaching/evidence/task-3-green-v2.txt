@@ -1,0 +1,10 @@
+unit01_first_ai_material_b02: PASS h1=1, h2=10 (original 9), code=30, mermaid=2
+unit02_ai_image_generation_b02: PASS h1=1, h2=9 (original 9), code=27, mermaid=1
+unit03_notebooklm_b02: PASS h1=1, h2=10 (original 9), code=42, mermaid=3
+unit04_local_ai_setup_b02: PASS h1=1, h2=10 (original 10), code=45, mermaid=2
+unit04_supplement_additions: PASS h1=1, h2=5 (original 5), code=41, mermaid=4
+unit06_practical_lesson_plan_b02: PASS h1=1, h2=12 (original 11), code=37, mermaid=3
+unit06_supplement_additions: PASS h1=1, h2=5 (original 4), code=45, mermaid=1
+literacy_research: PASS h1=1, h2=6 (original 6), code=0, mermaid=0
+Bash syntax: PASS all language-bash blocks (not executed; no CLI calls)
+Evidence limits: no paid CLI sessions or platform installs; parent owns final visual and all-course navigation checks.

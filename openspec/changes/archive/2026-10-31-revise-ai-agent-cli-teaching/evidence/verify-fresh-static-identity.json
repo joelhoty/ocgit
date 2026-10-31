@@ -1,0 +1,66 @@
+{
+  "status": "PASS",
+  "captured_at": "2026-10-31T13:42:24.568503+00:00",
+  "schema": "sos-evidence/v1",
+  "checks": 11,
+  "tasks": 5,
+  "requirements": [
+    [
+      "REQ-TEACH-001",
+      "新版入口與前導章"
+    ],
+    [
+      "REQ-TEACH-002",
+      "保留課程結構與設計"
+    ],
+    [
+      "REQ-TEACH-003",
+      "官方安裝與操作依據"
+    ],
+    [
+      "REQ-TEACH-004",
+      "專案指引與權限"
+    ],
+    [
+      "REQ-TEACH-005",
+      "漸進實作與能力邊界"
+    ],
+    [
+      "REQ-TEACH-006",
+      "新版導航完整性"
+    ],
+    [
+      "REQ-TEACH-007",
+      "舊入口相容與網站清單"
+    ],
+    [
+      "REQ-TEACH-008",
+      "可追溯驗證"
+    ]
+  ],
+  "scenarios": [
+    "新版入口與前導章驗收",
+    "保留課程結構與設計驗收",
+    "官方安裝與操作依據驗收",
+    "專案指引與權限驗收",
+    "漸進實作與能力邊界驗收",
+    "新版導航完整性驗收",
+    "舊入口相容與網站清單驗收",
+    "可追溯驗證驗收"
+  ],
+  "subject_hash": "sha256:cc6a4fb0b636e8ce78c3e2cefa34b0e05d4708b529abcf3515ddeb70b88ef39f",
+  "commands": [
+    {
+      "command": "python3 openspec/changes/revise-ai-agent-cli-teaching/validation/check_course.py",
+      "exit_code": 0,
+      "stdout": "{\n  \"status\": \"PASS\",\n  \"counts\": {\n    \"html\": 16,\n    \"local_links\": 262,\n    \"redirects\": 15,\n    \"markdown_pairs\": 10\n  },\n  \"errors\": []\n}\n"
+    },
+    {
+      "command": "python3 openspec/changes/revise-ai-agent-cli-teaching/validation/evidence_identity.py",
+      "exit_code": 0,
+      "stdout": "PASS: subject, anchored policy, requirement bindings and immutable payload digests match all 11 checks\n"
+    }
+  ],
+  "policy_inventory": "repo copy identical to loaded skill; no repository AGENTS or other verification policy found",
+  "manual_gaps": []
+}

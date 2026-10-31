@@ -1,0 +1,30 @@
+{
+  "task_id": "task-5",
+  "subject_hash": "sha256:0a4a2f3812875178012f34b94f1dbdee6baf667fcc26741578d3cb5e7363c755",
+  "static": {
+    "status": "PASS",
+    "counts": {
+      "html": 16,
+      "local_links": 262,
+      "redirects": 15,
+      "markdown_pairs": 10
+    },
+    "errors": []
+  },
+  "review_payloads": [
+    {
+      "path": "openspec/changes/revise-ai-agent-cli-teaching/evidence/final-content-review.md",
+      "sha256": "452977741496d8635946f098451228a278d9a0bb5b0ad63444afce17e66428ee"
+    }
+  ],
+  "browser_payload": "openspec/changes/revise-ai-agent-cli-teaching/evidence/browser-results-1.json",
+  "browser_sha256": "a6444ea502b68e420168648c1319a83e3863b5a6902c968f03df1f0d19b5e643",
+  "browser_cases": 47,
+  "browser_result": "PASS",
+  "captured_at": "2026-10-31T13:41:23.005042+00:00",
+  "limits": [
+    "No paid CLI execution or account login",
+    "No cross-platform installer execution",
+    "External CDN resources require network"
+  ]
+}
