@@ -1,7 +1,7 @@
 <!-- Path: AI_Agent_CLi | Updated: 2026-10-31 | Edition: Codex CLI / Claude Code -->
 # 單元二補充教材：讓教材更生動 - AI 圖片詠唱師
 
-> **本版查核：2026-10-31。**先閱讀[前導章：Agent 基本概念與工作環境](00_intro.html)，安裝並登入 Codex CLI 或 Claude Code 任選一款即可。本課使用虛構／去識別化資料，所有結果都要以來源與實際檔案驗收。
+> **閱讀前提：**先完成[前導章：Agent 基本概念與工作環境](00_intro.html)，使用 Codex CLI 或 Claude Code 其中一款。本章以備課作為範例情境；不是教師也能把主題換成自己的工作或學習內容。範例請使用虛構或去識別化資料，結果都要回到來源與實際檔案確認。（查核日期：2026-10-31）
 
 
 ## 單元目標
@@ -97,6 +97,8 @@ graph TD
 
 ## 跨學科圖片 Prompt 範例庫
 
+> **文字標示提醒**：下列提示若要求圖中出現標籤或文字（例如 labeled arrows、Clearly labeled），請依步驟一先產生無文字底圖，再自行加上標籤。
+
 ### 📐 數學科
 
 #### 範例 1：幾何圖形教學
@@ -124,7 +126,7 @@ Clean, simple style suitable for elementary school students.
 #### 範例 3：生活情境應用
 ```
 A warm, friendly illustration of a fruit market stall.
-Display shows apples (¥50 per kg), oranges (¥40 per kg), and bananas (¥30 per kg).
+Display shows apples (NT$50 per kg), oranges (NT$40 per kg), and bananas (NT$30 per kg).
 Cartoon style, bright colors, suitable for math word problems.
 
 (一個溫馨友善的水果攤插圖。展示蘋果(每公斤 50 元)、柳橙(每公斤 40 元)、香蕉(每公斤 30 元)。卡通風格,明亮色彩,適合數學應用題。)
@@ -217,7 +219,7 @@ Metaphorical, thought-provoking, suitable for teaching Chinese idioms.
 
 #### 範例 3：寫作情境啟發
 ```
-A inspiring illustration of "My Dream".
+An inspiring illustration of "My Dream".
 Show a child looking at a starry night sky with thought bubbles containing various dreams:
 scientist, teacher, artist, astronaut. Dreamy, hopeful mood, soft colors.
 
@@ -326,16 +328,14 @@ Use icons and simple labels for each period. Horizontal layout, clear and organi
 
 ### 技巧 3：中英文提示詞對比
 
-**重要提醒**：目前多數 AI 圖片生成模型對英文提示詞的理解更精準。建議：
-- 使用英文撰寫提示詞(可搭配翻譯工具)
-- 或使用「中文描述 + 英文關鍵字」混合模式
+**重要提醒**：中文或英文都可以寫提示詞，結果差異常來自細節多寡，不一定來自語言。想比較時，請用兩種語言寫入相同細節，保留效果較好的版本。圖片中的中文文字仍可能出錯，需要中文標示時請後製加入。
 
 **範例對比**：
 
-| 中文提示詞 | 英文提示詞 | 效果差異 |
+| 中文提示詞 | 英文提示詞 | 比較時留意 |
 |-----------|-----------|---------|
-| 一隻可愛的貓 | A cute cat, fluffy, orange fur, cartoon style | 英文版更精準 |
-| 數學圖表 | Mathematical diagram, clean, minimalist, white background | 英文版風格更明確 |
+| 一隻可愛的橘貓，毛茸茸，卡通風格 | A cute cat, fluffy, orange fur, cartoon style | 主體、毛色與風格是否符合描述 |
+| 數學圖表，簡潔，極簡風格，白色背景 | Mathematical diagram, clean, minimalist, white background | 版面與背景是否符合描述 |
 
 ---
 
@@ -353,7 +353,7 @@ Use icons and simple labels for each period. Horizontal layout, clear and organi
 
 1. **文字內容**：AI 圖片中的文字可能錯誤或亂碼,建議後製加入文字
 2. **精確度**：複雜的圖表或精確的科學圖示,可能需要專業軟體
-3. **人物相似度**：無法生成特定真實人物(如歷史名人的真實樣貌)
+3. **人物相似度**：不應生成可辨識的特定真人(如歷史名人的真實樣貌)
 4. **文化敏感度**：注意文化適當性,避免刻板印象
 5. **學生隱私**：不要生成可辨識特定學生的圖片
 
@@ -442,7 +442,7 @@ A3：AI 可生成「一般性的人物」,但不應生成可辨識的特定真�
 A4：需查看各 AI 工具的授權條款。教學用途通常可以,但商業用途需確認。
 
 **Q5：圖片解析度不夠清晰？**
-A5：部分 AI 工具支援高解析度選項。或使用 AI 放大工具(如 waifu2x)提升解析度。
+A5：部分 AI 工具支援高解析度選項。或使用可信的放大工具提升解析度。
 
 **Q6：如何讓多張圖片風格一致？**
 A6：在每個提示詞中使用相同的風格關鍵字(例如都加上 "cartoon style, pastel colors")。

@@ -171,44 +171,7 @@ html{scroll-behavior:smooth}body{box-sizing:border-box}img{max-width:100%;height
 <h3 id="21">2.1. 前置需求：選擇工具與安裝路線</h3>
 <p>終端機、網路與可用帳號是起點。原生安裝不需預先安裝 Node.js；只有選 npm 或執行 JavaScript 專案時才需要 Node。Windows PowerShell 與 macOS shell 命令分開使用，安裝完後記下版本與安裝方式。不要使用另一款產品的 API key 登入。</p>
 <h3 id="22-codex-cli-claude-code">2.2. 安裝 Codex CLI 或 Claude Code</h3>
-<table>
-<thead>
-<tr>
-<th>系統／安裝方式</th>
-<th>Codex CLI</th>
-<th>Claude Code</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Windows PowerShell（新視窗）</td>
-<td><code>powershell -ExecutionPolicy Bypass -c "irm https://chatgpt.com/codex/install.ps1 | iex"</code></td>
-<td><code>irm https://claude.ai/install.ps1 | iex</code></td>
-</tr>
-<tr>
-<td>macOS／Linux／WSL 終端機</td>
-<td><code>curl -fsSL https://chatgpt.com/codex/install.sh | sh</code></td>
-<td><code>curl -fsSL https://claude.ai/install.sh | bash</code></td>
-</tr>
-<tr>
-<td>macOS Homebrew（替代）</td>
-<td><code>brew install --cask codex</code></td>
-<td><code>brew install --cask claude-code</code></td>
-</tr>
-<tr>
-<td>Windows WinGet（Claude 替代）</td>
-<td>本課不列未查核的 CLI 套件名稱</td>
-<td><code>winget install Anthropic.ClaudeCode</code></td>
-</tr>
-</tbody>
-</table>
-<p>表格的 <code>|</code> 是管線字元。每款工具只選一種安裝方法，避免多份執行檔搶用 PATH。下載腳本會在本機執行；學校電腦請使用管理員核准的安裝路線。這些指令在 shell 執行，不貼到 AI 對話中。</p>
-<p>安裝後重新開終端機，選所用工具檢查：</p>
-<pre><code class="language-powershell">codex --version
-# 或選 Claude Code：
-claude --version
-</code></pre>
-<p>查核：2026-10-31。<a href="https://learn.chatgpt.com/docs/codex/cli">Codex 安裝</a>、<a href="https://learn.chatgpt.com/docs/enterprise/windows-deployment">Windows CLI 部署</a>、<a href="https://code.claude.com/docs/en/setup">Claude Code 安裝</a>。</p>
+<p>安裝指令只維護在一處：請到<a href="00_intro.html#cli-installation">前導章的安裝章節</a>選一款工具，完成後再回到這裡。</p>
 <h3 id="23">2.3. 啟動與登入</h3>
 <p>建立 <code>cli-practice</code> 資料夾，用 VS Code 開啟。整合終端機進入該目錄後執行 <code>git init</code>，再啟動 <code>codex</code> 或 <code>claude</code>，依瀏覽器流程登入。用 <code>codex login status</code> 或 <code>claude auth status --text</code> 確認狀態；帳號方案與 API 額度分開計算，依官方帳號畫面為準。</p>
 <p><strong>第一個任務：</strong>請 AI「只列出這個資料夾有哪些檔案，不修改」。確認工作目錄與結果相同後，再進行後續寫檔練習。遇到權限要求，先看它要執行的操作與路徑，依任務需要核准。<a href="https://learn.chatgpt.com/docs/auth">Codex 認證</a>、<a href="https://code.claude.com/docs/en/quickstart">Claude 入門</a>。</p>
@@ -219,60 +182,9 @@ claude --version
 <p>核對回答後再說：</p>
 <pre><code class="language-text">把剛才的摘要改成適合初學者的版本，保留來源，並列出兩個自我檢核問題。
 </code></pre>
-<table>
-<thead>
-<tr>
-<th>會話操作</th>
-<th>Codex CLI</th>
-<th>Claude Code</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>選模型</td>
-<td><code>/model</code></td>
-<td><code>/model</code></td>
-</tr>
-<tr>
-<td>查狀態與用量</td>
-<td><code>/status</code></td>
-<td><code>/status</code>、<code>/usage</code></td>
-</tr>
-<tr>
-<td>查 context</td>
-<td><code>/status</code> 與狀態列</td>
-<td><code>/context</code></td>
-</tr>
-<tr>
-<td>壓縮長對話</td>
-<td><code>/compact</code></td>
-<td><code>/compact</code></td>
-</tr>
-<tr>
-<td>接續會話</td>
-<td><code>/resume</code></td>
-<td><code>/resume</code></td>
-</tr>
-<tr>
-<td>開新任務</td>
-<td><code>/new</code></td>
-<td><code>/clear</code></td>
-</tr>
-<tr>
-<td>工具權限</td>
-<td><code>/permissions</code></td>
-<td><code>/permissions</code></td>
-</tr>
-<tr>
-<td>操作說明</td>
-<td><code>/</code> 選單</td>
-<td><code>/help</code>、<code>/</code> 選單</td>
-</tr>
-</tbody>
-</table>
-<p>以上均在 <strong>CLI 內</strong>輸入。Codex 不套用 Claude 的 <code>/usage</code>；用量、context 容量與帳單不同。完整操作情境見<a href="00_intro.html#510">前導章：常用會話內指令</a>。模型與指令以目前版本、帳號及組織允許的選單為準。</p>
+<p>會話內指令（選模型、查用量、壓縮 context、接續會話等）的對照表只維護在<a href="00_intro.html#slash-commands">前導章：常用會話內指令速查</a>；實際可用指令以目前版本、帳號及組織允許的選單為準。</p>
 <p>專案指引是獨立檔案：Codex 使用 <code>AGENTS.md</code>，Claude 使用 <code>CLAUDE.md</code>；相容條件見<a href="05_instructions.html">單元五</a>。文字要求不等同系統權限，開始前應檢查 <code>/permissions</code>。</p>
-<p>來源：<a href="https://learn.chatgpt.com/docs/developer-commands?surface=cli">Codex CLI 指令</a>、<a href="https://code.claude.com/docs/en/commands">Claude Code 指令</a>（2026-10-31 查核）。</p><p><strong>更新與故障排除：</strong>原生 Codex 重跑安裝命令；支援 self-update 的 release 可用 <code>codex update</code>。原生 Claude 會自動更新，手動可用 <code>claude update</code>；若以 Homebrew 或 WinGet 安裝，改用該管理器的 upgrade。找不到指令先重開終端機並檢查 PATH，版本可顯示但不能使用則先查登入與帳號，不要反覆重裝。詳見 <a href="08_environment.html">環境指南</a>。</p>
+<p><strong>更新與故障排除：</strong>原生 Codex 重跑安裝命令；支援 self-update 的 release 可用 <code>codex update</code>。原生 Claude 會自動更新，手動可用 <code>claude update</code>；若以 Homebrew 或 WinGet 安裝，改用該管理器的 upgrade。找不到指令先重開終端機並檢查 PATH，版本可顯示但不能使用則先查登入與帳號，不要反覆重裝。詳見<a href="00_intro.html#appendix-installation">前導章附錄 A</a>。</p>
 <p><strong>提示的四段式寫法：</strong>「讀什麼 → 要做什麼 → 不可做什麼 → 如何驗收」。在 AI 會話內貼自然語言提示；在 shell 中執行 <code>codex</code>／<code>claude</code>。不要將說明句當 shell 命令，也不要虛構 <code>@shell</code>、<code>@google</code> 或 <code>@web</code> 為通用 CLI 語法。</p>
 <h2 id="4-hands-on-examples">4. 實戰應用範例（Hands-on Examples）</h2>
 <h3 id="level-1code-explanation">🔰 Level 1：程式碼解釋與學習（Code Explanation）</h3>
@@ -326,34 +238,11 @@ print(average)
 </code></pre>
 <p><strong>產物：</strong>三個檔案及測試紀錄。<strong>驗收：</strong>瀏覽器可開啟、計分正確、重做狀態重置、手機文字沒有被裁切。CLI 能產生檔案不代表已驗證頁面；若工具沒有瀏覽器能力，由你實際開啟核對，紀錄測試者與結果。</p>
 <h2 id="5">5. 進階技巧：專案專屬設定</h2>
-<table>
-<thead>
-<tr>
-<th>工具</th>
-<th>本課指引檔</th>
-<th>載入確認</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Codex CLI</td>
-<td>專案根目錄 <code>AGENTS.md</code></td>
-<td>在該目錄開始新會話，請它列出實際載入的指引與適用規則；再用一個可核對的小任務驗證</td>
-</tr>
-<tr>
-<td>Claude Code</td>
-<td>專案根目錄 <code>CLAUDE.md</code></td>
-<td>用 <code>/context</code> 檢查 Memory files，並測試輸出；共用規則時在 CLAUDE.md 寫入 <code>@AGENTS.md</code></td>
-</tr>
-</tbody>
-</table>
-<p>Codex 還有使用者層與子目錄的規則，<code>AGENTS.override.md</code> 可覆蓋同層預設檔案。Claude Code v2.1.277+ 可直接讀 AGENTS.md，但預設只有在工作目錄及其上層沒有 CLAUDE.md、.claude/CLAUDE.md 或 CLAUDE.local.md 時才採用；內建支援被停用、舊版或部分升級後首次會話也可能不可用。<code>/config</code> 的 Project instructions 可設定同時載入兩者。本課採 CLAUDE.md 匯入 AGENTS.md，兼顧既有版本與 Windows，不依賴 symlink。</p>
-<p>這些文字提供 context，不是系統權限，更不保證模型每次都遵守。<code>/permissions</code>、實際 sandbox、檔案權限與人工驗收分別負責授權、隔離與品質。不要在規則內放 API 金鑰或學生個資。</p>
-<p>來源：<a href="https://learn.chatgpt.com/docs/agent-configuration/agents-md">Codex AGENTS.md</a>、<a href="https://code.claude.com/docs/en/memory">Claude 專案記憶</a>、<a href="https://code.claude.com/docs/en/permissions">Claude 權限</a>。</p>
+<p>指引檔的載入方式、相容條件與驗證方法集中在<a href="05_instructions.html">單元五</a>，這裡只保留課堂規則範例。</p>
 <p>在 AGENTS.md 放入課程規則，再讓 CLAUDE.md 匯入：</p>
 <pre><code class="language-markdown"># 課堂專案規則
 - 使用繁體中文；先讀指定來源，輸出到 outputs/。
-- 不改 sources/；不刪除未確認的檔案。
+- 不改 inputs/；不刪除未確認的檔案。
 - 範例採虛構資料；不寫入 API 金鑰、學生姓名或學號。
 - 完成後列出修改檔案、驗證方法與仍需人工確認的項目。
 </code></pre>

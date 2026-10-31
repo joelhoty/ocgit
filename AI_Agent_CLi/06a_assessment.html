@@ -78,10 +78,10 @@
 html{scroll-behavior:smooth}body{box-sizing:border-box}img{max-width:100%;height:auto}pre{max-width:100%;overflow-x:auto}table{display:block;max-width:100%;overflow-x:auto}td,th{min-width:7em}.course-nav{display:flex;flex-wrap:wrap;gap:.65em;align-items:center;padding:1em 0;margin:1em 0;border-bottom:1px solid #3e3e3e;font-size:.95rem}.course-nav a{color:#66b3ff}.course-nav span{color:#aaa}.course-toc{margin:1.5em 0;padding:1em;background:#222831;border-radius:8px}.course-toc a{overflow-wrap:anywhere}h1,h2,h3,p,li{overflow-wrap:break-word}.mermaid svg{max-width:100%;height:auto}@media(max-width:600px){body{padding:14px!important}h1{font-size:1.65em}pre code{padding:1em}.course-nav{line-height:1.8}}
 </style></head>
 <body><nav aria-label="課程導覽" class="course-nav"><a href="index.html">課程目錄</a><a href="06_lesson_plans.html">← 上一章</a><a href="06a_assessment.md">Markdown 原文</a><span>雙 CLI 教材 · 2026-10-31</span></nav>
-<div class="container"><!-- Path: AI_Agent_CLi | Updated: 2026-10-31 | Edition: Codex CLI / Claude Code -->
+<div class="container"><span class="legacy-anchor" id="a-pandoc_1"></span><span class="legacy-anchor" id="cvscode"></span><!-- Path: AI_Agent_CLi | Updated: 2026-10-31 | Edition: Codex CLI / Claude Code -->
 <h1 id="_1">單元六補充內容：進階應用</h1><details class="course-toc"><summary>本頁章節</summary><ul><li><a href="#markdown-ai">Markdown 轉換應用：從 AI 輸出到實用文件</a></li><li><a href="#ai_1">成績處理應用：AI 輔助評分與分析</a></li><li><a href="#_22">綜合實戰：學期末成績處理完整流程</a></li><li><a href="#ai_3">未來展望：AI 在教育評量的可能性</a></li><li><a href="#_30">本補充單元驗收與平台差異</a></li></ul></details>
 <blockquote>
-<p><strong>本版查核：2026-10-31。</strong>先閱讀<a href="00_intro.html">前導章：Agent 基本概念與工作環境</a>，安裝並登入 Codex CLI 或 Claude Code 任選一款即可。本課使用虛構／去識別化資料，所有結果都要以來源與實際檔案驗收。</p>
+<p><strong>閱讀前提：</strong>先完成<a href="00_intro.html">前導章：Agent 基本概念與工作環境</a>，使用 Codex CLI 或 Claude Code 其中一款。本章以備課作為範例情境；不是教師也能把主題換成自己的工作或學習內容。範例請使用虛構或去識別化資料，結果都要回到來源與實際檔案確認。（查核日期：2026-10-31）</p>
 </blockquote>
 <p><strong>銜接</strong>：搭配<a href="06_lesson_plans.html">單元六</a>閱讀，練習文件轉換與虛構成績資料分析。</p>
 <hr/>
@@ -106,13 +106,13 @@ html{scroll-behavior:smooth}body{box-sizing:border-box}img{max-width:100%;height
 3. <strong>靈活轉換</strong>：可轉成 PDF、Word、PowerPoint、HTML</p>
 <hr/>
 <h3 id="markdown-word">轉換方式一：Markdown → Word</h3>
-<h4 id="a-pandoc">方法 A：使用 Pandoc（推薦）</h4>
+<h4 id="a-pandoc-word">方法 A：使用 Pandoc（產出 Word 時使用）</h4>
 <p><strong>安裝 Pandoc</strong>：依作業系統選一種安裝方式，完成後執行 <code>pandoc --version</code>。以下安裝命令依 <a href="https://pandoc.org/installing.html">Pandoc 官方文件</a> 查核（2026-10-31）。</p>
-<pre><code class="language-bash"># Mac
-brew install pandoc
-
-# Windows PowerShell（WinGet）
-winget install --source winget --exact --id JohnMacFarlane.Pandoc
+<p>macOS（Homebrew）：</p>
+<pre><code class="language-bash">brew install pandoc
+</code></pre>
+<p>Windows PowerShell（WinGet）：</p>
+<pre><code class="language-powershell">winget install --source winget --exact --id JohnMacFarlane.Pandoc
 </code></pre>
 <p><strong>基本轉換</strong>：</p>
 <pre><code class="language-bash">pandoc lesson_plan.md -o lesson_plan.docx
@@ -149,7 +149,7 @@ pandoc new_lesson.md --reference-doc=template.docx -o new_lesson.docx
 4. 點選「Export to Word」<br/>
 5. 下載檔案</p>
 <hr/>
-<h4 id="cvscode">方法 C：VSCode 擴充套件（推薦教師使用）</h4>
+<h4 id="cvscode-pdf-markdown-pdf">方法 C：VSCode 擴充套件（快速產出 PDF 時使用 Markdown PDF）</h4>
 <p>VSCode 提供多種擴充套件，從簡單到進階，滿足不同需求：</p>
 <hr/>
 <h5 id="markdown-pdf">📌 簡單方案：Markdown PDF（最快上手）</h5>
@@ -218,7 +218,7 @@ pandoc new_lesson.md --reference-doc=template.docx -o new_lesson.docx
 flowchart LR
     A[開始] --&gt; B[步驟一]
     B --&gt; C[結束]
-```​
+```
 </code></pre>
 <p>→ 預覽與輸出時自動轉成圖片！</p>
 <p><strong>2. 支援數學公式</strong></p>
@@ -251,7 +251,7 @@ $$
 <p><strong>前置需求</strong>：<br/>
 1. 已安裝 Pandoc（參考前面的安裝說明）<br/>
 2. 熟悉 VS Code Tasks；已建立 <code>template.docx</code> 與 <code>style.css</code><br/>
-3. PDF 任務另需安裝 XeLaTeX，<code>CJKmainfont</code> 改為本機實際存在的中文字型</p>
+3. PDF 任務另需安裝 XeLaTeX 與 xeCJK 套件，<code>CJKmainfont</code> 改為本機實際存在的中文字型（Windows 可用 <code>Microsoft JhengHei</code>，macOS 可用 <code>PingFang TC</code>）</p>
 <p><strong>設定步驟</strong>：</p>
 <p><strong>1. 建立 Tasks 設定檔</strong></p>
 <p>先在 CLI 對話請 Agent 依目前環境建立設定：</p>
@@ -290,7 +290,7 @@ Markdown to HTML 三個任務。請先解釋輸入輸出路徑與參數，不覆
         "${fileDirname}/${fileBasenameNoExtension}.pdf",
         "--pdf-engine=xelatex",
         "-V",
-        "CJKmainfont=Microsoft YaHei"
+        "CJKmainfont=Noto Sans CJK TC"
       ],
       "group": "build"
     },
@@ -406,8 +406,9 @@ Markdown to HTML 三個任務。請先解釋輸入輸出路徑與參數，不覆
 <h5 id="_4">🔧 常見問題排解</h5>
 <p><strong>Q1：PDF 中文顯示亂碼？</strong><br/>
 A：使用 Pandoc 時加入中文字型參數：</p>
-<pre><code class="language-bash">pandoc file.md -o file.pdf --pdf-engine=xelatex -V CJKmainfont="Microsoft YaHei"
+<pre><code class="language-bash">pandoc file.md -o file.pdf --pdf-engine=xelatex -V CJKmainfont="Noto Sans CJK TC"
 </code></pre>
+<p>字型請改成本機有的中文字型：Windows 可用 <code>Microsoft JhengHei</code>，macOS 可用 <code>PingFang TC</code>。</p>
 <p><strong>Q2：Mermaid 圖表無法轉換？</strong><br/>
 A：<br/>
 - 方法 1：使用 Markdown Preview Enhanced（原生支援）<br/>
@@ -427,9 +428,6 @@ A：在同一 CLI 會話請 Agent 建立批次轉換流程：</p>
 <p><strong>官方文件</strong>：<br/>
 - Markdown Preview Enhanced: https://shd101wyy.github.io/markdown-preview-enhanced/<br/>
 - Pandoc User Guide: https://pandoc.org/MANUAL.html</p>
-<p><strong>中文教學</strong>：<br/>
-- VSCode Markdown 完整指南（推薦）<br/>
-- Pandoc 中文排版設定</p>
 <hr/>
 <h3 id="markdown-google-docs">轉換方式二：Markdown → Google Docs</h3>
 <h4 id="a-google-docs">方法 A：透過 Google Docs 匯入</h4>
@@ -471,13 +469,11 @@ A：在同一 CLI 會話請 Agent 建立批次轉換流程：</p>
 </code></pre>
 <hr/>
 <h3 id="markdown-pdf_1">轉換方式三：Markdown → PDF</h3>
-<h4 id="a-pandoc_1">方法 A：使用 Pandoc</h4>
-<pre><code class="language-bash"># 基本轉換
-pandoc lesson_plan.md -o lesson_plan.pdf
-
-# 套用 LaTeX 模板（更專業）
-pandoc lesson_plan.md -o lesson_plan.pdf --pdf-engine=xelatex -V CJKmainfont="Microsoft YaHei"
+<h4 id="a-pandoc">方法 A：使用 Pandoc</h4>
+<p>中文 PDF 需要指定 PDF 引擎與中文字型，另需安裝 XeLaTeX 與 xeCJK 套件（精簡版 TeX 可能未內含）：</p>
+<pre><code class="language-bash">pandoc lesson_plan.md -o lesson_plan.pdf --pdf-engine=xelatex -V CJKmainfont="Noto Sans CJK TC"
 </code></pre>
+<p>字型請改成本機有的中文字型：Windows 可用 <code>Microsoft JhengHei</code>，macOS 可用 <code>PingFang TC</code>。</p>
 <h4 id="bvscode-markdown-preview-enhanced">方法 B：VSCode + Markdown Preview Enhanced</h4>
 <p>在預覽視窗：右鍵 → Export → PDF</p>
 <h4 id="c">方法 C：線上工具</h4>
@@ -829,35 +825,35 @@ pandoc lesson_plan.md -o lesson_plan.pdf --pdf-engine=xelatex -V CJKmainfont="Mi
 │   └── attendance.csv
 ├── rubrics/
 │   └── grading_policy.txt
-└── output/
+└── outputs/
 </code></pre>
 <h3 id="_24">步驟二：整合資料</h3>
-<p>先在 VS Code 建立 <code>output</code> 資料夾；從含 <code>raw_data</code>、<code>rubrics</code>、<code>output</code> 的專案根目錄啟動 CLI，以下各步在同一會話輸入。每一步都檢查輸出，成功後才進入下一步。</p>
+<p>先在 VS Code 建立 <code>outputs</code> 資料夾；從含 <code>raw_data</code>、<code>rubrics</code>、<code>outputs</code> 的專案根目錄啟動 CLI，以下各步在同一會話輸入。每一步都檢查輸出，成功後才進入下一步。</p>
 <p><strong>對話提示（在同一個 CLI 會話中輸入）</strong></p>
 <pre><code class="language-text">整合 raw_data 資料夾中的所有 CSV，合併成一份完整成績表，包含所有評量項目。使用 CSV 格式。
 
-請將結果保存為 output/grades_combined.csv，完成後回報路徑及核對結果。
+請將結果保存為 outputs/grades_combined.csv，完成後回報路徑及核對結果。
 </code></pre>
 <h3 id="_25">步驟三：計算總成績</h3>
 <p><strong>對話提示（在同一個 CLI 會話中輸入）</strong></p>
-<pre><code class="language-text">根據 rubrics/grading_policy.txt 的加權規則，計算 output/grades_combined.csv 的總成績與等第。
+<pre><code class="language-text">根據 rubrics/grading_policy.txt 的加權規則，計算 outputs/grades_combined.csv 的總成績與等第。
 
-請將結果保存為 output/final_grades.md，完成後回報路徑及核對結果。
+請將結果保存為 outputs/final_grades.md，完成後回報路徑及核對結果。
 </code></pre>
 <h3 id="_26">步驟四：生成分析報告</h3>
 <p><strong>對話提示（在同一個 CLI 會話中輸入）</strong></p>
-<pre><code class="language-text">分析 output/final_grades.md：
+<pre><code class="language-text">分析 outputs/final_grades.md：
 - 成績分布統計
 - 需關注學生清單
 - 各項目表現分析
 - 教學成效評估
 輸出為完整報告。
 
-請將結果保存為 output/semester_report.md，完成後回報路徑及核對結果。
+請將結果保存為 outputs/semester_report.md，完成後回報路徑及核對結果。
 </code></pre>
 <h3 id="pdf">步驟五：轉換為 PDF 報告</h3>
-<pre><code class="language-text">請先檢查 Pandoc、PDF 引擎及中文字型是否可用，再將 output/semester_report.md
-轉換為 output/semester_report.pdf。若缺少工具，先說明環境需求；不要把失敗輸出當成完成。
+<pre><code class="language-text">請先檢查 Pandoc、PDF 引擎及中文字型是否可用，再將 outputs/semester_report.md
+轉換為 outputs/semester_report.pdf。若缺少工具，先說明環境需求；不要把失敗輸出當成完成。
 轉換後回報檔案位置，列出需要人工檢查的表格、換頁與中文字。
 </code></pre>
 <p>開啟 PDF 逐頁核對，確認數值與 Markdown 報表一致。</p>
@@ -886,7 +882,6 @@ pandoc lesson_plan.md -o lesson_plan.pdf --pdf-engine=xelatex -V CJKmainfont="Mi
 - 學生的主體性<br/>
 - 教育的溫度</p>
 <hr/>
-<p><strong>補充完成</strong>：以上內容應整合至 06_lesson_plans.md 的延伸應用章節</p>
 <h2 id="_30">本補充單元驗收與平台差異</h2>
 <p>先只使用本文虛構資料：客觀題例應為 80 分；五筆加權總分依序為 84.10、89.65、73.65、89.60、70.75。用試算表或明確程式獨立重算，不能只用第二次模型回答當驗證。正式成績由教師依核准規則決定，AI 只提供分析草稿。</p>
 <p>請在對話中告知作業系統，讓 Agent 選擇 Bash 或 PowerShell 腳本，不直接將 Bash 語法貼到 PowerShell。批次轉換前備妥 <code>my_template.docx</code>，先要求列出輸入輸出對應與覆寫衝突，再試跑一份，核對後才批次執行。</p>
