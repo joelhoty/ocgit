@@ -1,0 +1,7 @@
+Adapted reproduced failure: read loop shares stdin with stdin-consuming command.
+Command: mock_cli() { cat >/dev/null; printf "draft\n"; }; printf "student_A\nstudent_B\n" | while IFS= read -r student; do printf "%s\n" "$student"; mock_cli; done
+Observed output:
+student_A
+draft
+Expected two student IDs; observed only student_A.
+No CLI/model request; mock_cli consumes stdin to expose inherited-stream behavior.

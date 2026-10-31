@@ -1,0 +1,9 @@
+AI_Agent_Cli_b13.html: PASS, h2=6, visible chars=10188, code blocks=16
+Environment_Setup_Guide_b06.html: PASS, h2=4, visible chars=6295, code blocks=12
+AI_CLI_Tutorial_b03.html: PASS, h2=6, visible chars=5870, code blocks=10
+unit05_agent_instructions_b02.html: PASS, h2=10, visible chars=8349, code blocks=21
+PASS: all five scoped targets present; no Gemini branding/commands; original h2 purposes and teacher templates retained.
+PASS: installation code pipe character contains no Markdown backslash; table remains parseable.
+PASS: unit05 Markdown h2 titles appear in HTML; Mermaid converted to div.mermaid.
+Manual source alignment: AGENTS.md v2.1.277 and fallback import; native Windows differences; no full-auto; read-only exec; package-specific updates.
+Not executed: CLI installs/auth/paid agent tasks, Windows/macOS commands, C++/Python teaching samples. Browser/whole-site navigation remains parent task.

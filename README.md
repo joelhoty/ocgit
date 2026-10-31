@@ -21,12 +21,12 @@
 
 ## 📂 課程分類總覽
 
-本平台目前收錄 **101 份 HTML 教材**，涵蓋以下主題：
+本平台目前收錄 **102 份 HTML 教材**，涵蓋以下主題：
 
-### 🎨 Gemini AI 設計教學
-`GeminiForDesignTeaching/` — 15 篇
+### 🎨 AI Agent CLI 設計教學
+`AI_Agent_CLi/` — 16 篇（含索引）
 
-以 Google Gemini 為核心的設計教學系列，涵蓋 AI 圖像生成、NotebookLM 應用、本地 AI 環境建置、Markdown 客製化、實務教案設計，以及 AI 素養探討。
+以 Codex CLI 與 Claude Code 為主線，先讀 Agent 基本概念與工作環境，再循六單元學習教材生成、圖片提示、NotebookLM、CLI 專案操作、AGENTS.md／CLAUDE.md 與教案交付。新版內連結均指向 AI_Agent_CLi，舊 HTML 網址保留導向。
 
 ### 🤖 AI 導論
 `AI_intro/` — 15 篇
@@ -87,7 +87,7 @@ OCgithub/
 ├── CONTRIBUTING.md             # 📝 貢獻指南
 ├── README.md                   # 📖 本文件
 │
-├── GeminiForDesignTeaching/    # 🎨 Gemini AI 設計教學
+├── AI_Agent_CLi/    # 🎨 AI Agent CLI 設計教學
 ├── AI_intro/                   # 🤖 AI 導論
 │   └── History/                #     AI 發展史系列
 ├── Git/                        # 🔀 Git 版本管理

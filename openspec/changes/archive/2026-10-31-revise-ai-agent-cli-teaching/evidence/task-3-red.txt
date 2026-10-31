@@ -1,0 +1,22 @@
+Task3 adapted baseline: FAIL
+Acceptance: all 18 specified targets exist, preserve heading structure, no old CLI commands, dual CLI routes and references.
+Missing targets:
+AI_Agent_CLi/literacy_b02.html
+AI_Agent_CLi/literacy_chatgpt_revise_b06.html
+AI_Agent_CLi/literacy_research.html
+AI_Agent_CLi/literacy_research.md
+AI_Agent_CLi/unit01_first_ai_material_b02.html
+AI_Agent_CLi/unit01_first_ai_material_b02.md
+AI_Agent_CLi/unit02_ai_image_generation_b02.html
+AI_Agent_CLi/unit02_ai_image_generation_b02.md
+AI_Agent_CLi/unit03_notebooklm_b02.html
+AI_Agent_CLi/unit03_notebooklm_b02.md
+AI_Agent_CLi/unit04_local_ai_setup_b02.html
+AI_Agent_CLi/unit04_local_ai_setup_b02.md
+AI_Agent_CLi/unit04_supplement_additions.html
+AI_Agent_CLi/unit04_supplement_additions.md
+AI_Agent_CLi/unit06_practical_lesson_plan_b02.html
+AI_Agent_CLi/unit06_practical_lesson_plan_b02.md
+AI_Agent_CLi/unit06_supplement_additions.html
+AI_Agent_CLi/unit06_supplement_additions.md
+Original sources retain gemini commands, gemini.md, unsupported privacy assertion.

@@ -1,0 +1,9 @@
+{
+  "acceptance": "Complete requirements matrix, identity-bound final evidence, independent reviews and archival readiness",
+  "observed": {
+    "verification_report_exists": false,
+    "manifest_exists": false
+  },
+  "result": "fail",
+  "reason": "Final verification report and manifest not yet created."
+}

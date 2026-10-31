@@ -1,0 +1,22 @@
+[
+  {
+    "route": 1,
+    "exit": 0,
+    "files": [
+      "student_A_report.md",
+      "student_B_report.md",
+      "student_C_report.md"
+    ],
+    "pass": true
+  },
+  {
+    "route": 2,
+    "exit": 0,
+    "files": [
+      "student_A_report.md",
+      "student_B_report.md",
+      "student_C_report.md"
+    ],
+    "pass": true
+  }
+]

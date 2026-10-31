@@ -1,0 +1,15 @@
+{
+  "base_commit": "b53e3dec4c41d1e951c8d1c537b4bcdfbe5a9431",
+  "worktree": "/private/tmp/ocgithub-ai-agent-cli",
+  "tasks": {
+    "1": "unchecked; missing target HTML; no earlier evidence",
+    "2": "unchecked; missing target HTML; no earlier evidence",
+    "3": "unchecked; missing target HTML; no earlier evidence",
+    "4": "unchecked; missing target HTML; no earlier evidence",
+    "5": "unchecked; missing target HTML; no earlier evidence"
+  },
+  "preserve": {
+    "repo.log": "a3242ff5a6de8f9ab86946014ecc4db6a7cb1e2c2c9b41eb95a3fb8ad64c4998",
+    "AI_Agent_CLi/assets/agent_layers_b01.svg": "70dd9b32a71c66fc21e7070750f2043e8acdf6ba623d9a395ea33aeb1d67b677"
+  }
+}

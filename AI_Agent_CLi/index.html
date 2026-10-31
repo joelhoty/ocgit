@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+
+<html lang="zh-TW">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>AI Agent CLI 設計教學課程目錄</title>
+<!-- CSS 框架 -->
+<link href="https://cdn.jsdelivr.net/npm/water.css@2/out/dark.min.css" rel="stylesheet"/>
+<style>
+        body {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 50px;
+            padding: 30px 0;
+            border-bottom: 2px solid #4a9eff;
+        }
+
+        .header h1 {
+            margin-bottom: 10px;
+            color: #4a9eff;
+        }
+
+        .header p {
+            color: #888;
+            font-size: 1.1em;
+        }
+
+        .course-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(min(100%, 350px), 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .course-card {
+            background: #1e1e1e;
+            border: 1px solid #3e3e3e;
+            border-radius: 12px;
+            padding: 25px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .course-card:hover {
+            transform: translateY(-5px);
+            border-color: #4a9eff;
+            box-shadow: 0 5px 20px rgba(74, 158, 255, 0.2);
+        }
+
+        .course-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 5px;
+            height: 100%;
+            background: linear-gradient(to bottom, #4a9eff, #2d7dd2);
+        }
+
+        .unit-badge {
+            display: inline-block;
+            background: #2d2d2d;
+            color: #4a9eff;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .course-card h3 {
+            margin: 15px 0;
+            color: #fff;
+            font-size: 1.3em;
+        }
+
+        .course-card p {
+            color: #aaa;
+            line-height: 1.6;
+            margin: 15px 0;
+        }
+
+        .course-card ul {
+            list-style: none;
+            padding: 0;
+            margin: 15px 0;
+        }
+
+        .course-card li {
+            color: #bbb;
+            padding: 5px 0;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .course-card li::before {
+            content: '▹';
+            position: absolute;
+            left: 0;
+            color: #4a9eff;
+            font-weight: bold;
+        }
+
+        .view-link {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 10px 20px;
+            background: #4a9eff;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 6px;
+            transition: background 0.3s ease;
+            font-weight: bold;
+        }
+
+        .view-link:hover {
+            background: #2d7dd2;
+            text-decoration: none;
+        }
+
+        .supplement-card {
+            background: #252525;
+            border-left: 3px solid #ff9f43;
+        }
+
+        .supplement-card .unit-badge {
+            background: #3d2d1f;
+            color: #ff9f43;
+        }
+
+        .supplement-card::before {
+            background: linear-gradient(to bottom, #ff9f43, #d17d2b);
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 50px;
+            padding: 20px;
+            color: #666;
+            border-top: 1px solid #3e3e3e;
+        }
+    </style>
+<style id="course-navigation-style">
+html{scroll-behavior:smooth}body{box-sizing:border-box}img{max-width:100%;height:auto}pre{max-width:100%;overflow-x:auto}table{display:block;max-width:100%;overflow-x:auto}td,th{min-width:7em}.course-nav{display:flex;flex-wrap:wrap;gap:.65em;align-items:center;padding:1em 0;margin:1em 0;border-bottom:1px solid #3e3e3e;font-size:.95rem}.course-nav a{color:#66b3ff}.course-nav span{color:#aaa}.course-toc{margin:1.5em 0;padding:1em;background:#222831;border-radius:8px}.course-toc a{overflow-wrap:anywhere}h1,h2,h3,p,li{overflow-wrap:break-word}.mermaid svg{max-width:100%;height:auto}@media(max-width:600px){body{padding:14px!important}h1{font-size:1.65em}pre code{padding:1em}.course-nav{line-height:1.8}}
+</style></head>
+<body>
+<div class="header">
+<h1>AI Agent CLI 設計教學課程</h1>
+<p>Codex CLI × Claude Code｜保留六單元的漸進實作，從 Agent 概念走向教案交付</p>
+</div>
+<div class="course-grid">
+
+<!-- Unit 01 -->
+
+<!-- Unit 02 -->
+
+<!-- Unit 03 -->
+
+<!-- Unit 04 -->
+
+<!-- Unit 04 Supplement -->
+
+<!-- Unit 05 -->
+
+<!-- Unit 06 -->
+
+<!-- Unit 06 Supplement -->
+
+<!-- Literacy Supplement -->
+
+<!-- Literacy Research -->
+
+<!-- Literacy ChatGPT Revise b06 -->
+
+<!-- AI Agent Cli -->
+
+<!-- Environment Setup Guide -->
+
+<!-- Codex CLI／Claude Code Tutorial -->
+
+<div class="course-card">
+<span class="unit-badge">前導章｜建議先讀</span>
+<h3>讓 AI Agent 成為個人工作與學習助理</h3>
+<p>先理解 Agent、Context、Tools 與 Harness，再依電腦環境選擇 Codex CLI 或 Claude Code。Windows 主線，另附 macOS 差異。</p>
+<ul><li>Agent 六層架構與任務迴圈</li><li>VS Code、PowerShell、Git 與 CLI 的角色</li><li>專案指引、Python／uv 與驗收方法</li></ul>
+<a class="view-link" href="00_intro.html">閱讀前導教材 →</a>
+<p><a href="00_intro.md">Markdown 原文</a></p>
+</div><div class="course-card">
+<span class="unit-badge">單元一</span>
+<h3>觀念暖身與初體驗 - 我的第一個 AI 生成教材</h3>
+<p>從零開始認識 AI，學習如何撰寫有效的提示詞，並使用 Codex CLI／Claude Code 生成教學素材。</p>
+<ul>
+<li>理解 AI 的基本運作原理與定位</li>
+<li>學會撰寫有效的提示詞 (Prompt)</li>
+<li>使用 Codex CLI／Claude Code 生成教學素材</li>
+<li>掌握從模糊問題到精準指令的優化技巧</li>
+</ul>
+<a class="view-link" href="01_materials.html">查看教材 →</a>
+</div><div class="course-card">
+<span class="unit-badge">單元二</span>
+<h3>讓教材更生動 - AI 圖片詠唱師</h3>
+<p>深入學習 AI 圖片生成技術，掌握圖片生成的提示詞技巧，為教材增添視覺吸引力。</p>
+<ul>
+<li>掌握 AI 圖片生成的核心技術</li>
+<li>學習有效的圖片提示詞技巧</li>
+<li>運用多種 AI 圖片工具</li>
+<li>為教學內容創作視覺素材</li>
+</ul>
+<a class="view-link" href="02_images.html">查看教材 →</a>
+</div><div class="course-card">
+<span class="unit-badge">單元三</span>
+<h3>打造您的專屬知識庫 - 備課神器 NotebookLM</h3>
+<p>學習使用 NotebookLM 建立個人化知識庫，提升備課效率，讓 AI 成為您的智能教學助理。</p>
+<ul>
+<li>建立個人化的 AI 知識庫</li>
+<li>上傳與管理各類教學資料</li>
+<li>快速檢索與整理教學內容</li>
+<li>生成課程摘要與教學問答</li>
+</ul>
+<a class="view-link" href="03_notebooklm.html">查看教材 →</a>
+</div><div class="course-card">
+<span class="unit-badge">單元四</span>
+<h3>觀念升級 - 當 AI 遇上你的電腦</h3>
+<p>在 VS Code 的專案資料夾使用 Codex CLI 或 Claude Code，理解本機工具與雲端模型的分工。</p>
+<ul>
+<li>區分本機執行工具與雲端推論</li>
+<li>啟動專案、核對目錄與權限</li>
+<li>在同一會話逐步讀檔與整理</li>
+<li>保護教學資料的隱私安全</li>
+</ul>
+<a class="view-link" href="04_workspace.html">查看教材 →</a>
+</div><div class="course-card supplement-card">
+<span class="unit-badge">單元四補充</span>
+<h3>進階章節：CLI、Markdown 與教學流程</h3>
+<p>整合 VS Code、Markdown 與 Mermaid，從課程大綱逐步產生教材與評量。</p>
+<ul>
+<li>Markdown 文件結構與輸出</li>
+<li>Mermaid 與 PlantUML 的選擇</li>
+<li>從大綱到課程手冊的實作</li>
+<li>整合多種 AI 工具</li>
+</ul>
+<a class="view-link" href="04a_workflows.html">查看補充教材 →</a>
+</div><div class="course-card">
+<span class="unit-badge">單元五</span>
+<h3>個人化你的 AI - 初探 AGENTS.md／CLAUDE.md</h3>
+<p>學習使用 AGENTS.md／CLAUDE.md 客製化您的 AI 助理，讓 AI 更符合您的教學風格與需求。</p>
+<ul>
+<li>認識 AGENTS.md／CLAUDE.md 的功能與應用</li>
+<li>建立個人化的 AI 設定檔</li>
+<li>調整 AI 的回應風格與行為</li>
+<li>打造專屬的教學 AI 助理</li>
+</ul>
+<a class="view-link" href="05_instructions.html">查看教材 →</a>
+</div><div class="course-card">
+<span class="unit-badge">單元六</span>
+<h3>實戰演練 - AI 幫我讀檔案、寫教案</h3>
+<p>綜合運用前面學到的技能，讓 AI 協助您處理教學文件、撰寫教案，提升整體教學效率。</p>
+<ul>
+<li>使用 AI 分析與整理教學文件</li>
+<li>自動生成結構化教案內容</li>
+<li>批次處理多個教學檔案</li>
+<li>建立完整的教學工作流程</li>
+</ul>
+<a class="view-link" href="06_lesson_plans.html">查看教材 →</a>
+</div><div class="course-card supplement-card">
+<span class="unit-badge">單元六補充</span>
+<h3>進階應用：AI 教學實戰技巧</h3>
+<p>單元六的進階內容，提供更多實用的 AI 教學應用案例與技巧。</p>
+<ul>
+<li>複雜教案的 AI 輔助設計</li>
+<li>多媒體教材整合應用</li>
+<li>教學評量的 AI 協助</li>
+<li>課程管理自動化技巧</li>
+</ul>
+<a class="view-link" href="06a_assessment.html">查看補充教材 →</a>
+</div><div class="course-card">
+<span class="unit-badge">專題</span>
+<h3>AI Agent 與 AI CLI 應用</h3>
+<p>深入了解 AI Agent 與 AI CLI 的概念、關係與實際應用，並包含 Codex CLI／Claude Code 的詳細安裝與使用指南。</p>
+<ul>
+<li>理解 AI Agent 的核心組件</li>
+<li>掌握 AI CLI 的工作原理</li>
+<li>學習 Codex CLI／Claude Code 的完整操作</li>
+<li>探索與本地開發環境整合的強大功能</li>
+</ul>
+<a class="view-link" href="07_agents_cli.html">查看教材 →</a>
+</div><div class="course-card">
+<span class="unit-badge">環境設定</span>
+<h3>開發環境建置指南：Codex CLI／Claude Code, VS Code 與 Python</h3>
+<p>本指南旨在協助初學者在 Windows 系統上建立完整的 Python 開發環境，整合 Codex CLI／Claude Code 人工智慧工具、VS Code 編輯器以及現代化的 Python 套件管理工具 uv。</p>
+<ul>
+<li>選一款 CLI 安裝；原生版不需 Node.js</li>
+<li>安裝與設定 Visual Studio Code (VS Code)</li>
+<li>Python 環境與 UV 套件管理 (虛擬環境概念)</li>
+<li>專案管理與 Agent 協作 (AGENTS.md／CLAUDE.md 設定檔)</li>
+</ul>
+<a class="view-link" href="08_environment.html">查看教材 →</a>
+</div><div class="course-card">
+<span class="unit-badge">實戰教學</span>
+<h3>Codex CLI／Claude Code 實戰教學：讓 AI 駐紮在你的終端機</h3>
+<p>直接在終端機與 AI 協作，無需切換視窗。本教學涵蓋從環境建置、基礎指令到程式碼重構、聯網搜尋等四大實戰應用場景。</p>
+<ul>
+<li>環境建置：依平台選擇安裝與更新方式</li>
+<li>基礎操作：互動會話、單次執行與讀檔</li>
+<li>實戰應用：程式碼解釋、除錯與原型建立</li>
+<li>進階技巧：AGENTS.md／CLAUDE.md 專案設定</li>
+</ul>
+<a class="view-link" href="09_cli_practice.html">查看教材 →</a>
+</div><div class="course-card supplement-card">
+<span class="unit-badge">素養補充</span>
+<h3>資訊科技素養與媒體素養：在生成式 AI 時代的挑戰、機會與實踐</h3>
+<p>深入探討 AI 時代的資訊素養與媒體素養，理解如何批判性地使用與評估 AI 生成內容。</p>
+<ul>
+<li>網路時代的資訊科技與媒體素養核心議題</li>
+<li>生成式 AI 帶來的素養新挑戰</li>
+<li>資料來源與版權的倫理考量</li>
+<li>AI 生成影像真假的識別技巧</li>
+<li>生成內容使用的倫理與學術誠信</li>
+</ul>
+<a class="view-link" href="10_literacy.html">查看補充教材 →</a>
+</div><div class="course-card supplement-card">
+<span class="unit-badge">素養補充（修訂版 b06）</span>
+<h3>資訊科技素養與媒體素養：在生成式 AI 時代的挑戰、機會與實踐（增強版）</h3>
+<p>完整修訂版本，新增實作練習、Q&amp;A 問答、學習總結等實用內容，提供更全面的學習體驗。</p>
+<ul>
+<li>資訊科技素養與媒體素養的完整比較分析</li>
+<li>生成式 AI 帶來的挑戰與機會深度探討</li>
+<li>臺灣《數位時代媒體素養教育白皮書》解讀</li>
+<li>常見問題與實務解決方案（Q&amp;A）</li>
+<li>實作練習：AI 內容批判分析、深偽影像辨識</li>
+<li>完整的學習總結與參考文獻</li>
+</ul>
+<a class="view-link" href="11_literacy_practice.html">查看增強版教材 →</a>
+</div><div class="course-card supplement-card">
+<span class="unit-badge">素養研究版</span>
+<h3>資訊科技素養與媒體素養：學術研究版</h3>
+<p>完整的學術研究文章，深入探討生成式 AI 時代的資訊科技與媒體素養挑戰、機會與實踐策略。</p>
+<ul>
+<li>假訊息與認知偏誤的深度分析</li>
+<li>演算法偏誤與公平性議題</li>
+<li>個人化學習與智慧導師的發展</li>
+<li>教師專業發展與創新教學實踐</li>
+<li>政策框架與跨領域合作展望</li>
+</ul>
+<a class="view-link" href="12_literacy_research.html">查看研究文章 →</a>
+</div></div>
+<div class="footer">
+<p>前導章 + 6 個漸進單元 + 8 篇延伸教材｜雙 CLI 主線｜更新：2026-10-31</p>
+<p><a class="view-link" href="https://drive.google.com/file/d/1yfelCqXPZU4uFK02YpRY9cc-cgl5JATu/view?usp=drive_link">下載科目調查檔案 →</a></p>
+</div>
+</body>
+</html>

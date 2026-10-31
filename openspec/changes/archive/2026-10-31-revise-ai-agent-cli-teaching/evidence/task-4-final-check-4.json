@@ -1,0 +1,34 @@
+{
+  "task_id": "task-4",
+  "subject_hash": "sha256:c23260507879c2b814941cb13e9feb1f9e824d68b7b915bcc2423e2ce8239b1c",
+  "static": {
+    "status": "PASS",
+    "counts": {
+      "html": 16,
+      "local_links": 262,
+      "redirects": 15,
+      "markdown_pairs": 10
+    },
+    "errors": []
+  },
+  "review_payloads": [
+    {
+      "path": "openspec/changes/archive/2026-10-31-revise-ai-agent-cli-teaching/evidence/task-4-spec-review-v3.md",
+      "sha256": "ed2bffd6819b8688078ba92ff02d5f4644311ad2fc76c8d8270e5f732160f087"
+    },
+    {
+      "path": "openspec/changes/archive/2026-10-31-revise-ai-agent-cli-teaching/evidence/task-4-quality-review-v1.md",
+      "sha256": "027e5159b53faffa960e2085e64aad0e5f63c2471690403e019dba531c63d4b8"
+    }
+  ],
+  "browser_payload": "openspec/changes/archive/2026-10-31-revise-ai-agent-cli-teaching/evidence/browser-results-3.json",
+  "browser_sha256": "3ec069867914c3632abe4879cd218e5cf88db4e0979c6b68d3f5c7ce20d31901",
+  "browser_cases": 47,
+  "browser_result": "PASS",
+  "captured_at": "2026-10-31T13:47:10.666116+00:00",
+  "limits": [
+    "No paid CLI execution or account login",
+    "No cross-platform installer execution",
+    "External CDN resources require network"
+  ]
+}

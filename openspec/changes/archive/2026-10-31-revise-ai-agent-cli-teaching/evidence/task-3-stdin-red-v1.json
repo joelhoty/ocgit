@@ -1,0 +1,14 @@
+[
+  {
+    "route": 1,
+    "exit": 0,
+    "files": [],
+    "pass": false
+  },
+  {
+    "route": 2,
+    "exit": 0,
+    "files": [],
+    "pass": false
+  }
+]

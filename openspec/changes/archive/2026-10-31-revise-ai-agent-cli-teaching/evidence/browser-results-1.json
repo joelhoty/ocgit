@@ -1,0 +1,480 @@
+{
+  "status": "PASS",
+  "results": [
+    {
+      "title": "前導章：Agent 基本概念與工作環境｜AI Agent CLI",
+      "width": 1280,
+      "scroll": 1280,
+      "diagrams": 6,
+      "rendered": 6,
+      "brokenImages": [],
+      "diagramErrors": 0,
+      "file": "00_intro.html",
+      "status": 200,
+      "errors": []
+    },
+    {
+      "title": "單元一補充教材：觀念暖身與初體驗 - 我的第一個 AI 生成教材",
+      "width": 1280,
+      "scroll": 1280,
+      "diagrams": 2,
+      "rendered": 2,
+      "brokenImages": [],
+      "diagramErrors": 0,
+      "file": "01_materials.html",
+      "status": 200,
+      "errors": []
+    },
+    {
+      "title": "單元二補充教材：讓教材更生動 - AI 圖片詠唱師",
+      "width": 1280,
+      "scroll": 1280,
+      "diagrams": 1,
+      "rendered": 1,
+      "brokenImages": [],
+      "diagramErrors": 0,
+      "file": "02_images.html",
+      "status": 200,
+      "errors": []
+    },
+    {
+      "title": "單元三補充教材：打造您的專屬知識庫 - 備課神器 NotebookLM",
+      "width": 1280,
+      "scroll": 1280,
+      "diagrams": 3,
+      "rendered": 3,
+      "brokenImages": [],
+      "diagramErrors": 0,
+      "file": "03_notebooklm.html",
+      "status": 200,
+      "errors": []
+    },
+    {
+      "title": "單元四補充教材：觀念升級 - 當 AI 遇上你的電腦",
+      "width": 1280,
+      "scroll": 1280,
+      "diagrams": 2,
+      "rendered": 2,
+      "brokenImages": [],
+      "diagramErrors": 0,
+      "file": "04_workspace.html",
+      "status": 200,
+      "errors": []
+    },
+    {
+      "title": "單元四補充內容：進階章節",
+      "width": 1280,
+      "scroll": 1280,
+      "diagrams": 4,
+      "rendered": 4,
+      "brokenImages": [],
+      "diagramErrors": 0,
+      "file": "04a_workflows.html",
+      "status": 200,
+      "errors": []
+    },
+    {
+      "title": "單元五補充教材：個人化你的 AI — AGENTS.md 與 CLAUDE.md",
+      "width": 1280,
+      "scroll": 1280,
+      "diagrams": 1,
+      "rendered": 1,
+      "brokenImages": [],
+      "diagramErrors": 0,
+      "file": "05_instructions.html",
+      "status": 200,
+      "errors": []
+    },
+    {
+      "title": "單元六補充教材：實戰演練 - AI 幫我讀檔案、寫教案",
+      "width": 1280,
+      "scroll": 1280,
+      "diagrams": 3,
+      "rendered": 3,
+      "brokenImages": [],
+      "diagramErrors": 0,
+      "file": "06_lesson_plans.html",
+      "status": 200,
+      "errors": []
+    },
+    {
+      "title": "單元六補充內容：進階應用",
+      "width": 1280,
+      "scroll": 1280,
+      "diagrams": 1,
+      "rendered": 1,
+      "brokenImages": [],
+      "diagramErrors": 0,
+      "file": "06a_assessment.html",
+      "status": 200,
+      "errors": []
+    },
+    {
+      "title": "AI Agent 與 AI CLI 應用",
+      "width": 1280,
+      "scroll": 1280,
+      "diagrams": 0,
+      "rendered": 0,
+      "brokenImages": [],
+      "diagramErrors": 0,
+      "file": "07_agents_cli.html",
+      "status": 200,
+      "errors": []
+    },
+    {
+      "title": "開發環境建置指南：Codex CLI、Claude Code、VS Code 與 Python",
+      "width": 1280,
+      "scroll": 1280,
+      "diagrams": 0,
+      "rendered": 0,
+      "brokenImages": [],
+      "diagramErrors": 0,
+      "file": "08_environment.html",
+      "status": 200,
+      "errors": []
+    },
+    {
+      "title": "Codex CLI 與 Claude Code 實戰教學：讓 AI 駐紮在你的終端機",
+      "width": 1280,
+      "scroll": 1280,
+      "diagrams": 0,
+      "rendered": 0,
+      "brokenImages": [],
+      "diagramErrors": 0,
+      "file": "09_cli_practice.html",
+      "status": 200,
+      "errors": []
+    },
+    {
+      "title": "literacy_b02",
+      "width": 1280,
+      "scroll": 1280,
+      "diagrams": 0,
+      "rendered": 0,
+      "brokenImages": [],
+      "diagramErrors": 0,
+      "file": "10_literacy.html",
+      "status": 200,
+      "errors": []
+    },
+    {
+      "title": "literacy_chatgpt_revise_b06",
+      "width": 1280,
+      "scroll": 1280,
+      "diagrams": 1,
+      "rendered": 1,
+      "brokenImages": [],
+      "diagramErrors": 0,
+      "file": "11_literacy_practice.html",
+      "status": 200,
+      "errors": []
+    },
+    {
+      "title": "資訊科技素養與媒體素養：在生成式 AI 時代的挑戰、機會與實踐",
+      "width": 1280,
+      "scroll": 1280,
+      "diagrams": 0,
+      "rendered": 0,
+      "brokenImages": [],
+      "diagramErrors": 0,
+      "file": "12_literacy_research.html",
+      "status": 200,
+      "errors": []
+    },
+    {
+      "title": "AI Agent CLI 設計教學課程目錄",
+      "width": 1280,
+      "scroll": 1280,
+      "diagrams": 0,
+      "rendered": 0,
+      "brokenImages": [],
+      "diagramErrors": 0,
+      "file": "index.html",
+      "status": 200,
+      "errors": []
+    },
+    {
+      "title": "前導章：Agent 基本概念與工作環境｜AI Agent CLI",
+      "width": 390,
+      "scroll": 390,
+      "diagrams": 6,
+      "rendered": 6,
+      "brokenImages": [],
+      "diagramErrors": 0,
+      "file": "00_intro.html",
+      "status": 200,
+      "errors": []
+    },
+    {
+      "title": "單元一補充教材：觀念暖身與初體驗 - 我的第一個 AI 生成教材",
+      "width": 390,
+      "scroll": 390,
+      "diagrams": 2,
+      "rendered": 2,
+      "brokenImages": [],
+      "diagramErrors": 0,
+      "file": "01_materials.html",
+      "status": 200,
+      "errors": []
+    },
+    {
+      "title": "單元二補充教材：讓教材更生動 - AI 圖片詠唱師",
+      "width": 390,
+      "scroll": 390,
+      "diagrams": 1,
+      "rendered": 1,
+      "brokenImages": [],
+      "diagramErrors": 0,
+      "file": "02_images.html",
+      "status": 200,
+      "errors": []
+    },
+    {
+      "title": "單元三補充教材：打造您的專屬知識庫 - 備課神器 NotebookLM",
+      "width": 390,
+      "scroll": 390,
+      "diagrams": 3,
+      "rendered": 3,
+      "brokenImages": [],
+      "diagramErrors": 0,
+      "file": "03_notebooklm.html",
+      "status": 200,
+      "errors": []
+    },
+    {
+      "title": "單元四補充教材：觀念升級 - 當 AI 遇上你的電腦",
+      "width": 390,
+      "scroll": 390,
+      "diagrams": 2,
+      "rendered": 2,
+      "brokenImages": [],
+      "diagramErrors": 0,
+      "file": "04_workspace.html",
+      "status": 200,
+      "errors": []
+    },
+    {
+      "title": "單元四補充內容：進階章節",
+      "width": 390,
+      "scroll": 390,
+      "diagrams": 4,
+      "rendered": 4,
+      "brokenImages": [],
+      "diagramErrors": 0,
+      "file": "04a_workflows.html",
+      "status": 200,
+      "errors": []
+    },
+    {
+      "title": "單元五補充教材：個人化你的 AI — AGENTS.md 與 CLAUDE.md",
+      "width": 390,
+      "scroll": 390,
+      "diagrams": 1,
+      "rendered": 1,
+      "brokenImages": [],
+      "diagramErrors": 0,
+      "file": "05_instructions.html",
+      "status": 200,
+      "errors": []
+    },
+    {
+      "title": "單元六補充教材：實戰演練 - AI 幫我讀檔案、寫教案",
+      "width": 390,
+      "scroll": 390,
+      "diagrams": 3,
+      "rendered": 3,
+      "brokenImages": [],
+      "diagramErrors": 0,
+      "file": "06_lesson_plans.html",
+      "status": 200,
+      "errors": []
+    },
+    {
+      "title": "單元六補充內容：進階應用",
+      "width": 390,
+      "scroll": 390,
+      "diagrams": 1,
+      "rendered": 1,
+      "brokenImages": [],
+      "diagramErrors": 0,
+      "file": "06a_assessment.html",
+      "status": 200,
+      "errors": []
+    },
+    {
+      "title": "AI Agent 與 AI CLI 應用",
+      "width": 390,
+      "scroll": 390,
+      "diagrams": 0,
+      "rendered": 0,
+      "brokenImages": [],
+      "diagramErrors": 0,
+      "file": "07_agents_cli.html",
+      "status": 200,
+      "errors": []
+    },
+    {
+      "title": "開發環境建置指南：Codex CLI、Claude Code、VS Code 與 Python",
+      "width": 390,
+      "scroll": 390,
+      "diagrams": 0,
+      "rendered": 0,
+      "brokenImages": [],
+      "diagramErrors": 0,
+      "file": "08_environment.html",
+      "status": 200,
+      "errors": []
+    },
+    {
+      "title": "Codex CLI 與 Claude Code 實戰教學：讓 AI 駐紮在你的終端機",
+      "width": 390,
+      "scroll": 390,
+      "diagrams": 0,
+      "rendered": 0,
+      "brokenImages": [],
+      "diagramErrors": 0,
+      "file": "09_cli_practice.html",
+      "status": 200,
+      "errors": []
+    },
+    {
+      "title": "literacy_b02",
+      "width": 390,
+      "scroll": 390,
+      "diagrams": 0,
+      "rendered": 0,
+      "brokenImages": [],
+      "diagramErrors": 0,
+      "file": "10_literacy.html",
+      "status": 200,
+      "errors": []
+    },
+    {
+      "title": "literacy_chatgpt_revise_b06",
+      "width": 390,
+      "scroll": 390,
+      "diagrams": 1,
+      "rendered": 1,
+      "brokenImages": [],
+      "diagramErrors": 0,
+      "file": "11_literacy_practice.html",
+      "status": 200,
+      "errors": []
+    },
+    {
+      "title": "資訊科技素養與媒體素養：在生成式 AI 時代的挑戰、機會與實踐",
+      "width": 390,
+      "scroll": 390,
+      "diagrams": 0,
+      "rendered": 0,
+      "brokenImages": [],
+      "diagramErrors": 0,
+      "file": "12_literacy_research.html",
+      "status": 200,
+      "errors": []
+    },
+    {
+      "title": "AI Agent CLI 設計教學課程目錄",
+      "width": 390,
+      "scroll": 390,
+      "diagrams": 0,
+      "rendered": 0,
+      "brokenImages": [],
+      "diagramErrors": 0,
+      "file": "index.html",
+      "status": 200,
+      "errors": []
+    },
+    {
+      "legacy": "AI_Agent_Cli_b13.html",
+      "javascript": false,
+      "manual_target": "../AI_Agent_CLi/07_agents_cli.html",
+      "destination": "http://127.0.0.1:49509/AI_Agent_CLi/07_agents_cli.html"
+    },
+    {
+      "legacy": "Environment_Setup_Guide_b06.html",
+      "javascript": false,
+      "manual_target": "../AI_Agent_CLi/08_environment.html",
+      "destination": "http://127.0.0.1:49509/AI_Agent_CLi/08_environment.html"
+    },
+    {
+      "legacy": "Gemini_CLI_Tutorial_b02.html",
+      "javascript": false,
+      "manual_target": "../AI_Agent_CLi/09_cli_practice.html",
+      "destination": "http://127.0.0.1:49509/AI_Agent_CLi/09_cli_practice.html"
+    },
+    {
+      "legacy": "index_content.html",
+      "javascript": false,
+      "manual_target": "../AI_Agent_CLi/index.html",
+      "destination": "http://127.0.0.1:49509/AI_Agent_CLi/index.html"
+    },
+    {
+      "legacy": "literacy_b02.html",
+      "javascript": false,
+      "manual_target": "../AI_Agent_CLi/10_literacy.html",
+      "destination": "http://127.0.0.1:49509/AI_Agent_CLi/10_literacy.html"
+    },
+    {
+      "legacy": "literacy_chatgpt_revise_b06.html",
+      "javascript": false,
+      "manual_target": "../AI_Agent_CLi/11_literacy_practice.html",
+      "destination": "http://127.0.0.1:49509/AI_Agent_CLi/11_literacy_practice.html"
+    },
+    {
+      "legacy": "literacy_research.html",
+      "javascript": false,
+      "manual_target": "../AI_Agent_CLi/12_literacy_research.html",
+      "destination": "http://127.0.0.1:49509/AI_Agent_CLi/12_literacy_research.html"
+    },
+    {
+      "legacy": "unit01_first_ai_material_b02.html",
+      "javascript": false,
+      "manual_target": "../AI_Agent_CLi/01_materials.html",
+      "destination": "http://127.0.0.1:49509/AI_Agent_CLi/01_materials.html"
+    },
+    {
+      "legacy": "unit02_ai_image_generation_b02.html",
+      "javascript": false,
+      "manual_target": "../AI_Agent_CLi/02_images.html",
+      "destination": "http://127.0.0.1:49509/AI_Agent_CLi/02_images.html"
+    },
+    {
+      "legacy": "unit03_notebooklm_b02.html",
+      "javascript": false,
+      "manual_target": "../AI_Agent_CLi/03_notebooklm.html",
+      "destination": "http://127.0.0.1:49509/AI_Agent_CLi/03_notebooklm.html"
+    },
+    {
+      "legacy": "unit04_local_ai_setup_b02.html",
+      "javascript": false,
+      "manual_target": "../AI_Agent_CLi/04_workspace.html",
+      "destination": "http://127.0.0.1:49509/AI_Agent_CLi/04_workspace.html"
+    },
+    {
+      "legacy": "unit04_supplement_additions.html",
+      "javascript": false,
+      "manual_target": "../AI_Agent_CLi/04a_workflows.html",
+      "destination": "http://127.0.0.1:49509/AI_Agent_CLi/04a_workflows.html"
+    },
+    {
+      "legacy": "unit05_gemini_md_customization_b01.html",
+      "javascript": false,
+      "manual_target": "../AI_Agent_CLi/05_instructions.html",
+      "destination": "http://127.0.0.1:49509/AI_Agent_CLi/05_instructions.html"
+    },
+    {
+      "legacy": "unit06_practical_lesson_plan_b02.html",
+      "javascript": false,
+      "manual_target": "../AI_Agent_CLi/06_lesson_plans.html",
+      "destination": "http://127.0.0.1:49509/AI_Agent_CLi/06_lesson_plans.html"
+    },
+    {
+      "legacy": "unit06_supplement_additions.html",
+      "javascript": false,
+      "manual_target": "../AI_Agent_CLi/06a_assessment.html",
+      "destination": "http://127.0.0.1:49509/AI_Agent_CLi/06a_assessment.html"
+    }
+  ],
+  "failures": []
+}

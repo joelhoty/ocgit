@@ -1,0 +1,886 @@
+<!DOCTYPE html>
+
+<html lang="zh-TW">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>單元四補充內容：進階章節</title>
+<!-- CSS 框架 -->
+<link href="https://cdn.jsdelivr.net/npm/water.css@2/out/dark.min.css" rel="stylesheet"/>
+<!-- 代碼高亮 -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/base16/darcula.min.css" rel="stylesheet"/>
+<!-- 自定義樣式 -->
+<style>
+        
+                body {
+                    max-width: 900px;
+                    margin: 0 auto;
+                    padding: 20px;
+                }
+                /* 提升代码块对比度 */
+                pre {
+                    background: #1e1e1e !important;
+                    border: 1px solid #3e3e3e;
+                }
+                pre code {
+                    background: #1e1e1e !important;
+                }
+                code {
+                    background: #2d2d2d !important;
+                }
+                /* 引用块对比度 */
+                blockquote {
+                    background: #2d2d2d;
+                    border-left: 4px solid #4a9eff;
+                }
+            
+        
+        /* 通用代碼塊樣式 */
+        pre code {
+            display: block;
+            padding: 1.5em;
+            border-radius: 8px;
+            overflow-x: auto;
+            line-height: 1.6;
+        }
+
+        /* Mermaid 圖表樣式 */
+        
+        .mermaid {
+            margin: 2em 0;
+            padding: 1.5em;
+            text-align: center;
+            border-radius: 8px;
+        }
+        
+        .mermaid {
+            background: #2c3034;
+            border: 1px solid #444;
+        }
+            
+        
+        /* 響應式調整 */
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            .container, .markdown-body, .latex-body, .window-body, .nes-container {
+                padding: 15px;
+            }
+            pre code {
+                padding: 1em;
+            }
+        }
+        
+        table {display:block; overflow-x:auto;} img,svg {max-width:100%;} pre {overflow-x:auto;}
+    </style>
+<style id="course-navigation-style">
+html{scroll-behavior:smooth}body{box-sizing:border-box}img{max-width:100%;height:auto}pre{max-width:100%;overflow-x:auto}table{display:block;max-width:100%;overflow-x:auto}td,th{min-width:7em}.course-nav{display:flex;flex-wrap:wrap;gap:.65em;align-items:center;padding:1em 0;margin:1em 0;border-bottom:1px solid #3e3e3e;font-size:.95rem}.course-nav a{color:#66b3ff}.course-nav span{color:#aaa}.course-toc{margin:1.5em 0;padding:1em;background:#222831;border-radius:8px}.course-toc a{overflow-wrap:anywhere}h1,h2,h3,p,li{overflow-wrap:break-word}.mermaid svg{max-width:100%;height:auto}@media(max-width:600px){body{padding:14px!important}h1{font-size:1.65em}pre code{padding:1em}.course-nav{line-height:1.8}}
+</style></head>
+<body><nav aria-label="課程導覽" class="course-nav"><a href="index.html">課程目錄</a><a href="04_workspace.html">← 上一章</a><a href="05_instructions.html">下一章 →</a><a href="04a_workflows.md">Markdown 原文</a><span>雙 CLI 教材 · 2026-10-31</span></nav>
+<div class="container"><!-- Path: AI_Agent_CLi | Updated: 2026-10-31 | Edition: Codex CLI / Claude Code -->
+<h1 id="_1">單元四補充內容：進階章節</h1><details class="course-toc"><summary>本頁章節</summary><ul><li><a href="#cli-vscode">CLI + VSCode 整合的五大優勢</a></li><li><a href="#markdown">Markdown 格式輸出的優勢與應用</a></li><li><a href="#mermaid-vs-plantuml">Mermaid vs PlantUML：差異與選擇</a></li><li><a href="#_8">完整實戰案例：從大綱到完整教材設計</a></li><li><a href="#_18">實用指令總結</a></li></ul></details>
+<blockquote>
+<p><strong>本版查核：2026-10-31。</strong>先閱讀<a href="00_intro.html">前導章：Agent 基本概念與工作環境</a>，安裝並登入 Codex CLI 或 Claude Code 任選一款即可。本課使用虛構／去識別化資料，所有結果都要以來源與實際檔案驗收。</p>
+</blockquote>
+<p><strong>銜接</strong>：搭配<a href="04_workspace.html">單元四</a>閱讀，練習多檔案、Markdown 與流程圖。</p>
+<hr/>
+<h3 id="cli">雙 CLI 操作約定</h3>
+<p>在專案資料夾開啟終端機，先用 <code>codex</code> 或 <code>claude</code> 啟動互動會話，再貼上本章的自然語言提示。逐輪等待完成，追問時維持同一會話；另開一次指令不會自動承接剛才內容。</p>
+<table>
+<thead>
+<tr>
+<th>情境</th>
+<th>Codex CLI</th>
+<th>Claude Code</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>互動操作（初學者主線）</td>
+<td><code>codex</code></td>
+<td><code>claude</code></td>
+</tr>
+<tr>
+<td>帶第一個提示開始會話</td>
+<td><code>codex "閱讀 lesson.txt 並摘要"</code></td>
+<td><code>claude "閱讀 lesson.txt 並摘要"</code></td>
+</tr>
+<tr>
+<td>單次輸出後結束</td>
+<td><code>codex exec "閱讀 lesson.txt 並摘要"</code></td>
+<td><code>claude -p "閱讀 lesson.txt 並摘要"</code></td>
+</tr>
+<tr>
+<td>專案規則</td>
+<td><code>AGENTS.md</code></td>
+<td><code>CLAUDE.md</code>；AGENTS.md 的相容條件見單元五</td>
+</tr>
+</tbody>
+</table>
+<p>以下標示 <strong>Codex CLI／Claude Code</strong> 的 shell 範例是兩個替代選項，選一組執行即可。<code>bash</code> 中的 <code>for ...; do</code>、<code>$(date ...)</code> 是 macOS／Linux／WSL 範例，Windows PowerShell 請使用文中的 PowerShell 版本或互動主線。簡單雙引號指令可在 PowerShell 7 使用。</p>
+<p>單次模式要先完成登入。Codex <code>exec</code> 預設唯讀，且通常要求位於 Git 專案，先在教學資料夾執行 <code>git init</code>；需要直接寫檔時，改用互動會話並確認權限，或明確使用 <code>--sandbox workspace-write</code>。Claude <code>-p</code> 不會彈出互動授權；需要未預先允許的工具時，改回互動模式檢查授權，不使用全面略過權限的旗標。下列 <code>&gt; file.md</code> 是 shell 儲存標準輸出，會覆寫同名檔；先選用新檔名。不要同時要求 Agent 寫入同一個重新導向的檔案。</p>
+<p><a href="https://learn.chatgpt.com/docs/non-interactive-mode">Codex 非互動模式官方說明</a>、<a href="https://code.claude.com/docs/en/cli-reference">Claude Code CLI reference</a>（查核 2026-10-31）。</p>
+<h2 id="cli-vscode">CLI + VSCode 整合的五大優勢</h2>
+<h3 id="_2">優勢一：一站式工作環境</h3>
+<p><strong>傳統方式</strong>：<br/>
+- 瀏覽器開 網頁 AI → 複製結果 → 貼到 Word → 存檔<br/>
+- 需要在多個視窗間切換<br/>
+- 容易遺失內容</p>
+<p><strong>CLI + VSCode 方式</strong>：</p>
+<pre><code>同一個視窗內：
+├── 左側：檔案總管（看到所有教材）
+├── 中間：編輯區（檢視與編輯內容）
+└── 下方：終端機（與 AI 對話）
+</code></pre>
+<p><strong>效益</strong>：工作可減少視窗切換；效益需以自己的任務時間紀錄評估</p>
+<hr/>
+<h3 id="notebooklm">優勢二：批次處理多檔案（類似 NotebookLM）</h3>
+<p><strong>核心能力</strong>：Codex CLI／Claude Code 可依指定路徑逐步讀檔並整合分析；先列出讀取清單，不能假定所有檔案都已進入 context</p>
+<p><strong>情境範例</strong>：整週教案統整</p>
+<p><strong>資料夾結構</strong>：</p>
+<pre><code>week5_lessons/
+├── monday_math.txt
+├── wednesday_science.txt
+├── friday_social.txt
+└── assessment.txt
+</code></pre>
+<p><strong>指令</strong>：<br/>
+<strong>Codex CLI（擇一）</strong></p>
+<pre><code class="language-bash">codex exec "分析這個資料夾中的所有檔案，整理出本週的教學重點、學生表現與需改進之處"
+</code></pre>
+<p><strong>Claude Code（擇一）</strong></p>
+<pre><code class="language-bash">claude -p "分析這個資料夾中的所有檔案，整理出本週的教學重點、學生表現與需改進之處"
+</code></pre>
+<p><strong>要求 Agent 執行並確認紀錄</strong>：<br/>
+1. 讀取所有 4 個檔案<br/>
+2. 整合資訊<br/>
+3. 生成綜合報告</p>
+<p><strong>vs NotebookLM 的差異</strong>：</p>
+<table>
+<thead>
+<tr>
+<th>比較項目</th>
+<th>NotebookLM</th>
+<th>Codex CLI／Claude Code + VSCode</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>檔案管理</strong></td>
+<td>網頁上傳，分散</td>
+<td>本機資料夾，集中</td>
+</tr>
+<tr>
+<td><strong>修改檔案</strong></td>
+<td>需重新上傳</td>
+<td>下一次讀檔取得更新內容；已載入 context 需重讀</td>
+</tr>
+<tr>
+<td><strong>工作流程</strong></td>
+<td>瀏覽器 → 複製 → 貼上</td>
+<td>終端機 → 直接輸出檔案</td>
+</tr>
+<tr>
+<td><strong>隱私性</strong></td>
+<td>雲端處理</td>
+<td>工具在本機執行；提示與已讀資料仍可能送至雲端模型</td>
+</tr>
+<tr>
+<td><strong>整合性</strong></td>
+<td>獨立工具</td>
+<td>整合在開發環境</td>
+</tr>
+</tbody>
+</table>
+<hr/>
+<h3 id="_3">優勢三：輸出結果可直接存檔</h3>
+<p><strong>傳統方式</strong>：<br/>
+1. AI 生成內容<br/>
+2. 手動複製<br/>
+3. 開啟 Word<br/>
+4. 貼上<br/>
+5. 調整格式<br/>
+6. 存檔</p>
+<p><strong>CLI 方式</strong>：<br/>
+<strong>Codex CLI（擇一）</strong></p>
+<pre><code class="language-bash">codex exec "設計教案" &gt; lesson_plan.md
+</code></pre>
+<p><strong>Claude Code（擇一）</strong></p>
+<pre><code class="language-bash">claude -p "設計教案" &gt; lesson_plan.md
+</code></pre>
+<p><strong>完成後檢查</strong>：確認命令成功、檔案非空且內容符合要求，再改名為正式稿。</p>
+<hr/>
+<h3 id="_4">優勢四：版本控制與歷程追蹤</h3>
+<p><strong>搭配 Git 使用</strong>：</p>
+<pre><code class="language-bash">git add lesson_plan.md
+git commit -m "AI生成初稿"
+
+# 修改後
+git add lesson_plan.md
+git commit -m "調整難度"
+</code></pre>
+<p><strong>優點</strong>：<br/>
+- 追蹤每次修改<br/>
+- 可回溯舊版本<br/>
+- 團隊協作更容易</p>
+<hr/>
+<h3 id="_5">優勢五：自動化工作流程</h3>
+<p><strong>範例：每週自動生成教學週報</strong></p>
+<p>建立腳本 <code>weekly_report.sh</code>（macOS／Linux／WSL）：先建立並確認對應的週次資料夾，放入本週來源；若使用 Codex 單次模式，該資料夾須屬於 Git 專案。<code>set -euo pipefail</code> 使切換目錄或 CLI 失敗時停止，不繼續宣告完成。<br/>
+<strong>Codex CLI（擇一）</strong></p>
+<pre><code class="language-bash">#!/bin/bash
+set -euo pipefail
+cd "$HOME/teaching/week_$(date +%U)"
+codex exec "整理本週教學檔案,生成週報" &gt; weekly_report_$(date +%Y%m%d).md
+test -s "weekly_report_$(date +%Y%m%d).md"
+echo "週報草稿已生成；請核對來源與內容。"
+</code></pre>
+<p><strong>Claude Code（擇一）</strong></p>
+<pre><code class="language-bash">#!/bin/bash
+set -euo pipefail
+cd "$HOME/teaching/week_$(date +%U)"
+claude -p "整理本週教學檔案,生成週報" &gt; weekly_report_$(date +%Y%m%d).md
+test -s "weekly_report_$(date +%Y%m%d).md"
+echo "週報草稿已生成；請核對來源與內容。"
+</code></pre>
+<p><strong>執行</strong>：</p>
+<pre><code class="language-bash">bash weekly_report.sh
+</code></pre>
+<hr/>
+<h2 id="markdown">Markdown 格式輸出的優勢與應用</h2>
+<h3 id="markdown_1">什麼是 Markdown？</h3>
+<p><strong>簡單定義</strong>：一種輕量級的標記語言，用簡單符號表示格式</p>
+<p><strong>核心理念</strong>：<br/>
+- 純文字，任何編輯器都能開啟<br/>
+- 語法簡單，5 分鐘上手<br/>
+- 轉換方便，可轉成 PDF、Word、HTML</p>
+<h3 id="markdown_2">Markdown 基本語法</h3>
+<pre><code class="language-markdown"># 這是標題 1
+## 這是標題 2
+### 這是標題 3
+
+**粗體文字**
+*斜體文字*
+
+- 項目一
+- 項目二
+  - 子項目
+
+1. 第一點
+2. 第二點
+
+[連結文字](https://example.com)
+
+![圖片說明](image.png)
+</code></pre>
+<h3 id="markdown_3">為何用 Markdown 撰寫教材？</h3>
+<h4 id="1">優勢 1：專注內容，不被格式干擾</h4>
+<p><strong>Word 的問題</strong>：<br/>
+- 調整字體、大小、顏色<br/>
+- 對齊、縮排<br/>
+- 可能花費額外時間調整格式，請依實際作業記錄</p>
+<p><strong>Markdown 的解法</strong>：<br/>
+- 只用符號標記<br/>
+- 格式統一自動套用<br/>
+- 專注在內容撰寫</p>
+<h4 id="2">優勢 2：跨平台、容易保存</h4>
+<ul>
+<li>純文字較容易跨工具讀取，仍需保存編碼與外部資源</li>
+<li>不依賴特定軟體（Word、Pages）</li>
+<li>任何裝置都能編輯</li>
+</ul>
+<h4 id="3">優勢 3：整合程式碼與圖表</h4>
+<p><strong>傳統方式</strong>：<br/>
+1. 用軟體畫流程圖<br/>
+2. 截圖<br/>
+3. 插入 Word<br/>
+4. 修改？重新畫→截圖→插入</p>
+<p><strong>Markdown + Mermaid</strong>：</p>
+<pre><code class="language-markdown">```mermaid
+graph TD
+    A[開始] --&gt; B[步驟一]
+    B --&gt; C[步驟二]
+    C --&gt; D[結束]
+```
+</code></pre>
+<p><strong>修改？直接改文字！</strong></p>
+<hr/>
+<h3 id="ai-markdown">AI 輸出 Markdown 的範例</h3>
+<p><strong>Prompt</strong>：<br/>
+<strong>Codex CLI（擇一）</strong></p>
+<pre><code class="language-bash">codex exec "設計一份國小數學「分數加減」教案，用 Markdown 格式輸出，包含：
+- 教學目標（條列）
+- 教學流程（分段，用標題區分）
+- 評量方式（表格呈現）
+"
+</code></pre>
+<p><strong>Claude Code（擇一）</strong></p>
+<pre><code class="language-bash">claude -p "設計一份國小數學「分數加減」教案，用 Markdown 格式輸出，包含：
+- 教學目標（條列）
+- 教學流程（分段，用標題區分）
+- 評量方式（表格呈現）
+"
+</code></pre>
+<p><strong>AI 輸出</strong>：</p>
+<pre><code class="language-markdown"># 分數加減教案
+
+## 教學目標
+- 學生能理解同分母分數相加
+- 學生能運用分數解決生活問題
+- 學生能說明分數加法的意義
+
+## 教學流程
+
+### 引起動機（10 分鐘）
+使用披薩切片的例子...
+
+### 發展活動（25 分鐘）
+1. 教師示範...
+2. 學生練習...
+
+## 評量方式
+
+| 評量項目 | 方式 | 佔分 |
+|---------|------|------|
+| 課堂練習 | 紙筆測驗 | 40% |
+| 小組討論 | 觀察紀錄 | 30% |
+| 回家作業 | 作業批改 | 30% |
+</code></pre>
+<hr/>
+<h3 id="markdown_4">Markdown 進階應用：嵌入圖表</h3>
+<h4 id="mermaid">Mermaid：流程圖、架構圖</h4>
+<p><strong>範例：教學流程圖</strong></p>
+<pre><code class="language-markdown">```mermaid
+graph LR
+    A[課前準備] --&gt; B[引起動機]
+    B --&gt; C[概念講解]
+    C --&gt; D[練習活動]
+    D --&gt; E[總結評量]
+```
+</code></pre>
+<p><strong>優點</strong>：<br/>
+- 文字描述就能生成圖表<br/>
+- 修改方便<br/>
+- 風格統一</p>
+<hr/>
+<h2 id="mermaid-vs-plantuml">Mermaid vs PlantUML：差異與選擇</h2>
+<h3 id="_6">快速比較表</h3>
+<table>
+<thead>
+<tr>
+<th>比較項目</th>
+<th>Mermaid</th>
+<th>PlantUML</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>學習難度</strong></td>
+<td>⭐⭐ 簡單</td>
+<td>⭐⭐⭐ 中等</td>
+</tr>
+<tr>
+<td><strong>圖表類型</strong></td>
+<td>流程圖、甘特圖、類別圖</td>
+<td>UML 全系列、架構圖</td>
+</tr>
+<tr>
+<td><strong>渲染方式</strong></td>
+<td>瀏覽器即時渲染</td>
+<td>需要外部工具</td>
+</tr>
+<tr>
+<td><strong>適用對象</strong></td>
+<td>教師、一般用途</td>
+<td>軟體工程師</td>
+</tr>
+<tr>
+<td><strong>VSCode 支援</strong></td>
+<td>內建預覽</td>
+<td>需安裝擴充</td>
+</tr>
+<tr>
+<td><strong>適合情境</strong></td>
+<td>教學流程、概念圖</td>
+<td>系統架構、程式設計</td>
+</tr>
+</tbody>
+</table>
+<h3 id="mermaid_1">Mermaid 適用情境</h3>
+<h4 id="1_1">1. 教學流程圖</h4>
+<div class="mermaid">graph TD
+    A[第一節課&lt;br/&gt;認識昆蟲] --&gt; B[第二節課&lt;br/&gt;觀察實作]
+    B --&gt; C[第三節課&lt;br/&gt;分類整理]
+    C --&gt; D[第四節課&lt;br/&gt;成果發表]
+</div>
+<h4 id="2_1">2. 概念關係圖</h4>
+<div class="mermaid">graph LR
+    A[植物] --&gt; B[光合作用]
+    B --&gt; C[氧氣]
+    B --&gt; D[養分]
+    E[陽光] --&gt; B
+    F[水] --&gt; B
+    G[二氧化碳] --&gt; B
+</div>
+<h4 id="3_1">3. 甘特圖（進度規劃）</h4>
+<div class="mermaid">gantt
+    title 專題研究進度
+    section 階段一
+    文獻蒐集: 2024-10-01, 7d
+    section 階段二
+    實驗設計: 2024-10-08, 5d
+    資料蒐集: 2024-10-13, 10d
+    section 階段三
+    分析報告: 2024-10-23, 5d
+</div>
+<h3 id="plantuml">PlantUML 適用情境</h3>
+<h4 id="1_2">1. 系統架構圖</h4>
+<pre><code class="language-plantuml">@startuml
+package "教學系統" {
+  [教案管理]
+  [學生管理]
+  [成績系統]
+}
+
+package "資料庫" {
+  database "MySQL"
+}
+
+[教案管理] --&gt; [MySQL]
+[學生管理] --&gt; [MySQL]
+[成績系統] --&gt; [MySQL]
+@enduml
+</code></pre>
+<h4 id="2_2">2. 類別圖（程式設計用）</h4>
+<pre><code class="language-plantuml">@startuml
+class 學生 {
+  +姓名
+  +學號
+  +成績
+  +計算平均()
+}
+
+class 教師 {
+  +姓名
+  +科目
+  +教學()
+  +評分()
+}
+
+學生 "多" -- "1" 教師 : 學習
+@enduml
+</code></pre>
+<h3 id="_7">教師實務建議</h3>
+<p><strong>建議使用 Mermaid，理由：</strong><br/>
+1. ✅ 學習曲線平緩，30 分鐘上手<br/>
+2. ✅ VSCode 原生支援，即時預覽<br/>
+3. ✅ 足夠應付教學需求（流程、概念圖）<br/>
+4. ✅ Markdown 直接嵌入，不需額外工具</p>
+<p><strong>PlantUML 適合：</strong><br/>
+- 資訊科技老師<br/>
+- 需要繪製軟體架構<br/>
+- 專案管理複雜圖表</p>
+<hr/>
+<h2 id="_8">完整實戰案例：從大綱到完整教材設計</h2>
+<h3 id="_9">情境：設計「大型語言模型」教學教材</h3>
+<p><strong>對象</strong>：高中資訊科技課程<br/>
+<strong>時間</strong>：4 週，每週 2 小時</p>
+<hr/>
+<h3 id="_10">階段一：生成教學大綱</h3>
+<p><strong>檔案準備</strong>：<br/>
+在 VS Code 建立並開啟 <code>llm_course/</code>，終端機也切換至此資料夾；所有檔案以下採同一層目錄。</p>
+<p><strong>Prompt</strong>：<br/>
+<strong>Codex CLI（擇一）</strong></p>
+<pre><code class="language-bash">codex exec "我要為高中生設計『大型語言模型入門』課程，共 4 週。
+
+請生成課程大綱，以 Markdown 格式輸出：
+
+## 課程名稱
+## 目標學生
+## 課程目標（3-5 點）
+## 週次規劃
+
+### 第一週：
+- 主題
+- 重點概念
+- 教學活動
+
+### 第二週：
+...
+
+請以 Markdown 格式完整輸出。" &gt; course_outline.md
+</code></pre>
+<p><strong>Claude Code（擇一）</strong></p>
+<pre><code class="language-bash">claude -p "我要為高中生設計『大型語言模型入門』課程，共 4 週。
+
+請生成課程大綱，以 Markdown 格式輸出：
+
+## 課程名稱
+## 目標學生
+## 課程目標（3-5 點）
+## 週次規劃
+
+### 第一週：
+- 主題
+- 重點概念
+- 教學活動
+
+### 第二週：
+...
+
+請以 Markdown 格式完整輸出。" &gt; course_outline.md
+</code></pre>
+<p><strong>生成結果</strong>（部分）：</p>
+<pre><code class="language-markdown"># 大型語言模型入門課程
+
+## 目標學生
+高中一、二年級，具備基本電腦操作能力
+
+## 課程目標
+- 理解 AI 與大型語言模型的基本概念
+- 能操作並評估 AI 工具（如 ChatGPT）
+- 認識 AI 的應用與倫理議題
+- 培養批判思考與資訊素養
+
+## 週次規劃
+
+### 第一週：認識 AI 與語言模型
+**主題**：什麼是 AI？語言模型如何運作？
+
+**重點概念**：
+- AI、機器學習、深度學習的關係
+- 語言模型的訓練方式
+- Transformer 架構（簡化說明）
+
+**教學活動**：
+1. 破冰：讓學生試用 ChatGPT，紀錄驚訝與疑問
+2. 講解：用比喻說明 AI 如何學習語言
+3. 實作：設計不同提示詞，觀察 AI 回應差異
+
+---
+
+### 第二週：提示工程（Prompt Engineering）
+...
+</code></pre>
+<hr/>
+<h3 id="_11">階段二：根據大綱細化每週教材</h3>
+<p><strong>針對第一週，生成詳細教案</strong>：</p>
+<p><strong>Prompt</strong>：<br/>
+<strong>Codex CLI（擇一）</strong></p>
+<pre><code class="language-bash">codex exec "根據 course_outline.md 的第一週內容，設計完整的 2 小時教案。
+
+輸出格式（Markdown）：
+# 第一週教案：認識 AI 與語言模型
+
+## 教學目標
+## 教學準備
+## 教學流程（分段，含時間）
+### 引起動機（15 分鐘）
+### 概念講解（30 分鐘）
+### 實作活動（40 分鐘）
+### 討論與總結（20 分鐘）
+### 休息與轉場（15 分鐘）
+## 學習單設計
+## 評量方式
+## 延伸閱讀
+
+請生成完整內容。" &gt; week1_lesson_plan.md
+</code></pre>
+<p><strong>Claude Code（擇一）</strong></p>
+<pre><code class="language-bash">claude -p "根據 course_outline.md 的第一週內容，設計完整的 2 小時教案。
+
+輸出格式（Markdown）：
+# 第一週教案：認識 AI 與語言模型
+
+## 教學目標
+## 教學準備
+## 教學流程（分段，含時間）
+### 引起動機（15 分鐘）
+### 概念講解（30 分鐘）
+### 實作活動（40 分鐘）
+### 討論與總結（20 分鐘）
+### 休息與轉場（15 分鐘）
+## 學習單設計
+## 評量方式
+## 延伸閱讀
+
+請生成完整內容。" &gt; week1_lesson_plan.md
+</code></pre>
+<hr/>
+<h3 id="_12">階段三：生成教學簡報大綱</h3>
+<p><strong>Prompt</strong>：<br/>
+<strong>Codex CLI（擇一）</strong></p>
+<pre><code class="language-bash">codex exec "根據 week1_lesson_plan.md，設計一份教學簡報大綱（15-20 頁）。
+
+以 Markdown 列表方式輸出，每個項目是一頁投影片的標題與重點：
+
+## 投影片大綱
+
+### 第 1 頁：課程標題
+- 標題：認識 AI 與語言模型
+- 副標題：探索 ChatGPT 背後的科學
+
+### 第 2 頁：破冰活動
+- 提問：你用過哪些 AI 工具？
+- 互動：掃碼體驗 ChatGPT
+
+...
+
+請包含流程圖建議（用 Mermaid 語法）" &gt; week1_slides_outline.md
+</code></pre>
+<p><strong>Claude Code（擇一）</strong></p>
+<pre><code class="language-bash">claude -p "根據 week1_lesson_plan.md，設計一份教學簡報大綱（15-20 頁）。
+
+以 Markdown 列表方式輸出，每個項目是一頁投影片的標題與重點：
+
+## 投影片大綱
+
+### 第 1 頁：課程標題
+- 標題：認識 AI 與語言模型
+- 副標題：探索 ChatGPT 背後的科學
+
+### 第 2 頁：破冰活動
+- 提問：你用過哪些 AI 工具？
+- 互動：掃碼體驗 ChatGPT
+
+...
+
+請包含流程圖建議（用 Mermaid 語法）" &gt; week1_slides_outline.md
+</code></pre>
+<hr/>
+<h3 id="_13">階段四：生成學習單</h3>
+<p><strong>Prompt</strong>：<br/>
+<strong>Codex CLI（擇一）</strong></p>
+<pre><code class="language-bash">codex exec "根據 week1_lesson_plan.md，設計一份學習單。
+
+格式：
+# 學習單：認識 AI 與語言模型
+
+## 第一部分：課前暖身（3 題）
+## 第二部分：實作紀錄
+### 任務一：設計 3 個提示詞
+| 提示詞 | AI 回應摘要 | 你的觀察 |
+|--------|------------|---------|
+| ... | ... | ... |
+
+## 第三部分：反思問題（2 題）
+## 第四部分：延伸挑戰（選做）
+
+請以 Markdown 表格與條列方式輸出完整內容。" &gt; week1_worksheet.md
+</code></pre>
+<p><strong>Claude Code（擇一）</strong></p>
+<pre><code class="language-bash">claude -p "根據 week1_lesson_plan.md，設計一份學習單。
+
+格式：
+# 學習單：認識 AI 與語言模型
+
+## 第一部分：課前暖身（3 題）
+## 第二部分：實作紀錄
+### 任務一：設計 3 個提示詞
+| 提示詞 | AI 回應摘要 | 你的觀察 |
+|--------|------------|---------|
+| ... | ... | ... |
+
+## 第三部分：反思問題（2 題）
+## 第四部分：延伸挑戰（選做）
+
+請以 Markdown 表格與條列方式輸出完整內容。" &gt; week1_worksheet.md
+</code></pre>
+<hr/>
+<h3 id="_14">階段五：生成評量試題</h3>
+<p><strong>Prompt</strong>：<br/>
+<strong>Codex CLI（擇一）</strong></p>
+<pre><code class="language-bash">codex exec "根據 week1_lesson_plan.md，設計評量題目。
+
+# 第一週評量
+
+## 選擇題（5 題）
+測驗基本概念理解
+
+## 簡答題（3 題）
+測驗應用與思考
+
+## 實作題（1 題）
+設計一個教學情境的 AI 應用，並說明提示詞設計
+
+請附標準答案與評分標準。" &gt; week1_assessment.md
+</code></pre>
+<p><strong>Claude Code（擇一）</strong></p>
+<pre><code class="language-bash">claude -p "根據 week1_lesson_plan.md，設計評量題目。
+
+# 第一週評量
+
+## 選擇題（5 題）
+測驗基本概念理解
+
+## 簡答題（3 題）
+測驗應用與思考
+
+## 實作題（1 題）
+設計一個教學情境的 AI 應用，並說明提示詞設計
+
+請附標準答案與評分標準。" &gt; week1_assessment.md
+</code></pre>
+<hr/>
+<h3 id="_15">階段六：整合所有檔案</h3>
+<p><strong>資料夾結構</strong>（第一週完成後，與上面指令一致）：</p>
+<pre><code>llm_course/
+├── course_outline.md
+├── week1_lesson_plan.md
+├── week1_slides_outline.md
+├── week1_worksheet.md
+└── week1_assessment.md
+</code></pre>
+<p>其他週次請同樣建立對應檔案後再整合；不存在的週次不可讓 AI 補寫成「已完成」。</p>
+<p><strong>最後整合指令</strong>：<br/>
+<strong>Codex CLI（擇一）</strong></p>
+<pre><code class="language-bash">codex exec "統整目前資料夾中 course_outline.md 與 week1_ 開頭的檔案，生成一份『完整課程手冊』，包含：
+- 目錄（自動生成連結）
+- 課程概覽
+- 各週教學內容（引用各檔案）
+- 附錄（參考資源、延伸閱讀）
+
+只回傳手冊 Markdown 內容，不要自行寫入檔案" &gt; course_handbook.md
+</code></pre>
+<p><strong>Claude Code（擇一）</strong></p>
+<pre><code class="language-bash">claude -p "統整目前資料夾中 course_outline.md 與 week1_ 開頭的檔案，生成一份『完整課程手冊』，包含：
+- 目錄（自動生成連結）
+- 課程概覽
+- 各週教學內容（引用各檔案）
+- 附錄（參考資源、延伸閱讀）
+
+只回傳手冊 Markdown 內容，不要自行寫入檔案" &gt; course_handbook.md
+</code></pre>
+<hr/>
+<h3 id="_16">完整流程圖</h3>
+<div class="mermaid">graph TD
+    A[生成課程大綱] --&gt; B[細化週次教案]
+    B --&gt; C1[教學簡報大綱]
+    B --&gt; C2[學習單]
+    B --&gt; C3[評量試題]
+    C1 --&gt; D[整合成課程手冊]
+    C2 --&gt; D
+    C3 --&gt; D
+    D --&gt; E[轉換成 PDF/Word]
+</div>
+<hr/>
+<h3 id="_17">時間效益分析（課堂試算，非實測保證）</h3>
+<table>
+<thead>
+<tr>
+<th>任務</th>
+<th>傳統方式</th>
+<th>AI + CLI 方式</th>
+<th>節省時間</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>課程大綱</td>
+<td>2 小時</td>
+<td>5 分鐘 + 調整 15 分鐘</td>
+<td>約 83%</td>
+</tr>
+<tr>
+<td>單週教案</td>
+<td>3 小時</td>
+<td>10 分鐘 + 調整 30 分鐘</td>
+<td>約 78%</td>
+</tr>
+<tr>
+<td>學習單</td>
+<td>1.5 小時</td>
+<td>5 分鐘 + 調整 20 分鐘</td>
+<td>約 72%</td>
+</tr>
+<tr>
+<td>評量設計</td>
+<td>2 小時</td>
+<td>10 分鐘 + 調整 30 分鐘</td>
+<td>約 67%</td>
+</tr>
+<tr>
+<td><strong>表內四項合計</strong></td>
+<td><strong>8.5 小時</strong></td>
+<td><strong>2 小時 5 分鐘</strong></td>
+<td><strong>約 75%（試算）</strong></td>
+</tr>
+</tbody>
+</table>
+<hr/>
+<h2 id="_18">實用指令總結</h2>
+<h3 id="_19">多檔案整合分析</h3>
+<p><strong>Codex CLI（擇一）</strong></p>
+<pre><code class="language-bash"># 分析整個資料夾
+codex exec "分析這個資料夾的所有檔案並生成摘要"
+
+# 指定特定檔案
+codex exec "整合 file1.txt, file2.txt, file3.txt 的內容"
+</code></pre>
+<p><strong>Claude Code（擇一）</strong></p>
+<pre><code class="language-bash"># 分析整個資料夾
+claude -p "分析這個資料夾的所有檔案並生成摘要"
+
+# 指定特定檔案
+claude -p "整合 file1.txt, file2.txt, file3.txt 的內容"
+</code></pre>
+<h3 id="markdown_5">輸出為 Markdown 檔案</h3>
+<p><strong>Codex CLI（擇一）</strong></p>
+<pre><code class="language-bash"># 直接輸出
+codex exec "生成教案" &gt; lesson.md
+
+# 追加內容
+codex exec "生成評量" &gt;&gt; lesson.md
+</code></pre>
+<p><strong>Claude Code（擇一）</strong></p>
+<pre><code class="language-bash"># 直接輸出
+claude -p "生成教案" &gt; lesson.md
+
+# 追加內容
+claude -p "生成評量" &gt;&gt; lesson.md
+</code></pre>
+<h3 id="mermaid_2">使用 Mermaid 圖表</h3>
+<p><strong>Codex CLI（擇一）</strong></p>
+<pre><code class="language-bash">codex exec "設計教學流程，用 Mermaid 流程圖呈現" &gt; flow.md
+</code></pre>
+<p><strong>Claude Code（擇一）</strong></p>
+<pre><code class="language-bash">claude -p "設計教學流程，用 Mermaid 流程圖呈現" &gt; flow.md
+</code></pre>
+<h3 id="_20">批次處理</h3>
+<p><strong>Codex CLI（擇一）</strong></p>
+<pre><code class="language-bash"># 為每個單元生成教案
+for unit in unit1 unit2 unit3; do
+  codex exec "閱讀 $unit/source.md，僅依來源生成教案，不要寫檔" &gt; ${unit}_plan.md
+done
+</code></pre>
+<p><strong>Claude Code（擇一）</strong></p>
+<pre><code class="language-bash"># 為每個單元生成教案
+for unit in unit1 unit2 unit3; do
+  claude -p "閱讀 $unit/source.md，僅依來源生成教案，不要寫檔" &gt; ${unit}_plan.md
+done
+</code></pre>
+<hr/>
+<p><strong>學習銜接</strong>：完成後回到<a href="04_workspace.html">單元四</a>的練習任務。</p>
+<h3 id="powershell-7">PowerShell 7 批次操作對照</h3>
+<p>先確認 <code>unit1</code>、<code>unit2</code>、<code>unit3</code> 各有 <code>source.md</code>，以下兩種選一種；每次產生的是獨立任務，提示需指定來源。</p>
+<pre><code class="language-powershell">foreach ($unit in @('unit1', 'unit2', 'unit3')) {
+    codex exec "閱讀 $unit/source.md，僅依來源生成教案，將 Markdown 內容回傳，不要寫檔" &gt; "${unit}_plan.md"
+    if ($LASTEXITCODE -ne 0) { throw "生成失敗：$unit" }
+}
+</code></pre>
+<p>Claude Code 路線把該行改為 <code>claude -p "閱讀 $unit/source.md，僅依來源生成教案，將 Markdown 內容回傳，不要寫檔" &gt; "${unit}_plan.md"</code>。不把失敗後留下的空檔當成完成。</p></div>
+<!-- Highlight.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+<script>hljs.highlightAll();</script>
+<!-- Mermaid -->
+<script type="module">
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+        mermaid.initialize({
+            "startOnLoad": true,
+            "theme": "dark",
+            "securityLevel": "loose"
+});
+    </script>
+<nav aria-label="課程導覽" class="course-nav"><a href="index.html">課程目錄</a><a href="04_workspace.html">← 上一章</a><a href="05_instructions.html">下一章 →</a><a href="04a_workflows.md">Markdown 原文</a><span>雙 CLI 教材 · 2026-10-31</span></nav></body>
+</html>

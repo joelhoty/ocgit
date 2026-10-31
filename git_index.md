@@ -71,25 +71,26 @@
 |-----------|:------------:|------|
 | CD_shape_1_b03.html | 2026-03-20 | [🔗 Open](https://joelhoty.github.io/ocgit/Coreldraw/CD_shape_1_b03.html) |
 
-## 📂 GeminiForDesignTeaching
+## 📂 AI_Agent_CLi
 
 | File Name | Last Updated | Link |
 |-----------|:------------:|------|
-| Gemini_CLI_Tutorial_b02.html | 2025-12-30 | [🔗 Open](https://joelhoty.github.io/ocgit/GeminiForDesignTeaching/Gemini_CLI_Tutorial_b02.html) |
-| index_content.html | 2025-12-30 | [🔗 Open](https://joelhoty.github.io/ocgit/GeminiForDesignTeaching/index_content.html) |
-| Environment_Setup_Guide_b06.html | 2025-12-14 | [🔗 Open](https://joelhoty.github.io/ocgit/GeminiForDesignTeaching/Environment_Setup_Guide_b06.html) |
-| unit01_first_ai_material_b02.html | 2025-12-09 | [🔗 Open](https://joelhoty.github.io/ocgit/GeminiForDesignTeaching/unit01_first_ai_material_b02.html) |
-| AI_Agent_Cli_b13.html | 2025-11-18 | [🔗 Open](https://joelhoty.github.io/ocgit/GeminiForDesignTeaching/AI_Agent_Cli_b13.html) |
-| literacy_b02.html | 2025-10-20 | [🔗 Open](https://joelhoty.github.io/ocgit/GeminiForDesignTeaching/literacy_b02.html) |
-| literacy_chatgpt_revise_b06.html | 2025-10-20 | [🔗 Open](https://joelhoty.github.io/ocgit/GeminiForDesignTeaching/literacy_chatgpt_revise_b06.html) |
-| literacy_research.html | 2025-10-20 | [🔗 Open](https://joelhoty.github.io/ocgit/GeminiForDesignTeaching/literacy_research.html) |
-| unit02_ai_image_generation_b02.html | 2025-10-18 | [🔗 Open](https://joelhoty.github.io/ocgit/GeminiForDesignTeaching/unit02_ai_image_generation_b02.html) |
-| unit03_notebooklm_b02.html | 2025-10-18 | [🔗 Open](https://joelhoty.github.io/ocgit/GeminiForDesignTeaching/unit03_notebooklm_b02.html) |
-| unit04_local_ai_setup_b02.html | 2025-10-18 | [🔗 Open](https://joelhoty.github.io/ocgit/GeminiForDesignTeaching/unit04_local_ai_setup_b02.html) |
-| unit04_supplement_additions.html | 2025-10-18 | [🔗 Open](https://joelhoty.github.io/ocgit/GeminiForDesignTeaching/unit04_supplement_additions.html) |
-| unit05_gemini_md_customization_b01.html | 2025-10-18 | [🔗 Open](https://joelhoty.github.io/ocgit/GeminiForDesignTeaching/unit05_gemini_md_customization_b01.html) |
-| unit06_practical_lesson_plan_b02.html | 2025-10-18 | [🔗 Open](https://joelhoty.github.io/ocgit/GeminiForDesignTeaching/unit06_practical_lesson_plan_b02.html) |
-| unit06_supplement_additions.html | 2025-10-18 | [🔗 Open](https://joelhoty.github.io/ocgit/GeminiForDesignTeaching/unit06_supplement_additions.html) |
+| 00_intro.html | 2026-10-31 | [🔗 Open](https://joelhoty.github.io/ocgit/AI_Agent_CLi/00_intro.html) |
+| 09_cli_practice.html | 2026-10-31 | [🔗 Open](https://joelhoty.github.io/ocgit/AI_Agent_CLi/09_cli_practice.html) |
+| index.html | 2026-10-31 | [🔗 Open](https://joelhoty.github.io/ocgit/AI_Agent_CLi/index.html) |
+| 08_environment.html | 2026-10-31 | [🔗 Open](https://joelhoty.github.io/ocgit/AI_Agent_CLi/08_environment.html) |
+| 01_materials.html | 2026-10-31 | [🔗 Open](https://joelhoty.github.io/ocgit/AI_Agent_CLi/01_materials.html) |
+| 07_agents_cli.html | 2026-10-31 | [🔗 Open](https://joelhoty.github.io/ocgit/AI_Agent_CLi/07_agents_cli.html) |
+| 10_literacy.html | 2026-10-31 | [🔗 Open](https://joelhoty.github.io/ocgit/AI_Agent_CLi/10_literacy.html) |
+| 11_literacy_practice.html | 2026-10-31 | [🔗 Open](https://joelhoty.github.io/ocgit/AI_Agent_CLi/11_literacy_practice.html) |
+| 12_literacy_research.html | 2026-10-31 | [🔗 Open](https://joelhoty.github.io/ocgit/AI_Agent_CLi/12_literacy_research.html) |
+| 02_images.html | 2026-10-31 | [🔗 Open](https://joelhoty.github.io/ocgit/AI_Agent_CLi/02_images.html) |
+| 03_notebooklm.html | 2026-10-31 | [🔗 Open](https://joelhoty.github.io/ocgit/AI_Agent_CLi/03_notebooklm.html) |
+| 04_workspace.html | 2026-10-31 | [🔗 Open](https://joelhoty.github.io/ocgit/AI_Agent_CLi/04_workspace.html) |
+| 04a_workflows.html | 2026-10-31 | [🔗 Open](https://joelhoty.github.io/ocgit/AI_Agent_CLi/04a_workflows.html) |
+| 05_instructions.html | 2026-10-31 | [🔗 Open](https://joelhoty.github.io/ocgit/AI_Agent_CLi/05_instructions.html) |
+| 06_lesson_plans.html | 2026-10-31 | [🔗 Open](https://joelhoty.github.io/ocgit/AI_Agent_CLi/06_lesson_plans.html) |
+| 06a_assessment.html | 2026-10-31 | [🔗 Open](https://joelhoty.github.io/ocgit/AI_Agent_CLi/06a_assessment.html) |
 
 ## 📂 Git
 
