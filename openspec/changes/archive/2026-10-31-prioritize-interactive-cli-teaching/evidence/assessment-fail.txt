@@ -1,0 +1,3 @@
+Adapted RED: REQ-TEACH-009/010 daily and advanced examples should not invoke CLI with prompt.
+AI_Agent_CLi/06_lesson_plans.md: FAIL (3 prohibited occurrences)
+AI_Agent_CLi/06a_assessment.md: FAIL (27 prohibited occurrences)

@@ -1,0 +1,39 @@
+{
+  "task_id": "task-2",
+  "subject_hash": "sha256:e42a75e74d23db588692daf0731305a855e63e2d14d52eb834b1dbd10c39b116",
+  "static": {
+    "status": "PASS",
+    "counts": {
+      "html": 16,
+      "local_links": 280,
+      "redirects": 15,
+      "markdown_pairs": 10
+    },
+    "errors": []
+  },
+  "command_prompt_matches": [],
+  "browser": {
+    "path": "openspec/changes/prioritize-interactive-cli-teaching/evidence/browser-results-2.json",
+    "sha256": "6c6a64b483a2cb4d51757fa7e10f13a292d88f69d7863975e8a26eea624bdd3f",
+    "cases": 47
+  },
+  "reviews": [
+    {
+      "path": "openspec/changes/prioritize-interactive-cli-teaching/evidence/spec-review-v2.md",
+      "sha256": "624337367be4651577ae62c7ed60b4eaf0a95ff5c1217cf9cb7ce63706d99a2a"
+    },
+    {
+      "path": "openspec/changes/prioritize-interactive-cli-teaching/evidence/quality-review-v1.md",
+      "sha256": "fd3aea16c949d4edf8b873bbaf73933397a6fd2af31aa39607c63e225d5a7f70"
+    },
+    {
+      "path": "openspec/changes/prioritize-interactive-cli-teaching/evidence/visual-review.md",
+      "sha256": "05bdeab31a768b5ea02395ab9b6d1de72a14d8e9957d17cf88946e278defff41"
+    },
+    {
+      "path": "openspec/changes/prioritize-interactive-cli-teaching/evidence/spec-policy-review.md",
+      "sha256": "67cf6a5accc17d714ca48e32f2934c74284e470e35a41a08c32bf5db5a6eda61"
+    }
+  ],
+  "captured_at": "2026-10-31T14:09:22.280368+00:00"
+}

@@ -78,7 +78,7 @@
 html{scroll-behavior:smooth}body{box-sizing:border-box}img{max-width:100%;height:auto}pre{max-width:100%;overflow-x:auto}table{display:block;max-width:100%;overflow-x:auto}td,th{min-width:7em}.course-nav{display:flex;flex-wrap:wrap;gap:.65em;align-items:center;padding:1em 0;margin:1em 0;border-bottom:1px solid #3e3e3e;font-size:.95rem}.course-nav a{color:#66b3ff}.course-nav span{color:#aaa}.course-toc{margin:1.5em 0;padding:1em;background:#222831;border-radius:8px}.course-toc a{overflow-wrap:anywhere}h1,h2,h3,p,li{overflow-wrap:break-word}.mermaid svg{max-width:100%;height:auto}@media(max-width:600px){body{padding:14px!important}h1{font-size:1.65em}pre code{padding:1em}.course-nav{line-height:1.8}}
 </style></head>
 <body><nav aria-label="課程導覽" class="course-nav"><a href="index.html">課程目錄</a><a href="01_materials.html">下一章 →</a><a href="00_intro.md">Markdown 原文</a><span>雙 CLI 教材 · 2026-10-31</span></nav>
-<div class="container"><!-- Path: AI_Agent_CLi | Updated: 2026-10-31 | Version: b05-course-revision -->
+<div class="container"><span class="legacy-anchor" id="59-cli"></span><!-- Path: AI_Agent_CLi | Updated: 2026-10-31 | Version: b05-course-revision -->
 <h1 id="ai-agent">前導章：讓 AI Agent 成為個人工作與學習助理</h1><details class="course-toc"><summary>本頁章節</summary><ul><li><a href="#0">0. 使用方式與學習目標</a></li><li><a href="#1-ai-why">1. 為什麼需要一個 AI 工作環境（Why）</a></li><li><a href="#2-llm-agent-what">2. LLM 與 Agent 的六層關係（What）</a></li><li><a href="#3">3. 工具地圖與安裝需求</a></li><li><a href="#4-windows-how">4. Windows 基礎環境安裝（How）</a></li><li><a href="#5-agent-cli">5. 安裝並啟動一款 Agent CLI</a></li><li><a href="#6-git">6. 用資料夾與 Git 管理專案</a></li><li><a href="#7-agentsmd-ai">7. AGENTS.md 與第一個 AI 學習任務</a></li><li><a href="#8-python-uv">8. Python 與 uv：建立可重現的執行環境</a></li><li><a href="#9">9. 可執行實作：學習時間統計</a></li><li><a href="#10-macos">10. macOS 操作差異</a></li><li><a href="#11-qa">11. 常見問題與解決方案（Q&amp;A）</a></li><li><a href="#12-practice">12. 實作練習與評量（Practice）</a></li><li><a href="#13-summary">13. 學習總結（Summary）</a></li><li><a href="#14-extension-application">14. 延伸問題與應用（Extension &amp; Application）</a></li><li><a href="#15">15. 官方文件與維護方式</a></li><li><a href="#jev">Jev 合規檢查紀錄（原稿歷史紀錄）</a></li><li><a href="#jev_1">Jev 圖表選型檢查紀錄（原稿歷史紀錄）</a></li></ul></details>
 <p><strong>Codex CLI／Claude Code 雙主線｜環境建置與實作教材</strong></p>
 <blockquote>
@@ -145,7 +145,8 @@ html{scroll-behavior:smooth}body{box-sizing:border-box}img{max-width:100%;height
 <h3 id="03">0.3 指令閱讀約定</h3>
 <ul>
 <li>標成 <code>powershell</code> 的區塊在 PowerShell 執行；標成 <code>bash</code> 的區塊在 macOS Terminal 的 zsh／bash 執行。</li>
-<li><code>transcript</code> 是輸入給 AI 的提示或預期輸出，不能當成終端機指令執行。</li>
+<li><code>text</code> 是在 CLI 會話輸入的自然語言；<code>transcript</code> 是 AI 提示或預期輸出，都不能當成 shell 指令執行。</li>
+<li><code>/model</code> 等斜線指令也在 CLI 會話內輸入，詳見第 5.10 節。</li>
 <li>每次只執行一小段，確認結果後再往下做；不要把整份講義一次貼入終端機。</li>
 <li>本教材使用 <code>%USERPROFILE%</code> 對應的個人目錄；PowerShell 的寫法是 <code>$env:USERPROFILE</code>。macOS 使用 <code>$HOME</code>。</li>
 <li>範例的姓名、郵件、版本輸出都是示意；請改成自己的值。登入憑證只在官方登入頁或指定設定位置輸入。</li>
@@ -1393,57 +1394,110 @@ winget list --name Claude
 </tbody>
 </table>
 <p>同名指令出現多個版本時，先確認目前使用哪一份，再處理舊安裝，避免誤刪正在使用的版本。</p>
-<h3 id="59-cli">5.9 從互動到單次任務：雙 CLI 最小操作對照</h3>
-<p>以下指令在 shell 執行；對話內的 <code>/status</code>、<code>/permissions</code>、<code>/memory</code> 等指令不可直接貼到 PowerShell。先完成第 6 章的專案與 Git 初始化，再做單次讀檔練習。</p>
+<h3 id="59">5.9 啟動後，以自然語言完成任務</h3>
+<p>在專案資料夾的終端機輸入 <code>codex</code> 或 <code>claude</code>，選一款啟動即可。進入 CLI 後，日常與進階任務都在同一會話中逐輪溝通；不用每次回到 shell 重新啟動。安裝與環境設定指令才依標示在 shell 執行。</p>
+<p><strong>練習輸入：</strong>完成第 6 章的專案準備，再使用第 7.4 節的 <code>inputs/notes.md</code>。在 CLI 的對話輸入區貼上：</p>
+<pre><code class="language-text">閱讀 inputs/notes.md，列出三個重點及各自的來源段落。
+先不要修改檔案；如果找不到來源，請指出缺少什麼。
+</code></pre>
+<p>讀完回答後，在<strong>同一會話</strong>接著說：</p>
+<pre><code class="language-text">把剛才的三個重點改寫成適合高中生複習的版本。
+保留來源段落，每點加一個自我檢核問題；不要增加筆記中沒有的事實。
+</code></pre>
+<p>核對內容後，再交代產物：</p>
+<pre><code class="language-text">將確認後的內容存成 outputs/notes_summary.md。
+若檔案已存在，先說明差異，不要直接覆寫。
+完成後重新讀取檔案，確認三個重點、來源與自我檢核問題都已保存。
+</code></pre>
+<p><strong>預期產物：</strong>有來源的三個重點與 <code>outputs/notes_summary.md</code>。<strong>驗收：</strong>逐點對回筆記，開啟實際檔案檢查，再查看 Git 變更；原先已有的修改不能算成本次成果。這是學習者實作設計，編寫教材時未代替學習者呼叫模型。</p>
+<p>文字要求「不要修改」不是檔案系統唯讀設定。開始前用會話內的 <code>/permissions</code> 檢查工具權限，收到操作授權時看清楚路徑與用途。專案長期指引另放在 <code>AGENTS.md</code> 或 <code>CLAUDE.md</code>，詳見<a href="05_instructions.html">單元五：專案指引</a>，它們是檔案，不是對話操作指令。</p>
+<h3 id="510">5.10 常用會話內指令速查</h3>
+<p>以下指令在<strong>已啟動的 CLI 對話輸入區</strong>輸入，不貼到 PowerShell 或 zsh。先輸入 <code>/</code> 查看選單，再選需要的指令。功能會隨版本、方案與組織設定而異；沒有出現的指令，先查目前版本的說明，不要直接套用另一款工具的名稱。</p>
 <table>
 <thead>
 <tr>
-<th>目的</th>
+<th>想做什麼</th>
 <th>Codex CLI</th>
 <th>Claude Code</th>
+<th>使用時機</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>啟動互動會話</td>
-<td><code>codex</code></td>
-<td><code>claude</code></td>
+<td>選模型</td>
+<td><code>/model</code></td>
+<td><code>/model</code></td>
+<td>開始新階段前選擇帳號可用的模型</td>
 </tr>
 <tr>
-<td>查看命令說明</td>
-<td><code>codex --help</code></td>
-<td><code>claude --help</code></td>
+<td>看目前狀態</td>
+<td><code>/status</code></td>
+<td><code>/status</code></td>
+<td>確認目前工作設定</td>
 </tr>
 <tr>
-<td>接續既有工作</td>
-<td><code>codex resume</code></td>
-<td><code>claude -c</code>（目前目錄最近會話）或 <code>claude -r</code></td>
+<td>看用量</td>
+<td><code>/status</code>；可用 <code>/statusline</code> 顯示 token 等資訊</td>
+<td><code>/usage</code>（現行文件的 <code>/cost</code>、<code>/stats</code> 為其別名）</td>
+<td>一段工作後查看消耗與可用額度資訊</td>
 </tr>
 <tr>
-<td>檢查登入</td>
-<td><code>codex login status</code></td>
-<td>在會話使用 <code>/status</code>；需要重新登入用 <code>/login</code></td>
+<td>看 context 使用情況</td>
+<td><code>/status</code>、畫面下方狀態列</td>
+<td><code>/context</code></td>
+<td>檔案或對話變多，先確認上下文容量</td>
 </tr>
 <tr>
-<td>單次任務</td>
-<td><code>codex exec "任務"</code></td>
-<td><code>claude -p "任務"</code></td>
+<td>壓縮對話</td>
+<td><code>/compact</code></td>
+<td><code>/compact</code></td>
+<td>同一任務還要繼續，但上下文已變長</td>
 </tr>
 <tr>
-<td>權限檢查</td>
-<td>會話內 <code>/permissions</code></td>
-<td>會話內 <code>/permissions</code></td>
+<td>接續既有會話</td>
+<td><code>/resume</code></td>
+<td><code>/resume</code></td>
+<td>回到之前的工作，選對專案與會話</td>
+</tr>
+<tr>
+<td>開始不同任務</td>
+<td><code>/new</code></td>
+<td><code>/clear</code></td>
+<td>換主題，避免沿用不相關上下文</td>
+</tr>
+<tr>
+<td>檢查工具權限</td>
+<td><code>/permissions</code></td>
+<td><code>/permissions</code></td>
+<td>讀寫檔案或執行工具前</td>
+</tr>
+<tr>
+<td>找操作說明</td>
+<td>輸入 <code>/</code> 查看選單</td>
+<td><code>/help</code> 或 <code>/</code> 選單</td>
+<td>忘記名稱或確認版本支援</td>
 </tr>
 </tbody>
 </table>
-<p><strong>練習輸入：</strong>第 7.4 節的 <code>inputs/notes.md</code>。在專案根目錄執行所選工具的一行：</p>
-<pre><code class="language-bash">codex exec --sandbox read-only "只讀取 inputs/notes.md，列出三個重點及各自的來源段落，不修改任何檔案。"
+<p>Codex 本表以 <code>/status</code> 查用量，不將 Claude 的 <code>/usage</code> 當成兩款共通指令。模型清單以實際選單為準，無須背誦固定模型名稱。</p>
+<p>查核日期：2026-10-31。依據：<a href="https://learn.chatgpt.com/docs/developer-commands?surface=cli">Codex CLI 會話指令</a>、<a href="https://learn.chatgpt.com/docs/developer-settings">Codex 狀態與設定</a>、<a href="https://code.claude.com/docs/en/commands">Claude Code 指令</a>。</p>
+<h3 id="511-sessioncontext">5.11 進階操作：管理 session、context 與用量</h3>
+<p><strong>Session 是持續工作的會話；context 是模型當下能參考的內容。</strong> 保留會話有助於承接需求，但不代表每一輪都完整記住所有歷史。token 使用量也不等於帳單金額；上下文容量、方案額度及 API 計費是不同概念，依介面與帳號資料分別確認。</p>
+<ol>
+<li><strong>開始工作：</strong>用 <code>/model</code> 選擇模型，再用自然語言說明目標、來源、產物與驗收條件。先做一小段，檢查品質再擴大工作量。</li>
+<li><strong>進行中：</strong>一個階段完成後查看用量；Codex 用 <code>/status</code>，Claude 用 <code>/usage</code>。檔案很多時，明確指定本輪相關檔案，避免反覆要求讀取整個資料夾。</li>
+<li><strong>對話變長：</strong>先請 Agent 將已確認決策、檔案路徑、未完成事項存入 <code>progress.md</code>，確認內容後再使用 <code>/compact</code>。摘要可能遺漏細節，重要限制應保留在專案文件，接續時重新核對。</li>
+<li><strong>下次繼續：</strong>啟動 CLI 後用 <code>/resume</code> 選擇會話，請 Agent 檢查 <code>progress.md</code> 與目前檔案，再確認下一步。恢復歷史對話不會把檔案還原成當時版本。</li>
+<li><strong>換任務：</strong>先保存必要成果，再用 Codex <code>/new</code> 或 Claude <code>/clear</code> 開新對話；需要的來源與目標重新交代。</li>
+</ol>
+<p><strong>進階練習：</strong>完成摘要後，在同一會話提出：</p>
+<pre><code class="language-text">我想整理 inputs/ 裡本週的筆記。先列出檔案清單與分批計畫，
+說明哪些工作需要你閱讀內容，哪些適合用本機腳本整理。
+先以一份筆記試做，確認來源與格式後再處理其餘檔案。
+若需要腳本，先建立並解釋它的輸入、輸出與失敗處理，等我確認再執行。
+每份產物保留來源，失敗項目另外列出；不要把空檔案當作成功。
 </code></pre>
-<pre><code class="language-bash">claude -p "只讀取 inputs/notes.md，列出三個重點及各自的來源段落，不修改任何檔案。"
-</code></pre>
-<p>以上兩行同樣可在 PowerShell 使用。Codex 的 read-only 是 sandbox 設定；Claude 範例中的「不修改」只是文字要求，不能當成檔案系統唯讀。授課時仍應先檢查權限。非互動模式不能靠後續問答補齊授權；若被拒絕，回互動模式釐清所需操作，不要直接關閉所有保護。</p>
-<p><strong>預期產物：</strong>終端機中的三個重點與來源段落。<strong>驗收：</strong>逐點對回筆記、確認沒有額外新增事實，再檢查 <code>git status --short</code>；已存在的未提交內容不能誤算為本次改動。這只是練習設計，未在編寫本教材時替學習者呼叫模型。</p>
-<p>來源：<a href="https://learn.chatgpt.com/docs/developer-commands?surface=cli">Codex CLI 指令</a>、<a href="https://code.claude.com/docs/en/cli-reference">Claude Code CLI reference</a>、<a href="https://code.claude.com/docs/en/interactive-mode">Claude Code 互動指令</a>。</p>
+<p>這樣可以在會話中調整計畫、檢查腳本與追問結果；教師依任務決定何時讓 Agent 繼續，不必自行把 prompt 包進終端機指令。</p>
 <h2 id="6-git">6. 用資料夾與 Git 管理專案</h2>
 <h3 id="61">6.1 建立一致的專案結構</h3>
 <p>在 VS Code 開啟 <code>study-assistant</code> 資料夾。先在 CLI 結束對話，或另外開一個 PowerShell 終端機，避免把 shell 指令誤貼到 AI 對話輸入區。</p>

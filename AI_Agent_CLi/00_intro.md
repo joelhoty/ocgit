@@ -38,7 +38,8 @@
 ### 0.3 指令閱讀約定
 
 - 標成 `powershell` 的區塊在 PowerShell 執行；標成 `bash` 的區塊在 macOS Terminal 的 zsh／bash 執行。
-- `transcript` 是輸入給 AI 的提示或預期輸出，不能當成終端機指令執行。
+- `text` 是在 CLI 會話輸入的自然語言；`transcript` 是 AI 提示或預期輸出，都不能當成 shell 指令執行。
+- `/model` 等斜線指令也在 CLI 會話內輸入，詳見第 5.10 節。
 - 每次只執行一小段，確認結果後再往下做；不要把整份講義一次貼入終端機。
 - 本教材使用 `%USERPROFILE%` 對應的個人目錄；PowerShell 的寫法是 `$env:USERPROFILE`。macOS 使用 `$HOME`。
 - 範例的姓名、郵件、版本輸出都是示意；請改成自己的值。登入憑證只在官方登入頁或指定設定位置輸入。
@@ -696,34 +697,77 @@ winget list --name Claude
 
 同名指令出現多個版本時，先確認目前使用哪一份，再處理舊安裝，避免誤刪正在使用的版本。
 
-### 5.9 從互動到單次任務：雙 CLI 最小操作對照
+### 5.9 啟動後，以自然語言完成任務
 
-以下指令在 shell 執行；對話內的 `/status`、`/permissions`、`/memory` 等指令不可直接貼到 PowerShell。先完成第 6 章的專案與 Git 初始化，再做單次讀檔練習。
+在專案資料夾的終端機輸入 `codex` 或 `claude`，選一款啟動即可。進入 CLI 後，日常與進階任務都在同一會話中逐輪溝通；不用每次回到 shell 重新啟動。安裝與環境設定指令才依標示在 shell 執行。
 
-| 目的 | Codex CLI | Claude Code |
-|---|---|---|
-| 啟動互動會話 | `codex` | `claude` |
-| 查看命令說明 | `codex --help` | `claude --help` |
-| 接續既有工作 | `codex resume` | `claude -c`（目前目錄最近會話）或 `claude -r` |
-| 檢查登入 | `codex login status` | 在會話使用 `/status`；需要重新登入用 `/login` |
-| 單次任務 | `codex exec "任務"` | `claude -p "任務"` |
-| 權限檢查 | 會話內 `/permissions` | 會話內 `/permissions` |
+**練習輸入：**完成第 6 章的專案準備，再使用第 7.4 節的 `inputs/notes.md`。在 CLI 的對話輸入區貼上：
 
-**練習輸入：**第 7.4 節的 `inputs/notes.md`。在專案根目錄執行所選工具的一行：
-
-```bash
-codex exec --sandbox read-only "只讀取 inputs/notes.md，列出三個重點及各自的來源段落，不修改任何檔案。"
+```text
+閱讀 inputs/notes.md，列出三個重點及各自的來源段落。
+先不要修改檔案；如果找不到來源，請指出缺少什麼。
 ```
 
-```bash
-claude -p "只讀取 inputs/notes.md，列出三個重點及各自的來源段落，不修改任何檔案。"
+讀完回答後，在**同一會話**接著說：
+
+```text
+把剛才的三個重點改寫成適合高中生複習的版本。
+保留來源段落，每點加一個自我檢核問題；不要增加筆記中沒有的事實。
 ```
 
-以上兩行同樣可在 PowerShell 使用。Codex 的 read-only 是 sandbox 設定；Claude 範例中的「不修改」只是文字要求，不能當成檔案系統唯讀。授課時仍應先檢查權限。非互動模式不能靠後續問答補齊授權；若被拒絕，回互動模式釐清所需操作，不要直接關閉所有保護。
+核對內容後，再交代產物：
 
-**預期產物：**終端機中的三個重點與來源段落。**驗收：**逐點對回筆記、確認沒有額外新增事實，再檢查 `git status --short`；已存在的未提交內容不能誤算為本次改動。這只是練習設計，未在編寫本教材時替學習者呼叫模型。
+```text
+將確認後的內容存成 outputs/notes_summary.md。
+若檔案已存在，先說明差異，不要直接覆寫。
+完成後重新讀取檔案，確認三個重點、來源與自我檢核問題都已保存。
+```
 
-來源：[Codex CLI 指令](https://learn.chatgpt.com/docs/developer-commands?surface=cli)、[Claude Code CLI reference](https://code.claude.com/docs/en/cli-reference)、[Claude Code 互動指令](https://code.claude.com/docs/en/interactive-mode)。
+**預期產物：**有來源的三個重點與 `outputs/notes_summary.md`。**驗收：**逐點對回筆記，開啟實際檔案檢查，再查看 Git 變更；原先已有的修改不能算成本次成果。這是學習者實作設計，編寫教材時未代替學習者呼叫模型。
+
+文字要求「不要修改」不是檔案系統唯讀設定。開始前用會話內的 `/permissions` 檢查工具權限，收到操作授權時看清楚路徑與用途。專案長期指引另放在 `AGENTS.md` 或 `CLAUDE.md`，詳見[單元五：專案指引](05_instructions.html)，它們是檔案，不是對話操作指令。
+
+### 5.10 常用會話內指令速查
+
+以下指令在**已啟動的 CLI 對話輸入區**輸入，不貼到 PowerShell 或 zsh。先輸入 `/` 查看選單，再選需要的指令。功能會隨版本、方案與組織設定而異；沒有出現的指令，先查目前版本的說明，不要直接套用另一款工具的名稱。
+
+| 想做什麼 | Codex CLI | Claude Code | 使用時機 |
+|---|---|---|---|
+| 選模型 | `/model` | `/model` | 開始新階段前選擇帳號可用的模型 |
+| 看目前狀態 | `/status` | `/status` | 確認目前工作設定 |
+| 看用量 | `/status`；可用 `/statusline` 顯示 token 等資訊 | `/usage`（現行文件的 `/cost`、`/stats` 為其別名） | 一段工作後查看消耗與可用額度資訊 |
+| 看 context 使用情況 | `/status`、畫面下方狀態列 | `/context` | 檔案或對話變多，先確認上下文容量 |
+| 壓縮對話 | `/compact` | `/compact` | 同一任務還要繼續，但上下文已變長 |
+| 接續既有會話 | `/resume` | `/resume` | 回到之前的工作，選對專案與會話 |
+| 開始不同任務 | `/new` | `/clear` | 換主題，避免沿用不相關上下文 |
+| 檢查工具權限 | `/permissions` | `/permissions` | 讀寫檔案或執行工具前 |
+| 找操作說明 | 輸入 `/` 查看選單 | `/help` 或 `/` 選單 | 忘記名稱或確認版本支援 |
+
+Codex 本表以 `/status` 查用量，不將 Claude 的 `/usage` 當成兩款共通指令。模型清單以實際選單為準，無須背誦固定模型名稱。
+
+查核日期：2026-10-31。依據：[Codex CLI 會話指令](https://learn.chatgpt.com/docs/developer-commands?surface=cli)、[Codex 狀態與設定](https://learn.chatgpt.com/docs/developer-settings)、[Claude Code 指令](https://code.claude.com/docs/en/commands)。
+
+### 5.11 進階操作：管理 session、context 與用量
+
+**Session 是持續工作的會話；context 是模型當下能參考的內容。** 保留會話有助於承接需求，但不代表每一輪都完整記住所有歷史。token 使用量也不等於帳單金額；上下文容量、方案額度及 API 計費是不同概念，依介面與帳號資料分別確認。
+
+1. **開始工作：**用 `/model` 選擇模型，再用自然語言說明目標、來源、產物與驗收條件。先做一小段，檢查品質再擴大工作量。
+2. **進行中：**一個階段完成後查看用量；Codex 用 `/status`，Claude 用 `/usage`。檔案很多時，明確指定本輪相關檔案，避免反覆要求讀取整個資料夾。
+3. **對話變長：**先請 Agent 將已確認決策、檔案路徑、未完成事項存入 `progress.md`，確認內容後再使用 `/compact`。摘要可能遺漏細節，重要限制應保留在專案文件，接續時重新核對。
+4. **下次繼續：**啟動 CLI 後用 `/resume` 選擇會話，請 Agent 檢查 `progress.md` 與目前檔案，再確認下一步。恢復歷史對話不會把檔案還原成當時版本。
+5. **換任務：**先保存必要成果，再用 Codex `/new` 或 Claude `/clear` 開新對話；需要的來源與目標重新交代。
+
+**進階練習：**完成摘要後，在同一會話提出：
+
+```text
+我想整理 inputs/ 裡本週的筆記。先列出檔案清單與分批計畫，
+說明哪些工作需要你閱讀內容，哪些適合用本機腳本整理。
+先以一份筆記試做，確認來源與格式後再處理其餘檔案。
+若需要腳本，先建立並解釋它的輸入、輸出與失敗處理，等我確認再執行。
+每份產物保留來源，失敗項目另外列出；不要把空檔案當作成功。
+```
+
+這樣可以在會話中調整計畫、檢查腳本與追問結果；教師依任務決定何時讓 Agent 繼續，不必自行把 prompt 包進終端機指令。
 
 ## 6. 用資料夾與 Git 管理專案
 

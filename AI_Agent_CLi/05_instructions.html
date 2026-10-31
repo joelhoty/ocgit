@@ -215,9 +215,9 @@ html{scroll-behavior:smooth}body{box-sizing:border-box}img{max-width:100%;height
 - 使用條列式呈現重點
 - 適時舉例說明
 </code></pre>
-<p><strong>重點說明</strong>：
-- <code>#</code> 開頭是標題,幫助組織內容
-- 清楚說明角色、風格、原則
+<p><strong>重點說明</strong>：<br/>
+- <code>#</code> 開頭是標題,幫助組織內容<br/>
+- 清楚說明角色、風格、原則<br/>
 - 使用 Markdown 格式(條列、標題等)</p>
 <hr/>
 <h3 id="agentsmd_2">步驟三：測試 AGENTS.md 是否生效</h3>
@@ -232,10 +232,10 @@ html{scroll-behavior:smooth}body{box-sizing:border-box}img{max-width:100%;height
 只回覆，不修改檔案；指出任何互相矛盾或未讀取的規則。
 </code></pre>
 <p>Claude 可用 <code>/context</code> 查看 Memory files；Codex 在新會話確認工作目錄與適用指引，再核對實際產物。</p>
-<p><strong>預期結果</strong>：
+<p><strong>預期結果</strong>：<br/>
 輸出應符合角色、每段字數與條列格式。核對載入紀錄及實際結果；自我介紹不等於規則已生效，正確回覆一次也不保證所有任務都正確。</p>
-<p><strong>比較</strong>：
-- 未設定 AGENTS.md：回答可能較正式、通用
+<p><strong>比較</strong>：<br/>
+- 未設定 AGENTS.md：回答可能較正式、通用<br/>
 - 已設定 AGENTS.md：回答符合您的角色設定</p>
 <hr/>
 <h3 id="_6">步驟四：修改與調整</h3>
@@ -449,10 +449,10 @@ html{scroll-behavior:smooth}body{box-sizing:border-box}img{max-width:100%;height
 
 每個版本請標示清楚,並說明調整重點。
 </code></pre>
-<p><strong>使用方式</strong>：</p>
-<pre><code class="language-bash">codex "改寫這段關於光合作用的說明"
+<p><strong>使用方式：</strong>先啟動所選 CLI，在對話中輸入以下提示，並貼上原文或提供實際檔案位置。</p>
+<pre><code class="language-text">依專案指引的「改寫」規則，將我提供的光合作用說明改寫為三種難度。
 </code></pre>
-<p>這個提示會開啟 Codex 互動會話；Claude 可把 <code>codex</code> 改為 <code>claude</code>。請同時提供要改寫的文字或檔案位置。預期產生三個版本，再人工核對內容、難度與學習目標，不以篇幅判定品質。</p>
+<p>兩款工具共用這份自然語言提示。預期產生三個版本，再人工核對內容、難度與學習目標，不以篇幅判定品質。</p>
 <hr/>
 <h3 id="2_1">技巧 2：設定輸出範本</h3>
 <p><strong>情境</strong>：您需要固定格式的學習單</p>
@@ -515,11 +515,10 @@ html{scroll-behavior:smooth}body{box-sizing:border-box}img{max-width:100%;height
 - 類型:選擇、填空、簡答、討論
 - 格式:題號清楚,附標準答案
 </code></pre>
-<p><strong>使用方式</strong>：</p>
-<pre><code class="language-bash">codex "【快速模式】讀 sources/lesson.md 並摘要；只回覆，不改檔"
-# Claude 的相同提示：
-claude "【快速模式】讀 sources/lesson.md 並摘要；只回覆，不改檔"
+<p><strong>使用方式：</strong>在已啟動的 CLI 會話輸入，兩款工具皆適用。</p>
+<pre><code class="language-text">【快速模式】讀 sources/lesson.md 並摘要；只回覆，不改檔。
 </code></pre>
+<p>這裡的「快速模式」是專案文件自訂的回應格式，不是 CLI 的模型或速度設定。若要換模型，使用會話內的 <code>/model</code>；常用指令見<a href="00_intro.html#510">前導章</a>。</p>
 <hr/>
 <h2 id="_14">實用技巧與注意事項</h2>
 <h3 id="agentsmd_3">✅ AGENTS.md 撰寫最佳實踐</h3>
@@ -576,10 +575,10 @@ claude "【快速模式】讀 sources/lesson.md 並摘要；只回覆，不改�
 <hr/>
 <h2 id="_17">延伸應用</h2>
 <h3 id="1-ai">應用 1：建立學科專屬 AI 助理</h3>
-<p><strong>長期策略</strong>：
-1. 為每個學科建立獨立資料夾
-2. 每個資料夾放置專屬的 <code>AGENTS.md</code>
-3. 在各資料夾啟動新會話，確認實際載入的規則；父層規則仍可能一起生效
+<p><strong>長期策略</strong>：<br/>
+1. 為每個學科建立獨立資料夾<br/>
+2. 每個資料夾放置專屬的 <code>AGENTS.md</code><br/>
+3. 在各資料夾啟動新會話，確認實際載入的規則；父層規則仍可能一起生效<br/>
 4. Claude 在各學科資料夾使用 CLAUDE.md 匯入該處 AGENTS.md，避免版本支援差異</p>
 <p><strong>資料夾結構</strong>：</p>
 <pre><code>teaching/
@@ -596,13 +595,13 @@ claude "【快速模式】讀 sources/lesson.md 並摘要；只回覆，不改�
 <hr/>
 <h3 id="2_2">應用 2：團隊協作範本</h3>
 <p><strong>情境</strong>：與同事共同備課,統一 AI 使用方式</p>
-<p><strong>做法</strong>：
-1. 團隊共同制定 <code>AGENTS.md</code> 範本
-2. 用共同測例比較產物風格與來源；有範本仍須驗收
+<p><strong>做法</strong>：<br/>
+1. 團隊共同制定 <code>AGENTS.md</code> 範本<br/>
+2. 用共同測例比較產物風格與來源；有範本仍須驗收<br/>
 3. 定期檢討與更新</p>
-<p><strong>好處</strong>：
-- 教材風格統一
-- 避免重複設定
+<p><strong>好處</strong>：<br/>
+- 教材風格統一<br/>
+- 避免重複設定<br/>
 - 累積團隊知識</p>
 <hr/>
 <h3 id="3_1">應用 3：學習歷程記錄</h3>
@@ -632,19 +631,19 @@ claude "【快速模式】讀 sources/lesson.md 並摘要；只回覆，不改�
 </ol>
 <hr/>
 <h2 id="qa">常見問題 Q&amp;A</h2>
-<p><strong>Q1：指引檔一定要放在哪裡？</strong>
+<p><strong>Q1：指引檔一定要放在哪裡？</strong><br/>
 A1：本課把 AGENTS.md 與 CLAUDE.md 放在專案根目錄，並從該處啟動 CLI。Codex 與 Claude 也有使用者層及子目錄規則，不能把「VS Code 開啟的資料夾」當成唯一載入依據；先核對終端機工作目錄。</p>
-<p><strong>Q2：我可以有多個指引檔嗎？</strong>
+<p><strong>Q2：我可以有多個指引檔嗎？</strong><br/>
 A2：可以用根目錄共通規則搭配子目錄特定規則；但工具載入與優先順序不同。Codex 的 AGENTS.override.md 不等於 Claude 支援的檔名。先用一個根目錄檔完成練習，再增加層級。</p>
-<p><strong>Q3：規則會影響所有指令嗎？</strong>
+<p><strong>Q3：規則會影響所有指令嗎？</strong><br/>
 A3：規則只影響讀到它的 AI 會話，不會改變你手動執行的 shell 命令，也不能覆蓋更高層政策或實際檔案權限。Claude 新版可直接支援 AGENTS.md，但受到前述版本、CLAUDE.md 存在與設定條件限制。</p>
-<p><strong>Q4：設定太多會不會讓 AI 混亂？</strong>
+<p><strong>Q4：設定太多會不會讓 AI 混亂？</strong><br/>
 A4：過長、矛盾或無法驗證的規則會增加 context 負擔。先聚焦三到五項核心規則，把細節放到任務資料；以測例結果決定是否調整。</p>
-<p><strong>Q5：我可以臨時調整設定嗎？</strong>
+<p><strong>Q5：我可以臨時調整設定嗎？</strong><br/>
 A5：對可由任務調整的風格，可以明確寫「本次請詳細說明」。這不表示任意提示都能覆蓋系統、組織或安全限制；有衝突先釐清適用規則。</p>
-<p><strong>Q6：AI 沒有遵守設定怎麼辦？</strong>
+<p><strong>Q6：AI 沒有遵守設定怎麼辦？</strong><br/>
 A6：先檢查檔名大小寫、儲存、啟動目錄、上層及子層檔案。Claude 使用 <code>/context</code> 核對 Memory files，必要時用 CLAUDE.md 的 <code>@AGENTS.md</code> 匯入；Codex 開新會話再核對適用指引。確認規則可測且沒有矛盾，最後檢查實際產物，不只追問「你有讀嗎」。</p>
-<p><strong>Q7：可以參考其他人的指引檔嗎？</strong>
+<p><strong>Q7：可以參考其他人的指引檔嗎？</strong><br/>
 A7：可以，但要先閱讀每條規則、檢查外部連結與可能執行的工作流程。改成自己的年級、學科、來源與驗收條件；不要把陌生設定直接當成可信任的命令。</p>
 <hr/>
 <h2 id="_21">範本下載(文字版)</h2>
