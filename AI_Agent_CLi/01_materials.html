@@ -78,10 +78,10 @@
 html{scroll-behavior:smooth}body{box-sizing:border-box}img{max-width:100%;height:auto}pre{max-width:100%;overflow-x:auto}table{display:block;max-width:100%;overflow-x:auto}td,th{min-width:7em}.course-nav{display:flex;flex-wrap:wrap;gap:.65em;align-items:center;padding:1em 0;margin:1em 0;border-bottom:1px solid #3e3e3e;font-size:.95rem}.course-nav a{color:#66b3ff}.course-nav span{color:#aaa}.course-toc{margin:1.5em 0;padding:1em;background:#222831;border-radius:8px}.course-toc a{overflow-wrap:anywhere}h1,h2,h3,p,li{overflow-wrap:break-word}.mermaid svg{max-width:100%;height:auto}@media(max-width:600px){body{padding:14px!important}h1{font-size:1.65em}pre code{padding:1em}.course-nav{line-height:1.8}}
 </style></head>
 <body><nav aria-label="課程導覽" class="course-nav"><a href="index.html">課程目錄</a><a href="00_intro.html">← 上一章</a><a href="02_images.html">下一章 →</a><a href="01_materials.md">Markdown 原文</a><span>雙 CLI 教材 · 2026-10-31</span></nav>
-<div class="container"><!-- Path: AI_Agent_CLi | Updated: 2026-10-31 | Edition: Codex CLI / Claude Code -->
+<div class="container"><span class="legacy-anchor" id="2-context"></span><span class="legacy-anchor" id="7-example"></span><!-- Path: AI_Agent_CLi | Updated: 2026-10-31 | Edition: Codex CLI / Claude Code -->
 <h1 id="-ai">單元一補充教材：觀念暖身與初體驗 - 我的第一個 AI 生成教材</h1><details class="course-toc"><summary>本頁章節</summary><ul><li><a href="#_1">單元目標</a></li><li><a href="#_2">核心概念詳解</a></li><li><a href="#_4">詳細操作步驟</a></li><li><a href="#prompt">跨學科 Prompt 範例庫</a></li><li><a href="#_14">完整教材設計提示詞的結構總結</a></li><li><a href="#_20">實用技巧與注意事項</a></li><li><a href="#_24">延伸應用</a></li><li><a href="#_25">練習任務</a></li><li><a href="#qa">常見問題 Q&amp;A</a></li><li><a href="#_28">本單元交付與驗收</a></li></ul></details>
 <blockquote>
-<p><strong>本版查核：2026-10-31。</strong>先閱讀<a href="00_intro.html">前導章：Agent 基本概念與工作環境</a>，安裝並登入 Codex CLI 或 Claude Code 任選一款即可。本課使用虛構／去識別化資料，所有結果都要以來源與實際檔案驗收。</p>
+<p><strong>閱讀前提：</strong>先完成<a href="00_intro.html">前導章：Agent 基本概念與工作環境</a>，使用 Codex CLI 或 Claude Code 其中一款。本章以備課作為範例情境；不是教師也能把主題換成自己的工作或學習內容。範例請使用虛構或去識別化資料，結果都要回到來源與實際檔案確認。（查核日期：2026-10-31）</p>
 </blockquote>
 <h2 id="_1">單元目標</h2>
 <ul>
@@ -285,14 +285,15 @@ html{scroll-behavior:smooth}body{box-sizing:border-box}img{max-width:100%;height
 <hr/>
 <h2 id="_14">完整教材設計提示詞的結構總結</h2>
 <h3 id="_15">📌 黃金公式：完整教材設計/教學活動提示詞架構</h3>
-<p>一個高品質的教材設計或教學活動提示詞，通常包含以下 <strong>7 大結構元素</strong>：</p>
+<p>一個高品質的教材設計或教學活動提示詞，通常包含以下 <strong>8 大結構元素</strong>：</p>
 <div class="mermaid">flowchart LR
-    A[角色設定] --&gt; B[情境背景]
+    A[角色設定] --&gt; B[情境與來源]
     B --&gt; C[核心任務]
     C --&gt; D[內容要求]
     D --&gt; E[格式規範]
     E --&gt; F[限制條件]
-    F --&gt; G[輸出範例]
+    F --&gt; G[驗收條件]
+    G --&gt; H[輸出範例]
 </div>
 <hr/>
 <h3 id="_16">結構元素詳解</h3>
@@ -304,18 +305,20 @@ html{scroll-behavior:smooth}body{box-sizing:border-box}img{max-width:100%;height
 - 你是一位經驗豐富的國小數學老師，擅長用生活化情境教學。<br/>
 - 你是一位充滿創意的自然科教師，專長於實驗設計與探究教學。</p>
 <hr/>
-<h4 id="2-context">2️⃣ 情境背景 (Context)</h4>
-<p><strong>說明教學場景與對象</strong></p>
+<h4 id="2-context-sources">2️⃣ 情境與來源 (Context &amp; Sources)</h4>
+<p><strong>說明教學場景、對象與 AI 應使用的資料</strong></p>
 <pre><code>教學對象：[年級/程度]
 課程主題：[單元名稱]
 教學時間：[分鐘數]
 特殊考量：[班級特性/學習目標]
+來源資料：[AI 應使用的檔案、頁碼或網址]
 </code></pre>
 <p><strong>範例</strong>：</p>
 <pre><code>教學對象：國小五年級學生
 課程主題：分數的加減運算
 教學時間：40 分鐘
 特殊考量：班上有 3 位學習較慢的學生需要差異化設計
+來源資料：inputs/fraction_unit.md（課本分數單元摘錄）
 </code></pre>
 <hr/>
 <h4 id="3-task">3️⃣ 核心任務 (Task)</h4>
@@ -387,7 +390,22 @@ html{scroll-behavior:smooth}body{box-sizing:border-box}img{max-width:100%;height
 - 時間分配要務實（考慮實際操作時間）
 </code></pre>
 <hr/>
-<h4 id="7-example">7️⃣ 輸出範例 (Example) 【選用】</h4>
+<h4 id="7-acceptance">7️⃣ 驗收條件 (Acceptance)</h4>
+<p><strong>說明完成後用什麼標準檢查結果</strong></p>
+<pre><code>驗收條件：
+- [可核對的條件 1]
+- [可核對的條件 2]
+- 來源未涵蓋的內容：[如何標示]
+</code></pre>
+<p><strong>範例</strong>：</p>
+<pre><code>驗收條件：
+- 各活動時間加總等於 40 分鐘
+- 每道題目都附答案，並可在來源資料找到依據
+- 來源未涵蓋的內容標示「資料不足」，不自行補寫
+</code></pre>
+<p><strong>與限制條件的差別</strong>：限制條件規定怎麼寫，驗收條件規定寫完後怎麼檢查。</p>
+<hr/>
+<h4 id="8-example">8️⃣ 輸出範例 (Example) 【選用】</h4>
 <p><strong>提供參考範例，讓 AI 模仿風格</strong></p>
 <pre><code>參考範例：
 [貼上一小段您期望的輸出風格]
@@ -401,11 +419,12 @@ html{scroll-behavior:smooth}body{box-sizing:border-box}img{max-width:100%;height
 <pre><code>【1. 角色設定】
 你是一位創意十足的國小自然科教師，擅長設計動手做的探究活動。
 
-【2. 情境背景】
+【2. 情境與來源】
 教學對象：國小四年級學生
 課程主題：磁鐵的特性
 教學時間：20 分鐘
 特殊考量：學生已學過磁鐵的基本概念（同極相斥、異極相吸）
+來源資料：inputs/magnet_notes.md（磁鐵單元課堂筆記）
 
 【3. 核心任務】
 請設計一個「探索磁力強弱」的課堂實驗活動。
@@ -434,7 +453,13 @@ html{scroll-behavior:smooth}body{box-sizing:border-box}img{max-width:100%;height
 - 活動要能在 20 分鐘內完成（含討論）
 - 避免複雜的科學術語
 
-【7. 輸出範例參考】
+【7. 驗收條件】
+- 全部步驟與討論的時間加總不超過 20 分鐘
+- 活動步驟用到的材料都列在材料清單中
+- 磁力的科學說明都能在 inputs/magnet_notes.md 找到依據
+- 來源未涵蓋的內容標示「資料不足」，不自行補寫
+
+【8. 輸出範例參考】
 活動名稱：磁力大考驗
 
 活動目標：
@@ -494,11 +519,12 @@ html{scroll-behavior:smooth}body{box-sizing:border-box}img{max-width:100%;height
 <p>完成提示詞後，用這個檢核表確認品質：</p>
 <ul>
 <li>[ ] ✅ 有設定明確角色嗎？</li>
-<li>[ ] ✅ 有說明教學對象與情境嗎？</li>
+<li>[ ] ✅ 有說明教學對象、情境與來源資料嗎？</li>
 <li>[ ] ✅ 任務夠具體嗎？（不是「設計活動」而是「設計 OO 活動，包含 ABC」）</li>
 <li>[ ] ✅ 有列出必須包含的內容元素嗎？</li>
 <li>[ ] ✅ 有指定輸出格式嗎？</li>
 <li>[ ] ✅ 有設定語氣、長度、難度等限制嗎？</li>
+<li>[ ] ✅ 有寫出完成後要檢查的驗收條件嗎？</li>
 <li>[ ] ✅ 如果需要特定風格，有提供範例嗎？</li>
 </ul>
 <hr/>
@@ -510,7 +536,7 @@ html{scroll-behavior:smooth}body{box-sizing:border-box}img{max-width:100%;height
 <li><strong>要求格式化輸出</strong>：明確要求「條列式」、「表格」、「分段說明」等格式</li>
 <li><strong>提供範例</strong>：在提示詞中給 AI 一個參考範例，它會模仿風格</li>
 <li><strong>設定限制</strong>：字數、語氣、難度、對象都可以明確設定</li>
-<li><strong>使用結構化提示詞</strong>：按照「角色→情境→任務→要求→格式→限制」的順序組織</li>
+<li><strong>使用結構化提示詞</strong>：按照「角色→情境與來源→任務→要求→格式→限制→驗收」的順序組織</li>
 </ol>
 <h3 id="_22">⚠️ 常見錯誤</h3>
 <ol>
@@ -524,7 +550,7 @@ html{scroll-behavior:smooth}body{box-sizing:border-box}img{max-width:100%;height
 <div class="mermaid">graph LR
     A[撰寫結構化提示詞] --&gt; B[觀察 AI 輸出]
     B --&gt; C{滿意嗎？}
-    C --&gt;|不滿意| D[檢查 7 大元素]
+    C --&gt;|不滿意| D[檢查 8 大元素]
     D --&gt; E[補充缺少的元素]
     E --&gt; B
     C --&gt;|滿意| F[儲存並應用]
@@ -583,7 +609,7 @@ html{scroll-behavior:smooth}body{box-sizing:border-box}img{max-width:100%;height
 <h3 id="_26">初階任務</h3>
 <ol>
 <li>使用「簡化版 4 元素」架構，生成一段課程簡介</li>
-<li>使用「完整 7 元素」架構，設計一個課堂小活動</li>
+<li>使用「完整 8 元素」架構，設計一個課堂小活動</li>
 <li>比較兩種架構的輸出差異</li>
 </ol>
 <h3 id="_27">進階任務</h3>
@@ -606,7 +632,7 @@ A4：這是 AI 的特性！如果需要穩定的結果，可以在提示詞中�
 A5：可以，但建議先檢查內容正確性，並根據班級特性微調。AI 是起點,不是終點。</p>
 <p><strong>Q6：結構化提示詞會不會太複雜？</strong><br/>
 A6：初期可能需要時間適應，但熟悉後反而更快！因為結構清楚，AI 理解更精準，減少反覆修改的時間。建議先從「簡化版 4 元素」開始練習。</p>
-<p><strong>Q7：是否每次都要用完整的 7 元素？</strong><br/>
+<p><strong>Q7：是否每次都要用完整的 8 元素？</strong><br/>
 A7：不一定。簡單任務用「精簡版」即可，複雜任務（如完整教案、教學活動）才需要「完整版」。依需求彈性調整。</p>
 <hr/>
 <p><strong>小結</strong>：本單元著重於建立正確的 AI 使用觀念，以及掌握提示詞的基本技巧與完整結構。透過反覆練習與優化，您將能更精準地讓 AI 成為您的教學助理！記住：<strong>好的提示詞 = 明確的結構 + 具體的要求 + 適當的限制</strong></p>

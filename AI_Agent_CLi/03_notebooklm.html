@@ -81,8 +81,8 @@ html{scroll-behavior:smooth}body{box-sizing:border-box}img{max-width:100%;height
 <div class="container"><!-- Path: AI_Agent_CLi | Updated: 2026-10-31 | Edition: Codex CLI / Claude Code -->
 <h1 id="-notebooklm">單元三補充教材：打造您的專屬知識庫 - 備課神器 NotebookLM</h1><details class="course-toc"><summary>本頁章節</summary><ul><li><a href="#_1">單元目標</a></li><li><a href="#_2">核心概念詳解</a></li><li><a href="#_3">詳細操作步驟</a></li><li><a href="#_6">跨學科應用範例</a></li><li><a href="#_13">進階技巧</a></li><li><a href="#_22">實用技巧與注意事項</a></li><li><a href="#_25">延伸應用</a></li><li><a href="#_26">練習任務</a></li><li><a href="#qa">常見問題 Q&amp;A</a></li><li><a href="#codex-cliclaude-code">與 Codex CLI／Claude Code 接續的實作</a></li></ul></details>
 <blockquote>
-<p><strong>本版查核：2026-10-31。</strong>先閱讀<a href="00_intro.html">前導章：Agent 基本概念與工作環境</a>，安裝並登入 Codex CLI 或 Claude Code 任選一款即可。本課使用虛構／去識別化資料，所有結果都要以來源與實際檔案驗收。</p>
-<p><strong>名稱提醒</strong>：保留原課程「NotebookLM」名稱與章節路徑；截至查核日，Google 官方說明頁已使用 <strong>Gemini Notebook</strong> 名稱。實際介面以登入帳號顯示為準。<a href="https://support.google.com/gemininotebook/answer/16164461">官方介紹</a>。</p>
+<p><strong>閱讀前提：</strong>先完成<a href="00_intro.html">前導章：Agent 基本概念與工作環境</a>，使用 Codex CLI 或 Claude Code 其中一款。本章以備課作為範例情境；不是教師也能把主題換成自己的工作或學習內容。範例請使用虛構或去識別化資料，結果都要回到來源與實際檔案確認。（查核日期：2026-10-31）</p>
+<p><strong>名稱提醒</strong>：Google 已正式將 NotebookLM 更名為 <strong>Gemini Notebook</strong>（<a href="https://blog.google/innovation-and-ai/products/gemini-notebook/notebooklm-gemini-notebook/">官方公告</a>）。本課程為了延續性仍稱 NotebookLM，實際介面以登入後顯示為準。<a href="https://support.google.com/gemininotebook/answer/16164461">官方介紹</a>。</p>
 </blockquote>
 <h2 id="_1">單元目標</h2>
 <ul>
@@ -93,16 +93,16 @@ html{scroll-behavior:smooth}body{box-sizing:border-box}img{max-width:100%;height
 </ul>
 <hr/>
 <h2 id="_2">核心概念詳解</h2>
-<h3 id="1">1. 從「開放式考試」到「開卷考試」</h3>
+<h3 id="1">1. 從「閉卷考試」到「開卷考試」</h3>
 <h4 id="ai-chatgptgemini">傳統 AI (如 ChatGPT、Gemini)</h4>
 <ul>
-<li><strong>比喻</strong>：像「開放式考試」,AI 憑記憶自由回答</li>
+<li><strong>比喻</strong>：像「閉卷考試」,AI 憑記憶作答</li>
 <li><strong>優點</strong>：知識廣博、反應快速</li>
 <li><strong>缺點</strong>：可能產生幻覺(編造不存在的內容)、若未提供來源或搜尋工具，回答可能缺少可核對依據</li>
 </ul>
 <h4 id="notebooklm">NotebookLM</h4>
 <ul>
-<li><strong>比喻</strong>：像「開卷考試」,AI 以您選取的來源作為回答依據</li>
+<li><strong>比喻</strong>：像「開卷考試」,AI 翻開指定資料作答,以您選取的來源作為依據</li>
 <li><strong>優點</strong>：可點開引用回查來源，但仍可能誤讀或漏掉條件</li>
 <li><strong>缺點</strong>：來源不足時可能無法回答；需補資料，不能用流暢文字替代證據</li>
 </ul>
@@ -179,6 +179,7 @@ html{scroll-behavior:smooth}body{box-sizing:border-box}img{max-width:100%;height
 <h3 id="_7">📐 數學科</h3>
 <h4 id="1_1">範例 1：課本內容分析</h4>
 <p><strong>情境</strong>：上傳國小五年級數學課本「分數單元」PDF</p>
+<p><strong>上傳前</strong>：上傳學生作業需先取得同意並遵守所屬機構規定；上傳有著作權的課本也需具備使用權利。</p>
 <p><strong>Prompt 1 - 內容摘要</strong>：</p>
 <pre><code>請摘要這份教材的主要教學目標與重點概念。
 </code></pre>
@@ -280,7 +281,7 @@ html{scroll-behavior:smooth}body{box-sizing:border-box}img{max-width:100%;height
 <hr/>
 <h3 id="_10">📖 國語科</h3>
 <h4 id="1_4">範例 1：課文深度閱讀</h4>
-<p><strong>情境</strong>：上傳國小課文「背影」全文</p>
+<p><strong>情境</strong>：上傳國中課文「背影」全文</p>
 <p><strong>Prompt 1 - 文本分析</strong>：</p>
 <pre><code>請分析這篇課文：
 1. 主旨與中心思想
@@ -504,7 +505,7 @@ html{scroll-behavior:smooth}body{box-sizing:border-box}img{max-width:100%;height
 <pre><code>教材：植物的光合作用
 
 探究問題：
-1. 不同環境的植物（沙漠、深海、極地），光合作用有何差異？
+1. 不同環境的植物（沙漠、極地），光合作用有何差異？
 2. 如果地球大氣的氧氣含量改變，植物會如何演化？
 3. 人造光合作用是否可能？有哪些科學挑戰？
 4. 氣候變遷如何影響全球的光合作用效率？
@@ -689,7 +690,7 @@ html{scroll-behavior:smooth}body{box-sizing:border-box}img{max-width:100%;height
 </ol>
 <h3 id="_23">⚠️ 使用限制與注意事項</h3>
 <ol>
-<li><strong>檔案大小限制</strong>：單一檔案通常有大小限制(約 500 頁或 20MB)</li>
+<li><strong>檔案大小限制</strong>：每份來源上限 500,000 字或本機上傳 200 MB；方案與上限以 <a href="https://support.google.com/notebooklm/answer/16213268?hl=en">Google 官方說明</a>為準</li>
 <li><strong>語言限制</strong>：繁體中文支援良好,但複雜排版可能影響辨識</li>
 <li><strong>只知道上傳的內容</strong>：無法回答資料外的問題</li>
 <li><strong>需檢查正確性</strong>：AI 可能誤讀或誤解,務必確認</li>
@@ -720,44 +721,12 @@ html{scroll-behavior:smooth}body{box-sizing:border-box}img{max-width:100%;height
 <td>資料辨識問題</td>
 <td>檢查原文,必要時重新上傳</td>
 </tr>
-<tr>
-<td>無法生成表格</td>
-<td>NotebookLM 限制</td>
-<td>要求條列式,再自行轉成表格</td>
-</tr>
 </tbody>
 </table>
 <hr/>
 <h2 id="_25">延伸應用</h2>
 <h3 id="1_9">應用 1：快速備課流程</h3>
-<p><strong>傳統備課</strong> vs <strong>AI 輔助備課</strong>：</p>
-<table>
-<thead>
-<tr>
-<th>步驟</th>
-<th>傳統方式</th>
-<th>NotebookLM 輔助</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>理解教材</td>
-<td>閱讀全文(30 分鐘)</td>
-<td>要求摘要(2 分鐘)</td>
-</tr>
-<tr>
-<td>設計題目</td>
-<td>手動出題(20 分鐘)</td>
-<td>AI 生成初稿(2 分鐘) → 教師調整(5 分鐘)</td>
-</tr>
-<tr>
-<td>規劃活動</td>
-<td>查資料、構思(40 分鐘)</td>
-<td>AI 提供建議(3 分鐘) → 教師優化(10 分鐘)</td>
-</tr>
-</tbody>
-</table>
-<p><strong>總時間節省</strong>：約 70%</p>
+<p>請記錄自己理解教材、設計題目與規劃活動各花多少時間，再判斷流程是否值得；摘要不能取代閱讀原文。</p>
 <hr/>
 <h3 id="2_8">應用 2：差異化教學準備</h3>
 <p><strong>情境</strong>：同一份教材,準備不同難度版本</p>
@@ -806,13 +775,13 @@ A1：確保 PDF 是文字版(非掃描圖片),或使用 OCR 工具轉換後再�
 <p><strong>Q2：AI 的回答有錯誤怎麼辦？</strong><br/>
 A2：點選引用來源,檢查原文。如果是 AI 誤讀,可調整提問方式或重新上傳清晰版本。</p>
 <p><strong>Q3：我可以上傳學生作業讓 AI 分析嗎？</strong><br/>
-A3：可以,但務必移除學生姓名等個資。適合分析「錯誤類型」、「學習盲點」。</p>
+A3：可以,但需先取得同意並遵守所屬機構規定,且務必移除學生姓名等個資。適合分析「錯誤類型」、「學習盲點」。上傳有著作權的課本也需具備使用權利。</p>
 <p><strong>Q4：NotebookLM 和一般 Gemini 有什麼不同？</strong><br/>
 A4：NotebookLM 的核心是來源導向回答與引用；一般對話工具也能搭配來源或搜尋。兩者都需回查原文，不能只靠產品名稱判定可信度。</p>
 <p><strong>Q5：生成的題目可以直接使用嗎？</strong><br/>
 A5：建議當作「初稿」,教師仍需檢查難度、正確性,並根據班級特性調整。</p>
 <p><strong>Q6：可以跟其他老師分享筆記本嗎？</strong><br/>
-A6：目前 NotebookLM 主要是個人使用,但您可以匯出內容分享,或提供相同資料讓其他老師建立自己的筆記本。</p>
+A6：可以。筆記本可用電子郵件分享給指定對象，並設為檢視者或編輯者；帳號權限允許時也可用公開連結分享。Workspace Enterprise／Education 帳號可能受管理員限制。<a href="https://support.google.com/notebooklm/answer/16322204?hl=en">官方說明</a>。</p>
 <hr/>
 <p><strong>小結</strong>：NotebookLM 將「有憑有據」帶入 AI 教學應用,讓您的備課更高效、精準。透過建立專屬知識庫,AI 真正成為懂您教材的智慧助教！</p>
 <h2 id="codex-cliclaude-code">與 Codex CLI／Claude Code 接續的實作</h2>

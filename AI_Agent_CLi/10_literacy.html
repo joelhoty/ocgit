@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>literacy_b02</title>
+<title>資訊與媒體素養：使用生成式 AI 的入門概念</title>
 <!-- CSS 框架 -->
 <link href="https://cdn.jsdelivr.net/npm/water.css@2/out/dark.min.css" rel="stylesheet"/>
 <!-- 代碼高亮 -->
@@ -78,163 +78,237 @@
 html{scroll-behavior:smooth}body{box-sizing:border-box}img{max-width:100%;height:auto}pre{max-width:100%;overflow-x:auto}table{display:block;max-width:100%;overflow-x:auto}td,th{min-width:7em}.course-nav{display:flex;flex-wrap:wrap;gap:.65em;align-items:center;padding:1em 0;margin:1em 0;border-bottom:1px solid #3e3e3e;font-size:.95rem}.course-nav a{color:#66b3ff}.course-nav span{color:#aaa}.course-toc{margin:1.5em 0;padding:1em;background:#222831;border-radius:8px}.course-toc a{overflow-wrap:anywhere}h1,h2,h3,p,li{overflow-wrap:break-word}.mermaid svg{max-width:100%;height:auto}@media(max-width:600px){body{padding:14px!important}h1{font-size:1.65em}pre code{padding:1em}.course-nav{line-height:1.8}}
 </style></head>
 <body><nav aria-label="課程導覽" class="course-nav"><a href="index.html">課程目錄</a><a href="00_intro.html">前導章</a><span>雙 CLI 教材 · 2026-10-31</span></nav>
-<div class="container"><!-- Path: AI_Agent_CLi | Timestamp: 2025-10-20 11:50:00 | Version: b02 -->
-<h1>資訊科技素養與媒體素養：在生成式 AI 時代的挑戰、機會與實踐</h1><details class="course-toc"><summary>本頁章節</summary><ul><li><a href="#section-1">前言：當「眼見為憑」已成過去</a></li><li><a href="#section-2">第一部分：網路時代的資訊科技與媒體素養</a></li><li><a href="#section-3">第二部分：因應生成式 AI 的素養新挑戰</a></li><li><a href="#section-4">第三部分：本課程中的相關議題與實踐策略</a></li><li><a href="#section-5">結論：擁抱 AI，更要深化素養</a></li><li><a href="#section-6">參考文獻 (APA 7th)</a></li></ul></details>
-<h2 id="section-1">前言：當「眼見為憑」已成過去</h2>
-<p>在數位時代，資訊科技素養與媒體素養是每位公民的必備能力。前者強調有效尋找、評估與運用資訊的能力；後者則著重於批判性地解讀、分析媒體訊息。然而，生成式 AI (Generative AI) 的崛起，以前所未有的方式撼動了這兩大素養的根基。當文字、圖片、甚至影片都能在數秒內被「創造」出來時，我們賴以信任的「眼見為憑」已不再可靠，這不僅加劇了現有的假訊息挑戰，也對公眾信任造成侵蝕 (Ofcom, 2024)。</p>
-<p>本文件旨在深入探討生成式 AI 對資訊與媒體素養帶來的衝擊，並結合本課程所學，提出在教學現場中應對這些挑戰的具體策略與倫理考量，以培養學生具備駕馭此新興科技的數位公民意識。</p>
+<div class="container">
+<h1 id="page-title">資訊與媒體素養：使用生成式 AI 的入門概念</h1><details class="course-toc"><summary>本頁章節</summary><ul><li><a href="#section-1">前言：學用 AI，也要學會查證</a></li><li><a href="#section-2">兩種素養是什麼</a></li><li><a href="#section-3">生成式 AI 帶來的新挑戰</a></li><li><a href="#section-4">看到可疑影像時：先用 SIFT 查脈絡</a></li><li><a href="#section-5">資料來源與著作權</a></li><li><a href="#section-6">負責任地使用 AI</a></li><li><a href="#section-7">常見問題 (Q&amp;A)</a></li><li><a href="#section-8">概念練習</a></li><li><a href="#section-9">重點回顧</a></li><li><a href="#section-10">參考文獻</a></li></ul></details>
+<h2 id="section-1">前言：學用 AI，也要學會查證</h2>
+<p>生成式 AI 能在幾秒內寫出文章、畫出圖片，也能幫你整理筆記。這很方便，但它給出的內容不一定正確，而且看起來越流暢，越容易讓人忘記查證。</p>
+<p>本頁寫給剛開始學習 AI 應用的入門使用者，不需要程式或教育背景。讀完後，你應該能分辨兩種素養的差別，知道 AI 輸出為什麼要查，也知道遇到可疑內容時第一步該做什麼。</p>
 <hr/>
-<h2 id="section-2">第一部分：網路時代的資訊科技與媒體素養</h2>
-<p>在 AI 普及之前，我們早已面臨數位資訊環境的挑戰，這些挑戰是理解 AI 衝擊的基礎。</p>
-<h3>1.1 資訊科技素養的核心議題</h3>
-<p>傳統的資訊科技素養，核心在於<strong>尋找 (Find)、評估 (Evaluate) 與應用 (Apply)</strong> 資訊。然而，網路的普及帶來了幾項挑戰：</p>
+
+<h2 id="section-2">兩種素養是什麼</h2>
+<p><strong>資訊素養</strong>是知道自己何時需要資訊，並且能找到、評估和有效使用這些資訊<sup><a href="#ref-1">[1]</a></sup>。<strong>媒體素養</strong>是能使用各種傳播形式進行接取、分析、評估、創作和行動<sup><a href="#ref-2">[2]</a></sup>。</p>
+<p>臺灣教育部 2023 年的白皮書把媒體素養整理成五項能力：近用、分析、創造、反思、行動，並以批判性思考為核心<sup><a href="#ref-3">[3]</a></sup>。</p>
+<h3 id="literacy-comparison">核心概念比較</h3>
+<p>兩者常被放在一起談，但重點不同：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">特徵</th>
+<th style="text-align: left;">資訊素養 (Information Literacy)</th>
+<th style="text-align: left;">媒體素養 (Media Literacy)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>核心焦點</strong></td>
+<td style="text-align: left;">資訊的取用、評估與有效運用</td>
+<td style="text-align: left;">媒體訊息的解讀、批判與創作</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>主要問題</strong></td>
+<td style="text-align: left;">「我如何找到並使用準確的資訊？」</td>
+<td style="text-align: left;">「這個訊息是誰製作的？為什麼？它想傳達什麼？」</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>關鍵技能</strong></td>
+<td style="text-align: left;">搜尋策略、資料庫使用、事實查核、引用與學術倫理</td>
+<td style="text-align: left;">批判性分析、意識形態辨識、符號解讀、影像敘事、內容創作</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>主要範疇</strong></td>
+<td style="text-align: left;">學習研究、問題解決、數據管理</td>
+<td style="text-align: left;">新聞、廣告、社群媒體、影視娛樂</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>與 AI 的關係</strong></td>
+<td style="text-align: left;">用 AI 協助取得與整理資訊，並核對來源</td>
+<td style="text-align: left;">批判性檢視 AI 生成的內容、辨識深偽與演算法偏見</td>
+</tr>
+</tbody>
+</table>
+<h3 id="online-challenges">網路時代原有的挑戰</h3>
 <ul>
-<li><strong>資訊過載 (Information Overload)</strong>：如何在海量資料中找到可信、相關的內容？</li>
-<li><strong>搜尋引擎的侷限</strong>：搜尋結果可能受到商業利益、演算法偏見的影響，排名第一的未必是最好的答案。</li>
-<li><strong>過濾氣泡 (Filter Bubbles) 與同溫層效應 (Echo Chambers)</strong>：個人化的演算法讓我們只看到自己認同的觀點，限縮了視野，加劇了觀點的極化。</li>
+<li><strong>資訊過載</strong>：資料太多，難以找到可信又相關的內容。</li>
+<li><strong>搜尋與推薦的侷限</strong>：排名第一的結果未必最好；個人化推薦也可能讓我們較常看到自己認同的觀點，這就是常說的過濾氣泡與同溫層。</li>
+<li><strong>守門人減少</strong>：社群平台讓人人都能發布內容，內容品質也更參差不齊。</li>
 </ul>
-<h3>1.2 媒體素養的核心議題</h3>
-<p>媒體素養的核心是<strong>批判性解讀 (Critical Analysis)</strong>。傳統挑戰包括：</p>
+<p>錯誤內容也要分清楚。研究者依意圖區分三種情況<sup><a href="#ref-4">[4]</a></sup>：</p>
 <ul>
-<li><strong>假訊息 (Misinformation) 與惡意訊息 (Disinformation)</strong>：前者是無意間傳播的錯誤資訊，後者是刻意製造的謊言，兩者都嚴重影響公眾認知 (Al-Fanar Media, 2023)。</li>
-<li><strong>媒體再現 (Media Representation)</strong>：媒體如何呈現特定群體、事件，可能加深刻板印象。</li>
-<li><strong>守門人 (Gatekeeper) 的式微</strong>：傳統媒體的編輯審核功能被社群平台取代，人人皆可是媒體，但內容品質參差不齊。</li>
-</ul>
-<hr/>
-<h2 id="section-3">第二部分：因應生成式 AI 的素養新挑戰</h2>
-<p>生成式 AI 不僅放大了上述挑戰，更創造了全新的議題。我們的素養能力需要「升級」，以應對這個由 AI 共同建構的新資訊世界。</p>
-<h3>2.1 生成式 AI 時代的資訊科技素養：從「搜尋」到「詠唱與驗證」</h3>
-<p>AI 改變了我們獲取資訊的模式。資訊素養的核心從「如何找到答案」轉變為「<strong>如何提出好問題，並驗證 AI 給出的答案</strong>」。</p>
-<ul>
-<li>
-<p><strong>提示詞工程 (Prompt Engineering) 的重要性</strong>：<br/>
-  如同本課程單元一所學，向 AI 提問的品質，直接決定了答案的品質。一個好的提問者，需要具備<strong>明確定義問題、提供足夠脈絡、設定輸出限制</strong>的能力。這本身就是一種新的、需要策略性提問的資訊素養 (American Psychological Association, 2025; Lo, 2023)。</p>
-</li>
-<li>
-<p><strong>對「幻覺 (Hallucination)」的警覺</strong>：<br/>
-  AI 可能會「一本正經地胡說八道」，捏造不存在的資訊、數據或來源。因此，<strong>交叉比對、事實查核 (Fact-checking)</strong> 變得比以往更加重要。我們不能將 AI 的回答直接當作最終事實，而應視其為需要驗證的起點 (Connections Academy, n.d.)。</p>
-</li>
-<li>
-<p><strong>理解 AI 的偏見 (Bias)</strong>：<br/>
-  AI 模型是從大量的網路資料中學習的，這些資料本身就充滿了人類社會的偏見。因此，AI 的回答可能複製甚至放大這些偏見。我們需要具備<strong>識別潛在偏見、並批判性評估其觀點</strong>的能力，並主動提問：「這個系統是誰創建的？缺少了誰的觀點？」(EdWeek, 2023)。</p>
-</li>
-</ul>
-<h3>2.2 生成式 AI 時代的媒體素養：從「解讀」到「鑑識」</h3>
-<p>當媒體內容可以被輕易「生成」，媒體素養的核心從「解讀訊息意涵」擴展至「<strong>鑑識內容的真實性</strong>」。</p>
-<ul>
-<li>
-<p><strong>合成媒體 (Synthetic Media) 的挑戰</strong>：<br/>
-  AI 生成的圖片、Deepfake 影片，其逼真程度已遠超傳統的影像處理軟體。這使得辨識真偽的難度大幅提升。學生需要學習新的「視覺識讀」技巧，以應對身分盜竊、網路霸凌和政治宣傳等風險 (AI for Education, 2024)。</p>
-</li>
-<li>
-<p><strong>內容來源的模糊化</strong>：<br/>
-  一篇文章、一張圖片的創作者是誰？是人類、AI，還是人機協作？這使得評估訊息的可信度與作者意圖變得更加複雜。</p>
-</li>
-<li>
-<p><strong>從消費者到「負責任的創造者」</strong>：<br/>
-  如同本課程單元二所學，學生也能輕易使用 AI 生成內容。媒體素養不再只是被動接收，更包含<strong>身為創造者的倫理責任</strong>：不製造假訊息、不侵害他人權益，並理解其創作可能帶來的社會影響。</p>
-</li>
-</ul>
-<hr/>
-<h2 id="section-4">第三部分：本課程中的相關議題與實踐策略</h2>
-<p>在本課程中，我們不僅學習如何使用 AI，更要學習如何負責任地使用。以下針對三大核心議題，提出具體討論與實踐策略。</p>
-<h3>3.1 資料來源與版權 (Data Sources &amp; Copyright)</h3>
-<p><strong>議題核心</strong>：AI 的知識從何而來？我們使用 AI 生成的內容，是否侵犯了他人的版權？</p>
-<ul>
-<li>
-<p><strong>AI 的學習基礎與合理使用爭議</strong>：<br/>
-  大型語言模型透過爬取巨量的網路公開資料（包含受版權保護的文本、圖片）進行訓練。這引發了關於此舉是否構成「合理使用 (Fair Use)」的激烈法律與倫理辯論，目前仍有多起相關訴訟正在進行中 (JDSupra, 2024)。</p>
-</li>
-<li>
-<p><strong>AI 生成內容的所有權</strong>：</p>
-</li>
-<li>根據美國著作權局 (U.S. Copyright Office) 的現行指導方針，完全由 AI 自動生成的內容<strong>不受版權保護</strong>。著作權的保護資格取決於人類作者是否提供了「足夠的創意輸入與控制」，而非僅僅下達提示詞 (U.S. Copyright Office, 2023)。</li>
-<li>
-<p>這意味著，若師生僅使用簡單提示詞生成的內容，可能不擁有其版權。</p>
-</li>
-<li>
-<p><strong>教學實踐策略</strong>：</p>
-</li>
-<li><strong>建立正確觀念</strong>：應告知學生，AI 生成的內容並非「憑空出現」，而是基於現有資料的重組與再創造。</li>
-<li><strong>強調「透明」與「註明」</strong>：當學術作業或報告允許使用 AI 時，應要求學生明確註明。根據 APA 指南，建議在方法論或附錄中描述使用了哪個 AI 工具及如何使用，並將完整的對話紀錄放在附錄中以求透明 (American Psychological Association, 2023)。</li>
-<li><strong>鼓勵轉化而非照單全收</strong>：引導學生將 AI 生成的內容視為「草稿」或「靈感來源」，並在此基礎上進行修改、擴充，加入自己的觀點與分析，最終產出屬於自己的原創作品。</li>
-<li><strong>遵守授權條款</strong>：提醒學生在使用特定 AI 工具前，應查閱其服務條款，了解生成內容的使用範圍（例如是否可用於商業用途）。</li>
-</ul>
-<h3>3.2 影像真假的識別 (Image Authenticity)</h3>
-<p><strong>議題核心</strong>：面對越來越逼真的 AI 生成圖片與 Deepfake 影片，我們如何培養學生的「火眼金睛」？</p>
-<ul>
-<li><strong>AI 影像的常見破綻</strong>：雖然 AI 進步神速，但在細節上仍常出錯。引導學生從以下幾個方面進行「慢思考」與觀察 (AI for Education, 2024; SchoolAI, 2025)：</li>
-<li><strong>物理與環境不一致</strong>：光影方向是否統一？背景中的物體或文字是否扭曲、模糊或不合 logique？</li>
-<li><strong>人體結構的異常</strong>：檢查手指和牙齒的數量與形狀、不自然的關節結構、不對稱的耳環或眼鏡。</li>
-<li><strong>臉部細節</strong>：皮膚是否過於光滑完美？眨眼頻率是否不正常？嘴唇運動是否與聲音完全同步？</li>
-<li>
-<p><strong>不自然的混合體</strong>：物體之間是否有不自然的融合或過渡？</p>
-</li>
-<li>
-<p><strong>教學實踐策略</strong>：</p>
-</li>
-<li><strong>舉辦「真假猜猜看」活動</strong>：定期在課堂上展示人類拍攝與 AI 生成的影像，讓學生分組討論、找出破綻，並說明判斷依據，培養觀察力。</li>
-<li><strong>教導使用查證工具</strong>：<ul>
-<li><strong>反向圖片搜尋 (Reverse Image Search)</strong>：將可疑圖片上傳至 Google Lens 或 TinEye，查找其原始來源與發布脈絡 (EdWeek, 2024)。</li>
-<li><strong>AI 檢測工具</strong>：介紹線上檢測工具，並同時說明其準確率並非 100%，只能作為參考，不能完全依賴。</li>
-</ul>
-</li>
-<li><strong>強調「情境」與「來源」的重要性 (SIFT 框架)</strong>：一張圖片的真實性，不只在於其本身。引導學生查證：<strong>S</strong>top (停止), <strong>I</strong>nvestigate the source (調查來源), <strong>F</strong>ind better coverage (尋找更好的報導), <strong>T</strong>race claims (追溯原始脈絡)。</li>
-<li><strong>建立健康心態</strong>：面對無法立即辨識的內容，應抱持「<strong>暫時懷疑，多方查證</strong>」的態度，而非輕易相信或轉發。</li>
-</ul>
-<h3>3.3 生成內容的使用倫理 (Ethics of Generated Content)</h3>
-<p><strong>議題核心</strong>：我們應該在何時、以何種方式使用 AI？學術誠信的界線在哪裡？</p>
-<ul>
-<li>
-<p><strong>學術誠信的挑戰</strong>：學生將 AI 生成的報告直接當成自己的作業繳交，這對學習的意義構成了根本性的挑戰，可能削弱學生的批判性思維與寫作能力 (Cornell University, n.d.)。</p>
-</li>
-<li>
-<p><strong>偏見與刻板印象的再製</strong>：若未經批判性思考，直接使用 AI 生成的內容，可能無意中傳播了模型本身存在的偏見（例如對特定職業、性別、種族的刻板印象）。</p>
-</li>
-<li>
-<p><strong>創造有害內容的風險</strong>：AI 可能被用於製造網路霸凌的言論、惡意的假訊息或歧視性內容。</p>
-</li>
-<li>
-<p><strong>教學實踐策略</strong>：</p>
-</li>
-<li><strong>制定清晰的 AI 使用規範</strong>：<ul>
-<li><strong>允許的範圍</strong>：例如，允許使用 AI 進行腦力激盪、文法潤飾、尋找初步資料、程式碼除錯。</li>
-<li><strong>禁止的範圍</strong>：例如，禁止將 AI 生成的完整文章作為個人作業提交。</li>
-<li><strong>必須註明的場合</strong>：在報告或作業中，必須明確標示 AI 的使用情況。</li>
-</ul>
-</li>
-<li><strong>重新設計評量方式</strong>：<ul>
-<li>減少純知識記憶性的作業，增加<strong>強調過程、思辨、實作與口頭報告</strong>的評量。</li>
-<li>要求學生不僅提交成果，更要提交一份「反思報告」，說明<strong>創作過程</strong>以及<strong>如何使用 AI 作為輔助工具</strong>。</li>
-</ul>
-</li>
-<li><strong>課堂倫理思辨</strong>：<ul>
-<li>舉辦討論會，探討「AI 寫詩，作者是誰？」、「使用 AI 繪圖參加比賽是否公平？」、「Deepfake 技術的應用界線？」等倫理議題。</li>
-<li>引導學生思考 AI 技術對社會的長遠影響，培養負責任的數位公民態度。</li>
-</ul>
-</li>
-<li><strong>善用本機 AI 工具</strong>：如本課程單元四、五所介紹的 VS Code + Codex CLI／Claude Code 與 <code>AGENTS.md</code>／<code>CLAUDE.md</code> 可引導任務範圍；文字規則不是強制隔離。需搭配實際工具權限、匿名資料與教師核對，且本機 CLI 不代表資料不送往雲端模型。</li>
+<li><strong>錯誤資訊 (mis-information)</strong>：內容是錯的，但不是為了傷害而製作。</li>
+<li><strong>假訊息 (dis-information)</strong>：內容是錯的，而且刻意製作來傷害個人、群體、組織或國家。</li>
+<li><strong>惡意資訊 (mal-information)</strong>：內容以事實為基礎，卻被用來造成傷害。</li>
 </ul>
 <hr/>
-<h2 id="section-5">結論：擁抱 AI，更要深化素養</h2>
-<p>生成式 AI 是一把雙面刃。與其禁止，不如積極引導。身為教育者，我們的任務是幫助下一代建立駕馭這項強大工具所需的<strong>批判性思維、倫理意識與數位韌性</strong> (UNESCO, 2023)。</p>
-<p>這意味著，資訊與媒體素養教育的重點，必須從過去的「防弊」思維，轉向更積極的「賦能」思維：不僅要教會學生如何分辨假象，更要教會他們如何與 AI 協作，成為一個更具創造力、更負責任的資訊創造者與傳播者。最終目標是培養出能夠明智地、合乎道德地使用 AI，並為社會做出積極貢獻的數位公民。</p>
+
+<h2 id="section-3">生成式 AI 帶來的新挑戰</h2>
+<h3 id="ask-and-verify">從「搜尋」到「提問與驗證」</h3>
+<p>使用 AI 時，重點從「如何找到答案」多了一步：「如何問清楚，並驗證 AI 給的答案」。<a href="01_materials.html">單元一</a>介紹的提示詞寫法，就是這項能力的一部分。研究者也把提示詞工程放進資訊素養的討論中<sup><a href="#ref-5">[5]</a></sup>。</p>
+<h3 id="hallucination">幻覺 (Hallucination)：AI 可能說錯，甚至捏造</h3>
+<p>AI 會犯錯，也可能生成捏造或具欺騙性的內容<sup><a href="#ref-6">[6]</a></sup>。因此要把 AI 的回答當成待查證的起點，而不是最終事實。一個實用方法是<strong>橫向閱讀 (lateral reading)</strong>：離開 AI 的回答，用外部來源比對<sup><a href="#ref-6">[6]</a></sup>。</p>
+<p>只知道「AI 會出錯」還不夠。一項以社交機器人進行的實驗中，機器人穿插的錯誤詞彙約 77% 成為受試者的錯誤記憶，單次事先警告也沒有減少這個現象<sup><a href="#ref-7">[7]</a></sup>。這項研究使用受控的機器人和詞彙記憶作業，不能直接推論到所有 AI 對話，但它提醒我們：要靠實際核對，不能只靠「我會小心」。</p>
+<h3 id="ai-bias">AI 的偏見</h3>
+<p>演算法偏誤是指機器學習演算法的系統性錯誤造成不公平或歧視性的結果；不具代表性或帶有歷史偏見的資料，可能放大既有偏見<sup><a href="#ref-8">[8]</a></sup>。看到 AI 的回答時，可以多問一句：「這份回答可能缺少誰的觀點？」</p>
+<h3 id="synthetic-media">合成媒體與內容來源</h3>
+<p>文章和圖片的作者可能是人、AI，或兩者合作，這讓判斷可信度和作者意圖變得更複雜。你在<a href="02_images.html">單元二</a>也會用 AI 生成圖片，所以這不只是看別人的內容：你同時也是創作者，要避免製造誤導他人的內容。</p>
 <hr/>
-<h2 id="section-6">參考文獻 (APA 7th)</h2>
-<p>AI for Education. (2024, October 21). <em>Uncovering Deepfakes: Classroom Guide</em>. AI for Education. https://www.aiforeducation.io/resources/uncovering-deepfakes-classroom-guide</p>
-<p>Al-Fanar Media. (2023, May 22). <em>Media Literacy and Critical Thinking ‘Key to Countering Disinformation’</em>. https://www.al-fanarmedia.org/2023/05/media-literacy-and-critical-thinking-key-to-countering-disinformation/</p>
-<p>American Psychological Association. (2023). <em>How to cite ChatGPT</em>. APA Style. https://apastyle.apa.org/blog/how-to-cite-chatgpt</p>
-<p>American Psychological Association. (2025, June 3). <em>AI literacy: Why every teen needs to learn this essential skill</em>. https://www.apa.org/topics/artificial-intelligence/literacy-essential-skill</p>
-<p>Connections Academy. (n.d.). <em>Fact-Checking in the Age of AI: A New Frontier for Information Literacy</em>. https://www.connectionsacademy.com/support/resources/article/fact-checking-in-the-age-of-ai-a-new-frontier-for-information-literacy/</p>
-<p>Cornell University. (n.d.). <em>Generative Artificial Intelligence: Academic Integrity</em>. The Center for Teaching Innovation. https://teaching.cornell.edu/generative-artificial-intelligence/academic-integrity-generative-artificial-intelligence</p>
-<p>EdWeek. (2023, September 19). <em>How to Teach About AI and Algorithmic Bias</em>. https://www.edweek.org/technology/how-to-teach-about-ai-and-algorithmic-bias/2023/09</p>
-<p>EdWeek. (2024, June 24). <em>How to Teach Kids to Spot AI Manipulation</em>. https://www.edweek.org/technology/how-to-teach-kids-to-spot-ai-manipulation/2024/06</p>
-<p>JDSupra. (2024, March 12). <em>Generative AI and Copyright: Fair Use</em>. https://www.jdsupra.com/legalnews/generative-ai-and-copyright-fair-use-2720533/</p>
-<p>Lo, L. S. (2023). The CLEAR path: A framework for enhancing information literacy through prompt engineering. <em>Journal of Academic Librarianship</em>, <em>49</em>(4), 102720. https://doi.org/10.1016/j.acalib.2023.102720</p>
-<p>Ofcom. (2024, November 13). <em>Future Technology and Media Literacy: Applications of Generative AI</em>. https://www.ofcom.org.uk/research-and-data/media-literacy-research/reports/future-technology-and-media-literacy</p>
-<p>SchoolAI. (2025, July 15). <em>Teaching media literacy in the age of deepfakes and generative AI</em>. https://www.schoolai.com/post/teaching-media-literacy-in-the-age-of-deepfakes-and-generative-ai</p>
-<p>UNESCO. (2023). <em>Guidance for generative AI in education and research</em>. https://unesdoc.unesco.org/ark:/48223/pf0000386693</p>
-<p>U.S. Copyright Office. (2023). <em>Copyright Registration Guidance: Works Containing Material Generated by Artificial Intelligence</em>. Federal Register, 88(59), 16190-16194. https://www.federalregister.gov/documents/2023/03/16/2023-05321/copyright-registration-guidance-works-containing-material-generated-by-artificial-intelligence</p></div>
+
+<h2 id="section-4">看到可疑影像時：先用 SIFT 查脈絡</h2>
+<p>面對可疑的圖片或影片，不要先盯著畫面找破綻。先用 <strong>SIFT</strong> 四個動作查脈絡<sup><a href="#ref-9">[9]</a></sup>：</p>
+<ol>
+<li><strong>S：Stop（停下來）</strong>。先別分享，也別急著相信。</li>
+<li><strong>I：Investigate the source（調查來源）</strong>。這是誰發布的？他的背景是什麼？</li>
+<li><strong>F：Find better coverage（尋找更好的報導）</strong>。可信的來源是否也報導了這件事？</li>
+<li><strong>T：Trace claims, quotes, and media back to the original context（追溯原始脈絡）</strong>。這段說法、引言或影像最早出自哪裡？</li>
+</ol>
+<p>幾個工具和判斷方式可以搭配使用：</p>
+<ul>
+<li><strong>反向圖片搜尋</strong>：用圖片本身查它還出現在哪裡、背景是什麼<sup><a href="#ref-10">[10]</a></sup>。Google 的以圖搜尋會列出含有該圖片或類似圖片的網站<sup><a href="#ref-11">[11]</a></sup>。</li>
+<li><strong>事實查核網站</strong>：<a href="https://tfc-taiwan.org.tw/">台灣事實查核中心</a>會發布查核報告，可先查是否已有人查過<sup><a href="#ref-12">[12]</a></sup>。</li>
+<li><strong>AI 檢測工具</strong>：只能參考。有圖書館實務人員就指出，這類工具並不可靠<sup><a href="#ref-13">[13]</a></sup>。</li>
+<li><strong>畫面破綻</strong>：例如六根手指或不合理的鏡頭角度<sup><a href="#ref-10">[10]</a></sup><sup><a href="#ref-13">[13]</a></sup>。這些只是線索：有破綻值得懷疑，沒有破綻也不代表是真的。</li>
+</ul>
+<p>查不出結果時，可以老實地說「目前無法確認」，先不要轉傳。</p>
+<hr/>
+
+<h2 id="section-5">資料來源與著作權</h2>
+<p>以下說明幫助你建立基本概念，不是法律意見。各國規定不同，也還在變動。</p>
+<h3 id="training-data">訓練資料的爭議</h3>
+<p>用受著作權保護的作品訓練生成式 AI，是否屬於合理使用，仍有爭議。美國加州的 <em>Bartz v. Anthropic</em> 與 <em>Kadrey v. Meta</em> 兩案中，法官表示這種訓練可能構成合理使用，但相關訴訟仍在持續<sup><a href="#ref-14">[14]</a></sup>。</p>
+<h3 id="output-ownership">AI 生成內容歸誰</h3>
+<ul>
+<li><strong>美國</strong>：著作權局 2025 年 1 月的報告認為，以目前一般可用的技術來說，只下提示詞並不足以讓使用者成為輸出內容的作者；若 AI 是工具，且由人類決定內容的表達元素，成果則可能全部或部分受保護<sup><a href="#ref-15">[15]</a></sup>。最高法院 2026 年 3 月 2 日拒絕受理 <em>Thaler v. Perlmutter</em>，維持「須有人類作者」的下級法院判決；至於人類要貢獻多少才夠，仍沒有明確界線<sup><a href="#ref-16">[16]</a></sup>。</li>
+<li><strong>臺灣</strong>：著作權法規定著作人是創作著作之人，著作人於著作完成時享有著作權<sup><a href="#ref-17">[17]</a></sup>。依智慧局見解，人類有實際創意投入、把 AI 當輔助工具的成果仍可受保護；完全由 AI 獨立完成、人類沒有實際創意投入的成果，原則上無法享有著作權<sup><a href="#ref-18">[18]</a></sup>。</li>
+<li><strong>後續發展</strong>：工商時報 2026 年 8 月報導，智慧局已完成《生成式人工智慧著作權指引》1.0 版<sup><a href="#ref-19">[19]</a></sup>。本教材未取得正式公告全文，實際內容請以智慧局公告為準。</li>
+</ul>
+<h3 id="upload-risk">上傳他人作品前先想一下</h3>
+<p>把他人著作上傳到生成式 AI，可能涉及重製與公開傳輸。未經授權又不符合合理使用時，恐侵害著作權。生成式 AI 不會替你審查來源，責任在使用者身上<sup><a href="#ref-18">[18]</a></sup>。</p>
+<hr/>
+
+<h2 id="section-6">負責任地使用 AI</h2>
+<ul>
+<li><strong>說明 AI 參與了什麼</strong>：學校、公司或活動若有 AI 使用規定，就照規定註明。臺灣行政院的參考指引也要求機關不可完全信任生成資訊，並應適當揭露使用情形<sup><a href="#ref-18">[18]</a></sup>。</li>
+<li><strong>把輸出當草稿</strong>：先核對，再加入自己的判斷和修改。</li>
+<li><strong>保護個人資料</strong>：避免上傳自己或他人的個人資料<sup><a href="#ref-18">[18]</a></sup>。</li>
+<li><strong>使用本機 AI 工具時也一樣</strong>：<a href="04_workspace.html">單元四</a>、<a href="05_instructions.html">單元五</a>介紹的 VS Code 與 Codex CLI／Claude Code，可用 <code>AGENTS.md</code>／<code>CLAUDE.md</code> 引導任務範圍。文字規則不是強制隔離，需搭配實際工具權限；本機 CLI 也不代表資料不會送往雲端模型。</li>
+<li><strong>不製造傷害</strong>：不用 AI 製作騷擾、歧視或誤導他人的內容。</li>
+</ul>
+<p>UNESCO 的生成式 AI 教育指引也採人本取向<sup><a href="#ref-20">[20]</a></sup>。對入門使用者來說，這句話可以很實際：工具可以幫忙，判斷和責任仍在你身上。</p>
+<hr/>
+
+<h2 id="section-7">常見問題 (Q&amp;A)</h2>
+<h3 id="qa-1">Q1：資訊這麼多，怎麼判斷一個新聞來源是否可信？</h3>
+<ul>
+<li><strong>檢查作者與機構</strong>：是否有明確的作者和發布機構？快速查一下它的聲譽和立場。</li>
+<li><strong>檢視引用來源</strong>：可信的報導通常會說明消息來源。完全沒有可驗證來源的文章，要抱持懷疑。</li>
+<li><strong>注意報導風格</strong>：充滿情緒性用語或強烈個人意見的內容，可能更接近評論。</li>
+<li><strong>交叉比對</strong>：比較不同立場的媒體如何報導同一件事。</li>
+</ul>
+<h3 id="qa-2">Q2：發現家人或朋友分享不實資訊，該怎麼辦？</h3>
+<ul>
+<li><strong>私下溝通</strong>：避免在公開留言區指責，改用私訊和關心的語氣提醒。</li>
+<li><strong>提供證據</strong>：與其只說「這是假的」，不如附上查核報告或可靠的資料連結。</li>
+<li><strong>同理與引導</strong>：先理解對方分享的動機，再一起確認，例如：「我找不到可靠的來源，我們要不要一起查查看？」</li>
+</ul>
+<h3 id="qa-3">Q3：我是入門使用者，可以怎麼把素養用在日常生活？</h3>
+<ul>
+<li><strong>從感興趣的主題開始</strong>：看新聞時留意立場，看科學報導時留意證據強度。</li>
+<li><strong>用真實案例</strong>：拿最近流傳的貼文或爭議事件練習，比抽象規則更好記。</li>
+<li><strong>做一份小型查證紀錄</strong>：寫下你查了什麼、在哪裡查到、還有什麼不確定。</li>
+</ul>
+<hr/>
+
+<h2 id="section-8">概念練習</h2>
+<p>這些練習著重思考，不需要新的安裝或設定。完成後用本節最後的<a href="#practice-rubric">評量規準</a>自我檢查。</p>
+<h3 id="practice-1">練習一：用來源規則核對 AI 摘要</h3>
+<p><strong>規則</strong>：<strong>每個重點標示來源段落；來源沒寫的內容列為待查。</strong></p>
+<ol>
+<li><strong>準備</strong>：使用前導章 <a href="00_intro.html#read-followup-save">5.6 讀檔、追問與保存摘要草稿</a>的摘要，或任選一份你自己的筆記，請 AI 依上述規則列出三個重點。</li>
+<li><strong>核對</strong>：逐點回到原文，把每個重點分成三類：有依據、來源不支持、待查。</li>
+<li><strong>反思</strong>：AI 語氣肯定的地方，來源是否也同樣明確？有沒有哪個重點讀起來合理，原文卻沒有寫？</li>
+</ol>
+<h3 id="practice-2">練習二：用 SIFT 查一張可疑圖片</h3>
+<ol>
+<li><strong>選題</strong>：選一張最近在社群流傳的圖片或影片截圖。</li>
+<li><strong>查證</strong>：依 <a href="#section-4">SIFT 四個動作</a>逐步記錄，每一步寫下你查了什麼、看到什麼。可以使用反向圖片搜尋和事實查核網站。</li>
+<li><strong>結論</strong>：寫下「可信」、「不可信」或「目前無法確認」，並說明依據。</li>
+</ol>
+<h3 id="practice-3">練習三：用五項能力拆解一則訊息</h3>
+<p>選一則最近廣為流傳的新聞或貼文，用白皮書的五項能力<sup><a href="#ref-3">[3]</a></sup>思考：</p>
+<ul>
+<li><strong>近用</strong>：你是從哪裡看到的？原始出處在哪裡？</li>
+<li><strong>分析</strong>：它的目的是告知、娛樂還是說服？資訊是否真實可信？可能造成什麼影響？</li>
+<li><strong>創造</strong>：如果由你改寫成更正確、更公平的版本，你會改什麼？</li>
+<li><strong>反思</strong>：它為什麼吸引你？你的反應符合你想負起的責任嗎？</li>
+<li><strong>行動</strong>：你會分享、留言澄清、忽略，還是向平台檢舉？為什麼？</li>
+</ul>
+<h3 id="practice-rubric">評量規準</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">向度</th>
+<th style="text-align: left;">達標</th>
+<th style="text-align: left;">需加強</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>來源標示</strong></td>
+<td style="text-align: left;">每個重點都能指到具體的來源段落</td>
+<td style="text-align: left;">只寫「來自筆記」，或有重點找不到來源</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>待查處理</strong></td>
+<td style="text-align: left;">來源沒寫的內容全部列為待查</td>
+<td style="text-align: left;">把未經確認的內容寫成事實</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>查證過程</strong></td>
+<td style="text-align: left;">留下查證步驟，並使用至少一個 AI 以外的來源</td>
+<td style="text-align: left;">只看畫面細節，或只問 AI</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>判斷與說明</strong></td>
+<td style="text-align: left;">結論和證據相符，必要時能說「目前無法確認」</td>
+<td style="text-align: left;">只有結論，沒有理由</td>
+</tr>
+</tbody>
+</table>
+<p>四個向度都達標，就算完成。</p>
+<hr/>
+
+<h2 id="section-9">重點回顧</h2>
+<ul>
+<li><strong>兩種素養</strong>：資訊素養重在找到和使用資訊，媒體素養重在解讀和創作訊息。</li>
+<li><strong>AI 輸出</strong>：可能出錯、可能捏造，也可能帶有偏見，要回到來源核對。</li>
+<li><strong>可疑影像</strong>：先用 SIFT 查脈絡，畫面破綻和檢測工具都只是參考。</li>
+<li><strong>來源規則</strong>：每個重點標示來源段落，來源沒寫的列為待查。</li>
+<li><strong>著作權與隱私</strong>：只下提示詞通常不足以成為作者；上傳他人作品或個人資料前要先想清楚。</li>
+</ul>
+<hr/>
+<h2 id="section-10">參考文獻</h2>
+<p>除註明者外，以下來源都已開啟並閱讀相關段落。</p>
+<ol class="reference-list">
+<li id="ref-1">American Library Association. (1989). <em>Presidential Committee on Information Literacy: Final report</em>. <a href="https://www.ala.org/acrl/publications/whitepapers/presidential">https://www.ala.org/acrl/publications/whitepapers/presidential</a>（檢索日期 2026-10-31）。</li>
+<li id="ref-2">National Association for Media Literacy Education. (n.d.). <em>What is media literacy? Media literacy defined</em>. <a href="https://namle.org/resources/media-literacy-defined/">https://namle.org/resources/media-literacy-defined/</a>（檢索日期 2026-10-31）。</li>
+<li id="ref-3">教育部（2023 年 3 月）。<em>數位時代媒體素養教育白皮書</em>。 <a href="https://ws.moe.edu.tw/001/Upload/3/relfile/6315/88728/acae722a-d0d8-4a48-b86f-a7962c905c77.pdf">https://ws.moe.edu.tw/001/Upload/3/relfile/6315/88728/acae722a-d0d8-4a48-b86f-a7962c905c77.pdf</a>（檢索日期 2026-10-31）。</li>
+<li id="ref-4">Wardle, C., &amp; Derakhshan, H. (2017). <em>Information disorder: Toward an interdisciplinary framework for research and policymaking</em>. Council of Europe. <a href="https://shorensteincenter.org/?p=10550">https://shorensteincenter.org/?p=10550</a>（檢索日期 2026-10-31）。</li>
+<li id="ref-5">Lo, L. S. (2023). The CLEAR path: A framework for enhancing information literacy through prompt engineering. <em>The Journal of Academic Librarianship</em>, <em>49</em>(4), 102720. <a href="https://doi.org/10.1016/j.acalib.2023.102720">https://doi.org/10.1016/j.acalib.2023.102720</a>（檢索日期 2026-10-31）。<strong>註：</strong>僅經 Crossref 確認書目，未閱讀全文。</li>
+<li id="ref-6">Stanford CRAFT. (2025, January 21). <em>How do I fact-check AI search results?</em> <a href="https://craft.stanford.edu/resource/how-do-i-fact-check-ai-search-results">https://craft.stanford.edu/resource/how-do-i-fact-check-ai-search-results</a>（檢索日期 2026-10-31）。</li>
+<li id="ref-7">Huang, T.-R., Cheng, Y.-L., &amp; Rajaram, S. (2024). Unavoidable social contagion of false memory from robots to humans. <em>American Psychologist</em>, <em>79</em>(2), 285–298. <a href="https://doi.org/10.1037/amp0001230">https://doi.org/10.1037/amp0001230</a>（檢索日期 2026-10-31）。<strong>註：</strong>僅閱讀書目紀錄與摘要，未閱讀全文。</li>
+<li id="ref-8">Jonker, A., &amp; Rogers, J. (2024, September 20; updated 2026, July 8). <em>What is algorithmic bias?</em> IBM. <a href="https://www.ibm.com/think/topics/algorithmic-bias">https://www.ibm.com/think/topics/algorithmic-bias</a>（檢索日期 2026-10-31）。</li>
+<li id="ref-9">Caulfield, M. (2019, June 19). <em>SIFT (The four moves)</em>. Hapgood. <a href="https://hapgood.us/2019/06/19/sift-the-four-moves/">https://hapgood.us/2019/06/19/sift-the-four-moves/</a>（檢索日期 2026-10-31）。</li>
+<li id="ref-10">Klein, A. (2024, June 24). <em>How to teach kids to spot AI manipulation</em>. Education Week. <a href="https://www.edweek.org/technology/how-to-teach-kids-to-spot-ai-manipulation/2024/06">https://www.edweek.org/technology/how-to-teach-kids-to-spot-ai-manipulation/2024/06</a>（檢索日期 2026-10-31）。</li>
+<li id="ref-11">Google. (n.d.). <em>透過 Google 用圖片搜尋</em>. Google 搜尋說明。 <a href="https://support.google.com/websearch/answer/1325808?hl=zh-Hant">https://support.google.com/websearch/answer/1325808?hl=zh-Hant</a>（檢索日期 2026-10-31）。</li>
+<li id="ref-12">台灣事實查核中心. (n.d.). <em>台灣事實查核中心</em>. <a href="https://tfc-taiwan.org.tw/">https://tfc-taiwan.org.tw/</a>（檢索日期 2026-10-31）。</li>
+<li id="ref-13">KCUR. (2026, March 20). <em>Mid-Continent Public Library is teaching people how to not be duped by AI videos and images</em>. <a href="https://www.kcur.org/podcast/up-to-date/2026-03-20/mid-continent-public-library-is-teaching-people-how-to-not-be-duped-by-ai-videos-and-images">https://www.kcur.org/podcast/up-to-date/2026-03-20/mid-continent-public-library-is-teaching-people-how-to-not-be-duped-by-ai-videos-and-images</a>（檢索日期 2026-10-31）。</li>
+<li id="ref-14">The McLellan, Michigan State University College of Law. (2025, September 8). <em>California judges rule in favor of AI</em>. <a href="https://mclellan.law.msu.edu/articles/juges-rule-ai-training-fair-use">https://mclellan.law.msu.edu/articles/juges-rule-ai-training-fair-use</a>（檢索日期 2026-10-31）。<strong>註：</strong>此為法學院網站的摘要，不是判決原文；日期依頁面標示 25.09.08 判讀。</li>
+<li id="ref-15">U.S. Copyright Office. (2025, January). <em>Copyright and artificial intelligence, Part 2: Copyrightability</em>. <a href="https://www.copyright.gov/ai/Copyright-and-Artificial-Intelligence-Part-2-Copyrightability-Report.pdf">https://www.copyright.gov/ai/Copyright-and-Artificial-Intelligence-Part-2-Copyrightability-Report.pdf</a>（檢索日期 2026-10-31）。</li>
+<li id="ref-16">Assmus, R. M., &amp; Nolan, B. W. (2026, March 11). <em>Supreme Court denies cert in AI authorship case</em>. Mayer Brown. <a href="https://www.mayerbrown.com/en/insights/publications/2026/03/supreme-court-denies-review-in-ai-authorship-case">https://www.mayerbrown.com/en/insights/publications/2026/03/supreme-court-denies-review-in-ai-authorship-case</a>（檢索日期 2026-10-31）。<strong>註：</strong>此為律師事務所的說明文章，不是法院文件。</li>
+<li id="ref-17">著作權法（民國 111 年 6 月 15 日修正）。全國法規資料庫。 <a href="https://law.moj.gov.tw/LawClass/LawAll.aspx?pcode=J0070017">https://law.moj.gov.tw/LawClass/LawAll.aspx?pcode=J0070017</a>（檢索日期 2026-10-31）。</li>
+<li id="ref-18">李志強（2026 年 1 月）。迎接人工智慧時代來臨：淺析使用生成式 AI 應行注意之法律風險。<em>清流雙月刊</em>，61，57–63。 <a href="https://www.tipo.gov.tw/wSite/public/Attachment/012/f1778635296558.pdf">https://www.tipo.gov.tw/wSite/public/Attachment/012/f1778635296558.pdf</a>（檢索日期 2026-10-31）。</li>
+<li id="ref-19">王玉樹（2026 年 8 月 5 日）。生成式AI著作權指引1.0出爐 列三大類合理使用 餘都要授權。工商時報。 <a href="https://www.ctee.com.tw/news/20260805701974-430503">https://www.ctee.com.tw/news/20260805701974-430503</a>（檢索日期 2026-10-31）。<strong>註：</strong>此為新聞報導；未取得智慧局正式公告的指引全文。</li>
+<li id="ref-20">UNESCO. (2023, September 7; updated 2026, January 16). <em>Guidance for generative AI in education and research</em>. <a href="https://www.unesco.org/en/articles/guidance-generative-ai-education-and-research">https://www.unesco.org/en/articles/guidance-generative-ai-education-and-research</a>（檢索日期 2026-10-31）。<strong>註：</strong>僅閱讀 UNESCO 的介紹頁，未閱讀指引全文。</li>
+</ol></div>
 <!-- Highlight.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
 <script>hljs.highlightAll();</script>

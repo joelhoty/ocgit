@@ -81,7 +81,7 @@ html{scroll-behavior:smooth}body{box-sizing:border-box}img{max-width:100%;height
 <div class="container"><!-- Path: AI_Agent_CLi | Updated: 2026-10-31 | Edition: Codex CLI / Claude Code -->
 <h1 id="-ai">單元二補充教材：讓教材更生動 - AI 圖片詠唱師</h1><details class="course-toc"><summary>本頁章節</summary><ul><li><a href="#_1">單元目標</a></li><li><a href="#_2">核心概念詳解</a></li><li><a href="#_4">詳細操作步驟</a></li><li><a href="#prompt">跨學科圖片 Prompt 範例庫</a></li><li><a href="#_13">進階技巧</a></li><li><a href="#_16">實用技巧與注意事項</a></li><li><a href="#_20">延伸應用</a></li><li><a href="#_21">練習任務</a></li><li><a href="#qa">常見問題 Q&amp;A</a></li></ul></details>
 <blockquote>
-<p><strong>本版查核：2026-10-31。</strong>先閱讀<a href="00_intro.html">前導章：Agent 基本概念與工作環境</a>，安裝並登入 Codex CLI 或 Claude Code 任選一款即可。本課使用虛構／去識別化資料，所有結果都要以來源與實際檔案驗收。</p>
+<p><strong>閱讀前提：</strong>先完成<a href="00_intro.html">前導章：Agent 基本概念與工作環境</a>，使用 Codex CLI 或 Claude Code 其中一款。本章以備課作為範例情境；不是教師也能把主題換成自己的工作或學習內容。範例請使用虛構或去識別化資料，結果都要回到來源與實際檔案確認。（查核日期：2026-10-31）</p>
 </blockquote>
 <h2 id="_1">單元目標</h2>
 <ul>
@@ -177,6 +177,9 @@ html{scroll-behavior:smooth}body{box-sizing:border-box}img{max-width:100%;height
 </ol>
 <hr/>
 <h2 id="prompt">跨學科圖片 Prompt 範例庫</h2>
+<blockquote>
+<p><strong>文字標示提醒</strong>：下列提示若要求圖中出現標籤或文字（例如 labeled arrows、Clearly labeled），請依步驟一先產生無文字底圖，再自行加上標籤。</p>
+</blockquote>
 <h3 id="_7">📐 數學科</h3>
 <h4 id="1">範例 1：幾何圖形教學</h4>
 <pre><code>A simple, clean diagram of a right-angled triangle on white background.
@@ -196,7 +199,7 @@ Clean, simple style suitable for elementary school students.
 <p><strong>使用情境</strong>：課堂投影片、概念說明</p>
 <h4 id="3_1">範例 3：生活情境應用</h4>
 <pre><code>A warm, friendly illustration of a fruit market stall.
-Display shows apples (¥50 per kg), oranges (¥40 per kg), and bananas (¥30 per kg).
+Display shows apples (NT$50 per kg), oranges (NT$40 per kg), and bananas (NT$30 per kg).
 Cartoon style, bright colors, suitable for math word problems.
 
 (一個溫馨友善的水果攤插圖。展示蘋果(每公斤 50 元)、柳橙(每公斤 40 元)、香蕉(每公斤 30 元)。卡通風格,明亮色彩,適合數學應用題。)
@@ -265,7 +268,7 @@ Metaphorical, thought-provoking, suitable for teaching Chinese idioms.
 (一個創意插圖,表現成語「井底之蛙」。展示一隻小青蛙在深井底部,向上看著一小圈天空。隱喻性、發人深省,適合教授中文成語。)
 </code></pre>
 <h4 id="3_4">範例 3：寫作情境啟發</h4>
-<pre><code>A inspiring illustration of "My Dream".
+<pre><code>An inspiring illustration of "My Dream".
 Show a child looking at a starry night sky with thought bubbles containing various dreams:
 scientist, teacher, artist, astronaut. Dreamy, hopeful mood, soft colors.
 
@@ -380,28 +383,26 @@ Use icons and simple labels for each period. Horizontal layout, clear and organi
 </code></pre>
 <hr/>
 <h3 id="3_6">技巧 3：中英文提示詞對比</h3>
-<p><strong>重要提醒</strong>：目前多數 AI 圖片生成模型對英文提示詞的理解更精準。建議：<br/>
-- 使用英文撰寫提示詞(可搭配翻譯工具)<br/>
-- 或使用「中文描述 + 英文關鍵字」混合模式</p>
+<p><strong>重要提醒</strong>：中文或英文都可以寫提示詞，結果差異常來自細節多寡，不一定來自語言。想比較時，請用兩種語言寫入相同細節，保留效果較好的版本。圖片中的中文文字仍可能出錯，需要中文標示時請後製加入。</p>
 <p><strong>範例對比</strong>：</p>
 <table>
 <thead>
 <tr>
 <th>中文提示詞</th>
 <th>英文提示詞</th>
-<th>效果差異</th>
+<th>比較時留意</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>一隻可愛的貓</td>
+<td>一隻可愛的橘貓，毛茸茸，卡通風格</td>
 <td>A cute cat, fluffy, orange fur, cartoon style</td>
-<td>英文版更精準</td>
+<td>主體、毛色與風格是否符合描述</td>
 </tr>
 <tr>
-<td>數學圖表</td>
+<td>數學圖表，簡潔，極簡風格，白色背景</td>
 <td>Mathematical diagram, clean, minimalist, white background</td>
-<td>英文版風格更明確</td>
+<td>版面與背景是否符合描述</td>
 </tr>
 </tbody>
 </table>
@@ -419,7 +420,7 @@ Use icons and simple labels for each period. Horizontal layout, clear and organi
 <ol>
 <li><strong>文字內容</strong>：AI 圖片中的文字可能錯誤或亂碼,建議後製加入文字</li>
 <li><strong>精確度</strong>：複雜的圖表或精確的科學圖示,可能需要專業軟體</li>
-<li><strong>人物相似度</strong>：無法生成特定真實人物(如歷史名人的真實樣貌)</li>
+<li><strong>人物相似度</strong>：不應生成可辨識的特定真人(如歷史名人的真實樣貌)</li>
 <li><strong>文化敏感度</strong>：注意文化適當性,避免刻板印象</li>
 <li><strong>學生隱私</strong>：不要生成可辨識特定學生的圖片</li>
 </ol>
@@ -483,7 +484,7 @@ A3：AI 可生成「一般性的人物」,但不應生成可辨識的特定真�
 <p><strong>Q4：生成的圖片可以商用嗎？</strong><br/>
 A4：需查看各 AI 工具的授權條款。教學用途通常可以,但商業用途需確認。</p>
 <p><strong>Q5：圖片解析度不夠清晰？</strong><br/>
-A5：部分 AI 工具支援高解析度選項。或使用 AI 放大工具(如 waifu2x)提升解析度。</p>
+A5：部分 AI 工具支援高解析度選項。或使用可信的放大工具提升解析度。</p>
 <p><strong>Q6：如何讓多張圖片風格一致？</strong><br/>
 A6：在每個提示詞中使用相同的風格關鍵字(例如都加上 "cartoon style, pastel colors")。</p>
 <hr/>

@@ -146,6 +146,35 @@
             color: #666;
             border-top: 1px solid #3e3e3e;
         }
+
+        .references {
+            margin-top: 50px;
+            padding: 25px;
+            background: #1e1e1e;
+            border: 1px solid #3e3e3e;
+            border-radius: 12px;
+        }
+
+        .references h2 {
+            margin-top: 0;
+            color: #4a9eff;
+        }
+
+        .references h3 {
+            margin-top: 30px;
+            color: #fff;
+        }
+
+        .references p {
+            color: #aaa;
+            line-height: 1.6;
+        }
+
+        .references th,
+        .references td {
+            vertical-align: top;
+            line-height: 1.5;
+        }
     </style>
 <style id="course-navigation-style">
 html{scroll-behavior:smooth}body{box-sizing:border-box}img{max-width:100%;height:auto}pre{max-width:100%;overflow-x:auto}table{display:block;max-width:100%;overflow-x:auto}td,th{min-width:7em}.course-nav{display:flex;flex-wrap:wrap;gap:.65em;align-items:center;padding:1em 0;margin:1em 0;border-bottom:1px solid #3e3e3e;font-size:.95rem}.course-nav a{color:#66b3ff}.course-nav span{color:#aaa}.course-toc{margin:1.5em 0;padding:1em;background:#222831;border-radius:8px}.course-toc a{overflow-wrap:anywhere}h1,h2,h3,p,li{overflow-wrap:break-word}.mermaid svg{max-width:100%;height:auto}@media(max-width:600px){body{padding:14px!important}h1{font-size:1.65em}pre code{padding:1em}.course-nav{line-height:1.8}}
@@ -153,43 +182,15 @@ html{scroll-behavior:smooth}body{box-sizing:border-box}img{max-width:100%;height
 <body>
 <div class="header">
 <h1>AI Agent CLI 設計教學課程</h1>
-<p>Codex CLI × Claude Code｜保留六單元的漸進實作，從 Agent 概念走向教案交付</p>
+<p>VS Code ＋ 終端機 Agent｜給想學 AI 應用的入門使用者，從 Agent 概念走向完整交付</p>
+<p><a href="#references">參考資料與查證紀錄</a></p>
 </div>
 <div class="course-grid">
-
-<!-- Unit 01 -->
-
-<!-- Unit 02 -->
-
-<!-- Unit 03 -->
-
-<!-- Unit 04 -->
-
-<!-- Unit 04 Supplement -->
-
-<!-- Unit 05 -->
-
-<!-- Unit 06 -->
-
-<!-- Unit 06 Supplement -->
-
-<!-- Literacy Supplement -->
-
-<!-- Literacy Research -->
-
-<!-- Literacy ChatGPT Revise b06 -->
-
-<!-- AI Agent Cli -->
-
-<!-- Environment Setup Guide -->
-
-<!-- Codex CLI／Claude Code Tutorial -->
-
 <div class="course-card">
 <span class="unit-badge">前導章｜建議先讀</span>
 <h3>讓 AI Agent 成為個人工作與學習助理</h3>
-<p>從認識 Agent、選擇環境開始，依 Windows 或 macOS 路線準備專案，安裝並登入一款 CLI，再完成有來源的對話任務。進階背景集中於附錄。</p>
-<ul><li>Agent 概念、最小環境與專案準備</li><li>讀檔、追問、存檔與驗收；會話、模型及用量管理</li><li>維護排錯與 Python／uv 選讀實作</li></ul>
+<p>用 VS Code 管理檔案、用終端機 Agent 產生內容：先認識 Agent、搭好工作台，安裝一款 CLI，完成有來源的任務，再回頭看懂系統架構。</p>
+<ul><li>Agent 概念與 VS Code 工作台</li><li>讀檔、追問、存檔與驗收；專案規則與六層架構</li><li>會話管理、排錯索引與 Python 選讀延伸</li></ul>
 <a class="view-link" href="00_intro.html">閱讀前導教材 →</a>
 <p><a href="00_intro.md">Markdown 原文</a></p>
 </div><div class="course-card">
@@ -227,13 +228,13 @@ html{scroll-behavior:smooth}body{box-sizing:border-box}img{max-width:100%;height
 <a class="view-link" href="03_notebooklm.html">查看教材 →</a>
 </div><div class="course-card">
 <span class="unit-badge">單元四</span>
-<h3>觀念升級 - 當 AI 遇上你的電腦</h3>
-<p>在 VS Code 的專案資料夾使用 Codex CLI 或 Claude Code，理解本機工具與雲端模型的分工。</p>
+<h3>多檔案工作 - 讓 Agent 讀懂一整個資料夾</h3>
+<p>從單一檔案進到整個資料夾：指定讀取範圍、逐步追問，並理解網頁對話與終端機 Agent 的差別。</p>
 <ul>
-<li>區分本機執行工具與雲端推論</li>
-<li>啟動專案、核對目錄與權限</li>
+<li>區分工具執行位置與模型推論位置</li>
+<li>先列檔案，再指定讀取範圍</li>
 <li>在同一會話逐步讀檔與整理</li>
-<li>保護教學資料的隱私安全</li>
+<li>保護資料隱私與安全</li>
 </ul>
 <a class="view-link" href="04_workspace.html">查看教材 →</a>
 </div><div class="course-card supplement-card">
@@ -283,76 +284,84 @@ html{scroll-behavior:smooth}body{box-sizing:border-box}img{max-width:100%;height
 </div><div class="course-card">
 <span class="unit-badge">專題</span>
 <h3>AI Agent 與 AI CLI 應用</h3>
-<p>深入了解 AI Agent 與 AI CLI 的概念、關係與實際應用，並包含 Codex CLI／Claude Code 的詳細安裝與使用指南。</p>
+<p>深入了解 AI Agent 與 AI CLI 的概念與關係，並以程式、研究與教材案例示範進階應用。安裝與指令請查前導章。</p>
 <ul>
 <li>理解 AI Agent 的核心組件</li>
 <li>掌握 AI CLI 的工作原理</li>
-<li>學習 Codex CLI／Claude Code 的完整操作</li>
-<li>探索與本地開發環境整合的強大功能</li>
+<li>閱讀進階應用案例</li>
+<li>探索與開發環境整合的應用</li>
 </ul>
 <a class="view-link" href="07_agents_cli.html">查看教材 →</a>
 </div><div class="course-card">
-<span class="unit-badge">環境設定</span>
-<h3>開發環境建置指南：Codex CLI／Claude Code, VS Code 與 Python</h3>
-<p>本指南旨在協助初學者在 Windows 系統上建立完整的 Python 開發環境，整合 Codex CLI／Claude Code 人工智慧工具、VS Code 編輯器以及現代化的 Python 套件管理工具 uv。</p>
-<ul>
-<li>選一款 CLI 安裝；原生版不需 Node.js</li>
-<li>安裝與設定 Visual Studio Code (VS Code)</li>
-<li>Python 環境與 UV 套件管理 (虛擬環境概念)</li>
-<li>專案管理與 Agent 協作 (AGENTS.md／CLAUDE.md 設定檔)</li>
-</ul>
-<a class="view-link" href="08_environment.html">查看教材 →</a>
-</div><div class="course-card">
 <span class="unit-badge">實戰教學</span>
 <h3>Codex CLI／Claude Code 實戰教學：讓 AI 駐紮在你的終端機</h3>
-<p>直接在終端機與 AI 協作，無需切換視窗。本教學涵蓋從環境建置、基礎指令到程式碼重構、聯網搜尋等四大實戰應用場景。</p>
+<p>從讀程式、修改、搜尋到小型原型，用四個層級練習在終端機與 AI 協作。環境建置請先完成前導章。</p>
 <ul>
-<li>環境建置：依平台選擇安裝與更新方式</li>
-<li>基礎操作：互動會話、單次執行與讀檔</li>
+<li>基礎操作：互動會話與讀檔</li>
 <li>實戰應用：程式碼解釋、除錯與原型建立</li>
 <li>進階技巧：AGENTS.md／CLAUDE.md 專案設定</li>
 </ul>
 <a class="view-link" href="09_cli_practice.html">查看教材 →</a>
 </div><div class="course-card supplement-card">
-<span class="unit-badge">素養補充</span>
-<h3>資訊科技素養與媒體素養：在生成式 AI 時代的挑戰、機會與實踐</h3>
-<p>深入探討 AI 時代的資訊素養與媒體素養，理解如何批判性地使用與評估 AI 生成內容。</p>
+<span class="unit-badge">素養</span>
+<h3>資訊與媒體素養：使用生成式 AI 的入門概念</h3>
+<p>學用 AI，也要學會查證：理解兩種素養的差別，並練習判斷 AI 生成內容與可疑影像。</p>
 <ul>
-<li>網路時代的資訊科技與媒體素養核心議題</li>
-<li>生成式 AI 帶來的素養新挑戰</li>
-<li>資料來源與版權的倫理考量</li>
-<li>AI 生成影像真假的識別技巧</li>
-<li>生成內容使用的倫理與學術誠信</li>
+<li>資訊素養與媒體素養是什麼</li>
+<li>生成式 AI 帶來的新挑戰</li>
+<li>用 SIFT 查證可疑影像的脈絡</li>
+<li>資料來源、著作權與負責任地使用</li>
+<li>概念練習與評量規準</li>
 </ul>
-<a class="view-link" href="10_literacy.html">查看補充教材 →</a>
-</div><div class="course-card supplement-card">
-<span class="unit-badge">素養補充（修訂版 b06）</span>
-<h3>資訊科技素養與媒體素養：在生成式 AI 時代的挑戰、機會與實踐（增強版）</h3>
-<p>完整修訂版本，新增實作練習、Q&amp;A 問答、學習總結等實用內容，提供更全面的學習體驗。</p>
-<ul>
-<li>資訊科技素養與媒體素養的完整比較分析</li>
-<li>生成式 AI 帶來的挑戰與機會深度探討</li>
-<li>臺灣《數位時代媒體素養教育白皮書》解讀</li>
-<li>常見問題與實務解決方案（Q&amp;A）</li>
-<li>實作練習：AI 內容批判分析、深偽影像辨識</li>
-<li>完整的學習總結與參考文獻</li>
-</ul>
-<a class="view-link" href="11_literacy_practice.html">查看增強版教材 →</a>
-</div><div class="course-card supplement-card">
-<span class="unit-badge">素養研究版</span>
-<h3>資訊科技素養與媒體素養：學術研究版</h3>
-<p>完整的學術研究文章，深入探討生成式 AI 時代的資訊科技與媒體素養挑戰、機會與實踐策略。</p>
-<ul>
-<li>假訊息與認知偏誤的深度分析</li>
-<li>演算法偏誤與公平性議題</li>
-<li>個人化學習與智慧導師的發展</li>
-<li>教師專業發展與創新教學實踐</li>
-<li>政策框架與跨領域合作展望</li>
-</ul>
-<a class="view-link" href="12_literacy_research.html">查看研究文章 →</a>
+<a class="view-link" href="10_literacy.html">查看素養教材 →</a>
 </div></div>
+<section class="references" id="references">
+<h2>參考資料與查證紀錄</h2>
+<p>以下是 2026-10-31 教材審查時檢索的來源。本表只記錄來源與查得內容，不代表已安裝實測；線上服務的功能與條款會變動，使用前請重新確認。</p>
+<p>查證方式：「頁面擷取」指實際讀取該頁內容；「搜尋摘要」指由搜尋服務回傳的頁面摘要取得，未逐字核對原頁；「Crossref」指以 Crossref API 查詢 DOI 的書目資料。</p>
+
+<h3>CLI 與編輯器</h3>
+<table>
+<thead><tr><th>來源</th><th>查得內容</th><th>查證方式</th><th>檢索日期</th></tr></thead>
+<tbody>
+<tr><td><a href="https://learn.chatgpt.com/docs/cli/slash-commands">Codex CLI 斜線指令</a></td><td>Codex 有 <code>/usage</code>，可查 token 活動與用量限制重置</td><td>頁面擷取</td><td>2026-10-31</td></tr>
+<tr><td><a href="https://learn.chatgpt.com/docs/developer-commands?surface=cli">Codex CLI 指令參考</a></td><td>提供 <code>codex doctor</code> 診斷指令</td><td>頁面擷取</td><td>2026-10-31</td></tr>
+<tr><td><a href="https://github.com/openai/codex/blob/main/docs/install.md">Codex 安裝文件（GitHub）</a></td><td>列最低 4 GB、建議 8 GB 記憶體；同檔仍寫 Windows 需經 WSL2，可能未更新</td><td>頁面擷取</td><td>2026-10-31</td></tr>
+<tr><td><a href="https://github.com/microsoft/winget-pkgs/tree/master/manifests/o/OpenAI/Codex">WinGet 套件清單：OpenAI.Codex</a></td><td>存在發行者為 OpenAI, Inc. 的 Codex CLI 套件；OpenAI 官方文件未列此安裝路線，提交者未確認</td><td>頁面擷取</td><td>2026-10-31</td></tr>
+<tr><td><a href="https://code.claude.com/docs/en/memory">Claude Code：記憶與專案指引</a></td><td><code>/context</code> 的 Memory files 可確認 CLAUDE.md 已載入；<code>/memory</code> 也會列出不存在的檔案，v2.1.280 起才能確認直接讀取的 AGENTS.md</td><td>頁面擷取</td><td>2026-10-31</td></tr>
+<tr><td><a href="https://code.claude.com/docs/en/setup">Claude Code：安裝與設定</a></td><td>npm 安裝會自動更新；<code>claude-code@latest</code> 需用同名 cask 移除</td><td>頁面擷取</td><td>2026-10-31</td></tr>
+<tr><td><a href="https://code.claude.com/docs/en/tools-reference">Claude Code：工具參考</a></td><td>Windows 上 Monitor 工具僅在有 Git Bash 時可用</td><td>頁面擷取</td><td>2026-10-31</td></tr>
+<tr><td><a href="https://developers.googleblog.com/an-important-update-transitioning-gemini-cli-to-antigravity-cli/">Google Developers Blog：Gemini CLI 轉移至 Antigravity CLI</a></td><td>2026-06-18 停止服務僅適用 Pro、Ultra 與免費個人用戶；企業授權與付費 API 金鑰持續</td><td>頁面擷取</td><td>2026-10-31</td></tr>
+<tr><td><a href="https://github.com/microsoft/vscode/issues/316332">VS Code #316332：Move bierner.markdown-mermaid into core</a></td><td>Mermaid 預覽已併入 VS Code 內建功能</td><td>搜尋摘要</td><td>2026-10-31</td></tr>
+<tr><td><a href="https://www.issoh.co.jp/md/tech/6583">issoh.co.jp：VS Code Mermaid 內建說明</a></td><td>二手來源：稱 VS Code 1.121 起內建；版本號未由官方發行說明確認</td><td>搜尋摘要</td><td>2026-10-31</td></tr>
+</tbody>
+</table>
+
+<h3>帳號條款與 Gemini Notebook（原 NotebookLM）</h3>
+<table>
+<thead><tr><th>來源</th><th>查得內容</th><th>查證方式</th><th>檢索日期</th></tr></thead>
+<tbody>
+<tr><td><a href="https://anthropic.com/terms">Anthropic Consumer Terms of Service</a></td><td>須年滿 18 歲或當地同意年齡，取較高者；適用消費者帳號，教育方案規定未查得</td><td>搜尋摘要</td><td>2026-10-31</td></tr>
+<tr><td><a href="https://openai.com/en-GB/policies/row-terms-of-use/">OpenAI Terms of Use</a></td><td>須年滿 13 歲，未滿 18 歲需家長或監護人同意；Codex 專屬規定未查得</td><td>搜尋摘要</td><td>2026-10-31</td></tr>
+<tr><td><a href="https://blog.google/innovation-and-ai/products/gemini-notebook/notebooklm-gemini-notebook/">Google：NotebookLM is now Gemini Notebook</a></td><td>NotebookLM 已更名為 Gemini Notebook</td><td>搜尋摘要</td><td>2026-10-31</td></tr>
+<tr><td><a href="https://support.google.com/notebooklm/answer/16213268?hl=en">Gemini Notebook：方案說明</a></td><td>每筆記本來源數依方案為 50 至 600；每份來源上限 500,000 字或本機上傳 200 MB</td><td>搜尋摘要</td><td>2026-10-31</td></tr>
+<tr><td><a href="https://support.google.com/gemininotebook/answer/16215270">Gemini Notebook：新增來源</a></td><td>來源新增方式與上限的官方說明頁</td><td>搜尋摘要</td><td>2026-10-31</td></tr>
+<tr><td><a href="https://blog.google/innovation-and-ai/products/gemini-notebook/new-flexible-usage-limits/">Google：Gemini Notebook 彈性用量限制</a></td><td>用量改為依運算量計算，每五小時重置</td><td>搜尋摘要</td><td>2026-10-31</td></tr>
+<tr><td><a href="https://support.google.com/notebooklm/answer/16322204?hl=en">Gemini Notebook：公開與精選筆記本</a></td><td>支援以電子郵件分享（檢視者／編輯者）與公開連結；Workspace Enterprise、Education 帳號的公開分享有限制</td><td>搜尋摘要</td><td>2026-10-31</td></tr>
+</tbody>
+</table>
+
+<h3>學術文獻</h3>
+<table>
+<thead><tr><th>來源</th><th>查得內容</th><th>查證方式</th><th>檢索日期</th></tr></thead>
+<tbody>
+<tr><td>Huang, Cheng, &amp; Rajaram. Unavoidable social contagion of false memory from robots to humans. <em>American Psychologist</em>. <a href="https://doi.org/10.1037/amp0001230">doi:10.1037/amp0001230</a></td><td>正確書目；舊版素養研究文章引用的 10.1037/amp0001154 實為訃聞，不應使用</td><td>Crossref</td><td>2026-10-31</td></tr>
+<tr><td>Laupichler, Aster, Schirch, et al. Artificial intelligence literacy in higher and adult education: A scoping literature review. <em>Computers and Education: Artificial Intelligence</em>, 3. <a href="https://doi.org/10.1016/j.caeai.2022.100101">doi:10.1016/j.caeai.2022.100101</a></td><td>確認正確刊名與卷號；舊版素養教材所列期刊有誤</td><td>Crossref</td><td>2026-10-31</td></tr>
+</tbody>
+</table>
+</section>
 <div class="footer">
-<p>前導章 + 6 個漸進單元 + 8 篇延伸教材｜雙 CLI 主線｜更新：2026-10-31</p>
+<p>前導章 + 6 個漸進單元 + 5 篇延伸教材｜VS Code ＋ 終端機 Agent｜更新：2026-10-31</p>
 <p><a class="view-link" href="https://drive.google.com/file/d/1yfelCqXPZU4uFK02YpRY9cc-cgl5JATu/view?usp=drive_link">下載科目調查檔案 →</a></p>
 </div>
 </body>

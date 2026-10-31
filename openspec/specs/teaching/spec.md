@@ -1,6 +1,6 @@
 # Teaching Specification
 
-Synced from approved revise-ai-agent-cli-teaching and explicit user filename amendment, 2026-10-31.
+Synced from approved revise-ai-agent-cli-teaching, explicit user filename amendment, and beginner-concept-revision, 2026-10-31.
 
 
 ### Requirement: REQ-TEACH-001 — 新版入口與前導章
@@ -12,12 +12,12 @@ Synced from approved revise-ai-agent-cli-teaching and explicit user filename ame
 - THEN 先看見前導章，圖片載入且可進入單元一
 
 ### Requirement: REQ-TEACH-002 — 保留課程結構與設計
-教材 MUST 保留原六單元順序、章節功能、跨科練習、補充與素養教材及深色卡片／程式碼／圖表設計；既有 HTML/Markdown 配對內容 MUST 一致。
+教材 MUST 保留原六單元順序、跨科練習及深色卡片／程式碼／圖表設計；單元可依前導章調整重點。重複的補充或素養頁 MAY 整併到單一頁，被整併的網址 MUST 保留導向。既有 HTML/Markdown 配對內容 MUST 一致。
 
 #### Scenario: 保留課程結構與設計驗收
 - GIVEN 新版教材已產生
 - WHEN 逐頁比較新舊教材
-- THEN 原教學目的與結構仍可對照，沒有以摘要替代整份教材
+- THEN 原教學目的仍可對照，被整併的內容有明確去向
 
 ### Requirement: REQ-TEACH-003 — 官方安裝與操作依據
 雙 CLI 教材 MUST 提供按平台區分的安裝、更新、版本檢查、登入、專案啟動、互動會話操作與排錯資訊，逐項引用官方來源與查核日期；區分 shell 指令和會話指令、安裝依賴與專案依賴。一般與進階任務均以會話為主，不要求教授啟動指令附帶 prompt 或單次執行。
@@ -103,7 +103,7 @@ Synced from approved revise-ai-agent-cli-teaching and explicit user filename ame
 - THEN 教材分別列出官方支援的斜線指令（查核 /model、/usage、/status、/compact、/resume、/help 等），說明輸入位置、用途、使用時機及功能差異，不假設同名指令兩款皆有。
 
 ### Requirement: REQ-TEACH-012 — 前導章依學習前置條件排序
-前導章 MUST 依概念、最小環境、專案準備、CLI登入、首次對話任務、會話管理、維護與延伸實作排列。首次操作使用的來源檔與環境 MUST 已先介紹建立方式；技術細節與歷史紀錄 SHOULD 集中附錄，不中斷主線。
+前導章 MUST 依短版概念、VS Code 工作台與最小環境、CLI登入、首次對話任務、專案規則、回看系統架構、會話管理、穩定工作、基礎評量、Python 延伸排列；排錯索引與附錄供查閱。首次操作使用的來源檔與環境 MUST 已先介紹建立方式；完整架構 MUST 排在學習者完成首次任務之後；專案規則 MUST 排在首次任務之後，讓規則對應實際需求；技術細節 SHOULD 集中附錄，不中斷主線。
 
 #### Scenario: 基礎讀者順讀
 - GIVEN 學習者尚未建立工作環境
@@ -113,10 +113,10 @@ Synced from approved revise-ai-agent-cli-teaching and explicit user filename ame
 #### Scenario: Python延伸讀者
 - GIVEN 已完成基礎對話任務
 - WHEN 選讀Python實作
-- THEN 先完成uv與直譯器準備，再操作資料、程式與驗收，不被Node選修安裝打斷。
+- THEN 先完成uv與直譯器準備，再操作資料、程式與驗收，不被Node選修安裝打斷；基礎路線不需要跳過 Python 章節才能完成評量。
 
 ### Requirement: REQ-TEACH-013 — 前導章重排內容與連結相容
-教材 MUST 保留原有效案例、程式、圖形、引用、驗收與歷史標籤，合併重複敘述後以對照紀錄追蹤。Markdown與HTML MUST 同步，原檔名及已存在的錨點仍能到達相應主題。
+教材 MUST 保留有效案例、程式、圖形、引用與驗收，合併重複敘述後以對照紀錄追蹤。版本與歷史驗證紀錄 MUST 保存，但存放於 00_intro_history.md，不放在學習內容中。Markdown與HTML MUST 同步，原檔名及已存在的錨點仍能到達相應主題。
 
 #### Scenario: 舊主題連結
 - GIVEN 原有指向前導章小節的連結
@@ -127,3 +127,24 @@ Synced from approved revise-ai-agent-cli-teaching and explicit user filename ame
 - GIVEN 原教材內容清單
 - WHEN 對照新版主文與附錄
 - THEN 有效實作及歷史資料均有去向，兩種格式一致且圖片正常。
+
+### Requirement: REQ-TEACH-014 — 受眾與主要工作環境
+教材 MUST 以想學習 AI 應用的入門使用者為對象，不預設讀者是教師或學生；備課情境 MAY 作為範例，但 MUST 說明可換成自己的主題。主要工作環境 MUST 為 VS Code（檔案管理與審閱）加上整合終端機內的 Agent（內容生成與管理）。教材定位為概念教材，實作問題另行記錄修正。
+
+#### Scenario: 非教師的入門讀者
+- GIVEN 讀者想學 AI 應用，但不是教師
+- WHEN 依前導章與單元閱讀
+- THEN 能理解工作方式，且知道如何把範例情境換成自己的主題。
+
+#### Scenario: 在單一工作台操作
+- GIVEN 讀者已開啟 VS Code 專案
+- WHEN 依主線操作與驗收
+- THEN 不需離開 VS Code，並能分辨 Agent 與 shell 兩個終端機的用途。
+
+### Requirement: REQ-TEACH-015 — 內容單一權威位置
+安裝指令、會話指令與專案指引載入規則 MUST 只維護在一處：安裝與會話指令在前導章，專案指引在單元五；其他頁面 MUST 以連結引用，不複製表格。
+
+#### Scenario: 更新 CLI 指令
+- GIVEN 官方指令變更
+- WHEN 維護者修訂教材
+- THEN 只需修改一處，其他頁面不留舊版副本。

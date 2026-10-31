@@ -1,7 +1,7 @@
 <!-- Path: AI_Agent_CLi | Updated: 2026-10-31 | Edition: Codex CLI / Claude Code -->
 # 單元六補充內容：進階應用
 
-> **本版查核：2026-10-31。**先閱讀[前導章：Agent 基本概念與工作環境](00_intro.html)，安裝並登入 Codex CLI 或 Claude Code 任選一款即可。本課使用虛構／去識別化資料，所有結果都要以來源與實際檔案驗收。
+> **閱讀前提：**先完成[前導章：Agent 基本概念與工作環境](00_intro.html)，使用 Codex CLI 或 Claude Code 其中一款。本章以備課作為範例情境；不是教師也能把主題換成自己的工作或學習內容。範例請使用虛構或去識別化資料，結果都要回到來源與實際檔案確認。（查核日期：2026-10-31）
 
 
 **銜接**：搭配[單元六](06_lesson_plans.html)閱讀，練習文件轉換與虛構成績資料分析。
@@ -46,14 +46,19 @@
 
 ### 轉換方式一：Markdown → Word
 
-#### 方法 A：使用 Pandoc（推薦）
+#### 方法 A：使用 Pandoc（產出 Word 時使用）
 
 **安裝 Pandoc**：依作業系統選一種安裝方式，完成後執行 `pandoc --version`。以下安裝命令依 [Pandoc 官方文件](https://pandoc.org/installing.html) 查核（2026-10-31）。
-```bash
-# Mac
-brew install pandoc
 
-# Windows PowerShell（WinGet）
+macOS（Homebrew）：
+
+```bash
+brew install pandoc
+```
+
+Windows PowerShell（WinGet）：
+
+```powershell
 winget install --source winget --exact --id JohnMacFarlane.Pandoc
 ```
 
@@ -102,7 +107,7 @@ pandoc new_lesson.md --reference-doc=template.docx -o new_lesson.docx
 
 ---
 
-#### 方法 C：VSCode 擴充套件（推薦教師使用）
+#### 方法 C：VSCode 擴充套件（快速產出 PDF 時使用 Markdown PDF）
 
 VSCode 提供多種擴充套件，從簡單到進階，滿足不同需求：
 
@@ -193,13 +198,13 @@ VSCode 提供多種擴充套件，從簡單到進階，滿足不同需求：
 **進階功能**：
 
 **1. 支援 Mermaid 圖表**
-```markdown
+````markdown
 ```mermaid
 flowchart LR
     A[開始] --> B[步驟一]
     B --> C[結束]
-```​
 ```
+````
 → 預覽與輸出時自動轉成圖片！
 
 **2. 支援數學公式**
@@ -242,7 +247,7 @@ $$
 **前置需求**：
 1. 已安裝 Pandoc（參考前面的安裝說明）
 2. 熟悉 VS Code Tasks；已建立 `template.docx` 與 `style.css`
-3. PDF 任務另需安裝 XeLaTeX，`CJKmainfont` 改為本機實際存在的中文字型
+3. PDF 任務另需安裝 XeLaTeX 與 xeCJK 套件，`CJKmainfont` 改為本機實際存在的中文字型（Windows 可用 `Microsoft JhengHei`，macOS 可用 `PingFang TC`）
 
 **設定步驟**：
 
@@ -289,7 +294,7 @@ Markdown to HTML 三個任務。請先解釋輸入輸出路徑與參數，不覆
         "${fileDirname}/${fileBasenameNoExtension}.pdf",
         "--pdf-engine=xelatex",
         "-V",
-        "CJKmainfont=Microsoft YaHei"
+        "CJKmainfont=Noto Sans CJK TC"
       ],
       "group": "build"
     },
@@ -379,8 +384,9 @@ Markdown to HTML 三個任務。請先解釋輸入輸出路徑與參數，不覆
 **Q1：PDF 中文顯示亂碼？**
 A：使用 Pandoc 時加入中文字型參數：
 ```bash
-pandoc file.md -o file.pdf --pdf-engine=xelatex -V CJKmainfont="Microsoft YaHei"
+pandoc file.md -o file.pdf --pdf-engine=xelatex -V CJKmainfont="Noto Sans CJK TC"
 ```
+字型請改成本機有的中文字型：Windows 可用 `Microsoft JhengHei`，macOS 可用 `PingFang TC`。
 
 **Q2：Mermaid 圖表無法轉換？**
 A：
@@ -407,10 +413,6 @@ A：在同一 CLI 會話請 Agent 建立批次轉換流程：
 **官方文件**：
 - Markdown Preview Enhanced: https://shd101wyy.github.io/markdown-preview-enhanced/
 - Pandoc User Guide: https://pandoc.org/MANUAL.html
-
-**中文教學**：
-- VSCode Markdown 完整指南（推薦）
-- Pandoc 中文排版設定
 
 ---
 
@@ -469,13 +471,13 @@ function markdownToGoogleDocs(markdownText, docName) {
 
 #### 方法 A：使用 Pandoc
 
-```bash
-# 基本轉換
-pandoc lesson_plan.md -o lesson_plan.pdf
+中文 PDF 需要指定 PDF 引擎與中文字型，另需安裝 XeLaTeX 與 xeCJK 套件（精簡版 TeX 可能未內含）：
 
-# 套用 LaTeX 模板（更專業）
-pandoc lesson_plan.md -o lesson_plan.pdf --pdf-engine=xelatex -V CJKmainfont="Microsoft YaHei"
+```bash
+pandoc lesson_plan.md -o lesson_plan.pdf --pdf-engine=xelatex -V CJKmainfont="Noto Sans CJK TC"
 ```
+
+字型請改成本機有的中文字型：Windows 可用 `Microsoft JhengHei`，macOS 可用 `PingFang TC`。
 
 #### 方法 B：VSCode + Markdown Preview Enhanced
 
@@ -904,48 +906,48 @@ semester_grades/
 │   └── attendance.csv
 ├── rubrics/
 │   └── grading_policy.txt
-└── output/
+└── outputs/
 ```
 
 ### 步驟二：整合資料
 
-先在 VS Code 建立 `output` 資料夾；從含 `raw_data`、`rubrics`、`output` 的專案根目錄啟動 CLI，以下各步在同一會話輸入。每一步都檢查輸出，成功後才進入下一步。
+先在 VS Code 建立 `outputs` 資料夾；從含 `raw_data`、`rubrics`、`outputs` 的專案根目錄啟動 CLI，以下各步在同一會話輸入。每一步都檢查輸出，成功後才進入下一步。
 
 **對話提示（在同一個 CLI 會話中輸入）**
 ```text
 整合 raw_data 資料夾中的所有 CSV，合併成一份完整成績表，包含所有評量項目。使用 CSV 格式。
 
-請將結果保存為 output/grades_combined.csv，完成後回報路徑及核對結果。
+請將結果保存為 outputs/grades_combined.csv，完成後回報路徑及核對結果。
 ```
 
 ### 步驟三：計算總成績
 
 **對話提示（在同一個 CLI 會話中輸入）**
 ```text
-根據 rubrics/grading_policy.txt 的加權規則，計算 output/grades_combined.csv 的總成績與等第。
+根據 rubrics/grading_policy.txt 的加權規則，計算 outputs/grades_combined.csv 的總成績與等第。
 
-請將結果保存為 output/final_grades.md，完成後回報路徑及核對結果。
+請將結果保存為 outputs/final_grades.md，完成後回報路徑及核對結果。
 ```
 
 ### 步驟四：生成分析報告
 
 **對話提示（在同一個 CLI 會話中輸入）**
 ```text
-分析 output/final_grades.md：
+分析 outputs/final_grades.md：
 - 成績分布統計
 - 需關注學生清單
 - 各項目表現分析
 - 教學成效評估
 輸出為完整報告。
 
-請將結果保存為 output/semester_report.md，完成後回報路徑及核對結果。
+請將結果保存為 outputs/semester_report.md，完成後回報路徑及核對結果。
 ```
 
 ### 步驟五：轉換為 PDF 報告
 
 ```text
-請先檢查 Pandoc、PDF 引擎及中文字型是否可用，再將 output/semester_report.md
-轉換為 output/semester_report.pdf。若缺少工具，先說明環境需求；不要把失敗輸出當成完成。
+請先檢查 Pandoc、PDF 引擎及中文字型是否可用，再將 outputs/semester_report.md
+轉換為 outputs/semester_report.pdf。若缺少工具，先說明環境需求；不要把失敗輸出當成完成。
 轉換後回報檔案位置，列出需要人工檢查的表格、換頁與中文字。
 ```
 
@@ -976,8 +978,6 @@ semester_grades/
 - 教育的溫度
 
 ---
-
-**補充完成**：以上內容應整合至 06_lesson_plans.md 的延伸應用章節
 
 ## 本補充單元驗收與平台差異
 

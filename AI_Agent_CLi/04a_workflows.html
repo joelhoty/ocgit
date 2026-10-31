@@ -81,7 +81,7 @@ html{scroll-behavior:smooth}body{box-sizing:border-box}img{max-width:100%;height
 <div class="container"><!-- Path: AI_Agent_CLi | Updated: 2026-10-31 | Edition: Codex CLI / Claude Code -->
 <h1 id="_1">單元四補充內容：進階章節</h1><details class="course-toc"><summary>本頁章節</summary><ul><li><a href="#cli-vscode">CLI + VSCode 整合的五大優勢</a></li><li><a href="#markdown">Markdown 格式輸出的優勢與應用</a></li><li><a href="#mermaid-vs-plantuml">Mermaid vs PlantUML：差異與選擇</a></li><li><a href="#_8">完整實戰案例：從大綱到完整教材設計</a></li><li><a href="#_18">實用對話提示總結</a></li></ul></details>
 <blockquote>
-<p><strong>本版查核：2026-10-31。</strong>先閱讀<a href="00_intro.html">前導章：Agent 基本概念與工作環境</a>，安裝並登入 Codex CLI 或 Claude Code 任選一款即可。本課使用虛構／去識別化資料，所有結果都要以來源與實際檔案驗收。</p>
+<p><strong>閱讀前提：</strong>先完成<a href="00_intro.html">前導章：Agent 基本概念與工作環境</a>，使用 Codex CLI 或 Claude Code 其中一款。本章以備課作為範例情境；不是教師也能把主題換成自己的工作或學習內容。範例請使用虛構或去識別化資料，結果都要回到來源與實際檔案確認。（查核日期：2026-10-31）</p>
 </blockquote>
 <p><strong>銜接</strong>：搭配<a href="04_workspace.html">單元四</a>閱讀，練習多檔案、Markdown 與流程圖。</p>
 <hr/>
@@ -375,7 +375,7 @@ graph LR
 </tr>
 <tr>
 <td><strong>VSCode 支援</strong></td>
-<td>內建預覽</td>
+<td>新版內建預覽；舊版需擴充功能</td>
 <td>需安裝擴充</td>
 </tr>
 <tr>
@@ -452,7 +452,7 @@ class 教師 {
 <h3 id="_7">教師實務建議</h3>
 <p><strong>建議使用 Mermaid，理由：</strong><br/>
 1. ✅ 學習曲線平緩，30 分鐘上手<br/>
-2. ✅ VSCode 原生支援，即時預覽<br/>
+2. ✅ 新版 VS Code 內建 Mermaid 預覽；舊版需擴充功能<br/>
 3. ✅ 足夠應付教學需求（流程、概念圖）<br/>
 4. ✅ Markdown 直接嵌入，不需額外工具</p>
 <p><strong>PlantUML 適合：</strong><br/>
@@ -641,49 +641,8 @@ class 教師 {
     D --&gt; E[轉換成 PDF/Word]
 </div>
 <hr/>
-<h3 id="_17">時間效益分析（課堂試算，非實測保證）</h3>
-<table>
-<thead>
-<tr>
-<th>任務</th>
-<th>傳統方式</th>
-<th>AI + CLI 方式</th>
-<th>節省時間</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>課程大綱</td>
-<td>2 小時</td>
-<td>5 分鐘 + 調整 15 分鐘</td>
-<td>約 83%</td>
-</tr>
-<tr>
-<td>單週教案</td>
-<td>3 小時</td>
-<td>10 分鐘 + 調整 30 分鐘</td>
-<td>約 78%</td>
-</tr>
-<tr>
-<td>學習單</td>
-<td>1.5 小時</td>
-<td>5 分鐘 + 調整 20 分鐘</td>
-<td>約 72%</td>
-</tr>
-<tr>
-<td>評量設計</td>
-<td>2 小時</td>
-<td>10 分鐘 + 調整 30 分鐘</td>
-<td>約 67%</td>
-</tr>
-<tr>
-<td><strong>表內四項合計</strong></td>
-<td><strong>8.5 小時</strong></td>
-<td><strong>2 小時 5 分鐘</strong></td>
-<td><strong>約 75%（試算）</strong></td>
-</tr>
-</tbody>
-</table>
+<h3 id="_17">時間紀錄練習</h3>
+<p>請記錄自己完成課程大綱、單週教案、學習單與評量設計各花多少時間。</p>
 <hr/>
 <h2 id="_18">實用對話提示總結</h2>
 <p>以下提示都輸入在已啟動的 CLI 會話中。需要整理 context、續接會話或查看模型與用量時，參考<a href="00_intro.html">前導章</a>的工具對照。</p>
