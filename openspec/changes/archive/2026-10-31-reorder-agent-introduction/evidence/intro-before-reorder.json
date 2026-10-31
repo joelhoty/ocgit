@@ -1,0 +1,1886 @@
+{
+  "base_commit": "f7a957f77a1715a020056fdd6dd67ca0eb2bc4df",
+  "markdown_sha256": "bb343c122d5aef2793c684c5cd0f92ac8dc38d9a3c09d30d1b033d4b51044efd",
+  "html_sha256": "13b3f6b2f8bb13a598b5d1c213d1b09073eadd912c40b3a299eb226c286a5dbf",
+  "ids": [
+    {
+      "id": "course-navigation-style",
+      "tag": "style",
+      "text": "html{scroll-behavior:smooth}body{box-sizing:border-box}img{max-width:100%;height:auto}pre{max-width:100%;overflow-x:auto}table{display:block;max-width:100%;overflow-x:auto}td,th{mi"
+    },
+    {
+      "id": "59-cli",
+      "tag": "span",
+      "text": ""
+    },
+    {
+      "id": "ai-agent",
+      "tag": "h1",
+      "text": "前導章：讓 AI Agent 成為個人工作與學習助理"
+    },
+    {
+      "id": "0",
+      "tag": "h2",
+      "text": "0. 使用方式與學習目標"
+    },
+    {
+      "id": "01",
+      "tag": "h3",
+      "text": "0.1 完成後能做到什麼"
+    },
+    {
+      "id": "02",
+      "tag": "h3",
+      "text": "0.2 課程安排與交付物"
+    },
+    {
+      "id": "03",
+      "tag": "h3",
+      "text": "0.3 指令閱讀約定"
+    },
+    {
+      "id": "1-ai-why",
+      "tag": "h2",
+      "text": "1. 為什麼需要一個 AI 工作環境（Why）"
+    },
+    {
+      "id": "11",
+      "tag": "h3",
+      "text": "1.1 從問答到完成任務"
+    },
+    {
+      "id": "12",
+      "tag": "h3",
+      "text": "1.2 環境建置解決的四個問題"
+    },
+    {
+      "id": "2-llm-agent-what",
+      "tag": "h2",
+      "text": "2. LLM 與 Agent 的六層關係（What）"
+    },
+    {
+      "id": "21",
+      "tag": "h3",
+      "text": "2.1 引用的分層圖"
+    },
+    {
+      "id": "22",
+      "tag": "h3",
+      "text": "2.2 各層如何對應本課任務"
+    },
+    {
+      "id": "23-cli",
+      "tag": "h3",
+      "text": "2.3 模型、CLI 與執行環境有何不同"
+    },
+    {
+      "id": "24-promptcontexttoolsskills-mcp",
+      "tag": "h3",
+      "text": "2.4 Prompt、Context、Tools、Skills 與 MCP"
+    },
+    {
+      "id": "25",
+      "tag": "h3",
+      "text": "2.5 軟限制與硬限制"
+    },
+    {
+      "id": "26-agent",
+      "tag": "h3",
+      "text": "2.6 Agent 迴圈：圖中的各層如何合作"
+    },
+    {
+      "id": "27-workflow-agent",
+      "tag": "h3",
+      "text": "2.7 Workflow 與 Agent：誰決定下一步"
+    },
+    {
+      "id": "3",
+      "tag": "h2",
+      "text": "3. 工具地圖與安裝需求"
+    },
+    {
+      "id": "31",
+      "tag": "h3",
+      "text": "3.1 每個工具負責什麼"
+    },
+    {
+      "id": "32-cli-nodejs",
+      "tag": "h3",
+      "text": "3.2 CLI 還需要 Node.js 嗎？"
+    },
+    {
+      "id": "321",
+      "tag": "h4",
+      "text": "3.2.1 四種安裝方式比較"
+    },
+    {
+      "id": "322",
+      "tag": "h4",
+      "text": "3.2.2 建議與結論"
+    },
+    {
+      "id": "323",
+      "tag": "h4",
+      "text": "3.2.3 先分清楚四種檔案與工具"
+    },
+    {
+      "id": "324-standalonenpm",
+      "tag": "h4",
+      "text": "3.2.4 「原生版」「standalone」「npm 版」指的是什麼"
+    },
+    {
+      "id": "325",
+      "tag": "h4",
+      "text": "3.2.5 安裝時、執行時、任務時：三個時間點各需要什麼"
+    },
+    {
+      "id": "326-cli",
+      "tag": "h4",
+      "text": "3.2.6 三款 CLI 逐一對照"
+    },
+    {
+      "id": "327-cli-rust-nodejs",
+      "tag": "h4",
+      "text": "3.2.7 CLI 改用 Rust 撰寫，就不需要 Node.js 了嗎？"
+    },
+    {
+      "id": "328",
+      "tag": "h4",
+      "text": "3.2.8 官方安裝指令一覽"
+    },
+    {
+      "id": "33-antigravity-cliagy",
+      "tag": "h3",
+      "text": "3.3 選讀比較：Antigravity CLI（agy）"
+    },
+    {
+      "id": "34",
+      "tag": "h3",
+      "text": "3.4 作業系統、帳號與資源"
+    },
+    {
+      "id": "4-windows-how",
+      "tag": "h2",
+      "text": "4. Windows 基礎環境安裝（How）"
+    },
+    {
+      "id": "41",
+      "tag": "h3",
+      "text": "4.1 安裝順序"
+    },
+    {
+      "id": "42-vs-code",
+      "tag": "h3",
+      "text": "4.2 安裝 VS Code"
+    },
+    {
+      "id": "43-powershell-7",
+      "tag": "h3",
+      "text": "4.3 安裝 PowerShell 7"
+    },
+    {
+      "id": "44-git",
+      "tag": "h3",
+      "text": "4.4 安裝 Git"
+    },
+    {
+      "id": "45",
+      "tag": "h3",
+      "text": "4.5 先學會五個終端機操作"
+    },
+    {
+      "id": "5-agent-cli",
+      "tag": "h2",
+      "text": "5. 安裝並啟動一款 Agent CLI"
+    },
+    {
+      "id": "51",
+      "tag": "h3",
+      "text": "5.1 選擇路線"
+    },
+    {
+      "id": "52-aclaude-code",
+      "tag": "h3",
+      "text": "5.2 路線 A：Claude Code"
+    },
+    {
+      "id": "53-bcodex-cli",
+      "tag": "h3",
+      "text": "5.3 路線 B：Codex CLI"
+    },
+    {
+      "id": "54-cantigravity-cli",
+      "tag": "h3",
+      "text": "5.4 選讀路線 C：Antigravity CLI"
+    },
+    {
+      "id": "55-gemini-agy",
+      "tag": "h3",
+      "text": "5.5 選讀：舊 gemini 指令遷移到 agy"
+    },
+    {
+      "id": "56",
+      "tag": "h3",
+      "text": "5.6 第一次對話的共同驗證"
+    },
+    {
+      "id": "57",
+      "tag": "h3",
+      "text": "5.7 記錄安裝方式與更新方式"
+    },
+    {
+      "id": "58-cli",
+      "tag": "h3",
+      "text": "5.8 盤點既有安裝：這台電腦的 CLI 從哪裡來？"
+    },
+    {
+      "id": "59",
+      "tag": "h3",
+      "text": "5.9 啟動後，以自然語言完成任務"
+    },
+    {
+      "id": "510",
+      "tag": "h3",
+      "text": "5.10 常用會話內指令速查"
+    },
+    {
+      "id": "511-sessioncontext",
+      "tag": "h3",
+      "text": "5.11 進階操作：管理 session、context 與用量"
+    },
+    {
+      "id": "6-git",
+      "tag": "h2",
+      "text": "6. 用資料夾與 Git 管理專案"
+    },
+    {
+      "id": "61",
+      "tag": "h3",
+      "text": "6.1 建立一致的專案結構"
+    },
+    {
+      "id": "62-readme",
+      "tag": "h3",
+      "text": "6.2 撰寫 README"
+    },
+    {
+      "id": "63-gitignore",
+      "tag": "h3",
+      "text": "6.3 設定 .gitignore"
+    },
+    {
+      "id": "64-commit",
+      "tag": "h3",
+      "text": "6.4 建立第一次 commit"
+    },
+    {
+      "id": "65",
+      "tag": "h3",
+      "text": "6.5 理解三個位置"
+    },
+    {
+      "id": "66",
+      "tag": "h3",
+      "text": "6.6 撤回與回復的練習"
+    },
+    {
+      "id": "67-git",
+      "tag": "h3",
+      "text": "6.7 Git、版本後綴與備份的分工"
+    },
+    {
+      "id": "7-agentsmd-ai",
+      "tag": "h2",
+      "text": "7. AGENTS.md 與第一個 AI 學習任務"
+    },
+    {
+      "id": "71",
+      "tag": "h3",
+      "text": "7.1 專案規則要能直接執行"
+    },
+    {
+      "id": "72-agentsmd",
+      "tag": "h3",
+      "text": "7.2 各工具是否會讀取 AGENTS.md"
+    },
+    {
+      "id": "73",
+      "tag": "h3",
+      "text": "7.3 確認規則真的生效"
+    },
+    {
+      "id": "74",
+      "tag": "h3",
+      "text": "7.4 準備來源筆記"
+    },
+    {
+      "id": "75",
+      "tag": "h3",
+      "text": "7.5 第一個完整提示"
+    },
+    {
+      "id": "76",
+      "tag": "h3",
+      "text": "7.6 驗收，而不是只接受「完成了」"
+    },
+    {
+      "id": "8-python-uv",
+      "tag": "h2",
+      "text": "8. Python 與 uv：建立可重現的執行環境"
+    },
+    {
+      "id": "81",
+      "tag": "h3",
+      "text": "8.1 四個概念先分清楚"
+    },
+    {
+      "id": "82-uv-uv-python",
+      "tag": "h3",
+      "text": "8.2 安裝 uv，再由 uv 管理 Python"
+    },
+    {
+      "id": "83-python",
+      "tag": "h3",
+      "text": "8.3 在既有專案加入 Python 設定"
+    },
+    {
+      "id": "84",
+      "tag": "h3",
+      "text": "8.4 哪些檔案應該保存"
+    },
+    {
+      "id": "85",
+      "tag": "h3",
+      "text": "8.5 安裝與移除套件"
+    },
+    {
+      "id": "86-activate",
+      "tag": "h3",
+      "text": "8.6 是否需要手動 activate"
+    },
+    {
+      "id": "9",
+      "tag": "h2",
+      "text": "9. 可執行實作：學習時間統計"
+    },
+    {
+      "id": "91-nodejs",
+      "tag": "h3",
+      "text": "9.1 Node.js 的選修安裝"
+    },
+    {
+      "id": "92-vs-code-python",
+      "tag": "h3",
+      "text": "9.2 在 VS Code 選對 Python"
+    },
+    {
+      "id": "93",
+      "tag": "h3",
+      "text": "9.3 準備資料"
+    },
+    {
+      "id": "94",
+      "tag": "h3",
+      "text": "9.4 先讀偽代碼"
+    },
+    {
+      "id": "95",
+      "tag": "h3",
+      "text": "9.5 完整程式"
+    },
+    {
+      "id": "96",
+      "tag": "h3",
+      "text": "9.6 執行與核對"
+    },
+    {
+      "id": "97",
+      "tag": "h3",
+      "text": "9.7 用除錯器理解執行過程"
+    },
+    {
+      "id": "98-ai",
+      "tag": "h3",
+      "text": "9.8 讓 AI 做一個有邊界的修改"
+    },
+    {
+      "id": "10-macos",
+      "tag": "h2",
+      "text": "10. macOS 操作差異"
+    },
+    {
+      "id": "101-powershell",
+      "tag": "h3",
+      "text": "10.1 不必為了本課改用 PowerShell"
+    },
+    {
+      "id": "102",
+      "tag": "h3",
+      "text": "10.2 最小安裝步驟"
+    },
+    {
+      "id": "103-python",
+      "tag": "h3",
+      "text": "10.3 Python 路線"
+    },
+    {
+      "id": "11-qa",
+      "tag": "h2",
+      "text": "11. 常見問題與解決方案（Q&A）"
+    },
+    {
+      "id": "111",
+      "tag": "h3",
+      "text": "11.1 先判斷錯誤在哪一層"
+    },
+    {
+      "id": "112",
+      "tag": "h3",
+      "text": "11.2 問題對照表"
+    },
+    {
+      "id": "113-ai",
+      "tag": "h3",
+      "text": "11.3 能直接貼給 AI 的除錯格式"
+    },
+    {
+      "id": "114",
+      "tag": "h3",
+      "text": "11.4 費用與額度怎麼看"
+    },
+    {
+      "id": "12-practice",
+      "tag": "h2",
+      "text": "12. 實作練習與評量（Practice）"
+    },
+    {
+      "id": "121-a",
+      "tag": "h3",
+      "text": "12.1 練習 A：把任務放回六層模型"
+    },
+    {
+      "id": "122-b",
+      "tag": "h3",
+      "text": "12.2 練習 B：最小可用環境"
+    },
+    {
+      "id": "123-c",
+      "tag": "h3",
+      "text": "12.3 練習 C：資料錯誤能否被發現"
+    },
+    {
+      "id": "124",
+      "tag": "h3",
+      "text": "12.4 綜合任務：一週學習助理"
+    },
+    {
+      "id": "125",
+      "tag": "h3",
+      "text": "12.5 評分規準"
+    },
+    {
+      "id": "13-summary",
+      "tag": "h2",
+      "text": "13. 學習總結（Summary）"
+    },
+    {
+      "id": "131",
+      "tag": "h3",
+      "text": "13.1 應獲得的知識"
+    },
+    {
+      "id": "132",
+      "tag": "h3",
+      "text": "13.2 應獲得的技能"
+    },
+    {
+      "id": "133",
+      "tag": "h3",
+      "text": "13.3 每次工作的收尾清單"
+    },
+    {
+      "id": "14-extension-application",
+      "tag": "h2",
+      "text": "14. 延伸問題與應用（Extension & Application）"
+    },
+    {
+      "id": "141",
+      "tag": "h3",
+      "text": "14.1 反思性問題"
+    },
+    {
+      "id": "142",
+      "tag": "h3",
+      "text": "14.2 真實應用情境"
+    },
+    {
+      "id": "143",
+      "tag": "h3",
+      "text": "14.3 跨領域連結"
+    },
+    {
+      "id": "144",
+      "tag": "h3",
+      "text": "14.4 進階探索"
+    },
+    {
+      "id": "15",
+      "tag": "h2",
+      "text": "15. 官方文件與維護方式"
+    },
+    {
+      "id": "151",
+      "tag": "h3",
+      "text": "15.1 主要來源索引"
+    },
+    {
+      "id": "152",
+      "tag": "h3",
+      "text": "15.2 授課前重新確認"
+    },
+    {
+      "id": "153",
+      "tag": "h3",
+      "text": "15.3 版本記錄"
+    },
+    {
+      "id": "154-b05",
+      "tag": "h3",
+      "text": "15.4 原 b05 歷史驗證紀錄與本次限制"
+    },
+    {
+      "id": "jev",
+      "tag": "h2",
+      "text": "Jev 合規檢查紀錄（原稿歷史紀錄）"
+    },
+    {
+      "id": "jev_1",
+      "tag": "h2",
+      "text": "Jev 圖表選型檢查紀錄（原稿歷史紀錄）"
+    }
+  ],
+  "blocks": [
+    {
+      "ordinal": 1,
+      "sha256": "4199137acef48f5145f82aae872739b7a21dbbc40f9dd713b42829f58bf15b55",
+      "preview": "flowchart TD"
+    },
+    {
+      "ordinal": 2,
+      "sha256": "122a14c5505571c9543e495c12703272a95ba863d181a2a7e7741ff7564fc326",
+      "preview": "flowchart TD"
+    },
+    {
+      "ordinal": 3,
+      "sha256": "4dc97fd85b8110023673855734564aea1b36cf6d7942bcc64ab049f08e862af5",
+      "preview": "flowchart LR"
+    },
+    {
+      "ordinal": 4,
+      "sha256": "8b7541d9fae8a58e5878da26888304a972e63d73f964bcd8616fc9c7d27ddac0",
+      "preview": "file \"$(realpath \"$(command -v codex)\")\""
+    },
+    {
+      "ordinal": 5,
+      "sha256": "f0d1b04c7e2ddbe3e6ff6c86145216d1237feb785d1fe8607809498587503ab8",
+      "preview": "flowchart TD"
+    },
+    {
+      "ordinal": 6,
+      "sha256": "85ff6876c793a75435e55ef004cd5b51b834561fee3f61b8b998ce9a67aa27ca",
+      "preview": "code --version"
+    },
+    {
+      "ordinal": 7,
+      "sha256": "32e04b5dad8b6fe5f5c4a4c15abd1833d44faac98abf2a9a808683c585646fa5",
+      "preview": "winget --version"
+    },
+    {
+      "ordinal": 8,
+      "sha256": "e108b30e12390a03de4a6861f032e6ab5e7ebe5047fbbead1443c74b8f7b228c",
+      "preview": "winget install --id Microsoft.PowerShell --source winget"
+    },
+    {
+      "ordinal": 9,
+      "sha256": "3fe2b0d717fda9033260bf47653de2d5e0abaf4f88ce128e0f9670ba4b46fe23",
+      "preview": "$PSVersionTable.PSVersion"
+    },
+    {
+      "ordinal": 10,
+      "sha256": "6894e78ac95158728619f82f444ba5f80934e829320a1fe3ee277d3e757e8196",
+      "preview": "git --version"
+    },
+    {
+      "ordinal": 11,
+      "sha256": "001f5c645d7f48c89bcc7b8406b4c187a8b300c73ceb7acf1de75b99a5b996a7",
+      "preview": "New-Item -ItemType Directory -Path \"$env:USERPROFILE\\AI-Lab\" -Force"
+    },
+    {
+      "ordinal": 12,
+      "sha256": "a6af177e741126e0580d6c9ddb9c86b02b8131fc6c75701b4369fac46b844603",
+      "preview": "New-Item -ItemType Directory -Path \"$env:USERPROFILE\\AI-Lab\\study-assistant\" -Force"
+    },
+    {
+      "ordinal": 13,
+      "sha256": "852b4301ba29837917d7a291d6cf9a8d10336a1c80b00a3db3c65efe935ac306",
+      "preview": "irm https://claude.ai/install.ps1 | iex"
+    },
+    {
+      "ordinal": 14,
+      "sha256": "ae0174540c1b862414e088cac67dfb0e473366c71c5fed971e5177c1bbd61106",
+      "preview": "curl -fsSL https://claude.ai/install.cmd -o install.cmd && install.cmd && del install.cmd"
+    },
+    {
+      "ordinal": 15,
+      "sha256": "1e50abefca1e8c369e92a711ee4a80864874c5d4214be10c6d82c51388de676b",
+      "preview": "Set-Location \"$env:USERPROFILE\\AI-Lab\\study-assistant\""
+    },
+    {
+      "ordinal": 16,
+      "sha256": "171330bcd750f7da384c9c0e678576bb071c596a3457fcad6df3d33b86695d60",
+      "preview": "powershell -ExecutionPolicy ByPass -c \"irm https://chatgpt.com/codex/install.ps1 | iex\""
+    },
+    {
+      "ordinal": 17,
+      "sha256": "325c7f7a946a743f3ca255dcef50852e3164443a7db2bae66fdc2ee06249a224",
+      "preview": "$codexInstallerPath = Join-Path $env:TEMP \"codex-install.ps1\""
+    },
+    {
+      "ordinal": 18,
+      "sha256": "993fa50f5e078fb4b6a1b6a23d1a8805fc343ad18768bae708342990342b360c",
+      "preview": "Set-Location \"$env:USERPROFILE\\AI-Lab\\study-assistant\""
+    },
+    {
+      "ordinal": 19,
+      "sha256": "524936f9a7b823a0e7f7472103ed0581cc7c87a2d34b291ec03968f3cd7dff6c",
+      "preview": "irm https://antigravity.google/cli/install.ps1 | iex"
+    },
+    {
+      "ordinal": 20,
+      "sha256": "82f9336216a1e4eceaec5e4d1287b139ab0f1f4417f567b580d809dee310d19b",
+      "preview": "curl -fsSL https://antigravity.google/cli/install.cmd -o install.cmd && install.cmd && del install.cmd"
+    },
+    {
+      "ordinal": 21,
+      "sha256": "3779161720b934fff4e0aca0d3a0d458d7bc105aad4020a378c7173f28d9f7f6",
+      "preview": "Set-Location \"$env:USERPROFILE\\AI-Lab\\study-assistant\""
+    },
+    {
+      "ordinal": 22,
+      "sha256": "a0ba69db884ff6011fc131641088ed69d67959aa7cd557546d18c32bad01e9ad",
+      "preview": "agy plugin import gemini"
+    },
+    {
+      "ordinal": 23,
+      "sha256": "3b1d9bb54055fb2d7f81c89ffaea6e279327b34ca4d0097e8c0ba08ab9b36e56",
+      "preview": "npm.cmd uninstall -g @google/gemini-cli"
+    },
+    {
+      "ordinal": 24,
+      "sha256": "dbad8c91bc49209f6a0da0fda4bd9506d5ee5e495f18ef911167e84f1cf8cef3",
+      "preview": "請只讀取並回報目前工作資料夾。"
+    },
+    {
+      "ordinal": 25,
+      "sha256": "53269d36cf89f851fcf31b8f6ff62e8bb8d4de0eae839e27929481aaf6ba4791",
+      "preview": "for c in claude codex agy gemini node npm; do echo \"== $c\"; type -a \"$c\"; done"
+    },
+    {
+      "ordinal": 26,
+      "sha256": "fadd99a6df994f950d7e3dbc644832f4562b86c40ba8d53333607919616fc2d4",
+      "preview": "foreach ($c in \"claude\",\"codex\",\"agy\",\"gemini\",\"node\",\"npm\") { \"== $c\"; Get-Command $c -All -ErrorAction SilentlyContinue | Select-Object Source }"
+    },
+    {
+      "ordinal": 27,
+      "sha256": "cd4e98b0bddf60368a890469067faa98a6dffb515cfc9cfd4c1fd20771ef4bc0",
+      "preview": "閱讀 inputs/notes.md，列出三個重點及各自的來源段落。"
+    },
+    {
+      "ordinal": 28,
+      "sha256": "f39cccbb86ecb6ccd87ba01e285af6bcf4900e3f5714b77fa047cca688cb7531",
+      "preview": "把剛才的三個重點改寫成適合高中生複習的版本。"
+    },
+    {
+      "ordinal": 29,
+      "sha256": "e5f569ad6ab8ac185ced25333acd25197c8f64ed96f76dabed86f34ed15173bc",
+      "preview": "將確認後的內容存成 outputs/notes_summary.md。"
+    },
+    {
+      "ordinal": 30,
+      "sha256": "70f34afbdaaf1b19ee7062a409166107963458bb1f1d1c04b8d1a5bad348188d",
+      "preview": "我想整理 inputs/ 裡本週的筆記。先列出檔案清單與分批計畫，"
+    },
+    {
+      "ordinal": 31,
+      "sha256": "49cb3b95aabe22bf939eb9478062eef56f2e64080855b685276b097676eaa8e9",
+      "preview": "Set-Location \"$env:USERPROFILE\\AI-Lab\\study-assistant\""
+    },
+    {
+      "ordinal": 32,
+      "sha256": "8c35c2afc0c362740540b418721a9eaa0433313eb8e004b78baf73654be37e84",
+      "preview": "study-assistant/"
+    },
+    {
+      "ordinal": 33,
+      "sha256": "cc2513db881122e530fab248364e9d4983d3cf52ba8af7f458d7a5004477d230",
+      "preview": "# 個人學習助理"
+    },
+    {
+      "ordinal": 34,
+      "sha256": "aa7c3d0d940d1e3b4dad31555a8a89c9524cc59b4ecdf32a57401d9e01c0aee5",
+      "preview": ".venv/"
+    },
+    {
+      "ordinal": 35,
+      "sha256": "efa6c8d1a54b4a4a99bb7fefa8b7c4e1c03f10071607d1ec59428c7e88f5fcab",
+      "preview": "Get-Location"
+    },
+    {
+      "ordinal": 36,
+      "sha256": "ce3b647bdc66aad8eca5f837af269001014e6cd5c83b71705fa5bd06e6257d12",
+      "preview": "git status"
+    },
+    {
+      "ordinal": 37,
+      "sha256": "18075ad94f8768627fd8c1f1d4afaa5c3f73d7d901cc483b4b113713352dcbc0",
+      "preview": "flowchart LR"
+    },
+    {
+      "ordinal": 38,
+      "sha256": "59d54a1d6179899220c72f03b0fc770c166386e23a51c431df76240cb8d5ac35",
+      "preview": "git restore --staged README.md"
+    },
+    {
+      "ordinal": 39,
+      "sha256": "4979a57dd03086ca191295390a854b8af97b01fa13387734b1dbf291d65ab3e8",
+      "preview": "git restore -- README.md"
+    },
+    {
+      "ordinal": 40,
+      "sha256": "b9e2217fd2dd95b74585332385b1c683cceeaf460370a285be801d9141460254",
+      "preview": "# 學習助理專案指引"
+    },
+    {
+      "ordinal": 41,
+      "sha256": "336cc4fbf19beaada7ccf9986414fa91851a8d7a07dfb3ccbe800a69eed0ab49",
+      "preview": "@AGENTS.md"
+    },
+    {
+      "ordinal": 42,
+      "sha256": "7685a3ebf7e7c9988c3d6ce51dbaaef5bbc6ecd0b9774dcac4e94582290d4d3e",
+      "preview": "請確認目前工作資料夾。"
+    },
+    {
+      "ordinal": 43,
+      "sha256": "acbabdc5f3a0f075908dd7ef5a7f19896f0391dc99c0dbe52baa4641b64494fe",
+      "preview": "git add AGENTS.md"
+    },
+    {
+      "ordinal": 44,
+      "sha256": "8f4a2a89f5df50d3cb5b07b05444f924d1e942c0be820b59584b26e8148d5e54",
+      "preview": "# Python 虛擬環境課堂筆記"
+    },
+    {
+      "ordinal": 45,
+      "sha256": "132d7a0b4bdeaadeaca586404bc08108db02fdd678385eb3dc98b148091f3b57",
+      "preview": "git add inputs/notes.md"
+    },
+    {
+      "ordinal": 46,
+      "sha256": "50aebe9acbca2811e96a1c2dbd5aa123c69ef1eb7e5939ea301d97d5d59f468b",
+      "preview": "目標：把 inputs/notes.md 整理成高中生可閱讀的課後複習資料。"
+    },
+    {
+      "ordinal": 47,
+      "sha256": "2577863949ed251d1f40ae6934da3dbb6f00c7a2e95b9dd7b5cdd228c7507bb2",
+      "preview": "git status --short"
+    },
+    {
+      "ordinal": 48,
+      "sha256": "e8c0c13b2b4767162f53dba7bafec91202adbdd9c263c2e86176d4ba3f1d865a",
+      "preview": "第 2 題需要尚未教過的知識。請只根據 P1–P4 改成可回答的題目。"
+    },
+    {
+      "ordinal": 49,
+      "sha256": "06dde98ee129fc78df866427770150d1dbe9190008d4611b36b1feece4bd2f63",
+      "preview": "git add outputs/review_b01.md"
+    },
+    {
+      "ordinal": 50,
+      "sha256": "1e4cb0b3480e7ccad8d27bd4adfd3b5ba8743021a46df85fff0c97e9c6f6b476",
+      "preview": "winget install --id astral-sh.uv -e"
+    },
+    {
+      "ordinal": 51,
+      "sha256": "3556f12383423759dfb4ae24e0ff66c847128c94ac66719e1226c029a6e59267",
+      "preview": "uv --version"
+    },
+    {
+      "ordinal": 52,
+      "sha256": "efb57a187f0d111ca19adf93b76ea562fb0b48dc2c7fe0138974406837dcf48d",
+      "preview": "Set-Location \"$env:USERPROFILE\\AI-Lab\\study-assistant\""
+    },
+    {
+      "ordinal": 53,
+      "sha256": "0affdf3e536a5a749dc387b7857d1e660a042911d01fe771e33dba72d0fbce2d",
+      "preview": "uv init --bare --no-workspace --vcs none --python 3.13"
+    },
+    {
+      "ordinal": 54,
+      "sha256": "26da1957ea7f5b1e686d212bae56847ac313a661748ba097752e4f0575d6b960",
+      "preview": "study-assistant/"
+    },
+    {
+      "ordinal": 55,
+      "sha256": "a866197ff864d0ce04f59173bfed87d4351c94d96206233ce7001d5b35f4701f",
+      "preview": "uv add rich"
+    },
+    {
+      "ordinal": 56,
+      "sha256": "dc4c54d65a2657e89ecd029532cbb0c0ec206a0f0dfe0a14bdf80b821667899e",
+      "preview": "uv remove rich"
+    },
+    {
+      "ordinal": 57,
+      "sha256": "6bbacce7c69a344255a6a66804e5ac25efb9ea7307bf7609929baaaf5a5685e3",
+      "preview": ".\\.venv\\Scripts\\Activate.ps1"
+    },
+    {
+      "ordinal": 58,
+      "sha256": "1f8b2cf1a98dddca36133b1541650246f4f795e9b8edccc94f26071cbe754905",
+      "preview": "source .venv/bin/activate"
+    },
+    {
+      "ordinal": 59,
+      "sha256": "53131e5bb8fcd28b73e63b3a3acdeeb023b81a466554fa2a3beb8e785ec4655d",
+      "preview": "node --version"
+    },
+    {
+      "ordinal": 60,
+      "sha256": "a1ddb54a269d9e031cd0a69ebb67efd246733c9c00a6bbc1d77fc6ddb721bcc4",
+      "preview": "date,subject,minutes"
+    },
+    {
+      "ordinal": 61,
+      "sha256": "013b06e4107f02a33e3de27e9c5264f8faf158affbd5f99d60b3b49634d6a226",
+      "preview": "找到專案根目錄與輸入檔"
+    },
+    {
+      "ordinal": 62,
+      "sha256": "f4bdaa05349cf45b6cfb3da7b17c7558249a077cfba29ffdf3c5aee684e6efb3",
+      "preview": "from collections import defaultdict"
+    },
+    {
+      "ordinal": 63,
+      "sha256": "3a1985cd73cfd21659a267eaa140f94d83d13ffabfb90ca8d73fa0804c826506",
+      "preview": "uv run python scripts/summarize_study.py"
+    },
+    {
+      "ordinal": 64,
+      "sha256": "ad8fcaa7b7c5036103ab0a57a910f15e5ee917604e99f7444efd405ac9b456d4",
+      "preview": "git add pyproject.toml uv.lock .python-version inputs/study_log.csv scripts/summarize_study.py"
+    },
+    {
+      "ordinal": 65,
+      "sha256": "95f2d2a98220004922757e3e57ad10e8b84cad7b1046163748d493a2d4f3e904",
+      "preview": "請閱讀 AGENTS.md 與 scripts/summarize_study.py。"
+    },
+    {
+      "ordinal": 66,
+      "sha256": "e64b922af0b2d85cec36eb876e83e21fedbbc8392637f7781d39e04235d08091",
+      "preview": "mkdir -p \"$HOME/AI-Lab/study-assistant\""
+    },
+    {
+      "ordinal": 67,
+      "sha256": "d3300595b243c58e9759ba1bc824e7acf988a6d6e27e7899db0bdda52e92f7ff",
+      "preview": "curl -fsSL https://claude.ai/install.sh | bash"
+    },
+    {
+      "ordinal": 68,
+      "sha256": "a12b8b98ce6244a90dfa31d71ee41146b87caaf822a8517b55fa8834fff9b417",
+      "preview": "curl -fsSL https://chatgpt.com/codex/install.sh | sh"
+    },
+    {
+      "ordinal": 69,
+      "sha256": "57ad4408371721c8864e117eae415443774f1d15a24ac8178134e691059bafbe",
+      "preview": "curl -fsSL https://antigravity.google/cli/install.sh | bash"
+    },
+    {
+      "ordinal": 70,
+      "sha256": "aecd85f81d639746c63e1155984f88356e46da403b2ed73d3a4681bc2704cf0f",
+      "preview": "brew install --cask claude-code"
+    },
+    {
+      "ordinal": 71,
+      "sha256": "7b26af4878103faef9aed993b85fd9f217581ad66b0cf5cdeb807f0c85a92a0a",
+      "preview": "curl -LsSf https://astral.sh/uv/install.sh | sh"
+    },
+    {
+      "ordinal": 72,
+      "sha256": "849a88dc98c8a1df6856f631e033f569dc8ac5ae494029c7d3a219ab3e953d58",
+      "preview": "uv --version"
+    },
+    {
+      "ordinal": 73,
+      "sha256": "82157d1d3f692b5e2ecd5623f01435ab181e6c6ac1f55206c5f5d15d4fe3ddc5",
+      "preview": "flowchart TD"
+    },
+    {
+      "ordinal": 74,
+      "sha256": "432182047dc233e5446b3a9459a5090c2491ae7daad402c461226efe7b58b445",
+      "preview": "我想完成：執行學習時間統計。"
+    }
+  ],
+  "links": [
+    {
+      "href": "index.html",
+      "text": "課程目錄"
+    },
+    {
+      "href": "01_materials.html",
+      "text": "下一章 →"
+    },
+    {
+      "href": "00_intro.md",
+      "text": "Markdown 原文"
+    },
+    {
+      "href": "#0",
+      "text": "0. 使用方式與學習目標"
+    },
+    {
+      "href": "#1-ai-why",
+      "text": "1. 為什麼需要一個 AI 工作環境（Why）"
+    },
+    {
+      "href": "#2-llm-agent-what",
+      "text": "2. LLM 與 Agent 的六層關係（What）"
+    },
+    {
+      "href": "#3",
+      "text": "3. 工具地圖與安裝需求"
+    },
+    {
+      "href": "#4-windows-how",
+      "text": "4. Windows 基礎環境安裝（How）"
+    },
+    {
+      "href": "#5-agent-cli",
+      "text": "5. 安裝並啟動一款 Agent CLI"
+    },
+    {
+      "href": "#6-git",
+      "text": "6. 用資料夾與 Git 管理專案"
+    },
+    {
+      "href": "#7-agentsmd-ai",
+      "text": "7. AGENTS.md 與第一個 AI 學習任務"
+    },
+    {
+      "href": "#8-python-uv",
+      "text": "8. Python 與 uv：建立可重現的執行環境"
+    },
+    {
+      "href": "#9",
+      "text": "9. 可執行實作：學習時間統計"
+    },
+    {
+      "href": "#10-macos",
+      "text": "10. macOS 操作差異"
+    },
+    {
+      "href": "#11-qa",
+      "text": "11. 常見問題與解決方案（Q&A）"
+    },
+    {
+      "href": "#12-practice",
+      "text": "12. 實作練習與評量（Practice）"
+    },
+    {
+      "href": "#13-summary",
+      "text": "13. 學習總結（Summary）"
+    },
+    {
+      "href": "#14-extension-application",
+      "text": "14. 延伸問題與應用（Extension & Application）"
+    },
+    {
+      "href": "#15",
+      "text": "15. 官方文件與維護方式"
+    },
+    {
+      "href": "#jev",
+      "text": "Jev 合規檢查紀錄（原稿歷史紀錄）"
+    },
+    {
+      "href": "#jev_1",
+      "text": "Jev 圖表選型檢查紀錄（原稿歷史紀錄）"
+    },
+    {
+      "href": "https://joelhoty.github.io/onclassbyJoel/AI/ai_agent_harness_workflow.html",
+      "text": "AI Agent 分層模型"
+    },
+    {
+      "href": "https://joelhoty.github.io/onclassbyJoel/AI/ai_agent_harness_workflow.md",
+      "text": "Markdown 原文"
+    },
+    {
+      "href": "https://www.anthropic.com/research/building-effective-agents",
+      "text": "Building effective agents"
+    },
+    {
+      "href": "https://code.visualstudio.com/docs/python/python-tutorial",
+      "text": "VS Code Python 官方教學"
+    },
+    {
+      "href": "https://formulae.brew.sh/cask/codex",
+      "text": "Codex cask"
+    },
+    {
+      "href": "https://formulae.brew.sh/cask/claude-code",
+      "text": "Claude Code cask"
+    },
+    {
+      "href": "https://formulae.brew.sh/cask/antigravity-cli",
+      "text": "Antigravity CLI cask"
+    },
+    {
+      "href": "https://code.claude.com/docs/en/setup",
+      "text": "Claude Code Setup"
+    },
+    {
+      "href": "https://learn.chatgpt.com/docs/codex/cli",
+      "text": "Codex CLI"
+    },
+    {
+      "href": "https://github.com/openai/codex",
+      "text": "Codex GitHub README"
+    },
+    {
+      "href": "https://learn.chatgpt.com/docs/enterprise/windows-deployment",
+      "text": "Codex Windows 部署"
+    },
+    {
+      "href": "https://antigravity.google/docs/getting-started?tab=cli",
+      "text": "Antigravity CLI 安裝"
+    },
+    {
+      "href": "https://antigravity.google/docs/cli/gcli-migration",
+      "text": "官方遷移說明"
+    },
+    {
+      "href": "https://code.claude.com/docs/en/setup",
+      "text": "Claude Code 需求"
+    },
+    {
+      "href": "https://github.com/openai/codex",
+      "text": "Codex GitHub README"
+    },
+    {
+      "href": "https://antigravity.google/docs/getting-started?tab=cli",
+      "text": "Antigravity 各介面"
+    },
+    {
+      "href": "https://code.visualstudio.com/docs/setup/windows",
+      "text": "VS Code Windows 官方安裝說明"
+    },
+    {
+      "href": "https://learn.microsoft.com/en-us/powershell/scripting/install/install-powershell-on-windows",
+      "text": "PowerShell 官方安裝方式"
+    },
+    {
+      "href": "https://git-scm.com/install/windows",
+      "text": "Git for Windows 官方下載頁"
+    },
+    {
+      "href": "https://code.claude.com/docs/en/setup",
+      "text": "官方安裝與需求"
+    },
+    {
+      "href": "https://code.claude.com/docs/en/quickstart",
+      "text": "官方入門"
+    },
+    {
+      "href": "https://learn.chatgpt.com/docs/codex/cli",
+      "text": "Codex CLI 官方頁"
+    },
+    {
+      "href": "https://learn.chatgpt.com/docs/enterprise/windows-deployment",
+      "text": "官方 Windows CLI 部署方式"
+    },
+    {
+      "href": "https://github.com/openai/codex",
+      "text": "Codex GitHub README"
+    },
+    {
+      "href": "https://learn.chatgpt.com/docs/developer-commands?surface=cli",
+      "text": "Codex CLI 指令"
+    },
+    {
+      "href": "https://learn.chatgpt.com/docs/codex/cli",
+      "text": "Codex CLI 官方頁"
+    },
+    {
+      "href": "https://antigravity.google/docs/getting-started?tab=cli",
+      "text": "Antigravity CLI 官方入門"
+    },
+    {
+      "href": "https://antigravity.google/docs/cli/troubleshooting",
+      "text": "官方更新排錯"
+    },
+    {
+      "href": "https://antigravity.google/docs/cli/gcli-migration",
+      "text": "Antigravity 遷移文件"
+    },
+    {
+      "href": "05_instructions.html",
+      "text": "單元五：專案指引"
+    },
+    {
+      "href": "https://learn.chatgpt.com/docs/developer-commands?surface=cli",
+      "text": "Codex CLI 會話指令"
+    },
+    {
+      "href": "https://learn.chatgpt.com/docs/developer-settings",
+      "text": "Codex 狀態與設定"
+    },
+    {
+      "href": "https://code.claude.com/docs/en/commands",
+      "text": "Claude Code 指令"
+    },
+    {
+      "href": "https://git-scm.com/docs/gitignore",
+      "text": "Git ignore 官方說明"
+    },
+    {
+      "href": "https://git-scm.com/docs/git-restore",
+      "text": "Git restore 官方文件"
+    },
+    {
+      "href": "https://learn.chatgpt.com/docs/agent-configuration/agents-md",
+      "text": "Codex AGENTS.md"
+    },
+    {
+      "href": "https://code.claude.com/docs/en/memory",
+      "text": "Claude Code 專案記憶"
+    },
+    {
+      "href": "https://antigravity.google/docs/cli/gcli-migration",
+      "text": "Antigravity 遷移規則"
+    },
+    {
+      "href": "https://docs.astral.sh/uv/getting-started/installation/",
+      "text": "uv 安裝"
+    },
+    {
+      "href": "https://docs.astral.sh/uv/guides/install-python/",
+      "text": "uv 管理 Python"
+    },
+    {
+      "href": "https://docs.astral.sh/uv/concepts/projects/init/",
+      "text": "uv 專案初始化"
+    },
+    {
+      "href": "https://docs.astral.sh/uv/guides/projects/",
+      "text": "uv 專案操作"
+    },
+    {
+      "href": "https://docs.astral.sh/uv/guides/projects/",
+      "text": "uv 依賴管理"
+    },
+    {
+      "href": "https://nodejs.org/en/download",
+      "text": "Node.js 官方下載頁"
+    },
+    {
+      "href": "https://nodejs.org/en/about/previous-releases",
+      "text": "Node.js 官方版本狀態"
+    },
+    {
+      "href": "https://code.visualstudio.com/docs/python/python-tutorial",
+      "text": "VS Code Python 教學"
+    },
+    {
+      "href": "https://docs.python.org/3/library/csv.html",
+      "text": "Python csv 文件"
+    },
+    {
+      "href": "https://code.visualstudio.com/docs/setup/mac",
+      "text": "VS Code macOS 官方說明"
+    },
+    {
+      "href": "https://git-scm.com/install/mac",
+      "text": "Git macOS 安裝頁"
+    },
+    {
+      "href": "https://docs.astral.sh/uv/getting-started/installation/",
+      "text": "uv 官方說明"
+    },
+    {
+      "href": "https://joelhoty.github.io/onclassbyJoel/AI/ai_agent_harness_workflow.html",
+      "text": "Joel 的分層模型 HTML"
+    },
+    {
+      "href": "https://www.anthropic.com/research/building-effective-agents",
+      "text": "Anthropic：Building effective agents"
+    },
+    {
+      "href": "https://code.visualstudio.com/docs/setup/windows",
+      "text": "Windows 安裝"
+    },
+    {
+      "href": "https://code.visualstudio.com/docs/setup/mac",
+      "text": "macOS 安裝"
+    },
+    {
+      "href": "https://code.visualstudio.com/docs/python/python-tutorial",
+      "text": "Python 教學"
+    },
+    {
+      "href": "https://learn.microsoft.com/en-us/powershell/scripting/install/install-powershell-on-windows",
+      "text": "官方 Windows 安裝"
+    },
+    {
+      "href": "https://git-scm.com/install/windows",
+      "text": "Windows 安裝"
+    },
+    {
+      "href": "https://git-scm.com/docs/git-restore",
+      "text": "restore"
+    },
+    {
+      "href": "https://git-scm.com/docs/gitignore",
+      "text": "gitignore"
+    },
+    {
+      "href": "https://code.claude.com/docs/en/setup",
+      "text": "Setup"
+    },
+    {
+      "href": "https://code.claude.com/docs/en/quickstart",
+      "text": "Quickstart"
+    },
+    {
+      "href": "https://code.claude.com/docs/en/memory",
+      "text": "Memory"
+    },
+    {
+      "href": "https://learn.chatgpt.com/docs/codex/cli",
+      "text": "CLI 入門"
+    },
+    {
+      "href": "https://github.com/openai/codex",
+      "text": "GitHub README"
+    },
+    {
+      "href": "https://learn.chatgpt.com/docs/enterprise/windows-deployment",
+      "text": "Windows 部署"
+    },
+    {
+      "href": "https://learn.chatgpt.com/docs/agent-configuration/agents-md",
+      "text": "AGENTS.md"
+    },
+    {
+      "href": "https://antigravity.google/docs/getting-started?tab=cli",
+      "text": "入門"
+    },
+    {
+      "href": "https://antigravity.google/docs/cli/gcli-migration",
+      "text": "遷移"
+    },
+    {
+      "href": "https://nodejs.org/en/download",
+      "text": "官方下載"
+    },
+    {
+      "href": "https://nodejs.org/dist/index.json",
+      "text": "發行清單"
+    },
+    {
+      "href": "https://docs.astral.sh/uv/getting-started/installation/",
+      "text": "安裝"
+    },
+    {
+      "href": "https://docs.astral.sh/uv/guides/install-python/",
+      "text": "Python 管理"
+    },
+    {
+      "href": "https://docs.astral.sh/uv/concepts/projects/init/",
+      "text": "專案初始化"
+    },
+    {
+      "href": "https://docs.astral.sh/uv/guides/projects/",
+      "text": "專案操作"
+    },
+    {
+      "href": "https://docs.python.org/3/library/csv.html",
+      "text": "csv 模組"
+    },
+    {
+      "href": "https://learn.chatgpt.com/docs/codex/cli",
+      "text": "Codex CLI 官方頁"
+    },
+    {
+      "href": "index.html",
+      "text": "課程目錄"
+    },
+    {
+      "href": "01_materials.html",
+      "text": "下一章 →"
+    },
+    {
+      "href": "00_intro.md",
+      "text": "Markdown 原文"
+    }
+  ],
+  "images": [
+    "assets/agent_layers_b01.svg"
+  ],
+  "headings": [
+    {
+      "level": "h1",
+      "id": "ai-agent",
+      "text": "前導章：讓 AI Agent 成為個人工作與學習助理"
+    },
+    {
+      "level": "h2",
+      "id": "0",
+      "text": "0. 使用方式與學習目標"
+    },
+    {
+      "level": "h3",
+      "id": "01",
+      "text": "0.1 完成後能做到什麼"
+    },
+    {
+      "level": "h3",
+      "id": "02",
+      "text": "0.2 課程安排與交付物"
+    },
+    {
+      "level": "h3",
+      "id": "03",
+      "text": "0.3 指令閱讀約定"
+    },
+    {
+      "level": "h2",
+      "id": "1-ai-why",
+      "text": "1. 為什麼需要一個 AI 工作環境（Why）"
+    },
+    {
+      "level": "h3",
+      "id": "11",
+      "text": "1.1 從問答到完成任務"
+    },
+    {
+      "level": "h3",
+      "id": "12",
+      "text": "1.2 環境建置解決的四個問題"
+    },
+    {
+      "level": "h2",
+      "id": "2-llm-agent-what",
+      "text": "2. LLM 與 Agent 的六層關係（What）"
+    },
+    {
+      "level": "h3",
+      "id": "21",
+      "text": "2.1 引用的分層圖"
+    },
+    {
+      "level": "h3",
+      "id": "22",
+      "text": "2.2 各層如何對應本課任務"
+    },
+    {
+      "level": "h3",
+      "id": "23-cli",
+      "text": "2.3 模型、CLI 與執行環境有何不同"
+    },
+    {
+      "level": "h3",
+      "id": "24-promptcontexttoolsskills-mcp",
+      "text": "2.4 Prompt、Context、Tools、Skills 與 MCP"
+    },
+    {
+      "level": "h3",
+      "id": "25",
+      "text": "2.5 軟限制與硬限制"
+    },
+    {
+      "level": "h3",
+      "id": "26-agent",
+      "text": "2.6 Agent 迴圈：圖中的各層如何合作"
+    },
+    {
+      "level": "h3",
+      "id": "27-workflow-agent",
+      "text": "2.7 Workflow 與 Agent：誰決定下一步"
+    },
+    {
+      "level": "h2",
+      "id": "3",
+      "text": "3. 工具地圖與安裝需求"
+    },
+    {
+      "level": "h3",
+      "id": "31",
+      "text": "3.1 每個工具負責什麼"
+    },
+    {
+      "level": "h3",
+      "id": "32-cli-nodejs",
+      "text": "3.2 CLI 還需要 Node.js 嗎？"
+    },
+    {
+      "level": "h4",
+      "id": "321",
+      "text": "3.2.1 四種安裝方式比較"
+    },
+    {
+      "level": "h4",
+      "id": "322",
+      "text": "3.2.2 建議與結論"
+    },
+    {
+      "level": "h4",
+      "id": "323",
+      "text": "3.2.3 先分清楚四種檔案與工具"
+    },
+    {
+      "level": "h4",
+      "id": "324-standalonenpm",
+      "text": "3.2.4 「原生版」「standalone」「npm 版」指的是什麼"
+    },
+    {
+      "level": "h4",
+      "id": "325",
+      "text": "3.2.5 安裝時、執行時、任務時：三個時間點各需要什麼"
+    },
+    {
+      "level": "h4",
+      "id": "326-cli",
+      "text": "3.2.6 三款 CLI 逐一對照"
+    },
+    {
+      "level": "h4",
+      "id": "327-cli-rust-nodejs",
+      "text": "3.2.7 CLI 改用 Rust 撰寫，就不需要 Node.js 了嗎？"
+    },
+    {
+      "level": "h4",
+      "id": "328",
+      "text": "3.2.8 官方安裝指令一覽"
+    },
+    {
+      "level": "h3",
+      "id": "33-antigravity-cliagy",
+      "text": "3.3 選讀比較：Antigravity CLI（agy）"
+    },
+    {
+      "level": "h3",
+      "id": "34",
+      "text": "3.4 作業系統、帳號與資源"
+    },
+    {
+      "level": "h2",
+      "id": "4-windows-how",
+      "text": "4. Windows 基礎環境安裝（How）"
+    },
+    {
+      "level": "h3",
+      "id": "41",
+      "text": "4.1 安裝順序"
+    },
+    {
+      "level": "h3",
+      "id": "42-vs-code",
+      "text": "4.2 安裝 VS Code"
+    },
+    {
+      "level": "h3",
+      "id": "43-powershell-7",
+      "text": "4.3 安裝 PowerShell 7"
+    },
+    {
+      "level": "h3",
+      "id": "44-git",
+      "text": "4.4 安裝 Git"
+    },
+    {
+      "level": "h3",
+      "id": "45",
+      "text": "4.5 先學會五個終端機操作"
+    },
+    {
+      "level": "h2",
+      "id": "5-agent-cli",
+      "text": "5. 安裝並啟動一款 Agent CLI"
+    },
+    {
+      "level": "h3",
+      "id": "51",
+      "text": "5.1 選擇路線"
+    },
+    {
+      "level": "h3",
+      "id": "52-aclaude-code",
+      "text": "5.2 路線 A：Claude Code"
+    },
+    {
+      "level": "h3",
+      "id": "53-bcodex-cli",
+      "text": "5.3 路線 B：Codex CLI"
+    },
+    {
+      "level": "h3",
+      "id": "54-cantigravity-cli",
+      "text": "5.4 選讀路線 C：Antigravity CLI"
+    },
+    {
+      "level": "h3",
+      "id": "55-gemini-agy",
+      "text": "5.5 選讀：舊 gemini 指令遷移到 agy"
+    },
+    {
+      "level": "h3",
+      "id": "56",
+      "text": "5.6 第一次對話的共同驗證"
+    },
+    {
+      "level": "h3",
+      "id": "57",
+      "text": "5.7 記錄安裝方式與更新方式"
+    },
+    {
+      "level": "h3",
+      "id": "58-cli",
+      "text": "5.8 盤點既有安裝：這台電腦的 CLI 從哪裡來？"
+    },
+    {
+      "level": "h3",
+      "id": "59",
+      "text": "5.9 啟動後，以自然語言完成任務"
+    },
+    {
+      "level": "h3",
+      "id": "510",
+      "text": "5.10 常用會話內指令速查"
+    },
+    {
+      "level": "h3",
+      "id": "511-sessioncontext",
+      "text": "5.11 進階操作：管理 session、context 與用量"
+    },
+    {
+      "level": "h2",
+      "id": "6-git",
+      "text": "6. 用資料夾與 Git 管理專案"
+    },
+    {
+      "level": "h3",
+      "id": "61",
+      "text": "6.1 建立一致的專案結構"
+    },
+    {
+      "level": "h3",
+      "id": "62-readme",
+      "text": "6.2 撰寫 README"
+    },
+    {
+      "level": "h3",
+      "id": "63-gitignore",
+      "text": "6.3 設定 .gitignore"
+    },
+    {
+      "level": "h3",
+      "id": "64-commit",
+      "text": "6.4 建立第一次 commit"
+    },
+    {
+      "level": "h3",
+      "id": "65",
+      "text": "6.5 理解三個位置"
+    },
+    {
+      "level": "h3",
+      "id": "66",
+      "text": "6.6 撤回與回復的練習"
+    },
+    {
+      "level": "h3",
+      "id": "67-git",
+      "text": "6.7 Git、版本後綴與備份的分工"
+    },
+    {
+      "level": "h2",
+      "id": "7-agentsmd-ai",
+      "text": "7. AGENTS.md 與第一個 AI 學習任務"
+    },
+    {
+      "level": "h3",
+      "id": "71",
+      "text": "7.1 專案規則要能直接執行"
+    },
+    {
+      "level": "h3",
+      "id": "72-agentsmd",
+      "text": "7.2 各工具是否會讀取 AGENTS.md"
+    },
+    {
+      "level": "h3",
+      "id": "73",
+      "text": "7.3 確認規則真的生效"
+    },
+    {
+      "level": "h3",
+      "id": "74",
+      "text": "7.4 準備來源筆記"
+    },
+    {
+      "level": "h3",
+      "id": "75",
+      "text": "7.5 第一個完整提示"
+    },
+    {
+      "level": "h3",
+      "id": "76",
+      "text": "7.6 驗收，而不是只接受「完成了」"
+    },
+    {
+      "level": "h2",
+      "id": "8-python-uv",
+      "text": "8. Python 與 uv：建立可重現的執行環境"
+    },
+    {
+      "level": "h3",
+      "id": "81",
+      "text": "8.1 四個概念先分清楚"
+    },
+    {
+      "level": "h3",
+      "id": "82-uv-uv-python",
+      "text": "8.2 安裝 uv，再由 uv 管理 Python"
+    },
+    {
+      "level": "h3",
+      "id": "83-python",
+      "text": "8.3 在既有專案加入 Python 設定"
+    },
+    {
+      "level": "h3",
+      "id": "84",
+      "text": "8.4 哪些檔案應該保存"
+    },
+    {
+      "level": "h3",
+      "id": "85",
+      "text": "8.5 安裝與移除套件"
+    },
+    {
+      "level": "h3",
+      "id": "86-activate",
+      "text": "8.6 是否需要手動 activate"
+    },
+    {
+      "level": "h2",
+      "id": "9",
+      "text": "9. 可執行實作：學習時間統計"
+    },
+    {
+      "level": "h3",
+      "id": "91-nodejs",
+      "text": "9.1 Node.js 的選修安裝"
+    },
+    {
+      "level": "h3",
+      "id": "92-vs-code-python",
+      "text": "9.2 在 VS Code 選對 Python"
+    },
+    {
+      "level": "h3",
+      "id": "93",
+      "text": "9.3 準備資料"
+    },
+    {
+      "level": "h3",
+      "id": "94",
+      "text": "9.4 先讀偽代碼"
+    },
+    {
+      "level": "h3",
+      "id": "95",
+      "text": "9.5 完整程式"
+    },
+    {
+      "level": "h3",
+      "id": "96",
+      "text": "9.6 執行與核對"
+    },
+    {
+      "level": "h3",
+      "id": "97",
+      "text": "9.7 用除錯器理解執行過程"
+    },
+    {
+      "level": "h3",
+      "id": "98-ai",
+      "text": "9.8 讓 AI 做一個有邊界的修改"
+    },
+    {
+      "level": "h2",
+      "id": "10-macos",
+      "text": "10. macOS 操作差異"
+    },
+    {
+      "level": "h3",
+      "id": "101-powershell",
+      "text": "10.1 不必為了本課改用 PowerShell"
+    },
+    {
+      "level": "h3",
+      "id": "102",
+      "text": "10.2 最小安裝步驟"
+    },
+    {
+      "level": "h3",
+      "id": "103-python",
+      "text": "10.3 Python 路線"
+    },
+    {
+      "level": "h2",
+      "id": "11-qa",
+      "text": "11. 常見問題與解決方案（Q&A）"
+    },
+    {
+      "level": "h3",
+      "id": "111",
+      "text": "11.1 先判斷錯誤在哪一層"
+    },
+    {
+      "level": "h3",
+      "id": "112",
+      "text": "11.2 問題對照表"
+    },
+    {
+      "level": "h3",
+      "id": "113-ai",
+      "text": "11.3 能直接貼給 AI 的除錯格式"
+    },
+    {
+      "level": "h3",
+      "id": "114",
+      "text": "11.4 費用與額度怎麼看"
+    },
+    {
+      "level": "h2",
+      "id": "12-practice",
+      "text": "12. 實作練習與評量（Practice）"
+    },
+    {
+      "level": "h3",
+      "id": "121-a",
+      "text": "12.1 練習 A：把任務放回六層模型"
+    },
+    {
+      "level": "h3",
+      "id": "122-b",
+      "text": "12.2 練習 B：最小可用環境"
+    },
+    {
+      "level": "h3",
+      "id": "123-c",
+      "text": "12.3 練習 C：資料錯誤能否被發現"
+    },
+    {
+      "level": "h3",
+      "id": "124",
+      "text": "12.4 綜合任務：一週學習助理"
+    },
+    {
+      "level": "h3",
+      "id": "125",
+      "text": "12.5 評分規準"
+    },
+    {
+      "level": "h2",
+      "id": "13-summary",
+      "text": "13. 學習總結（Summary）"
+    },
+    {
+      "level": "h3",
+      "id": "131",
+      "text": "13.1 應獲得的知識"
+    },
+    {
+      "level": "h3",
+      "id": "132",
+      "text": "13.2 應獲得的技能"
+    },
+    {
+      "level": "h3",
+      "id": "133",
+      "text": "13.3 每次工作的收尾清單"
+    },
+    {
+      "level": "h2",
+      "id": "14-extension-application",
+      "text": "14. 延伸問題與應用（Extension & Application）"
+    },
+    {
+      "level": "h3",
+      "id": "141",
+      "text": "14.1 反思性問題"
+    },
+    {
+      "level": "h3",
+      "id": "142",
+      "text": "14.2 真實應用情境"
+    },
+    {
+      "level": "h3",
+      "id": "143",
+      "text": "14.3 跨領域連結"
+    },
+    {
+      "level": "h3",
+      "id": "144",
+      "text": "14.4 進階探索"
+    },
+    {
+      "level": "h2",
+      "id": "15",
+      "text": "15. 官方文件與維護方式"
+    },
+    {
+      "level": "h3",
+      "id": "151",
+      "text": "15.1 主要來源索引"
+    },
+    {
+      "level": "h3",
+      "id": "152",
+      "text": "15.2 授課前重新確認"
+    },
+    {
+      "level": "h3",
+      "id": "153",
+      "text": "15.3 版本記錄"
+    },
+    {
+      "level": "h3",
+      "id": "154-b05",
+      "text": "15.4 原 b05 歷史驗證紀錄與本次限制"
+    },
+    {
+      "level": "h2",
+      "id": "jev",
+      "text": "Jev 合規檢查紀錄（原稿歷史紀錄）"
+    },
+    {
+      "level": "h2",
+      "id": "jev_1",
+      "text": "Jev 圖表選型檢查紀錄（原稿歷史紀錄）"
+    }
+  ]
+}

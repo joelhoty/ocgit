@@ -1,0 +1,50 @@
+{
+  "task_id": "task-2",
+  "subject_hash": "sha256:6668cf09da710bbf277169f12ac02fccf4df49121a68adfa023c702193063a2f",
+  "checks": {
+    "check_course.py": {
+      "status": "PASS",
+      "counts": {
+        "html": 16,
+        "local_links": 304,
+        "redirects": 15,
+        "markdown_pairs": 10
+      },
+      "errors": []
+    },
+    "check_intro.py": {
+      "status": "PASS",
+      "legacy_ids": 111,
+      "errors": [],
+      "negative_controls": {
+        "missing_alias_rejected": true,
+        "duplicate_alias_rejected": true,
+        "misplaced_alias_rejected": true
+      }
+    }
+  },
+  "browser": {
+    "path": "openspec/changes/reorder-agent-introduction/evidence/browser-intro-2.json",
+    "sha256": "6046a79f251472956a65f402975e406a3f596f0ecc240dfc8d335efbc78bcc46",
+    "cases": 114
+  },
+  "reviews": [
+    {
+      "path": "openspec/changes/reorder-agent-introduction/evidence/spec-review-final.md",
+      "sha256": "009ae172d7b7d8375e50aeeae9630a7206eb000430febdef40232a952381b6a6"
+    },
+    {
+      "path": "openspec/changes/reorder-agent-introduction/evidence/quality-review-final.md",
+      "sha256": "2bd2820fc0194ff67ab3b5899ab39a03443d20ccaee89110b1bcb80d75bd2ebf"
+    },
+    {
+      "path": "openspec/changes/reorder-agent-introduction/evidence/visual-review.md",
+      "sha256": "1f699e335d407d40da1d50e0f92f2338268c5e45d33ef540dc6225f95fae3d82"
+    },
+    {
+      "path": "openspec/changes/reorder-agent-introduction/evidence/quality-harness-followup.md",
+      "sha256": "ec0d37db6b860e1c9e6d8852fea3513737a17b284541c21f608fef986df2fca2"
+    }
+  ],
+  "captured_at": "2026-10-31T14:40:24.667964+00:00"
+}

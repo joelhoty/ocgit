@@ -1,0 +1,412 @@
+schema: sos-evidence/v1
+change: reorder-agent-introduction
+captured_at: '2026-10-31T14:40:58.901359+00:00'
+worktree:
+  path: /private/tmp/ocgithub-interactive-cli
+  commit: f7a957f77a1715a020056fdd6dd67ca0eb2bc4df
+  diff_hash: sha256:84f5575ca2f6bd76d9a10c6c1613eee61228048583fc00ea5075e6063a6a63d7
+checks:
+- id: task-1.automated
+  task_id: task-1
+  requirement_ids: &id001
+  - REQ-TEACH-012
+  - REQ-TEACH-013
+  kind: automated
+  subject: &id002
+    base_commit: f7a957f77a1715a020056fdd6dd67ca0eb2bc4df
+    constituents:
+    - path: AI_Agent_CLi/00_intro.html
+      type: regular
+      sha256: 1b26738017b821cb936fb18e16efb1ef5219632d27de8ad7cf6ad721e3d4eba1
+    - path: AI_Agent_CLi/00_intro.md
+      type: regular
+      sha256: fc594f21f6ba5c4b02807359684d99dd1a194637c3c711fef36b46ed5350731c
+    - path: AI_Agent_CLi/01_materials.html
+      type: regular
+      sha256: 67f4f7867ec6eaeefb20f1b857c0ccf700ce687adb605108ea98e02c19610a74
+    - path: AI_Agent_CLi/01_materials.md
+      type: regular
+      sha256: 8a4bd36f9d5db3a43e2bf614dfbf42f443b68da5d465ede3de2467017ee9c2c7
+    - path: AI_Agent_CLi/02_images.html
+      type: regular
+      sha256: afe419d2c8e4ad7b1609ffdcc1becf847c30c06a50409d36b235eb6ef75f99b9
+    - path: AI_Agent_CLi/02_images.md
+      type: regular
+      sha256: e97ec9f80fa31176bd0bee0cbd7fff6b535568f1310af2def60fe16bcf96b210
+    - path: AI_Agent_CLi/03_notebooklm.html
+      type: regular
+      sha256: 1dfa8351c36b7ed8c6b9108e6cd9ec3f6c1139c2e6a6d579f0dcdefb6d03e163
+    - path: AI_Agent_CLi/03_notebooklm.md
+      type: regular
+      sha256: ddbbaa9e604d44837d5d408f08b9404173e4289f9a62af3dee462f86146a0ceb
+    - path: AI_Agent_CLi/04_workspace.html
+      type: regular
+      sha256: b6a7e27108fea079e34dd67a1fc8c560e640583a2e3b74b42c8f954b472252a0
+    - path: AI_Agent_CLi/04_workspace.md
+      type: regular
+      sha256: 25b5cd6ee8d0bbb6e3d0aa6e5fac5746ec59e22c54026c0df978e507e2ef17bd
+    - path: AI_Agent_CLi/04a_workflows.html
+      type: regular
+      sha256: aa631a70dfdd895950bf1fc759a5a7879568c02ab1e5ee7cecabc82fcdc014b7
+    - path: AI_Agent_CLi/04a_workflows.md
+      type: regular
+      sha256: a5b098378b75ce574c0e8c6e823b26192ef99cc68918876f9ef91a1c8e33fe0e
+    - path: AI_Agent_CLi/05_instructions.html
+      type: regular
+      sha256: 63a33277c0b55cf9fae544f22de57ccd9f99fd305f515334543eb28da7a359bf
+    - path: AI_Agent_CLi/05_instructions.md
+      type: regular
+      sha256: 276d32ec79c1a207df296b71aec8f36559d3562c655cd34156036770d52d325c
+    - path: AI_Agent_CLi/06_lesson_plans.html
+      type: regular
+      sha256: e5ce2c75edeae0a59f11509fa314b36b0bba6a5284eb094008d08422e7729d90
+    - path: AI_Agent_CLi/06_lesson_plans.md
+      type: regular
+      sha256: eb540e473780e1f788005c2835f55e25b3539365a5834ec9f304bbf9e4cb76e2
+    - path: AI_Agent_CLi/06a_assessment.html
+      type: regular
+      sha256: 69008f5c1910065814857c3f289bc841ab6cf81c0139ac484dabafcf1daaebbe
+    - path: AI_Agent_CLi/06a_assessment.md
+      type: regular
+      sha256: 3ff7e25019fdb409399d67ca66b9bcf26112dc769028c547b50bf6525571a25a
+    - path: AI_Agent_CLi/07_agents_cli.html
+      type: regular
+      sha256: ace70e5bbd84f2564e3812f429a6d525511f2b8509245b33276e25e53d806e53
+    - path: AI_Agent_CLi/08_environment.html
+      type: regular
+      sha256: 5925bc2783e7011b8535b756041bc67fee58b0d9c52d3923bd3a382f845d060b
+    - path: AI_Agent_CLi/09_cli_practice.html
+      type: regular
+      sha256: e78ea15946d178b4565fbbc452d1cddb41e4a79a2632a6b65a264884a9a2d01d
+    - path: AI_Agent_CLi/10_literacy.html
+      type: regular
+      sha256: c2ca2894d36c37ea419b579aeec13ad7b341904ec2725691d05cd78ff2ae2969
+    - path: AI_Agent_CLi/11_literacy_practice.html
+      type: regular
+      sha256: 63bff2620ea76ebaa51b8edabac4f665d2a7670e410b261db9538b0b9ecc512e
+    - path: AI_Agent_CLi/12_literacy_research.html
+      type: regular
+      sha256: 73e6493712d071e8b1256fd46b8dd3a502ba579461a89c61e57d8abadc4929e9
+    - path: AI_Agent_CLi/12_literacy_research.md
+      type: regular
+      sha256: 69b41783746956c57c8b2537d147e0779e5787e405b0ec32b26c46e26640927d
+    - path: AI_Agent_CLi/assets/agent_layers_b01.svg
+      type: regular
+      sha256: 70dd9b32a71c66fc21e7070750f2043e8acdf6ba623d9a395ea33aeb1d67b677
+    - path: AI_Agent_CLi/index.html
+      type: regular
+      sha256: 54a9b620f19792f7b22543c36b8724edc317e39f0fcf4118ae55a3cc9be688f5
+    - path: CONTRIBUTING.md
+      type: regular
+      sha256: a6f0f41fd4309e04220255729ccc55cef7252b618f7644c25358497e63a9e6f2
+    - path: GeminiForDesignTeaching/AI_Agent_Cli_b13.html
+      type: regular
+      sha256: d9db9ed30c09ff3ddd42c7513987c3a8e89d5b7d48cb4c479af070c8693795d9
+    - path: GeminiForDesignTeaching/Environment_Setup_Guide_b06.html
+      type: regular
+      sha256: 68c7e7e3bfbdf0d8009588b5f6a90a320a9730e24715a6f6a253c9fc07c2ef06
+    - path: GeminiForDesignTeaching/Gemini_CLI_Tutorial_b02.html
+      type: regular
+      sha256: 73dd5b1930ddc166c7d0d2f3bc527c8c7ce44132dc1390a08377b4d533319b3c
+    - path: GeminiForDesignTeaching/index_content.html
+      type: regular
+      sha256: e8025b68b3f7a51d58af52d04d53976a61c46446a3564a8b33404c8d8d0d41a9
+    - path: GeminiForDesignTeaching/literacy_b02.html
+      type: regular
+      sha256: df4082e8051f0b751c78a6dbf8ea7e0acfb6115868c87f3bf335b2bc3c78427e
+    - path: GeminiForDesignTeaching/literacy_chatgpt_revise_b06.html
+      type: regular
+      sha256: 4a781d95874a342104506dd97d4e51d9e5e62c08a522f8cd6797f1df58c8464c
+    - path: GeminiForDesignTeaching/literacy_research.html
+      type: regular
+      sha256: eaecae58d92cd2502239abd8aaa9886770871f90a7062e2ce2e16cca1b0bb16e
+    - path: GeminiForDesignTeaching/literacy_research.md
+      type: regular
+      sha256: 69b41783746956c57c8b2537d147e0779e5787e405b0ec32b26c46e26640927d
+    - path: GeminiForDesignTeaching/unit01_first_ai_material_b02.html
+      type: regular
+      sha256: 20a8029b3648359338355c91a7fdd05f7a80d9a78c3a4d6494fcaecf141b8f55
+    - path: GeminiForDesignTeaching/unit01_first_ai_material_b02.md
+      type: regular
+      sha256: 03b3ef956109470599cd35370e6fe23f91b9776c367ab0c263c35b9e1d17f217
+    - path: GeminiForDesignTeaching/unit02_ai_image_generation_b02.html
+      type: regular
+      sha256: 503edd9366fb5bd86afebfd3a1ac0be560d4570a8e0cce8a2b0dcd2798e840fd
+    - path: GeminiForDesignTeaching/unit02_ai_image_generation_b02.md
+      type: regular
+      sha256: 3af9e7d2695efad50f9c82a70bb7ef58481ecb0ffe9f68dc066ec238c6551908
+    - path: GeminiForDesignTeaching/unit03_notebooklm_b02.html
+      type: regular
+      sha256: 03e4bac34709fa55224cafdac621d1470e89c85fed049c2e5e008331b68b5c7b
+    - path: GeminiForDesignTeaching/unit03_notebooklm_b02.md
+      type: regular
+      sha256: 3b23f6e161e7dfd20b1d63905b20ae3dc9ec6322bc3d5854f4b3f8777920cee1
+    - path: GeminiForDesignTeaching/unit04_local_ai_setup_b02.html
+      type: regular
+      sha256: 7f5750df33de63a7fc855f123d78b9cbdee679fb455533308ef861fcd34f0e40
+    - path: GeminiForDesignTeaching/unit04_local_ai_setup_b02.md
+      type: regular
+      sha256: 498542ef750c6dcd3bf8db0cfd08bbbdad91f5091afb831b20ccf265a8656a0f
+    - path: GeminiForDesignTeaching/unit04_supplement_additions.html
+      type: regular
+      sha256: 8736239f720d8f6bb7b512fc8acb799e15d111ddb80cdda02e8ceda59b9bb78a
+    - path: GeminiForDesignTeaching/unit04_supplement_additions.md
+      type: regular
+      sha256: d018fe561f3d75ff0b03bf1336993aa80bd397b1fda272f18bad772b86db0e53
+    - path: GeminiForDesignTeaching/unit05_gemini_md_customization_b01.html
+      type: regular
+      sha256: 6367e56350070154e10a2e4622990b47ef37997e5be01962613b47c66e181bda
+    - path: GeminiForDesignTeaching/unit05_gemini_md_customization_b01.md
+      type: regular
+      sha256: 67d01de8e4a538e1c8427416209a6332e3f2cafaa7e23d3444c90cdbc36e95b8
+    - path: GeminiForDesignTeaching/unit06_practical_lesson_plan_b02.html
+      type: regular
+      sha256: c3346f4c23d2d8450f452d27a2565e9bb9a90e3e8e387f68b668c3fec43bdd75
+    - path: GeminiForDesignTeaching/unit06_practical_lesson_plan_b02.md
+      type: regular
+      sha256: a2b3b92b21491001e134f8e8ad38897f930286c90fb993e125470ddf99609440
+    - path: GeminiForDesignTeaching/unit06_supplement_additions.html
+      type: regular
+      sha256: 56ee2bbc0859972c571d5020c6d180e3ae4ed4a815f9a7ad6680e5ce71b7b87b
+    - path: GeminiForDesignTeaching/unit06_supplement_additions.md
+      type: regular
+      sha256: fc6779209108ca5e0d891003f87ec53c5ca6acda3a5aca5c75952c2e7dfe327d
+    - path: README.md
+      type: regular
+      sha256: 7f37a3273c0c2626446a4dc32d54d367b4a95136d647ce82bda3fa4f94125404
+    - path: git_index.md
+      type: regular
+      sha256: e2badabdd16430f5519061a3c7502d382f219ca92b00b778e9db55fe1b204f24
+    - path: index.html
+      type: regular
+      sha256: 64405d1930c64ab46136ebd17ce9de7d382b974f8ebc013f68d722fb1d117a39
+    - path: md2htmlv2.py
+      type: regular
+      sha256: fe56aaf26fd0515a154864f6af0740b345a6238474ab9f8ea55d90379588dae9
+    - path: openspec/changes/archive/2026-10-31-reorder-agent-introduction/anchor-map.json
+      type: regular
+      sha256: 28c069fc4eac9b094863d53843ac3209a765b03ccf78774ada641d2bbce9afa0
+    - path: openspec/changes/archive/2026-10-31-reorder-agent-introduction/content-map.md
+      type: regular
+      sha256: 93a373d9444e40c5d331047b5de13e5954f237177cbaf2034cdfdf29c2ee1d0a
+    - path: openspec/changes/archive/2026-10-31-reorder-agent-introduction/inputs/00_intro.before.html
+      type: regular
+      sha256: 13b3f6b2f8bb13a598b5d1c213d1b09073eadd912c40b3a299eb226c286a5dbf
+    - path: openspec/changes/archive/2026-10-31-reorder-agent-introduction/inputs/00_intro.before.md
+      type: regular
+      sha256: bb343c122d5aef2793c684c5cd0f92ac8dc38d9a3c09d30d1b033d4b51044efd
+    - path: openspec/changes/archive/2026-10-31-reorder-agent-introduction/section-map.json
+      type: regular
+      sha256: 329997e6691c1caeaa325a85afe0a3412bff1f207564a5ca3b4338b504cf9d14
+    - path: openspec/changes/archive/2026-10-31-reorder-agent-introduction/validation/browser_intro.py
+      type: regular
+      sha256: b1c16dca241ae1b4e51f6451ccbd5158ee3067b03504fa576e9a9a4f4f01bd08
+    - path: openspec/changes/archive/2026-10-31-reorder-agent-introduction/validation/capture_evidence.py
+      type: regular
+      sha256: fc85cfe6003660504598865e29b95acd3936aea7297653c41c5d3b009c04273b
+    - path: openspec/changes/archive/2026-10-31-reorder-agent-introduction/validation/check_course.py
+      type: regular
+      sha256: 3252c4be103d268dcc6f35c23f19742e528eada2ddb29f6aadbf6c5ad74ee84e
+    - path: openspec/changes/archive/2026-10-31-reorder-agent-introduction/validation/check_intro.py
+      type: regular
+      sha256: a25d28c16c4b43b308c309475bf52bfab6aec403eb021f585b46ef7fd6bdd3f0
+    - path: openspec/changes/archive/2026-10-31-reorder-agent-introduction/validation/evidence_identity.py
+      type: regular
+      sha256: 2c0a0274ecbffc5fc17eba4dcad34c73bf1065a7a630003b4a25be859aa7e192
+    - path: openspec/changes/archive/2026-10-31-reorder-agent-introduction/validation/filename-map.json
+      type: regular
+      sha256: 419239d83ed10476872d21593871752332d46756a37fd670f74da37bba59c247
+    - path: openspec/changes/archive/2026-10-31-reorder-agent-introduction/validation/render_intro.py
+      type: regular
+      sha256: e4f0a20676609984f3ef845b6a596301dfa223919703d262afc88d1457d032a3
+    subject_hash: sha256:84f5575ca2f6bd76d9a10c6c1613eee61228048583fc00ea5075e6063a6a63d7
+  policy: &id003
+    id: sos-task-subject/v1
+    policy_inputs:
+    - kind: design_constraint
+      source_path: openspec/changes/archive/2026-10-31-reorder-agent-introduction/design.md
+      source_anchor: <whole-file>
+      canonicalization: sos-policy-input/v1
+      sha256: b374b0c125b43b80ed059080bc4ac64f90382ff61925fd736490ead09fa7fa3d
+    - kind: spec_requirement
+      source_path: openspec/changes/archive/2026-10-31-reorder-agent-introduction/specs/teaching/spec.md
+      source_anchor: '### Requirement: REQ-TEACH-012 — 前導章依學習前置條件排序'
+      canonicalization: sos-policy-input/v1
+      sha256: a0907d100ee7d74d58a89b62db0952a2a3332761323a0a4b1c0f37acb2245034
+    - kind: spec_requirement
+      source_path: openspec/changes/archive/2026-10-31-reorder-agent-introduction/specs/teaching/spec.md
+      source_anchor: '### Requirement: REQ-TEACH-013 — 前導章重排內容與連結相容'
+      canonicalization: sos-policy-input/v1
+      sha256: 7fb4fe480ed4385f5f28313edfb36a49d9f8cd80d44a8f1bfc2ef343cb71a0ef
+    - kind: task_contract
+      source_path: openspec/changes/archive/2026-10-31-reorder-agent-introduction/tasks.md
+      source_anchor: '### Task 1: 重排與銜接完整教材'
+      canonicalization: sos-task-contract/v1
+      sha256: 036de27e3e3ce04f7d5f22adbd9b2109d5e0f680983cc31dcd471069f1ffd4ff
+    - kind: verification_policy
+      source_path: openspec/changes/archive/2026-10-31-reorder-agent-introduction/validation/sos-verify-policy.md
+      source_anchor: <whole-file>
+      canonicalization: sos-policy-input/v1
+      sha256: fe61207e4143f25d43ca908363659e67acb618591f0ca7fbf4054bcc424c413b
+    policy_hash: sha256:71efaa1f6eea7062354a88c6459f7ac99e1b3474ee4e6bd8a03c0d8340cfbcdb
+    paths_source: task Files plus linked course dependencies and validation tools
+    path_normalization: repo-relative POSIX
+    directory_expansion: recursive
+    sort: bytewise LC_ALL=C
+    regular_file_digest: SHA-256 of raw bytes
+    symlink_digest: SHA-256 of raw link-target bytes
+    listing_format: <sha256>  <path>\n
+    subject_digest: SHA-256 of canonical listing bytes
+    exclusions:
+    - tasks.md
+    - evidence-manifest.yaml
+    - review-report.md
+    - generated-evidence-payloads
+    invalidates_on:
+    - constituent_path_or_digest_change
+    - command_change
+    - incompatible_tool_version_change
+    - policy_change
+    - evidence_payload_digest_change
+    ttl: null
+  result: pass
+  evidence_path: openspec/changes/archive/2026-10-31-reorder-agent-introduction/evidence/task-1-final-2.json
+  evidence_sha256: sha256:6d9d36de913a5a37567c8ec8c2c346ef9433318e6c23b3bd95d8219e5493688c
+  captured_at: '2026-10-31T14:40:58.901359+00:00'
+  summary: Reading-order, content, paired rendering and all legacy topic mappings
+    verified.
+  command: python3 openspec/changes/archive/2026-10-31-reorder-agent-introduction/validation/capture_evidence.py
+  tool:
+    name: Python
+    version: 3.13.7
+    version_compatibility: same-major
+- id: task-1.representative
+  task_id: task-1
+  requirement_ids: *id001
+  kind: representative
+  subject: *id002
+  policy: *id003
+  result: pass
+  evidence_path: openspec/changes/archive/2026-10-31-reorder-agent-introduction/evidence/task-1-final-2.json
+  evidence_sha256: sha256:6d9d36de913a5a37567c8ec8c2c346ef9433318e6c23b3bd95d8219e5493688c
+  captured_at: '2026-10-31T14:40:58.901359+00:00'
+  summary: Reading-order, content, paired rendering and all legacy topic mappings
+    verified.
+  actor:
+    type: AI
+    id: independent-reviewers-and-parent
+  procedure: 'Review original/new content mapping and Windows/macOS reading paths;
+    inspect representative desktop/mobile screenshots. For high-risk: navigate every
+    legacy topic fragment with JS disabled and compare destination position with mapped
+    semantic heading; verify missing/duplicate/misplaced alias controls fail.'
+- id: task-2.automated
+  task_id: task-2
+  requirement_ids: &id004
+  - REQ-TEACH-012
+  - REQ-TEACH-013
+  kind: automated
+  subject: *id002
+  policy: &id005
+    id: sos-task-subject/v1
+    policy_inputs:
+    - kind: design_constraint
+      source_path: openspec/changes/archive/2026-10-31-reorder-agent-introduction/design.md
+      source_anchor: <whole-file>
+      canonicalization: sos-policy-input/v1
+      sha256: b374b0c125b43b80ed059080bc4ac64f90382ff61925fd736490ead09fa7fa3d
+    - kind: spec_requirement
+      source_path: openspec/changes/archive/2026-10-31-reorder-agent-introduction/specs/teaching/spec.md
+      source_anchor: '### Requirement: REQ-TEACH-012 — 前導章依學習前置條件排序'
+      canonicalization: sos-policy-input/v1
+      sha256: a0907d100ee7d74d58a89b62db0952a2a3332761323a0a4b1c0f37acb2245034
+    - kind: spec_requirement
+      source_path: openspec/changes/archive/2026-10-31-reorder-agent-introduction/specs/teaching/spec.md
+      source_anchor: '### Requirement: REQ-TEACH-013 — 前導章重排內容與連結相容'
+      canonicalization: sos-policy-input/v1
+      sha256: 7fb4fe480ed4385f5f28313edfb36a49d9f8cd80d44a8f1bfc2ef343cb71a0ef
+    - kind: task_contract
+      source_path: openspec/changes/archive/2026-10-31-reorder-agent-introduction/tasks.md
+      source_anchor: '### Task 2: 驗證重排與舊錨點相容'
+      canonicalization: sos-task-contract/v1
+      sha256: c27200b54529c200c1e904278ec7740fc57294f590c245ecb672361d013f6446
+    - kind: verification_policy
+      source_path: openspec/changes/archive/2026-10-31-reorder-agent-introduction/validation/sos-verify-policy.md
+      source_anchor: <whole-file>
+      canonicalization: sos-policy-input/v1
+      sha256: fe61207e4143f25d43ca908363659e67acb618591f0ca7fbf4054bcc424c413b
+    policy_hash: sha256:30d043de65d42ba59915845596fd1410d68c71951c959c73fcbeb453e887774a
+    paths_source: task Files plus linked course dependencies and validation tools
+    path_normalization: repo-relative POSIX
+    directory_expansion: recursive
+    sort: bytewise LC_ALL=C
+    regular_file_digest: SHA-256 of raw bytes
+    symlink_digest: SHA-256 of raw link-target bytes
+    listing_format: <sha256>  <path>\n
+    subject_digest: SHA-256 of canonical listing bytes
+    exclusions:
+    - tasks.md
+    - evidence-manifest.yaml
+    - review-report.md
+    - generated-evidence-payloads
+    invalidates_on:
+    - constituent_path_or_digest_change
+    - command_change
+    - incompatible_tool_version_change
+    - policy_change
+    - evidence_payload_digest_change
+    ttl: null
+  result: pass
+  evidence_path: openspec/changes/archive/2026-10-31-reorder-agent-introduction/evidence/task-2-final-2.json
+  evidence_sha256: sha256:451fe05efab7a99a8e68ed04107f33b658640e8d36c0730a0cb292b4f17069d3
+  captured_at: '2026-10-31T14:40:58.901359+00:00'
+  summary: Reading-order, content, paired rendering and all legacy topic mappings
+    verified.
+  command: python3 openspec/changes/archive/2026-10-31-reorder-agent-introduction/validation/capture_evidence.py
+  tool:
+    name: Python
+    version: 3.13.7
+    version_compatibility: same-major
+- id: task-2.representative
+  task_id: task-2
+  requirement_ids: *id004
+  kind: representative
+  subject: *id002
+  policy: *id005
+  result: pass
+  evidence_path: openspec/changes/archive/2026-10-31-reorder-agent-introduction/evidence/task-2-final-2.json
+  evidence_sha256: sha256:451fe05efab7a99a8e68ed04107f33b658640e8d36c0730a0cb292b4f17069d3
+  captured_at: '2026-10-31T14:40:58.901359+00:00'
+  summary: Reading-order, content, paired rendering and all legacy topic mappings
+    verified.
+  actor:
+    type: AI
+    id: independent-reviewers-and-parent
+  procedure: 'Review original/new content mapping and Windows/macOS reading paths;
+    inspect representative desktop/mobile screenshots. For high-risk: navigate every
+    legacy topic fragment with JS disabled and compare destination position with mapped
+    semantic heading; verify missing/duplicate/misplaced alias controls fail.'
+- id: task-2.high-risk
+  task_id: task-2
+  requirement_ids: *id004
+  kind: high-risk
+  subject: *id002
+  policy: *id005
+  result: pass
+  evidence_path: openspec/changes/archive/2026-10-31-reorder-agent-introduction/evidence/browser-intro-2.json
+  evidence_sha256: sha256:6046a79f251472956a65f402975e406a3f596f0ecc240dfc8d335efbc78bcc46
+  captured_at: '2026-10-31T14:40:58.901359+00:00'
+  summary: Reading-order, content, paired rendering and all legacy topic mappings
+    verified.
+  actor:
+    type: AI
+    id: independent-reviewers-and-parent
+  procedure: 'Review original/new content mapping and Windows/macOS reading paths;
+    inspect representative desktop/mobile screenshots. For high-risk: navigate every
+    legacy topic fragment with JS disabled and compare destination position with mapped
+    semantic heading; verify missing/duplicate/misplaced alias controls fail.'
+  command: python3 openspec/changes/archive/2026-10-31-reorder-agent-introduction/validation/browser_intro.py
+  tool:
+    name: Python + Playwright + Chrome
+    version: 3.13.7 / 1.57.0
+    version_compatibility: same-major
+manual_gaps: []

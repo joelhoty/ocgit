@@ -1,0 +1,656 @@
+[
+  {
+    "old_heading": "前導章：讓 AI Agent 成為個人工作與學習助理",
+    "old_text": "前導章：讓 AI Agent 成為個人工作與學習助理",
+    "old_id": "ai-agent",
+    "new_id": "intro"
+  },
+  {
+    "old_heading": "0. 使用方式與學習目標",
+    "old_text": "0. 使用方式與學習目標",
+    "old_id": "0",
+    "new_id": "learning-route"
+  },
+  {
+    "old_heading": "0.1 完成後能做到什麼",
+    "old_text": "0.1 完成後能做到什麼",
+    "old_id": "01",
+    "new_id": "learning-outcomes"
+  },
+  {
+    "old_heading": "0.2 課程安排與交付物",
+    "old_text": "0.2 課程安排與交付物",
+    "old_id": "02",
+    "new_id": "course-plan"
+  },
+  {
+    "old_heading": "0.3 指令閱讀約定",
+    "old_text": "0.3 指令閱讀約定",
+    "old_id": "03",
+    "new_id": "input-conventions"
+  },
+  {
+    "old_heading": "1. 為什麼需要一個 AI 工作環境（Why）",
+    "old_text": "1. 為什麼需要一個 AI 工作環境（Why）",
+    "old_id": "1-ai-why",
+    "new_id": "agent-basics"
+  },
+  {
+    "old_heading": "1.1 從問答到完成任務",
+    "old_text": "1.1 從問答到完成任務",
+    "old_id": "11",
+    "new_id": "from-chat-to-work"
+  },
+  {
+    "old_heading": "1.2 環境建置解決的四個問題",
+    "old_text": "1.2 環境建置解決的四個問題",
+    "old_id": "12",
+    "new_id": "environment-purpose"
+  },
+  {
+    "old_heading": "2. LLM 與 Agent 的六層關係（What）",
+    "old_text": "2. LLM 與 Agent 的六層關係（What）",
+    "old_id": "2-llm-agent-what",
+    "new_id": "agent-basics"
+  },
+  {
+    "old_heading": "2.1 引用的分層圖",
+    "old_text": "2.1 引用的分層圖",
+    "old_id": "21",
+    "new_id": "agent-layer-diagram"
+  },
+  {
+    "old_heading": "2.2 各層如何對應本課任務",
+    "old_text": "2.2 各層如何對應本課任務",
+    "old_id": "22",
+    "new_id": "layers-in-practice"
+  },
+  {
+    "old_heading": "2.3 模型、CLI 與執行環境有何不同",
+    "old_text": "2.3 模型、CLI 與執行環境有何不同",
+    "old_id": "23-cli",
+    "new_id": "model-cli-environment"
+  },
+  {
+    "old_heading": "2.4 Prompt、Context、Tools、Skills 與 MCP",
+    "old_text": "2.4 Prompt、Context、Tools、Skills 與 MCP",
+    "old_id": "24-promptcontexttoolsskills-mcp",
+    "new_id": "context-tools-skills"
+  },
+  {
+    "old_heading": "2.5 軟限制與硬限制",
+    "old_text": "2.5 軟限制與硬限制",
+    "old_id": "25",
+    "new_id": "guidance-and-permissions"
+  },
+  {
+    "old_heading": "2.6 Agent 迴圈：圖中的各層如何合作",
+    "old_text": "2.6 Agent 迴圈：圖中的各層如何合作",
+    "old_id": "26-agent",
+    "new_id": "agent-loop"
+  },
+  {
+    "old_heading": "2.7 Workflow 與 Agent：誰決定下一步",
+    "old_text": "2.7 Workflow 與 Agent：誰決定下一步",
+    "old_id": "27-workflow-agent",
+    "new_id": "workflow-and-agent"
+  },
+  {
+    "old_heading": "3. 工具地圖與安裝需求",
+    "old_text": "3. 工具地圖與安裝需求",
+    "old_id": "3",
+    "new_id": "minimal-environment"
+  },
+  {
+    "old_heading": "3.1 每個工具負責什麼",
+    "old_text": "3.1 每個工具負責什麼",
+    "old_id": "31",
+    "new_id": "tool-roles"
+  },
+  {
+    "old_heading": "3.2 CLI 還需要 Node.js 嗎？",
+    "old_text": "3.2 CLI 還需要 Node.js 嗎？",
+    "old_id": "32-cli-nodejs",
+    "new_id": "appendix-installation"
+  },
+  {
+    "old_heading": "3.2.1 四種安裝方式比較",
+    "old_text": "3.2.1 四種安裝方式比較",
+    "old_id": "321",
+    "new_id": "installation-methods"
+  },
+  {
+    "old_heading": "3.2.2 建議與結論",
+    "old_text": "3.2.2 建議與結論",
+    "old_id": "322",
+    "new_id": "installation-decisions"
+  },
+  {
+    "old_heading": "3.2.3 先分清楚四種檔案與工具",
+    "old_text": "3.2.3 先分清楚四種檔案與工具",
+    "old_id": "323",
+    "new_id": "binary-script-manager"
+  },
+  {
+    "old_heading": "3.2.4 「原生版」「standalone」「npm 版」指的是什麼",
+    "old_text": "3.2.4 「原生版」「standalone」「npm 版」指的是什麼",
+    "old_id": "324-standalonenpm",
+    "new_id": "distribution-terms"
+  },
+  {
+    "old_heading": "3.2.5 安裝時、執行時、任務時：三個時間點各需要什麼",
+    "old_text": "3.2.5 安裝時、執行時、任務時：三個時間點各需要什麼",
+    "old_id": "325",
+    "new_id": "dependency-stages"
+  },
+  {
+    "old_heading": "3.2.6 三款 CLI 逐一對照",
+    "old_text": "3.2.6 三款 CLI 逐一對照",
+    "old_id": "326-cli",
+    "new_id": "cli-dependency-comparison"
+  },
+  {
+    "old_heading": "3.2.7 CLI 改用 Rust 撰寫，就不需要 Node.js 了嗎？",
+    "old_text": "3.2.7 CLI 改用 Rust 撰寫，就不需要 Node.js 了嗎？",
+    "old_id": "327-cli-rust-nodejs",
+    "new_id": "implementation-language"
+  },
+  {
+    "old_heading": "3.2.8 官方安裝指令一覽",
+    "old_text": "3.2.8 官方安裝指令一覽",
+    "old_id": "328",
+    "new_id": "alternative-installation"
+  },
+  {
+    "old_heading": "3.3 選讀比較：Antigravity CLI（agy）",
+    "old_text": "3.3 選讀比較：Antigravity CLI（agy）",
+    "old_id": "33-antigravity-cliagy",
+    "new_id": "antigravity-overview"
+  },
+  {
+    "old_heading": "3.4 作業系統、帳號與資源",
+    "old_text": "3.4 作業系統、帳號與資源",
+    "old_id": "34",
+    "new_id": "platform-account-requirements"
+  },
+  {
+    "old_heading": "4. Windows 基礎環境安裝（How）",
+    "old_text": "4. Windows 基礎環境安裝（How）",
+    "old_id": "4-windows-how",
+    "new_id": "workspace-setup"
+  },
+  {
+    "old_heading": "4.1 安裝順序",
+    "old_text": "4.1 安裝順序",
+    "old_id": "41",
+    "new_id": "setup-order"
+  },
+  {
+    "old_heading": "4.2 安裝 VS Code",
+    "old_text": "4.2 安裝 VS Code",
+    "old_id": "42-vs-code",
+    "new_id": "windows-vscode"
+  },
+  {
+    "old_heading": "4.3 安裝 PowerShell 7",
+    "old_text": "4.3 安裝 PowerShell 7",
+    "old_id": "43-powershell-7",
+    "new_id": "windows-powershell"
+  },
+  {
+    "old_heading": "4.4 安裝 Git",
+    "old_text": "4.4 安裝 Git",
+    "old_id": "44-git",
+    "new_id": "windows-git"
+  },
+  {
+    "old_heading": "4.5 先學會五個終端機操作",
+    "old_text": "4.5 先學會五個終端機操作",
+    "old_id": "45",
+    "new_id": "terminal-basics"
+  },
+  {
+    "old_heading": "5. 安裝並啟動一款 Agent CLI",
+    "old_text": "5. 安裝並啟動一款 Agent CLI",
+    "old_id": "5-agent-cli",
+    "new_id": "cli-installation"
+  },
+  {
+    "old_heading": "5.1 選擇路線",
+    "old_text": "5.1 選擇路線",
+    "old_id": "51",
+    "new_id": "installation-choice"
+  },
+  {
+    "old_heading": "5.2 路線 A：Claude Code",
+    "old_text": "5.2 路線 A：Claude Code",
+    "old_id": "52-aclaude-code",
+    "new_id": "install-claude"
+  },
+  {
+    "old_heading": "5.3 路線 B：Codex CLI",
+    "old_text": "5.3 路線 B：Codex CLI",
+    "old_id": "53-bcodex-cli",
+    "new_id": "install-codex"
+  },
+  {
+    "old_heading": "5.4 選讀路線 C：Antigravity CLI",
+    "old_text": "5.4 選讀路線 C：Antigravity CLI",
+    "old_id": "54-cantigravity-cli",
+    "new_id": "install-antigravity"
+  },
+  {
+    "old_heading": "5.5 選讀：舊 gemini 指令遷移到 agy",
+    "old_text": "5.5 選讀：舊 gemini 指令遷移到 agy",
+    "old_id": "55-gemini-agy",
+    "new_id": "gemini-migration"
+  },
+  {
+    "old_heading": "5.6 第一次對話的共同驗證",
+    "old_text": "5.6 第一次對話的共同驗證",
+    "old_id": "56",
+    "new_id": "verify-first-session"
+  },
+  {
+    "old_heading": "5.7 記錄安裝方式與更新方式",
+    "old_text": "5.7 記錄安裝方式與更新方式",
+    "old_id": "57",
+    "new_id": "update-uninstall"
+  },
+  {
+    "old_heading": "5.8 盤點既有安裝：這台電腦的 CLI 從哪裡來？",
+    "old_text": "5.8 盤點既有安裝：這台電腦的 CLI 從哪裡來？",
+    "old_id": "58-cli",
+    "new_id": "installation-inventory"
+  },
+  {
+    "old_heading": "5.9 啟動後，以自然語言完成任務",
+    "old_text": "5.9 啟動後，以自然語言完成任務",
+    "old_id": "59",
+    "new_id": "read-followup-save"
+  },
+  {
+    "old_heading": "5.10 常用會話內指令速查",
+    "old_text": "5.10 常用會話內指令速查",
+    "old_id": "510",
+    "new_id": "slash-commands"
+  },
+  {
+    "old_heading": "5.11 進階操作：管理 session、context 與用量",
+    "old_text": "5.11 進階操作：管理 session、context 與用量",
+    "old_id": "511-sessioncontext",
+    "new_id": "session-context-usage"
+  },
+  {
+    "old_heading": "6. 用資料夾與 Git 管理專案",
+    "old_text": "6. 用資料夾與 Git 管理專案",
+    "old_id": "6-git",
+    "new_id": "workspace-setup"
+  },
+  {
+    "old_heading": "6.1 建立一致的專案結構",
+    "old_text": "6.1 建立一致的專案結構",
+    "old_id": "61",
+    "new_id": "project-folders"
+  },
+  {
+    "old_heading": "6.2 撰寫 README",
+    "old_text": "6.2 撰寫 README",
+    "old_id": "62-readme",
+    "new_id": "project-readme"
+  },
+  {
+    "old_heading": "6.3 設定 `.gitignore`",
+    "old_text": "6.3 設定 .gitignore",
+    "old_id": "63-gitignore",
+    "new_id": "gitignore"
+  },
+  {
+    "old_heading": "6.4 建立第一次 commit",
+    "old_text": "6.4 建立第一次 commit",
+    "old_id": "64-commit",
+    "new_id": "first-checkpoint"
+  },
+  {
+    "old_heading": "6.5 理解三個位置",
+    "old_text": "6.5 理解三個位置",
+    "old_id": "65",
+    "new_id": "git-states"
+  },
+  {
+    "old_heading": "6.6 撤回與回復的練習",
+    "old_text": "6.6 撤回與回復的練習",
+    "old_id": "66",
+    "new_id": "git-recovery"
+  },
+  {
+    "old_heading": "6.7 Git、版本後綴與備份的分工",
+    "old_text": "6.7 Git、版本後綴與備份的分工",
+    "old_id": "67-git",
+    "new_id": "versions-and-backups"
+  },
+  {
+    "old_heading": "7. AGENTS.md 與第一個 AI 學習任務",
+    "old_text": "7. AGENTS.md 與第一個 AI 學習任務",
+    "old_id": "7-agentsmd-ai",
+    "new_id": "first-task"
+  },
+  {
+    "old_heading": "7.1 專案規則要能直接執行",
+    "old_text": "7.1 專案規則要能直接執行",
+    "old_id": "71",
+    "new_id": "project-instructions"
+  },
+  {
+    "old_heading": "7.2 各工具是否會讀取 AGENTS.md",
+    "old_text": "7.2 各工具是否會讀取 AGENTS.md",
+    "old_id": "72-agentsmd",
+    "new_id": "instruction-loading"
+  },
+  {
+    "old_heading": "7.3 確認規則真的生效",
+    "old_text": "7.3 確認規則真的生效",
+    "old_id": "73",
+    "new_id": "verify-instructions"
+  },
+  {
+    "old_heading": "7.4 準備來源筆記",
+    "old_text": "7.4 準備來源筆記",
+    "old_id": "74",
+    "new_id": "source-notes"
+  },
+  {
+    "old_heading": "7.5 第一個完整提示",
+    "old_text": "7.5 第一個完整提示",
+    "old_id": "75",
+    "new_id": "complete-review"
+  },
+  {
+    "old_heading": "7.6 驗收，而不是只接受「完成了」",
+    "old_text": "7.6 驗收，而不是只接受「完成了」",
+    "old_id": "76",
+    "new_id": "verify-deliverables"
+  },
+  {
+    "old_heading": "8. Python 與 uv：建立可重現的執行環境",
+    "old_text": "8. Python 與 uv：建立可重現的執行環境",
+    "old_id": "8-python-uv",
+    "new_id": "python-practice"
+  },
+  {
+    "old_heading": "8.1 四個概念先分清楚",
+    "old_text": "8.1 四個概念先分清楚",
+    "old_id": "81",
+    "new_id": "python-environment-concepts"
+  },
+  {
+    "old_heading": "8.2 安裝 uv，再由 uv 管理 Python",
+    "old_text": "8.2 安裝 uv，再由 uv 管理 Python",
+    "old_id": "82-uv-uv-python",
+    "new_id": "install-python-uv"
+  },
+  {
+    "old_heading": "8.3 在既有專案加入 Python 設定",
+    "old_text": "8.3 在既有專案加入 Python 設定",
+    "old_id": "83-python",
+    "new_id": "initialize-python"
+  },
+  {
+    "old_heading": "8.4 哪些檔案應該保存",
+    "old_text": "8.4 哪些檔案應該保存",
+    "old_id": "84",
+    "new_id": "python-project-files"
+  },
+  {
+    "old_heading": "8.5 安裝與移除套件",
+    "old_text": "8.5 安裝與移除套件",
+    "old_id": "85",
+    "new_id": "python-packages"
+  },
+  {
+    "old_heading": "8.6 是否需要手動 activate",
+    "old_text": "8.6 是否需要手動 activate",
+    "old_id": "86-activate",
+    "new_id": "python-activation"
+  },
+  {
+    "old_heading": "9. 可執行實作：學習時間統計",
+    "old_text": "9. 可執行實作：學習時間統計",
+    "old_id": "9",
+    "new_id": "python-practice"
+  },
+  {
+    "old_heading": "9.1 Node.js 的選修安裝",
+    "old_text": "9.1 Node.js 的選修安裝",
+    "old_id": "91-nodejs",
+    "new_id": "node-installation"
+  },
+  {
+    "old_heading": "9.2 在 VS Code 選對 Python",
+    "old_text": "9.2 在 VS Code 選對 Python",
+    "old_id": "92-vs-code-python",
+    "new_id": "select-python-interpreter"
+  },
+  {
+    "old_heading": "9.3 準備資料",
+    "old_text": "9.3 準備資料",
+    "old_id": "93",
+    "new_id": "study-data"
+  },
+  {
+    "old_heading": "9.4 先讀偽代碼",
+    "old_text": "9.4 先讀偽代碼",
+    "old_id": "94",
+    "new_id": "study-pseudocode"
+  },
+  {
+    "old_heading": "9.5 完整程式",
+    "old_text": "9.5 完整程式",
+    "old_id": "95",
+    "new_id": "study-program"
+  },
+  {
+    "old_heading": "9.6 執行與核對",
+    "old_text": "9.6 執行與核對",
+    "old_id": "96",
+    "new_id": "run-study-report"
+  },
+  {
+    "old_heading": "9.7 用除錯器理解執行過程",
+    "old_text": "9.7 用除錯器理解執行過程",
+    "old_id": "97",
+    "new_id": "debug-study-program"
+  },
+  {
+    "old_heading": "9.8 讓 AI 做一個有邊界的修改",
+    "old_text": "9.8 讓 AI 做一個有邊界的修改",
+    "old_id": "98-ai",
+    "new_id": "agent-bounded-change"
+  },
+  {
+    "old_heading": "10. macOS 操作差異",
+    "old_text": "10. macOS 操作差異",
+    "old_id": "10-macos",
+    "new_id": "workspace-setup"
+  },
+  {
+    "old_heading": "10.1 不必為了本課改用 PowerShell",
+    "old_text": "10.1 不必為了本課改用 PowerShell",
+    "old_id": "101-powershell",
+    "new_id": "terminal-basics"
+  },
+  {
+    "old_heading": "10.2 最小安裝步驟",
+    "old_text": "10.2 最小安裝步驟",
+    "old_id": "102",
+    "new_id": "macos-setup"
+  },
+  {
+    "old_heading": "10.3 Python 路線",
+    "old_text": "10.3 Python 路線",
+    "old_id": "103-python",
+    "new_id": "install-python-uv"
+  },
+  {
+    "old_heading": "11. 常見問題與解決方案（Q&A）",
+    "old_text": "11. 常見問題與解決方案（Q&A）",
+    "old_id": "11-qa",
+    "new_id": "reliable-work"
+  },
+  {
+    "old_heading": "11.1 先判斷錯誤在哪一層",
+    "old_text": "11.1 先判斷錯誤在哪一層",
+    "old_id": "111",
+    "new_id": "diagnose-layer"
+  },
+  {
+    "old_heading": "11.2 問題對照表",
+    "old_text": "11.2 問題對照表",
+    "old_id": "112",
+    "new_id": "troubleshooting-table"
+  },
+  {
+    "old_heading": "11.3 能直接貼給 AI 的除錯格式",
+    "old_text": "11.3 能直接貼給 AI 的除錯格式",
+    "old_id": "113-ai",
+    "new_id": "debugging-prompt"
+  },
+  {
+    "old_heading": "11.4 費用與額度怎麼看",
+    "old_text": "11.4 費用與額度怎麼看",
+    "old_id": "114",
+    "new_id": "cost-and-quota"
+  },
+  {
+    "old_heading": "12. 實作練習與評量（Practice）",
+    "old_text": "12. 實作練習與評量（Practice）",
+    "old_id": "12-practice",
+    "new_id": "practice-summary"
+  },
+  {
+    "old_heading": "12.1 練習 A：把任務放回六層模型",
+    "old_text": "12.1 練習 A：把任務放回六層模型",
+    "old_id": "121-a",
+    "new_id": "exercise-layers"
+  },
+  {
+    "old_heading": "12.2 練習 B：最小可用環境",
+    "old_text": "12.2 練習 B：最小可用環境",
+    "old_id": "122-b",
+    "new_id": "exercise-minimal-setup"
+  },
+  {
+    "old_heading": "12.3 練習 C：資料錯誤能否被發現",
+    "old_text": "12.3 練習 C：資料錯誤能否被發現",
+    "old_id": "123-c",
+    "new_id": "exercise-data-errors"
+  },
+  {
+    "old_heading": "12.4 綜合任務：一週學習助理",
+    "old_text": "12.4 綜合任務：一週學習助理",
+    "old_id": "124",
+    "new_id": "weekly-assistant"
+  },
+  {
+    "old_heading": "12.5 評分規準",
+    "old_text": "12.5 評分規準",
+    "old_id": "125",
+    "new_id": "assessment-rubric"
+  },
+  {
+    "old_heading": "13. 學習總結（Summary）",
+    "old_text": "13. 學習總結（Summary）",
+    "old_id": "13-summary",
+    "new_id": "practice-summary"
+  },
+  {
+    "old_heading": "13.1 應獲得的知識",
+    "old_text": "13.1 應獲得的知識",
+    "old_id": "131",
+    "new_id": "knowledge-summary"
+  },
+  {
+    "old_heading": "13.2 應獲得的技能",
+    "old_text": "13.2 應獲得的技能",
+    "old_id": "132",
+    "new_id": "skills-checklist"
+  },
+  {
+    "old_heading": "13.3 每次工作的收尾清單",
+    "old_text": "13.3 每次工作的收尾清單",
+    "old_id": "133",
+    "new_id": "work-closeout"
+  },
+  {
+    "old_heading": "14. 延伸問題與應用（Extension & Application）",
+    "old_text": "14. 延伸問題與應用（Extension & Application）",
+    "old_id": "14-extension-application",
+    "new_id": "practice-summary"
+  },
+  {
+    "old_heading": "14.1 反思性問題",
+    "old_text": "14.1 反思性問題",
+    "old_id": "141",
+    "new_id": "reflection-questions"
+  },
+  {
+    "old_heading": "14.2 真實應用情境",
+    "old_text": "14.2 真實應用情境",
+    "old_id": "142",
+    "new_id": "application-scenarios"
+  },
+  {
+    "old_heading": "14.3 跨領域連結",
+    "old_text": "14.3 跨領域連結",
+    "old_id": "143",
+    "new_id": "cross-disciplinary"
+  },
+  {
+    "old_heading": "14.4 進階探索",
+    "old_text": "14.4 進階探索",
+    "old_id": "144",
+    "new_id": "further-exploration"
+  },
+  {
+    "old_heading": "15. 官方文件與維護方式",
+    "old_text": "15. 官方文件與維護方式",
+    "old_id": "15",
+    "new_id": "appendix-history"
+  },
+  {
+    "old_heading": "15.1 主要來源索引",
+    "old_text": "15.1 主要來源索引",
+    "old_id": "151",
+    "new_id": "official-sources"
+  },
+  {
+    "old_heading": "15.2 授課前重新確認",
+    "old_text": "15.2 授課前重新確認",
+    "old_id": "152",
+    "new_id": "teaching-maintenance"
+  },
+  {
+    "old_heading": "15.3 版本記錄",
+    "old_text": "15.3 版本記錄",
+    "old_id": "153",
+    "new_id": "version-history"
+  },
+  {
+    "old_heading": "15.4 原 b05 歷史驗證紀錄與本次限制",
+    "old_text": "15.4 原 b05 歷史驗證紀錄與本次限制",
+    "old_id": "154-b05",
+    "new_id": "historical-verification"
+  },
+  {
+    "old_heading": "Jev 合規檢查紀錄（原稿歷史紀錄）",
+    "old_text": "Jev 合規檢查紀錄（原稿歷史紀錄）",
+    "old_id": "jev",
+    "new_id": "historical-jev-compliance"
+  },
+  {
+    "old_heading": "Jev 圖表選型檢查紀錄（原稿歷史紀錄）",
+    "old_text": "Jev 圖表選型檢查紀錄（原稿歷史紀錄）",
+    "old_id": "jev_1",
+    "new_id": "historical-jev-diagrams"
+  }
+]

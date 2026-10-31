@@ -1,0 +1,9 @@
+{
+  "status": "FAIL",
+  "legacy_ids": 0,
+  "errors": [
+    "main/appendix reading order mismatch",
+    "missing or extra old ID mappings"
+  ],
+  "negative_controls": {}
+}
