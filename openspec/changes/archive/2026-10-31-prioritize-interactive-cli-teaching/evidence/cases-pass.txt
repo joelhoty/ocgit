@@ -1,0 +1,7 @@
+Acceptance: no command-plus-prompt recommendations; case/topic and output coverage preserved.
+04_workspace: PASS: no command-plus-prompt occurrences; 18 natural-language blocks; 14 source/output case anchors retained; original diagrams retained except intended interactive workflow/terminology update.
+sha256 25b5cd6ee8d0bbb6e3d0aa6e5fac5746ec59e22c54026c0df978e507e2ef17bd  AI_Agent_CLi/04_workspace.md
+04a_workflows: PASS: no command-plus-prompt occurrences; 21 natural-language blocks; 18 source/output case anchors retained; original diagrams retained except intended interactive workflow/terminology update.
+sha256 a5b098378b75ce574c0e8c6e823b26192ef99cc68918876f9ef91a1c8e33fe0e  AI_Agent_CLi/04a_workflows.md
+Manual self-review: retained mathematics/science/history/writing/English/reflection/differentiation examples; retained six-stage course workflow and exact output names; batch and weekly-report work uses dialogue planning, script review, execution and validation; context management links to intro.
+HTML rendering and cross-course independent reviews are assigned to parent; no real CLI model task executed.

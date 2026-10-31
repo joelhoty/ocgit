@@ -1,0 +1,8 @@
+Adapted GREEN: REQ-TEACH-009/010/011 assigned Markdown portion.
+AI_Agent_CLi/06_lesson_plans.md: PASS; no CLI-with-prompt examples; intro and instructions links present; sha256:eb540e473780e1f788005c2835f55e25b3539365a5834ec9f304bbf9e4cb76e2
+JSON fenced samples parse: PASS
+AI_Agent_CLi/06a_assessment.md: PASS; no CLI-with-prompt examples; intro and instructions links present; sha256:3ff7e25019fdb409399d67ca66b9bcf26112dc769028c547b50bf6525571a25a
+JSON fenced samples parse: PASS
+Preserved assessment output paths and independent recomputation targets: PASS
+Manual self-review: all five assessment cases retained; batch script now planned, reviewed, trial-run, validated and reported in the same conversation; actual Pandoc commands retained only as explained tool-reference examples. HTML rendering and independent review delegated to parent.
+git diff --check assigned files: PASS

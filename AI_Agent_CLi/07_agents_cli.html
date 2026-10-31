@@ -213,68 +213,72 @@ codex
 <p>第一次啟動依提示完成瀏覽器登入。需要重新登入時，在 shell 用 <code>codex login</code> 或 <code>claude auth login</code>；不要使用舊教材中的 <code>config set api_key</code>。成功判準：能看見正確專案目錄並完成一個讀檔任務。版本號印出僅代表指令可執行，不代表帳號已授權。</p>
 <h3 id="3">3. 基本用法</h3>
 <h4 id="a-prompt">a) 直接提問（Prompt）</h4>
-<p>指定輸入、輸出與驗收：「讀 README.md，列出三個重點，每點註明來源章節，不修改檔案」。下表區分互動與非互動模式。</p>
+<p>先在專案終端機輸入 <code>codex</code> 或 <code>claude</code>。進入會話後，在對話輸入區貼上自然語言任務；後續追問維持同一會話。</p>
+<pre><code class="language-text">閱讀 README.md，列出三個重點，每點註明來源章節。先不要修改檔案。
+</code></pre>
+<p>核對回答後再說：</p>
+<pre><code class="language-text">把剛才的摘要改成適合初學者的版本，保留來源，並列出兩個自我檢核問題。
+</code></pre>
 <table>
 <thead>
 <tr>
-<th>工作</th>
-<th>Codex CLI（shell）</th>
-<th>Claude Code（shell）</th>
+<th>會話操作</th>
+<th>Codex CLI</th>
+<th>Claude Code</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>互動對話</td>
-<td><code>codex</code></td>
-<td><code>claude</code></td>
+<td>選模型</td>
+<td><code>/model</code></td>
+<td><code>/model</code></td>
 </tr>
 <tr>
-<td>帶入起始任務並互動</td>
-<td><code>codex "說明這個專案"</code></td>
-<td><code>claude "說明這個專案"</code></td>
+<td>查狀態與用量</td>
+<td><code>/status</code></td>
+<td><code>/status</code>、<code>/usage</code></td>
 </tr>
 <tr>
-<td>單次完成後離開</td>
-<td><code>codex exec "摘要 README.md"</code></td>
-<td><code>claude -p "摘要 README.md"</code></td>
+<td>查 context</td>
+<td><code>/status</code> 與狀態列</td>
+<td><code>/context</code></td>
 </tr>
 <tr>
-<td>接續最近工作</td>
-<td><code>codex resume --last</code></td>
-<td><code>claude -c</code></td>
+<td>壓縮長對話</td>
+<td><code>/compact</code></td>
+<td><code>/compact</code></td>
 </tr>
 <tr>
-<td>選擇歷史工作</td>
-<td><code>codex resume</code></td>
-<td><code>claude -r</code></td>
+<td>接續會話</td>
+<td><code>/resume</code></td>
+<td><code>/resume</code></td>
 </tr>
 <tr>
-<td>檢查登入</td>
-<td><code>codex login status</code></td>
-<td><code>claude auth status --text</code></td>
+<td>開新任務</td>
+<td><code>/new</code></td>
+<td><code>/clear</code></td>
 </tr>
 <tr>
-<td>顯示版本／參數</td>
-<td><code>codex --version</code>／<code>codex --help</code></td>
-<td><code>claude --version</code>／<code>claude --help</code></td>
+<td>工具權限</td>
+<td><code>/permissions</code></td>
+<td><code>/permissions</code></td>
+</tr>
+<tr>
+<td>操作說明</td>
+<td><code>/</code> 選單</td>
+<td><code>/help</code>、<code>/</code> 選單</td>
 </tr>
 </tbody>
 </table>
-<p><strong>會話內命令：</strong>啟動後才輸入 <code>/model</code> 選模型、<code>/permissions</code> 檢查權限；Codex 用 <code>/status</code> 檢查會話，Claude 用 <code>/context</code> 檢查載入情境、<code>/memory</code> 管理指引。CLI 的可用模型依帳號、版本與組織設定而變，不把教材中的模型名稱視為最新保證。</p>
-<p><code>codex exec</code> 預設採唯讀沙箱；確實需要改檔時，明確指定 <code>codex exec --sandbox workspace-write "任務"</code>。先在專案執行 <code>git init</code> 建立版本追蹤；刻意在非 Git 目錄做一次性任務時才使用 <code>--skip-git-repo-check</code>。<code>claude -p</code> 受既有權限控制，不能把無人互動解讀成自動授予所有工具；初學者先用互動模式處理寫檔要求。不要將 Codex 的 <code>-p</code> 當成 Claude 的 print：Codex 的 <code>-p</code> 是設定 profile。</p>
-<p>來源：<a href="https://learn.chatgpt.com/docs/developer-commands?surface=cli">Codex 命令</a>、<a href="https://learn.chatgpt.com/docs/non-interactive-mode">非互動模式</a>、<a href="https://code.claude.com/docs/en/cli-reference">Claude CLI</a>。</p>
-<h4 id="b-chat">b) 互動式聊天（Chat）</h4>
-<p>在專案目錄啟動 <code>codex</code> 或 <code>claude</code> 後，可以先讀資料、追問、再同意修改。離開再續接時，檢查工作目錄與實際檔案是否已變動；歷史對話不一定反映當下狀態。使用 <code>codex resume --last</code> 或 <code>claude -c</code>，仍需交代新的驗收目標。</p>
-<h4 id="c-piping">c) 結合管道（Piping）與檔案</h4>
-<p>macOS／Linux／WSL 的 shell 示例：</p>
-<pre><code class="language-bash">cat script.sh | codex exec "解釋傳入腳本，不執行它"
-cat script.sh | claude -p "解釋傳入腳本，不執行它"
-</code></pre>
-<p>PowerShell 的同一用途：</p>
-<pre><code class="language-powershell">Get-Content -Raw -Encoding utf8 script.sh | codex exec "解釋傳入腳本，不執行它"
-Get-Content -Raw -Encoding utf8 script.sh | claude -p "解釋傳入腳本，不執行它"
-</code></pre>
-<p>輸出存檔可用 <code>codex exec -o summary.md "摘要 README.md"</code>；Claude 文字輸出可在 PowerShell 7 使用 <code>claude -p "摘要 README.md，只輸出 Markdown" | Set-Content -Encoding utf8 summary.md</code>。先確認目標檔不存在或可覆寫；重導向會覆寫既有檔案。文字生成的 Dockerfile 必須再檢查原始碼與執行環境，不是直接可信的部署成果。</p>
+<p>以上均在 <strong>CLI 內</strong>輸入。Codex 不套用 Claude 的 <code>/usage</code>；用量、context 容量與帳單不同。完整操作情境見<a href="00_intro.html#510">前導章：常用會話內指令</a>。模型與指令以目前版本、帳號及組織允許的選單為準。</p>
+<p>專案指引是獨立檔案：Codex 使用 <code>AGENTS.md</code>，Claude 使用 <code>CLAUDE.md</code>；相容條件見<a href="05_instructions.html">單元五</a>。文字要求不等同系統權限，開始前應檢查 <code>/permissions</code>。</p>
+<p>來源：<a href="https://learn.chatgpt.com/docs/developer-commands?surface=cli">Codex CLI 指令</a>、<a href="https://code.claude.com/docs/en/commands">Claude Code 指令</a>（2026-10-31 查核）。</p><h4 id="b-chat">b) 延續同一會話</h4><p>對話變長時先保存進度再用 <code>/compact</code>。下次用 <code>/resume</code> 選會話，確認工作目錄、進度文件與實際檔案；歷史對話不代表當下檔案狀態。</p>
+<h4 id="c-piping">c) 在對話中讀檔與保存產物</h4><p>兩款工具使用相同的自然語言任務，逐輪輸入：</p>
+<pre><code class="language-text">閱讀 script.sh，說明它的輸入、輸出、可能修改的路徑與失敗處理；先不要執行。
+</code></pre><p>確認理解後再要求保存摘要：</p>
+<pre><code class="language-text">將剛才確認的說明存成 summary.md。若檔案已存在，先說明差異。
+完成後重新讀取 summary.md，確認內容與 script.sh 相符。
+</code></pre><p>若需要批次流程，也先在對話中要求 Agent 規劃、建立並解釋腳本，檢查後再授權執行。生成的 Dockerfile 仍須核對原始碼與執行環境，不能僅以文字生成判定可部署。</p>
 <h3 id="4">4. 進階應用範例</h3>
 <h4 id="_3">範例一：程式碼生成與解釋</h4>
 <p>準備 <code>main.cpp</code>：</p>
@@ -404,7 +408,7 @@ int main() {
 <p><strong>步驟六：排錯。</strong>找不到 g++ 時先確認是否安裝工具鏈、PATH 是否正確、是否重開終端機；編譯失敗則閱讀完整錯誤與檔名行號。執行成功後，再讓 CLI 解釋實際結果，不讓 AI 猜測編譯器是否已存在。</p>
 <h2 id="_10">維護與學習驗收</h2>
 <p>原生 Codex 以重跑官方安裝命令更新；支援 self-update 的 release 也可用 <code>codex update</code>。原生 Claude 自動更新，也可依官方 <code>claude update</code>；Homebrew／WinGet／npm 安裝依相應套件管理方式更新。課前重查官方來源與版本，不以本教材日期取代當日驗證。</p>
-<p>完成後應能：辨識 CLI 與模型、選一款工具登入、正確切換互動與單次任務、建立專案指引，並用真實檔案與測試驗收一個完整任務。下一步到 <a href="index.html">課程索引</a> 選擇適合的漸進單元。</p></div>
+<p>完成後應能：辨識 CLI 與模型、選一款工具登入、在同一會話逐輪交代任務、管理 context 與用量、建立專案指引，並用真實檔案與測試驗收一個完整任務。下一步到 <a href="index.html">課程索引</a> 選擇適合的漸進單元。</p></div>
 <!-- Highlight.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
 <script>hljs.highlightAll();</script>

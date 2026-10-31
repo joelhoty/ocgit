@@ -1,0 +1,3 @@
+# Approved scope reconciliation
+
+User explicitly rejected command-plus-prompt for advanced as well as beginner material, requested session/context/token/model controls and slash commands, then approved with “ok”. During pre-archive inventory, existing REQ-TEACH-003 was found to mandate single-shot teaching. The delta now preserves its exact ID/name and removes that obsolete obligation to reflect the already-approved direction; no new teaching scope or design decision is introduced. Tasks bind this existing requirement in addition to the three new requirements. Original proposal count (three added requirements) remains true; this synchronization adds one modified requirement. Evidence is refreshed for changed policy inputs.

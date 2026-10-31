@@ -213,57 +213,66 @@ claude --version
 <p>建立 <code>cli-practice</code> 資料夾，用 VS Code 開啟。整合終端機進入該目錄後執行 <code>git init</code>，再啟動 <code>codex</code> 或 <code>claude</code>，依瀏覽器流程登入。用 <code>codex login status</code> 或 <code>claude auth status --text</code> 確認狀態；帳號方案與 API 額度分開計算，依官方帳號畫面為準。</p>
 <p><strong>第一個任務：</strong>請 AI「只列出這個資料夾有哪些檔案，不修改」。確認工作目錄與結果相同後，再進行後續寫檔練習。遇到權限要求，先看它要執行的操作與路徑，依任務需要核准。<a href="https://learn.chatgpt.com/docs/auth">Codex 認證</a>、<a href="https://code.claude.com/docs/en/quickstart">Claude 入門</a>。</p>
 <h2 id="3-basic-operations">3. 基礎操作指南（Basic Operations）</h2>
-<h3 id="31">3.1. 核心指令</h3>
+<h3 id="31">3.1. 對話與常用會話指令</h3><p>先在專案終端機輸入 <code>codex</code> 或 <code>claude</code>。進入會話後，在對話輸入區貼上自然語言任務；後續追問維持同一會話。</p>
+<pre><code class="language-text">閱讀 README.md，列出三個重點，每點註明來源章節。先不要修改檔案。
+</code></pre>
+<p>核對回答後再說：</p>
+<pre><code class="language-text">把剛才的摘要改成適合初學者的版本，保留來源，並列出兩個自我檢核問題。
+</code></pre>
 <table>
 <thead>
 <tr>
-<th>工作</th>
-<th>Codex CLI（shell）</th>
-<th>Claude Code（shell）</th>
+<th>會話操作</th>
+<th>Codex CLI</th>
+<th>Claude Code</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>互動對話</td>
-<td><code>codex</code></td>
-<td><code>claude</code></td>
+<td>選模型</td>
+<td><code>/model</code></td>
+<td><code>/model</code></td>
 </tr>
 <tr>
-<td>帶入起始任務並互動</td>
-<td><code>codex "說明這個專案"</code></td>
-<td><code>claude "說明這個專案"</code></td>
+<td>查狀態與用量</td>
+<td><code>/status</code></td>
+<td><code>/status</code>、<code>/usage</code></td>
 </tr>
 <tr>
-<td>單次完成後離開</td>
-<td><code>codex exec "摘要 README.md"</code></td>
-<td><code>claude -p "摘要 README.md"</code></td>
+<td>查 context</td>
+<td><code>/status</code> 與狀態列</td>
+<td><code>/context</code></td>
 </tr>
 <tr>
-<td>接續最近工作</td>
-<td><code>codex resume --last</code></td>
-<td><code>claude -c</code></td>
+<td>壓縮長對話</td>
+<td><code>/compact</code></td>
+<td><code>/compact</code></td>
 </tr>
 <tr>
-<td>選擇歷史工作</td>
-<td><code>codex resume</code></td>
-<td><code>claude -r</code></td>
+<td>接續會話</td>
+<td><code>/resume</code></td>
+<td><code>/resume</code></td>
 </tr>
 <tr>
-<td>檢查登入</td>
-<td><code>codex login status</code></td>
-<td><code>claude auth status --text</code></td>
+<td>開新任務</td>
+<td><code>/new</code></td>
+<td><code>/clear</code></td>
 </tr>
 <tr>
-<td>顯示版本／參數</td>
-<td><code>codex --version</code>／<code>codex --help</code></td>
-<td><code>claude --version</code>／<code>claude --help</code></td>
+<td>工具權限</td>
+<td><code>/permissions</code></td>
+<td><code>/permissions</code></td>
+</tr>
+<tr>
+<td>操作說明</td>
+<td><code>/</code> 選單</td>
+<td><code>/help</code>、<code>/</code> 選單</td>
 </tr>
 </tbody>
 </table>
-<p><strong>會話內命令：</strong>啟動後才輸入 <code>/model</code> 選模型、<code>/permissions</code> 檢查權限；Codex 用 <code>/status</code> 檢查會話，Claude 用 <code>/context</code> 檢查載入情境、<code>/memory</code> 管理指引。CLI 的可用模型依帳號、版本與組織設定而變，不把教材中的模型名稱視為最新保證。</p>
-<p><code>codex exec</code> 預設採唯讀沙箱；確實需要改檔時，明確指定 <code>codex exec --sandbox workspace-write "任務"</code>。先在專案執行 <code>git init</code> 建立版本追蹤；刻意在非 Git 目錄做一次性任務時才使用 <code>--skip-git-repo-check</code>。<code>claude -p</code> 受既有權限控制，不能把無人互動解讀成自動授予所有工具；初學者先用互動模式處理寫檔要求。不要將 Codex 的 <code>-p</code> 當成 Claude 的 print：Codex 的 <code>-p</code> 是設定 profile。</p>
-<p>來源：<a href="https://learn.chatgpt.com/docs/developer-commands?surface=cli">Codex 命令</a>、<a href="https://learn.chatgpt.com/docs/non-interactive-mode">非互動模式</a>、<a href="https://code.claude.com/docs/en/cli-reference">Claude CLI</a>。</p>
-<p><strong>更新與故障排除：</strong>原生 Codex 重跑安裝命令；支援 self-update 的 release 可用 <code>codex update</code>。原生 Claude 會自動更新，手動可用 <code>claude update</code>；若以 Homebrew 或 WinGet 安裝，改用該管理器的 upgrade。找不到指令先重開終端機並檢查 PATH，版本可顯示但不能使用則先查登入與帳號，不要反覆重裝。詳見 <a href="08_environment.html">環境指南</a>。</p>
+<p>以上均在 <strong>CLI 內</strong>輸入。Codex 不套用 Claude 的 <code>/usage</code>；用量、context 容量與帳單不同。完整操作情境見<a href="00_intro.html#510">前導章：常用會話內指令</a>。模型與指令以目前版本、帳號及組織允許的選單為準。</p>
+<p>專案指引是獨立檔案：Codex 使用 <code>AGENTS.md</code>，Claude 使用 <code>CLAUDE.md</code>；相容條件見<a href="05_instructions.html">單元五</a>。文字要求不等同系統權限，開始前應檢查 <code>/permissions</code>。</p>
+<p>來源：<a href="https://learn.chatgpt.com/docs/developer-commands?surface=cli">Codex CLI 指令</a>、<a href="https://code.claude.com/docs/en/commands">Claude Code 指令</a>（2026-10-31 查核）。</p><p><strong>更新與故障排除：</strong>原生 Codex 重跑安裝命令；支援 self-update 的 release 可用 <code>codex update</code>。原生 Claude 會自動更新，手動可用 <code>claude update</code>；若以 Homebrew 或 WinGet 安裝，改用該管理器的 upgrade。找不到指令先重開終端機並檢查 PATH，版本可顯示但不能使用則先查登入與帳號，不要反覆重裝。詳見 <a href="08_environment.html">環境指南</a>。</p>
 <p><strong>提示的四段式寫法：</strong>「讀什麼 → 要做什麼 → 不可做什麼 → 如何驗收」。在 AI 會話內貼自然語言提示；在 shell 中執行 <code>codex</code>／<code>claude</code>。不要將說明句當 shell 命令，也不要虛構 <code>@shell</code>、<code>@google</code> 或 <code>@web</code> 為通用 CLI 語法。</p>
 <h2 id="4-hands-on-examples">4. 實戰應用範例（Hands-on Examples）</h2>
 <h3 id="level-1code-explanation">🔰 Level 1：程式碼解釋與學習（Code Explanation）</h3>

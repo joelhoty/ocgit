@@ -10,25 +10,32 @@
 
 ### 雙 CLI 操作約定
 
-在專案資料夾開啟終端機，先用 `codex` 或 `claude` 啟動互動會話，再貼上本章的自然語言提示。逐輪等待完成，追問時維持同一會話；另開一次指令不會自動承接剛才內容。
+在專案資料夾開啟終端機，輸入 `codex` 或 `claude` 任選一款，啟動一次互動會話。接著把本章的「對話提示」貼入 CLI 的對話輸入區；每輪檢查回覆，再在同一會話追問，不需反覆回到終端機重啟工具。
 
-| 情境 | Codex CLI | Claude Code |
-|---|---|---|
-| 互動操作（初學者主線） | `codex` | `claude` |
-| 帶第一個提示開始會話 | `codex "閱讀 lesson.txt 並摘要"` | `claude "閱讀 lesson.txt 並摘要"` |
-| 單次輸出後結束 | `codex exec "閱讀 lesson.txt 並摘要"` | `claude -p "閱讀 lesson.txt 並摘要"` |
-| 專案規則 | `AGENTS.md` | `CLAUDE.md`；AGENTS.md 的相容條件見單元五 |
+```text
+請先閱讀 lesson.txt，列出三個教學重點及來源段落。
+```
 
-以下標示 **Codex CLI／Claude Code** 的 shell 範例是兩個替代選項，選一組執行即可。`bash` 中的 `for ...; do`、`$(date ...)` 是 macOS／Linux／WSL 範例，Windows PowerShell 請使用文中的 PowerShell 版本或互動主線。簡單雙引號指令可在 PowerShell 7 使用。
+確認內容後繼續說：「把第二點改寫成適合國小五年級的說明。」需要保存時，直接指定檔名並要求回報實際寫入位置；已有同名檔案時先比較差異，再決定更新或另存新版本。檔案寫入與程式執行仍受工具權限控制。
 
-單次模式要先完成登入。Codex `exec` 預設唯讀，且通常要求位於 Git 專案，先在教學資料夾執行 `git init`；需要直接寫檔時，改用互動會話並確認權限，或明確使用 `--sandbox workspace-write`。Claude `-p` 不會彈出互動授權；需要未預先允許的工具時，改回互動模式檢查授權，不使用全面略過權限的旗標。下列 `> file.md` 是 shell 儲存標準輸出，會覆寫同名檔；先選用新檔名。不要同時要求 Agent 寫入同一個重新導向的檔案。
+**會話管理**：長任務也在 CLI 中進行。模型選擇、用量、context 整理與會話續接的常用指令，見[前導章的 CLI 互動操作與指令速查](00_intro.html)。切換主題或壓縮 context 前，先將已確認的目標、檔案與待辦保存，續接後核對摘要。
 
-[Codex 非互動模式官方說明](https://learn.chatgpt.com/docs/non-interactive-mode)、[Claude Code CLI reference](https://code.claude.com/docs/en/cli-reference)（查核 2026-10-31）。
+**專案指引檔**：Codex 使用 `AGENTS.md`；Claude Code 使用 `CLAUDE.md`。它們是專案內的文字檔，不是需要輸入的操作指令。作用範圍、相容條件與驗證方式見[單元五](05_instructions.html)。
 
 
 ## Markdown 轉換應用：從 AI 輸出到實用文件
 
 ### 為何從 Markdown 開始？
+
+先在 CLI 對話交代要轉換的檔案與格式，例如：
+
+```text
+請檢查 lesson_plan.md，協助轉成 lesson_plan.docx。
+先確認 Pandoc 與所需範本是否可用，說明轉換方式，再執行轉換並回報產物。
+若有圖表或格式無法保留，請指出需要另外處理的項目。
+```
+
+以下 Pandoc 命令與設定檔是核對 Agent 執行內容的參考；日常操作可繼續在對話中請它完成。安裝命令在終端機執行，或在了解安裝範圍後授權 Agent 執行，不把它們當成對話提示。
 
 **核心優勢**：
 1. **AI 天然輸出格式**：可明確要求 Codex CLI／Claude Code 輸出 Markdown；仍需檢查格式
@@ -66,12 +73,11 @@ pandoc lesson_plan.md -o template.docx
 pandoc new_lesson.md --reference-doc=template.docx -o new_lesson.docx
 ```
 
-**實用案例**：
-```bash
-# 轉換整個資料夾的 Markdown 檔案
-for file in *.md; do
-  pandoc "$file" --reference-doc=my_template.docx -o "${file%.md}.docx"
-done
+**批次轉換的對話提示**：
+```text
+請列出目前資料夾中的 Markdown 檔案，使用 my_template.docx 作為樣式範本，
+規劃逐檔轉成同名 DOCX 的腳本。先列出輸入與輸出對應，檢查是否會覆寫既有檔案。
+我確認後先轉一份檢查版面，再完成其餘檔案，最後列出成功與失敗清單。
 ```
 
 ---
@@ -242,7 +248,16 @@ $$
 
 **1. 建立 Tasks 設定檔**
 
-在專案根目錄建立 `.vscode/tasks.json`：
+先在 CLI 對話請 Agent 依目前環境建立設定：
+
+```text
+請檢查 Pandoc、XeLaTeX、中文字型、template.docx 與 style.css 是否可用，
+為目前專案建立 .vscode/tasks.json，提供 Markdown to Word、Markdown to PDF、
+Markdown to HTML 三個任務。請先解釋輸入輸出路徑與參數，不覆寫既有設定。
+若缺少工具或字型，列出待補項目，不要先執行轉換。
+```
+
+以下是可供比對的 `.vscode/tasks.json` 範例；PDF 字型須依本機環境調整：
 
 ```json
 {
@@ -378,11 +393,11 @@ A：
 - 或用 Pandoc 將 HTML 轉 DOCX；也可用 Word 開啟 HTML 後另存 DOCX，並檢查格式
 
 **Q4：如何批次轉換多個檔案？**
-A：使用終端機搭配 Pandoc：
-```bash
-for file in *.md; do
-  pandoc "$file" -o "${file%.md}.docx"
-done
+A：在同一 CLI 會話請 Agent 建立批次轉換流程：
+```text
+請將目前資料夾的 Markdown 逐檔轉為同名 DOCX，先列出對應檔案與可能的覆寫衝突。
+請建立適合目前作業系統的腳本，供我確認後試跑一份，再處理其餘檔案。
+每份都記錄是否成功，失敗時保留原因，不將空檔當成完成。
 ```
 
 ---
@@ -572,15 +587,12 @@ graph LR
 10. B
 ```
 
-**批改指令**：
-**Codex CLI（擇一）**
-```bash
-codex exec "比較 answer_key.txt 和 student_001_answers.txt，計算正確題數與分數（每題 10 分）。列出答錯的題號。" > student_001_score.txt
-```
+**批改提示**：
+**對話提示（在同一個 CLI 會話中輸入）**
+```text
+比較 answer_key.txt 和 student_001_answers.txt，計算正確題數與分數（每題 10 分）。列出答錯的題號。
 
-**Claude Code（擇一）**
-```bash
-claude -p "比較 answer_key.txt 和 student_001_answers.txt，計算正確題數與分數（每題 10 分）。列出答錯的題號。" > student_001_score.txt
+請將結果保存為 student_001_score.txt，完成後回報路徑及核對結果。
 ```
 
 **輸出結果**：
@@ -620,15 +632,10 @@ claude -p "比較 answer_key.txt 和 student_001_answers.txt，計算正確題�
 植物需要陽光和水進行光合作用，會產生氧氣。葉綠素吸收陽光的能量，將二氧化碳和水轉換成葡萄糖。
 ```
 
-**評分指令**：
-**Codex CLI（擇一）**
-```bash
-codex exec "根據 rubric.txt 的評分標準，為 student_answer.txt 評分。列出給分項目與理由。"
-```
-
-**Claude Code（擇一）**
-```bash
-claude -p "根據 rubric.txt 的評分標準，為 student_answer.txt 評分。列出給分項目與理由。"
+**評分提示**：
+**對話提示（在同一個 CLI 會話中輸入）**
+```text
+根據 rubric.txt 的評分標準，為 student_answer.txt 評分。列出給分項目與理由。
 ```
 
 **AI 輸出**：
@@ -672,10 +679,9 @@ claude -p "根據 rubric.txt 的評分標準，為 student_answer.txt 評分。�
 - 作業：20%
 - 出席：5%
 
-**指令**：
-**Codex CLI（擇一）**
-```bash
-codex exec "根據 grades.csv，計算每位學生的總成績。
+**對話提示（在同一個 CLI 會話中輸入）**
+```text
+根據 grades.csv，計算每位學生的總成績。
 
 計算方式：
 - 平時成績 × 20%
@@ -695,32 +701,8 @@ codex exec "根據 grades.csv，計算每位學生的總成績。
 - C：70 ≤ 分數 < 80
 - D：60 ≤ 分數 < 70
 - F：分數 < 60
-" > final_grades.md
-```
 
-**Claude Code（擇一）**
-```bash
-claude -p "根據 grades.csv，計算每位學生的總成績。
-
-計算方式：
-- 平時成績 × 20%
-- 期中考 × 25%
-- 期末考 × 30%
-- 作業 × 20%
-- 出席 × 5%
-
-輸出格式：
-| 代號 | 總成績 | 等第 |
-|------|--------|------|
-| ... | ... | ... |
-
-等第標準：
-- A：90以上
-- B：80 ≤ 分數 < 90
-- C：70 ≤ 分數 < 80
-- D：60 ≤ 分數 < 70
-- F：分數 < 60
-" > final_grades.md
+請將結果保存為 final_grades.md，完成後回報路徑及核對結果。
 ```
 
 ---
@@ -729,29 +711,18 @@ claude -p "根據 grades.csv，計算每位學生的總成績。
 
 #### 分析成績分布
 
-**指令**：
-**Codex CLI（擇一）**
-```bash
-codex exec "分析 grades.csv 的成績分布：
+**對話提示（在同一個 CLI 會話中輸入）**
+```text
+分析 grades.csv 的成績分布：
 
 1. 計算各科目的平均分、最高分、最低分、標準差
 2. 列出需要加強的學生（總成績低於 70）
 3. 分析各評量項目的相關性（哪些項目表現相似）
 4. 提供教學建議
 
-輸出為 Markdown 報表格式。" > grade_analysis.md
-```
+輸出為 Markdown 報表格式。
 
-**Claude Code（擇一）**
-```bash
-claude -p "分析 grades.csv 的成績分布：
-
-1. 計算各科目的平均分、最高分、最低分、標準差
-2. 列出需要加強的學生（總成績低於 70）
-3. 分析各評量項目的相關性（哪些項目表現相似）
-4. 提供教學建議
-
-輸出為 Markdown 報表格式。" > grade_analysis.md
+請將結果保存為 grade_analysis.md，完成後回報路徑及核對結果。
 ```
 
 **已核對的示例（母體標準差取一位小數，非實際學生資料）**：
@@ -805,10 +776,9 @@ claude -p "分析 grades.csv 的成績分布：
 4. 文法（20%）：句子正確、標點適當
 ```
 
-**指令**：
-**Codex CLI（擇一）**
-```bash
-codex exec "根據 writing_rubric.txt，評析 essay.txt：
+**對話提示（在同一個 CLI 會話中輸入）**
+```text
+根據 writing_rubric.txt，評析 essay.txt：
 
 請提供：
 1. 各項目評分（滿分 100）
@@ -816,20 +786,9 @@ codex exec "根據 writing_rubric.txt，評析 essay.txt：
 3. 改進建議（3 點）
 4. 整體評語（鼓勵性質）
 
-語氣：正面、建設性" > feedback.md
-```
+語氣：正面、建設性
 
-**Claude Code（擇一）**
-```bash
-claude -p "根據 writing_rubric.txt，評析 essay.txt：
-
-請提供：
-1. 各項目評分（滿分 100）
-2. 具體優點（3 點）
-3. 改進建議（3 點）
-4. 整體評語（鼓勵性質）
-
-語氣：正面、建設性" > feedback.md
+請將結果保存為 feedback.md，完成後回報路徑及核對結果。
 ```
 
 ---
@@ -848,81 +807,59 @@ claude -p "根據 writing_rubric.txt，評析 essay.txt：
 ...
 ```
 
-**指令**：
-**Codex CLI（擇一）**
-```bash
-codex exec "分析 test_results.csv：
+**對話提示（在同一個 CLI 會話中輸入）**
+```text
+分析 test_results.csv：
 
 1. 列出「過難題目」（答對率 < 30%）
 2. 列出「過易題目」（答對率 > 90%）
 3. 列出「鑑別度不佳題目」（< 0.3）
 4. 提供命題建議
 
-輸出為分析報告。" > test_analysis.md
-```
+輸出為分析報告。
 
-**Claude Code（擇一）**
-```bash
-claude -p "分析 test_results.csv：
-
-1. 列出「過難題目」（答對率 < 30%）
-2. 列出「過易題目」（答對率 > 90%）
-3. 列出「鑑別度不佳題目」（< 0.3）
-4. 提供命題建議
-
-輸出為分析報告。" > test_analysis.md
+請將結果保存為 test_analysis.md，完成後回報路徑及核對結果。
 ```
 
 ---
 
-### 實用工具：成績處理腳本
+### 實用工具：在對話中建立成績處理腳本
 
-**自動化腳本**：`grade_processor.sh`（macOS／Linux／WSL）。先建立 `grading_policy.txt` 寫入本節權重與等第，並在 `grades.csv` 使用與 `student_list.txt` 一致的虛構代號；報表仍需人工與程式重算。
-**Codex CLI（擇一）**
-```bash
-#!/bin/bash
-set -euo pipefail
-mkdir -p reports
-# student_list.txt 每行只填一個虛構代號，例如 student_A；不得含空白或路徑符號。
-echo "開始處理虛構成績..."
+批次計算仍從 CLI 對話開始。先建立 `grading_policy.txt`，寫入本節權重與等第；`grades.csv` 與 `student_list.txt` 使用一致的虛構代號。此範例統一使用 `student_A` 這類代號，清單每行一個，不含空白或路徑符號；將前例「學生A」等代號一致改名後再執行。
 
-# 步驟 1：計算總成績
-codex exec "根據 grades.csv 與 grading_policy.txt 計算總成績，先列出公式再回傳 Markdown，不要寫檔" > final_grades.md
+**第一輪：規劃與建立**
 
-# 步驟 2：分析成績分布
-codex exec "分析 grades.csv 的成績分布" > grade_analysis.md
+```text
+請檢查 grades.csv、grading_policy.txt 與 student_list.txt，先說明資料欄位、加權公式與處理流程。
+接著建立可重複執行的本機成績處理腳本：macOS／Linux／WSL 使用 grade_processor.sh；
+若目前是 Windows PowerShell，改建 grade_processor.ps1。可呼叫本機 Python 計算，
+但不要在腳本中另啟 AI CLI 或呼叫模型服務。先展示腳本與執行計畫，等我檢查後再執行。
 
-# 步驟 3：生成學生個別報表（假設有學生清單）
-while IFS= read -r student; do
-  [[ "$student" =~ ^student_[A-Za-z0-9]+$ ]] || { echo "代號格式錯誤"; exit 1; }
-  codex exec "閱讀 grades.csv 與 final_grades.md，為代號 $student 生成個人成績草稿，不要寫檔" > "reports/${student}_report.md" </dev/null
-done < student_list.txt
-
-echo "處理完成！報表已生成於 reports/ 資料夾"
+腳本需要：
+1. 依規則計算總成績及等第，保存為 final_grades.md，包含公式。
+2. 將各項平均、最高、最低、母體標準差與需關注名單保存為 grade_analysis.md。
+3. 依 student_list.txt 逐一生成 reports/{代號}_report.md，列出該代號的各項成績、總分及等第。
+4. 驗證代號格式為 student_ 後接英文字母或數字；發現重複、缺漏、非數值、代號不符或無效路徑就停止並回報。
+5. 不修改來源資料；已有輸出時先回報衝突，不直接覆寫。失敗或空檔不得記為成功，保留可追查的錯誤紀錄。
 ```
 
-**Claude Code（擇一）**
-```bash
-#!/bin/bash
-set -euo pipefail
-mkdir -p reports
-# student_list.txt 每行只填一個虛構代號，例如 student_A；不得含空白或路徑符號。
-echo "開始處理虛構成績..."
+**第二輪：檢查後試跑**
 
-# 步驟 1：計算總成績
-claude -p "根據 grades.csv 與 grading_policy.txt 計算總成績，先列出公式再回傳 Markdown，不要寫檔" > final_grades.md
-
-# 步驟 2：分析成績分布
-claude -p "分析 grades.csv 的成績分布" > grade_analysis.md
-
-# 步驟 3：生成學生個別報表（假設有學生清單）
-while IFS= read -r student; do
-  [[ "$student" =~ ^student_[A-Za-z0-9]+$ ]] || { echo "代號格式錯誤"; exit 1; }
-  claude -p "閱讀 grades.csv 與 final_grades.md，為代號 $student 生成個人成績草稿，不要寫檔" > "reports/${student}_report.md" </dev/null
-done < student_list.txt
-
-echo "處理完成！報表已生成於 reports/ 資料夾"
+```text
+我已核對公式、代號對應與輸出位置。請先用這五筆虛構資料試跑，
+列出實際執行的程式、完成與失敗項目，並核對每份報表的代號與分數。
+若任何一步失敗，先說明原因與修正方式，停止後續批次處理。
 ```
+
+**第三輪：補充個別回饋**
+
+```text
+請閱讀 grades.csv、final_grades.md 與 reports/ 中的報表，
+逐份提出個人回饋草稿，清楚區分計算結果與教學建議，不更動原始分數。
+先展示一份供我核對，再依確認的格式補入各份報表，列出本次更新的檔案。
+```
+
+對話管理與計算程式各有角色：會話保留討論脈絡，腳本負責可重算的數值。檢查用量或整理 context 時，使用[前導章的會話內指令速查](00_intro.html)，並把已確認公式、來源與待辦存檔。報表仍需教師覆核，不能把第二次模型回答當成獨立重算。
 
 ---
 
@@ -972,58 +909,47 @@ semester_grades/
 
 ### 步驟二：整合資料
 
-先在 VS Code 建立 `output` 資料夾；以下各步從含 `raw_data`、`rubrics`、`output` 的專案根目錄執行。每一步都檢查輸出，成功後才進入下一步。
+先在 VS Code 建立 `output` 資料夾；從含 `raw_data`、`rubrics`、`output` 的專案根目錄啟動 CLI，以下各步在同一會話輸入。每一步都檢查輸出，成功後才進入下一步。
 
-**指令**：
-**Codex CLI（擇一）**
-```bash
-codex exec "整合 raw_data 資料夾中的所有 CSV，合併成一份完整成績表，包含所有評量項目。只回傳 CSV 內容，不要自行寫檔" > output/grades_combined.csv
-```
+**對話提示（在同一個 CLI 會話中輸入）**
+```text
+整合 raw_data 資料夾中的所有 CSV，合併成一份完整成績表，包含所有評量項目。使用 CSV 格式。
 
-**Claude Code（擇一）**
-```bash
-claude -p "整合 raw_data 資料夾中的所有 CSV，合併成一份完整成績表，包含所有評量項目。只回傳 CSV 內容，不要自行寫檔" > output/grades_combined.csv
+請將結果保存為 output/grades_combined.csv，完成後回報路徑及核對結果。
 ```
 
 ### 步驟三：計算總成績
 
-**Codex CLI（擇一）**
-```bash
-codex exec "根據 rubrics/grading_policy.txt 的加權規則，計算 output/grades_combined.csv 的總成績與等第。" > output/final_grades.md
-```
+**對話提示（在同一個 CLI 會話中輸入）**
+```text
+根據 rubrics/grading_policy.txt 的加權規則，計算 output/grades_combined.csv 的總成績與等第。
 
-**Claude Code（擇一）**
-```bash
-claude -p "根據 rubrics/grading_policy.txt 的加權規則，計算 output/grades_combined.csv 的總成績與等第。" > output/final_grades.md
+請將結果保存為 output/final_grades.md，完成後回報路徑及核對結果。
 ```
 
 ### 步驟四：生成分析報告
 
-**Codex CLI（擇一）**
-```bash
-codex exec "分析 output/final_grades.md：
+**對話提示（在同一個 CLI 會話中輸入）**
+```text
+分析 output/final_grades.md：
 - 成績分布統計
 - 需關注學生清單
 - 各項目表現分析
 - 教學成效評估
-輸出為完整報告。" > output/semester_report.md
-```
+輸出為完整報告。
 
-**Claude Code（擇一）**
-```bash
-claude -p "分析 output/final_grades.md：
-- 成績分布統計
-- 需關注學生清單
-- 各項目表現分析
-- 教學成效評估
-輸出為完整報告。" > output/semester_report.md
+請將結果保存為 output/semester_report.md，完成後回報路徑及核對結果。
 ```
 
 ### 步驟五：轉換為 PDF 報告
 
-```bash
-pandoc output/semester_report.md -o output/semester_report.pdf
+```text
+請先檢查 Pandoc、PDF 引擎及中文字型是否可用，再將 output/semester_report.md
+轉換為 output/semester_report.pdf。若缺少工具，先說明環境需求；不要把失敗輸出當成完成。
+轉換後回報檔案位置，列出需要人工檢查的表格、換頁與中文字。
 ```
+
+開啟 PDF 逐頁核對，確認數值與 Markdown 報表一致。
 
 ---
 
@@ -1057,11 +983,6 @@ pandoc output/semester_report.md -o output/semester_report.pdf
 
 先只使用本文虛構資料：客觀題例應為 80 分；五筆加權總分依序為 84.10、89.65、73.65、89.60、70.75。用試算表或明確程式獨立重算，不能只用第二次模型回答當驗證。正式成績由教師依核准規則決定，AI 只提供分析草稿。
 
-所有 Bash 腳本先在 macOS／Linux／WSL 操作。PowerShell 7 可用以下方式逐檔轉換（先備妥 `my_template.docx`）：
-```powershell
-Get-ChildItem -Filter *.md | ForEach-Object {
-    pandoc $_.FullName --reference-doc=my_template.docx -o ($_.BaseName + '.docx')
-}
-```
+請在對話中告知作業系統，讓 Agent 選擇 Bash 或 PowerShell 腳本，不直接將 Bash 語法貼到 PowerShell。批次轉換前備妥 `my_template.docx`，先要求列出輸入輸出對應與覆寫衝突，再試跑一份，核對後才批次執行。
 
 Pandoc 的 PDF 輸出還需要指定 PDF engine 及可用的中文字型；不把安裝 Pandoc 當成已具備 LaTeX。Mermaid 需先渲染成 SVG／PNG 再放入 DOCX，不能假設 Pandoc 自動辨識 Mermaid。轉換後逐頁檢查標題、表格、圖表、換頁與中文字。[Pandoc 手冊](https://pandoc.org/MANUAL.html)。

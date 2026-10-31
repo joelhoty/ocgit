@@ -79,48 +79,42 @@ html{scroll-behavior:smooth}body{box-sizing:border-box}img{max-width:100%;height
 </style></head>
 <body><nav aria-label="課程導覽" class="course-nav"><a href="index.html">課程目錄</a><a href="04_workspace.html">← 上一章</a><a href="05_instructions.html">下一章 →</a><a href="04a_workflows.md">Markdown 原文</a><span>雙 CLI 教材 · 2026-10-31</span></nav>
 <div class="container"><!-- Path: AI_Agent_CLi | Updated: 2026-10-31 | Edition: Codex CLI / Claude Code -->
-<h1 id="_1">單元四補充內容：進階章節</h1><details class="course-toc"><summary>本頁章節</summary><ul><li><a href="#cli-vscode">CLI + VSCode 整合的五大優勢</a></li><li><a href="#markdown">Markdown 格式輸出的優勢與應用</a></li><li><a href="#mermaid-vs-plantuml">Mermaid vs PlantUML：差異與選擇</a></li><li><a href="#_8">完整實戰案例：從大綱到完整教材設計</a></li><li><a href="#_18">實用指令總結</a></li></ul></details>
+<h1 id="_1">單元四補充內容：進階章節</h1><details class="course-toc"><summary>本頁章節</summary><ul><li><a href="#cli-vscode">CLI + VSCode 整合的五大優勢</a></li><li><a href="#markdown">Markdown 格式輸出的優勢與應用</a></li><li><a href="#mermaid-vs-plantuml">Mermaid vs PlantUML：差異與選擇</a></li><li><a href="#_8">完整實戰案例：從大綱到完整教材設計</a></li><li><a href="#_18">實用對話提示總結</a></li></ul></details>
 <blockquote>
 <p><strong>本版查核：2026-10-31。</strong>先閱讀<a href="00_intro.html">前導章：Agent 基本概念與工作環境</a>，安裝並登入 Codex CLI 或 Claude Code 任選一款即可。本課使用虛構／去識別化資料，所有結果都要以來源與實際檔案驗收。</p>
 </blockquote>
 <p><strong>銜接</strong>：搭配<a href="04_workspace.html">單元四</a>閱讀，練習多檔案、Markdown 與流程圖。</p>
 <hr/>
 <h3 id="cli">雙 CLI 操作約定</h3>
-<p>在專案資料夾開啟終端機，先用 <code>codex</code> 或 <code>claude</code> 啟動互動會話，再貼上本章的自然語言提示。逐輪等待完成，追問時維持同一會話；另開一次指令不會自動承接剛才內容。</p>
+<p>先在專案資料夾的終端機輸入 <code>codex</code> 或 <code>claude</code>，啟動其中一款工具。進入 CLI 會話後，直接輸入本章的自然語言提示；同一任務逐輪追問，不必每次重新啟動工具。</p>
 <table>
 <thead>
 <tr>
-<th>情境</th>
-<th>Codex CLI</th>
-<th>Claude Code</th>
+<th>輸入位置</th>
+<th>要做的事</th>
+<th>範例</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>互動操作（初學者主線）</td>
-<td><code>codex</code></td>
-<td><code>claude</code></td>
+<td>終端機 shell</td>
+<td>啟動一次 CLI，兩款擇一</td>
+<td><code>codex</code> 或 <code>claude</code></td>
 </tr>
 <tr>
-<td>帶第一個提示開始會話</td>
-<td><code>codex "閱讀 lesson.txt 並摘要"</code></td>
-<td><code>claude "閱讀 lesson.txt 並摘要"</code></td>
+<td>CLI 會話輸入區</td>
+<td>說明任務、來源與產物</td>
+<td>閱讀 lesson.txt，整理三個重點並標示來源。</td>
 </tr>
 <tr>
-<td>單次輸出後結束</td>
-<td><code>codex exec "閱讀 lesson.txt 並摘要"</code></td>
-<td><code>claude -p "閱讀 lesson.txt 並摘要"</code></td>
-</tr>
-<tr>
-<td>專案規則</td>
-<td><code>AGENTS.md</code></td>
-<td><code>CLAUDE.md</code>；AGENTS.md 的相容條件見單元五</td>
+<td>同一會話輸入區</td>
+<td>依剛才結果追問與修改</td>
+<td>把第二個重點改寫成適合國小五年級的說明。</td>
 </tr>
 </tbody>
 </table>
-<p>以下標示 <strong>Codex CLI／Claude Code</strong> 的 shell 範例是兩個替代選項，選一組執行即可。<code>bash</code> 中的 <code>for ...; do</code>、<code>$(date ...)</code> 是 macOS／Linux／WSL 範例，Windows PowerShell 請使用文中的 PowerShell 版本或互動主線。簡單雙引號指令可在 PowerShell 7 使用。</p>
-<p>單次模式要先完成登入。Codex <code>exec</code> 預設唯讀，且通常要求位於 Git 專案，先在教學資料夾執行 <code>git init</code>；需要直接寫檔時，改用互動會話並確認權限，或明確使用 <code>--sandbox workspace-write</code>。Claude <code>-p</code> 不會彈出互動授權；需要未預先允許的工具時，改回互動模式檢查授權，不使用全面略過權限的旗標。下列 <code>&gt; file.md</code> 是 shell 儲存標準輸出，會覆寫同名檔；先選用新檔名。不要同時要求 Agent 寫入同一個重新導向的檔案。</p>
-<p><a href="https://learn.chatgpt.com/docs/non-interactive-mode">Codex 非互動模式官方說明</a>、<a href="https://code.claude.com/docs/en/cli-reference">Claude Code CLI reference</a>（查核 2026-10-31）。</p>
+<p><strong>專案指引檔</strong>：Codex 使用 <code>AGENTS.md</code>，Claude Code 使用 <code>CLAUDE.md</code>。這些是保存專案慣例的檔案；設定方式及相容條件見<a href="05_instructions.html">單元五</a>。</p>
+<p>需要切換模型、查看用量或管理 context 時，使用 CLI 介面；兩款工具的常用斜線指令與差異見<a href="00_intro.html">前導章</a>。寫檔前說清楚路徑與是否保留原稿，完成後在 VS Code 開啟產物核對。自然語言的「不要修改」是任務要求，不能取代權限設定。</p>
 <h2 id="cli-vscode">CLI + VSCode 整合的五大優勢</h2>
 <h3 id="_2">優勢一：一站式工作環境</h3>
 <p><strong>傳統方式</strong>：<br/>
@@ -145,12 +139,8 @@ html{scroll-behavior:smooth}body{box-sizing:border-box}img{max-width:100%;height
 ├── friday_social.txt
 └── assessment.txt
 </code></pre>
-<p><strong>指令</strong>：<br/>
-<strong>Codex CLI（擇一）</strong></p>
-<pre><code class="language-bash">codex exec "分析這個資料夾中的所有檔案，整理出本週的教學重點、學生表現與需改進之處"
-</code></pre>
-<p><strong>Claude Code（擇一）</strong></p>
-<pre><code class="language-bash">claude -p "分析這個資料夾中的所有檔案，整理出本週的教學重點、學生表現與需改進之處"
+<p><strong>對話提示</strong>：</p>
+<pre><code class="language-text">分析這個資料夾中的所有檔案，整理出本週的教學重點、學生表現與需改進之處
 </code></pre>
 <p><strong>要求 Agent 執行並確認紀錄</strong>：<br/>
 1. 讀取所有 4 個檔案<br/>
@@ -202,17 +192,14 @@ html{scroll-behavior:smooth}body{box-sizing:border-box}img{max-width:100%;height
 4. 貼上<br/>
 5. 調整格式<br/>
 6. 存檔</p>
-<p><strong>CLI 方式</strong>：<br/>
-<strong>Codex CLI（擇一）</strong></p>
-<pre><code class="language-bash">codex exec "設計教案" &gt; lesson_plan.md
+<p><strong>CLI 方式</strong>：</p>
+<pre><code class="language-text">設計教案
+請儲存為 lesson_plan.md；若已有同名檔案，先說明差異再詢問如何處理。
 </code></pre>
-<p><strong>Claude Code（擇一）</strong></p>
-<pre><code class="language-bash">claude -p "設計教案" &gt; lesson_plan.md
-</code></pre>
-<p><strong>完成後檢查</strong>：確認命令成功、檔案非空且內容符合要求，再改名為正式稿。</p>
+<p><strong>完成後檢查</strong>：確認寫檔紀錄成功、檔案非空且內容符合要求，再改名為正式稿。</p>
 <hr/>
 <h3 id="_4">優勢四：版本控制與歷程追蹤</h3>
-<p><strong>搭配 Git 使用</strong>：</p>
+<p><strong>搭配 Git 使用</strong>：以下是 Git 的終端機操作，請另開 shell 執行，不要貼進 AI 對話區。也可在 CLI 會話請 Agent 先說明差異，再協助完成相同的版本紀錄。</p>
 <pre><code class="language-bash">git add lesson_plan.md
 git commit -m "AI生成初稿"
 
@@ -226,27 +213,27 @@ git commit -m "調整難度"
 - 團隊協作更容易</p>
 <hr/>
 <h3 id="_5">優勢五：自動化工作流程</h3>
-<p><strong>範例：每週自動生成教學週報</strong></p>
-<p>建立腳本 <code>weekly_report.sh</code>（macOS／Linux／WSL）：先建立並確認對應的週次資料夾，放入本週來源；若使用 Codex 單次模式，該資料夾須屬於 Git 專案。<code>set -euo pipefail</code> 使切換目錄或 CLI 失敗時停止，不繼續宣告完成。<br/>
-<strong>Codex CLI（擇一）</strong></p>
-<pre><code class="language-bash">#!/bin/bash
-set -euo pipefail
-cd "$HOME/teaching/week_$(date +%U)"
-codex exec "整理本週教學檔案,生成週報" &gt; weekly_report_$(date +%Y%m%d).md
-test -s "weekly_report_$(date +%Y%m%d).md"
-echo "週報草稿已生成；請核對來源與內容。"
+<p><strong>範例：每週整理教學週報</strong></p>
+<p>進階任務仍在 CLI 會話中進行。先建立對應的週次資料夾（例如 <code>~/teaching/week_44/</code>）並放入本週來源，再請 Agent 把重複性的檔案整理做成腳本；內容摘要與修訂則留在對話中完成。</p>
+<p><strong>第一輪：規劃可重複的流程</strong></p>
+<pre><code class="language-text">請先確認本週教學資料夾的實際路徑與週次，列出要讀取的檔案。
+我每週都要整理教學重點、學生表現與待改進項目，最後產生 weekly_report_YYYYMMDD.md。
+請規劃流程，區分適合腳本處理的檔案檢查、彙整，以及需要你閱讀後摘要的部分。
+先說明，不要執行。
 </code></pre>
-<p><strong>Claude Code（擇一）</strong></p>
-<pre><code class="language-bash">#!/bin/bash
-set -euo pipefail
-cd "$HOME/teaching/week_$(date +%U)"
-claude -p "整理本週教學檔案,生成週報" &gt; weekly_report_$(date +%Y%m%d).md
-test -s "weekly_report_$(date +%Y%m%d).md"
-echo "週報草稿已生成；請核對來源與內容。"
+<p><strong>第二輪：建立與檢查腳本</strong></p>
+<pre><code class="language-text">依剛才確認的流程，建立 weekly_report.sh，供 macOS／Linux／WSL 整理來源清單與檢查產物。
+不要在腳本中啟動另一個 AI CLI；摘要由我們目前這個會話處理。
+腳本須檢查資料夾是否存在、來源是否非空，避免覆寫已有週報；任何步驟失敗就停止並列出原因。
+請逐段解釋腳本，並說明將讀取、建立或修改哪些檔案，先不要執行。
 </code></pre>
-<p><strong>執行</strong>：</p>
-<pre><code class="language-bash">bash weekly_report.sh
+<p><strong>第三輪：執行與產生週報</strong></p>
+<pre><code class="language-text">我已檢查剛才的腳本。請執行已確認的來源檢查與整理步驟，再讀取本週來源，生成週報草稿。
+以實際日期命名為 weekly_report_YYYYMMDD.md，標出各段的來源檔名。
+最後執行產物檢查，確認檔案非空，列出成功、失敗及待我核對的項目。
+若缺檔或執行失敗，停在該步說明，不要宣稱週報已完成。
 </code></pre>
+<p>Windows PowerShell 使用者可以在第二輪改請 Agent 建立 <code>weekly_report.ps1</code>，說明相同檢查規則。每週在 CLI 對話指定該週資料夾後重用流程；這裡不設定無人值守的自動排程。</p>
 <hr/>
 <h2 id="markdown">Markdown 格式輸出的優勢與應用</h2>
 <h3 id="markdown_1">什麼是 Markdown？</h3>
@@ -307,20 +294,11 @@ graph TD
 <p><strong>修改？直接改文字！</strong></p>
 <hr/>
 <h3 id="ai-markdown">AI 輸出 Markdown 的範例</h3>
-<p><strong>Prompt</strong>：<br/>
-<strong>Codex CLI（擇一）</strong></p>
-<pre><code class="language-bash">codex exec "設計一份國小數學「分數加減」教案，用 Markdown 格式輸出，包含：
+<p><strong>在 CLI 會話輸入</strong>：</p>
+<pre><code class="language-text">設計一份國小數學「分數加減」教案，用 Markdown 格式輸出，包含：
 - 教學目標（條列）
 - 教學流程（分段，用標題區分）
 - 評量方式（表格呈現）
-"
-</code></pre>
-<p><strong>Claude Code（擇一）</strong></p>
-<pre><code class="language-bash">claude -p "設計一份國小數學「分數加減」教案，用 Markdown 格式輸出，包含：
-- 教學目標（條列）
-- 教學流程（分段，用標題區分）
-- 評量方式（表格呈現）
-"
 </code></pre>
 <p><strong>AI 輸出</strong>：</p>
 <pre><code class="language-markdown"># 分數加減教案
@@ -489,10 +467,9 @@ class 教師 {
 <hr/>
 <h3 id="_10">階段一：生成教學大綱</h3>
 <p><strong>檔案準備</strong>：<br/>
-在 VS Code 建立並開啟 <code>llm_course/</code>，終端機也切換至此資料夾；所有檔案以下採同一層目錄。</p>
-<p><strong>Prompt</strong>：<br/>
-<strong>Codex CLI（擇一）</strong></p>
-<pre><code class="language-bash">codex exec "我要為高中生設計『大型語言模型入門』課程，共 4 週。
+在 VS Code 建立並開啟 <code>llm_course/</code>，終端機也切換至此資料夾，再用 <code>codex</code> 或 <code>claude</code> 啟動一次。以下六個階段在同一會話逐步進行，所有檔案採同一層目錄。每階段完成後先開啟產物核對，再送出下一個提示；不要假定對話中顯示的文字已經寫入檔案。</p>
+<p><strong>在 CLI 會話輸入</strong>：</p>
+<pre><code class="language-text">我要為高中生設計『大型語言模型入門』課程，共 4 週。
 
 請生成課程大綱，以 Markdown 格式輸出：
 
@@ -509,27 +486,8 @@ class 教師 {
 ### 第二週：
 ...
 
-請以 Markdown 格式完整輸出。" &gt; course_outline.md
-</code></pre>
-<p><strong>Claude Code（擇一）</strong></p>
-<pre><code class="language-bash">claude -p "我要為高中生設計『大型語言模型入門』課程，共 4 週。
-
-請生成課程大綱，以 Markdown 格式輸出：
-
-## 課程名稱
-## 目標學生
-## 課程目標（3-5 點）
-## 週次規劃
-
-### 第一週：
-- 主題
-- 重點概念
-- 教學活動
-
-### 第二週：
-...
-
-請以 Markdown 格式完整輸出。" &gt; course_outline.md
+請以 Markdown 格式完整輸出。
+請儲存為 course_outline.md；若已有同名檔案，先說明差異再詢問如何處理。
 </code></pre>
 <p><strong>生成結果</strong>（部分）：</p>
 <pre><code class="language-markdown"># 大型語言模型入門課程
@@ -566,9 +524,8 @@ class 教師 {
 <hr/>
 <h3 id="_11">階段二：根據大綱細化每週教材</h3>
 <p><strong>針對第一週，生成詳細教案</strong>：</p>
-<p><strong>Prompt</strong>：<br/>
-<strong>Codex CLI（擇一）</strong></p>
-<pre><code class="language-bash">codex exec "根據 course_outline.md 的第一週內容，設計完整的 2 小時教案。
+<p><strong>在 CLI 會話輸入</strong>：</p>
+<pre><code class="language-text">根據 course_outline.md 的第一週內容，設計完整的 2 小時教案。
 
 輸出格式（Markdown）：
 # 第一週教案：認識 AI 與語言模型
@@ -585,33 +542,13 @@ class 教師 {
 ## 評量方式
 ## 延伸閱讀
 
-請生成完整內容。" &gt; week1_lesson_plan.md
-</code></pre>
-<p><strong>Claude Code（擇一）</strong></p>
-<pre><code class="language-bash">claude -p "根據 course_outline.md 的第一週內容，設計完整的 2 小時教案。
-
-輸出格式（Markdown）：
-# 第一週教案：認識 AI 與語言模型
-
-## 教學目標
-## 教學準備
-## 教學流程（分段，含時間）
-### 引起動機（15 分鐘）
-### 概念講解（30 分鐘）
-### 實作活動（40 分鐘）
-### 討論與總結（20 分鐘）
-### 休息與轉場（15 分鐘）
-## 學習單設計
-## 評量方式
-## 延伸閱讀
-
-請生成完整內容。" &gt; week1_lesson_plan.md
+請生成完整內容。
+請儲存為 week1_lesson_plan.md；若已有同名檔案，先說明差異再詢問如何處理。
 </code></pre>
 <hr/>
 <h3 id="_12">階段三：生成教學簡報大綱</h3>
-<p><strong>Prompt</strong>：<br/>
-<strong>Codex CLI（擇一）</strong></p>
-<pre><code class="language-bash">codex exec "根據 week1_lesson_plan.md，設計一份教學簡報大綱（15-20 頁）。
+<p><strong>在 CLI 會話輸入</strong>：</p>
+<pre><code class="language-text">根據 week1_lesson_plan.md，設計一份教學簡報大綱（15-20 頁）。
 
 以 Markdown 列表方式輸出，每個項目是一頁投影片的標題與重點：
 
@@ -627,32 +564,13 @@ class 教師 {
 
 ...
 
-請包含流程圖建議（用 Mermaid 語法）" &gt; week1_slides_outline.md
-</code></pre>
-<p><strong>Claude Code（擇一）</strong></p>
-<pre><code class="language-bash">claude -p "根據 week1_lesson_plan.md，設計一份教學簡報大綱（15-20 頁）。
-
-以 Markdown 列表方式輸出，每個項目是一頁投影片的標題與重點：
-
-## 投影片大綱
-
-### 第 1 頁：課程標題
-- 標題：認識 AI 與語言模型
-- 副標題：探索 ChatGPT 背後的科學
-
-### 第 2 頁：破冰活動
-- 提問：你用過哪些 AI 工具？
-- 互動：掃碼體驗 ChatGPT
-
-...
-
-請包含流程圖建議（用 Mermaid 語法）" &gt; week1_slides_outline.md
+請包含流程圖建議（用 Mermaid 語法）
+請儲存為 week1_slides_outline.md；若已有同名檔案，先說明差異再詢問如何處理。
 </code></pre>
 <hr/>
 <h3 id="_13">階段四：生成學習單</h3>
-<p><strong>Prompt</strong>：<br/>
-<strong>Codex CLI（擇一）</strong></p>
-<pre><code class="language-bash">codex exec "根據 week1_lesson_plan.md，設計一份學習單。
+<p><strong>在 CLI 會話輸入</strong>：</p>
+<pre><code class="language-text">根據 week1_lesson_plan.md，設計一份學習單。
 
 格式：
 # 學習單：認識 AI 與語言模型
@@ -667,31 +585,13 @@ class 教師 {
 ## 第三部分：反思問題（2 題）
 ## 第四部分：延伸挑戰（選做）
 
-請以 Markdown 表格與條列方式輸出完整內容。" &gt; week1_worksheet.md
-</code></pre>
-<p><strong>Claude Code（擇一）</strong></p>
-<pre><code class="language-bash">claude -p "根據 week1_lesson_plan.md，設計一份學習單。
-
-格式：
-# 學習單：認識 AI 與語言模型
-
-## 第一部分：課前暖身（3 題）
-## 第二部分：實作紀錄
-### 任務一：設計 3 個提示詞
-| 提示詞 | AI 回應摘要 | 你的觀察 |
-|--------|------------|---------|
-| ... | ... | ... |
-
-## 第三部分：反思問題（2 題）
-## 第四部分：延伸挑戰（選做）
-
-請以 Markdown 表格與條列方式輸出完整內容。" &gt; week1_worksheet.md
+請以 Markdown 表格與條列方式輸出完整內容。
+請儲存為 week1_worksheet.md；若已有同名檔案，先說明差異再詢問如何處理。
 </code></pre>
 <hr/>
 <h3 id="_14">階段五：生成評量試題</h3>
-<p><strong>Prompt</strong>：<br/>
-<strong>Codex CLI（擇一）</strong></p>
-<pre><code class="language-bash">codex exec "根據 week1_lesson_plan.md，設計評量題目。
+<p><strong>在 CLI 會話輸入</strong>：</p>
+<pre><code class="language-text">根據 week1_lesson_plan.md，設計評量題目。
 
 # 第一週評量
 
@@ -704,27 +604,12 @@ class 教師 {
 ## 實作題（1 題）
 設計一個教學情境的 AI 應用，並說明提示詞設計
 
-請附標準答案與評分標準。" &gt; week1_assessment.md
-</code></pre>
-<p><strong>Claude Code（擇一）</strong></p>
-<pre><code class="language-bash">claude -p "根據 week1_lesson_plan.md，設計評量題目。
-
-# 第一週評量
-
-## 選擇題（5 題）
-測驗基本概念理解
-
-## 簡答題（3 題）
-測驗應用與思考
-
-## 實作題（1 題）
-設計一個教學情境的 AI 應用，並說明提示詞設計
-
-請附標準答案與評分標準。" &gt; week1_assessment.md
+請附標準答案與評分標準。
+請儲存為 week1_assessment.md；若已有同名檔案，先說明差異再詢問如何處理。
 </code></pre>
 <hr/>
 <h3 id="_15">階段六：整合所有檔案</h3>
-<p><strong>資料夾結構</strong>（第一週完成後，與上面指令一致）：</p>
+<p><strong>資料夾結構</strong>（第一週完成後，與上面提示指定的檔名一致）：</p>
 <pre><code>llm_course/
 ├── course_outline.md
 ├── week1_lesson_plan.md
@@ -733,24 +618,15 @@ class 教師 {
 └── week1_assessment.md
 </code></pre>
 <p>其他週次請同樣建立對應檔案後再整合；不存在的週次不可讓 AI 補寫成「已完成」。</p>
-<p><strong>最後整合指令</strong>：<br/>
-<strong>Codex CLI（擇一）</strong></p>
-<pre><code class="language-bash">codex exec "統整目前資料夾中 course_outline.md 與 week1_ 開頭的檔案，生成一份『完整課程手冊』，包含：
+<p><strong>最後整合提示</strong>：</p>
+<pre><code class="language-text">統整目前資料夾中 course_outline.md 與 week1_ 開頭的檔案，生成一份『完整課程手冊』，包含：
 - 目錄（自動生成連結）
 - 課程概覽
 - 各週教學內容（引用各檔案）
 - 附錄（參考資源、延伸閱讀）
 
-只回傳手冊 Markdown 內容，不要自行寫入檔案" &gt; course_handbook.md
-</code></pre>
-<p><strong>Claude Code（擇一）</strong></p>
-<pre><code class="language-bash">claude -p "統整目前資料夾中 course_outline.md 與 week1_ 開頭的檔案，生成一份『完整課程手冊』，包含：
-- 目錄（自動生成連結）
-- 課程概覽
-- 各週教學內容（引用各檔案）
-- 附錄（參考資源、延伸閱讀）
-
-只回傳手冊 Markdown 內容，不要自行寫入檔案" &gt; course_handbook.md
+請整理手冊 Markdown 內容。
+請儲存為 course_handbook.md；若已有同名檔案，先說明差異再詢問如何處理。
 </code></pre>
 <hr/>
 <h3 id="_16">完整流程圖</h3>
@@ -809,67 +685,54 @@ class 教師 {
 </tbody>
 </table>
 <hr/>
-<h2 id="_18">實用指令總結</h2>
+<h2 id="_18">實用對話提示總結</h2>
+<p>以下提示都輸入在已啟動的 CLI 會話中。需要整理 context、續接會話或查看模型與用量時，參考<a href="00_intro.html">前導章</a>的工具對照。</p>
 <h3 id="_19">多檔案整合分析</h3>
-<p><strong>Codex CLI（擇一）</strong></p>
-<pre><code class="language-bash"># 分析整個資料夾
-codex exec "分析這個資料夾的所有檔案並生成摘要"
-
-# 指定特定檔案
-codex exec "整合 file1.txt, file2.txt, file3.txt 的內容"
+<p><strong>先指定範圍，再確認已讀來源：</strong></p>
+<pre><code class="language-text">請列出這個資料夾中可供分析的教學檔案，讀取後生成摘要，並標出每個重點的來源檔名。
 </code></pre>
-<p><strong>Claude Code（擇一）</strong></p>
-<pre><code class="language-bash"># 分析整個資料夾
-claude -p "分析這個資料夾的所有檔案並生成摘要"
-
-# 指定特定檔案
-claude -p "整合 file1.txt, file2.txt, file3.txt 的內容"
+<p><strong>只需部分檔案時，縮小範圍：</strong></p>
+<pre><code class="language-text">這次只整合 file1.txt、file2.txt、file3.txt 的內容，先列出它們的共通點與差異。
 </code></pre>
 <h3 id="markdown_5">輸出為 Markdown 檔案</h3>
-<p><strong>Codex CLI（擇一）</strong></p>
-<pre><code class="language-bash"># 直接輸出
-codex exec "生成教案" &gt; lesson.md
-
-# 追加內容
-codex exec "生成評量" &gt;&gt; lesson.md
+<p><strong>第一輪：建立初稿</strong></p>
+<pre><code class="language-text">依我們剛才確認的教學目標與來源生成教案，儲存為 lesson.md。
+若同名檔案已存在，先列出現況並讓我確認處理方式。
 </code></pre>
-<p><strong>Claude Code（擇一）</strong></p>
-<pre><code class="language-bash"># 直接輸出
-claude -p "生成教案" &gt; lesson.md
-
-# 追加內容
-claude -p "生成評量" &gt;&gt; lesson.md
+<p><strong>第二輪：修改同一份產物</strong></p>
+<pre><code class="language-text">請重新讀取 lesson.md，依教學目標生成評量，加入檔案末尾的「評量」段落。
+保留既有教案，完成後列出新增內容，讓我核對。
 </code></pre>
 <h3 id="mermaid_2">使用 Mermaid 圖表</h3>
-<p><strong>Codex CLI（擇一）</strong></p>
-<pre><code class="language-bash">codex exec "設計教學流程，用 Mermaid 流程圖呈現" &gt; flow.md
-</code></pre>
-<p><strong>Claude Code（擇一）</strong></p>
-<pre><code class="language-bash">claude -p "設計教學流程，用 Mermaid 流程圖呈現" &gt; flow.md
+<pre><code class="language-text">設計教學流程，用 Mermaid 流程圖呈現，儲存為 flow.md。
+若已有同名檔案，先說明差異再詢問如何處理。
 </code></pre>
 <h3 id="_20">批次處理</h3>
-<p><strong>Codex CLI（擇一）</strong></p>
-<pre><code class="language-bash"># 為每個單元生成教案
-for unit in unit1 unit2 unit3; do
-  codex exec "閱讀 $unit/source.md，僅依來源生成教案，不要寫檔" &gt; ${unit}_plan.md
-done
+<p><strong>第一輪：確認每個單元的輸入與輸出</strong></p>
+<pre><code class="language-text">請檢查 unit1、unit2、unit3 資料夾各自的 source.md。
+列出來源是否存在、是否有內容，以及預計產生的 unit1_plan.md、unit2_plan.md、unit3_plan.md。
+每份教案只能依對應單元的來源撰寫；缺少來源就先列為待處理，不要補造內容。
 </code></pre>
-<p><strong>Claude Code（擇一）</strong></p>
-<pre><code class="language-bash"># 為每個單元生成教案
-for unit in unit1 unit2 unit3; do
-  claude -p "閱讀 $unit/source.md，僅依來源生成教案，不要寫檔" &gt; ${unit}_plan.md
-done
+<p><strong>第二輪：建立可重複使用的檢查腳本</strong></p>
+<pre><code class="language-text">請建立適合目前作業系統的腳本，檢查這三組來源與產物，並說明怎麼判定成功或失敗。
+不要在腳本中啟動另一個 AI CLI；教案內容仍由目前會話依來源生成。
+遇到缺檔、空檔或既有同名產物須列出原因，不要覆寫。先給我檢查腳本與計畫。
 </code></pre>
-<hr/>
-<p><strong>學習銜接</strong>：完成後回到<a href="04_workspace.html">單元四</a>的練習任務。</p>
+<p><strong>第三輪：逐項執行並驗收</strong></p>
+<pre><code class="language-text">依剛才確認的計畫逐單元讀取 source.md，生成對應教案並儲存。
+完成一個單元後先檢查產物，再處理下一個；全部完成後執行檢查腳本。
+請列出各單元的來源、產物路徑、檢查結果與待處理事項，不把失敗後留下的空檔當成完成。
+</code></pre>
 <h3 id="powershell-7">PowerShell 7 批次操作對照</h3>
-<p>先確認 <code>unit1</code>、<code>unit2</code>、<code>unit3</code> 各有 <code>source.md</code>，以下兩種選一種；每次產生的是獨立任務，提示需指定來源。</p>
-<pre><code class="language-powershell">foreach ($unit in @('unit1', 'unit2', 'unit3')) {
-    codex exec "閱讀 $unit/source.md，僅依來源生成教案，將 Markdown 內容回傳，不要寫檔" &gt; "${unit}_plan.md"
-    if ($LASTEXITCODE -ne 0) { throw "生成失敗：$unit" }
-}
+<p>在 Windows 上，用相同的對話流程交代平台即可，不必背誦不同的迴圈語法：</p>
+<pre><code class="language-text">我的環境是 Windows PowerShell 7，請將剛才的來源與產物檢查腳本寫成 .ps1。
+使用 unit1、unit2、unit3 各自的 source.md，檢查對應的 unit1_plan.md、unit2_plan.md、unit3_plan.md。
+外部程式失敗時須檢查結束狀態，停止並說明原因；檔案存在但沒有內容也不能算成功。
+先解釋腳本；我檢查後，再請你執行。
 </code></pre>
-<p>Claude Code 路線把該行改為 <code>claude -p "閱讀 $unit/source.md，僅依來源生成教案，將 Markdown 內容回傳，不要寫檔" &gt; "${unit}_plan.md"</code>。不把失敗後留下的空檔當成完成。</p></div>
+<p><strong>跨平台驗收重點</strong>：來源、產物名稱與教學要求保持一致；差異只在腳本語法。若中途需要更換模型或整理 context，先把完成清單與待處理事項保存為 <code>progress.md</code>，之後請 Agent 重新讀取再繼續。</p>
+<hr/>
+<p><strong>學習銜接</strong>：完成後回到<a href="04_workspace.html">單元四</a>的練習任務。</p></div>
 <!-- Highlight.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
 <script>hljs.highlightAll();</script>

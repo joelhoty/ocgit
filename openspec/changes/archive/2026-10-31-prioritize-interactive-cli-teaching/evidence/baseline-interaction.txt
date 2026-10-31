@@ -1,0 +1,228 @@
+AI_Agent_CLi/04a_workflows.md:18:| 帶第一個提示開始會話 | `codex "閱讀 lesson.txt 並摘要"` | `claude "閱讀 lesson.txt 並摘要"` |
+AI_Agent_CLi/04a_workflows.md:19:| 單次輸出後結束 | `codex exec "閱讀 lesson.txt 並摘要"` | `claude -p "閱讀 lesson.txt 並摘要"` |
+AI_Agent_CLi/04a_workflows.md:67:codex exec "分析這個資料夾中的所有檔案，整理出本週的教學重點、學生表現與需改進之處"
+AI_Agent_CLi/04a_workflows.md:72:claude -p "分析這個資料夾中的所有檔案，整理出本週的教學重點、學生表現與需改進之處"
+AI_Agent_CLi/04a_workflows.md:105:codex exec "設計教案" > lesson_plan.md
+AI_Agent_CLi/04a_workflows.md:110:claude -p "設計教案" > lesson_plan.md
+AI_Agent_CLi/04a_workflows.md:145:codex exec "整理本週教學檔案,生成週報" > weekly_report_$(date +%Y%m%d).md
+AI_Agent_CLi/04a_workflows.md:155:claude -p "整理本週教學檔案,生成週報" > weekly_report_$(date +%Y%m%d).md
+AI_Agent_CLi/04a_workflows.md:246:codex exec "設計一份國小數學「分數加減」教案，用 Markdown 格式輸出，包含：
+AI_Agent_CLi/04a_workflows.md:255:claude -p "設計一份國小數學「分數加減」教案，用 Markdown 格式輸出，包含：
+AI_Agent_CLi/04a_workflows.md:434:codex exec "我要為高中生設計『大型語言模型入門』課程，共 4 週。
+AI_Agent_CLi/04a_workflows.md:456:claude -p "我要為高中生設計『大型語言模型入門』課程，共 4 週。
+AI_Agent_CLi/04a_workflows.md:519:codex exec "根據 course_outline.md 的第一週內容，設計完整的 2 小時教案。
+AI_Agent_CLi/04a_workflows.md:541:claude -p "根據 course_outline.md 的第一週內容，設計完整的 2 小時教案。
+AI_Agent_CLi/04a_workflows.md:568:codex exec "根據 week1_lesson_plan.md，設計一份教學簡報大綱（15-20 頁）。
+AI_Agent_CLi/04a_workflows.md:589:claude -p "根據 week1_lesson_plan.md，設計一份教學簡報大綱（15-20 頁）。
+AI_Agent_CLi/04a_workflows.md:615:codex exec "根據 week1_lesson_plan.md，設計一份學習單。
+AI_Agent_CLi/04a_workflows.md:635:claude -p "根據 week1_lesson_plan.md，設計一份學習單。
+AI_Agent_CLi/04a_workflows.md:660:codex exec "根據 week1_lesson_plan.md，設計評量題目。
+AI_Agent_CLi/04a_workflows.md:678:claude -p "根據 week1_lesson_plan.md，設計評量題目。
+AI_Agent_CLi/04a_workflows.md:713:codex exec "統整目前資料夾中 course_outline.md 與 week1_ 開頭的檔案，生成一份『完整課程手冊』，包含：
+AI_Agent_CLi/04a_workflows.md:724:claude -p "統整目前資料夾中 course_outline.md 與 week1_ 開頭的檔案，生成一份『完整課程手冊』，包含：
+AI_Agent_CLi/04a_workflows.md:769:codex exec "分析這個資料夾的所有檔案並生成摘要"
+AI_Agent_CLi/04a_workflows.md:772:codex exec "整合 file1.txt, file2.txt, file3.txt 的內容"
+AI_Agent_CLi/04a_workflows.md:778:claude -p "分析這個資料夾的所有檔案並生成摘要"
+AI_Agent_CLi/04a_workflows.md:781:claude -p "整合 file1.txt, file2.txt, file3.txt 的內容"
+AI_Agent_CLi/04a_workflows.md:788:codex exec "生成教案" > lesson.md
+AI_Agent_CLi/04a_workflows.md:791:codex exec "生成評量" >> lesson.md
+AI_Agent_CLi/04a_workflows.md:797:claude -p "生成教案" > lesson.md
+AI_Agent_CLi/04a_workflows.md:800:claude -p "生成評量" >> lesson.md
+AI_Agent_CLi/04a_workflows.md:806:codex exec "設計教學流程，用 Mermaid 流程圖呈現" > flow.md
+AI_Agent_CLi/04a_workflows.md:811:claude -p "設計教學流程，用 Mermaid 流程圖呈現" > flow.md
+AI_Agent_CLi/04a_workflows.md:819:  codex exec "閱讀 $unit/source.md，僅依來源生成教案，不要寫檔" > ${unit}_plan.md
+AI_Agent_CLi/04a_workflows.md:827:  claude -p "閱讀 $unit/source.md，僅依來源生成教案，不要寫檔" > ${unit}_plan.md
+AI_Agent_CLi/04a_workflows.md:841:    codex exec "閱讀 $unit/source.md，僅依來源生成教案，將 Markdown 內容回傳，不要寫檔" > "${unit}_plan.md"
+AI_Agent_CLi/04a_workflows.md:846:Claude Code 路線把該行改為 `claude -p "閱讀 $unit/source.md，僅依來源生成教案，將 Markdown 內容回傳，不要寫檔" > "${unit}_plan.md"`。不把失敗後留下的空檔當成完成。
+AI_Agent_CLi/04_workspace.html:103:<td>帶第一個提示開始會話</td>
+AI_Agent_CLi/04_workspace.html:109:<td><code>codex exec "閱讀 lesson.txt 並摘要"</code></td>
+AI_Agent_CLi/04_workspace.html:110:<td><code>claude -p "閱讀 lesson.txt 並摘要"</code></td>
+AI_Agent_CLi/04_workspace.html:246:<pre><code class="language-bash">codex exec "您的問題或指令"
+AI_Agent_CLi/04_workspace.html:249:<pre><code class="language-bash">claude -p "您的問題或指令"
+AI_Agent_CLi/04_workspace.html:253:<pre><code class="language-bash">codex exec "你好,請自我介紹"
+AI_Agent_CLi/04_workspace.html:256:<pre><code class="language-bash">claude -p "你好,請自我介紹"
+AI_Agent_CLi/04_workspace.html:267:<pre><code class="language-bash">codex exec "請列出 3 個適合國小的數學遊戲"
+AI_Agent_CLi/04_workspace.html:270:<pre><code class="language-bash">claude -p "請列出 3 個適合國小的數學遊戲"
+AI_Agent_CLi/04_workspace.html:276:<pre><code class="language-bash">codex exec "請摘要 lesson.txt 這個檔案的內容"
+AI_Agent_CLi/04_workspace.html:279:<pre><code class="language-bash">claude -p "請摘要 lesson.txt 這個檔案的內容"
+AI_Agent_CLi/04_workspace.html:306:<pre><code class="language-bash">codex exec "請摘要這個資料夾中所有檔案,整理出本週數學課的教學重點"
+AI_Agent_CLi/04_workspace.html:309:<pre><code class="language-bash">claude -p "請摘要這個資料夾中所有檔案,整理出本週數學課的教學重點"
+AI_Agent_CLi/04_workspace.html:313:<pre><code class="language-bash">codex exec "根據 student_errors.txt,分析學生最常犯的 3 個錯誤,並建議補救教學策略"
+AI_Agent_CLi/04_workspace.html:316:<pre><code class="language-bash">claude -p "根據 student_errors.txt,分析學生最常犯的 3 個錯誤,並建議補救教學策略"
+AI_Agent_CLi/04_workspace.html:320:<pre><code class="language-bash">codex exec "根據本週教學內容與學生錯誤,建議下週的教學重點與活動"
+AI_Agent_CLi/04_workspace.html:323:<pre><code class="language-bash">claude -p "根據本週教學內容與學生錯誤,建議下週的教學重點與活動"
+AI_Agent_CLi/04_workspace.html:337:<pre><code class="language-bash">codex exec "根據 experiment_guide.txt 和 rubric.txt,檢查 student_report_1.txt 是否符合要求,列出優點與需改進之處"
+AI_Agent_CLi/04_workspace.html:340:<pre><code class="language-bash">claude -p "根據 experiment_guide.txt 和 rubric.txt,檢查 student_report_1.txt 是否符合要求,列出優點與需改進之處"
+AI_Agent_CLi/04_workspace.html:344:<pre><code class="language-bash">codex exec "分析所有 student_report 檔案,歸納出學生普遍做得好的地方,以及共同的問題"
+AI_Agent_CLi/04_workspace.html:347:<pre><code class="language-bash">claude -p "分析所有 student_report 檔案,歸納出學生普遍做得好的地方,以及共同的問題"
+AI_Agent_CLi/04_workspace.html:361:<pre><code class="language-bash">codex exec "整合這個資料夾中的所有資料,製作一份完整的教學重點摘要,包含：1. 時間軸 2. 重要事件 3. 關鍵人物 4. 教學重點"
+AI_Agent_CLi/04_workspace.html:364:<pre><code class="language-bash">claude -p "整合這個資料夾中的所有資料,製作一份完整的教學重點摘要,包含：1. 時間軸 2. 重要事件 3. 關鍵人物 4. 教學重點"
+AI_Agent_CLi/04_workspace.html:378:<pre><code class="language-bash">codex exec "根據 topic.txt 和 scoring_guide.txt,評析 essay_A.txt,提供具體的優點與改進建議,語氣要鼓勵而非批評"
+AI_Agent_CLi/04_workspace.html:381:<pre><code class="language-bash">claude -p "根據 topic.txt 和 scoring_guide.txt,評析 essay_A.txt,提供具體的優點與改進建議,語氣要鼓勵而非批評"
+AI_Agent_CLi/04_workspace.html:394:<pre><code class="language-bash">codex exec "根據這個資料夾的資料,設計一份學習單：包含 5 題單字填空、3 題文法選擇題、1 段對話填空"
+AI_Agent_CLi/04_workspace.html:397:<pre><code class="language-bash">claude -p "根據這個資料夾的資料,設計一份學習單：包含 5 題單字填空、3 題文法選擇題、1 段對話填空"
+AI_Agent_CLi/04_workspace.html:401:<pre><code class="language-bash">codex exec "根據 dialogue.txt,設計一個 15 分鐘的角色扮演活動,包含角色分配、台詞提示、延伸問題"
+AI_Agent_CLi/04_workspace.html:404:<pre><code class="language-bash">claude -p "根據 dialogue.txt,設計一個 15 分鐘的角色扮演活動,包含角色分配、台詞提示、延伸問題"
+AI_Agent_CLi/04_workspace.html:412:<pre><code class="language-bash">codex exec "請根據 ./folder_name/file.txt 檔案,進行分析"
+AI_Agent_CLi/04_workspace.html:415:<pre><code class="language-bash">claude -p "請根據 ./folder_name/file.txt 檔案,進行分析"
+AI_Agent_CLi/04_workspace.html:419:<pre><code class="language-bash">codex exec "請根據 ./lessons/week1.txt,摘要本週教學重點"
+AI_Agent_CLi/04_workspace.html:422:<pre><code class="language-bash">claude -p "請根據 ./lessons/week1.txt,摘要本週教學重點"
+AI_Agent_CLi/04_workspace.html:432:<pre><code class="language-bash">codex exec "摘要內容" &gt; output.txt
+AI_Agent_CLi/04_workspace.html:435:<pre><code class="language-bash">claude -p "摘要內容" &gt; output.txt
+AI_Agent_CLi/04_workspace.html:445:<p>若離開會話，重新開始時請提供檔案與已保存的摘要；使用續接功能前確認會話屬於同一專案。<code>codex exec</code> 或 <code>claude -p</code> 各執行一次，並不表示自動保留上次 context。</p>
+AI_Agent_CLi/04_workspace.html:524:<pre><code class="language-bash">codex exec "分析這個資料夾中所有學生的反思日記,歸納出：1. 學生覺得最困難的部分 2. 最有成就感的部分 3. 共同的疑問"
+AI_Agent_CLi/04_workspace.html:527:<pre><code class="language-bash">claude -p "分析這個資料夾中所有學生的反思日記,歸納出：1. 學生覺得最困難的部分 2. 最有成就感的部分 3. 共同的疑問"
+AI_Agent_CLi/04_workspace.html:537:<pre><code class="language-bash">codex exec "將 original.txt 改寫成三個版本：1. 簡化版(國小三年級) 2. 標準版(國小五年級) 3. 進階版(國中程度),分別輸出"
+AI_Agent_CLi/04_workspace.html:540:<pre><code class="language-bash">claude -p "將 original.txt 改寫成三個版本：1. 簡化版(國小三年級) 2. 標準版(國小五年級) 3. 進階版(國中程度),分別輸出"
+AI_Agent_CLi/07_agents_cli.html:238:<td><code>codex exec "摘要 README.md"</code></td>
+AI_Agent_CLi/07_agents_cli.html:239:<td><code>claude -p "摘要 README.md"</code></td>
+AI_Agent_CLi/07_agents_cli.html:264:<p><code>codex exec</code> 預設採唯讀沙箱；確實需要改檔時，明確指定 <code>codex exec --sandbox workspace-write "任務"</code>。先在專案執行 <code>git init</code> 建立版本追蹤；刻意在非 Git 目錄做一次性任務時才使用 <code>--skip-git-repo-check</code>。<code>claude -p</code> 受既有權限控制，不能把無人互動解讀成自動授予所有工具；初學者先用互動模式處理寫檔要求。不要將 Codex 的 <code>-p</code> 當成 Claude 的 print：Codex 的 <code>-p</code> 是設定 profile。</p>
+AI_Agent_CLi/07_agents_cli.html:270:<pre><code class="language-bash">cat script.sh | codex exec "解釋傳入腳本，不執行它"
+AI_Agent_CLi/07_agents_cli.html:271:cat script.sh | claude -p "解釋傳入腳本，不執行它"
+AI_Agent_CLi/07_agents_cli.html:274:<pre><code class="language-powershell">Get-Content -Raw -Encoding utf8 script.sh | codex exec "解釋傳入腳本，不執行它"
+AI_Agent_CLi/07_agents_cli.html:275:Get-Content -Raw -Encoding utf8 script.sh | claude -p "解釋傳入腳本，不執行它"
+AI_Agent_CLi/07_agents_cli.html:277:<p>輸出存檔可用 <code>codex exec -o summary.md "摘要 README.md"</code>；Claude 文字輸出可在 PowerShell 7 使用 <code>claude -p "摘要 README.md，只輸出 Markdown" | Set-Content -Encoding utf8 summary.md</code>。先確認目標檔不存在或可覆寫；重導向會覆寫既有檔案。文字生成的 Dockerfile 必須再檢查原始碼與執行環境，不是直接可信的部署成果。</p>
+AI_Agent_CLi/06_lesson_plans.html:103:<td>帶第一個提示開始會話</td>
+AI_Agent_CLi/06_lesson_plans.html:109:<td><code>codex exec "閱讀 lesson.txt 並摘要"</code></td>
+AI_Agent_CLi/06_lesson_plans.html:110:<td><code>claude -p "閱讀 lesson.txt 並摘要"</code></td>
+AI_Agent_CLi/04_workspace.md:14:| 帶第一個提示開始會話 | `codex "閱讀 lesson.txt 並摘要"` | `claude "閱讀 lesson.txt 並摘要"` |
+AI_Agent_CLi/04_workspace.md:15:| 單次輸出後結束 | `codex exec "閱讀 lesson.txt 並摘要"` | `claude -p "閱讀 lesson.txt 並摘要"` |
+AI_Agent_CLi/04_workspace.md:160:codex exec "您的問題或指令"
+AI_Agent_CLi/04_workspace.md:165:claude -p "您的問題或指令"
+AI_Agent_CLi/04_workspace.md:171:codex exec "你好,請自我介紹"
+AI_Agent_CLi/04_workspace.md:176:claude -p "你好,請自我介紹"
+AI_Agent_CLi/04_workspace.md:193:codex exec "請列出 3 個適合國小的數學遊戲"
+AI_Agent_CLi/04_workspace.md:198:claude -p "請列出 3 個適合國小的數學遊戲"
+AI_Agent_CLi/04_workspace.md:208:codex exec "請摘要 lesson.txt 這個檔案的內容"
+AI_Agent_CLi/04_workspace.md:213:claude -p "請摘要 lesson.txt 這個檔案的內容"
+AI_Agent_CLi/04_workspace.md:253:codex exec "請摘要這個資料夾中所有檔案,整理出本週數學課的教學重點"
+AI_Agent_CLi/04_workspace.md:258:claude -p "請摘要這個資料夾中所有檔案,整理出本週數學課的教學重點"
+AI_Agent_CLi/04_workspace.md:264:codex exec "根據 student_errors.txt,分析學生最常犯的 3 個錯誤,並建議補救教學策略"
+AI_Agent_CLi/04_workspace.md:269:claude -p "根據 student_errors.txt,分析學生最常犯的 3 個錯誤,並建議補救教學策略"
+AI_Agent_CLi/04_workspace.md:275:codex exec "根據本週教學內容與學生錯誤,建議下週的教學重點與活動"
+AI_Agent_CLi/04_workspace.md:280:claude -p "根據本週教學內容與學生錯誤,建議下週的教學重點與活動"
+AI_Agent_CLi/04_workspace.md:301:codex exec "根據 experiment_guide.txt 和 rubric.txt,檢查 student_report_1.txt 是否符合要求,列出優點與需改進之處"
+AI_Agent_CLi/04_workspace.md:306:claude -p "根據 experiment_guide.txt 和 rubric.txt,檢查 student_report_1.txt 是否符合要求,列出優點與需改進之處"
+AI_Agent_CLi/04_workspace.md:312:codex exec "分析所有 student_report 檔案,歸納出學生普遍做得好的地方,以及共同的問題"
+AI_Agent_CLi/04_workspace.md:317:claude -p "分析所有 student_report 檔案,歸納出學生普遍做得好的地方,以及共同的問題"
+AI_Agent_CLi/04_workspace.md:338:codex exec "整合這個資料夾中的所有資料,製作一份完整的教學重點摘要,包含：1. 時間軸 2. 重要事件 3. 關鍵人物 4. 教學重點"
+AI_Agent_CLi/04_workspace.md:343:claude -p "整合這個資料夾中的所有資料,製作一份完整的教學重點摘要,包含：1. 時間軸 2. 重要事件 3. 關鍵人物 4. 教學重點"
+AI_Agent_CLi/04_workspace.md:364:codex exec "根據 topic.txt 和 scoring_guide.txt,評析 essay_A.txt,提供具體的優點與改進建議,語氣要鼓勵而非批評"
+AI_Agent_CLi/04_workspace.md:369:claude -p "根據 topic.txt 和 scoring_guide.txt,評析 essay_A.txt,提供具體的優點與改進建議,語氣要鼓勵而非批評"
+AI_Agent_CLi/04_workspace.md:389:codex exec "根據這個資料夾的資料,設計一份學習單：包含 5 題單字填空、3 題文法選擇題、1 段對話填空"
+AI_Agent_CLi/04_workspace.md:394:claude -p "根據這個資料夾的資料,設計一份學習單：包含 5 題單字填空、3 題文法選擇題、1 段對話填空"
+AI_Agent_CLi/04_workspace.md:400:codex exec "根據 dialogue.txt,設計一個 15 分鐘的角色扮演活動,包含角色分配、台詞提示、延伸問題"
+AI_Agent_CLi/04_workspace.md:405:claude -p "根據 dialogue.txt,設計一個 15 分鐘的角色扮演活動,包含角色分配、台詞提示、延伸問題"
+AI_Agent_CLi/04_workspace.md:419:codex exec "請根據 ./folder_name/file.txt 檔案,進行分析"
+AI_Agent_CLi/04_workspace.md:424:claude -p "請根據 ./folder_name/file.txt 檔案,進行分析"
+AI_Agent_CLi/04_workspace.md:430:codex exec "請根據 ./lessons/week1.txt,摘要本週教學重點"
+AI_Agent_CLi/04_workspace.md:435:claude -p "請根據 ./lessons/week1.txt,摘要本週教學重點"
+AI_Agent_CLi/04_workspace.md:450:codex exec "摘要內容" > output.txt
+AI_Agent_CLi/04_workspace.md:455:claude -p "摘要內容" > output.txt
+AI_Agent_CLi/04_workspace.md:471:若離開會話，重新開始時請提供檔案與已保存的摘要；使用續接功能前確認會話屬於同一專案。`codex exec` 或 `claude -p` 各執行一次，並不表示自動保留上次 context。
+AI_Agent_CLi/04_workspace.md:543:codex exec "分析這個資料夾中所有學生的反思日記,歸納出：1. 學生覺得最困難的部分 2. 最有成就感的部分 3. 共同的疑問"
+AI_Agent_CLi/04_workspace.md:548:claude -p "分析這個資料夾中所有學生的反思日記,歸納出：1. 學生覺得最困難的部分 2. 最有成就感的部分 3. 共同的疑問"
+AI_Agent_CLi/04_workspace.md:564:codex exec "將 original.txt 改寫成三個版本：1. 簡化版(國小三年級) 2. 標準版(國小五年級) 3. 進階版(國中程度),分別輸出"
+AI_Agent_CLi/04_workspace.md:569:claude -p "將 original.txt 改寫成三個版本：1. 簡化版(國小三年級) 2. 標準版(國小五年級) 3. 進階版(國中程度),分別輸出"
+AI_Agent_CLi/06a_assessment.md:18:| 帶第一個提示開始會話 | `codex "閱讀 lesson.txt 並摘要"` | `claude "閱讀 lesson.txt 並摘要"` |
+AI_Agent_CLi/06a_assessment.md:19:| 單次輸出後結束 | `codex exec "閱讀 lesson.txt 並摘要"` | `claude -p "閱讀 lesson.txt 並摘要"` |
+AI_Agent_CLi/06a_assessment.md:578:codex exec "比較 answer_key.txt 和 student_001_answers.txt，計算正確題數與分數（每題 10 分）。列出答錯的題號。" > student_001_score.txt
+AI_Agent_CLi/06a_assessment.md:583:claude -p "比較 answer_key.txt 和 student_001_answers.txt，計算正確題數與分數（每題 10 分）。列出答錯的題號。" > student_001_score.txt
+AI_Agent_CLi/06a_assessment.md:626:codex exec "根據 rubric.txt 的評分標準，為 student_answer.txt 評分。列出給分項目與理由。"
+AI_Agent_CLi/06a_assessment.md:631:claude -p "根據 rubric.txt 的評分標準，為 student_answer.txt 評分。列出給分項目與理由。"
+AI_Agent_CLi/06a_assessment.md:678:codex exec "根據 grades.csv，計算每位學生的總成績。
+AI_Agent_CLi/06a_assessment.md:703:claude -p "根據 grades.csv，計算每位學生的總成績。
+AI_Agent_CLi/06a_assessment.md:735:codex exec "分析 grades.csv 的成績分布：
+AI_Agent_CLi/06a_assessment.md:747:claude -p "分析 grades.csv 的成績分布：
+AI_Agent_CLi/06a_assessment.md:811:codex exec "根據 writing_rubric.txt，評析 essay.txt：
+AI_Agent_CLi/06a_assessment.md:824:claude -p "根據 writing_rubric.txt，評析 essay.txt：
+AI_Agent_CLi/06a_assessment.md:854:codex exec "分析 test_results.csv：
+AI_Agent_CLi/06a_assessment.md:866:claude -p "分析 test_results.csv：
+AI_Agent_CLi/06a_assessment.md:890:codex exec "根據 grades.csv 與 grading_policy.txt 計算總成績，先列出公式再回傳 Markdown，不要寫檔" > final_grades.md
+AI_Agent_CLi/06a_assessment.md:893:codex exec "分析 grades.csv 的成績分布" > grade_analysis.md
+AI_Agent_CLi/06a_assessment.md:898:  codex exec "閱讀 grades.csv 與 final_grades.md，為代號 $student 生成個人成績草稿，不要寫檔" > "reports/${student}_report.md" </dev/null
+AI_Agent_CLi/06a_assessment.md:913:claude -p "根據 grades.csv 與 grading_policy.txt 計算總成績，先列出公式再回傳 Markdown，不要寫檔" > final_grades.md
+AI_Agent_CLi/06a_assessment.md:916:claude -p "分析 grades.csv 的成績分布" > grade_analysis.md
+AI_Agent_CLi/06a_assessment.md:921:  claude -p "閱讀 grades.csv 與 final_grades.md，為代號 $student 生成個人成績草稿，不要寫檔" > "reports/${student}_report.md" </dev/null
+AI_Agent_CLi/06a_assessment.md:980:codex exec "整合 raw_data 資料夾中的所有 CSV，合併成一份完整成績表，包含所有評量項目。只回傳 CSV 內容，不要自行寫檔" > output/grades_combined.csv
+AI_Agent_CLi/06a_assessment.md:985:claude -p "整合 raw_data 資料夾中的所有 CSV，合併成一份完整成績表，包含所有評量項目。只回傳 CSV 內容，不要自行寫檔" > output/grades_combined.csv
+AI_Agent_CLi/06a_assessment.md:992:codex exec "根據 rubrics/grading_policy.txt 的加權規則，計算 output/grades_combined.csv 的總成績與等第。" > output/final_grades.md
+AI_Agent_CLi/06a_assessment.md:997:claude -p "根據 rubrics/grading_policy.txt 的加權規則，計算 output/grades_combined.csv 的總成績與等第。" > output/final_grades.md
+AI_Agent_CLi/06a_assessment.md:1004:codex exec "分析 output/final_grades.md：
+AI_Agent_CLi/06a_assessment.md:1014:claude -p "分析 output/final_grades.md：
+AI_Agent_CLi/09_cli_practice.html:238:<td><code>codex exec "摘要 README.md"</code></td>
+AI_Agent_CLi/09_cli_practice.html:239:<td><code>claude -p "摘要 README.md"</code></td>
+AI_Agent_CLi/09_cli_practice.html:264:<p><code>codex exec</code> 預設採唯讀沙箱；確實需要改檔時，明確指定 <code>codex exec --sandbox workspace-write "任務"</code>。先在專案執行 <code>git init</code> 建立版本追蹤；刻意在非 Git 目錄做一次性任務時才使用 <code>--skip-git-repo-check</code>。<code>claude -p</code> 受既有權限控制，不能把無人互動解讀成自動授予所有工具；初學者先用互動模式處理寫檔要求。不要將 Codex 的 <code>-p</code> 當成 Claude 的 print：Codex 的 <code>-p</code> 是設定 profile。</p>
+AI_Agent_CLi/04a_workflows.html:105:<td>帶第一個提示開始會話</td>
+AI_Agent_CLi/04a_workflows.html:111:<td><code>codex exec "閱讀 lesson.txt 並摘要"</code></td>
+AI_Agent_CLi/04a_workflows.html:112:<td><code>claude -p "閱讀 lesson.txt 並摘要"</code></td>
+AI_Agent_CLi/04a_workflows.html:150:<pre><code class="language-bash">codex exec "分析這個資料夾中的所有檔案，整理出本週的教學重點、學生表現與需改進之處"
+AI_Agent_CLi/04a_workflows.html:153:<pre><code class="language-bash">claude -p "分析這個資料夾中的所有檔案，整理出本週的教學重點、學生表現與需改進之處"
+AI_Agent_CLi/04a_workflows.html:207:<pre><code class="language-bash">codex exec "設計教案" &gt; lesson_plan.md
+AI_Agent_CLi/04a_workflows.html:210:<pre><code class="language-bash">claude -p "設計教案" &gt; lesson_plan.md
+AI_Agent_CLi/04a_workflows.html:235:codex exec "整理本週教學檔案,生成週報" &gt; weekly_report_$(date +%Y%m%d).md
+AI_Agent_CLi/04a_workflows.html:243:claude -p "整理本週教學檔案,生成週報" &gt; weekly_report_$(date +%Y%m%d).md
+AI_Agent_CLi/04a_workflows.html:312:<pre><code class="language-bash">codex exec "設計一份國小數學「分數加減」教案，用 Markdown 格式輸出，包含：
+AI_Agent_CLi/04a_workflows.html:319:<pre><code class="language-bash">claude -p "設計一份國小數學「分數加減」教案，用 Markdown 格式輸出，包含：
+AI_Agent_CLi/04a_workflows.html:495:<pre><code class="language-bash">codex exec "我要為高中生設計『大型語言模型入門』課程，共 4 週。
+AI_Agent_CLi/04a_workflows.html:515:<pre><code class="language-bash">claude -p "我要為高中生設計『大型語言模型入門』課程，共 4 週。
+AI_Agent_CLi/04a_workflows.html:571:<pre><code class="language-bash">codex exec "根據 course_outline.md 的第一週內容，設計完整的 2 小時教案。
+AI_Agent_CLi/04a_workflows.html:591:<pre><code class="language-bash">claude -p "根據 course_outline.md 的第一週內容，設計完整的 2 小時教案。
+AI_Agent_CLi/04a_workflows.html:614:<pre><code class="language-bash">codex exec "根據 week1_lesson_plan.md，設計一份教學簡報大綱（15-20 頁）。
+AI_Agent_CLi/04a_workflows.html:633:<pre><code class="language-bash">claude -p "根據 week1_lesson_plan.md，設計一份教學簡報大綱（15-20 頁）。
+AI_Agent_CLi/04a_workflows.html:655:<pre><code class="language-bash">codex exec "根據 week1_lesson_plan.md，設計一份學習單。
+AI_Agent_CLi/04a_workflows.html:673:<pre><code class="language-bash">claude -p "根據 week1_lesson_plan.md，設計一份學習單。
+AI_Agent_CLi/04a_workflows.html:694:<pre><code class="language-bash">codex exec "根據 week1_lesson_plan.md，設計評量題目。
+AI_Agent_CLi/04a_workflows.html:710:<pre><code class="language-bash">claude -p "根據 week1_lesson_plan.md，設計評量題目。
+AI_Agent_CLi/04a_workflows.html:738:<pre><code class="language-bash">codex exec "統整目前資料夾中 course_outline.md 與 week1_ 開頭的檔案，生成一份『完整課程手冊』，包含：
+AI_Agent_CLi/04a_workflows.html:747:<pre><code class="language-bash">claude -p "統整目前資料夾中 course_outline.md 與 week1_ 開頭的檔案，生成一份『完整課程手冊』，包含：
+AI_Agent_CLi/04a_workflows.html:816:codex exec "分析這個資料夾的所有檔案並生成摘要"
+AI_Agent_CLi/04a_workflows.html:819:codex exec "整合 file1.txt, file2.txt, file3.txt 的內容"
+AI_Agent_CLi/04a_workflows.html:823:claude -p "分析這個資料夾的所有檔案並生成摘要"
+AI_Agent_CLi/04a_workflows.html:826:claude -p "整合 file1.txt, file2.txt, file3.txt 的內容"
+AI_Agent_CLi/04a_workflows.html:831:codex exec "生成教案" &gt; lesson.md
+AI_Agent_CLi/04a_workflows.html:834:codex exec "生成評量" &gt;&gt; lesson.md
+AI_Agent_CLi/04a_workflows.html:838:claude -p "生成教案" &gt; lesson.md
+AI_Agent_CLi/04a_workflows.html:841:claude -p "生成評量" &gt;&gt; lesson.md
+AI_Agent_CLi/04a_workflows.html:845:<pre><code class="language-bash">codex exec "設計教學流程，用 Mermaid 流程圖呈現" &gt; flow.md
+AI_Agent_CLi/04a_workflows.html:848:<pre><code class="language-bash">claude -p "設計教學流程，用 Mermaid 流程圖呈現" &gt; flow.md
+AI_Agent_CLi/04a_workflows.html:854:  codex exec "閱讀 $unit/source.md，僅依來源生成教案，不要寫檔" &gt; ${unit}_plan.md
+AI_Agent_CLi/04a_workflows.html:860:  claude -p "閱讀 $unit/source.md，僅依來源生成教案，不要寫檔" &gt; ${unit}_plan.md
+AI_Agent_CLi/04a_workflows.html:868:    codex exec "閱讀 $unit/source.md，僅依來源生成教案，將 Markdown 內容回傳，不要寫檔" &gt; "${unit}_plan.md"
+AI_Agent_CLi/04a_workflows.html:872:<p>Claude Code 路線把該行改為 <code>claude -p "閱讀 $unit/source.md，僅依來源生成教案，將 Markdown 內容回傳，不要寫檔" &gt; "${unit}_plan.md"</code>。不把失敗後留下的空檔當成完成。</p></div>
+AI_Agent_CLi/06a_assessment.html:105:<td>帶第一個提示開始會話</td>
+AI_Agent_CLi/06a_assessment.html:111:<td><code>codex exec "閱讀 lesson.txt 並摘要"</code></td>
+AI_Agent_CLi/06a_assessment.html:112:<td><code>claude -p "閱讀 lesson.txt 並摘要"</code></td>
+AI_Agent_CLi/06a_assessment.html:588:<pre><code class="language-bash">codex exec "比較 answer_key.txt 和 student_001_answers.txt，計算正確題數與分數（每題 10 分）。列出答錯的題號。" &gt; student_001_score.txt
+AI_Agent_CLi/06a_assessment.html:591:<pre><code class="language-bash">claude -p "比較 answer_key.txt 和 student_001_answers.txt，計算正確題數與分數（每題 10 分）。列出答錯的題號。" &gt; student_001_score.txt
+AI_Agent_CLi/06a_assessment.html:624:<pre><code class="language-bash">codex exec "根據 rubric.txt 的評分標準，為 student_answer.txt 評分。列出給分項目與理由。"
+AI_Agent_CLi/06a_assessment.html:627:<pre><code class="language-bash">claude -p "根據 rubric.txt 的評分標準，為 student_answer.txt 評分。列出給分項目與理由。"
+AI_Agent_CLi/06a_assessment.html:663:<pre><code class="language-bash">codex exec "根據 grades.csv，計算每位學生的總成績。
+AI_Agent_CLi/06a_assessment.html:686:<pre><code class="language-bash">claude -p "根據 grades.csv，計算每位學生的總成績。
+AI_Agent_CLi/06a_assessment.html:713:<pre><code class="language-bash">codex exec "分析 grades.csv 的成績分布：
+AI_Agent_CLi/06a_assessment.html:723:<pre><code class="language-bash">claude -p "分析 grades.csv 的成績分布：
+AI_Agent_CLi/06a_assessment.html:776:<pre><code class="language-bash">codex exec "根據 writing_rubric.txt，評析 essay.txt：
+AI_Agent_CLi/06a_assessment.html:787:<pre><code class="language-bash">claude -p "根據 writing_rubric.txt，評析 essay.txt：
+AI_Agent_CLi/06a_assessment.html:810:<pre><code class="language-bash">codex exec "分析 test_results.csv：
+AI_Agent_CLi/06a_assessment.html:820:<pre><code class="language-bash">claude -p "分析 test_results.csv：
+AI_Agent_CLi/06a_assessment.html:840:codex exec "根據 grades.csv 與 grading_policy.txt 計算總成績，先列出公式再回傳 Markdown，不要寫檔" &gt; final_grades.md
+AI_Agent_CLi/06a_assessment.html:843:codex exec "分析 grades.csv 的成績分布" &gt; grade_analysis.md
+AI_Agent_CLi/06a_assessment.html:848:  codex exec "閱讀 grades.csv 與 final_grades.md，為代號 $student 生成個人成績草稿，不要寫檔" &gt; "reports/${student}_report.md" &lt;/dev/null
+AI_Agent_CLi/06a_assessment.html:861:claude -p "根據 grades.csv 與 grading_policy.txt 計算總成績，先列出公式再回傳 Markdown，不要寫檔" &gt; final_grades.md
+AI_Agent_CLi/06a_assessment.html:864:claude -p "分析 grades.csv 的成績分布" &gt; grade_analysis.md
+AI_Agent_CLi/06a_assessment.html:869:  claude -p "閱讀 grades.csv 與 final_grades.md，為代號 $student 生成個人成績草稿，不要寫檔" &gt; "reports/${student}_report.md" &lt;/dev/null
+AI_Agent_CLi/06a_assessment.html:929:<pre><code class="language-bash">codex exec "整合 raw_data 資料夾中的所有 CSV，合併成一份完整成績表，包含所有評量項目。只回傳 CSV 內容，不要自行寫檔" &gt; output/grades_combined.csv
+AI_Agent_CLi/06a_assessment.html:932:<pre><code class="language-bash">claude -p "整合 raw_data 資料夾中的所有 CSV，合併成一份完整成績表，包含所有評量項目。只回傳 CSV 內容，不要自行寫檔" &gt; output/grades_combined.csv
+AI_Agent_CLi/06a_assessment.html:936:<pre><code class="language-bash">codex exec "根據 rubrics/grading_policy.txt 的加權規則，計算 output/grades_combined.csv 的總成績與等第。" &gt; output/final_grades.md
+AI_Agent_CLi/06a_assessment.html:939:<pre><code class="language-bash">claude -p "根據 rubrics/grading_policy.txt 的加權規則，計算 output/grades_combined.csv 的總成績與等第。" &gt; output/final_grades.md
+AI_Agent_CLi/06a_assessment.html:943:<pre><code class="language-bash">codex exec "分析 output/final_grades.md：
+AI_Agent_CLi/06a_assessment.html:951:<pre><code class="language-bash">claude -p "分析 output/final_grades.md：
+AI_Agent_CLi/00_intro.html:1429:<td><code>codex exec "任務"</code></td>
+AI_Agent_CLi/00_intro.html:1430:<td><code>claude -p "任務"</code></td>
+AI_Agent_CLi/00_intro.html:1440:<pre><code class="language-bash">codex exec --sandbox read-only "只讀取 inputs/notes.md，列出三個重點及各自的來源段落，不修改任何檔案。"
+AI_Agent_CLi/00_intro.html:1442:<pre><code class="language-bash">claude -p "只讀取 inputs/notes.md，列出三個重點及各自的來源段落，不修改任何檔案。"
+AI_Agent_CLi/06_lesson_plans.md:14:| 帶第一個提示開始會話 | `codex "閱讀 lesson.txt 並摘要"` | `claude "閱讀 lesson.txt 並摘要"` |
+AI_Agent_CLi/06_lesson_plans.md:15:| 單次輸出後結束 | `codex exec "閱讀 lesson.txt 並摘要"` | `claude -p "閱讀 lesson.txt 並摘要"` |
+AI_Agent_CLi/00_intro.md:709:| 單次任務 | `codex exec "任務"` | `claude -p "任務"` |
+AI_Agent_CLi/00_intro.md:715:codex exec --sandbox read-only "只讀取 inputs/notes.md，列出三個重點及各自的來源段落，不修改任何檔案。"
+AI_Agent_CLi/00_intro.md:719:claude -p "只讀取 inputs/notes.md，列出三個重點及各自的來源段落，不修改任何檔案。"

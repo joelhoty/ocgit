@@ -1,0 +1,3 @@
+Acceptance: no recommended command-plus-prompt examples; natural-language text prompts retain cases and output names.
+04_workspace: FAIL, 47 command-plus-prompt occurrences
+04a_workflows: FAIL, 38 command-plus-prompt occurrences

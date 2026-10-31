@@ -1,19 +1,18 @@
-<!-- Path: AI_Agent_CLi | Updated: 2026-10-31 | Version: b05-course-revision -->
-# 前導章：讓 AI Agent 成為個人工作與學習助理
+# 前導章：讓 AI Agent 成為個人工作與學習助理 {#intro}
 
 **Codex CLI／Claude Code 雙主線｜環境建置與實作教材**
 
-> 對象：具備基本電腦操作能力的高中生、教師與初學者。  
-> 主線：Windows 11 ＋ PowerShell 7 ＋ VS Code；另附 macOS 操作差異。  
-> 建議時數：6 節課，每節 50 分鐘；安裝與帳號準備可課前完成。  
-> 本課程版官方文件查核日期：2026-10-31。Codex CLI 與 Claude Code 為必選其一的主線；Antigravity 為選讀比較。原 b05 的套件盤點與測試屬 2026-10-29 歷史紀錄，並非本次重新執行。工具版本會更新，授課前請重新確認官方需求。  
-> 來源：使用者提供的完整 `00_intro.md`。原始大綱 `AI_working_env.md` 未隨本課程提供，故不建立失效連結；本課保留完整章節與練習。
+> 對象：具備基本電腦操作能力的高中生、教師與初學者。
+> Windows 使用 PowerShell 7，macOS 使用 zsh；兩條準備路線會接回相同的專案與對話練習。
+> 建議時數：6 節課，每節 50 分鐘；安裝與帳號準備可課前完成。
+> 官方文件查核日期：2026-10-31。主線從 Codex CLI／Claude Code 選一款；Antigravity 為附錄選讀。原 b05 的套件盤點與測試屬 2026-10-29 歷史紀錄，並非本次重新執行。
+> 來源：使用者提供的完整教材；本版重排閱讀順序並保留完整實作與歷史資料。原始大綱 `AI_working_env.md` 未隨課程提供，不建立失效連結。
 
-## 0. 使用方式與學習目標
+## 0. 學習路線與閱讀約定 {#learning-route}
 
-本教材從「模型為什麼需要工作環境」開始，帶你安裝工具、建立專案、交付 AI 任務，再以 Python 自動整理學習紀錄。完成後，你應能獨立建立一個可追蹤變更、可重現執行結果的個人助理專案。
+本課以「整理一份課堂筆記，交付有來源的複習資料」作為第一個完整任務。先理解 Agent，再準備環境與檔案；完成一次對話任務後，才進一步學習會話管理、維護與程式自動化。
 
-### 0.1 完成後能做到什麼
+### 0.1 完成後能做到什麼 {#learning-outcomes}
 
 1. 用 L0–L5 六層架構說明 LLM、Context、Tools 與 Harness 的關係。
 2. 分辨安裝 CLI 所需環境、CLI 本身的執行依賴，以及工作專案的依賴。
@@ -22,30 +21,38 @@
 5. 透過 `uv` 管理 Python 版本、虛擬環境與套件，並在 VS Code 選對直譯器。
 6. 依據實際輸出與測試證據驗收 AI 工作，而不是只看它的完成宣告。
 
-### 0.2 課程安排與交付物
+### 0.2 課程安排與交付物 {#course-plan}
 
-| 節次 | 主題 | 學習者交付物 |
+| 節次 | 主題與對應章節 | 學習者交付物 |
 |---|---|---|
-| 1 | Agent 分層、Workflow、工具角色 | 六層對照表與一個任務分析 |
-| 2 | 安裝 VS Code、PowerShell、Git、CLI | 版本與安裝方式紀錄 |
-| 3 | 專案資料夾與 Git | 第一次 commit、README 與忽略規則 |
-| 4 | 專案指引與 AI 文件整理 | AGENTS.md、有來源的學習重點 |
-| 5 | Python、uv、VS Code 執行與除錯 | 可執行的學習時間統計程式 |
-| 6 | 驗證、故障排查與綜合任務 | 執行紀錄、修正說明、版本紀錄 |
+| 1 | 認識 Agent、選最小環境（1–2） | 六層對照表與工具選擇 |
+| 2 | 準備電腦、專案與 CLI（3–4） | README、工具版本與登入驗證 |
+| 3 | 第一個有來源的任務（5） | 專案指引、複習資料與 Git 檢查點 |
+| 4 | 管理會話與穩定工作（6–7） | 會話進度、用量觀察與排錯紀錄 |
+| 5 | Python 延伸實作（8，選讀） | 可執行的學習時間統計程式 |
+| 6 | 練習、評量與總結（9） | 驗收證據、修正說明與版本紀錄 |
 
-**閱讀路線：**只想整理筆記，先完成第 1–7 章與第 10–12 章；想加入程式自動化，再完成第 8–9 章。主線只需從 Codex CLI 或 Claude Code 選一種，不需要全部安裝。Antigravity 的安裝、遷移與盤點是選讀內容，不列入六單元必做項目。
+**基礎路線：**依序完成第 1–7 章，再做第 9 章的基礎練習；不需要先裝 Python 或 Node.js。
+**Python 延伸：**完成基礎任務後，再進入第 8 章與第 9 章的程式評量。
+**查閱路線：**想了解原生／npm 差別、更新或盤點工具，查附錄 A；Google 工具與舊 Gemini 遷移查附錄 B；官方來源與歷史紀錄查附錄 C。
 
-### 0.3 指令閱讀約定
+每個階段都先完成前置檔案，再輸入任務。主線只安裝一款 CLI，無須同時購買多家服務。
+
+### 0.3 指令閱讀約定 {#input-conventions}
 
 - 標成 `powershell` 的區塊在 PowerShell 執行；標成 `bash` 的區塊在 macOS Terminal 的 zsh／bash 執行。
-- `transcript` 是輸入給 AI 的提示或預期輸出，不能當成終端機指令執行。
+- 標成 `shell` 的區塊是 Windows PowerShell 與 macOS zsh 都可執行的共用終端機指令。
+- `text` 用於自然語言、資料或目錄示意，依區塊前的說明判讀；自然語言任務貼在 CLI 會話內。`transcript` 是 AI 提示或預期輸出，不能當成 shell 指令執行。
+- `/model` 等斜線指令也在 CLI 會話內輸入，操作時可查[會話指令速查](#slash-commands)。
 - 每次只執行一小段，確認結果後再往下做；不要把整份講義一次貼入終端機。
 - 本教材使用 `%USERPROFILE%` 對應的個人目錄；PowerShell 的寫法是 `$env:USERPROFILE`。macOS 使用 `$HOME`。
 - 範例的姓名、郵件、版本輸出都是示意；請改成自己的值。登入憑證只在官方登入頁或指定設定位置輸入。
 
-## 1. 為什麼需要一個 AI 工作環境（Why）
+## 1. 認識 AI Agent 與工作環境 {#agent-basics}
 
-### 1.1 從問答到完成任務
+**本章目的：**分清楚模型、操作介面與工作環境，知道要提供什麼、檢查什麼。這一章不需要安裝軟體。
+
+### 1.1 從問答到完成任務 {#from-chat-to-work}
 
 在純文字問答中，你把資料貼給模型，模型回覆文字，再由你複製、修改與存檔。當資料分散在十幾個檔案，反覆貼上會造成遺漏，也難以知道內容修改了哪些地方。
 
@@ -60,7 +67,7 @@ Agent 工作方式加入了工具與回饋：系統讀取指定檔案，讓模�
 
 這是理解工作方式的教學順序，不表示所有產品都依此順序演進，也不表示 Agent 一定比固定流程好。
 
-### 1.2 環境建置解決的四個問題
+### 1.2 環境建置解決的四個問題 {#environment-purpose}
 
 **資料在哪裡？**用專案資料夾集中來源、程式、結果與規則。
 
@@ -70,9 +77,19 @@ Agent 工作方式加入了工具與回饋：系統讀取指定檔案，讓模�
 
 **如何確認正確？**先寫出可核對的預期結果，再用測試、來源比對與人工閱讀驗收。
 
-## 2. LLM 與 Agent 的六層關係（What）
+### 1.3 模型、CLI 與執行環境有何不同 {#model-cli-environment}
 
-### 2.1 引用的分層圖
+LLM 接收 context，產生文字或結構化工具請求。它不會因為知道一個檔案路徑，就自動取得該檔案；必須由宿主系統提供讀檔能力並回傳內容。
+
+Agent CLI 是你操作整套系統的入口，通常整合或連接模型、context 管理與工具執行機制。**CLI 是產品介面與程式；LLM 是其中使用的模型；Harness 是支撐任務迴圈的執行與控制機制。**同一個 CLI 可隨版本或帳號提供不同模型；相同模型放進不同環境，也可能得到不同結果。
+
+教材採用以下概念公式，幫助檢查是否漏了某個環節：
+
+> Agent 系統 ≈ 模型 ＋ 情境資料 ＋ 可用能力 ＋ 執行限制 ＋ 回饋迴圈。
+
+這不是可代入數值的數學公式，也不是每個產品的實作規格。
+
+### 1.4 引用的分層圖 {#agent-layer-diagram}
 
 ![Agent 六層同心圓模型：L0 LLM、L1 Context、L2 推理策略、L3 能力、L4 Harness、L5 環境與人](assets/agent_layers_b01.svg)
 
@@ -80,7 +97,7 @@ Agent 工作方式加入了工具與回饋：系統讀取指定檔案，讓模�
 
 **讀圖提醒：**這是一個教學用的概念分層，不是產業通用的六層標準，也不是六個必須依序安裝的軟體。圓圈表示關注範圍，並不表示工具必須存在模型內部，或每次請求都由 L0 依序走到 L5。實際執行時，各層會互相配合。
 
-### 2.2 各層如何對應本課任務
+### 1.5 各層如何對應本課任務 {#layers-in-practice}
 
 以「讀取學習筆記，產生重點與自我測驗」為例：
 
@@ -95,19 +112,7 @@ Agent 工作方式加入了工具與回饋：系統讀取指定檔案，讓模�
 
 這些分類沿用原文的架構；表中的學習情境與排查方法是本教材的延伸設計。
 
-### 2.3 模型、CLI 與執行環境有何不同
-
-LLM 接收 context，產生文字或結構化工具請求。它不會因為知道一個檔案路徑，就自動取得該檔案；必須由宿主系統提供讀檔能力並回傳內容。
-
-Agent CLI 是你操作整套系統的入口，通常整合或連接模型、context 管理與工具執行機制。**CLI 是產品介面與程式；LLM 是其中使用的模型；Harness 是支撐任務迴圈的執行與控制機制。**同一個 CLI 可隨版本或帳號提供不同模型；相同模型放進不同環境，也可能得到不同結果。
-
-教材採用以下概念公式，幫助檢查是否漏了某個環節：
-
-> Agent 系統 ≈ 模型 ＋ 情境資料 ＋ 可用能力 ＋ 執行限制 ＋ 回饋迴圈。
-
-這不是可代入數值的數學公式，也不是每個產品的實作規格。
-
-### 2.4 Prompt、Context、Tools、Skills 與 MCP
+### 1.6 Prompt、Context、Tools、Skills 與 MCP {#context-tools-skills}
 
 | 名稱 | 用途 | 初學者例子 | 不應混淆的地方 |
 |---|---|---|---|
@@ -120,7 +125,7 @@ Agent CLI 是你操作整套系統的入口，通常整合或連接模型、cont
 
 推理策略可以包含規劃、行動後觀察與自我檢查。課堂上應要求 AI 說明**簡潔的計畫、可驗證依據及結果**，不需要要求它揭露隱藏的內部思考過程。模型自我檢查仍可能犯錯，需配合外部證據。
 
-### 2.5 軟限制與硬限制
+### 1.7 軟限制與硬限制 {#guidance-and-permissions}
 
 把「不要改原始檔」寫在 AGENTS.md，是給模型的行為指引。把來源資料夾設成唯讀，則是由執行環境拒絕寫入。兩者可搭配使用。
 
@@ -135,7 +140,7 @@ Agent CLI 是你操作整套系統的入口，通常整合或連接模型、cont
 
 **硬限制不是「絕對不會出事」的保證。**它依賴權限配置、工具實作與涵蓋範圍；Hooks 也只有在會攔截並拒絕操作時，才構成相應的強制控制。記錄日誌的 Hook 不等於阻擋操作。驗證格式通過，也不代表內容事實正確。
 
-### 2.6 Agent 迴圈：圖中的各層如何合作
+### 1.8 Agent 迴圈：圖中的各層如何合作 {#agent-loop}
 
 ```mermaid
 flowchart TD
@@ -155,7 +160,7 @@ flowchart TD
 
 圖中是概念設計，並非宣稱每一款 CLI 都會自動做相同的驗收。實務上可能需要使用者明確要求測試，或在工作流程中另設檢查步驟。
 
-### 2.7 Workflow 與 Agent：誰決定下一步
+### 1.9 Workflow 與 Agent：誰決定下一步 {#workflow-and-agent}
 
 固定流程可以包含 LLM；Agent 也可以執行固定步驟。判斷重點是「下一步主要由預先定義的規則決定，還是由模型依目前結果選擇」。這個區分可參考 Anthropic 的 [Building effective agents](https://www.anthropic.com/research/building-effective-agents)。
 
@@ -170,9 +175,11 @@ flowchart TD
 
 **課堂小練習：**AI 說找不到 `notes.md`，可能是 L0 的模型能力問題嗎？先檢查 L1 是否提供檔案、L3 讀檔工具是否成功、L5 的檔名與路徑是否正確，再考慮模型理解能力。
 
-## 3. 工具地圖與安裝需求
+## 2. 選擇最小工作環境 {#minimal-environment}
 
-### 3.1 每個工具負責什麼
+**本章目的：**決定自己的平台與 CLI 路線。先看必備工具與帳號條件，安裝時再照下一章操作；暫時不需要研究每種套件發行方式。
+
+### 2.1 每個工具負責什麼 {#tool-roles}
 
 | 工具 | 主要角色 | 本課何時需要 |
 |---|---|---|
@@ -187,180 +194,19 @@ flowchart TD
 
 **VS Code 擴充功能不等於編譯器或直譯器。**例如 Python 擴充功能協助選擇環境、執行與除錯，但 Python 程式仍需要 Python 直譯器。C/C++、Java、Go、Rust 等也各有工具鏈；安裝擴充功能不代表工具鏈已裝妥。[VS Code Python 官方教學](https://code.visualstudio.com/docs/python/python-tutorial)
 
-### 3.2 CLI 還需要 Node.js 嗎？
+### 2.2 先選一款 CLI，暫不安裝 Node.js {#choose-cli}
 
-**要不要先裝 Node.js，取決於你用什麼方式安裝 CLI。**先從 Codex CLI 或 Claude Code 選一款，再選安裝方式。以下保留 Antigravity 比較欄，供已有 Google 工具的教師選讀。
+本課採 Codex CLI 的 standalone 或 Claude Code 的原生安裝路線。兩者都不需要先安裝 Node.js；已有 Node 的電腦也不必移除它。
 
-#### 3.2.1 四種安裝方式比較
+| 現在要做的事 | 需要準備的工具 |
+|---|---|
+| 讀筆記、生成複習資料 | VS Code、目前平台的 shell、Git、其中一款 Agent CLI |
+| 第 8 章 Python 統計 | 之後再安裝 uv，由 uv 管理 Python |
+| npm、JavaScript 或需要 Node 的 MCP 工具 | 真正需要時再查[Node.js 選修安裝](#node-installation) |
 
-**基本資料（原稿套件盤點日 2026-10-29；2026-10-31 複核官方安裝文件）：**
+若學校已指定安裝方式，依核准方式操作。原生、Homebrew、WinGet、npm 的差異與取捨集中在[附錄 A](#appendix-installation)。本課不要求安裝附錄 B 的 Antigravity。
 
-| 安裝方式 | 適用平台 | 三款 CLI 官方是否提供 | 安裝時需要 Node.js？ | 執行時需要 Node.js？ | 更新方式 |
-|---|---|---|---|---|---|
-| 官方安裝腳本（原生版） | Windows、macOS、Linux | Claude Code、Codex、agy 都有；本課選原生腳本為主要路線 | 否 | 否 | Claude Code、agy 在背景自動更新；Codex 重跑安裝指令或 `codex update` |
-| Homebrew cask | macOS、Linux（依各 cask 平台清單） | Claude Code、Codex、agy 都有 cask | 否 | 否 | 手動 `brew upgrade`（agy 的 cask 標示會自行更新） |
-| WinGet | Windows | 只有 Claude Code（`Anthropic.ClaudeCode`）；Codex 官方頁未列 CLI 的 WinGet，agy 官方未列 | 否 | 否 | 手動 `winget upgrade` |
-| npm | 有 Node.js 的任何平台 | Claude Code、Codex 有；agy 未提供 | **是**（Claude Code 要 22+） | Claude Code：否；Codex：**是** | 手動 `npm install -g <套件>` |
-
-**優缺點：**
-
-| 安裝方式 | 優點 | 缺點 |
-|---|---|---|
-| 官方安裝腳本 | 本課採用原生安裝；不需 Node.js、不需系統管理員權限；Claude Code 與 agy 會自動更新；三款 CLI 在三種作業系統都能用 | 要執行從網路下載的腳本（`irm ... \| iex`、`curl ... \| sh`），學校電腦可能被資安政策或 PowerShell 執行原則擋下；三款 CLI 的更新方式不一致 |
-| Homebrew | 一個工具統一安裝、更新、移除多套軟體；不需 Node.js；由 Homebrew 驗證下載檔 | 要先裝 Homebrew，並依 cask 的支援平台選用；Claude Code cask 不會自動更新，`claude-code` 跟隨 stable 頻道，約晚一週；和官方腳本各裝一份時容易混淆 |
-| WinGet | Windows 10／11 內建；學校 IT 可統一派送；不需 Node.js | 三款中只有 Claude Code 有官方套件；不會自動更新；Claude Code 執行中升級可能因檔案被鎖住而失敗 |
-| npm | 已有 Node 開發環境的人熟悉；各平台指令相同；可用 `@版本號` 固定版本 | 必須先裝 Node.js；Codex 的 npm 版每次執行都要 Node，換 Node 版本或用 nvm 切換後指令可能消失；全域安裝常遇到權限問題（不可用 `sudo npm`）；Windows 可能卡在 `npm.ps1` 執行原則；官方可用的替代方式，依實際需求選用 |
-
-本表的 Homebrew 平台與執行檔資訊可在 [Codex cask](https://formulae.brew.sh/cask/codex)、[Claude Code cask](https://formulae.brew.sh/cask/claude-code)、[Antigravity CLI cask](https://formulae.brew.sh/cask/antigravity-cli) 逐一確認；本課 macOS 路線示範 Homebrew，Linux 可依官方腳本或支援套件選用。
-
-#### 3.2.2 建議與結論
-
-| 使用者情境 | 建議的安裝方式 | 理由 |
-|---|---|---|
-| 學生、初學者（本課主線） | **官方安裝腳本** | 不需 Node；Codex 與 Claude 的安裝步驟短，但更新方式不同 |
-| macOS 且平常就用 Homebrew 管理軟體 | Homebrew cask | 統一管理；記得定期 `brew upgrade` |
-| 學校 IT 統一派送的 Windows 電腦 | Claude Code 用 WinGet；Codex 用官方部署文件的固定版本安裝腳本（5.3）；agy 用官方腳本 | 可控制版本並集中管理 |
-| 已有 Node 開發環境的進階使用者 | 仍建議官方安裝腳本；npm 只在需要固定版本時使用 | 避免 Codex 綁定 Node、避免與原生版重複安裝 |
-
-> **結論：本課建議用官方安裝腳本安裝 CLI，因此不需要先裝好 Node.js。**  
-> 安裝時不需要，之後每次執行也不需要。只有兩種情況才要裝：一是你改用 npm 安裝 CLI，二是 AI 的任務本身用到 Node（例如用 `npx` 啟動 MCP server、處理 JavaScript 專案）。Node.js 是選修項目，等真的需要時再依第 9.1 節安裝 LTS 版。
-
-| 你的情況 | 要先裝 Node.js 嗎？ | 說明 |
-|---|---|---|
-| 依本課用官方安裝腳本安裝三款 CLI 任一款 | **不用** | 安裝腳本由系統內建的 PowerShell／bash 執行，裝好的是原生執行檔 |
-| 改用 Homebrew 或 WinGet 安裝 | **不用** | 套件管理器下載的是同一份原生執行檔 |
-| 改用 npm 安裝 Claude Code | **要**，Node.js 22+ | 只有安裝時需要；裝好的 `claude` 執行時不呼叫 Node。仍建議改用官方安裝腳本 |
-| 改用 npm 安裝 Codex CLI | **要**，而且之後不能移除 | `codex` 每次都由 Node 啟動；移除或切換 Node 版本就無法執行。建議改用官方安裝腳本 |
-| AI 的任務要用 `npx` 啟動 MCP server，或處理 JavaScript 專案 | **要**，到時再裝 | 這是任務需要，與 CLI 怎麼安裝無關；依第 9.1 節安裝 LTS 版 |
-| 電腦原本就裝有 Node.js | 不用移除 | 不影響原生版 CLI；但同一台電腦只保留一種 Node 管理方式（見 9.1） |
-
-```mermaid
-flowchart TD
-    Q1{"用什麼方式安裝 CLI？"}
-    Q1 -->|官方安裝腳本、Homebrew、WinGet| N1["不需要 Node.js<br/>直接安裝 CLI"]
-    Q1 -->|npm| Y1["先安裝 Node.js LTS<br/>Codex 的 npm 版之後也要一直保留 Node"]
-    N1 --> Q2{"任務要用 npx、MCP server<br/>或 JavaScript 專案嗎？"}
-    Q2 -->|否| N2["本課全程不需要 Node.js"]
-    Q2 -->|是| Y2["那時再依 9.1 安裝 Node.js LTS"]
-```
-
-3.2.3 以後說明這個結論的根據：先把「原生版」「standalone」「npm 版」「安裝時」「執行時」這幾個詞講清楚，再逐一對照。
-
-#### 3.2.3 先分清楚四種檔案與工具
-
-| 名詞 | 是什麼 | 怎麼被執行 | 例子 |
-|---|---|---|---|
-| 原生執行檔（native binary） | 已經編譯成作業系統與 CPU 能直接執行的機器碼檔案 | 作業系統直接載入，**不需要**另外安裝直譯器 | Windows 的 `claude.exe`；macOS 的 `codex`（Mach-O 格式） |
-| 腳本（script） | 純文字的程式碼檔 | 必須由對應的直譯器讀取後執行：`.js` 要 Node.js，`.ps1` 要 PowerShell，`.sh` 要 bash | npm 版 Codex 的 `codex.js`；安裝用的 `install.ps1` |
-| 安裝腳本（installer） | 負責「下載 → 檢查 → 放到指定資料夾 → 加入 PATH」的腳本，做完就結束 | 由作業系統內建的 shell 執行（PowerShell、CMD、bash、zsh） | `https://claude.ai/install.ps1`、`https://chatgpt.com/codex/install.sh` |
-| 套件管理器（package manager） | 統一負責下載、更新、移除軟體的工具 | 它本身也是程式，各有自己的需求 | npm（**本身要 Node.js**）、Homebrew、WinGet |
-
-**重點：安裝腳本不等於 CLI 本身。**`install.ps1` 雖然是腳本，但由 Windows 內建的 PowerShell 執行，所以不需要 Node；它執行完會在電腦上留下一個原生執行檔，之後每次輸入 `claude` 跑的是那個執行檔，跟安裝腳本已經無關。
-
-#### 3.2.4 「原生版」「standalone」「npm 版」指的是什麼
-
-這三個詞描述的角度不同：「原生」說的是**最後執行的是什麼檔案**，「standalone」說的是**用什麼管道安裝**。
-
-| 本教材用語 | 定義 | 官方文件的稱呼 | 安裝後電腦上留下什麼 |
-|---|---|---|---|
-| 原生版 | 執行官方網站提供的安裝腳本，取得原生執行檔，放進使用者目錄並加入 PATH | Claude Code：Native Install；Codex：standalone installer；Antigravity：native build 安裝腳本 | 原生執行檔，例如 `~/.local/bin/claude`、`%LOCALAPPDATA%\Programs\OpenAI\Codex\bin\codex.exe` |
-| standalone 版 | Codex 官方對「原生版」的稱呼。意思是「獨立安裝」：不經過 npm 等套件管理器，也不依賴其他執行環境 | Codex：standalone | 同上，原生執行檔 |
-| Homebrew／WinGet 版 | 由套件管理器下載**同一份**原生執行檔 | 各家列為替代安裝方式 | 原生執行檔，位置由套件管理器管理（例如 `/opt/homebrew/bin/`） |
-| npm 版 | 用 `npm install -g <套件>` 安裝 | 各家列為替代安裝方式 | **依工具不同**：Claude Code 是原生執行檔；Codex 是 Node 腳本 `codex.js` 加上原生程式 |
-
-所以在本教材中，「Codex standalone 版」和「Codex 原生版」指的是同一件事；Homebrew 版也是原生執行檔，但它透過套件管理器安裝，不算 standalone。
-
-#### 3.2.5 安裝時、執行時、任務時：三個時間點各需要什麼
-
-| 時間點 | 問的問題 | 由什麼決定 | 例子 |
-|---|---|---|---|
-| 安裝時 | 把 CLI 放到電腦上的**那一次**，需要什麼工具？ | 選用的安裝方式 | 官方安裝腳本只要系統內建的 shell；npm 安裝要先有 Node.js |
-| 執行時 | **每次**輸入 `claude`、`codex`、`agy` 啟動時，作業系統實際載入什麼？ | 安裝後留下的是原生執行檔還是 Node 腳本 | 原生執行檔直接啟動；Node 腳本要先啟動 Node |
-| 任務時 | CLI 已經在跑，AI 要做的**工作**還需要什麼？ | 任務內容，跟 CLI 怎麼安裝無關 | 用 `npx` 啟動 MCP server、執行 JavaScript 專案的 `npm test`，都要 Node |
-
-```mermaid
-flowchart LR
-    subgraph S1["安裝時"]
-        A1["官方安裝腳本<br/>install.ps1、install.sh、install.cmd"]
-        A2["Homebrew、WinGet"]
-        A3["npm<br/>（需要 Node.js）"]
-    end
-    subgraph S2["電腦上留下的檔案"]
-        B1["原生執行檔"]
-        B2["Node 腳本 codex.js<br/>加上原生程式"]
-    end
-    subgraph S3["執行時"]
-        C1["作業系統直接執行<br/>不需要 Node.js"]
-        C2["先由 Node.js 執行腳本<br/>需要 Node.js"]
-    end
-    A1 --> B1
-    A2 --> B1
-    A3 -->|Claude Code| B1
-    A3 -->|Codex CLI| B2
-    B1 --> C1
-    B2 --> C2
-```
-
-#### 3.2.6 三款 CLI 逐一對照
-
-| 工具與安裝方式 | 安裝時需要 | 安裝後留下的檔案 | 執行時需要 Node.js？ | 本課選擇 |
-|---|---|---|---|---|
-| Claude Code 原生版（官方安裝腳本） | 系統內建 shell | 原生執行檔 `claude`（Windows：`claude.exe`） | 否 | **採用** |
-| Claude Code Homebrew cask／WinGet | Homebrew 或 WinGet | 同一份原生執行檔 | 否 | 可替代；預設不自動更新 |
-| Claude Code npm 版 | **Node.js 22+** 與 npm | npm 依平台下載同一份原生執行檔（套件入口為 `bin/claude.exe`） | 否 | 不建議：要先裝 Node，且容易和原生版重複安裝 |
-| Codex standalone 版（官方安裝腳本） | 系統內建 shell | 原生執行檔 `codex`（Rust 編譯） | 否 | **採用** |
-| Codex Homebrew cask | Homebrew | 同一份原生執行檔 | 否 | 可替代 |
-| Codex npm 版 | **Node.js**（套件宣告 `node >= 16`）與 npm | 套件入口 `bin/codex.js` 是 Node 腳本，再由它呼叫原生程式 | **是** | 不建議：移除或切換 Node 版本後，`codex` 就無法啟動 |
-| Antigravity CLI 原生版（官方安裝腳本） | 系統內建 shell | 原生執行檔 `agy` | 否 | **選讀，不是課程必裝** |
-| Antigravity CLI Homebrew cask | Homebrew | 原生執行檔 `agy` | 否 | 可替代 |
-
-查核方式與來源：官方安裝頁——[Claude Code Setup](https://code.claude.com/docs/en/setup)、[Codex CLI](https://learn.chatgpt.com/docs/codex/cli)、[Codex GitHub README](https://github.com/openai/codex)、[Codex Windows 部署](https://learn.chatgpt.com/docs/enterprise/windows-deployment)、[Antigravity CLI 安裝](https://antigravity.google/docs/getting-started?tab=cli)。npm 版「執行時是否需要 Node」以 `npm view <套件> engines bin` 查看：`engines` 是套件宣告的 Node 版本，`bin` 是輸入指令時實際執行的入口檔。入口是 `.js` 就由 Node 執行；入口是 `.exe` 或原生檔就不需要 Node。Homebrew cask 以 `brew info --cask <名稱>` 確認安裝內容為原生執行檔（Binary）。
-
-**自己動手確認（macOS）：**
-
-```bash
-file "$(realpath "$(command -v codex)")"
-```
-
-輸出含 `Mach-O ... executable` 代表原生執行檔；輸出含 `script text` 且第一行是 `#!/usr/bin/env node`，代表是要靠 Node 執行的腳本。Windows 與更完整的盤點方式見第 5.8 節。
-
-早期教學常以 npm 為主要入口，所以常先安裝 Node.js；這不表示所有 CLI 的歷史版本都採同一架構。本課不指定每款工具「從哪個版本開始改成原生」，以免把未查核的版本分界寫成事實。
-
-#### 3.2.7 CLI 改用 Rust 撰寫，就不需要 Node.js 了嗎？
-
-決定因素是「發行方式」，不是「撰寫語言」。
-
-| 工具 | 原生執行檔的實作（查核方式） | 原生版需要 Node？ | 仍可能需要 Node 的情況 |
-|---|---|---|---|
-| Codex CLI | Rust 編譯的原生程式（官方 repo 的 `codex-rs`；執行檔內含 `rustc` 編譯資訊） | 否 | 改用 npm 版時，`codex.js` 啟動腳本要靠 Node 執行 |
-| Claude Code | 不是 Rust；是把 JavaScript 與 Bun runtime 打包成單一執行檔（執行檔內含 `Bun v1.x` 標記） | 否；runtime 已內建，不呼叫系統 Node | npm 只用來下載；安裝時要求 Node 22+ |
-| Antigravity CLI | 官方稱「native build」，未公開實作語言 | 否 | 官方路線未列 Node 需求 |
-
-所以「Rust 寫的 → 不用 Node」只說對一半：
-
-1. **原生執行檔**（不論 Rust、Go，或把 JS runtime 一起打包）啟動時都不需要系統裝 Node。
-2. **同一工具的 npm 版**可能仍用 Node 腳本當入口，Codex 就是例子。
-3. **任務依賴**與 CLI 語言無關：MCP server 常用 `npx` 啟動、JavaScript 專案要跑 `npm test`，這些仍需要 Node。
-
-#### 3.2.8 官方安裝指令一覽
-
-依 3.2.2 的結論，三款 CLI 都用下表的官方安裝腳本安裝，就不需要先裝 Node.js；Google 路線仍為選讀。
-
-**雙主線與選讀工具的安裝方式一覽（官方文件複核日 2026-10-31）：**
-
-| 工具（指令） | 官方推薦 | Windows PowerShell | Windows CMD | macOS／Linux | 套件管理器 | 自動更新 |
-|---|---|---|---|---|---|---|
-| Claude Code（`claude`） | 原生版（官方稱 Native Install） | `irm https://claude.ai/install.ps1 \| iex` | `curl -fsSL https://claude.ai/install.cmd -o install.cmd && install.cmd && del install.cmd` | `curl -fsSL https://claude.ai/install.sh \| bash` | WinGet `Anthropic.ClaudeCode`；Homebrew `claude-code`（stable）或 `claude-code@latest` | 原生版會在背景自動更新；WinGet／Homebrew 預設不會 |
-| Codex CLI（`codex`） | 原生版（官方稱 standalone） | `powershell -ExecutionPolicy ByPass -c "irm https://chatgpt.com/codex/install.ps1 \| iex"` | 官方未提供；開新的 PowerShell 視窗執行 | `curl -fsSL https://chatgpt.com/codex/install.sh \| sh` | Homebrew `brew install --cask codex`；npm `npm install -g @openai/codex` | 官方更新方式：重跑安裝指令（支援 self-update 的發行版可用 `codex update`） |
-| Antigravity CLI（`agy`） | 原生版（官方安裝腳本） | `irm https://antigravity.google/cli/install.ps1 \| iex` | `curl -fsSL https://antigravity.google/cli/install.cmd -o install.cmd && install.cmd && del install.cmd` | `curl -fsSL https://antigravity.google/cli/install.sh \| bash` | Homebrew `brew install --cask antigravity-cli`（需 macOS 12+） | 執行時在背景自動更新 |
-
-若在 Markdown 原始碼中看到表格內的 `\|`，那是表格的跳脫寫法；實際輸入終端機時只打 `|`。複製指令時以第 5 章程式碼區塊為準。
-
-### 3.3 選讀比較：Antigravity CLI（agy）
-
-Google 的 Agent CLI 已由 Gemini CLI（`gemini`）改為 Antigravity CLI（`agy`），本教材的 Google 路線只使用 `agy`。`agy` 是原生 binary，不需要 Node.js。原本為 Gemini CLI 寫的 `GEMINI.md` 在 `agy` 中仍會生效；電腦上還留有舊 `gemini` 指令的人，依第 5.5 節遷移後移除。[官方遷移說明](https://antigravity.google/docs/cli/gcli-migration)
-
-### 3.4 作業系統、帳號與資源
+### 2.3 作業系統、帳號與資源 {#platform-account-requirements}
 
 | 項目 | 本課做法 | 說明 |
 |---|---|---|
@@ -375,19 +221,20 @@ Google 的 Agent CLI 已由 Gemini CLI（`gemini`）改為 Antigravity CLI（`ag
 |---|---|
 | Claude Code | macOS 13.0+；Windows 10 1809+ 或 Windows Server 2019+；Ubuntu 20.04+、Debian 10+、Alpine 3.19+；4 GB+ RAM；x64 或 ARM64 |
 | Codex CLI | 安裝腳本支援 macOS（Apple Silicon、Intel）、Linux（x86_64、arm64）與原生 Windows；官方未另列記憶體門檻 |
-| Antigravity CLI | 安裝腳本支援 64 位元 Windows、macOS、Linux；Homebrew cask 標示 macOS 12+；官方未另列 CLI 專用的記憶體門檻 |
 
-Antigravity 的 App、CLI、IDE、SDK 是不同介面，不把 App 的最低 OS 或 SDK 的 Python 需求直接套到 CLI。[Claude Code 需求](https://code.claude.com/docs/en/setup)、[Codex GitHub README](https://github.com/openai/codex)、[Antigravity 各介面](https://antigravity.google/docs/getting-started?tab=cli)
+Google 選讀工具的需求另見附錄 B。[Claude Code 需求](https://code.claude.com/docs/en/setup)、[Codex GitHub README](https://github.com/openai/codex)、[Antigravity 各介面](https://antigravity.google/docs/getting-started?tab=cli)
 
 授課前先在一台與教室相同的電腦測試登入與基本任務。課堂不需要同時購買多家服務；使用可用的一種即可。
 
-## 4. Windows 基礎環境安裝（How）
+## 3. 準備電腦與專案資料夾 {#workspace-setup}
 
-### 4.1 安裝順序
+**本章目的：**讓編輯器、終端機與 Git 可以使用，並準備後續任務共同使用的資料夾。Windows 讀 3.2，macOS 讀 3.3，再一起完成 3.4–3.7。此時還不需要啟動 Agent。
+
+### 3.1 安裝順序 {#setup-order}
 
 ```mermaid
 flowchart TD
-    A["檢查作業系統、網路與帳號"] --> B["安裝 VS Code、PowerShell、Git"]
+    A["檢查作業系統、網路與帳號"] --> B["準備 VS Code、平台 shell、Git"]
     B --> C["建立專案資料夾"]
     C --> D["選一款原生 Agent CLI"]
     D --> E["登入並完成讀檔任務"]
@@ -397,7 +244,9 @@ flowchart TD
     F -->|筆記整理| I["繼續文件與 Git 練習"]
 ```
 
-### 4.2 安裝 VS Code
+### 3.2 Windows：VS Code、PowerShell 與 Git {#windows-setup}
+
+#### 3.2.1 安裝 VS Code {#windows-vscode}
 
 1. 開啟 [VS Code Windows 官方安裝說明](https://code.visualstudio.com/docs/setup/windows)，下載適合電腦架構的安裝程式。
 2. 一般個人電腦可選 User Setup；依精靈完成安裝，確認加入 PATH 的選項。
@@ -413,7 +262,7 @@ code --version
 
 Markdown 預覽可使用 `Ctrl+Shift+V`。Mermaid 是否顯示，取決於閱讀器與擴充功能；圖表不顯示時仍可閱讀相鄰文字與表格，或在支援 Mermaid 的 Obsidian 閱讀模式開啟。
 
-### 4.3 安裝 PowerShell 7
+#### 3.2.2 安裝 PowerShell 7 {#windows-powershell}
 
 在開始功能表開啟 Windows PowerShell，先檢查 WinGet：
 
@@ -437,29 +286,45 @@ $PSVersionTable.PSVersion
 
 在 VS Code 執行 `Terminal: Select Default Profile`，選 PowerShell 7，再建立新終端機。已存在的舊終端機不會自動切換 shell。
 
-### 4.4 安裝 Git
+#### 3.2.3 安裝 Git {#windows-git}
 
 1. 從 [Git for Windows 官方下載頁](https://git-scm.com/install/windows) 取得安裝程式。
 2. 依精靈安裝，讓命令列可使用 Git；初學者通常可保留預設選項。
 3. 重開終端機，執行：
 
-```powershell
+```shell
 git --version
 ```
 
 **成功判準：**顯示 Git 版本。Git 是本機版本控制工具，GitHub 是遠端代管平台；本課本機練習不需要 GitHub 帳號。
 
-### 4.5 先學會五個終端機操作
+### 3.3 macOS：VS Code、zsh 與 Git {#macos-setup}
 
-| 目的 | PowerShell 指令 | 解讀 |
+1. 從 VS Code 官方下載適合 Apple Silicon 或 Intel 的版本，移入 Applications。
+2. 在 VS Code 命令選擇區執行 `Shell Command: Install 'code' command in PATH`，再重開終端機。[VS Code macOS 官方說明](https://code.visualstudio.com/docs/setup/mac)
+3. 執行 `git --version`。若尚未安裝，依系統提示安裝開發者命令列工具，或依 [Git macOS 安裝頁](https://git-scm.com/install/mac) 選擇方式。
+
+macOS 直接使用 Terminal 的 zsh，或 VS Code 的整合終端機，不必為本課另外安裝 PowerShell。完成後接著看下方對照，再建立共同專案。
+
+### 3.4 看懂目前位置與平台指令 {#terminal-basics}
+
+macOS 可直接使用 Terminal 的 zsh，或 VS Code 整合終端機。PowerShell 是 Windows 主線選擇，不是 Agent 的通用必要條件。
+
+| 操作 | Windows PowerShell | macOS zsh／bash |
 |---|---|---|
-| 看目前位置 | `Get-Location` | 後續相對路徑從這裡算起 |
-| 列出檔案 | `Get-ChildItem` | 查看工作資料夾 |
-| 進入資料夾 | `Set-Location "路徑"` | 路徑有空白時加引號 |
-| 回上一層 | `Set-Location ..` | `..` 代表父資料夾 |
-| 查指令來源 | `Get-Command git` | 顯示目前找到哪一個程式 |
+| 個人目錄 | `$env:USERPROFILE` | `$HOME` |
+| 顯示位置 | `Get-Location` | `pwd` |
+| 列出檔案 | `Get-ChildItem` | `ls` |
+| 切換目錄 | `Set-Location "路徑"` | `cd "路徑"` |
+| 建立資料夾 | `New-Item -ItemType Directory -Path ... -Force` | `mkdir -p ...` |
+| 查找程式 | `Get-Command uv` | `command -v uv` |
+| 多個同名程式 | `Get-Command uv -All` | `type -a uv` |
+| npm 入口 | `npm.cmd` 或 `npm` | `npm` |
+| Python 環境入口 | `.venv\Scripts\python.exe` | `.venv/bin/python` |
 
-練習：
+回上一層可用 PowerShell `Set-Location ..` 或 macOS `cd ..`；路徑包含空白時加引號。先確認目前位置，再執行相對路徑的操作。
+
+**Windows 小練習：**
 
 ```powershell
 New-Item -ItemType Directory -Path "$env:USERPROFILE\AI-Lab" -Force
@@ -468,276 +333,40 @@ Get-Location
 Get-ChildItem
 ```
 
-`-Force` 在這個建立資料夾的例子中，允許資料夾已存在；它不是所有命令都適用的「安全模式」。
+**macOS 小練習：**
 
-## 5. 安裝並啟動一款 Agent CLI
+```bash
+mkdir -p "$HOME/AI-Lab"
+cd "$HOME/AI-Lab"
+pwd
+ls
+```
 
-### 5.1 選擇路線
+PowerShell 的 `-Force` 在這個建立資料夾的例子中允許資料夾已存在；它不是所有命令都適用的「安全模式」。
 
-下列 A、B、C **任選一條**。先建立空白練習資料夾，再在該資料夾啟動 CLI。安裝腳本會下載並執行程式，應使用以下官方網址；受管理的電腦則依學校核准的方式安裝。
+### 3.5 建立共同專案結構 {#project-folders}
 
-所有路線都先完成：
+依自己的平台執行一組指令，建立本課的 `study-assistant`。如果已有同名專案，先確認內容，不要把陌生資料夾當成空白練習。
+
+**Windows PowerShell：**
 
 ```powershell
 New-Item -ItemType Directory -Path "$env:USERPROFILE\AI-Lab\study-assistant" -Force
-Set-Location "$env:USERPROFILE\AI-Lab\study-assistant"
-```
-
-### 5.2 路線 A：Claude Code
-
-**帳號前提：**準備支援 Claude Code 的 Claude 訂閱、Claude Console（API）帳號，或學校核准的雲端供應商存取方式；官方入門目前列有 Pro、Max、Ultra、Team、Enterprise。能登入一般聊天頁面，不代表已取得 CLI 額度。方案、組織與地區資格以登入時顯示為準。
-
-在 PowerShell 執行官方原生安裝指令（不需要以系統管理員身分執行）：
-
-```powershell
-irm https://claude.ai/install.ps1 | iex
-```
-
-`irm` 取得遠端內容，`iex` 執行取得的內容。安裝過程不會顯示下載進度，請等待指令結束。若你開的是 CMD（提示字元沒有 `PS`），改用：
-
-```batch
-curl -fsSL https://claude.ai/install.cmd -o install.cmd && install.cmd && del install.cmd
-```
-
-在 Windows PowerShell 5.1 貼含 `&&` 的 CMD 指令，可能出現 `The token '&&' is not a valid statement separator`；PowerShell 7 雖支援 `&&`，仍不應混貼 CMD 版指令。在 CMD 貼 PowerShell 指令則可能出現 `'irm' is not recognized`。先確認 shell，再選對指令。
-
-安裝後開啟新終端機，回到專案資料夾：
-
-```powershell
-Set-Location "$env:USERPROFILE\AI-Lab\study-assistant"
-claude --version
-claude doctor
-claude
-```
-
-**成功判準：**`claude --version` 印出類似 `2.1.xxx (Claude Code)` 的版本；`claude doctor` 不啟動對話，只列出安裝健康狀態、設定檔錯誤與自動更新結果。接著執行 `claude`，依瀏覽器提示登入，確認目前工作路徑與信任範圍。
-
-| 項目 | 官方說明 | 本課做法 |
-|---|---|---|
-| Node.js | 原生路線不需要 | 不安裝 |
-| Git for Windows | 選用；有安裝時 Bash 與 Monitor 工具使用 Git Bash，沒有安裝時改用 PowerShell 工具執行命令 | 第 4.4 節已安裝，可直接使用 |
-| 更新 | 原生版會在背景自動更新，下次啟動生效；也可手動 `claude update` | 不要再用 npm 疊裝第二份 |
-| WSL | 可在 WSL 內改用 Linux 安裝指令；只有 WSL 2 支援 sandbox | 第一堂課不混用 WSL |
-| 替代安裝 | `winget install Anthropic.ClaudeCode`（不會自動更新，需 `winget upgrade Anthropic.ClaudeCode`） | 學校統一派送時可用 |
-
-[官方安裝與需求](https://code.claude.com/docs/en/setup)、[官方入門](https://code.claude.com/docs/en/quickstart)
-
-### 5.3 路線 B：Codex CLI
-
-[Codex CLI 官方頁](https://learn.chatgpt.com/docs/codex/cli)的「Install Codex」區塊提供四個分頁，每個分頁都附「安裝」與「更新」兩行指令（查核日 2026-10-29）：
-
-| 官方分頁 | 官方說明 | 安裝指令 | 更新指令 | 本課選擇 |
-|---|---|---|---|---|
-| macOS/Linux | standalone installer | `curl -fsSL https://chatgpt.com/codex/install.sh \| sh` | 與安裝指令相同，重跑一次 | macOS 採用（見 10.2） |
-| Windows | standalone installer，需從新的 PowerShell 視窗執行 | `powershell -ExecutionPolicy ByPass -c "irm https://chatgpt.com/codex/install.ps1 \| iex"` | 與安裝指令相同，重跑一次 | **Windows 採用** |
-| npm | 「也可以」用 npm 安裝 | `npm install -g @openai/codex` | `npm install -g @openai/codex` | 不採用：執行時需要 Node（見 3.2） |
-| Homebrew | 「也可以」用 Homebrew 安裝 | `brew install --cask codex` | `brew upgrade --cask codex` | macOS 替代方式 |
-
-官方頁沒有提供 WinGet 或 CMD 版本的 CLI 安裝指令；Windows 一律開新的 PowerShell 視窗執行。
-
-開一個新的 PowerShell 視窗，執行官方 Windows 分頁的安裝指令：
-
-```powershell
-powershell -ExecutionPolicy ByPass -c "irm https://chatgpt.com/codex/install.ps1 | iex"
-```
-
-這裡 `ByPass` 僅用於這次啟動的安裝程序，不是永久修改整台電腦的執行原則。安裝程式會把指令放在 `%LOCALAPPDATA%\Programs\OpenAI\Codex\bin`，並加入目前使用者的 PATH。
-
-若想先看過腳本再執行，或學校要求固定版本，可改用官方部署文件的「先下載、再執行」寫法：
-
-```powershell
-$codexInstallerPath = Join-Path $env:TEMP "codex-install.ps1"
-Invoke-WebRequest -UseBasicParsing -Uri "https://chatgpt.com/codex/install.ps1" -OutFile $codexInstallerPath
-powershell -ExecutionPolicy Bypass -File $codexInstallerPath
-```
-
-學校統一派送時，可在最後一行加上 `-Release <核准的版本號>` 固定版本；未指定時安裝 `latest`。若組織政策拒絕執行腳本，使用管理員提供的核准方式。[官方 Windows CLI 部署方式](https://learn.chatgpt.com/docs/enterprise/windows-deployment)、[Codex GitHub README](https://github.com/openai/codex)
-
-開新終端機，回到專案：
-
-```powershell
-Set-Location "$env:USERPROFILE\AI-Lab\study-assistant"
-codex --version
-codex
-```
-
-首次啟動選「Sign in with ChatGPT」或其他可用方式登入；確認任務權限後開始。可用 `/status` 查看狀態，`/permissions` 檢查權限選項；各版 UI 以目前顯示為準。之後要更新，官方做法是重新執行同一行安裝指令；支援自我更新的正式發行版另可使用 `codex update`；不是每種建置都支援，套件管理器安裝請沿用相應更新方式。參考 [Codex CLI 指令](https://learn.chatgpt.com/docs/developer-commands?surface=cli)。[Codex CLI 官方頁](https://learn.chatgpt.com/docs/codex/cli)
-
-**本課選 standalone；若已用 npm，先確認依賴與版本，再決定是否轉換。**npm 套件 `@openai/codex` 的 `codex` 指令是由 Node.js 執行的啟動腳本，日後移除或切換 Node 版本就可能無法啟動；standalone 版沒有這個依賴。
-
-### 5.4 選讀路線 C：Antigravity CLI
-
-在 PowerShell 執行：
-
-```powershell
-irm https://antigravity.google/cli/install.ps1 | iex
-```
-
-若在 CMD，改用：
-
-```batch
-curl -fsSL https://antigravity.google/cli/install.cmd -o install.cmd && install.cmd && del install.cmd
-```
-
-Windows 的預設安裝位置是 `C:\Users\<使用者名稱>\AppData\Local\agy\bin`。開新終端機後：
-
-```powershell
-Set-Location "$env:USERPROFILE\AI-Lab\study-assistant"
-agy --version
-agy
-```
-
-首次啟動會依序設定配色、顯示模式（Alt-Screen 或 Inline）、登入與工作區信任。個人 Google 帳號（免費、Pro、Ultra）選 `oauth-personal`；學校若提供 Gemini API 金鑰或企業方案，依管理員指示選擇對應的驗證方式。
-
-`agy` 會在執行時於背景自動更新。遇到更新失敗時，先核對安裝來源、PATH 與官方故障排除，不要先刪除正在使用的執行檔。這裡安裝的是 `agy` CLI binary，不是透過 npm 安裝 `gemini`，也不是安裝 Python SDK。[Antigravity CLI 官方入門](https://antigravity.google/docs/getting-started?tab=cli)、[官方更新排錯](https://antigravity.google/docs/cli/troubleshooting)
-
-### 5.5 選讀：舊 gemini 指令遷移到 agy
-
-本課新學習者完成路線 A 或 B 即可，跳過本節。只有想採用 Google 路線的人才需要路線 C。電腦上還有舊 `gemini` 指令的人，依下列步驟把設定搬到 `agy` 後移除：
-
-1. 依路線 C 安裝 `agy`，第一次執行時若偵測到舊設定，會出現遷移清單，可勾選要轉移的項目。
-2. 擴充功能（extensions）用下列指令轉成 Antigravity 外掛：
-
-```powershell
-agy plugin import gemini
-```
-
-3. 工作區 `GEMINI.md`、`AGENTS.md` 與全域 `~/.gemini/GEMINI.md` 不需轉換，仍會生效。
-4. 工作區技能不會自動轉移：把 `.gemini/skills/` 手動移到 `.agents/skills/`。
-5. MCP 設定改放 `~/.gemini/config/mcp_config.json`（全域）或 `.agents/mcp_config.json`（工作區）；遠端伺服器的 `url` 或 `httpUrl` 欄位要改名為 `serverUrl`。
-
-確認 `agy` 可正常工作後，再移除舊的 Gemini CLI：
-
-```powershell
-npm.cmd uninstall -g @google/gemini-cli
-```
-
-macOS 用 `npm uninstall -g @google/gemini-cli`；以 Homebrew 安裝者改用 `brew uninstall gemini-cli`。若用 nvm 管理多個 Node 版本，每個裝過 Gemini CLI 的 Node 版本都要各移除一次，最後用 `type -a gemini`（Windows：`Get-Command gemini -All`）確認已找不到指令。
-
-移除 Gemini CLI 不代表要移除 Node.js：若其他專案或 MCP server 仍使用 Node，保留即可。[Antigravity 遷移文件](https://antigravity.google/docs/cli/gcli-migration)
-
-### 5.6 第一次對話的共同驗證
-
-在所選 CLI 的對話輸入區貼上：
-
-```transcript
-請只讀取並回報目前工作資料夾。
-列出你實際能取得的檔案名稱，說明你現在有哪些讀檔、寫檔或執行命令的能力。
-不要建立或修改檔案，不要安裝套件。
-若無法取得某項資訊，請明確說明，不要猜測。
-```
-
-**成功判準：**有實際工具結果支持工作目錄與檔案清單。若資料夾是空的，回報空資料夾是合理結果。
-
-CLI 自述能力不是完整的權限稽核；再查看產品提供的權限畫面、日誌或工具執行紀錄。若它只用文字猜測目錄，要求實際讀取後重答。
-
-### 5.7 記錄安裝方式與更新方式
-
-在稍後建立的 `README.md` 記錄「工具名稱、版本、安裝方式、查核日期」，避免日後不知道是 npm 版還是原生版。
-
-| 工具與安裝來源 | 更新方式 | 移除方式 |
-|---|---|---|
-| Claude Code 原生版 | 背景自動更新；手動 `claude update` | macOS：刪除 `~/.local/bin/claude` 與 `~/.local/share/claude`；Windows：刪除 `%USERPROFILE%\.local\bin\claude.exe` 與 `%USERPROFILE%\.local\share\claude` |
-| Claude Code WinGet | `winget upgrade Anthropic.ClaudeCode` | `winget uninstall Anthropic.ClaudeCode` |
-| Claude Code Homebrew | `brew upgrade claude-code`（或 `claude-code@latest`） | `brew uninstall --cask claude-code` |
-| Claude Code npm | `npm install -g @anthropic-ai/claude-code@latest`（不要用 `npm update -g`） | `npm uninstall -g @anthropic-ai/claude-code` |
-| Codex standalone | 重跑官方安裝指令；支援 self-update 的發行版可用 `codex update` | 官方頁未提供移除指令 |
-| Codex Homebrew | `brew upgrade --cask codex` | `brew uninstall --cask codex` |
-| Codex npm | `npm install -g @openai/codex`（官方頁的更新指令與安裝指令相同） | `npm uninstall -g @openai/codex` |
-| Antigravity CLI 原生版 | 執行時背景自動更新 | 刪除 `agy` 執行檔（位置見路線 C） |
-| Antigravity CLI Homebrew | 套件標示會自行更新；必要時 `brew upgrade --cask antigravity-cli` | `brew uninstall --cask antigravity-cli` |
-
-Windows 上 npm 指令請用 `npm.cmd`。不要對同一個工具用兩種來源各裝一份；兩份並存時，執行的是 PATH 中排在前面的那份，另一份會停在舊版。
-
-### 5.8 盤點既有安裝：這台電腦的 CLI 從哪裡來？
-
-接手一台已經裝過工具的電腦（例如教師自己的筆電），先盤點再決定要不要重裝。步驟：
-
-1. 列出同名指令的所有來源。
-2. 追到實際執行檔，看它是原生程式還是 Node 腳本。
-3. 對照第 3.2 節，判斷安裝方式與 Node 依賴。
-
-macOS：
-
-```bash
-for c in claude codex agy gemini node npm; do echo "== $c"; type -a "$c"; done
-realpath "$(command -v claude)"
-file "$(realpath "$(command -v codex)")"
-head -1 "$(realpath "$(command -v gemini)")"
-npm ls -g --depth=0
-```
-
-Windows PowerShell：
-
-```powershell
-foreach ($c in "claude","codex","agy","gemini","node","npm") { "== $c"; Get-Command $c -All -ErrorAction SilentlyContinue | Select-Object Source }
-npm.cmd ls -g --depth=0
-winget list --name Claude
-```
-
-| 看到的路徑或內容 | 代表的安裝方式 | 是否依賴 Node |
-|---|---|---|
-| `~/.local/bin/claude` 指向 `~/.local/share/claude/versions/<版本>` | Claude Code 原生版 | 否 |
-| `~/.local/bin/codex` 指向 `~/.codex/packages/standalone/...`，或 `%LOCALAPPDATA%\Programs\OpenAI\Codex\bin` | Codex standalone | 否 |
-| `~/.local/bin/agy` 或 `AppData\Local\agy\bin` | Antigravity CLI 原生版 | 否 |
-| 路徑在 `/opt/homebrew/` 或 `Caskroom` 下 | Homebrew | 否（Gemini CLI formula 除外） |
-| 路徑在 `node_modules` 下、`head -1` 顯示 `#!/usr/bin/env node` | npm 全域安裝 | 是 |
-| 路徑在 `~/.nvm/versions/node/<版本>/` 下 | 由 nvm 管理的 Node 底下的 npm 全域套件 | 是；切換 Node 版本後指令可能消失 |
-
-**判讀範例（教師筆電，查核日 2026-10-29）：**
-
-| 工具 | 盤點結果 | 判讀與建議 |
-|---|---|---|
-| Claude Code 2.1.312 | 原生版，Mach-O arm64 | 符合官方推薦；不需處理 |
-| Codex 0.165.0 | standalone 版，Mach-O arm64 | 歷史盤點的 standalone 安裝；依官方方式重跑安裝或使用支援的 `codex update` |
-| Antigravity CLI | 未安裝 | 若要示範 Google 路線，用官方腳本安裝 |
-| Gemini CLI 0.42.0 | npm 全域安裝，nvm 的 Node 22.20.0 與 `/usr/local` 的 Node 22.14.0 各有一份 | 已被 `agy` 取代且重複安裝；依 5.5 遷移到 `agy` 後移除兩份 |
-| Node.js | nvm 22.20.0、`/usr/local` 官方安裝包 22.14.0、Homebrew `node` 24.x（未連結） | 三個來源並存，容易讓 `npm -g` 裝到非預期位置；保留一個管理方式即可 |
-
-同名指令出現多個版本時，先確認目前使用哪一份，再處理舊安裝，避免誤刪正在使用的版本。
-
-### 5.9 從互動到單次任務：雙 CLI 最小操作對照
-
-以下指令在 shell 執行；對話內的 `/status`、`/permissions`、`/memory` 等指令不可直接貼到 PowerShell。先完成第 6 章的專案與 Git 初始化，再做單次讀檔練習。
-
-| 目的 | Codex CLI | Claude Code |
-|---|---|---|
-| 啟動互動會話 | `codex` | `claude` |
-| 查看命令說明 | `codex --help` | `claude --help` |
-| 接續既有工作 | `codex resume` | `claude -c`（目前目錄最近會話）或 `claude -r` |
-| 檢查登入 | `codex login status` | 在會話使用 `/status`；需要重新登入用 `/login` |
-| 單次任務 | `codex exec "任務"` | `claude -p "任務"` |
-| 權限檢查 | 會話內 `/permissions` | 會話內 `/permissions` |
-
-**練習輸入：**第 7.4 節的 `inputs/notes.md`。在專案根目錄執行所選工具的一行：
-
-```bash
-codex exec --sandbox read-only "只讀取 inputs/notes.md，列出三個重點及各自的來源段落，不修改任何檔案。"
-```
-
-```bash
-claude -p "只讀取 inputs/notes.md，列出三個重點及各自的來源段落，不修改任何檔案。"
-```
-
-以上兩行同樣可在 PowerShell 使用。Codex 的 read-only 是 sandbox 設定；Claude 範例中的「不修改」只是文字要求，不能當成檔案系統唯讀。授課時仍應先檢查權限。非互動模式不能靠後續問答補齊授權；若被拒絕，回互動模式釐清所需操作，不要直接關閉所有保護。
-
-**預期產物：**終端機中的三個重點與來源段落。**驗收：**逐點對回筆記、確認沒有額外新增事實，再檢查 `git status --short`；已存在的未提交內容不能誤算為本次改動。這只是練習設計，未在編寫本教材時替學習者呼叫模型。
-
-來源：[Codex CLI 指令](https://learn.chatgpt.com/docs/developer-commands?surface=cli)、[Claude Code CLI reference](https://code.claude.com/docs/en/cli-reference)、[Claude Code 互動指令](https://code.claude.com/docs/en/interactive-mode)。
-
-## 6. 用資料夾與 Git 管理專案
-
-### 6.1 建立一致的專案結構
-
-在 VS Code 開啟 `study-assistant` 資料夾。先在 CLI 結束對話，或另外開一個 PowerShell 終端機，避免把 shell 指令誤貼到 AI 對話輸入區。
-
-```powershell
 Set-Location "$env:USERPROFILE\AI-Lab\study-assistant"
 New-Item -ItemType Directory -Path "inputs", "outputs", "scripts" -Force
 code .
 ```
 
-在 VS Code 檔案總管建立 `README.md`、`AGENTS.md`、`.gitignore`。先完成本章的 README 與忽略規則，AGENTS.md 的內容在下一章填入。
+**macOS zsh：**
+
+```bash
+mkdir -p "$HOME/AI-Lab/study-assistant"
+cd "$HOME/AI-Lab/study-assistant"
+mkdir -p inputs outputs scripts
+code .
+```
+
+在 VS Code 檔案總管建立 `README.md`、`AGENTS.md`、`.gitignore`。先完成本章的 README 與忽略規則；指引內容會在[首次任務](#project-instructions)填入，Claude 路線另建立 CLAUDE.md。
 
 ```text
 study-assistant/
@@ -753,9 +382,9 @@ Git 不追蹤空資料夾；建立檔案後才會看到資料夾內的項目進�
 
 **位置建議：**初學練習放在本機個人資料夾即可。雲端同步適合文件，但不宜在多台電腦間直接同步 `.venv` 或 `node_modules`；這些環境依平台而異，也會造成大量同步項目。程式專案可保留本機工作副本，再用 Git 遠端或備份機制保護必要資料。
 
-### 6.2 撰寫 README
+### 3.6 撰寫 README {#project-readme}
 
-將下列內容貼到 `README.md`，依實際環境填寫工具版本：
+將下列內容貼到 `README.md`，先填寫已安裝工具的版本；CLI 與 Python 欄位在完成對應安裝後補上：
 
 ```markdown
 # 個人學習助理
@@ -782,7 +411,7 @@ Git 不追蹤空資料夾；建立檔案後才會看到資料夾內的項目進�
 4. 驗收後建立 commit。
 ```
 
-### 6.3 設定 `.gitignore`
+### 3.7 設定 `.gitignore` {#gitignore}
 
 貼入以下規則。檔名開頭的點不能省略，也不要存成 `.gitignore.txt`。
 
@@ -802,81 +431,125 @@ Thumbs.db
 
 **重要區別：**`.gitignore` 控制 Git 對未追蹤檔案的處理，不會禁止 Agent 讀檔，也不會自動移除已追蹤的資料。不要把它當成資料存取權限。[Git ignore 官方說明](https://git-scm.com/docs/gitignore)
 
-### 6.4 建立第一次 commit
+## 4. 安裝並登入一款 CLI {#cli-installation}
 
-先確認這是練習專案，不是在其他既有專案內：
+### 4.1 選擇工具與平台 {#installation-choice}
 
-```powershell
-Get-Location
-git init
-git config user.name "Your Name"
-git config user.email "you@example.com"
-```
+**前提：**上一章的 `study-assistant`、`inputs`、`outputs`、`scripts` 已建立。先在終端機確認自己位於專案根目錄；Windows 使用 `Get-Location`，macOS 使用 `pwd`。
 
-請將姓名與郵件換成自己希望寫進 commit 的身分。這裡不加 `--global`，設定僅作用於這個專案。
+以下只選 Claude Code 或 Codex CLI **其中一款**，再執行對應平台的指令。安裝腳本會下載並執行程式，使用列出的官方網址；受管理電腦依學校核准方式安裝。完成登入後，兩條路線都回到 4.4 驗證工作目錄。
 
-若 `git init` 回報重新初始化既有儲存庫，先檢查是否已完成過此步驟；不要把陌生的既有資料夾當成空白練習專案。
+本節保留最短原生安裝路線；CMD、npm、Homebrew、WinGet 及固定版本部署等替代方式在[附錄 A](#alternative-installation)。Google 路線不在必做範圍。
 
-```powershell
-git status
-git add README.md .gitignore
-git diff --staged
-git commit -m "建立學習助理專案說明與忽略規則"
-git log --oneline -3
-```
+### 4.2 路線 A：Claude Code {#install-claude}
 
-**成功判準：**最後一行出現一筆含提交代碼與訊息的紀錄。若出現尚未追蹤的空白 AGENTS.md，下一章再處理即可。
+**帳號前提：**準備支援 Claude Code 的 Claude 訂閱、Claude Console（API）帳號，或學校核准的雲端供應商存取方式；官方入門目前列有 Pro、Max、Ultra、Team、Enterprise。能登入一般聊天頁面，不代表已取得 CLI 額度。方案、組織與地區資格以登入時顯示為準。
 
-### 6.5 理解三個位置
-
-```mermaid
-flowchart LR
-    W["工作目錄：你正在編輯的檔案"] -->|git add| S["暫存區：準備提交的版本"]
-    S -->|git commit| H["提交歷史：已保存的快照"]
-    W -.->|git diff 比較| S
-    S -.->|git diff --staged 比較| H
-```
-
-| 指令 | 看什麼 | 常見誤解 |
-|---|---|---|
-| `git status --short` | 變更與未追蹤檔案 | 有新檔不代表已納入版本控制 |
-| `git diff` | 工作目錄與暫存區的差異 | 不會顯示未追蹤新檔的全文 |
-| `git diff --staged` | 暫存區與目前提交的差異 | `git add` 之後應在這裡檢查 |
-| `git log --oneline` | 已建立的提交 | 存檔不會自動產生 commit |
-
-遇到新檔，先開啟閱讀，加入暫存後再用 `git diff --staged` 核對。不要因為 `git diff` 沒顯示內容，就認為 AI 沒有產生新檔。
-
-### 6.6 撤回與回復的練習
-
-若只是誤把 README 放入暫存區，先確認已有第一次 commit，再執行：
+**Windows PowerShell：**
 
 ```powershell
-git restore --staged README.md
+irm https://claude.ai/install.ps1 | iex
 ```
 
-這會取消暫存，保留檔案內容。
+`irm` 取得遠端內容，`iex` 執行取得的內容。此原生安裝不需以系統管理員身分執行，也不需要 Node.js。安裝未顯示下載進度時，等待指令結束。
 
-如果要練習丟棄未提交內容，僅在自己剛加上的一行測試文字上操作：先修改 README 並存檔，查看 `git diff -- README.md`，確認該變更可以丟棄，再執行：
+**macOS zsh：**
+
+```bash
+curl -fsSL https://claude.ai/install.sh | bash
+```
+
+安裝後開新終端機，再回到上一章建立的專案：Windows 用 `Set-Location "$env:USERPROFILE\AI-Lab\study-assistant"`；macOS 用 `cd "$HOME/AI-Lab/study-assistant"`。兩平台接著執行：
+
+```shell
+claude --version
+claude doctor
+claude
+```
+
+上面三行是 **shell 指令**，依序執行；最後一行才進入 CLI 會話。
+
+**成功判準：**版本資訊類似 `2.1.xxx (Claude Code)`；`claude doctor` 顯示安裝健康狀態、設定檔錯誤與更新結果，不啟動對話。執行 `claude` 後依瀏覽器提示登入，核對工作路徑與信任範圍。macOS 原生指令通常位於 `~/.local/bin`，找不到時先查 PATH 並重開終端機。
+
+[官方安裝與需求](https://code.claude.com/docs/en/setup)、[官方入門](https://code.claude.com/docs/en/quickstart)
+
+### 4.3 路線 B：Codex CLI {#install-codex}
+
+**Windows：**開新的 PowerShell 視窗，執行官方 Windows 安裝指令：
 
 ```powershell
-git restore -- README.md
+powershell -ExecutionPolicy ByPass -c "irm https://chatgpt.com/codex/install.ps1 | iex"
 ```
 
-此命令以暫存區內容還原工作檔，會丟棄該檔案尚未暫存的修改。若不確定是否需要保留，先另存副本。對已提交的錯誤可使用 `git revert` 建立反向提交，涉及多檔或衝突時先查看說明與差異。[Git restore 官方文件](https://git-scm.com/docs/git-restore)
+`ByPass` 僅用於這次啟動的安裝程序，不是永久修改整台電腦的執行原則。安裝程式會把指令放在 `%LOCALAPPDATA%\Programs\OpenAI\Codex\bin`，並加入目前使用者的 PATH。官方未提供 CLI 的 WinGet 或 CMD 安裝指令。
 
-### 6.7 Git、版本後綴與備份的分工
+**macOS zsh：**
 
-本教材所在的教材庫規定修改教材另存 `_bXX`，這是**文件產出規則**；Git 是**檔案內容的版本紀錄**，兩者可以並用。一般程式專案也可維持固定程式檔名並由 Git 追蹤，不必將每支程式不斷另存版本。
+```bash
+curl -fsSL https://chatgpt.com/codex/install.sh | sh
+```
 
-本機 Git 不等於異地備份。電腦損壞時，本機 `.git` 也可能一起遺失。需要長期保存時，再依資料性質設定備份或適當的遠端儲存庫。
+安裝後開新終端機，再回到上一章建立的專案：Windows 用 `Set-Location "$env:USERPROFILE\AI-Lab\study-assistant"`；macOS 用 `cd "$HOME/AI-Lab/study-assistant"`。兩平台接著在 shell 執行：
 
-## 7. AGENTS.md 與第一個 AI 學習任務
+```shell
+codex --version
+codex
+```
 
-### 7.1 專案規則要能直接執行
+首次啟動選「Sign in with ChatGPT」或其他可用方式登入。可用 `/status` 看狀態，`/permissions` 檢查權限；這兩個指令在 **CLI 會話內**輸入，各版 UI 以目前顯示為準。macOS standalone 指令通常位於 `~/.local/bin`。
+
+**成功判準：**版本可顯示、帳號可登入，並在正確專案開始會話。版本輸出只代表程式可執行，還要完成下一節的讀檔驗證。
+
+本課使用 standalone，不需 Node.js。npm 版仍有 Node 啟動依賴，已使用 npm 的讀者先查附錄 A，不必為本課立即重新安裝。[Codex CLI 官方頁](https://learn.chatgpt.com/docs/codex/cli)、[Codex CLI 指令](https://learn.chatgpt.com/docs/developer-commands?surface=cli)、[Codex GitHub README](https://github.com/openai/codex)
+
+### 4.4 第一次對話的共同驗證 {#verify-first-session}
+
+在所選 CLI 的對話輸入區貼上：
+
+```transcript
+請只讀取並回報目前工作資料夾。
+列出你實際能取得的檔案名稱，說明你現在有哪些讀檔、寫檔或執行命令的能力。
+不要建立或修改檔案，不要安裝套件。
+若無法取得某項資訊，請明確說明，不要猜測。
+```
+
+**成功判準：**有實際工具結果支持工作目錄與檔案清單。若資料夾是空的，回報空資料夾是合理結果。
+
+CLI 自述能力不是完整的權限稽核；再查看產品提供的權限畫面、日誌或工具執行紀錄。若它只用文字猜測目錄，要求實際讀取後重答。
+
+完成後在 `README.md` 補上 CLI 名稱、版本、安裝方式與查核日期。下一章準備來源與規則時，可在 VS Code 編輯檔案；需要執行 Git 時另開 shell 終端機，避免把命令貼進 AI 會話。
+
+## 5. 完成第一個有來源的任務 {#first-task}
+
+**本章目的：**用同一份筆記完成一次可驗收的對話工作。依序準備來源、設定規則、建立 Git 檢查點，再讓 Agent 讀檔、追問與保存。筆記內容談 Python，但本章只處理文字，**不需要先安裝或操作 Python**。
+
+### 5.1 準備來源筆記 {#source-notes}
+
+在 `inputs/notes.md` 貼入以下虛構課堂筆記：
+
+```markdown
+# Python 虛擬環境課堂筆記
+
+## P1：為什麼隔離環境
+不同專案可能需要不同版本的套件。各自使用虛擬環境，能降低套件互相影響的機會。
+
+## P2：工具角色
+Python 執行程式。uv 協助管理 Python 專案與套件。VS Code 是編輯器，Python 擴充功能協助操作直譯器。
+
+## P3：重現環境
+專案以 pyproject.toml 描述依賴，以 uv.lock 記錄解析後的版本。分享專案時不直接複製 .venv。
+
+## P4：檢查方法
+執行程式前要確認目前資料夾。遇到找不到套件，先確認執行程式的 Python 是否來自專案環境。
+```
+
+先確認檔案是 `inputs/notes.md`，不是 `notes.md.txt`。來源快照會在 5.4 與專案文件一起提交。
+
+### 5.2 專案規則要能直接執行 {#project-instructions}
 
 「請做好一點」沒有說明怎麼判斷好壞。更可操作的規則是「每個重點標示來源段落；來源沒寫的內容列為待查」。
 
-將下列內容貼進 `AGENTS.md`：
+先把共用規則貼進 `AGENTS.md`；下一節說明 Claude 路線如何載入它。規則中的 Python 操作只在第 8 章延伸實作時使用：
 
 ```markdown
 # 學習助理專案指引
@@ -902,15 +575,14 @@ git restore -- README.md
 
 這是文字規則範例，不會自動設定作業系統權限。課程使用的工作資料夾與 CLI 權限，仍需在工具中設定。
 
-### 7.2 各工具是否會讀取 AGENTS.md
+### 5.3 各工具是否會讀取 AGENTS.md {#instruction-loading}
 
 | 工具 | 查核到的行為 | 本課做法 |
 |---|---|---|
 | Codex CLI | 依全域與專案路徑載入指引，較近的規則可影響適用內容 | 將 AGENTS.md 放在根目錄，重新啟動後查核 |
 | Claude Code | v2.1.277 起可直接讀 AGENTS.md；預設只有工作目錄及上層沒有 CLAUDE.md、.claude/CLAUDE.md 或 CLAUDE.local.md 時才改讀 AGENTS.md | 主線建立 CLAUDE.md，內容可用 `@AGENTS.md` 匯入共用規則；用 `/memory` 核對 |
-| Antigravity CLI | 遷移文件說明工作區的 `GEMINI.md`、`AGENTS.md` 與全域 `~/.gemini/GEMINI.md` 都會生效 | 保留單一主要規則來源，確認工作區與載入狀態 |
 
-舊的 Gemini CLI 已由 Antigravity CLI 取代；原本為 Gemini CLI 寫的 `GEMINI.md` 可直接沿用到 `agy`，不需要改寫。
+Google 選讀工具的指引相容性另見[附錄 B](#antigravity-overview)。
 
 來源：[Codex AGENTS.md](https://learn.chatgpt.com/docs/agent-configuration/agents-md)、[Claude Code 專案記憶](https://code.claude.com/docs/en/memory)、[Antigravity 遷移規則](https://antigravity.google/docs/cli/gcli-migration)。
 
@@ -922,9 +594,38 @@ Claude Code 的直接支援需要 v2.1.277 或更新版本，以及啟用內建 
 
 這是 Claude Code 的匯入語法，不是所有 CLI 的通用語法。若既有專案已有管理文件，先讀取其規則再整合；不要用練習範例覆蓋既有內容。
 
-### 7.3 確認規則真的生效
+### 5.4 建立任務開始前的 Git 檢查點 {#first-checkpoint}
 
-儲存後重新啟動 CLI，輸入：
+在 **shell 終端機**執行，不貼到 AI 會話。先用 Windows `Get-Location` 或 macOS `pwd` 確認位於自己的 `study-assistant`。
+
+```shell
+git init
+git config user.name "Your Name"
+git config user.email "you@example.com"
+```
+
+這三行是兩平台共用的 shell 指令。姓名與郵件換成希望寫進 commit 的身分；不加 `--global`，設定僅作用於本專案。若 `git init` 回報重新初始化既有儲存庫，先確認是否做過這一步，不要把陌生的既有專案當空白練習。
+
+先檢查並暫存本章已準備的檔案：
+
+```shell
+git status
+git add README.md .gitignore AGENTS.md inputs/notes.md
+```
+
+Claude 路線若已建立 `CLAUDE.md`，另外執行 `git add CLAUDE.md`。接著檢查暫存內容並提交：
+
+```shell
+git diff --staged
+git commit -m "建立學習助理專案、工作規則與來源筆記"
+git log --oneline -3
+```
+
+**成功判準：**能看到提交代碼與訊息，且提交內包含正確來源與規則。這是讓你知道任務開始前檔案長什麼樣子的檢查點；`git add` 與 diff 的關係會在第 7 章進一步說明。
+
+### 5.5 確認規則真的生效 {#verify-instructions}
+
+因為剛新增指引，先結束先前的 CLI 會話，再在同一專案啟動所選工具，核對指引載入。這是規則變更後的驗證；接下來的任務追問不必反覆重啟。輸入：
 
 ```transcript
 請確認目前工作資料夾。
@@ -935,53 +636,46 @@ Claude Code 的直接支援需要 v2.1.277 或更新版本，以及啟用內建 
 
 請比較 AI 回答與檔案內容。主動要求讀檔可以確認文字內容，但不等於證明它在啟動時就自動載入；有指引清單或日誌時一起核對。
 
-回到 shell，保存規則：
+### 5.6 讀檔、追問與保存摘要草稿 {#read-followup-save}
 
-```powershell
-git add AGENTS.md
-git diff --staged
-git commit -m "加入學習助理工作規則"
+沿用上一節確認指引的會話，日常與進階任務都在同一會話中逐輪溝通；不用每次回到 shell 重新啟動。安裝與環境設定指令才依標示在 shell 執行。
+
+**練習輸入：**本章已準備的 `inputs/notes.md`。在 CLI 對話輸入區貼上：
+
+```text
+閱讀 inputs/notes.md，列出三個重點及各自的來源段落。
+先不要修改檔案；如果找不到來源，請指出缺少什麼。
 ```
 
-若另外建立 CLAUDE.md，先閱讀確認，再明確 `git add CLAUDE.md` 並提交。
+讀完回答後，在**同一會話**接著說：
 
-### 7.4 準備來源筆記
-
-在 `inputs/notes.md` 貼入以下虛構課堂筆記：
-
-```markdown
-# Python 虛擬環境課堂筆記
-
-## P1：為什麼隔離環境
-不同專案可能需要不同版本的套件。各自使用虛擬環境，能降低套件互相影響的機會。
-
-## P2：工具角色
-Python 執行程式。uv 協助管理 Python 專案與套件。VS Code 是編輯器，Python 擴充功能協助操作直譯器。
-
-## P3：重現環境
-專案以 pyproject.toml 描述依賴，以 uv.lock 記錄解析後的版本。分享專案時不直接複製 .venv。
-
-## P4：檢查方法
-執行程式前要確認目前資料夾。遇到找不到套件，先確認執行程式的 Python 是否來自專案環境。
+```text
+把剛才的三個重點改寫成適合高中生複習的版本。
+保留來源段落，每點加一個自我檢核問題；不要增加筆記中沒有的事實。
 ```
 
-存檔後先建立來源快照：
+核對內容後，再交代產物：
 
-```powershell
-git add inputs/notes.md
-git commit -m "加入虛擬環境課堂筆記"
+```text
+這次先將摘要草稿存成 outputs/notes_summary.md；這是本練習指定的草稿檔名。
+若檔案已存在，先說明差異，不要直接覆寫。
+完成後重新讀取檔案，確認三個重點、來源與自我檢核問題都已保存。
 ```
 
-### 7.5 第一個完整提示
+**預期產物：**有來源的三個重點與 `outputs/notes_summary.md`。**驗收：**逐點對回筆記，開啟實際檔案檢查，再查看 Git 變更；原先已有的修改不能算成本次成果。這是學習者實作設計，編寫教材時未代替學習者呼叫模型。
 
-重新在專案目錄啟動所選 CLI，輸入：
+文字要求「不要修改」不是檔案系統唯讀設定。開始前用會話內的 `/permissions` 檢查工具權限，收到操作授權時看清楚路徑與用途。專案長期指引另放在 `AGENTS.md` 或 `CLAUDE.md`，詳見[單元五：專案指引](05_instructions.html)，它們是檔案，不是對話操作指令。
+
+### 5.7 在同一會話完成複習資料 {#complete-review}
+
+摘要草稿驗收後，繼續在同一會話要求完整複習資料。這一步檢查三重點草稿是否漏掉來源段落，補齊為一一對應 P1–P4 的四個核心重點，另加測驗與操作練習。草稿與完整版是同一任務的兩個階段，並非改變原草稿的驗收條件：
 
 ```transcript
 目標：把 inputs/notes.md 整理成高中生可閱讀的課後複習資料。
 
 請先讀 AGENTS.md 與 inputs/notes.md，再建立 outputs/review_b01.md。
 輸出需要：
-1. 四個核心重點，各標示 P1、P2、P3 或 P4 來源。
+1. 四個核心重點，分別對應 P1、P2、P3、P4；補上摘要草稿未涵蓋的段落，逐點標示來源。
 2. 三題自我測驗，題目與答案分開放。
 3. 一個五分鐘可完成的操作練習。
 4. 一段「資料未涵蓋」說明，不補入來源未提供的版本或價格。
@@ -991,11 +685,11 @@ git commit -m "加入虛擬環境課堂筆記"
 完成後回報產出的檔案、檢查項目與結果。
 ```
 
-### 7.6 驗收，而不是只接受「完成了」
+### 5.8 驗收，而不是只接受「完成了」 {#verify-deliverables}
 
 先在編輯器開啟輸出，再到 shell 查看：
 
-```powershell
+```shell
 git status --short
 git diff -- inputs/notes.md
 ```
@@ -1018,17 +712,179 @@ git diff -- inputs/notes.md
 
 完成後明確加入實際產出的版本檔，再提交：
 
-```powershell
-git add outputs/review_b01.md
+```shell
+git add outputs/notes_summary.md outputs/review_b01.md
 git diff --staged
 git commit -m "加入第一版課後複習資料"
 ```
 
 若產出的是其他版本，請替換檔名。這個流程把 L1 的來源、L3 的寫檔與 L4 的驗收連在一起。
 
-## 8. Python 與 uv：建立可重現的執行環境
+## 6. 管理會話、模型與用量 {#session-controls}
 
-### 8.1 四個概念先分清楚
+**前提：**已完成一次讀檔與保存任務。現在練習在不中斷工作脈絡的情況下調整模型、查看用量，以及保存和續接進度。
+
+### 6.1 常用會話內指令速查 {#slash-commands}
+
+以下指令在**已啟動的 CLI 對話輸入區**輸入，不貼到 PowerShell 或 zsh。先輸入 `/` 查看選單，再選需要的指令。功能會隨版本、方案與組織設定而異；沒有出現的指令，先查目前版本的說明，不要直接套用另一款工具的名稱。
+
+| 想做什麼 | Codex CLI | Claude Code | 使用時機 |
+|---|---|---|---|
+| 選模型 | `/model` | `/model` | 開始新階段前選擇帳號可用的模型 |
+| 看目前狀態 | `/status` | `/status` | 確認目前工作設定 |
+| 看用量 | `/status`；可用 `/statusline` 顯示 token 等資訊 | `/usage`（現行文件的 `/cost`、`/stats` 為其別名） | 一段工作後查看消耗與可用額度資訊 |
+| 看 context 使用情況 | `/status`、畫面下方狀態列 | `/context` | 檔案或對話變多，先確認上下文容量 |
+| 壓縮對話 | `/compact` | `/compact` | 同一任務還要繼續，但上下文已變長 |
+| 接續既有會話 | `/resume` | `/resume` | 回到之前的工作，選對專案與會話 |
+| 開始不同任務 | `/new` | `/clear` | 換主題，避免沿用不相關上下文 |
+| 檢查工具權限 | `/permissions` | `/permissions` | 讀寫檔案或執行工具前 |
+| 找操作說明 | 輸入 `/` 查看選單 | `/help` 或 `/` 選單 | 忘記名稱或確認版本支援 |
+
+Codex 本表以 `/status` 查用量，不將 Claude 的 `/usage` 當成兩款共通指令。模型清單以實際選單為準，無須背誦固定模型名稱。
+
+查核日期：2026-10-31。依據：[Codex CLI 會話指令](https://learn.chatgpt.com/docs/developer-commands?surface=cli)、[Codex 狀態與設定](https://learn.chatgpt.com/docs/developer-settings)、[Claude Code 指令](https://code.claude.com/docs/en/commands)。
+
+### 6.2 進階操作：管理 session、context 與用量 {#session-context-usage}
+
+**Session 是持續工作的會話；context 是模型當下能參考的內容。** 保留會話有助於承接需求，但不代表每一輪都完整記住所有歷史。token 使用量也不等於帳單金額；上下文容量、方案額度及 API 計費是不同概念，依介面與帳號資料分別確認。
+
+1. **開始工作：**用 `/model` 選擇模型，再用自然語言說明目標、來源、產物與驗收條件。先做一小段，檢查品質再擴大工作量。
+2. **進行中：**一個階段完成後查看用量；Codex 用 `/status`，Claude 用 `/usage`。檔案很多時，明確指定本輪相關檔案，避免反覆要求讀取整個資料夾。
+3. **對話變長：**先請 Agent 將已確認決策、檔案路徑、未完成事項存入 `progress.md`，確認內容後再使用 `/compact`。摘要可能遺漏細節，重要限制應保留在專案文件，接續時重新核對。
+4. **下次繼續：**啟動 CLI 後用 `/resume` 選擇會話，請 Agent 檢查 `progress.md` 與目前檔案，再確認下一步。恢復歷史對話不會把檔案還原成當時版本。
+5. **換任務：**先保存必要成果，再用 Codex `/new` 或 Claude `/clear` 開新對話；需要的來源與目標重新交代。
+
+**進階練習：**完成摘要後，在同一會話提出：
+
+```text
+我想整理 inputs/ 裡本週的筆記。先列出檔案清單與分批計畫，
+說明哪些工作需要你閱讀內容，哪些適合用本機腳本整理。
+先以一份筆記試做，確認來源與格式後再處理其餘檔案。
+若需要腳本，先建立並解釋它的輸入、輸出與失敗處理，等我確認再執行。
+每份產物保留來源，失敗項目另外列出；不要把空檔案當作成功。
+```
+
+這樣可以在會話中調整計畫、檢查腳本與追問結果；教師依任務決定何時讓 Agent 繼續，不必自行把 prompt 包進終端機指令。
+
+## 7. 穩定工作與常見問題 {#reliable-work}
+
+**本章目的：**在每次任務後檢查差異、保留成果，遇到問題時先找出失敗的層級。Git 命令仍在 shell 執行；要請 Agent 協助時，再把目標與錯誤訊息貼進 CLI 會話。
+
+### 7.1 理解三個位置 {#git-states}
+
+```mermaid
+flowchart LR
+    W["工作目錄：你正在編輯的檔案"] -->|git add| S["暫存區：準備提交的版本"]
+    S -->|git commit| H["提交歷史：已保存的快照"]
+    W -.->|git diff 比較| S
+    S -.->|git diff --staged 比較| H
+```
+
+| 指令 | 看什麼 | 常見誤解 |
+|---|---|---|
+| `git status --short` | 變更與未追蹤檔案 | 有新檔不代表已納入版本控制 |
+| `git diff` | 工作目錄與暫存區的差異 | 不會顯示未追蹤新檔的全文 |
+| `git diff --staged` | 暫存區與目前提交的差異 | `git add` 之後應在這裡檢查 |
+| `git log --oneline` | 已建立的提交 | 存檔不會自動產生 commit |
+
+遇到新檔，先開啟閱讀，加入暫存後再用 `git diff --staged` 核對。不要因為 `git diff` 沒顯示內容，就認為 AI 沒有產生新檔。
+
+### 7.2 撤回與回復的練習 {#git-recovery}
+
+若只是誤把 README 放入暫存區，先確認已有第一次 commit，再執行：
+
+```shell
+git restore --staged README.md
+```
+
+這會取消暫存，保留檔案內容。
+
+如果要練習丟棄未提交內容，僅在自己剛加上的一行測試文字上操作：先修改 README 並存檔，查看 `git diff -- README.md`，確認該變更可以丟棄，再執行：
+
+```shell
+git restore -- README.md
+```
+
+此命令以暫存區內容還原工作檔，會丟棄該檔案尚未暫存的修改。若不確定是否需要保留，先另存副本。對已提交的錯誤可使用 `git revert` 建立反向提交，涉及多檔或衝突時先查看說明與差異。[Git restore 官方文件](https://git-scm.com/docs/git-restore)
+
+### 7.3 Git、版本後綴與備份的分工 {#versions-and-backups}
+
+本課練習產物使用 `_bXX` 表示版本，這是**文件產出規則**；Git 是**檔案內容的版本紀錄**，兩者可以並用。一般程式專案也可維持固定程式檔名並由 Git 追蹤，不必將每支程式不斷另存版本。
+
+本機 Git 不等於異地備份。電腦損壞時，本機 `.git` 也可能一起遺失。需要長期保存時，再依資料性質設定備份或適當的遠端儲存庫。
+
+### 7.4 每次工作的收尾清單 {#work-closeout}
+
+1. 確認成果已存成檔案，檔名與位置正確。
+2. 檢查來源是否被意外修改。
+3. 將結果與驗收條件逐一比對。
+4. 查看差異後再建立 commit。
+5. 記錄未完成項目，讓下一次工作能接續。
+
+### 7.5 先判斷錯誤在哪一層 {#diagnose-layer}
+
+```mermaid
+flowchart TD
+    A["操作失敗"] --> B{"指令能被找到嗎？"}
+    B -->|否| C["檢查安裝、PATH、終端機是否重開"]
+    B -->|是| D{"CLI 能啟動並登入嗎？"}
+    D -->|否| E["檢查帳號、網路、平台與安裝版本"]
+    D -->|是| F{"工具執行成功嗎？"}
+    F -->|否| G["檢查工作路徑、權限、直譯器與依賴"]
+    F -->|是| H["核對來源、需求、程式邏輯與輸出"]
+```
+
+### 7.6 問題對照表 {#troubleshooting-table}
+
+| 現象 | 可能原因 | 先做的檢查與處理 |
+|---|---|---|
+| `code`、`git`、`uv` 找不到 | 未安裝，或目前程序沒有新 PATH | 關閉並重開終端機；用 `Get-Command`／`command -v` 查詢 |
+| 外部 PowerShell 可用，VS Code 內不可用 | VS Code 保留舊環境變數 | 完全關閉後重新開啟 VS Code |
+| `irm` 找不到 | 正在 CMD 或 macOS shell | 改用對應 shell 的官方安裝指令 |
+| `npm.ps1 cannot be loaded` | PowerShell 腳本執行原則 | Windows 改用 `npm.cmd`；不必永久放寬政策 |
+| CLI 顯示版本，但無法使用模型 | 登入、額度、網路或方案問題 | 查官方登入狀態與錯誤；版本輸出只證明程式可啟動 |
+| 安裝原生 CLI 後仍要求 Node | 正在執行 npm 入口、外掛或專案工具 | 看錯誤中的實際指令；分清 CLI 與任務依賴 |
+| 移除或切換 Node 後 `codex` 無法啟動 | 裝的是 npm 版，`codex` 由 Node 啟動 | 改用 standalone 安裝，再移除 npm 版 |
+| `claude --version` 版本一直沒變 | 用 WinGet／Homebrew 安裝（不自動更新），或 npm 與原生版並存 | `claude doctor` 查安裝來源；依[更新與移除表](#update-uninstall)更新並移除多餘的一份 |
+| 更新後仍是舊版 | 同一工具有兩種安裝來源 | `type -a`／`Get-Command -All` 找出排在 PATH 前面的那份 |
+| 貼上安裝指令出現 `'&&' is not a valid statement separator` | 把含 `&&` 的 CMD 指令貼到 Windows PowerShell 5.1 | 改用 PowerShell 版指令 |
+| 仍在使用 `gemini` 指令 | Gemini CLI 已由 Antigravity CLI 取代 | 依[Google 遷移步驟](#gemini-migration)遷移到 `agy`，確認可用後移除 `gemini` |
+| AI 找不到檔案 | 目前目錄、檔名或副檔名不正確 | 列出檔案；確認不是 `notes.md.txt` |
+| 找不到 Python 套件 | 用錯直譯器或依賴未記錄 | `uv run python -c "import sys; print(sys.executable)"`；再查 `uv tree` |
+| `uv sync --locked` 失敗 | 描述與鎖檔不一致或平台不相容 | 閱讀錯誤；確認修改目的後才更新鎖檔 |
+| CSV 讀取失敗 | 檔案位置、編碼或欄位錯誤 | 確認三個欄位名、UTF-8、整數分鐘數 |
+| Git 說沒有可提交的內容 | 未存檔、未暫存或內容沒變 | `git status`，再確認應加入的檔案 |
+| `git diff` 空白，但有新文件 | 新檔尚未追蹤 | `git status --short`；閱讀新檔，再暫存比較 |
+| AI 沒遵守 AGENTS.md | 沒載入、規則衝突或模型未遵循 | 查指引來源與內容，再檢查實際輸出 |
+| Git 忽略 `.env`，AI 卻仍可能讀到 | 把版本控制忽略當成權限控制 | 另用工具權限與檔案存取配置管理 |
+| 圖表只顯示 Mermaid 原始碼 | 閱讀器不支援 Mermaid | 用支援的閱讀模式；SVG 分層圖可獨立開啟 |
+
+### 7.7 能直接貼給 AI 的除錯格式 {#debugging-prompt}
+
+```transcript
+我想完成：請填寫本輪目標（例如整理課堂筆記；Python 延伸可填執行學習時間統計）。
+作業系統與 shell：請填寫。
+目前資料夾：請填寫。
+我執行的完整指令：請填寫。
+實際錯誤訊息：貼上已移除憑證與個人資料的訊息。
+預期結果：請填寫可核對結果（Python 延伸範例：建立報表，總時間 170 分鐘）。
+已嘗試的處理：請填寫。
+
+請先找出最可能的原因與一個可驗證的檢查步驟。
+不要直接重裝所有工具，也不要修改無關檔案。
+```
+
+### 7.8 費用與額度怎麼看 {#cost-and-quota}
+
+CLI 可下載，不代表模型呼叫沒有費用。訂閱登入、API 金鑰、組織帳號可能有不同額度與計費方式，應以你實際選用服務的帳號頁為準。先用小型筆記完成練習，再逐步擴大資料量，能同時降低除錯難度與不必要呼叫。
+
+## 8. 延伸實作：Python 學習時間統計 {#python-practice}
+
+**選讀前提：**已完成第一個對話任務，且需要讓 Agent 執行本機程式。只整理文件的讀者可先跳到第 9 章基礎評量。
+
+本章依「環境 → 直譯器 → 資料 → 程式 → 驗收」進行。使用標準函式庫，不需要 Node.js，也不需要先安裝第三方 Python 套件。
+
+### 8.1 四個概念先分清楚 {#python-environment-concepts}
 
 | 名稱 | 責任 | 你會看到什麼 |
 |---|---|---|
@@ -1039,7 +895,7 @@ git commit -m "加入第一版課後複習資料"
 
 虛擬環境不是一台虛擬電腦，也不是安全 sandbox。它主要處理 Python 套件隔離，不會自動阻止程式讀取你有權限存取的檔案。
 
-### 8.2 安裝 uv，再由 uv 管理 Python
+### 8.2 安裝 uv 與 Python：依平台選一組 {#install-python-uv}
 
 Windows PowerShell：
 
@@ -1047,9 +903,15 @@ Windows PowerShell：
 winget install --id astral-sh.uv -e
 ```
 
-重開終端機後：
+**macOS zsh：**
 
-```powershell
+```bash
+curl -LsSf https://astral.sh/uv/install.sh | sh
+```
+
+兩平台都在安裝後重開終端機，再執行以下共用 shell 指令：
+
+```shell
 uv --version
 uv python install 3.13
 uv python list
@@ -1059,7 +921,9 @@ uv python list
 
 若 WinGet 無法使用，依 uv 官方頁選擇 standalone installer；不要把 `pip install uv` 當成唯一入口，否則會讓初學者卡在尚未安裝 Python 的循環。
 
-### 8.3 在既有專案加入 Python 設定
+不要從 Windows 複製 `.venv` 到 Mac；各平台依相同專案描述重建環境。
+
+### 8.3 在既有專案加入 Python 設定 {#initialize-python}
 
 回到 `study-assistant`。先確認沒有既有 `pyproject.toml`；若有，先閱讀，不要重複初始化。
 
@@ -1068,9 +932,9 @@ Set-Location "$env:USERPROFILE\AI-Lab\study-assistant"
 Test-Path pyproject.toml
 ```
 
-本課首次操作應顯示 `False`。接著執行：
+macOS 先用 `cd "$HOME/AI-Lab/study-assistant"` 回到專案，再用 `ls pyproject.toml` 或 VS Code 檔案總管確認檔案不存在。Windows 首次檢查應顯示 `False`。只有確認未初始化的練習專案，才執行以下兩平台共用的 uv 指令：
 
-```powershell
+```shell
 uv init --bare --no-workspace --vcs none --python 3.13
 uv python pin 3.13
 uv sync
@@ -1090,7 +954,7 @@ uv run python -c "import sys; print(sys.executable)"
 
 **成功判準：**Python 版本為 3.13 系列；`sys.executable` 指向專案內 `.venv` 的 Python，而不是不相關的系統 Python。具體路徑依系統而異。[uv 專案初始化](https://docs.astral.sh/uv/concepts/projects/init/)、[uv 專案操作](https://docs.astral.sh/uv/guides/projects/)
 
-### 8.4 哪些檔案應該保存
+### 8.4 哪些檔案應該保存 {#python-project-files}
 
 ```text
 study-assistant/
@@ -1107,80 +971,17 @@ study-assistant/
 
 取得他人的專案後，在根目錄執行 `uv sync --locked`，可要求鎖檔與描述一致；若不一致就先處理差異，不在不知情的狀況下更新依賴。鎖檔有助於重現套件，不能取代作業系統、外部服務或硬體條件的紀錄。
 
-### 8.5 安裝與移除套件
-
-以下是可選的套件管理練習，不是後面統計程式的必要依賴：
-
-```powershell
-uv add rich
-uv run python -c "from rich import print; print('[green]專案套件可使用[/green]')"
-uv tree
-```
-
-**成功判準：**可顯示文字，依賴清單包含 `rich`。終端機若沒有顏色，仍可先檢查是否有成功輸出。
-
-練習完成後移除：
-
-```powershell
-uv remove rich
-uv tree
-```
-
-`uv add` 與 `uv remove` 會更新專案依賴紀錄；不要只在某個不確定的環境執行 `pip install`，卻忘了讓專案知道自己需要什麼。[uv 依賴管理](https://docs.astral.sh/uv/guides/projects/)
-
-### 8.6 是否需要手動 activate
-
-使用 `uv run` 時，一般不必先手動啟用環境。這是本教材的主要路線。
-
-若要理解手動啟用，可在 Windows PowerShell 使用：
-
-```powershell
-.\.venv\Scripts\Activate.ps1
-python -c "import sys; print(sys.executable)"
-deactivate
-```
-
-macOS 的對應方式：
-
-```bash
-source .venv/bin/activate
-python -c "import sys; print(sys.executable)"
-deactivate
-```
-
-若 PowerShell 拒絕執行 Activate.ps1，直接回到 `uv run python ...` 路線即可；完成本課不需要把整台電腦設成允許所有腳本。
-
-## 9. 可執行實作：學習時間統計
-
-### 9.1 Node.js 的選修安裝
-
-若你要使用 npm 安裝 CLI、執行 JavaScript 或接上以 Node 寫成的工具，從 [Node.js 官方下載頁](https://nodejs.org/en/download) 選擇**仍受支援的 LTS** 與正確的作業系統、CPU 架構。
-
-安裝完成後開新 PowerShell：
-
-```powershell
-node --version
-npm.cmd --version
-node -e "console.log('Node.js 可以執行')"
-```
-
-macOS 使用 `npm --version`。從 [Node.js 官方版本狀態](https://nodejs.org/en/about/previous-releases) 選仍受支援的 LTS，並核對套件需求；Claude Code npm 安裝目前要求 Node 22+。套件的最低版本不等於仍受維護的推薦版本，不應為滿足舊文件的最低門檻而刻意安裝過期版本。
-
-**一台電腦只留一種 Node 管理方式。**官方安裝包、Homebrew、nvm 同時存在時，`npm install -g` 裝到哪一份取決於當下 PATH，容易出現「剛裝好卻找不到指令」或兩份版本不同的狀況。用第 5.8 節的指令先盤點，再決定保留哪一種。
-
-本章接下來的 Python 練習**不需要 Node.js**，可直接進行。
-
-### 9.2 在 VS Code 選對 Python
+### 8.5 在 VS Code 選對 Python {#select-python-interpreter}
 
 1. 在 Extensions 搜尋並安裝 Microsoft 發行的 **Python** 擴充功能。
-2. 先完成第 8 章的 `uv sync`，讓 `.venv` 確實存在。
-3. 按 `Ctrl+Shift+P`，執行 `Python: Select Interpreter`。
+2. 先完成 8.3 的 `uv sync`，讓 `.venv` 確實存在。
+3. Windows 按 `Ctrl+Shift+P`，macOS 按 `Cmd+Shift+P`，執行 `Python: Select Interpreter`。
 4. 選專案 `.venv` 的 Python。若清單未出現，手動指定 Windows 的 `.venv\Scripts\python.exe` 或 macOS 的 `.venv/bin/python`。
 5. 在整合終端機執行 `uv run python -c "import sys; print(sys.executable)"`，確認與編輯器選用的是同一環境。
 
 這兩個設定要一起理解：VS Code 選擇直譯器影響編輯器的執行／除錯；`uv run` 依專案配置選擇環境。兩者應一致，但不會因為改其中一個就保證所有既有終端機都跟著切換。[VS Code Python 教學](https://code.visualstudio.com/docs/python/python-tutorial)
 
-### 9.3 準備資料
+### 8.6 準備資料 {#study-data}
 
 在 `inputs/study_log.csv` 新增下列內容，使用 UTF-8 儲存。這是虛構學習紀錄，不含個人資料。
 
@@ -1195,7 +996,7 @@ date,subject,minutes
 
 先不用 AI，手算答案：英文 50 分鐘、Python 80 分鐘、數學 40 分鐘，總共 170 分鐘。這份手算結果就是外部驗證依據。
 
-### 9.4 先讀偽代碼
+### 8.7 先讀偽代碼 {#study-pseudocode}
 
 ```pseudocode
 找到專案根目錄與輸入檔
@@ -1209,7 +1010,7 @@ date,subject,minutes
 輸出檔案位置
 ```
 
-### 9.5 完整程式
+### 8.8 完整程式 {#study-program}
 
 在 `scripts/summarize_study.py` 貼入以下程式。標準函式庫的 `csv` 負責讀取欄位；`utf-8-sig` 同時處理有或沒有 UTF-8 BOM 的輸入，`newline=""` 讓 csv 模組處理換行。[Python csv 文件](https://docs.python.org/3/library/csv.html)
 
@@ -1289,11 +1090,11 @@ if __name__ == "__main__":
 
 範例以小型、欄位固定的學習紀錄為目標；同一筆紀錄若重複出現，會重複加總。程式沒有自動判斷哪一筆是重複錯誤，因為同一天同科目也可能有兩次學習。這類規則應由需求決定。
 
-### 9.6 執行與核對
+### 8.9 執行與核對 {#run-study-report}
 
 在專案根目錄：
 
-```powershell
+```shell
 uv run python scripts/summarize_study.py
 ```
 
@@ -1311,7 +1112,7 @@ uv run python scripts/summarize_study.py
 
 **驗收：**檔案存在、三科分鐘數正確、總和正確、來源未修改、重跑未覆蓋舊報表。
 
-### 9.7 用除錯器理解執行過程
+### 8.10 用除錯器理解執行過程 {#debug-study-program}
 
 1. 在 VS Code 開啟 `scripts/summarize_study.py`。
 2. 點選 `totals[subject] += minutes` 左側行號旁的空白區，設定中斷點。
@@ -1319,13 +1120,13 @@ uv run python scripts/summarize_study.py
 4. 程式停下時，觀察 `subject`、`minutes`、`totals` 的值。
 5. 按 F10 逐步執行，觀察加總如何變化；按 F5 繼續。
 
-這讓你能看見實際變數，而不是只相信 AI 對程式的描述。若 F5 執行的 Python 不對，回到第 9.2 節重新選擇直譯器。
+這讓你能看見實際變數，而不是只相信 AI 對程式的描述。若 F5 執行的 Python 不對，回到[選擇 Python 直譯器](#select-python-interpreter)重新選擇直譯器。
 
-### 9.8 讓 AI 做一個有邊界的修改
+### 8.11 讓 AI 做一個有邊界的修改 {#agent-bounded-change}
 
 先將目前可執行版本提交，再交付任務：
 
-```powershell
+```shell
 git add pyproject.toml uv.lock .python-version inputs/study_log.csv scripts/summarize_study.py
 git diff --staged
 git commit -m "加入可驗證的 Python 學習時間統計"
@@ -1345,156 +1146,54 @@ git commit -m "加入可驗證的 Python 學習時間統計"
 
 可在修改前先問它的計畫，但本課的成功判準仍是實際差異與執行結果。若驗證失敗，應保留失敗訊息，再修正與重跑。
 
-## 10. macOS 操作差異
+### 8.12 安裝與移除套件 {#python-packages}
 
-### 10.1 不必為了本課改用 PowerShell
+以下是完成統計後可選的套件管理練習，不是統計程式的必要依賴：
 
-macOS 可直接使用 Terminal 的 zsh，或 VS Code 整合終端機。PowerShell 是 Windows 主線選擇，不是 Agent 的通用必要條件。
+```shell
+uv add rich
+uv run python -c "from rich import print; print('[green]專案套件可使用[/green]')"
+uv tree
+```
 
-| 操作 | Windows PowerShell | macOS zsh／bash |
-|---|---|---|
-| 個人目錄 | `$env:USERPROFILE` | `$HOME` |
-| 顯示位置 | `Get-Location` | `pwd` |
-| 列出檔案 | `Get-ChildItem` | `ls` |
-| 切換目錄 | `Set-Location "路徑"` | `cd "路徑"` |
-| 建立資料夾 | `New-Item -ItemType Directory -Path ... -Force` | `mkdir -p ...` |
-| 查找程式 | `Get-Command uv` | `command -v uv` |
-| 多個同名程式 | `Get-Command uv -All` | `type -a uv` |
-| npm 入口 | `npm.cmd` 或 `npm` | `npm` |
-| Python 環境入口 | `.venv\Scripts\python.exe` | `.venv/bin/python` |
+**成功判準：**可顯示文字，依賴清單包含 `rich`。終端機若沒有顏色，仍可先檢查是否有成功輸出。
 
-### 10.2 最小安裝步驟
+練習完成後移除：
 
-1. 從 VS Code 官方下載適合 Apple Silicon 或 Intel 的版本，移入 Applications。
-2. 在 VS Code 命令選擇區執行 `Shell Command: Install 'code' command in PATH`，再重開終端機。[VS Code macOS 官方說明](https://code.visualstudio.com/docs/setup/mac)
-3. 執行 `git --version`。若尚未安裝，依系統提示安裝開發者命令列工具，或依 [Git macOS 安裝頁](https://git-scm.com/install/mac) 選擇方式。
-4. 建立專案：
+```shell
+uv remove rich
+uv tree
+```
+
+`uv add` 與 `uv remove` 會更新專案依賴紀錄；不要只在某個不確定的環境執行 `pip install`，卻忘了讓專案知道自己需要什麼。[uv 依賴管理](https://docs.astral.sh/uv/guides/projects/)
+
+### 8.13 是否需要手動 activate {#python-activation}
+
+使用 `uv run` 時，一般不必先手動啟用環境。這是本教材的主要路線。
+
+若要理解手動啟用，可在 Windows PowerShell 使用：
+
+```powershell
+.\.venv\Scripts\Activate.ps1
+python -c "import sys; print(sys.executable)"
+deactivate
+```
+
+macOS 的對應方式：
 
 ```bash
-mkdir -p "$HOME/AI-Lab/study-assistant"
-cd "$HOME/AI-Lab/study-assistant"
-mkdir -p inputs outputs scripts
-code .
+source .venv/bin/activate
+python -c "import sys; print(sys.executable)"
+deactivate
 ```
 
-主線在 Claude Code 與 Codex CLI 中選一種；Antigravity 區塊為選讀，不要整段全部執行：
+若 PowerShell 拒絕執行 Activate.ps1，直接回到 `uv run python ...` 路線即可；完成本課不需要把整台電腦設成允許所有腳本。
 
-**Claude Code：**
+## 9. 練習、評量與學習總結 {#practice-summary}
 
-```bash
-curl -fsSL https://claude.ai/install.sh | bash
-```
+**基礎路線：**完成 9.1、9.2，再使用 9.6–9.9 自評。**Python 延伸：**先完成第 8 章，再做 9.3、9.4 與 9.5 的完整評量。反思與應用討論適合兩條路線。
 
-**Codex CLI：**
-
-```bash
-curl -fsSL https://chatgpt.com/codex/install.sh | sh
-```
-
-**Antigravity CLI（選讀）：**
-
-```bash
-curl -fsSL https://antigravity.google/cli/install.sh | bash
-```
-
-以上為各工具官方安裝路線，來源見第 5 章。安裝後開新終端機，用相應的 `claude --version`、`codex --version` 或 `agy --version` 驗證。三者預設都把指令放在 `~/.local/bin`；若顯示找不到指令，先確認 `~/.local/bin` 已在 PATH 中，再重開終端機。
-
-已習慣 Homebrew 的 Mac 使用者，也可改用 cask（主線選前兩個之一；第三個為選讀）：
-
-```bash
-brew install --cask claude-code
-brew install --cask codex
-brew install --cask antigravity-cli
-```
-
-| cask | 更新方式 | 注意 |
-|---|---|---|
-| `claude-code` | `brew upgrade claude-code` | 跟隨 stable 頻道，約晚一週；要最新版改裝 `claude-code@latest`；預設不自動更新 |
-| `codex` | `brew upgrade --cask codex` | 與 standalone 版不要並存 |
-| `antigravity-cli` | 套件標示會自行更新 | 需要 macOS 12+ |
-
-不要用 Homebrew 和官方腳本各裝一份同一個工具；Homebrew 升級後也可執行 `brew cleanup` 清除舊版檔案。
-
-### 10.3 Python 路線
-
-依 [uv 官方說明](https://docs.astral.sh/uv/getting-started/installation/) 安裝：
-
-```bash
-curl -LsSf https://astral.sh/uv/install.sh | sh
-```
-
-重開終端機後：
-
-```bash
-uv --version
-uv python install 3.13
-cd "$HOME/AI-Lab/study-assistant"
-```
-
-接著沿用第 8–9 章的 `uv` 與 `git` 指令，將 `Set-Location` 等 PowerShell 專用指令替換為本章對照寫法。不要重複初始化已存在的專案，也不要從 Windows 複製 `.venv` 到 Mac。
-
-## 11. 常見問題與解決方案（Q&A）
-
-### 11.1 先判斷錯誤在哪一層
-
-```mermaid
-flowchart TD
-    A["操作失敗"] --> B{"指令能被找到嗎？"}
-    B -->|否| C["檢查安裝、PATH、終端機是否重開"]
-    B -->|是| D{"CLI 能啟動並登入嗎？"}
-    D -->|否| E["檢查帳號、網路、平台與安裝版本"]
-    D -->|是| F{"工具執行成功嗎？"}
-    F -->|否| G["檢查工作路徑、權限、直譯器與依賴"]
-    F -->|是| H["核對來源、需求、程式邏輯與輸出"]
-```
-
-### 11.2 問題對照表
-
-| 現象 | 可能原因 | 先做的檢查與處理 |
-|---|---|---|
-| `code`、`git`、`uv` 找不到 | 未安裝，或目前程序沒有新 PATH | 關閉並重開終端機；用 `Get-Command`／`command -v` 查詢 |
-| 外部 PowerShell 可用，VS Code 內不可用 | VS Code 保留舊環境變數 | 完全關閉後重新開啟 VS Code |
-| `irm` 找不到 | 正在 CMD 或 macOS shell | 改用對應 shell 的官方安裝指令 |
-| `npm.ps1 cannot be loaded` | PowerShell 腳本執行原則 | Windows 改用 `npm.cmd`；不必永久放寬政策 |
-| CLI 顯示版本，但無法使用模型 | 登入、額度、網路或方案問題 | 查官方登入狀態與錯誤；版本輸出只證明程式可啟動 |
-| 安裝原生 CLI 後仍要求 Node | 正在執行 npm 入口、外掛或專案工具 | 看錯誤中的實際指令；分清 CLI 與任務依賴 |
-| 移除或切換 Node 後 `codex` 無法啟動 | 裝的是 npm 版，`codex` 由 Node 啟動 | 改用 standalone 安裝，再移除 npm 版 |
-| `claude --version` 版本一直沒變 | 用 WinGet／Homebrew 安裝（不自動更新），或 npm 與原生版並存 | `claude doctor` 查安裝來源；依 5.7 表格更新並移除多餘的一份 |
-| 更新後仍是舊版 | 同一工具有兩種安裝來源 | `type -a`／`Get-Command -All` 找出排在 PATH 前面的那份 |
-| 貼上安裝指令出現 `'&&' is not a valid statement separator` | 把含 `&&` 的 CMD 指令貼到 Windows PowerShell 5.1 | 改用 PowerShell 版指令 |
-| 仍在使用 `gemini` 指令 | Gemini CLI 已由 Antigravity CLI 取代 | 依 5.5 遷移到 `agy`，確認可用後移除 `gemini` |
-| AI 找不到檔案 | 目前目錄、檔名或副檔名不正確 | 列出檔案；確認不是 `notes.md.txt` |
-| 找不到 Python 套件 | 用錯直譯器或依賴未記錄 | `uv run python -c "import sys; print(sys.executable)"`；再查 `uv tree` |
-| `uv sync --locked` 失敗 | 描述與鎖檔不一致或平台不相容 | 閱讀錯誤；確認修改目的後才更新鎖檔 |
-| CSV 讀取失敗 | 檔案位置、編碼或欄位錯誤 | 確認三個欄位名、UTF-8、整數分鐘數 |
-| Git 說沒有可提交的內容 | 未存檔、未暫存或內容沒變 | `git status`，再確認應加入的檔案 |
-| `git diff` 空白，但有新文件 | 新檔尚未追蹤 | `git status --short`；閱讀新檔，再暫存比較 |
-| AI 沒遵守 AGENTS.md | 沒載入、規則衝突或模型未遵循 | 查指引來源與內容，再檢查實際輸出 |
-| Git 忽略 `.env`，AI 卻仍可能讀到 | 把版本控制忽略當成權限控制 | 另用工具權限與檔案存取配置管理 |
-| 圖表只顯示 Mermaid 原始碼 | 閱讀器不支援 Mermaid | 用支援的閱讀模式；SVG 分層圖可獨立開啟 |
-
-### 11.3 能直接貼給 AI 的除錯格式
-
-```transcript
-我想完成：執行學習時間統計。
-作業系統與 shell：請填寫。
-目前資料夾：請填寫。
-我執行的完整指令：請填寫。
-實際錯誤訊息：貼上已移除憑證與個人資料的訊息。
-預期結果：建立報表，總時間 170 分鐘。
-已嘗試的處理：請填寫。
-
-請先找出最可能的原因與一個可驗證的檢查步驟。
-不要直接重裝所有工具，也不要修改無關檔案。
-```
-
-### 11.4 費用與額度怎麼看
-
-CLI 可下載，不代表模型呼叫沒有費用。訂閱登入、API 金鑰、組織帳號可能有不同額度與計費方式，應以你實際選用服務的帳號頁為準。先用小型筆記完成練習，再逐步擴大資料量，能同時降低除錯難度與不必要呼叫。
-
-## 12. 實作練習與評量（Practice）
-
-### 12.1 練習 A：把任務放回六層模型
+### 9.1 練習 A：把任務放回六層模型 {#exercise-layers}
 
 **任務：**「AI 已安裝但無法讀取來源資料夾。」分別提出 Context、能力、Harness、環境層面的可能原因。
 
@@ -1502,15 +1201,15 @@ CLI 可下載，不代表模型呼叫沒有費用。訂閱登入、API 金鑰、
 
 **參考方向：**未提供來源路徑、讀檔工具不可用、權限拒絕、檔案不存在。不能只回答「模型不夠聰明」。
 
-### 12.2 練習 B：最小可用環境
+### 9.2 練習 B：最小可用環境 {#exercise-minimal-setup}
 
-**任務：**只安裝基礎工具與一款原生 CLI，先不安裝 Node.js，完成第 7 章文件整理。
+**任務：**只安裝基礎工具與一款原生 CLI，先不安裝 Node.js，完成第 5 章文件整理。
 
 **交付：**README 的版本紀錄、來源筆記、複習資料與 Git commit。
 
 **成功判準：**能解釋為什麼這條路線不需要 Node.js，以及什麼情況下之後可能需要它。若電腦本來就有 Node，不必為練習移除；記錄既有環境即可，不能因此宣稱實測了「完全沒有 Node」的安裝。
 
-### 12.3 練習 C：資料錯誤能否被發現
+### 9.3 Python 延伸：資料錯誤能否被發現 {#exercise-data-errors}
 
 在獨立的測試副本中操作，不修改已驗收的來源。可以先把專案複製為新的練習目錄，排除 `.venv`，再用 `uv sync` 重建環境。
 
@@ -1525,7 +1224,7 @@ CLI 可下載，不代表模型呼叫沒有費用。訂閱登入、API 金鑰、
 
 「不建立新報表」不等於刪除舊報表；檢查執行前後檔案清單才能判斷。
 
-### 12.4 綜合任務：一週學習助理
+### 9.4 Python 綜合任務：一週學習助理 {#weekly-assistant}
 
 建立自己的虛構資料，至少含三個科目與七筆紀錄。請 Agent 完成以下工作：
 
@@ -1537,7 +1236,7 @@ CLI 可下載，不代表模型呼叫沒有費用。訂閱登入、API 金鑰、
 
 **限制：**不要用真實同學的個資；不要新增本任務不需要的套件；不要把正式發布或寄送包含在任務內。
 
-### 12.5 評分規準
+### 9.5 評分規準 {#assessment-rubric}
 
 | 項目 | 配分 | 可觀察的證據 |
 |---|---:|---|
@@ -1547,11 +1246,11 @@ CLI 可下載，不代表模型呼叫沒有費用。訂閱登入、API 金鑰、
 | 程式結果與錯誤處理 | 25 | 正常與異常資料測試都有紀錄 |
 | 版本控制與可重現性 | 15 | 有 commit、依賴文件與重新執行方式 |
 
+這份 100 分規準適用完成 Python 延伸的完整課程。基礎路線先檢核分層、環境、來源與版本控制四項，Python 項標示「尚未選修」，不視為基礎課程缺交。
+
 只交聊天截圖、缺少實際檔案或驗證結果，不算完成交付。
 
-## 13. 學習總結（Summary）
-
-### 13.1 應獲得的知識
+### 9.6 應獲得的知識 {#knowledge-summary}
 
 - LLM 是模型；Agent 系統還需要 context、工具、控制機制與回饋迴圈。
 - 六層圖用來分辨問題與責任；實際執行需要跨層互動。
@@ -1560,34 +1259,24 @@ CLI 可下載，不代表模型呼叫沒有費用。訂閱登入、API 金鑰、
 - 原生 CLI、npm 安裝與專案工具各有依賴，Node.js 不是所有 Agent 的共同必備環境。
 - VS Code、Python、uv 與 Git 分別負責編輯、執行、環境管理與版本追蹤。
 
-### 13.2 應獲得的技能
+### 9.7 應獲得的技能 {#skills-checklist}
 
 - [ ] 能查出目前工作路徑、工具版本與執行檔來源。
 - [ ] 能完成一款 CLI 的安裝、登入與實際讀檔任務。
 - [ ] 能建立 README、AGENTS.md 與 `.gitignore`。
 - [ ] 能用 `git status` 與兩種 diff 找出實際變更。
-- [ ] 能用 `uv run` 執行專案程式並確認直譯器。
-- [ ] 能核對 170 分鐘的基準結果與錯誤資料行為。
+- [ ] 【Python 延伸】能用 `uv run` 執行專案程式並確認直譯器。
+- [ ] 【Python 延伸】能核對 170 分鐘的基準結果與錯誤資料行為。
 - [ ] 能回報已驗證項目與尚未確認的限制。
 
-### 13.3 每次工作的收尾清單
-
-1. 確認成果已存成檔案，檔名與位置正確。
-2. 檢查來源是否被意外修改。
-3. 將結果與驗收條件逐一比對。
-4. 查看差異後再建立 commit。
-5. 記錄未完成項目，讓下一次工作能接續。
-
-## 14. 延伸問題與應用（Extension & Application）
-
-### 14.1 反思性問題
+### 9.8 反思性問題 {#reflection-questions}
 
 - 在操作之前，你是否把 CLI 名稱當成模型名稱？六層架構如何改變你的判斷？
 - 同一個模型在兩個工具中表現不同，除了模型能力，還有哪些原因？
 - AI 的文字答案很流暢，但檔案不存在，應如何定義「完成」？
 - 哪一個錯誤最初被你歸因於 AI，後來卻發現是路徑或環境問題？
 
-### 14.2 真實應用情境
+### 9.9 真實應用情境 {#application-scenarios}
 
 **教師備課：**將自己的課堂筆記整理為複習題，要求每題對應來源段落，再人工確認教學深度。
 
@@ -1595,14 +1284,14 @@ CLI 可下載，不代表模型呼叫沒有費用。訂閱登入、API 金鑰、
 
 **社團活動：**用虛構報名資料測試人數統計與通知草稿。正式資料處理與對外寄送要另有清楚的權限與流程。
 
-### 14.3 跨領域連結
+### 9.10 跨領域連結 {#cross-disciplinary}
 
 - **資訊與統計：**一個正確執行的程式，是否可能因為原始資料錯誤而產生錯誤結論？
 - **工程與設計：**如果報表功能每天都一樣，哪些部分適合改成固定程式，哪些仍需要 Agent？
 - **社會與倫理：**將同學的學習紀錄交給雲端模型前，需要考慮哪些資料使用界線？
 - **環境與資源：**比較一次處理全部資料與分段處理的呼叫次數、時間與成本，如何選擇？
 
-### 14.4 進階探索
+### 9.11 進階探索 {#further-exploration}
 
 1. 為統計程式新增「依日期範圍篩選」，先定義日期邊界測試。
 2. 用三份固定輸入比較不同 CLI，記錄成功率、花費時間與人工修正次數；不要只比較語氣。
@@ -1610,9 +1299,378 @@ CLI 可下載，不代表模型呼叫沒有費用。訂閱登入、API 金鑰、
 4. 研究一個 MCP 工具的 runtime 與權限需求，辨別它與 Agent CLI 本身的依賴。
 5. 建立固定流程：「來源檢查 → Agent 草稿 → 外部驗證 → 人工驗收」，觀察哪個步驟最能減少錯誤。
 
-## 15. 官方文件與維護方式
+## 附錄 A. 安裝原理與維護參考 {#appendix-installation}
 
-### 15.1 主要來源索引
+這裡供需要比較安裝方式、維護舊電腦或執行 Node 工具時查閱，不是完成第一次對話前的必讀內容。查完可回到[CLI 安裝](#cli-installation)或[穩定工作](#reliable-work)。
+
+### A.1 四種安裝方式比較 {#installation-methods}
+
+**基本資料（原稿套件盤點日 2026-10-29；2026-10-31 複核官方安裝文件）：**
+
+| 安裝方式 | 適用平台 | 三款 CLI 官方是否提供 | 安裝時需要 Node.js？ | 執行時需要 Node.js？ | 更新方式 |
+|---|---|---|---|---|---|
+| 官方安裝腳本（原生版） | Windows、macOS、Linux | Claude Code、Codex、agy 都有；本課選原生腳本為主要路線 | 否 | 否 | Claude Code、agy 在背景自動更新；Codex 重跑安裝指令或 `codex update` |
+| Homebrew cask | macOS、Linux（依各 cask 平台清單） | Claude Code、Codex、agy 都有 cask | 否 | 否 | 手動 `brew upgrade`（agy 的 cask 標示會自行更新） |
+| WinGet | Windows | 只有 Claude Code（`Anthropic.ClaudeCode`）；Codex 官方頁未列 CLI 的 WinGet，agy 官方未列 | 否 | 否 | 手動 `winget upgrade` |
+| npm | 有 Node.js 的任何平台 | Claude Code、Codex 有；agy 未提供 | **是**（Claude Code 要 22+） | Claude Code：否；Codex：**是** | 手動 `npm install -g <套件>` |
+
+**優缺點：**
+
+| 安裝方式 | 優點 | 缺點 |
+|---|---|---|
+| 官方安裝腳本 | 本課採用原生安裝；不需 Node.js、不需系統管理員權限；Claude Code 與 agy 會自動更新；三款 CLI 在三種作業系統都能用 | 要執行從網路下載的腳本（`irm ... \| iex`、`curl ... \| sh`），學校電腦可能被資安政策或 PowerShell 執行原則擋下；三款 CLI 的更新方式不一致 |
+| Homebrew | 一個工具統一安裝、更新、移除多套軟體；不需 Node.js；由 Homebrew 驗證下載檔 | 要先裝 Homebrew，並依 cask 的支援平台選用；Claude Code cask 不會自動更新，`claude-code` 跟隨 stable 頻道，約晚一週；和官方腳本各裝一份時容易混淆 |
+| WinGet | Windows 10／11 內建；學校 IT 可統一派送；不需 Node.js | 三款中只有 Claude Code 有官方套件；不會自動更新；Claude Code 執行中升級可能因檔案被鎖住而失敗 |
+| npm | 已有 Node 開發環境的人熟悉；各平台指令相同；可用 `@版本號` 固定版本 | 必須先裝 Node.js；Codex 的 npm 版每次執行都要 Node，換 Node 版本或用 nvm 切換後指令可能消失；全域安裝常遇到權限問題（不可用 `sudo npm`）；Windows 可能卡在 `npm.ps1` 執行原則；官方可用的替代方式，依實際需求選用 |
+
+本表的 Homebrew 平台與執行檔資訊可在 [Codex cask](https://formulae.brew.sh/cask/codex)、[Claude Code cask](https://formulae.brew.sh/cask/claude-code)、[Antigravity CLI cask](https://formulae.brew.sh/cask/antigravity-cli) 逐一確認；本課 macOS 主線採官方原生腳本，Homebrew 為替代方式，Linux 可依官方腳本或支援套件選用。
+
+### A.2 建議與結論 {#installation-decisions}
+
+| 使用者情境 | 建議的安裝方式 | 理由 |
+|---|---|---|
+| 學生、初學者（本課主線） | **官方安裝腳本** | 不需 Node；Codex 與 Claude 的安裝步驟短，但更新方式不同 |
+| macOS 且平常就用 Homebrew 管理軟體 | Homebrew cask | 統一管理；記得定期 `brew upgrade` |
+| 學校 IT 統一派送的 Windows 電腦 | Claude Code 用 WinGet；Codex 用官方部署文件的固定版本安裝腳本（見附錄 A.8）；agy 用官方腳本 | 可控制版本並集中管理 |
+| 已有 Node 開發環境的進階使用者 | 仍建議官方安裝腳本；npm 只在需要固定版本時使用 | 避免 Codex 綁定 Node、避免與原生版重複安裝 |
+
+> **結論：本課建議用官方安裝腳本安裝 CLI，因此不需要先裝好 Node.js。**
+> 安裝時不需要，之後每次執行也不需要。只有兩種情況才要裝：一是你改用 npm 安裝 CLI，二是 AI 的任務本身用到 Node（例如用 `npx` 啟動 MCP server、處理 JavaScript 專案）。Node.js 是選修項目，等真的需要時再依[Node.js 選修安裝](#node-installation)安裝 LTS 版。
+
+| 你的情況 | 要先裝 Node.js 嗎？ | 說明 |
+|---|---|---|
+| 依本課用官方安裝腳本安裝三款 CLI 任一款 | **不用** | 安裝腳本由系統內建的 PowerShell／bash 執行，裝好的是原生執行檔 |
+| 改用 Homebrew 或 WinGet 安裝 | **不用** | 套件管理器下載的是同一份原生執行檔 |
+| 改用 npm 安裝 Claude Code | **要**，Node.js 22+ | 只有安裝時需要；裝好的 `claude` 執行時不呼叫 Node。仍建議改用官方安裝腳本 |
+| 改用 npm 安裝 Codex CLI | **要**，而且之後不能移除 | `codex` 每次都由 Node 啟動；移除或切換 Node 版本就無法執行。建議改用官方安裝腳本 |
+| AI 的任務要用 `npx` 啟動 MCP server，或處理 JavaScript 專案 | **要**，到時再裝 | 這是任務需要，與 CLI 怎麼安裝無關；依[Node.js 選修安裝](#node-installation)安裝 LTS 版 |
+| 電腦原本就裝有 Node.js | 不用移除 | 不影響原生版 CLI；但同一台電腦只保留一種 Node 管理方式（見附錄 A.9） |
+
+```mermaid
+flowchart TD
+    Q1{"用什麼方式安裝 CLI？"}
+    Q1 -->|官方安裝腳本、Homebrew、WinGet| N1["不需要 Node.js<br/>直接安裝 CLI"]
+    Q1 -->|npm| Y1["先安裝 Node.js LTS<br/>Codex 的 npm 版之後也要一直保留 Node"]
+    N1 --> Q2{"任務要用 npx、MCP server<br/>或 JavaScript 專案嗎？"}
+    Q2 -->|否| N2["本課全程不需要 Node.js"]
+    Q2 -->|是| Y2["那時再依附錄 A.9 安裝 Node.js LTS"]
+```
+
+附錄 A.3 以後說明這個結論的根據：先把「原生版」「standalone」「npm 版」「安裝時」「執行時」這幾個詞講清楚，再逐一對照。
+
+### A.3 先分清楚四種檔案與工具 {#binary-script-manager}
+
+| 名詞 | 是什麼 | 怎麼被執行 | 例子 |
+|---|---|---|---|
+| 原生執行檔（native binary） | 已經編譯成作業系統與 CPU 能直接執行的機器碼檔案 | 作業系統直接載入，**不需要**另外安裝直譯器 | Windows 的 `claude.exe`；macOS 的 `codex`（Mach-O 格式） |
+| 腳本（script） | 純文字的程式碼檔 | 必須由對應的直譯器讀取後執行：`.js` 要 Node.js，`.ps1` 要 PowerShell，`.sh` 要 bash | npm 版 Codex 的 `codex.js`；安裝用的 `install.ps1` |
+| 安裝腳本（installer） | 負責「下載 → 檢查 → 放到指定資料夾 → 加入 PATH」的腳本，做完就結束 | 由作業系統內建的 shell 執行（PowerShell、CMD、bash、zsh） | `https://claude.ai/install.ps1`、`https://chatgpt.com/codex/install.sh` |
+| 套件管理器（package manager） | 統一負責下載、更新、移除軟體的工具 | 它本身也是程式，各有自己的需求 | npm（**本身要 Node.js**）、Homebrew、WinGet |
+
+**重點：安裝腳本不等於 CLI 本身。**`install.ps1` 雖然是腳本，但由 Windows 內建的 PowerShell 執行，所以不需要 Node；它執行完會在電腦上留下一個原生執行檔，之後每次輸入 `claude` 跑的是那個執行檔，跟安裝腳本已經無關。
+
+### A.4 「原生版」「standalone」「npm 版」指的是什麼 {#distribution-terms}
+
+這三個詞描述的角度不同：「原生」說的是**最後執行的是什麼檔案**，「standalone」說的是**用什麼管道安裝**。
+
+| 本教材用語 | 定義 | 官方文件的稱呼 | 安裝後電腦上留下什麼 |
+|---|---|---|---|
+| 原生版 | 執行官方網站提供的安裝腳本，取得原生執行檔，放進使用者目錄並加入 PATH | Claude Code：Native Install；Codex：standalone installer；Antigravity：native build 安裝腳本 | 原生執行檔，例如 `~/.local/bin/claude`、`%LOCALAPPDATA%\Programs\OpenAI\Codex\bin\codex.exe` |
+| standalone 版 | Codex 官方對「原生版」的稱呼。意思是「獨立安裝」：不經過 npm 等套件管理器，也不依賴其他執行環境 | Codex：standalone | 同上，原生執行檔 |
+| Homebrew／WinGet 版 | 由套件管理器下載**同一份**原生執行檔 | 各家列為替代安裝方式 | 原生執行檔，位置由套件管理器管理（例如 `/opt/homebrew/bin/`） |
+| npm 版 | 用 `npm install -g <套件>` 安裝 | 各家列為替代安裝方式 | **依工具不同**：Claude Code 是原生執行檔；Codex 是 Node 腳本 `codex.js` 加上原生程式 |
+
+所以在本教材中，「Codex standalone 版」和「Codex 原生版」指的是同一件事；Homebrew 版也是原生執行檔，但它透過套件管理器安裝，不算 standalone。
+
+### A.5 安裝時、執行時、任務時：三個時間點各需要什麼 {#dependency-stages}
+
+| 時間點 | 問的問題 | 由什麼決定 | 例子 |
+|---|---|---|---|
+| 安裝時 | 把 CLI 放到電腦上的**那一次**，需要什麼工具？ | 選用的安裝方式 | 官方安裝腳本只要系統內建的 shell；npm 安裝要先有 Node.js |
+| 執行時 | **每次**輸入 `claude`、`codex`、`agy` 啟動時，作業系統實際載入什麼？ | 安裝後留下的是原生執行檔還是 Node 腳本 | 原生執行檔直接啟動；Node 腳本要先啟動 Node |
+| 任務時 | CLI 已經在跑，AI 要做的**工作**還需要什麼？ | 任務內容，跟 CLI 怎麼安裝無關 | 用 `npx` 啟動 MCP server、執行 JavaScript 專案的 `npm test`，都要 Node |
+
+```mermaid
+flowchart LR
+    subgraph S1["安裝時"]
+        A1["官方安裝腳本<br/>install.ps1、install.sh、install.cmd"]
+        A2["Homebrew、WinGet"]
+        A3["npm<br/>（需要 Node.js）"]
+    end
+    subgraph S2["電腦上留下的檔案"]
+        B1["原生執行檔"]
+        B2["Node 腳本 codex.js<br/>加上原生程式"]
+    end
+    subgraph S3["執行時"]
+        C1["作業系統直接執行<br/>不需要 Node.js"]
+        C2["先由 Node.js 執行腳本<br/>需要 Node.js"]
+    end
+    A1 --> B1
+    A2 --> B1
+    A3 -->|Claude Code| B1
+    A3 -->|Codex CLI| B2
+    B1 --> C1
+    B2 --> C2
+```
+
+### A.6 三款 CLI 逐一對照 {#cli-dependency-comparison}
+
+| 工具與安裝方式 | 安裝時需要 | 安裝後留下的檔案 | 執行時需要 Node.js？ | 本課選擇 |
+|---|---|---|---|---|
+| Claude Code 原生版（官方安裝腳本） | 系統內建 shell | 原生執行檔 `claude`（Windows：`claude.exe`） | 否 | **採用** |
+| Claude Code Homebrew cask／WinGet | Homebrew 或 WinGet | 同一份原生執行檔 | 否 | 可替代；預設不自動更新 |
+| Claude Code npm 版 | **Node.js 22+** 與 npm | npm 依平台下載同一份原生執行檔（套件入口為 `bin/claude.exe`） | 否 | 不建議：要先裝 Node，且容易和原生版重複安裝 |
+| Codex standalone 版（官方安裝腳本） | 系統內建 shell | 原生執行檔 `codex`（Rust 編譯） | 否 | **採用** |
+| Codex Homebrew cask | Homebrew | 同一份原生執行檔 | 否 | 可替代 |
+| Codex npm 版 | **Node.js**（套件宣告 `node >= 16`）與 npm | 套件入口 `bin/codex.js` 是 Node 腳本，再由它呼叫原生程式 | **是** | 不建議：移除或切換 Node 版本後，`codex` 就無法啟動 |
+| Antigravity CLI 原生版（官方安裝腳本） | 系統內建 shell | 原生執行檔 `agy` | 否 | **選讀，不是課程必裝** |
+| Antigravity CLI Homebrew cask | Homebrew | 原生執行檔 `agy` | 否 | 可替代 |
+
+查核方式與來源：官方安裝頁——[Claude Code Setup](https://code.claude.com/docs/en/setup)、[Codex CLI](https://learn.chatgpt.com/docs/codex/cli)、[Codex GitHub README](https://github.com/openai/codex)、[Codex Windows 部署](https://learn.chatgpt.com/docs/enterprise/windows-deployment)、[Antigravity CLI 安裝](https://antigravity.google/docs/getting-started?tab=cli)。npm 版「執行時是否需要 Node」以 `npm view <套件> engines bin` 查看：`engines` 是套件宣告的 Node 版本，`bin` 是輸入指令時實際執行的入口檔。入口是 `.js` 就由 Node 執行；入口是 `.exe` 或原生檔就不需要 Node。Homebrew cask 以 `brew info --cask <名稱>` 確認安裝內容為原生執行檔（Binary）。
+
+**自己動手確認（macOS）：**
+
+```bash
+file "$(realpath "$(command -v codex)")"
+```
+
+輸出含 `Mach-O ... executable` 代表原生執行檔；輸出含 `script text` 且第一行是 `#!/usr/bin/env node`，代表是要靠 Node 執行的腳本。Windows 與更完整的盤點方式見[安裝來源盤點](#installation-inventory)。
+
+早期教學常以 npm 為主要入口，所以常先安裝 Node.js；這不表示所有 CLI 的歷史版本都採同一架構。本課不指定每款工具「從哪個版本開始改成原生」，以免把未查核的版本分界寫成事實。
+
+### A.7 CLI 改用 Rust 撰寫，就不需要 Node.js 了嗎？ {#implementation-language}
+
+決定因素是「發行方式」，不是「撰寫語言」。
+
+| 工具 | 原生執行檔的實作（查核方式） | 原生版需要 Node？ | 仍可能需要 Node 的情況 |
+|---|---|---|---|
+| Codex CLI | Rust 編譯的原生程式（官方 repo 的 `codex-rs`；執行檔內含 `rustc` 編譯資訊） | 否 | 改用 npm 版時，`codex.js` 啟動腳本要靠 Node 執行 |
+| Claude Code | 不是 Rust；是把 JavaScript 與 Bun runtime 打包成單一執行檔（執行檔內含 `Bun v1.x` 標記） | 否；runtime 已內建，不呼叫系統 Node | npm 只用來下載；安裝時要求 Node 22+ |
+| Antigravity CLI | 官方稱「native build」，未公開實作語言 | 否 | 官方路線未列 Node 需求 |
+
+所以「Rust 寫的 → 不用 Node」只說對一半：
+
+1. **原生執行檔**（不論 Rust、Go，或把 JS runtime 一起打包）啟動時都不需要系統裝 Node。
+2. **同一工具的 npm 版**可能仍用 Node 腳本當入口，Codex 就是例子。
+3. **任務依賴**與 CLI 語言無關：MCP server 常用 `npx` 啟動、JavaScript 專案要跑 `npm test`，這些仍需要 Node。
+
+### A.8 替代安裝方式與官方指令位置 {#alternative-installation}
+
+主線的官方原生安裝指令已集中於[Claude Code](#install-claude)與[Codex CLI](#install-codex)，Google 選讀指令在[附錄 B](#install-antigravity)。不要把每種方法都執行一遍；同一款工具保留一種安裝來源。
+
+下表保留原官方安裝總表的選擇資訊，原生指令改用章節連結，避免同一指令多處維護。
+
+| 工具 | 原生路線 | CMD／套件管理器替代方式 | 更新 |
+|---|---|---|---|
+| Claude Code | [Windows／macOS](#install-claude) | CMD 見下方；WinGet `Anthropic.ClaudeCode`；Homebrew `claude-code`（stable）或 `claude-code@latest`；npm `@anthropic-ai/claude-code` | 原生版背景更新；套件管理器依來源更新 |
+| Codex CLI | [Windows／macOS](#install-codex) | 無官方 CMD／WinGet CLI 路線；Homebrew `codex`；npm `@openai/codex` | standalone 重跑官方安裝；支援的版本可用 `codex update` |
+| Antigravity CLI | [附錄 B](#install-antigravity) | CMD 見附錄 B；Homebrew `antigravity-cli`（macOS 12+）；無官方 npm 路線 | 原生版背景更新 |
+
+若在 Markdown 表格原始碼看到 `\|`，那是表格跳脫寫法；輸入終端機時只有 `|`。可複製的原生指令以連結內的程式碼區塊為準。
+
+**Claude Code：CMD 替代**（只在 CMD 使用）：
+
+```batch
+curl -fsSL https://claude.ai/install.cmd -o install.cmd && install.cmd && del install.cmd
+```
+
+Windows PowerShell 5.1 不支援此處的 `&&`；PowerShell 7 雖支援，仍應使用 PowerShell 版。若出現 `'irm' is not recognized`，也要先確認不是在 CMD 貼了 PowerShell 指令。
+
+**Claude Code：Windows 補充**
+
+| 項目 | 官方說明與操作界線 |
+|---|---|
+| Git for Windows | 選用；有安裝時 Bash 與 Monitor 工具使用 Git Bash，沒有時改用 PowerShell 工具；本課已安裝 Git |
+| WSL | 可在 WSL 內使用 Linux 指令；只有 WSL 2 支援 sandbox；基礎課程不混用 WSL 與原生 Windows |
+| WinGet | `winget install Anthropic.ClaudeCode`；需以 `winget upgrade Anthropic.ClaudeCode` 更新 |
+| npm | 需先有符合要求的 Node；原生版使用者不要再疊裝另一份 |
+
+**Codex：官方四個安裝分頁**（原稿查核 2026-10-29，課程版複核 2026-10-31）：
+
+| 官方分頁 | 安裝位置／指令 | 更新方式 |
+|---|---|---|
+| macOS/Linux | [主線 standalone 指令](#install-codex) | 重跑同一安裝指令 |
+| Windows | [主線 PowerShell 指令](#install-codex) | 重跑同一安裝指令 |
+| npm | `npm install -g @openai/codex` | 同一指令；執行時仍需 Node |
+| Homebrew | `brew install --cask codex` | `brew upgrade --cask codex` |
+
+**Codex：學校固定版本部署或先檢查腳本**
+
+```powershell
+$codexInstallerPath = Join-Path $env:TEMP "codex-install.ps1"
+Invoke-WebRequest -UseBasicParsing -Uri "https://chatgpt.com/codex/install.ps1" -OutFile $codexInstallerPath
+powershell -ExecutionPolicy Bypass -File $codexInstallerPath
+```
+
+學校可在最後一行加上 `-Release <核准的版本號>`；未指定時安裝 `latest`。組織政策拒絕腳本時使用管理員核准的方法。[Windows CLI 部署](https://learn.chatgpt.com/docs/enterprise/windows-deployment)、[Codex GitHub README](https://github.com/openai/codex)
+
+**macOS Homebrew 替代：**只選所需工具的一行。
+
+```bash
+brew install --cask claude-code
+brew install --cask codex
+```
+
+| cask | 更新方式 | 注意 |
+|---|---|---|
+| `claude-code` | `brew upgrade claude-code` | stable 頻道，約晚一週；若選 `claude-code@latest`，安裝與更新均使用該名稱；預設不自動更新 |
+| `codex` | `brew upgrade --cask codex` | 與 standalone 版不要並存 |
+
+Homebrew 升級後可用 `brew cleanup` 清除舊版。官方腳本與 Homebrew 不要各裝一份同一工具。來源：[Claude Setup](https://code.claude.com/docs/en/setup)、[Codex CLI](https://learn.chatgpt.com/docs/codex/cli)。
+
+### A.9 Node.js 的選修安裝 {#node-installation}
+
+若你要使用 npm 安裝 CLI、執行 JavaScript 或接上以 Node 寫成的工具，從 [Node.js 官方下載頁](https://nodejs.org/en/download) 選擇**仍受支援的 LTS** 與正確的作業系統、CPU 架構。
+
+安裝完成後開新 PowerShell：
+
+```powershell
+node --version
+npm.cmd --version
+node -e "console.log('Node.js 可以執行')"
+```
+
+macOS 使用 `npm --version`。從 [Node.js 官方版本狀態](https://nodejs.org/en/about/previous-releases) 選仍受支援的 LTS，並核對套件需求；Claude Code npm 安裝目前要求 Node 22+。套件的最低版本不等於仍受維護的推薦版本，不應為滿足舊文件的最低門檻而刻意安裝過期版本。
+
+**一台電腦只留一種 Node 管理方式。**官方安裝包、Homebrew、nvm 同時存在時，`npm install -g` 裝到哪一份取決於當下 PATH，容易出現「剛裝好卻找不到指令」或兩份版本不同的狀況。用[安裝來源盤點](#installation-inventory)的指令先盤點，再決定保留哪一種。
+
+本課的[Python 練習](#python-practice)不需要 Node.js；只為筆記整理或 Python 而來的讀者可跳過本節。
+
+### A.10 記錄安裝方式與更新方式 {#update-uninstall}
+
+在專案的 `README.md` 記錄「工具名稱、版本、安裝方式、查核日期」，避免日後不知道是 npm 版還是原生版。
+
+| 工具與安裝來源 | 更新方式 | 移除方式 |
+|---|---|---|
+| Claude Code 原生版 | 背景自動更新；手動 `claude update` | macOS：刪除 `~/.local/bin/claude` 與 `~/.local/share/claude`；Windows：刪除 `%USERPROFILE%\.local\bin\claude.exe` 與 `%USERPROFILE%\.local\share\claude` |
+| Claude Code WinGet | `winget upgrade Anthropic.ClaudeCode` | `winget uninstall Anthropic.ClaudeCode` |
+| Claude Code Homebrew | `brew upgrade claude-code`（或 `claude-code@latest`） | `brew uninstall --cask claude-code` |
+| Claude Code npm | `npm install -g @anthropic-ai/claude-code@latest`（不要用 `npm update -g`） | `npm uninstall -g @anthropic-ai/claude-code` |
+| Codex standalone | 重跑官方安裝指令；支援 self-update 的發行版可用 `codex update` | 官方頁未提供移除指令 |
+| Codex Homebrew | `brew upgrade --cask codex` | `brew uninstall --cask codex` |
+| Codex npm | `npm install -g @openai/codex`（官方頁的更新指令與安裝指令相同） | `npm uninstall -g @openai/codex` |
+| Antigravity CLI 原生版 | 執行時背景自動更新 | 刪除 `agy` 執行檔（位置見附錄 B） |
+| Antigravity CLI Homebrew | 套件標示會自行更新；必要時 `brew upgrade --cask antigravity-cli` | `brew uninstall --cask antigravity-cli` |
+
+Windows 上 npm 指令請用 `npm.cmd`。不要對同一個工具用兩種來源各裝一份；兩份並存時，執行的是 PATH 中排在前面的那份，另一份會停在舊版。
+
+### A.11 盤點既有安裝：這台電腦的 CLI 從哪裡來？ {#installation-inventory}
+
+接手一台已經裝過工具的電腦（例如教師自己的筆電），先盤點再決定要不要重裝。步驟：
+
+1. 列出同名指令的所有來源。
+2. 追到實際執行檔，看它是原生程式還是 Node 腳本。
+3. 對照[安裝原理](#appendix-installation)，判斷安裝方式與 Node 依賴。
+
+macOS：
+
+```bash
+for c in claude codex agy gemini node npm; do echo "== $c"; type -a "$c"; done
+realpath "$(command -v claude)"
+file "$(realpath "$(command -v codex)")"
+head -1 "$(realpath "$(command -v gemini)")"
+npm ls -g --depth=0
+```
+
+Windows PowerShell：
+
+```powershell
+foreach ($c in "claude","codex","agy","gemini","node","npm") { "== $c"; Get-Command $c -All -ErrorAction SilentlyContinue | Select-Object Source }
+npm.cmd ls -g --depth=0
+winget list --name Claude
+```
+
+| 看到的路徑或內容 | 代表的安裝方式 | 是否依賴 Node |
+|---|---|---|
+| `~/.local/bin/claude` 指向 `~/.local/share/claude/versions/<版本>` | Claude Code 原生版 | 否 |
+| `~/.local/bin/codex` 指向 `~/.codex/packages/standalone/...`，或 `%LOCALAPPDATA%\Programs\OpenAI\Codex\bin` | Codex standalone | 否 |
+| `~/.local/bin/agy` 或 `AppData\Local\agy\bin` | Antigravity CLI 原生版 | 否 |
+| 路徑在 `/opt/homebrew/` 或 `Caskroom` 下 | Homebrew | 否（Gemini CLI formula 除外） |
+| 路徑在 `node_modules` 下、`head -1` 顯示 `#!/usr/bin/env node` | npm 全域安裝 | 是 |
+| 路徑在 `~/.nvm/versions/node/<版本>/` 下 | 由 nvm 管理的 Node 底下的 npm 全域套件 | 是；切換 Node 版本後指令可能消失 |
+
+同名指令有多個版本時，先確認目前使用哪份，再處理舊安裝。原稿教師筆電的實際盤點已移至[歷史紀錄](#historical-inventory)，不能視為你的電腦狀態。
+
+## 附錄 B. Antigravity 與舊 Gemini 遷移 {#appendix-antigravity}
+
+本附錄只供已有 Google 工具或需要遷移的人閱讀；基礎課程使用 Codex CLI／Claude Code，不必安裝第三款。完成查閱後可回[首次任務](#first-task)。
+
+### B.1 選讀比較：Antigravity CLI（agy） {#antigravity-overview}
+
+Google 的 Agent CLI 已由 Gemini CLI（`gemini`）改為 Antigravity CLI（`agy`），本教材的 Google 路線只使用 `agy`。`agy` 是原生 binary，不需要 Node.js。原本為 Gemini CLI 寫的 `GEMINI.md` 在 `agy` 中仍會生效；電腦上還留有舊 `gemini` 指令的人，依[附錄 B 的遷移步驟](#gemini-migration)遷移後移除。[官方遷移說明](https://antigravity.google/docs/cli/gcli-migration)
+
+| 項目 | 選讀工具條件 |
+|---|---|
+| Antigravity CLI | 官方腳本支援 64 位元 Windows、macOS、Linux；Homebrew cask 標示 macOS 12+；官方未另列 CLI 專用記憶體門檻 |
+| 介面區分 | App、CLI、IDE、SDK 是不同介面，不把 App 的最低 OS 或 SDK 的 Python 需求套到 CLI |
+| 指引 | 工作區 `GEMINI.md`、`AGENTS.md` 與全域 `~/.gemini/GEMINI.md` 會生效；保留單一主要來源並確認工作區與載入狀態 |
+
+[Antigravity 各介面](https://antigravity.google/docs/getting-started?tab=cli)、[遷移規則](https://antigravity.google/docs/cli/gcli-migration)
+
+### B.2 選讀路線 C：Antigravity CLI {#install-antigravity}
+
+在 PowerShell 執行：
+
+```powershell
+irm https://antigravity.google/cli/install.ps1 | iex
+```
+
+若在 CMD，改用：
+
+```batch
+curl -fsSL https://antigravity.google/cli/install.cmd -o install.cmd && install.cmd && del install.cmd
+```
+
+Windows 的預設安裝位置是 `C:\Users\<使用者名稱>\AppData\Local\agy\bin`。開新終端機後：
+
+```powershell
+Set-Location "$env:USERPROFILE\AI-Lab\study-assistant"
+agy --version
+agy
+```
+
+首次啟動會依序設定配色、顯示模式（Alt-Screen 或 Inline）、登入與工作區信任。個人 Google 帳號（免費、Pro、Ultra）選 `oauth-personal`；學校若提供 Gemini API 金鑰或企業方案，依管理員指示選擇對應的驗證方式。
+
+`agy` 會在執行時於背景自動更新。遇到更新失敗時，先核對安裝來源、PATH 與官方故障排除，不要先刪除正在使用的執行檔。這裡安裝的是 `agy` CLI binary，不是透過 npm 安裝 `gemini`，也不是安裝 Python SDK。[Antigravity CLI 官方入門](https://antigravity.google/docs/getting-started?tab=cli)、[官方更新排錯](https://antigravity.google/docs/cli/troubleshooting)
+
+**macOS 原生安裝：**
+
+```bash
+curl -fsSL https://antigravity.google/cli/install.sh | bash
+```
+
+開新終端機，回到 `study-assistant`，執行 `agy --version` 與 `agy`。原生指令通常位於 `~/.local/bin`，找不到時檢查 PATH。若原本用 Homebrew 管理軟體，可改用 `brew install --cask antigravity-cli`；cask 標示會自行更新，必要時用 `brew upgrade --cask antigravity-cli`，不要與原生來源並存。
+
+### B.3 選讀：舊 gemini 指令遷移到 agy {#gemini-migration}
+
+本課新學習者完成主線任一 CLI 即可跳過本節。電腦上還有舊 `gemini` 指令的人，依下列步驟把設定搬到 `agy` 後移除：
+
+1. 依前節安裝 `agy`，第一次執行時若偵測到舊設定，會出現遷移清單，可勾選要轉移的項目。
+2. 擴充功能（extensions）用下列指令轉成 Antigravity 外掛：
+
+```powershell
+agy plugin import gemini
+```
+
+3. 工作區 `GEMINI.md`、`AGENTS.md` 與全域 `~/.gemini/GEMINI.md` 不需轉換，仍會生效。
+4. 工作區技能不會自動轉移：把 `.gemini/skills/` 手動移到 `.agents/skills/`。
+5. MCP 設定改放 `~/.gemini/config/mcp_config.json`（全域）或 `.agents/mcp_config.json`（工作區）；遠端伺服器的 `url` 或 `httpUrl` 欄位要改名為 `serverUrl`。
+
+確認 `agy` 可正常工作後，再移除舊的 Gemini CLI：
+
+```powershell
+npm.cmd uninstall -g @google/gemini-cli
+```
+
+macOS 用 `npm uninstall -g @google/gemini-cli`；以 Homebrew 安裝者改用 `brew uninstall gemini-cli`。若用 nvm 管理多個 Node 版本，每個裝過 Gemini CLI 的 Node 版本都要各移除一次，最後用 `type -a gemini`（Windows：`Get-Command gemini -All`）確認已找不到指令。
+
+移除 Gemini CLI 不代表要移除 Node.js：若其他專案或 MCP server 仍使用 Node，保留即可。[Antigravity 遷移文件](https://antigravity.google/docs/cli/gcli-migration)
+
+## 附錄 C. 官方來源與歷史紀錄 {#appendix-history}
+
+本附錄分開列出可供維護時查閱的來源，以及使用者原稿保留的版本與測試紀錄。歷史紀錄中的節號指向當時原稿，**不是本次重排後的章節編號**；不能據此宣稱本次已重新安裝工具或重跑測試。
+
+### C.1 主要來源索引 {#official-sources}
 
 | 主題 | 參考來源 | 本教材用途 |
 |---|---|---|
@@ -1628,16 +1686,30 @@ CLI 可下載，不代表模型呼叫沒有費用。訂閱登入、API 金鑰、
 | uv | [安裝](https://docs.astral.sh/uv/getting-started/installation/)、[Python 管理](https://docs.astral.sh/uv/guides/install-python/)、[專案初始化](https://docs.astral.sh/uv/concepts/projects/init/)、[專案操作](https://docs.astral.sh/uv/guides/projects/) | Python 環境主線 |
 | Python | [csv 模組](https://docs.python.org/3/library/csv.html) | 統計範例的資料讀取 |
 
-### 15.2 授課前重新確認
+### C.2 授課前重新確認 {#teaching-maintenance}
 
 - 檢查各 CLI 官方安裝指令與支援平台，尤其是原生／npm 的需求差異；用 `npm view <套件> engines bin` 確認 npm 版執行時是否需要 Node。
-- 在教師電腦執行第 5.8 節盤點指令，清除重複安裝與已被取代的工具，再示範給學生看。
+- 在教師電腦執行[安裝來源盤點](#installation-inventory)盤點指令，清除重複安裝與已被取代的工具，再示範給學生看。
 - 在教室電腦測試登入與網路，不只確認 `--version`。
 - 保存實際使用的 CLI、uv 與 Python 版本，避免以「最新版」取代版本紀錄。
 - 核對 Python 範例與 170 分鐘預期結果。
 - 檢查相對圖檔連結，分享時將本文件與 `assets/agent_layers_b01.svg` 一起保留。
 
-### 15.3 版本記錄
+### C.3 教師電腦的歷史盤點 {#historical-inventory}
+
+以下是原稿查核日 2026-10-29 的教師筆電，保留為判讀案例，不代表讀者電腦或本次重新盤點。
+
+| 工具 | 盤點結果 | 判讀與建議 |
+|---|---|---|
+| Claude Code 2.1.312 | 原生版，Mach-O arm64 | 符合官方推薦；不需處理 |
+| Codex 0.165.0 | standalone 版，Mach-O arm64 | 歷史盤點的 standalone 安裝；依官方方式重跑安裝或使用支援的 `codex update` |
+| Antigravity CLI | 未安裝 | 若要示範 Google 路線，用官方腳本安裝 |
+| Gemini CLI 0.42.0 | npm 全域安裝，nvm 的 Node 22.20.0 與 `/usr/local` 的 Node 22.14.0 各有一份 | 已被 `agy` 取代且重複安裝；依 5.5 遷移到 `agy` 後移除兩份 |
+| Node.js | nvm 22.20.0、`/usr/local` 官方安裝包 22.14.0、Homebrew `node` 24.x（未連結） | 三個來源並存，容易讓 `npm -g` 裝到非預期位置；保留一個管理方式即可 |
+
+同名指令出現多個版本時，先確認目前使用哪一份，再處理舊安裝，避免誤刪正在使用的版本。
+
+### C.4 版本記錄 {#version-history}
 
 | 版本 | 日期 | 變更 |
 |---|---|---|
@@ -1647,8 +1719,9 @@ CLI 可下載，不代表模型呼叫沒有費用。訂閱登入、API 金鑰、
 | b04 | 2026-10-29 | 3.2 開頭新增「總結：不需要先裝好 Node.js」，附 6 種情況的判斷表與 Mermaid 決策圖；3.2.6 改為只列官方安裝指令，結論集中在開頭 |
 | b05 | 2026-10-29 | 3.2 改為「先比較安裝方式，再下結論」：新增 3.2.1 四種安裝方式（官方安裝腳本、Homebrew、WinGet、npm）的基本資料與優缺點比較、3.2.2 依使用者情境的建議與結論；原 3.2.1–3.2.6 順延為 3.2.3–3.2.8 |
 | b05 課程改版 | 2026-10-31 | 前置為課程基礎章，採 Codex CLI／Claude Code 雙主線；保留 Antigravity 選讀；明列 CLAUDE.md 與 AGENTS.md 的版本／載入條件；補互動及單次操作，複核 Homebrew 平台與修正 PowerShell 版本差異；保留原稿歷史測試並標明本次未重跑 |
+| 本次閱讀順序重整 | 2026-10-31 | 主線依概念、環境、專案、CLI、首次任務與會話管理排列；平台步驟前置，Node 與安裝細節、Google 遷移、歷史紀錄集中附錄；保留互動操作與斜線指令教學 |
 
-### 15.4 原 b05 歷史驗證紀錄與本次限制
+### C.5 原 b05 歷史驗證紀錄與本次限制 {#historical-verification}
 
 以下 2026-10-29 的實測與 Jev 紀錄隨使用者提供的原稿保留，僅描述原版，不能作為本次課程改版已重新執行的證據。本次 2026-10-31 核對官方文件、Markdown/HTML 內容及本地資源，未安裝 CLI、登入帳號或呼叫 Jev API。
 
@@ -1666,7 +1739,7 @@ CLI 可下載，不代表模型呼叫沒有費用。訂閱登入、API 金鑰、
 
 ---
 
-## Jev 合規檢查紀錄（原稿歷史紀錄）
+### C.6 Jev 合規檢查紀錄（原稿歷史紀錄） {#historical-jev-compliance}
 
 - **2026-10-29 20:14:13** ｜ 版本 `b02` ｜ Jev 模型 `jev-latest` ｜ ✅ PASS
   - 缺少模組：無
@@ -1682,7 +1755,7 @@ CLI 可下載，不代表模型呼叫沒有費用。訂閱登入、API 金鑰、
 
 ---
 
-## Jev 圖表選型檢查紀錄（原稿歷史紀錄）
+### C.7 Jev 圖表選型檢查紀錄（原稿歷史紀錄） {#historical-jev-diagrams}
 
 - **2026-10-29 20:14:20** ｜ 版本 `b02` ｜ Jev 模型 `jev-latest` ｜ ✅ PASS
   - 格式不符建議：無

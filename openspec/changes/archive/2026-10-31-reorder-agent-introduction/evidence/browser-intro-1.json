@@ -1,0 +1,1150 @@
+{
+  "status": "PASS",
+  "results": [
+    {
+      "old": "59-cli",
+      "target": "first-task",
+      "alias_count": 1,
+      "topic_count": 1,
+      "old_scroll": 13631,
+      "topic": "5. 完成第一個有來源的任務",
+      "target_scroll": 13639,
+      "pass": true
+    },
+    {
+      "old": "ai-agent",
+      "target": "intro",
+      "alias_count": 1,
+      "topic_count": 1,
+      "old_scroll": 112,
+      "topic": "前導章：讓 AI Agent 成為個人工作與學習助理",
+      "target_scroll": 112,
+      "pass": true
+    },
+    {
+      "old": "0",
+      "target": "learning-route",
+      "alias_count": 1,
+      "topic_count": 1,
+      "old_scroll": 549,
+      "topic": "0. 學習路線與閱讀約定",
+      "target_scroll": 549,
+      "pass": true
+    },
+    {
+      "old": "01",
+      "target": "learning-outcomes",
+      "alias_count": 1,
+      "topic_count": 1,
+      "old_scroll": 659,
+      "topic": "0.1 完成後能做到什麼",
+      "target_scroll": 667,
+      "pass": true
+    },
+    {
+      "old": "02",
+      "target": "course-plan",
+      "alias_count": 1,
+      "topic_count": 1,
+      "old_scroll": 860,
+      "topic": "0.2 課程安排與交付物",
+      "target_scroll": 868,
+      "pass": true
+    },
+    {
+      "old": "03",
+      "target": "input-conventions",
+      "alias_count": 1,
+      "topic_count": 1,
+      "old_scroll": 1307,
+      "topic": "0.3 指令閱讀約定",
+      "target_scroll": 1315,
+      "pass": true
+    },
+    {
+      "old": "1-ai-why",
+      "target": "agent-basics",
+      "alias_count": 1,
+      "topic_count": 1,
+      "old_scroll": 1553,
+      "topic": "1. 認識 AI Agent 與工作環境",
+      "target_scroll": 1561,
+      "pass": true
+    },
+    {
+      "old": "11",
+      "target": "from-chat-to-work",
+      "alias_count": 1,
+      "topic_count": 1,
+      "old_scroll": 1649,
+      "topic": "1.1 從問答到完成任務",
+      "target_scroll": 1657,
+      "pass": true
+    },
+    {
+      "old": "12",
+      "target": "environment-purpose",
+      "alias_count": 1,
+      "topic_count": 1,
+      "old_scroll": 2048,
+      "topic": "1.2 環境建置解決的四個問題",
+      "target_scroll": 2056,
+      "pass": true
+    },
+    {
+      "old": "2-llm-agent-what",
+      "target": "agent-basics",
+      "alias_count": 1,
+      "topic_count": 1,
+      "old_scroll": 1553,
+      "topic": "1. 認識 AI Agent 與工作環境",
+      "target_scroll": 1561,
+      "pass": true
+    },
+    {
+      "old": "21",
+      "target": "agent-layer-diagram",
+      "alias_count": 1,
+      "topic_count": 1,
+      "old_scroll": 2625,
+      "topic": "1.4 引用的分層圖",
+      "target_scroll": 2633,
+      "pass": true
+    },
+    {
+      "old": "22",
+      "target": "layers-in-practice",
+      "alias_count": 1,
+      "topic_count": 1,
+      "old_scroll": 3326,
+      "topic": "1.5 各層如何對應本課任務",
+      "target_scroll": 3334,
+      "pass": true
+    },
+    {
+      "old": "23-cli",
+      "target": "model-cli-environment",
+      "alias_count": 1,
+      "topic_count": 1,
+      "old_scroll": 2252,
+      "topic": "1.3 模型、CLI 與執行環境有何不同",
+      "target_scroll": 2260,
+      "pass": true
+    },
+    {
+      "old": "24-promptcontexttoolsskills-mcp",
+      "target": "context-tools-skills",
+      "alias_count": 1,
+      "topic_count": 1,
+      "old_scroll": 3778,
+      "topic": "1.6 Prompt、Context、Tools、Skills 與 MCP",
+      "target_scroll": 3786,
+      "pass": true
+    },
+    {
+      "old": "25",
+      "target": "guidance-and-permissions",
+      "alias_count": 1,
+      "topic_count": 1,
+      "old_scroll": 4209,
+      "topic": "1.7 軟限制與硬限制",
+      "target_scroll": 4217,
+      "pass": true
+    },
+    {
+      "old": "26-agent",
+      "target": "agent-loop",
+      "alias_count": 1,
+      "topic_count": 1,
+      "old_scroll": 4639,
+      "topic": "1.8 Agent 迴圈：圖中的各層如何合作",
+      "target_scroll": 4647,
+      "pass": true
+    },
+    {
+      "old": "27-workflow-agent",
+      "target": "workflow-and-agent",
+      "alias_count": 1,
+      "topic_count": 1,
+      "old_scroll": 4937,
+      "topic": "1.9 Workflow 與 Agent：誰決定下一步",
+      "target_scroll": 4945,
+      "pass": true
+    },
+    {
+      "old": "3",
+      "target": "minimal-environment",
+      "alias_count": 1,
+      "topic_count": 1,
+      "old_scroll": 5359,
+      "topic": "2. 選擇最小工作環境",
+      "target_scroll": 5367,
+      "pass": true
+    },
+    {
+      "old": "31",
+      "target": "tool-roles",
+      "alias_count": 1,
+      "topic_count": 1,
+      "old_scroll": 5477,
+      "topic": "2.1 每個工具負責什麼",
+      "target_scroll": 5485,
+      "pass": true
+    },
+    {
+      "old": "32-cli-nodejs",
+      "target": "appendix-installation",
+      "alias_count": 1,
+      "topic_count": 1,
+      "old_scroll": 32074,
+      "topic": "附錄 A. 安裝原理與維護參考",
+      "target_scroll": 32082,
+      "pass": true
+    },
+    {
+      "old": "321",
+      "target": "installation-methods",
+      "alias_count": 1,
+      "topic_count": 1,
+      "old_scroll": 32193,
+      "topic": "A.1 四種安裝方式比較",
+      "target_scroll": 32201,
+      "pass": true
+    },
+    {
+      "old": "322",
+      "target": "installation-decisions",
+      "alias_count": 1,
+      "topic_count": 1,
+      "old_scroll": 33251,
+      "topic": "A.2 建議與結論",
+      "target_scroll": 33259,
+      "pass": true
+    },
+    {
+      "old": "323",
+      "target": "binary-script-manager",
+      "alias_count": 1,
+      "topic_count": 1,
+      "old_scroll": 34386,
+      "topic": "A.3 先分清楚四種檔案與工具",
+      "target_scroll": 34394,
+      "pass": true
+    },
+    {
+      "old": "324-standalonenpm",
+      "target": "distribution-terms",
+      "alias_count": 1,
+      "topic_count": 1,
+      "old_scroll": 34906,
+      "topic": "A.4 「原生版」「standalone」「npm 版」指的是什麼",
+      "target_scroll": 34914,
+      "pass": true
+    },
+    {
+      "old": "325",
+      "target": "dependency-stages",
+      "alias_count": 1,
+      "topic_count": 1,
+      "old_scroll": 35535,
+      "topic": "A.5 安裝時、執行時、任務時：三個時間點各需要什麼",
+      "target_scroll": 35543,
+      "pass": true
+    },
+    {
+      "old": "326-cli",
+      "target": "cli-dependency-comparison",
+      "alias_count": 1,
+      "topic_count": 1,
+      "old_scroll": 36035,
+      "topic": "A.6 三款 CLI 逐一對照",
+      "target_scroll": 36035,
+      "pass": true
+    },
+    {
+      "old": "327-cli-rust-nodejs",
+      "target": "implementation-language",
+      "alias_count": 1,
+      "topic_count": 1,
+      "old_scroll": 37012,
+      "topic": "A.7 CLI 改用 Rust 撰寫，就不需要 Node.js 了嗎？",
+      "target_scroll": 37020,
+      "pass": true
+    },
+    {
+      "old": "328",
+      "target": "alternative-installation",
+      "alias_count": 1,
+      "topic_count": 1,
+      "old_scroll": 37444,
+      "topic": "A.8 替代安裝方式與官方指令位置",
+      "target_scroll": 37452,
+      "pass": true
+    },
+    {
+      "old": "33-antigravity-cliagy",
+      "target": "antigravity-overview",
+      "alias_count": 1,
+      "topic_count": 1,
+      "old_scroll": 41458,
+      "topic": "B.1 選讀比較：Antigravity CLI（agy）",
+      "target_scroll": 41466,
+      "pass": true
+    },
+    {
+      "old": "34",
+      "target": "platform-account-requirements",
+      "alias_count": 1,
+      "topic_count": 1,
+      "old_scroll": 6260,
+      "topic": "2.3 作業系統、帳號與資源",
+      "target_scroll": 6268,
+      "pass": true
+    },
+    {
+      "old": "4-windows-how",
+      "target": "workspace-setup",
+      "alias_count": 1,
+      "topic_count": 1,
+      "old_scroll": 6889,
+      "topic": "3. 準備電腦與專案資料夾",
+      "target_scroll": 6897,
+      "pass": true
+    },
+    {
+      "old": "41",
+      "target": "setup-order",
+      "alias_count": 1,
+      "topic_count": 1,
+      "old_scroll": 7007,
+      "topic": "3.1 安裝順序",
+      "target_scroll": 7015,
+      "pass": true
+    },
+    {
+      "old": "42-vs-code",
+      "target": "windows-vscode",
+      "alias_count": 1,
+      "topic_count": 1,
+      "old_scroll": 7283,
+      "topic": "3.2.1 安裝 VS Code",
+      "target_scroll": 7295,
+      "pass": true
+    },
+    {
+      "old": "43-powershell-7",
+      "target": "windows-powershell",
+      "alias_count": 1,
+      "topic_count": 1,
+      "old_scroll": 7661,
+      "topic": "3.2.2 安裝 PowerShell 7",
+      "target_scroll": 7669,
+      "pass": true
+    },
+    {
+      "old": "44-git",
+      "target": "windows-git",
+      "alias_count": 1,
+      "topic_count": 1,
+      "old_scroll": 8200,
+      "topic": "3.2.3 安裝 Git",
+      "target_scroll": 8208,
+      "pass": true
+    },
+    {
+      "old": "45",
+      "target": "terminal-basics",
+      "alias_count": 1,
+      "topic_count": 1,
+      "old_scroll": 8662,
+      "topic": "3.4 看懂目前位置與平台指令",
+      "target_scroll": 8670,
+      "pass": true
+    },
+    {
+      "old": "5-agent-cli",
+      "target": "cli-installation",
+      "alias_count": 1,
+      "topic_count": 1,
+      "old_scroll": 11478,
+      "topic": "4. 安裝並登入一款 CLI",
+      "target_scroll": 11486,
+      "pass": true
+    },
+    {
+      "old": "51",
+      "target": "installation-choice",
+      "alias_count": 1,
+      "topic_count": 1,
+      "old_scroll": 11532,
+      "topic": "4.1 選擇工具與平台",
+      "target_scroll": 11544,
+      "pass": true
+    },
+    {
+      "old": "52-aclaude-code",
+      "target": "install-claude",
+      "alias_count": 1,
+      "topic_count": 1,
+      "old_scroll": 11769,
+      "topic": "4.2 路線 A：Claude Code",
+      "target_scroll": 11777,
+      "pass": true
+    },
+    {
+      "old": "53-bcodex-cli",
+      "target": "install-codex",
+      "alias_count": 1,
+      "topic_count": 1,
+      "old_scroll": 12535,
+      "topic": "4.3 路線 B：Codex CLI",
+      "target_scroll": 12543,
+      "pass": true
+    },
+    {
+      "old": "54-cantigravity-cli",
+      "target": "install-antigravity",
+      "alias_count": 1,
+      "topic_count": 1,
+      "old_scroll": 41829,
+      "topic": "B.2 選讀路線 C：Antigravity CLI",
+      "target_scroll": 41837,
+      "pass": true
+    },
+    {
+      "old": "55-gemini-agy",
+      "target": "gemini-migration",
+      "alias_count": 1,
+      "topic_count": 1,
+      "old_scroll": 42612,
+      "topic": "B.3 選讀：舊 gemini 指令遷移到 agy",
+      "target_scroll": 42620,
+      "pass": true
+    },
+    {
+      "old": "56",
+      "target": "verify-first-session",
+      "alias_count": 1,
+      "topic_count": 1,
+      "old_scroll": 13243,
+      "topic": "4.4 第一次對話的共同驗證",
+      "target_scroll": 13251,
+      "pass": true
+    },
+    {
+      "old": "57",
+      "target": "update-uninstall",
+      "alias_count": 1,
+      "topic_count": 1,
+      "old_scroll": 39559,
+      "topic": "A.10 記錄安裝方式與更新方式",
+      "target_scroll": 39567,
+      "pass": true
+    },
+    {
+      "old": "58-cli",
+      "target": "installation-inventory",
+      "alias_count": 1,
+      "topic_count": 1,
+      "old_scroll": 40405,
+      "topic": "A.11 盤點既有安裝：這台電腦的 CLI 從哪裡來？",
+      "target_scroll": 40413,
+      "pass": true
+    },
+    {
+      "old": "59",
+      "target": "read-followup-save",
+      "alias_count": 1,
+      "topic_count": 1,
+      "old_scroll": 16335,
+      "topic": "5.6 讀檔、追問與保存摘要草稿",
+      "target_scroll": 16343,
+      "pass": true
+    },
+    {
+      "old": "510",
+      "target": "slash-commands",
+      "alias_count": 1,
+      "topic_count": 1,
+      "old_scroll": 18297,
+      "topic": "6.1 常用會話內指令速查",
+      "target_scroll": 18305,
+      "pass": true
+    },
+    {
+      "old": "511-sessioncontext",
+      "target": "session-context-usage",
+      "alias_count": 1,
+      "topic_count": 1,
+      "old_scroll": 19002,
+      "topic": "6.2 進階操作：管理 session、context 與用量",
+      "target_scroll": 19010,
+      "pass": true
+    },
+    {
+      "old": "6-git",
+      "target": "workspace-setup",
+      "alias_count": 1,
+      "topic_count": 1,
+      "old_scroll": 6889,
+      "topic": "3. 準備電腦與專案資料夾",
+      "target_scroll": 6897,
+      "pass": true
+    },
+    {
+      "old": "61",
+      "target": "project-folders",
+      "alias_count": 1,
+      "topic_count": 1,
+      "old_scroll": 9590,
+      "topic": "3.5 建立共同專案結構",
+      "target_scroll": 9598,
+      "pass": true
+    },
+    {
+      "old": "62-readme",
+      "target": "project-readme",
+      "alias_count": 1,
+      "topic_count": 1,
+      "old_scroll": 10443,
+      "topic": "3.6 撰寫 README",
+      "target_scroll": 10451,
+      "pass": true
+    },
+    {
+      "old": "63-gitignore",
+      "target": "gitignore",
+      "alias_count": 1,
+      "topic_count": 1,
+      "old_scroll": 11043,
+      "topic": "3.7 設定 .gitignore",
+      "target_scroll": 11054,
+      "pass": true
+    },
+    {
+      "old": "64-commit",
+      "target": "first-checkpoint",
+      "alias_count": 1,
+      "topic_count": 1,
+      "old_scroll": 15376,
+      "topic": "5.4 建立任務開始前的 Git 檢查點",
+      "target_scroll": 15384,
+      "pass": true
+    },
+    {
+      "old": "65",
+      "target": "git-states",
+      "alias_count": 1,
+      "topic_count": 1,
+      "old_scroll": 19731,
+      "topic": "7.1 理解三個位置",
+      "target_scroll": 19739,
+      "pass": true
+    },
+    {
+      "old": "66",
+      "target": "git-recovery",
+      "alias_count": 1,
+      "topic_count": 1,
+      "old_scroll": 20174,
+      "topic": "7.2 撤回與回復的練習",
+      "target_scroll": 20182,
+      "pass": true
+    },
+    {
+      "old": "67-git",
+      "target": "versions-and-backups",
+      "alias_count": 1,
+      "topic_count": 1,
+      "old_scroll": 20578,
+      "topic": "7.3 Git、版本後綴與備份的分工",
+      "target_scroll": 20586,
+      "pass": true
+    },
+    {
+      "old": "7-agentsmd-ai",
+      "target": "first-task",
+      "alias_count": 1,
+      "topic_count": 1,
+      "old_scroll": 13631,
+      "topic": "5. 完成第一個有來源的任務",
+      "target_scroll": 13639,
+      "pass": true
+    },
+    {
+      "old": "71",
+      "target": "project-instructions",
+      "alias_count": 1,
+      "topic_count": 1,
+      "old_scroll": 14204,
+      "topic": "5.2 專案規則要能直接執行",
+      "target_scroll": 14212,
+      "pass": true
+    },
+    {
+      "old": "72-agentsmd",
+      "target": "instruction-loading",
+      "alias_count": 1,
+      "topic_count": 1,
+      "old_scroll": 14844,
+      "topic": "5.3 各工具是否會讀取 AGENTS.md",
+      "target_scroll": 14852,
+      "pass": true
+    },
+    {
+      "old": "73",
+      "target": "verify-instructions",
+      "alias_count": 1,
+      "topic_count": 1,
+      "old_scroll": 16023,
+      "topic": "5.5 確認規則真的生效",
+      "target_scroll": 16031,
+      "pass": true
+    },
+    {
+      "old": "74",
+      "target": "source-notes",
+      "alias_count": 1,
+      "topic_count": 1,
+      "old_scroll": 13750,
+      "topic": "5.1 準備來源筆記",
+      "target_scroll": 13758,
+      "pass": true
+    },
+    {
+      "old": "75",
+      "target": "complete-review",
+      "alias_count": 1,
+      "topic_count": 1,
+      "old_scroll": 17022,
+      "topic": "5.7 在同一會話完成複習資料",
+      "target_scroll": 17030,
+      "pass": true
+    },
+    {
+      "old": "76",
+      "target": "verify-deliverables",
+      "alias_count": 1,
+      "topic_count": 1,
+      "old_scroll": 17436,
+      "topic": "5.8 驗收，而不是只接受「完成了」",
+      "target_scroll": 17447,
+      "pass": true
+    },
+    {
+      "old": "8-python-uv",
+      "target": "python-practice",
+      "alias_count": 1,
+      "topic_count": 1,
+      "old_scroll": 22590,
+      "topic": "8. 延伸實作：Python 學習時間統計",
+      "target_scroll": 22598,
+      "pass": true
+    },
+    {
+      "old": "81",
+      "target": "python-environment-concepts",
+      "alias_count": 1,
+      "topic_count": 1,
+      "old_scroll": 22747,
+      "topic": "8.1 四個概念先分清楚",
+      "target_scroll": 22755,
+      "pass": true
+    },
+    {
+      "old": "82-uv-uv-python",
+      "target": "install-python-uv",
+      "alias_count": 1,
+      "topic_count": 1,
+      "old_scroll": 23043,
+      "topic": "8.2 安裝 uv 與 Python：依平台選一組",
+      "target_scroll": 23051,
+      "pass": true
+    },
+    {
+      "old": "83-python",
+      "target": "initialize-python",
+      "alias_count": 1,
+      "topic_count": 1,
+      "old_scroll": 23666,
+      "topic": "8.3 在既有專案加入 Python 設定",
+      "target_scroll": 23674,
+      "pass": true
+    },
+    {
+      "old": "84",
+      "target": "python-project-files",
+      "alias_count": 1,
+      "topic_count": 1,
+      "old_scroll": 24425,
+      "topic": "8.4 哪些檔案應該保存",
+      "target_scroll": 24433,
+      "pass": true
+    },
+    {
+      "old": "85",
+      "target": "python-packages",
+      "alias_count": 1,
+      "topic_count": 1,
+      "old_scroll": 28584,
+      "topic": "8.12 安裝與移除套件",
+      "target_scroll": 28592,
+      "pass": true
+    },
+    {
+      "old": "86-activate",
+      "target": "python-activation",
+      "alias_count": 1,
+      "topic_count": 1,
+      "old_scroll": 29029,
+      "topic": "8.13 是否需要手動 activate",
+      "target_scroll": 29037,
+      "pass": true
+    },
+    {
+      "old": "9",
+      "target": "python-practice",
+      "alias_count": 1,
+      "topic_count": 1,
+      "old_scroll": 22590,
+      "topic": "8. 延伸實作：Python 學習時間統計",
+      "target_scroll": 22598,
+      "pass": true
+    },
+    {
+      "old": "91-nodejs",
+      "target": "node-installation",
+      "alias_count": 1,
+      "topic_count": 1,
+      "old_scroll": 39130,
+      "topic": "A.9 Node.js 的選修安裝",
+      "target_scroll": 39138,
+      "pass": true
+    },
+    {
+      "old": "92-vs-code-python",
+      "target": "select-python-interpreter",
+      "alias_count": 1,
+      "topic_count": 1,
+      "old_scroll": 24817,
+      "topic": "8.5 在 VS Code 選對 Python",
+      "target_scroll": 24825,
+      "pass": true
+    },
+    {
+      "old": "93",
+      "target": "study-data",
+      "alias_count": 1,
+      "topic_count": 1,
+      "old_scroll": 25078,
+      "topic": "8.6 準備資料",
+      "target_scroll": 25086,
+      "pass": true
+    },
+    {
+      "old": "94",
+      "target": "study-pseudocode",
+      "alias_count": 1,
+      "topic_count": 1,
+      "old_scroll": 25387,
+      "topic": "8.7 先讀偽代碼",
+      "target_scroll": 25395,
+      "pass": true
+    },
+    {
+      "old": "95",
+      "target": "study-program",
+      "alias_count": 1,
+      "topic_count": 1,
+      "old_scroll": 25675,
+      "topic": "8.8 完整程式",
+      "target_scroll": 25686,
+      "pass": true
+    },
+    {
+      "old": "96",
+      "target": "run-study-report",
+      "alias_count": 1,
+      "topic_count": 1,
+      "old_scroll": 27384,
+      "topic": "8.9 執行與核對",
+      "target_scroll": 27392,
+      "pass": true
+    },
+    {
+      "old": "97",
+      "target": "debug-study-program",
+      "alias_count": 1,
+      "topic_count": 1,
+      "old_scroll": 27858,
+      "topic": "8.10 用除錯器理解執行過程",
+      "target_scroll": 27866,
+      "pass": true
+    },
+    {
+      "old": "98-ai",
+      "target": "agent-bounded-change",
+      "alias_count": 1,
+      "topic_count": 1,
+      "old_scroll": 28097,
+      "topic": "8.11 讓 AI 做一個有邊界的修改",
+      "target_scroll": 28105,
+      "pass": true
+    },
+    {
+      "old": "10-macos",
+      "target": "workspace-setup",
+      "alias_count": 1,
+      "topic_count": 1,
+      "old_scroll": 6889,
+      "topic": "3. 準備電腦與專案資料夾",
+      "target_scroll": 6897,
+      "pass": true
+    },
+    {
+      "old": "101-powershell",
+      "target": "terminal-basics",
+      "alias_count": 1,
+      "topic_count": 1,
+      "old_scroll": 8662,
+      "topic": "3.4 看懂目前位置與平台指令",
+      "target_scroll": 8670,
+      "pass": true
+    },
+    {
+      "old": "102",
+      "target": "macos-setup",
+      "alias_count": 1,
+      "topic_count": 1,
+      "old_scroll": 8446,
+      "topic": "3.3 macOS：VS Code、zsh 與 Git",
+      "target_scroll": 8454,
+      "pass": true
+    },
+    {
+      "old": "103-python",
+      "target": "install-python-uv",
+      "alias_count": 1,
+      "topic_count": 1,
+      "old_scroll": 23043,
+      "topic": "8.2 安裝 uv 與 Python：依平台選一組",
+      "target_scroll": 23051,
+      "pass": true
+    },
+    {
+      "old": "11-qa",
+      "target": "reliable-work",
+      "alias_count": 1,
+      "topic_count": 1,
+      "old_scroll": 19613,
+      "topic": "7. 穩定工作與常見問題",
+      "target_scroll": 19621,
+      "pass": true
+    },
+    {
+      "old": "111",
+      "target": "diagnose-layer",
+      "alias_count": 1,
+      "topic_count": 1,
+      "old_scroll": 20928,
+      "topic": "7.5 先判斷錯誤在哪一層",
+      "target_scroll": 20936,
+      "pass": true
+    },
+    {
+      "old": "112",
+      "target": "troubleshooting-table",
+      "alias_count": 1,
+      "topic_count": 1,
+      "old_scroll": 21144,
+      "topic": "7.6 問題對照表",
+      "target_scroll": 21144,
+      "pass": true
+    },
+    {
+      "old": "113-ai",
+      "target": "debugging-prompt",
+      "alias_count": 1,
+      "topic_count": 1,
+      "old_scroll": 22161,
+      "topic": "7.7 能直接貼給 AI 的除錯格式",
+      "target_scroll": 22175,
+      "pass": true
+    },
+    {
+      "old": "114",
+      "target": "cost-and-quota",
+      "alias_count": 1,
+      "topic_count": 1,
+      "old_scroll": 22476,
+      "topic": "7.8 費用與額度怎麼看",
+      "target_scroll": 22487,
+      "pass": true
+    },
+    {
+      "old": "12-practice",
+      "target": "practice-summary",
+      "alias_count": 1,
+      "topic_count": 1,
+      "old_scroll": 29493,
+      "topic": "9. 練習、評量與學習總結",
+      "target_scroll": 29501,
+      "pass": true
+    },
+    {
+      "old": "121-a",
+      "target": "exercise-layers",
+      "alias_count": 1,
+      "topic_count": 1,
+      "old_scroll": 29612,
+      "topic": "9.1 練習 A：把任務放回六層模型",
+      "target_scroll": 29620,
+      "pass": true
+    },
+    {
+      "old": "122-b",
+      "target": "exercise-minimal-setup",
+      "alias_count": 1,
+      "topic_count": 1,
+      "old_scroll": 29777,
+      "topic": "9.2 練習 B：最小可用環境",
+      "target_scroll": 29785,
+      "pass": true
+    },
+    {
+      "old": "123-c",
+      "target": "exercise-data-errors",
+      "alias_count": 1,
+      "topic_count": 1,
+      "old_scroll": 29965,
+      "topic": "9.3 Python 延伸：資料錯誤能否被發現",
+      "target_scroll": 29973,
+      "pass": true
+    },
+    {
+      "old": "124",
+      "target": "weekly-assistant",
+      "alias_count": 1,
+      "topic_count": 1,
+      "old_scroll": 30372,
+      "topic": "9.4 Python 綜合任務：一週學習助理",
+      "target_scroll": 30380,
+      "pass": true
+    },
+    {
+      "old": "125",
+      "target": "assessment-rubric",
+      "alias_count": 1,
+      "topic_count": 1,
+      "old_scroll": 30627,
+      "topic": "9.5 評分規準",
+      "target_scroll": 30635,
+      "pass": true
+    },
+    {
+      "old": "13-summary",
+      "target": "practice-summary",
+      "alias_count": 1,
+      "topic_count": 1,
+      "old_scroll": 29493,
+      "topic": "9. 練習、評量與學習總結",
+      "target_scroll": 29501,
+      "pass": true
+    },
+    {
+      "old": "131",
+      "target": "knowledge-summary",
+      "alias_count": 1,
+      "topic_count": 1,
+      "old_scroll": 30996,
+      "topic": "9.6 應獲得的知識",
+      "target_scroll": 31004,
+      "pass": true
+    },
+    {
+      "old": "132",
+      "target": "skills-checklist",
+      "alias_count": 1,
+      "topic_count": 1,
+      "old_scroll": 31196,
+      "topic": "9.7 應獲得的技能",
+      "target_scroll": 31204,
+      "pass": true
+    },
+    {
+      "old": "133",
+      "target": "work-closeout",
+      "alias_count": 1,
+      "topic_count": 1,
+      "old_scroll": 20750,
+      "topic": "7.4 每次工作的收尾清單",
+      "target_scroll": 20758,
+      "pass": true
+    },
+    {
+      "old": "14-extension-application",
+      "target": "practice-summary",
+      "alias_count": 1,
+      "topic_count": 1,
+      "old_scroll": 29493,
+      "topic": "9. 練習、評量與學習總結",
+      "target_scroll": 29501,
+      "pass": true
+    },
+    {
+      "old": "141",
+      "target": "reflection-questions",
+      "alias_count": 1,
+      "topic_count": 1,
+      "old_scroll": 31419,
+      "topic": "9.8 反思性問題",
+      "target_scroll": 31427,
+      "pass": true
+    },
+    {
+      "old": "142",
+      "target": "application-scenarios",
+      "alias_count": 1,
+      "topic_count": 1,
+      "old_scroll": 31575,
+      "topic": "9.9 真實應用情境",
+      "target_scroll": 31583,
+      "pass": true
+    },
+    {
+      "old": "143",
+      "target": "cross-disciplinary",
+      "alias_count": 1,
+      "topic_count": 1,
+      "old_scroll": 31740,
+      "topic": "9.10 跨領域連結",
+      "target_scroll": 31748,
+      "pass": true
+    },
+    {
+      "old": "144",
+      "target": "further-exploration",
+      "alias_count": 1,
+      "topic_count": 1,
+      "old_scroll": 31896,
+      "topic": "9.11 進階探索",
+      "target_scroll": 31904,
+      "pass": true
+    },
+    {
+      "old": "15",
+      "target": "appendix-history",
+      "alias_count": 1,
+      "topic_count": 1,
+      "old_scroll": 43183,
+      "topic": "附錄 C. 官方來源與歷史紀錄",
+      "target_scroll": 43191,
+      "pass": true
+    },
+    {
+      "old": "151",
+      "target": "official-sources",
+      "alias_count": 1,
+      "topic_count": 1,
+      "old_scroll": 43301,
+      "topic": "C.1 主要來源索引",
+      "target_scroll": 43309,
+      "pass": true
+    },
+    {
+      "old": "152",
+      "target": "teaching-maintenance",
+      "alias_count": 1,
+      "topic_count": 1,
+      "old_scroll": 43838,
+      "topic": "C.2 授課前重新確認",
+      "target_scroll": 43852,
+      "pass": true
+    },
+    {
+      "old": "153",
+      "target": "version-history",
+      "alias_count": 1,
+      "topic_count": 1,
+      "old_scroll": 44507,
+      "topic": "C.4 版本記錄",
+      "target_scroll": 44515,
+      "pass": true
+    },
+    {
+      "old": "154-b05",
+      "target": "historical-verification",
+      "alias_count": 1,
+      "topic_count": 1,
+      "old_scroll": 45220,
+      "topic": "C.5 原 b05 歷史驗證紀錄與本次限制",
+      "target_scroll": 45234,
+      "pass": true
+    },
+    {
+      "old": "jev",
+      "target": "historical-jev-compliance",
+      "alias_count": 1,
+      "topic_count": 1,
+      "old_scroll": 45766,
+      "topic": "C.6 Jev 合規檢查紀錄（原稿歷史紀錄）",
+      "target_scroll": 45766,
+      "pass": true
+    },
+    {
+      "old": "jev_1",
+      "target": "historical-jev-diagrams",
+      "alias_count": 1,
+      "topic_count": 1,
+      "old_scroll": 45766,
+      "topic": "C.7 Jev 圖表選型檢查紀錄（原稿歷史紀錄）",
+      "target_scroll": 45766,
+      "pass": true
+    },
+    {
+      "width": 1280,
+      "scroll": 1280,
+      "brokenImages": 0,
+      "diagrams": 0,
+      "rendered": 0,
+      "diagramErrors": 0,
+      "file": "index.html",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "width": 1280,
+      "scroll": 1280,
+      "brokenImages": 0,
+      "diagrams": 6,
+      "rendered": 6,
+      "diagramErrors": 0,
+      "file": "00_intro.html",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "width": 390,
+      "scroll": 390,
+      "brokenImages": 0,
+      "diagrams": 0,
+      "rendered": 0,
+      "diagramErrors": 0,
+      "file": "index.html",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "width": 390,
+      "scroll": 390,
+      "brokenImages": 0,
+      "diagrams": 6,
+      "rendered": 6,
+      "diagramErrors": 0,
+      "file": "00_intro.html",
+      "status": 200,
+      "pass": true
+    }
+  ],
+  "errors": []
+}
