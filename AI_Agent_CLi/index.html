@@ -183,24 +183,32 @@ html{scroll-behavior:smooth}body{box-sizing:border-box}img{max-width:100%;height
 <div class="header">
 <h1>AI Agent CLI 設計教學課程</h1>
 <p>VS Code ＋ 終端機 Agent｜給想學 AI 應用的入門使用者，從 Agent 概念走向完整交付</p>
+<p>操作原則：只有安裝 CLI 時需要貼上作業系統指令；安裝後，建立檔案、Git 提交、執行程式都在 Agent 會話中以自然語言與內建指令（<code>/diff</code>、<code>@</code>、<code>!</code> 等）完成。</p>
 <p><a href="#references">參考資料與查證紀錄</a></p>
 </div>
 <div class="course-grid">
 <div class="course-card">
 <span class="unit-badge">前導章｜建議先讀</span>
 <h3>讓 AI Agent 成為個人工作與學習助理</h3>
-<p>用 VS Code 管理檔案、用終端機 Agent 產生內容：先認識 Agent、搭好工作台，安裝一款 CLI，完成有來源的任務，再回頭看懂系統架構。</p>
-<ul><li>Agent 概念與 VS Code 工作台</li><li>讀檔、追問、存檔與驗收；專案規則與六層架構</li><li>會話管理、排錯索引與 Python 選讀延伸</li></ul>
+<p>用 VS Code 管理檔案、用終端機 Agent 產生內容：先認識 Agent、搭好工作台，從 Claude Code、Codex CLI、agy 安裝一款 CLI，完成有來源的任務，再回頭看懂系統架構。</p>
+<ul><li>Agent 概念與 VS Code 工作台：一個終端機、全程在 Agent 會話中操作</li><li>以自然語言完成讀檔、存檔、Git 檢查點與驗收；專案規則與六層架構</li><li>內建指令速查（三款 CLI 對照）、排錯索引與 Python 選讀延伸</li></ul>
 <a class="view-link" href="00_intro.html">閱讀前導教材 →</a>
 <p><a href="00_intro.md">Markdown 原文</a></p>
 </div><div class="course-card">
+<span class="unit-badge">延伸章｜Antigravity CLI</span>
+<h3>agy CLI 安裝、專題資料夾啟動與 AGENTS.md 實作</h3>
+<p>選用 Google 路線的學習者：安裝並登入 agy，在 VS Code 以專題資料夾啟動，全程以 agy 指令完成操作，並訪談生成專案的 AGENTS.md。</p>
+<ul><li>Windows／macOS 安裝與帳號登入</li><li>終端機與 VS Code 啟動、會話指令與權限模式</li><li>AGENTS.md 生成流程、規則分層與實例分析</li></ul>
+<a class="view-link" href="agy_cli.html">閱讀 agy 延伸章 →</a>
+<p><a href="agy_cli.md">Markdown 原文</a></p>
+</div><div class="course-card">
 <span class="unit-badge">單元一</span>
 <h3>觀念暖身與初體驗 - 我的第一個 AI 生成教材</h3>
-<p>從零開始認識 AI，學習如何撰寫有效的提示詞，並使用 Codex CLI／Claude Code 生成教學素材。</p>
+<p>從零開始認識 AI，學習如何撰寫有效的提示詞，並使用 Codex CLI／Claude Code／agy 生成教學素材。</p>
 <ul>
 <li>理解 AI 的基本運作原理與定位</li>
 <li>學會撰寫有效的提示詞 (Prompt)</li>
-<li>使用 Codex CLI／Claude Code 生成教學素材</li>
+<li>使用 Codex CLI／Claude Code／agy 生成教學素材</li>
 <li>掌握從模糊問題到精準指令的優化技巧</li>
 </ul>
 <a class="view-link" href="01_materials.html">查看教材 →</a>
@@ -334,6 +342,9 @@ html{scroll-behavior:smooth}body{box-sizing:border-box}img{max-width:100%;height
 <tr><td><a href="https://developers.googleblog.com/an-important-update-transitioning-gemini-cli-to-antigravity-cli/">Google Developers Blog：Gemini CLI 轉移至 Antigravity CLI</a></td><td>2026-06-18 停止服務僅適用 Pro、Ultra 與免費個人用戶；企業授權與付費 API 金鑰持續</td><td>頁面擷取</td><td>2026-10-31</td></tr>
 <tr><td><a href="https://github.com/microsoft/vscode/issues/316332">VS Code #316332：Move bierner.markdown-mermaid into core</a></td><td>Mermaid 預覽已併入 VS Code 內建功能</td><td>搜尋摘要</td><td>2026-10-31</td></tr>
 <tr><td><a href="https://www.issoh.co.jp/md/tech/6583">issoh.co.jp：VS Code Mermaid 內建說明</a></td><td>二手來源：稱 VS Code 1.121 起內建；版本號未由官方發行說明確認</td><td>搜尋摘要</td><td>2026-10-31</td></tr>
+<tr><td><a href="https://learn.chatgpt.com/codex/developer-commands?surface=cli">Codex CLI 指令參考（developer commands）</a></td><td><code>!</code> 開頭執行本機指令（依目前核准與 sandbox 設定）；<code>@</code> 搜尋檔案路徑；<code>/diff</code>、<code>/review</code>、<code>/init</code>（產生 AGENTS.md）；未列內建的檔案回復指令</td><td>頁面擷取（部分為摘要）</td><td>2026-11-17</td></tr>
+<tr><td><a href="https://code.claude.com/docs/en/interactive-mode">Claude Code 互動模式</a>、<a href="https://code.claude.com/docs/en/checkpointing">檢查點</a></td><td><code>!</code> shell 模式會把指令與輸出加入對話；<code>/rewind</code>（別名 <code>/undo</code>、Esc Esc）可還原程式碼與對話，不追蹤只被 Bash 改動的檔案；<code>/init</code> 產生 CLAUDE.md</td><td>頁面擷取</td><td>2026-11-17</td></tr>
+<tr><td><a href="https://antigravity.google/docs/cli/reference">Antigravity CLI 指令參考</a></td><td><code>agy</code> 的斜線指令、快捷鍵與啟動參數；無 <code>/init</code>、<code>/compact</code>；<code>!</code> 指令列見 <code>agy changelog</code> 1.5.9</td><td>頁面擷取、本機 agy 1.5.10</td><td>2026-11-17</td></tr>
 </tbody>
 </table>
 
@@ -361,7 +372,7 @@ html{scroll-behavior:smooth}body{box-sizing:border-box}img{max-width:100%;height
 </table>
 </section>
 <div class="footer">
-<p>前導章 + 6 個漸進單元 + 5 篇延伸教材｜VS Code ＋ 終端機 Agent｜更新：2026-10-31</p>
+<p>前導章 + agy 延伸章 + 6 個漸進單元 + 5 篇延伸教材｜VS Code ＋ 終端機 Agent｜更新：2026-11-17</p>
 <p><a class="view-link" href="https://drive.google.com/file/d/1yfelCqXPZU4uFK02YpRY9cc-cgl5JATu/view?usp=drive_link">下載科目調查檔案 →</a></p>
 </div>
 </body>
