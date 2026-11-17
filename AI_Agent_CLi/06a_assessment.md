@@ -1,27 +1,28 @@
 <!-- Path: AI_Agent_CLi | Updated: 2026-11-17 | Edition: Codex CLI / Claude Code / agy -->
 # 單元六補充內容：進階應用
 
-> **閱讀前提：**先完成[前導章：Agent 基本概念與工作環境](00_intro.html)，使用 Codex CLI、Claude Code 或 Antigravity CLI（`agy`）其中一款。本章以備課作為範例情境；不是教師也能把主題換成自己的工作或學習內容。範例請使用虛構或去識別化資料，結果都要回到來源與實際檔案確認。（查核日期：2026-10-31）
-
-
-**銜接**：搭配[單元六](06_lesson_plans.html)閱讀，練習文件轉換與虛構成績資料分析。
+> **開始之前**
+>
+> - **前提**：先完成[前導章：Agent 基本概念與工作環境](00_intro.html)，並安裝 Codex CLI、Claude Code 或 Antigravity CLI（`agy`）其中一款。
+> - **情境**：本章以備課為例；不是教師也可以換成自己的工作或學習主題。
+> - **資料**：範例使用虛構或去識別化資料；結果都要回到來源與實際檔案確認。
+> - **銜接**：搭配[單元六](06_lesson_plans.html)閱讀，練習文件轉換與虛構成績資料分析。
+> - **查核日期**：2026-10-31
 
 ---
 
-### 雙 CLI 操作約定
+### CLI 操作約定
 
-在專案資料夾開啟終端機，輸入 `codex`、`claude` 或 `agy` 任選一款，啟動一次互動會話。接著把本章的「對話提示」貼入 CLI 的對話輸入區；每輪檢查回覆，再在同一會話追問，不需反覆回到終端機重啟工具。
+在專案資料夾開啟終端機，輸入 `codex`、`claude` 或 `agy` 任選一款，啟動一次互動會話。接著把本章的「對話提示」貼入 CLI 的對話輸入區，例如：
 
 ```text
 請先閱讀 lesson.txt，列出三個教學重點及來源段落。
 ```
 
-確認內容後繼續說：「把第二點改寫成適合國小五年級的說明。」需要保存時，直接指定檔名並要求回報實際寫入位置；已有同名檔案時先比較差異，再決定更新或另存新版本。檔案寫入與程式執行仍受工具權限控制。
-
-**會話管理**：長任務也在 CLI 中進行。模型選擇、用量、context 整理與會話續接的常用指令，見[前導章的 CLI 互動操作與指令速查](00_intro.html)。切換主題或壓縮 context 前，先將已確認的目標、檔案與待辦保存，續接後核對摘要。
-
-**專案指引檔**：Codex 與 agy 使用 `AGENTS.md`（agy 也讀 `GEMINI.md`）；Claude Code 使用 `CLAUDE.md`。它們是專案內的文字檔，不是需要輸入的操作指令。作用範圍、相容條件與驗證方式見[單元五](05_instructions.html)。
-
+- **追問**：每輪先檢查回覆，再在同一會話追問，例如「把第二點改寫成適合國小五年級的說明。」不需要回到終端機重啟工具。
+- **保存**：直接指定檔名，並要求回報實際寫入位置。已有同名檔案時，先比較差異，再決定更新或另存新版本。檔案寫入與程式執行仍受工具權限控制。
+- **會話管理**：長任務也在 CLI 中進行。模型選擇、用量、context 整理與會話續接的常用指令，見[前導章的 CLI 互動操作與指令速查](00_intro.html)。切換主題或壓縮 context 前，先保存已確認的目標、檔案與待辦，續接後核對摘要。
+- **專案指引檔**：Codex 與 agy 使用 `AGENTS.md`（agy 也讀 `GEMINI.md`），Claude Code 使用 `CLAUDE.md`。它們是專案內的文字檔，不是要輸入的操作指令。作用範圍、相容條件與驗證方式見[單元五](05_instructions.html)。
 
 ## Markdown 轉換應用：從 AI 輸出到實用文件
 
@@ -35,10 +36,13 @@
 若有圖表或格式無法保留，請指出需要另外處理的項目。
 ```
 
-以下 Pandoc 命令與設定檔是核對 Agent 執行內容的參考；日常操作可繼續在對話中請它完成。安裝命令在終端機執行，或在了解安裝範圍後授權 Agent 執行，不把它們當成對話提示。
+本章列出的 Pandoc 命令與設定檔，是用來核對 Agent 實際執行內容的參考。日常操作仍可在對話中請 Agent 完成。
+
+安裝命令不是對話提示：請在終端機執行，或在了解安裝範圍後授權 Agent 執行。
 
 **核心優勢**：
-1. **AI 天然輸出格式**：可明確要求 Codex CLI／Claude Code／agy 輸出 Markdown；仍需檢查格式
+
+1. **AI 天然輸出格式**：可明確要求 Codex CLI／Claude Code／agy 輸出 Markdown，但仍需檢查格式
 2. **易於編輯**：純文字，VSCode 直接編輯
 3. **靈活轉換**：可轉成 PDF、Word、PowerPoint、HTML
 
@@ -48,7 +52,7 @@
 
 #### 方法 A：使用 Pandoc（產出 Word 時使用）
 
-**安裝 Pandoc**：在 CLI 會話請 Agent 檢查並安裝，核准前對照官方指令：
+**安裝 Pandoc**：在 CLI 會話請 Agent 檢查並安裝，核准前先對照官方指令：
 
 ```text
 請檢查這台電腦是否已安裝 Pandoc。沒有的話，依 Pandoc 官方文件告訴我適用的安裝指令與影響，等我確認後再安裝，最後回報 pandoc --version。
@@ -60,21 +64,27 @@
 | Windows（WinGet） | `winget install --source winget --exact --id JohnMacFarlane.Pandoc` |
 
 **基本轉換**：
+
 ```text
 請用 Pandoc 把 lesson_plan.md 轉成 lesson_plan.docx。完成後回報輸出檔案大小，並確認原始 Markdown 沒有被修改。
 ```
+
 Agent 會執行 `pandoc lesson_plan.md -o lesson_plan.docx`。
 
 **進階：套用樣式範本**：
+
 ```text
 請先用 Pandoc 把 lesson_plan.md 轉成 template.docx 當參考範本，然後停下來等我。
 ```
+
 在 Word 中調整 `template.docx` 的樣式（標題字體、間距等）後，再交代：
+
 ```text
 請用 template.docx 當參考範本（--reference-doc），把 new_lesson.md 轉成 new_lesson.docx。
 ```
 
 **批次轉換的對話提示**：
+
 ```text
 請列出目前資料夾中的 Markdown 檔案，使用 my_template.docx 作為樣式範本，
 規劃逐檔轉成同名 DOCX 的腳本。先列出輸入與輸出對應，檢查是否會覆寫既有檔案。
@@ -85,7 +95,8 @@ Agent 會執行 `pandoc lesson_plan.md -o lesson_plan.docx`。
 
 #### 方法 B：線上工具（無需安裝）
 
-**選讀工具（上傳前確認服務與資料政策）**：
+**選讀工具**（上傳前請確認服務與資料政策）：
+
 1. **Dillinger** (https://dillinger.io/)
    - 線上編輯 Markdown
    - 匯出能力以目前介面為準；本課以本機 Pandoc 產生 DOCX
@@ -95,8 +106,9 @@ Agent 會執行 `pandoc lesson_plan.md -o lesson_plan.docx`。
    - 下載 DOCX
 
 **操作步驟**：
+
 1. 開啟 VSCode 中的 `.md` 檔案
-2. 全選複製 (Ctrl+A, Ctrl+C)
+2. 全選複製（Ctrl+A, Ctrl+C）
 3. 貼到線上工具
 4. 點選「Export to Word」
 5. 下載檔案
@@ -105,31 +117,35 @@ Agent 會執行 `pandoc lesson_plan.md -o lesson_plan.docx`。
 
 #### 方法 C：VSCode 擴充套件（快速產出 PDF 時使用 Markdown PDF）
 
-VSCode 提供多種擴充套件，從簡單到進階，滿足不同需求：
+VSCode 有多種擴充套件，可依需求從簡單到進階選用：
 
 ---
 
 ##### 📌 簡單方案：Markdown PDF（最快上手）
 
-**特點**：從命令面板匯出 PDF，也支援 HTML、PNG、JPEG。需有可用 Chromium／Chrome／Edge；首次使用可能下載瀏覽器。
+**特點**：從命令面板匯出 PDF，也支援 HTML、PNG、JPEG。電腦需有可用的 Chromium／Chrome／Edge，首次使用時可能會下載瀏覽器。
 
 **安裝步驟**：
+
 1. VSCode 左側點選「擴充功能」（或按 `Ctrl+Shift+X`）
 2. 搜尋「Markdown PDF」（作者：yzane）
 3. 點選「安裝」
 
 **使用方式**：
+
 1. 開啟 `.md` 檔案
 2. 按 `Ctrl+Shift+P`（Mac: `Cmd+Shift+P`）開啟命令面板
 3. 輸入「Markdown PDF: Export (pdf)」
-4. 按 Enter，PDF 自動生成在同一資料夾
+4. 按 Enter，PDF 會自動生成在同一資料夾
 
 **優點**：
-- ✅ 可由命令面板操作；依電腦環境設定瀏覽器與字型
+
+- ✅ 可由命令面板操作；瀏覽器與字型依電腦環境設定
 - ✅ 支援中文
 - ✅ 自動處理圖片與表格
 
 **限制**：
+
 - ⚠️ 不直接輸出 DOCX
 - ⚠️ 目前支援 Mermaid、PlantUML 與 KaTeX，但仍需檢查圖表載入及列印換頁
 
@@ -144,22 +160,26 @@ VSCode 提供多種擴充套件，從簡單到進階，滿足不同需求：
 **特點**：Markdown 編輯神器 + 轉 HTML
 
 **安裝步驟**：
+
 1. 搜尋「Markdown All in One」（作者：Yu Zhang）
 2. 安裝
 
 **主要功能**：
+
 - 即時預覽（`Ctrl+K V`）
 - 自動目錄生成
 - 表格格式化
 - **轉換成 HTML**（可再轉 Word）
 
 **轉 HTML 步驟**：
+
 1. 開啟 `.md` 檔案
 2. `Ctrl+Shift+P` → 「Markdown: Print current document to HTML」
 3. 生成 `.html` 檔案
-4. 用瀏覽器預覽；需 Word 時另用 `pandoc input.html -o output.docx`，不能假設瀏覽器「另存為」可產生 DOCX
+4. 用瀏覽器預覽。需要 Word 時，另用 `pandoc input.html -o output.docx`；不能假設瀏覽器「另存為」可產生 DOCX
 
 **優點**：
+
 - ✅ 編輯功能強大
 - ✅ HTML 保留標題與基本結構；複雜格式仍需檢查
 - ✅ 可自訂 CSS 樣式
@@ -173,16 +193,19 @@ VSCode 提供多種擴充套件，從簡單到進階，滿足不同需求：
 **特點**：功能最完整，支援多種輸出格式與進階功能
 
 **安裝步驟**：
+
 1. 搜尋「Markdown Preview Enhanced」（作者：Yiyi Wang）
 2. 安裝
 
 **開啟預覽**：
+
 - 方法 1：`Ctrl+K V`（側邊預覽）
 - 方法 2：右鍵 → 「Markdown Preview Enhanced: Open Preview」
 
 **轉換步驟**：
+
 1. 在預覽視窗右鍵
-2. 依目前擴充版本的匯出選單操作；Pandoc 類輸出需另備 Pandoc，PDF 需相應引擎
+2. 依目前擴充版本的匯出選單操作。Pandoc 類輸出需另備 Pandoc，PDF 需相應引擎
 3. 選擇輸出格式：
    - **PDF**
    - **Word** (.docx)
@@ -194,6 +217,7 @@ VSCode 提供多種擴充套件，從簡單到進階，滿足不同需求：
 **進階功能**：
 
 **1. 支援 Mermaid 圖表**
+
 ````markdown
 ```mermaid
 flowchart LR
@@ -201,35 +225,43 @@ flowchart LR
     B --> C[結束]
 ```
 ````
+
 → 預覽與輸出時自動轉成圖片！
 
 **2. 支援數學公式**
+
 ```markdown
 $$
 E = mc^2
 $$
 ```
+
 → 使用 KaTeX/MathJax 渲染
 
 **3. 程式碼執行**（進階）
+
 - 可在 Markdown 中執行 Python、JavaScript 程式碼
 - 結果直接顯示在文件中
 
 **4. 自訂 CSS 樣式**
+
 - 建立 `style.less` 檔案
 - 客製化輸出的 PDF/HTML 樣式
 
 **優點**：
+
 - ✅ 功能最完整
 - ✅ 支援 Mermaid、數學公式
 - ✅ 多種輸出格式
 - ✅ 高度可自訂
 
 **限制**：
+
 - ⚠️ 學習曲線稍高
 - ⚠️ 需要安裝額外工具（如 Puppeteer for PDF）
 
 **適用情境**：
+
 - 製作含圖表的專業教材
 - 需要多種格式輸出
 - 追求完美排版
@@ -241,9 +273,11 @@ $$
 **特點**：最強大，但需要設定
 
 **前置需求**：
+
 1. 已安裝 Pandoc（參考前面的安裝說明）
-2. 熟悉 VS Code Tasks；已建立 `template.docx` 與 `style.css`
-3. PDF 任務另需安裝 XeLaTeX 與 xeCJK 套件，`CJKmainfont` 改為本機實際存在的中文字型（Windows 可用 `Microsoft JhengHei`，macOS 可用 `PingFang TC`）
+2. 熟悉 VS Code Tasks
+3. 已建立 `template.docx` 與 `style.css`
+4. PDF 任務另需安裝 XeLaTeX 與 xeCJK 套件。`CJKmainfont` 要改成本機實際存在的中文字型（Windows 可用 `Microsoft JhengHei`，macOS 可用 `PingFang TC`）
 
 **設定步驟**：
 
@@ -258,7 +292,7 @@ Markdown to HTML 三個任務。請先解釋輸入輸出路徑與參數，不覆
 若缺少工具或字型，列出待補項目，不要先執行轉換。
 ```
 
-以下是可供比對的 `.vscode/tasks.json` 範例；PDF 字型須依本機環境調整：
+以下是可供比對的 `.vscode/tasks.json` 範例。PDF 字型須依本機環境調整：
 
 ```json
 {
@@ -312,6 +346,7 @@ Markdown to HTML 三個任務。請先解釋輸入輸出路徑與參數，不覆
 ```
 
 **2. 使用方式**：
+
 1. 開啟 `.md` 檔案
 2. 按 `Ctrl+Shift+P` → 「Tasks: Run Task」
 3. 選擇「Markdown to Word」或其他任務
@@ -320,6 +355,7 @@ Markdown to HTML 三個任務。請先解釋輸入輸出路徑與參數，不覆
 **3. 快捷鍵綁定（選用）**
 
 在 `keybindings.json` 中加入：
+
 ```json
 [
   {
@@ -336,12 +372,14 @@ Markdown to HTML 三個任務。請先解釋輸入輸出路徑與參數，不覆
 ```
 
 **優點**：
+
 - ✅ 完全自動化
 - ✅ 可批次處理
 - ✅ 統一團隊工作流程
 - ✅ 版本控制（設定檔可共享）
 
 **適用情境**：
+
 - 團隊協作
 - 大量文件轉換需求
 - 追求效率的進階使用者
@@ -361,41 +399,46 @@ Markdown to HTML 三個任務。請先解釋輸入輸出路徑與參數，不覆
 
 ##### 💡 實務建議
 
-**情境 1：快速產出 PDF 講義**
-→ 使用 **Markdown PDF**，一鍵完成
-
-**情境 2：教案包含流程圖**
-→ 使用 **Markdown Preview Enhanced**，完整支援 Mermaid
-
-**情境 3：需要 Word 格式給同事協作**
-→ 使用 **Pandoc + 範本**，保持格式一致
-
-**情境 4：大量文件轉換**
-→ 設定 **VSCode Tasks**，批次自動化處理
+| 情境 | 建議方案 | 理由 |
+|------|---------|------|
+| 快速產出 PDF 講義 | **Markdown PDF** | 一鍵完成 |
+| 教案包含流程圖 | **Markdown Preview Enhanced** | 完整支援 Mermaid |
+| 需要 Word 格式給同事協作 | **Pandoc + 範本** | 保持格式一致 |
+| 大量文件轉換 | **VSCode Tasks** | 批次自動化處理 |
 
 ---
 
 ##### 🔧 常見問題排解
 
 **Q1：PDF 中文顯示亂碼？**
+
 A：請 Agent 轉檔時指定 PDF 引擎與中文字型：
+
 ```text
 請用 Pandoc 把 file.md 轉成 file.pdf，使用 xelatex 引擎，CJKmainfont 選這台電腦已安裝的繁體中文字型；先列出可用字型讓我選。
 ```
+
 Agent 會加上 `--pdf-engine=xelatex -V CJKmainfont="字型名稱"` 參數。常見字型：Windows 可用 `Microsoft JhengHei`，macOS 可用 `PingFang TC`。
 
 **Q2：Mermaid 圖表無法轉換？**
+
 A：
+
 - 方法 1：使用 Markdown Preview Enhanced（原生支援）
 - 方法 2：先將圖表截圖，插入 Markdown 後再轉換
 
 **Q3：Word 轉換後格式跑掉？**
+
 A：
+
 - 使用 Pandoc 的 `--reference-doc` 參數，套用範本樣式
-- 或用 Pandoc 將 HTML 轉 DOCX；也可用 Word 開啟 HTML 後另存 DOCX，並檢查格式
+- 或用 Pandoc 將 HTML 轉 DOCX
+- 也可用 Word 開啟 HTML 後另存 DOCX，並檢查格式
 
 **Q4：如何批次轉換多個檔案？**
+
 A：在同一 CLI 會話請 Agent 建立批次轉換流程：
+
 ```text
 請將目前資料夾的 Markdown 逐檔轉為同名 DOCX，先列出對應檔案與可能的覆寫衝突。
 請建立適合目前作業系統的腳本，供我確認後試跑一份，再處理其餘檔案。
@@ -407,6 +450,7 @@ A：在同一 CLI 會話請 Agent 建立批次轉換流程：
 ##### 📚 延伸資源
 
 **官方文件**：
+
 - Markdown Preview Enhanced: https://shd101wyy.github.io/markdown-preview-enhanced/
 - Pandoc User Guide: https://pandoc.org/MANUAL.html
 
@@ -416,20 +460,24 @@ A：在同一 CLI 會話請 Agent 建立批次轉換流程：
 
 #### 方法 A：透過 Google Docs 匯入
 
-依 [Google 官方 Markdown 說明](https://support.google.com/docs/answer/12014036?hl=en) 開啟 `.md`；新版也可能以 [Markdown 模式](https://support.google.com/docs/answer/18289341?hl=en) 保留原格式，不把開啟等同自動轉換（查核 2026-10-31）。
+依 [Google 官方 Markdown 說明](https://support.google.com/docs/answer/12014036?hl=en) 開啟 `.md` 檔。新版也可能以 [Markdown 模式](https://support.google.com/docs/answer/18289341?hl=en) 保留原格式，所以「開啟」不等於「自動轉換」（查核 2026-10-31）。
 
 **步驟**：
+
 1. 開啟 Google Docs
 2. 檔案 → 開啟 → 上傳（File → Open → Upload）
 3. 選擇 `.md` 檔案
-4. 確認目前是 Markdown 模式或已轉為 Google 文件；如需 Google 文件格式，另建 Google 文件，用「Paste from Markdown」貼入內容，再核對格式
+4. 確認目前是 Markdown 模式，還是已轉為 Google 文件
+5. 如需 Google 文件格式：另建 Google 文件，用「Paste from Markdown」貼入內容，再核對格式
 
 **優點**：
+
 - 簡單快速
 - 保留基本格式
 - 雲端協作方便
 
 **限制**：
+
 - 進階格式可能跑掉（如 Mermaid 圖表）
 - 需手動調整樣式
 
@@ -437,9 +485,15 @@ A：在同一 CLI 會話請 Agent 建立批次轉換流程：
 
 #### 方法 B：透過 Google Apps Script 自動化
 
-**進階用途**：以文字建立 Google Docs 的最小示例；只處理一級、二級標題與一般段落，不會完整轉換表格、圖片、清單或程式碼區塊。使用前需在 Google Apps Script 授權文件存取；正式格式轉換優先使用 DOCX 匯入。[DocumentApp 官方參考](https://developers.google.com/apps-script/reference/document/document-app)。
+**進階用途**：下面是以文字建立 Google Docs 的最小示例，使用前請注意：
+
+- 只處理一級、二級標題與一般段落，不會完整轉換表格、圖片、清單或程式碼區塊。
+- 使用前需在 Google Apps Script 授權文件存取。
+- 正式格式轉換，優先使用 DOCX 匯入。
+- 參考：[DocumentApp 官方參考](https://developers.google.com/apps-script/reference/document/document-app)。
 
 **腳本範例**（Google Apps Script）：
+
 ```javascript
 function markdownToGoogleDocs(markdownText, docName) {
   var doc = DocumentApp.create(docName);
@@ -524,6 +578,7 @@ graph LR
 #### 💡 實用技巧
 
 **保留 Mermaid 圖表的方式**：
+
 1. 在 VSCode 中開啟 Markdown
 2. 預覽 Mermaid 圖表
 3. 截圖或右鍵儲存為圖片
@@ -537,19 +592,23 @@ graph LR
 ### 重要提醒：AI 的角色與限制
 
 **✅ AI 可以協助**：
+
 - 分析成績分布
 - 計算統計數據
 - 生成報表
 - 提供評分建議
 
 **❌ AI 不應完全取代**：
+
 - 教師的專業判斷
 - 學生個別差異考量
 - 質性評估
 
 **隱私原則**：
+
 - 去識別化（移除學生姓名、學號）
-- CLI 不等於離線推論；本課只用虛構資料，真實成績需依學校政策選擇核准的資料處理方式
+- CLI 不等於離線推論；本課只用虛構資料
+- 真實成績需依學校政策，選擇核准的資料處理方式
 - 僅用於分析，不公開
 
 ---
@@ -559,6 +618,7 @@ graph LR
 #### 情境：自動批改客觀題
 
 **檔案準備**：`answer_key.txt`
+
 ```
 1. B
 2. A
@@ -573,6 +633,7 @@ graph LR
 ```
 
 **學生答案**：`student_001_answers.txt`
+
 ```
 1. B
 2. A
@@ -586,8 +647,8 @@ graph LR
 10. B
 ```
 
-**批改提示**：
-**對話提示（在同一個 CLI 會話中輸入）**
+**批改提示**：在同一個 CLI 會話中輸入以下對話提示。
+
 ```text
 比較 answer_key.txt 和 student_001_answers.txt，計算正確題數與分數（每題 10 分）。列出答錯的題號。
 
@@ -595,6 +656,7 @@ graph LR
 ```
 
 **輸出結果**：
+
 ```
 批改結果：
 - 答對：8 題
@@ -613,6 +675,7 @@ graph LR
 #### 情境：簡答題評分輔助
 
 **標準答案**：`rubric.txt`
+
 ```
 題目：說明光合作用的過程
 
@@ -627,17 +690,19 @@ graph LR
 ```
 
 **學生答案**：`student_answer.txt`
+
 ```
 植物需要陽光和水進行光合作用，會產生氧氣。葉綠素吸收陽光的能量，將二氧化碳和水轉換成葡萄糖。
 ```
 
-**評分提示**：
-**對話提示（在同一個 CLI 會話中輸入）**
+**評分提示**：在同一個 CLI 會話中輸入以下對話提示。
+
 ```text
 根據 rubric.txt 的評分標準，為 student_answer.txt 評分。列出給分項目與理由。
 ```
 
 **AI 輸出**：
+
 ```
 評分結果：
 
@@ -672,13 +737,15 @@ graph LR
 #### 計算總成績（加權）
 
 **計算規則**：
+
 - 平時成績：20%
 - 期中考：25%
 - 期末考：30%
 - 作業：20%
 - 出席：5%
 
-**對話提示（在同一個 CLI 會話中輸入）**
+**對話提示**（在同一個 CLI 會話中輸入）：
+
 ```text
 根據 grades.csv，計算每位學生的總成績。
 
@@ -710,7 +777,8 @@ graph LR
 
 #### 分析成績分布
 
-**對話提示（在同一個 CLI 會話中輸入）**
+**對話提示**（在同一個 CLI 會話中輸入）：
+
 ```text
 分析 grades.csv 的成績分布：
 
@@ -724,7 +792,8 @@ graph LR
 請將結果保存為 grade_analysis.md，完成後回報路徑及核對結果。
 ```
 
-**已核對的示例（母體標準差取一位小數，非實際學生資料）**：
+**已核對的示例**（母體標準差取一位小數，非實際學生資料）：
+
 ```markdown
 # 學期成績分析報告
 
@@ -767,6 +836,7 @@ graph LR
 **學生作文**：`essay.txt`
 
 **評分向度**：`writing_rubric.txt`
+
 ```
 評分項目：
 1. 內容（30%）：主題明確、內容充實
@@ -775,7 +845,8 @@ graph LR
 4. 文法（20%）：句子正確、標點適當
 ```
 
-**對話提示（在同一個 CLI 會話中輸入）**
+**對話提示**（在同一個 CLI 會話中輸入）：
+
 ```text
 根據 writing_rubric.txt，評析 essay.txt：
 
@@ -797,6 +868,7 @@ graph LR
 **情境**：考試結束後，分析試卷品質
 
 **檔案**：`test_results.csv`
+
 ```csv
 題號,答對人數,總人數,鑑別度
 1,25,30,0.45
@@ -806,7 +878,8 @@ graph LR
 ...
 ```
 
-**對話提示（在同一個 CLI 會話中輸入）**
+**對話提示**（在同一個 CLI 會話中輸入）：
+
 ```text
 分析 test_results.csv：
 
@@ -824,7 +897,12 @@ graph LR
 
 ### 實用工具：在對話中建立成績處理腳本
 
-批次計算仍從 CLI 對話開始。先建立 `grading_policy.txt`，寫入本節權重與等第；`grades.csv` 與 `student_list.txt` 使用一致的虛構代號。此範例統一使用 `student_A` 這類代號，清單每行一個，不含空白或路徑符號；將前例「學生A」等代號一致改名後再執行。
+批次計算仍從 CLI 對話開始。執行前先準備好資料：
+
+- 建立 `grading_policy.txt`，寫入本節的權重與等第。
+- `grades.csv` 與 `student_list.txt` 使用一致的虛構代號。
+- 此範例統一使用 `student_A` 這類代號。清單每行一個，不含空白或路徑符號。
+- 把前例「學生A」等代號一致改名後，再執行。
 
 **第一輪：規劃與建立**
 
@@ -858,7 +936,9 @@ graph LR
 先展示一份供我核對，再依確認的格式補入各份報表，列出本次更新的檔案。
 ```
 
-對話管理與計算程式各有角色：會話保留討論脈絡，腳本負責可重算的數值。檢查用量或整理 context 時，使用[前導章的會話內指令速查](00_intro.html)，並把已確認公式、來源與待辦存檔。報表仍需教師覆核，不能把第二次模型回答當成獨立重算。
+對話管理與計算程式各有角色：會話保留討論脈絡，腳本負責可重算的數值。
+
+檢查用量或整理 context 時，使用[前導章的會話內指令速查](00_intro.html)，並把已確認的公式、來源與待辦存檔。報表仍需教師覆核，不能把第二次模型回答當成獨立重算。
 
 ---
 
@@ -871,7 +951,7 @@ graph LR
    - 移除學號、班級等可識別資訊
 
 2. **資料流向**：
-   - CLI 讀取真實資料後仍可能把內容送往模型服務；本課只用虛構資料
+   - CLI 讀取真實資料後，仍可能把內容送往模型服務；本課只用虛構資料
    - 真實資料若要求不離機，使用本機確定性程式計算，只將核准的彙總資料交給雲端工具
 
 3. **人工覆核**：
@@ -894,6 +974,7 @@ graph LR
 ### 步驟一：資料準備
 
 **檔案結構**：
+
 ```
 semester_grades/
 ├── raw_data/
@@ -908,9 +989,14 @@ semester_grades/
 
 ### 步驟二：整合資料
 
-先在 VS Code 建立 `outputs` 資料夾；從含 `raw_data`、`rubrics`、`outputs` 的專案根目錄啟動 CLI，以下各步在同一會話輸入。每一步都檢查輸出，成功後才進入下一步。
+開始前先完成以下準備：
 
-**對話提示（在同一個 CLI 會話中輸入）**
+1. 在 VS Code 建立 `outputs` 資料夾。
+2. 從含 `raw_data`、`rubrics`、`outputs` 的專案根目錄啟動 CLI。
+3. 以下各步都在同一會話輸入。每一步都檢查輸出，成功後才進入下一步。
+
+**對話提示**（在同一個 CLI 會話中輸入）：
+
 ```text
 整合 raw_data 資料夾中的所有 CSV，合併成一份完整成績表，包含所有評量項目。使用 CSV 格式。
 
@@ -919,7 +1005,8 @@ semester_grades/
 
 ### 步驟三：計算總成績
 
-**對話提示（在同一個 CLI 會話中輸入）**
+**對話提示**（在同一個 CLI 會話中輸入）：
+
 ```text
 根據 rubrics/grading_policy.txt 的加權規則，計算 outputs/grades_combined.csv 的總成績與等第。
 
@@ -928,7 +1015,8 @@ semester_grades/
 
 ### 步驟四：生成分析報告
 
-**對話提示（在同一個 CLI 會話中輸入）**
+**對話提示**（在同一個 CLI 會話中輸入）：
+
 ```text
 分析 outputs/final_grades.md：
 - 成績分布統計
@@ -955,21 +1043,25 @@ semester_grades/
 ## 未來展望：AI 在教育評量的可能性
 
 ### 可能的短期應用（情境討論，非預測）
+
 - ✅ 客觀題自動批改普及化
 - ✅ 作文評分輔助系統
 - ✅ 個人化學習建議
 
 ### 可能的中期應用（情境討論）
+
 - 🔮 多模態評量（結合影音、互動）
 - 🔮 即時形成性評量回饋
 - 🔮 學習歷程完整記錄與分析
 
 ### 可能的長期應用（情境討論）
+
 - 🌟 AI 家教系統
 - 🌟 適性化評量（每人題目不同）
 - 🌟 全方位學習建議（學科 + 非學科）
 
 **但永遠不變的是**：
+
 - 教師的關懷與理解
 - 學生的主體性
 - 教育的溫度
@@ -978,8 +1070,26 @@ semester_grades/
 
 ## 本補充單元驗收與平台差異
 
-先只使用本文虛構資料：客觀題例應為 80 分；五筆加權總分依序為 84.10、89.65、73.65、89.60、70.75。用試算表或明確程式獨立重算，不能只用第二次模型回答當驗證。正式成績由教師依核准規則決定，AI 只提供分析草稿。
+這節列出驗收用的正確數值，以及不同平台的注意事項。
 
-請在對話中告知作業系統，讓 Agent 選擇 Bash 或 PowerShell 腳本，不直接將 Bash 語法貼到 PowerShell。批次轉換前備妥 `my_template.docx`，先要求列出輸入輸出對應與覆寫衝突，再試跑一份，核對後才批次執行。
+**驗收數值**：先只使用本文的虛構資料，結果應為：
 
-Pandoc 的 PDF 輸出還需要指定 PDF engine 及可用的中文字型；不把安裝 Pandoc 當成已具備 LaTeX。Mermaid 需先渲染成 SVG／PNG 再放入 DOCX，不能假設 Pandoc 自動辨識 Mermaid。轉換後逐頁檢查標題、表格、圖表、換頁與中文字。[Pandoc 手冊](https://pandoc.org/MANUAL.html)。
+- 客觀題例：80 分
+- 五筆加權總分依序為 84.10、89.65、73.65、89.60、70.75
+
+請用試算表或明確的程式獨立重算，不能只用第二次模型回答當驗證。正式成績由教師依核准規則決定，AI 只提供分析草稿。
+
+**平台差異**：請在對話中告知作業系統，讓 Agent 選擇 Bash 或 PowerShell 腳本。不要把 Bash 語法直接貼到 PowerShell。
+
+批次轉換的順序：
+
+1. 備妥 `my_template.docx`。
+2. 要求 Agent 列出輸入輸出對應與覆寫衝突。
+3. 試跑一份，核對結果。
+4. 核對後才批次執行。
+
+**轉換提醒**（詳見 [Pandoc 手冊](https://pandoc.org/MANUAL.html)）：
+
+- Pandoc 輸出 PDF 時，還需要指定 PDF engine 及可用的中文字型。安裝了 Pandoc，不代表已具備 LaTeX。
+- Mermaid 需先渲染成 SVG／PNG 再放入 DOCX，不能假設 Pandoc 會自動辨識 Mermaid。
+- 轉換後逐頁檢查標題、表格、圖表、換頁與中文字。

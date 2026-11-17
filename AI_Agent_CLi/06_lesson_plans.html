@@ -76,20 +76,31 @@
     </style>
 <style id="course-navigation-style">
 html{scroll-behavior:smooth}body{box-sizing:border-box}img{max-width:100%;height:auto}pre{max-width:100%;overflow-x:auto}table{display:block;max-width:100%;overflow-x:auto}td,th{min-width:7em}.course-nav{display:flex;flex-wrap:wrap;gap:.65em;align-items:center;padding:1em 0;margin:1em 0;border-bottom:1px solid #3e3e3e;font-size:.95rem}.course-nav a{color:#66b3ff}.course-nav span{color:#aaa}.course-toc{margin:1.5em 0;padding:1em;background:#222831;border-radius:8px}.course-toc a{overflow-wrap:anywhere}h1,h2,h3,p,li{overflow-wrap:break-word}.mermaid svg{max-width:100%;height:auto}@media(max-width:600px){body{padding:14px!important}h1{font-size:1.65em}pre code{padding:1em}.course-nav{line-height:1.8}}
-</style></head>
-<body><nav aria-label="課程導覽" class="course-nav"><a href="index.html">課程目錄</a><a href="05_instructions.html">← 上一章</a><a href="06a_assessment.html">下一章 →</a><a href="06_lesson_plans.md">Markdown 原文</a><span>雙 CLI 教材 · 2026-10-31</span></nav>
+</style><link href="assets/course.css" rel="stylesheet"/>
+</head>
+<body><nav aria-label="課程導覽" class="course-nav"><a href="index.html">課程目錄</a><a href="05_instructions.html">← 上一章</a><a href="06a_assessment.html">下一章 →</a><a href="06_lesson_plans.md">Markdown 原文</a><span>三款 CLI 教材 · 更新 2026-11-17</span></nav>
 <div class="container"><!-- Path: AI_Agent_CLi | Updated: 2026-11-17 | Edition: Codex CLI / Claude Code / agy -->
 <h1 id="-ai">單元六補充教材：實戰演練 - AI 幫我讀檔案、寫教案</h1><details class="course-toc"><summary>本頁章節</summary><ul><li><a href="#_1">單元目標</a></li><li><a href="#_2">核心概念詳解</a></li><li><a href="#_3">詳細操作步驟</a></li><li><a href="#_11">跨學科完整範例</a></li><li><a href="#_24">進階技巧</a></li><li><a href="#_25">實用技巧與注意事項</a></li><li><a href="#_29">延伸應用</a></li><li><a href="#_30">完整案例演示</a></li><li><a href="#_34">練習任務</a></li><li><a href="#qa">常見問題 Q&amp;A</a></li><li><a href="#_36">課程總結</a></li><li><a href="#_41">完整案例的交付與驗收</a></li></ul></details>
 <blockquote>
-<p><strong>閱讀前提：</strong>先完成<a href="00_intro.html">前導章：Agent 基本概念與工作環境</a>，使用 Codex CLI、Claude Code 或 Antigravity CLI（<code>agy</code>）其中一款。本章以備課作為範例情境；不是教師也能把主題換成自己的工作或學習內容。範例請使用虛構或去識別化資料，結果都要回到來源與實際檔案確認。（查核日期：2026-10-31）</p>
+<p><strong>開始之前</strong></p>
+<ul>
+<li><strong>前提</strong>：先完成<a href="00_intro.html">前導章：Agent 基本概念與工作環境</a>，並安裝 Codex CLI、Claude Code 或 Antigravity CLI（<code>agy</code>）其中一款。</li>
+<li><strong>情境</strong>：本章以備課為例；不是教師也可以換成自己的工作或學習主題。</li>
+<li><strong>資料</strong>：範例使用虛構或去識別化資料；結果都要回到來源與實際檔案確認。</li>
+<li><strong>查核日期</strong>：2026-10-31</li>
+</ul>
 </blockquote>
-<h3 id="cli">雙 CLI 操作約定</h3>
-<p>在專案資料夾開啟終端機，輸入 <code>codex</code>、<code>claude</code> 或 <code>agy</code> 任選一款，啟動一次互動會話。接著把本章的「對話提示」貼入 CLI 的對話輸入區；每輪檢查回覆，再在同一會話追問，不需反覆回到終端機重啟工具。本章提示為了閱讀方便都寫得較簡短，實際使用時請補上來源、輸出位置與驗收條件。</p>
+<h3 id="cli">CLI 操作約定</h3>
+<p>在專案資料夾開啟終端機，輸入 <code>codex</code>、<code>claude</code> 或 <code>agy</code> 任選一款，啟動一次互動會話。接著把本章的「對話提示」貼入 CLI 的對話輸入區，例如：</p>
 <pre><code class="language-text">請先閱讀 lesson.txt，列出三個教學重點及來源段落。
 </code></pre>
-<p>確認內容後繼續說：「把第二點改寫成適合國小五年級的說明。」需要保存時，直接指定檔名並要求回報實際寫入位置；已有同名檔案時先比較差異，再決定更新或另存新版本。檔案寫入與程式執行仍受工具權限控制。</p>
-<p><strong>會話管理</strong>：長任務也在 CLI 中進行。模型選擇、用量、context 整理與會話續接的常用指令，見<a href="00_intro.html">前導章的 CLI 互動操作與指令速查</a>。切換主題或壓縮 context 前，先將已確認的目標、檔案與待辦保存，續接後核對摘要。</p>
-<p><strong>專案指引檔</strong>：Codex 與 agy 使用 <code>AGENTS.md</code>（agy 也讀 <code>GEMINI.md</code>）；Claude Code 使用 <code>CLAUDE.md</code>。它們是專案內的文字檔，不是需要輸入的操作指令。作用範圍、相容條件與驗證方式見<a href="05_instructions.html">單元五</a>。</p>
+<ul>
+<li><strong>追問</strong>：每輪先檢查回覆，再在同一會話追問，例如「把第二點改寫成適合國小五年級的說明。」不需要回到終端機重啟工具。</li>
+<li><strong>保存</strong>：直接指定檔名，並要求回報實際寫入位置。已有同名檔案時，先比較差異，再決定更新或另存新版本。檔案寫入與程式執行仍受工具權限控制。</li>
+<li><strong>提示長度</strong>：本章提示為了閱讀方便寫得較簡短；實際使用時，請補上來源、輸出位置與驗收條件。</li>
+<li><strong>會話管理</strong>：長任務也在 CLI 中進行。模型選擇、用量、context 整理與會話續接的常用指令，見<a href="00_intro.html">前導章的 CLI 互動操作與指令速查</a>。切換主題或壓縮 context 前，先保存已確認的目標、檔案與待辦，續接後核對摘要。</li>
+<li><strong>專案指引檔</strong>：Codex 與 agy 使用 <code>AGENTS.md</code>（agy 也讀 <code>GEMINI.md</code>），Claude Code 使用 <code>CLAUDE.md</code>。它們是專案內的文字檔，不是要輸入的操作指令。作用範圍、相容條件與驗證方式見<a href="05_instructions.html">單元五</a>。</li>
+</ul>
 <h2 id="_1">單元目標</h2>
 <ul>
 <li>整合前五個單元所學技能</li>
@@ -111,13 +122,15 @@ html{scroll-behavior:smooth}body{box-sizing:border-box}img{max-width:100%;height
     H --&gt; I[優化 AGENTS.md 與流程]
     I --&gt; B
 </div>
-<p><strong>關鍵理念</strong>：<br/>
-- AI 是「起點」,不是「終點」<br/>
-- 教師的專業判斷不可或缺<br/>
-- 持續優化形成良性循環</p>
+<p><strong>關鍵理念</strong>：</p>
+<ul>
+<li>AI 是「起點」，不是「終點」</li>
+<li>教師的專業判斷不可或缺</li>
+<li>持續優化，形成良性循環</li>
+</ul>
 <hr/>
 <h3 id="2">2. 教案的核心要素</h3>
-<p>無論學科,優質教案通常包含：</p>
+<p>無論哪個學科，優質教案通常包含：</p>
 <table>
 <thead>
 <tr>
@@ -148,7 +161,7 @@ html{scroll-behavior:smooth}body{box-sizing:border-box}img{max-width:100%;height
 </tr>
 <tr>
 <td><strong>教學省思</strong></td>
-<td>課後反思與調整(需教師親自撰寫)</td>
+<td>課後反思與調整（需教師親自撰寫）</td>
 </tr>
 </tbody>
 </table>
@@ -163,7 +176,7 @@ html{scroll-behavior:smooth}body{box-sizing:border-box}img{max-width:100%;height
 <h2 id="_3">詳細操作步驟</h2>
 <h3 id="_4">完整實戰：從零到完整教案</h3>
 <h4 id="_5">情境設定</h4>
-<p>您是國小五年級自然科老師,下週要教「植物的繁殖」單元。</p>
+<p>假設你是國小五年級自然科老師，下週要教「植物的繁殖」單元。以下步驟一到七，帶你從建立資料夾一路做到產出教案。</p>
 <hr/>
 <h3 id="_6">步驟一：準備工作環境</h3>
 <ol>
@@ -177,12 +190,15 @@ html{scroll-behavior:smooth}body{box-sizing:border-box}img{max-width:100%;height
   └── outputs/ (存放 AI 生成的內容)
 </code></pre>
 <ol>
-<li><strong>在 VSCode 開啟資料夾</strong></li>
-<li>檔案 → 開啟資料夾 → 選擇 <code>plant_reproduction</code></li>
+<li><strong>在 VSCode 開啟資料夾</strong>：檔案 → 開啟資料夾 → 選擇 <code>plant_reproduction</code></li>
 </ol>
 <hr/>
 <h3 id="agentsmdclaudemd">步驟二：設定 AGENTS.md／CLAUDE.md</h3>
-<p>以下範例存成 <code>AGENTS.md</code>，作為共用規則；Codex 與 agy 會直接載入。走 Claude Code 路線時不要改檔名，而是另建 <code>CLAUDE.md</code>，內容寫入 <code>@AGENTS.md</code> 匯入共用規則。</p>
+<p>這一步要寫好 AI 的共用規則。</p>
+<ul>
+<li>以下範例存成 <code>AGENTS.md</code>，作為共用規則；Codex 與 agy 會直接載入。</li>
+<li>走 Claude Code 路線時，不要改檔名。請另建 <code>CLAUDE.md</code>，內容寫入 <code>@AGENTS.md</code>，匯入共用規則。</li>
+</ul>
 <p><strong>範例內容</strong>：存成 <code>AGENTS.md</code>。指引作用範圍與驗證方法見<a href="05_instructions.html">單元五</a>。</p>
 <pre><code class="language-markdown"># AI 教學助理設定
 
@@ -258,13 +274,15 @@ html{scroll-behavior:smooth}body{box-sizing:border-box}img{max-width:100%;height
 </code></pre>
 <hr/>
 <h3 id="_9">步驟六：檢視與調整</h3>
-<p><strong>檢核清單</strong>：<br/>
-- [ ] 教學目標是否明確且可達成？<br/>
-- [ ] 時間分配是否合理？<br/>
-- [ ] 活動設計是否符合學生程度？<br/>
-- [ ] 實作材料是否容易取得？<br/>
-- [ ] 評量方式是否能真正檢核學習成效？<br/>
-- [ ] 是否考慮到班級特殊學生的需求？</p>
+<p><strong>檢核清單</strong>：</p>
+<ul>
+<li>[ ] 教學目標是否明確且可達成？</li>
+<li>[ ] 時間分配是否合理？</li>
+<li>[ ] 活動設計是否符合學生程度？</li>
+<li>[ ] 實作材料是否容易取得？</li>
+<li>[ ] 評量方式是否能真正檢核學習成效？</li>
+<li>[ ] 是否考慮到班級特殊學生的需求？</li>
+</ul>
 <p><strong>調整提示範例</strong>：</p>
 <pre><code class="language-text">請將引起動機改成「影片導入」,推薦一部 3 分鐘內的影片主題
 </code></pre>
@@ -277,14 +295,16 @@ html{scroll-behavior:smooth}body{box-sizing:border-box}img{max-width:100%;height
 將本次修訂理由、尚待確認的內容與下次待辦保存為 outputs/review_notes.md。
 保留「AI 輔助生成」標記與教師省思欄位，回報各檔案路徑及修改摘要。
 </code></pre>
-<p>開啟檔案核對後，再轉成 Word 或匯入 Google Docs，方法見<a href="06a_assessment.html">文件轉換與評量補充</a>。</p>
+<p>開啟檔案核對後，再轉成 Word 或匯入 Google Docs。方法見<a href="06a_assessment.html">文件轉換與評量補充</a>。</p>
 <p><strong>檔案命名建議</strong>：</p>
 <pre><code>植物繁殖_教案_五年級_AI輔助_b01.docx
 </code></pre>
-<p><strong>儲存提醒</strong>：<br/>
-- 註明「AI 輔助生成」<br/>
-- 保留調整版本記錄<br/>
-- 加入教師個人省思欄位</p>
+<p><strong>儲存提醒</strong>：</p>
+<ul>
+<li>註明「AI 輔助生成」</li>
+<li>保留調整版本記錄</li>
+<li>加入教師個人省思欄位</li>
+</ul>
 <hr/>
 <h2 id="_11">跨學科完整範例</h2>
 <h3 id="_12">📐 數學科：分數加減教案</h3>
@@ -410,23 +430,27 @@ html{scroll-behavior:smooth}body{box-sizing:border-box}img{max-width:100%;height
 <p><strong>使用方式</strong>：</p>
 <pre><code class="language-text">生成教案
 </code></pre>
-<p>AI 會按步驟引導,每步驟都可確認與調整。</p>
+<p>AI 會按步驟引導，每一步都可以確認與調整。</p>
 <hr/>
 <h3 id="2_1">技巧 2：批次產生教案系列</h3>
 <p><strong>情境</strong>：一次準備整個單元的教案</p>
 <p><strong>對話提示</strong>：</p>
 <pre><code class="language-text">這個資料夾包含 5 週的教材。請為每週生成一份教案大綱(含主題、目標、核心活動),我會再個別細化
 </code></pre>
-<p><strong>優點</strong>：<br/>
-- 先有整體架構<br/>
-- 確保連貫性<br/>
-- 再逐週細化</p>
+<p><strong>優點</strong>：</p>
+<ul>
+<li>先有整體架構</li>
+<li>確保連貫性</li>
+<li>再逐週細化</li>
+</ul>
 <hr/>
 <h3 id="3_1">技巧 3：教案版本迭代</h3>
-<p><strong>流程</strong>：<br/>
-1. 生成 v1 版本<br/>
-2. 實際教學後,記錄問題<br/>
-3. 請 AI 根據問題優化</p>
+<p><strong>流程</strong>：</p>
+<ol>
+<li>生成 v1 版本</li>
+<li>實際教學後，記錄問題</li>
+<li>請 AI 根據問題優化</li>
+</ol>
 <p><strong>對話提示範例</strong>：</p>
 <pre><code class="language-text">請閱讀 outputs/lesson_plan.md,這是我上次使用的教案。實際教學時發現:
 1. 時間不夠,學生寫學習單花了 20 分鐘
@@ -437,12 +461,14 @@ html{scroll-behavior:smooth}body{box-sizing:border-box}img{max-width:100%;height
 </code></pre>
 <hr/>
 <h3 id="4">技巧 4：多教師協作</h3>
-<p><strong>情境</strong>：同年級多班,共同備課</p>
-<p><strong>流程</strong>：<br/>
-1. 共同建立資料夾與 AGENTS.md<br/>
-2. 一人產生教案初稿<br/>
-3. 其他人提出修改建議<br/>
-4. 請 AI 整合意見</p>
+<p><strong>情境</strong>：同年級多班，共同備課</p>
+<p><strong>流程</strong>：</p>
+<ol>
+<li>共同建立資料夾與 AGENTS.md</li>
+<li>一人產生教案初稿</li>
+<li>其他人提出修改建議</li>
+<li>請 AI 整合意見</li>
+</ol>
 <p><strong>對話提示</strong>：</p>
 <pre><code class="language-text">請閱讀 outputs/lesson_plan_draft.md,這是教案初稿。以下是三位老師的修改建議:
 - A 老師:增加視覺輔助
@@ -499,8 +525,8 @@ html{scroll-behavior:smooth}body{box-sizing:border-box}img{max-width:100%;height
 <hr/>
 <h3 id="ai_2">⚠️ 使用 AI 教案的注意事項</h3>
 <ol>
-<li><strong>不可照單全收</strong>：AI 是起點,教師判斷是關鍵</li>
-<li><strong>考慮班級特性</strong>：特殊需求學生、班級氣氛 AI 不知道</li>
+<li><strong>不可照單全收</strong>：AI 是起點，教師判斷是關鍵</li>
+<li><strong>考慮班級特性</strong>：特殊需求學生、班級氣氛，AI 都不知道</li>
 <li><strong>檢查正確性</strong>：學科知識 AI 可能出錯</li>
 <li><strong>保留彈性</strong>：實際教學需隨機應變</li>
 <li><strong>記錄回饋</strong>：持續優化 AI 的設定</li>
@@ -521,10 +547,12 @@ html{scroll-behavior:smooth}body{box-sizing:border-box}img{max-width:100%;height
       ├── common_activities.md
       └── assessment_methods.md
 </code></pre>
-<p><strong>優點</strong>：<br/>
-- 累積可重複使用的素材<br/>
-- 建立個人教學風格資料庫<br/>
-- 越用越精準</p>
+<p><strong>優點</strong>：</p>
+<ul>
+<li>累積可重複使用的素材</li>
+<li>建立個人教學風格資料庫</li>
+<li>越用越精準</li>
+</ul>
 <hr/>
 <h2 id="_29">延伸應用</h2>
 <h3 id="1_1">應用 1：從教案到學習單</h3>
@@ -569,11 +597,13 @@ html{scroll-behavior:smooth}body{box-sizing:border-box}img{max-width:100%;height
 <h3 id="_31">案例：國小四年級自然「昆蟲」單元</h3>
 <h4 id="_32">準備階段</h4>
 <p><strong>資料夾</strong>：<code>insect_unit/</code></p>
-<p><strong>檔案清單</strong>：<br/>
-- <code>AGENTS.md</code> (自然科教師設定)<br/>
-- <code>textbook.txt</code> (課本內容)<br/>
-- <code>insect_photos.txt</code> (圖片描述清單)<br/>
-- <code>field_guide.txt</code> (校園常見昆蟲)</p>
+<p><strong>檔案清單</strong>：</p>
+<ul>
+<li><code>AGENTS.md</code>（自然科教師設定）</li>
+<li><code>textbook.txt</code>（課本內容）</li>
+<li><code>insect_photos.txt</code>（圖片描述清單）</li>
+<li><code>field_guide.txt</code>（校園常見昆蟲）</li>
+</ul>
 <h4 id="_33">對話與產物記錄</h4>
 <p><strong>第一步</strong>：</p>
 <pre><code class="language-text">摘要這個資料夾的內容,列出教學重點
@@ -595,14 +625,14 @@ html{scroll-behavior:smooth}body{box-sizing:border-box}img{max-width:100%;height
 </code></pre>
 <p><strong>輸出</strong>：評量題目與答案</p>
 <hr/>
-<p><strong>第五步</strong>(課後優化)：</p>
+<p><strong>第五步</strong>（課後優化）：</p>
 <pre><code class="language-text">實際教學發現學生很難辨識『胸部』與『腹部』,請在教案中加強這部分的說明與活動
 </code></pre>
 <p><strong>輸出</strong>：優化版教案</p>
 <hr/>
 <h2 id="_34">練習任務</h2>
 <h3 id="_35">綜合任務</h3>
-<p>選擇您下週要教的一個單元,完成以下流程:</p>
+<p>選擇你下週要教的一個單元，完成以下流程：</p>
 <ol>
 <li>✅ 建立專案資料夾</li>
 <li>✅ 撰寫 AGENTS.md</li>
@@ -611,26 +641,31 @@ html{scroll-behavior:smooth}body{box-sizing:border-box}img{max-width:100%;height
 <li>✅ 生成教案初稿</li>
 <li>✅ 檢視與調整</li>
 <li>✅ 產出完整教案</li>
-<li>✅ (選用)生成配套學習單</li>
+<li>✅（選用）生成配套學習單</li>
 </ol>
 <hr/>
 <h2 id="qa">常見問題 Q&amp;A</h2>
-<p><strong>Q1：AI 生成的教案可以直接用嗎？</strong><br/>
-A1：不建議。AI 提供的是「草稿」,仍需教師根據班級特性、教學風格調整。把 AI 當助手,不是替代品。</p>
-<p><strong>Q2：每次追問都要重新啟動 CLI 嗎？</strong><br/>
-A2：不需要。同一份教案可在同一會話逐輪討論。固定格式放在專案指引檔，常用提問另存成提示範本；離開前保存進度摘要，下次續接或新開會話時重新核對來源與產物。</p>
-<p><strong>Q3：如果 AI 生成的內容有錯誤？</strong><br/>
-A3：這是 AI 的限制。務必由教師檢核專業知識的正確性,尤其是學科概念、事實資料。</p>
-<p><strong>Q4：使用 AI 教案需要註明嗎？</strong><br/>
-A4：建議在檔案中註明「AI 輔助生成」,這是誠實且專業的做法。</p>
-<p><strong>Q5：AI 可以幫我寫「教學省思」嗎？</strong><br/>
-A5：不建議。教學省思需要真實的課堂經驗與個人反思,這是 AI 無法取代的專業核心。</p>
-<p><strong>Q6：我的學校要求特定教案格式,AI 可以配合嗎？</strong><br/>
-A6：可以！在 AGENTS.md 中提供格式範本,請檢查輸出是否符合範本，不視為強制保證。</p>
-<p><strong>Q7：使用 AI 會不會讓我失去教學專業？</strong><br/>
-A7：不會。AI 處理的是「架構與內容產出」,教師的專業在於「教學藝術、學生理解、課堂互動」,這些 AI 無法取代。就像用電腦打字不會讓人失去寫作能力,AI 是工具,專業仍在教師身上。</p>
-<p><strong>Q8：這樣的流程真的能節省時間嗎？</strong><br/>
-A8：初期需要學習與調整,但熟悉後,可用個人備課紀錄評估是否省時，不保證固定節省比例。更重要的是,您可以把時間用在更需要專業判斷的部分,如了解學生、設計互動、關懷個別需求。</p>
+<p><strong>Q1：AI 生成的教案可以直接用嗎？</strong></p>
+<p>A1：不建議。AI 提供的是「草稿」，仍需教師根據班級特性、教學風格調整。把 AI 當助手，不是替代品。</p>
+<p><strong>Q2：每次追問都要重新啟動 CLI 嗎？</strong></p>
+<p>A2：不需要。同一份教案可在同一會話逐輪討論。</p>
+<ul>
+<li>固定格式放在專案指引檔，常用提問另存成提示範本。</li>
+<li>離開前保存進度摘要。</li>
+<li>下次續接或新開會話時，重新核對來源與產物。</li>
+</ul>
+<p><strong>Q3：如果 AI 生成的內容有錯誤？</strong></p>
+<p>A3：這是 AI 的限制。務必由教師檢核專業知識的正確性，尤其是學科概念、事實資料。</p>
+<p><strong>Q4：使用 AI 教案需要註明嗎？</strong></p>
+<p>A4：建議在檔案中註明「AI 輔助生成」，這是誠實且專業的做法。</p>
+<p><strong>Q5：AI 可以幫我寫「教學省思」嗎？</strong></p>
+<p>A5：不建議。教學省思需要真實的課堂經驗與個人反思，這是 AI 無法取代的專業核心。</p>
+<p><strong>Q6：我的學校要求特定教案格式，AI 可以配合嗎？</strong></p>
+<p>A6：可以！在 AGENTS.md 中提供格式範本。但這不是強制保證，請檢查輸出是否符合範本。</p>
+<p><strong>Q7：使用 AI 會不會讓我失去教學專業？</strong></p>
+<p>A7：不會。AI 處理的是「架構與內容產出」，教師的專業在於「教學藝術、學生理解、課堂互動」，這些 AI 無法取代。就像用電腦打字不會讓人失去寫作能力，AI 是工具，專業仍在教師身上。</p>
+<p><strong>Q8：這樣的流程真的能節省時間嗎？</strong></p>
+<p>A8：初期需要學習與調整。熟悉後，可用個人備課紀錄評估是否省時，但不保證固定的節省比例。更重要的是，你可以把時間用在更需要專業判斷的部分，例如了解學生、設計互動、關懷個別需求。</p>
 <hr/>
 <h2 id="_36">課程總結</h2>
 <h3 id="_37">六個單元的完整拼圖</h3>
@@ -642,39 +677,56 @@ A8：初期需要學習與調整,但熟悉後,可用個人備課紀錄評估是�
     E --&gt; F[單元六:完整教案實戰]
     F --&gt; G[持續優化與應用]
 </div>
-<h3 id="_38">您已經學會</h3>
-<p>✅ 與 AI 有效溝通(提示詞技巧)<br/>
-✅ 生成視覺化教材(圖片生成)<br/>
-✅ 建立有憑有據的知識庫(NotebookLM)<br/>
-✅ 在本機環境高效工作(VSCode + CLI)<br/>
-✅ 客製化專屬 AI 助理(AGENTS.md)<br/>
-✅ 完成完整的教案設計流程<br/>
-✅ 回到來源與實際檔案，驗收 AI 的產物</p>
+<h3 id="_38">你已經學會</h3>
+<ul>
+<li>✅ 與 AI 有效溝通（提示詞技巧）</li>
+<li>✅ 生成視覺化教材（圖片生成）</li>
+<li>✅ 建立有憑有據的知識庫（NotebookLM）</li>
+<li>✅ 在本機環境高效工作（VSCode + CLI）</li>
+<li>✅ 客製化專屬 AI 助理（AGENTS.md）</li>
+<li>✅ 完成完整的教案設計流程</li>
+<li>✅ 回到來源與實際檔案，驗收 AI 的產物</li>
+</ul>
 <hr/>
 <h3 id="_39">下一步：持續精進</h3>
 <ol>
 <li><strong>每週一教案</strong>：選一個單元練習完整流程</li>
 <li><strong>優化 AGENTS.md</strong>：根據使用經驗調整設定</li>
 <li><strong>建立素材庫</strong>：累積常用的提示詞、範本、資源</li>
-<li><strong>分享與交流</strong>：與同事分享經驗,共同進步</li>
-<li><strong>關注新工具</strong>：AI 工具持續演進,保持學習</li>
+<li><strong>分享與交流</strong>：與同事分享經驗，共同進步</li>
+<li><strong>關注新工具</strong>：AI 工具持續演進，保持學習</li>
 </ol>
 <hr/>
 <h3 id="_40">最後的提醒</h3>
 <blockquote>
-<p>AI 是強大的助手,但<strong>教育的核心是人</strong>。</p>
-<p>技術讓我們更有效率,但不要忘記:<br/>
-- 學生的眼神與反應<br/>
-- 課堂的溫度與互動<br/>
-- 教育的初心與熱情</p>
-<p>讓 AI 處理重複性工作,讓教師專注於真正的教育。</p>
+<p>AI 是強大的助手，但<strong>教育的核心是人</strong>。</p>
+<p>技術讓我們更有效率，但不要忘記：</p>
+<ul>
+<li>學生的眼神與反應</li>
+<li>課堂的溫度與互動</li>
+<li>教育的初心與熱情</li>
+</ul>
+<p>讓 AI 處理重複性工作，讓教師專注於真正的教育。</p>
 </blockquote>
 <hr/>
 <p><strong>六個單元到此告一段落。</strong></p>
-<p>請用自己的主題再走一次完整流程，每一步都回到來源與實際檔案核對；遇到問題時，回到對應單元調整提示或規則。</p>
+<p>請用自己的主題再走一次完整流程，每一步都回到來源與實際檔案核對。遇到問題時，回到對應單元調整提示或規則。</p>
 <h2 id="_41">完整案例的交付與驗收</h2>
-<p><strong>輸入</strong>：<code>textbook.txt</code>、<code>reference.txt</code>、專案指引；來源須有使用權，學生資料以虛構內容替代。<strong>操作</strong>：在同一個 <code>codex</code>、<code>claude</code> 或 <code>agy</code> 會話完成步驟四至七；中途離開就把已確認的結果寫入 <code>outputs/lesson_plan.md</code>，下次明確要求重新讀取。</p>
-<p><strong>產物</strong>：<code>outputs/lesson_plan.md</code>、<code>outputs/worksheet.md</code>、<code>outputs/review_notes.md</code>。教師確認時數加總、活動材料、題目答案、來源段落、三個差異化層級；將需人工判定的學生特性留給教師。未核對前標示「草稿」。</p></div>
+<p>這節整理完整案例要準備什麼、交出什麼，以及教師要驗收哪些地方。</p>
+<ul>
+<li><strong>輸入</strong>：<code>textbook.txt</code>、<code>reference.txt</code> 與專案指引。來源須有使用權，學生資料以虛構內容替代。</li>
+<li><strong>操作</strong>：在同一個 <code>codex</code>、<code>claude</code> 或 <code>agy</code> 會話完成步驟四至七。中途離開時，把已確認的結果寫入 <code>outputs/lesson_plan.md</code>，下次明確要求重新讀取。</li>
+<li><strong>產物</strong>：<code>outputs/lesson_plan.md</code>、<code>outputs/worksheet.md</code>、<code>outputs/review_notes.md</code>。未核對前標示「草稿」。</li>
+</ul>
+<p>教師要確認的項目：</p>
+<ul>
+<li>時數加總</li>
+<li>活動材料</li>
+<li>題目答案</li>
+<li>來源段落</li>
+<li>三個差異化層級</li>
+</ul>
+<p>需要人工判定的學生特性，留給教師決定。</p></div>
 <!-- Highlight.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
 <script>hljs.highlightAll();</script>
@@ -687,5 +739,5 @@ A8：初期需要學習與調整,但熟悉後,可用個人備課紀錄評估是�
             "securityLevel": "loose"
 });
     </script>
-<nav aria-label="課程導覽" class="course-nav"><a href="index.html">課程目錄</a><a href="05_instructions.html">← 上一章</a><a href="06a_assessment.html">下一章 →</a><a href="06_lesson_plans.md">Markdown 原文</a><span>雙 CLI 教材 · 2026-10-31</span></nav></body>
+<nav aria-label="課程導覽" class="course-nav"><a href="index.html">課程目錄</a><a href="05_instructions.html">← 上一章</a><a href="06a_assessment.html">下一章 →</a><a href="06_lesson_plans.md">Markdown 原文</a><span>三款 CLI 教材 · 更新 2026-11-17</span></nav></body>
 </html>

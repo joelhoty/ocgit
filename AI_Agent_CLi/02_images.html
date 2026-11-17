@@ -76,29 +76,39 @@
     </style>
 <style id="course-navigation-style">
 html{scroll-behavior:smooth}body{box-sizing:border-box}img{max-width:100%;height:auto}pre{max-width:100%;overflow-x:auto}table{display:block;max-width:100%;overflow-x:auto}td,th{min-width:7em}.course-nav{display:flex;flex-wrap:wrap;gap:.65em;align-items:center;padding:1em 0;margin:1em 0;border-bottom:1px solid #3e3e3e;font-size:.95rem}.course-nav a{color:#66b3ff}.course-nav span{color:#aaa}.course-toc{margin:1.5em 0;padding:1em;background:#222831;border-radius:8px}.course-toc a{overflow-wrap:anywhere}h1,h2,h3,p,li{overflow-wrap:break-word}.mermaid svg{max-width:100%;height:auto}@media(max-width:600px){body{padding:14px!important}h1{font-size:1.65em}pre code{padding:1em}.course-nav{line-height:1.8}}
-</style></head>
-<body><nav aria-label="課程導覽" class="course-nav"><a href="index.html">課程目錄</a><a href="01_materials.html">← 上一章</a><a href="03_notebooklm.html">下一章 →</a><a href="02_images.md">Markdown 原文</a><span>雙 CLI 教材 · 2026-10-31</span></nav>
+</style><link href="assets/course.css" rel="stylesheet"/>
+</head>
+<body><nav aria-label="課程導覽" class="course-nav"><a href="index.html">課程目錄</a><a href="01_materials.html">← 上一章</a><a href="03_notebooklm.html">下一章 →</a><a href="02_images.md">Markdown 原文</a><span>三款 CLI 教材 · 更新 2026-11-17</span></nav>
 <div class="container"><!-- Path: AI_Agent_CLi | Updated: 2026-11-17 | Edition: Codex CLI / Claude Code / agy -->
 <h1 id="-ai">單元二補充教材：讓教材更生動 - AI 圖片詠唱師</h1><details class="course-toc"><summary>本頁章節</summary><ul><li><a href="#_1">單元目標</a></li><li><a href="#_2">核心概念詳解</a></li><li><a href="#_4">詳細操作步驟</a></li><li><a href="#prompt">跨學科圖片 Prompt 範例庫</a></li><li><a href="#_13">進階技巧</a></li><li><a href="#_16">實用技巧與注意事項</a></li><li><a href="#_20">延伸應用</a></li><li><a href="#_21">練習任務</a></li><li><a href="#qa">常見問題 Q&amp;A</a></li></ul></details>
 <blockquote>
-<p><strong>閱讀前提：</strong>先完成<a href="00_intro.html">前導章：Agent 基本概念與工作環境</a>，使用 Codex CLI、Claude Code 或 Antigravity CLI（<code>agy</code>）其中一款。本章以備課作為範例情境；不是教師也能把主題換成自己的工作或學習內容。範例請使用虛構或去識別化資料，結果都要回到來源與實際檔案確認。（查核日期：2026-10-31）</p>
+<p><strong>開始之前</strong></p>
+<ul>
+<li><strong>前提</strong>：先完成<a href="00_intro.html">前導章：Agent 基本概念與工作環境</a>，並安裝 Codex CLI、Claude Code 或 Antigravity CLI（<code>agy</code>）其中一款。</li>
+<li><strong>情境</strong>：本章以備課為例；不是教師也可以換成自己的工作或學習主題。</li>
+<li><strong>資料</strong>：範例使用虛構或去識別化資料；結果都要回到來源與實際檔案確認。</li>
+<li><strong>查核日期</strong>：2026-10-31</li>
+</ul>
 </blockquote>
 <h2 id="_1">單元目標</h2>
 <ul>
 <li>理解 AI 圖片生成的基本原理</li>
 <li>學會撰寫圖片生成提示詞 (Image Prompt)</li>
-<li>能夠用雙 CLI 撰寫圖片提示，透過可用的圖片工具生成並核對教學圖片</li>
+<li>能夠用 CLI 撰寫圖片提示，透過可用的圖片工具生成並核對教學圖片</li>
 <li>掌握不同類型圖片的描述技巧</li>
 </ul>
 <hr/>
 <h2 id="_2">核心概念詳解</h2>
 <h3 id="1-ai">1. AI 如何「畫圖」？</h3>
-<p><strong>核心比喻</strong>：AI 就像一位「看過數百萬張圖片的畫家」，它學習了各種物體的外觀、風格、構圖方式。當您用文字描述一個畫面，AI 會根據它的「視覺記憶」，產生符合描述的影像；這是生成模型的教學比喻，不代表直接剪貼原圖片。</p>
-<p><strong>重要觀念</strong>：<br/>
-- AI 圖片生成是「文字 → 圖像」的轉換過程<br/>
-- 提示詞越具體，圖片越符合預期<br/>
-- AI 擅長具體物件，抽象概念需要更多引導<br/>
-- 可能需要多次嘗試才能得到理想結果</p>
+<p><strong>核心比喻</strong>：AI 就像一位「看過數百萬張圖片的畫家」，學習了各種物體的外觀、風格與構圖方式。當你用文字描述一個畫面，AI 會根據它的「視覺記憶」，產生符合描述的影像。</p>
+<p>這是說明生成模型的教學比喻，不代表 AI 直接剪貼原圖片。</p>
+<p><strong>重要觀念</strong>：</p>
+<ul>
+<li>AI 圖片生成是「文字 → 圖像」的轉換過程</li>
+<li>提示詞越具體，圖片越符合預期</li>
+<li>AI 擅長具體物件，抽象概念需要更多引導</li>
+<li>可能需要多次嘗試才能得到理想結果</li>
+</ul>
 <h3 id="2">2. 圖片提示詞的五大要素</h3>
 <h4 id="_3">📋 完整的圖片提示詞結構</h4>
 <pre><code>[主體] + [動作/狀態] + [環境/背景] + [風格] + [細節要求]
@@ -144,17 +154,33 @@ html{scroll-behavior:smooth}body{box-sizing:border-box}img{max-width:100%;height
 <hr/>
 <h2 id="_4">詳細操作步驟</h2>
 <h3 id="cli">步驟一：以 CLI 準備提示，再使用圖片生成服務</h3>
+<p>這一步先在 CLI 寫好圖片提示，再到圖片生成服務產生圖片。</p>
 <ol>
-<li>在 <code>image_lesson</code> 專案用 <code>codex</code>、<code>claude</code> 或 <code>agy</code> 開始互動會話，請它將本章五要素整理成 <code>image_prompt.md</code>。</li>
-<li>本課共同路線使用有圖片生成功能的 ChatGPT 網頁：開啟 <a href="https://chatgpt.com/">ChatGPT</a>，將提示貼入並要求生成圖片。帳號與工作區必須開放這項功能；沒有權限時可使用教師提供的圖片完成辨識與修改提示練習。</li>
-<li>檢查主體數量、構圖、科學關係與文字標示，指出具體錯誤後再生成，不預設完成時間。</li>
-<li>下載成 <code>assets/lesson_image.png</code>，在 <code>image_notes.md</code> 記錄提示、工具、日期與人工修改。</li>
+<li>在 <code>image_lesson</code> 專案用 <code>codex</code>、<code>claude</code> 或 <code>agy</code> 開始互動會話。</li>
+<li>請它將本章五要素整理成 <code>image_prompt.md</code>。</li>
+<li>本課共同路線使用有圖片生成功能的 ChatGPT 網頁：開啟 <a href="https://chatgpt.com/">ChatGPT</a>，將提示貼入並要求生成圖片。</li>
+<li>帳號與工作區必須開放這項功能。</li>
+<li>沒有權限時，可使用教師提供的圖片，完成辨識與修改提示的練習。</li>
+<li>檢查主體數量、構圖、科學關係與文字標示。指出具體錯誤後再生成，不預設完成時間。</li>
+<li>下載成 <code>assets/lesson_image.png</code>。</li>
+<li>在 <code>image_notes.md</code> 記錄提示、工具、日期與人工修改。</li>
 </ol>
-<p><strong>能力差異</strong>：三款 CLI 都可協助寫提示與管理素材，但不能因此假定它們都可直接產生點陣圖片。目前 Codex 官方提供 imagegen 技能路線；只有當會話實際提供該技能、帳號額度允許時才可在 CLI 內使用。Claude Code 若要生成點陣圖，需要另接圖片服務或工具；Antigravity CLI（<code>agy</code>）的圖片生成能力本課未查核，同樣不列為必要；本課不要求安裝這些整合。<a href="https://learn.chatgpt.com/docs/image-generation">官方圖片生成說明</a>（2026-10-31 查核）。</p>
+<p><strong>能力差異</strong>：三款 CLI 都可協助寫提示與管理素材，但不能因此假定它們都能直接產生點陣圖片。</p>
+<ul>
+<li><strong>Codex</strong>：官方目前提供 imagegen 技能路線。只有會話實際提供該技能、帳號額度也允許時，才可在 CLI 內使用。</li>
+<li><strong>Claude Code</strong>：若要生成點陣圖，需要另接圖片服務或工具。</li>
+<li><strong>Antigravity CLI（<code>agy</code>）</strong>：圖片生成能力本課未查核，同樣不列為必要。</li>
+<li>本課不要求安裝這些整合。參考：<a href="https://learn.chatgpt.com/docs/image-generation">官方圖片生成說明</a>（2026-10-31 查核）。</li>
+</ul>
 <p><strong>共同提示（在任一 CLI 會話輸入）</strong>：</p>
 <pre><code class="language-text">請把「國小五年級水循環」轉成圖片生成提示，寫入 image_prompt.md：雲、海洋、蒸發、凝結、降雨、地表逕流必須有正確方向；先產生無文字底圖，再列出需人工加上的繁體中文標籤。不要宣稱已生成圖片。另寫一份檢核清單。
 </code></pre>
-<p><strong>驗收</strong>：<code>image_prompt.md</code> 是文字；下載的 PNG 是實際可開啟的圖檔。每個流程箭頭與標籤都需教師確認；AI 的「已完成」回覆不能替代這項檢查。</p>
+<p><strong>驗收</strong>：</p>
+<ul>
+<li><code>image_prompt.md</code> 是文字檔；下載的 PNG 是實際可開啟的圖檔。</li>
+<li>每個流程箭頭與標籤都需教師確認。</li>
+<li>AI 的「已完成」回覆不能替代這項檢查。</li>
+</ul>
 <h3 id="_5">步驟二：優化提示詞的流程</h3>
 <div class="mermaid">graph TD
     A[撰寫基礎描述] --&gt; B[生成第一版]
@@ -172,7 +198,7 @@ html{scroll-behavior:smooth}body{box-sizing:border-box}img{max-width:100%;height
 <ol>
 <li>點選滿意的圖片</li>
 <li>點選下載按鈕</li>
-<li>儲存到您的教材資料夾</li>
+<li>儲存到你的教材資料夾</li>
 <li>插入 Word、PPT 或學習單中</li>
 </ol>
 <hr/>
@@ -383,7 +409,8 @@ Use icons and simple labels for each period. Horizontal layout, clear and organi
 </code></pre>
 <hr/>
 <h3 id="3_6">技巧 3：中英文提示詞對比</h3>
-<p><strong>重要提醒</strong>：中文或英文都可以寫提示詞，結果差異常來自細節多寡，不一定來自語言。想比較時，請用兩種語言寫入相同細節，保留效果較好的版本。圖片中的中文文字仍可能出錯，需要中文標示時請後製加入。</p>
+<p><strong>重要提醒</strong>：中文或英文都可以寫提示詞。結果差異常來自細節多寡，不一定來自語言。</p>
+<p>想比較時，請用兩種語言寫入相同細節，保留效果較好的版本。圖片中的中文文字仍可能出錯，需要中文標示時請後製加入。</p>
 <p><strong>範例對比</strong>：</p>
 <table>
 <thead>
@@ -410,35 +437,39 @@ Use icons and simple labels for each period. Horizontal layout, clear and organi
 <h2 id="_16">實用技巧與注意事項</h2>
 <h3 id="_17">✅ 圖片生成最佳實踐</h3>
 <ol>
-<li><strong>從簡單開始</strong>：先生成基本版本,再逐步加入細節</li>
-<li><strong>善用風格關鍵字</strong>：明確指定風格,避免風格混亂</li>
-<li><strong>設定背景</strong>：指定白色或透明背景,方便後續使用</li>
+<li><strong>從簡單開始</strong>：先生成基本版本，再逐步加入細節</li>
+<li><strong>善用風格關鍵字</strong>：明確指定風格，避免風格混亂</li>
+<li><strong>設定背景</strong>：指定白色或透明背景，方便後續使用</li>
 <li><strong>檢查版權</strong>：確認 AI 生成圖片的使用授權</li>
-<li><strong>多次嘗試</strong>：不滿意就重新生成,每次結果都會不同</li>
+<li><strong>多次嘗試</strong>：不滿意就重新生成，每次結果都會不同</li>
 </ol>
 <h3 id="_18">⚠️ 使用限制與注意事項</h3>
 <ol>
-<li><strong>文字內容</strong>：AI 圖片中的文字可能錯誤或亂碼,建議後製加入文字</li>
-<li><strong>精確度</strong>：複雜的圖表或精確的科學圖示,可能需要專業軟體</li>
-<li><strong>人物相似度</strong>：不應生成可辨識的特定真人(如歷史名人的真實樣貌)</li>
-<li><strong>文化敏感度</strong>：注意文化適當性,避免刻板印象</li>
+<li><strong>文字內容</strong>：AI 圖片中的文字可能錯誤或亂碼，建議後製加入文字</li>
+<li><strong>精確度</strong>：複雜的圖表或精確的科學圖示，可能需要專業軟體</li>
+<li><strong>人物相似度</strong>：不應生成可辨識的特定真人（如歷史名人的真實樣貌）</li>
+<li><strong>文化敏感度</strong>：注意文化適當性，避免刻板印象</li>
 <li><strong>學生隱私</strong>：不要生成可辨識特定學生的圖片</li>
 </ol>
 <h3 id="_19">🎯 圖片後製建議</h3>
-<p>生成後可用簡單工具優化：<br/>
-- <strong>去背景</strong>：使用 remove.bg 等線上工具<br/>
-- <strong>加入文字</strong>：用 Canva、PowerPoint 加入標示<br/>
-- <strong>調整尺寸</strong>：裁切或縮放至適當大小<br/>
-- <strong>組合多張</strong>：用簡報軟體組合成教學海報</p>
+<p>生成後可用簡單工具優化：</p>
+<ul>
+<li><strong>去背景</strong>：使用 remove.bg 等線上工具</li>
+<li><strong>加入文字</strong>：用 Canva、PowerPoint 加入標示</li>
+<li><strong>調整尺寸</strong>：裁切或縮放至適當大小</li>
+<li><strong>組合多張</strong>：用簡報軟體組合成教學海報</li>
+</ul>
 <hr/>
 <h2 id="_20">延伸應用</h2>
 <h3 id="1_8">應用 1：製作視覺化學習單</h3>
 <p><strong>情境</strong>：為國小學生製作「認識蔬菜」學習單</p>
-<p><strong>步驟</strong>：<br/>
-1. 用 AI 分別生成：高麗菜、紅蘿蔔、番茄、青椒等圖片<br/>
-2. 每張圖片風格統一(例如:全部用 cartoon style)<br/>
-3. 在 Word 中排版,加上名稱與填空欄位<br/>
-4. 形成完整學習單</p>
+<p><strong>步驟</strong>：</p>
+<ol>
+<li>用 AI 分別生成：高麗菜、紅蘿蔔、番茄、青椒等圖片</li>
+<li>每張圖片風格統一（例如：全部用 cartoon style）</li>
+<li>在 Word 中排版，加上名稱與填空欄位</li>
+<li>形成完整學習單</li>
+</ol>
 <p><strong>Prompt 範本</strong>：</p>
 <pre><code>A cute, simple illustration of [蔬菜名稱].
 Cartoon style, bright colors, white background, suitable for children's educational materials.
@@ -463,32 +494,32 @@ Bright, energetic colors, positive mood, suitable for poster design.
 <h2 id="_21">練習任務</h2>
 <h3 id="_22">初階任務</h3>
 <ol>
-<li>生成一張適合您學科的「概念說明圖」</li>
-<li>生成三張不同風格的「同一主題圖片」,比較差異</li>
-<li>為您的下一份講義生成一張封面圖</li>
+<li>生成一張適合你學科的「概念說明圖」</li>
+<li>生成三張不同風格的「同一主題圖片」，比較差異</li>
+<li>為你的下一份講義生成一張封面圖</li>
 </ol>
 <h3 id="_23">進階任務</h3>
 <ol>
-<li>製作一套「視覺化單字卡」(5-10 張)</li>
+<li>製作一套「視覺化單字卡」（5-10 張）</li>
 <li>設計一份完整的「圖文並茂學習單」</li>
-<li>生成一系列風格統一的「課程插圖包」(至少 5 張)</li>
+<li>生成一系列風格統一的「課程插圖包」（至少 5 張）</li>
 </ol>
 <hr/>
 <h2 id="qa">常見問題 Q&amp;A</h2>
 <p><strong>Q1：為什麼生成的圖片跟我想的不一樣？</strong><br/>
-A1：嘗試更具體的描述,加入風格關鍵字,或提供參考範例的描述。</p>
+A1：嘗試更具體的描述、加入風格關鍵字，或提供參考範例的描述。</p>
 <p><strong>Q2：圖片中的文字都是亂碼怎麼辦？</strong><br/>
-A2：這是目前 AI 的限制。建議生成圖片後,用其他工具加入文字標籤。</p>
+A2：這是目前 AI 的限制。建議生成圖片後，用其他工具加入文字標籤。</p>
 <p><strong>Q3：可以生成真實人物的圖片嗎？</strong><br/>
-A3：AI 可生成「一般性的人物」,但不應生成可辨識的特定真人,也不建議生成學生肖像。</p>
+A3：AI 可生成「一般性的人物」，但不應生成可辨識的特定真人，也不建議生成學生肖像。</p>
 <p><strong>Q4：生成的圖片可以商用嗎？</strong><br/>
-A4：需查看各 AI 工具的授權條款。教學用途通常可以,但商業用途需確認。</p>
+A4：需查看各 AI 工具的授權條款。教學用途通常可以，但商業用途需確認。</p>
 <p><strong>Q5：圖片解析度不夠清晰？</strong><br/>
-A5：部分 AI 工具支援高解析度選項。或使用可信的放大工具提升解析度。</p>
+A5：部分 AI 工具支援高解析度選項，也可以使用可信的放大工具提升解析度。</p>
 <p><strong>Q6：如何讓多張圖片風格一致？</strong><br/>
-A6：在每個提示詞中使用相同的風格關鍵字(例如都加上 "cartoon style, pastel colors")。</p>
+A6：在每個提示詞中使用相同的風格關鍵字（例如都加上 "cartoon style, pastel colors"）。</p>
 <hr/>
-<p><strong>小結</strong>：AI 圖片生成能大幅提升教材的視覺吸引力。掌握提示詞技巧後,您將能快速產出符合需求的教學插圖,讓課堂更加生動有趣!</p></div>
+<p><strong>小結</strong>：AI 圖片生成能大幅提升教材的視覺吸引力。掌握提示詞技巧後，你能快速產出符合需求的教學插圖，讓課堂更加生動有趣！</p></div>
 <!-- Highlight.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
 <script>hljs.highlightAll();</script>
@@ -501,5 +532,5 @@ A6：在每個提示詞中使用相同的風格關鍵字(例如都加上 "cartoo
             "securityLevel": "loose"
 });
     </script>
-<nav aria-label="課程導覽" class="course-nav"><a href="index.html">課程目錄</a><a href="01_materials.html">← 上一章</a><a href="03_notebooklm.html">下一章 →</a><a href="02_images.md">Markdown 原文</a><span>雙 CLI 教材 · 2026-10-31</span></nav></body>
+<nav aria-label="課程導覽" class="course-nav"><a href="index.html">課程目錄</a><a href="01_materials.html">← 上一章</a><a href="03_notebooklm.html">下一章 →</a><a href="02_images.md">Markdown 原文</a><span>三款 CLI 教材 · 更新 2026-11-17</span></nav></body>
 </html>

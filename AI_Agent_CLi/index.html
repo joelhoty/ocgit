@@ -178,14 +178,48 @@
     </style>
 <style id="course-navigation-style">
 html{scroll-behavior:smooth}body{box-sizing:border-box}img{max-width:100%;height:auto}pre{max-width:100%;overflow-x:auto}table{display:block;max-width:100%;overflow-x:auto}td,th{min-width:7em}.course-nav{display:flex;flex-wrap:wrap;gap:.65em;align-items:center;padding:1em 0;margin:1em 0;border-bottom:1px solid #3e3e3e;font-size:.95rem}.course-nav a{color:#66b3ff}.course-nav span{color:#aaa}.course-toc{margin:1.5em 0;padding:1em;background:#222831;border-radius:8px}.course-toc a{overflow-wrap:anywhere}h1,h2,h3,p,li{overflow-wrap:break-word}.mermaid svg{max-width:100%;height:auto}@media(max-width:600px){body{padding:14px!important}h1{font-size:1.65em}pre code{padding:1em}.course-nav{line-height:1.8}}
+.reading-order{margin:2em 0 2.6em;padding:1.4em 1.6em;background:#222831;border-radius:10px;line-height:1.8}
+.reading-order h2{margin:0 0 .4em;font-size:1.4em}
+.reading-order>p{margin:.2em 0 1em;color:#b8c0ca}
+.reading-order ol.stages{list-style:none;padding:0;margin:0;counter-reset:stage}
+.reading-order ol.stages>li{counter-increment:stage;position:relative;margin:0 0 1.1em;padding:.9em 1.1em .9em 3.4em;background:#2a313b;border-radius:8px}
+.reading-order ol.stages>li::before{content:counter(stage);position:absolute;left:1em;top:.85em;width:1.7em;height:1.7em;line-height:1.7em;text-align:center;border-radius:50%;background:#66b3ff;color:#111;font-weight:700}
+.reading-order .stage-title{font-weight:700;font-size:1.05em}
+.reading-order .stage-meta{color:#a7b0bb;font-size:.92em;margin-left:.4em}
+.reading-order .path{margin:.4em 0 .2em;padding:0;list-style:none;display:flex;flex-wrap:wrap;gap:.4em .3em;align-items:center}
+.reading-order .path li{margin:0}
+.reading-order .path a{display:inline-block;padding:.15em .7em;border:1px solid #3e4a58;border-radius:999px;text-decoration:none;background:#1f252d}
+.reading-order .path .arrow{color:#7f8a96}
+.reading-order .opt a{border-style:dashed}
+.reading-order .note{margin:.35em 0 0;font-size:.93em;color:#c9d1da}
 </style></head>
 <body>
 <div class="header">
 <h1>AI Agent CLI 設計教學課程</h1>
 <p>VS Code ＋ 終端機 Agent｜給想學 AI 應用的入門使用者，從 Agent 概念走向完整交付</p>
 <p>操作原則：只有安裝 CLI 時需要貼上作業系統指令；安裝後，建立檔案、Git 提交、執行程式都在 Agent 會話中以自然語言與內建指令（<code>/diff</code>、<code>@</code>、<code>!</code> 等）完成。</p>
-<p><a href="#references">參考資料與查證紀錄</a></p>
+<p><a href="#reading-order">建議閱讀順序</a>｜<a href="#references">參考資料與查證紀錄</a></p>
 </div>
+<section class="reading-order" id="reading-order">
+<h2>建議閱讀順序</h2>
+<p>依序完成五個階段。實線框是建議必讀，虛線框是選讀；每個階段完成後再進入下一階段。</p>
+<ol class="stages">
+<li><span class="stage-title">必讀基礎</span><span class="stage-meta">約 6 節課</span>
+<ul class="path"><li><a href="00_intro.html">前導章（第 1～9 章）</a></li><li class="arrow">＋</li><li class="opt"><a href="agy_cli.html">agy 延伸章（使用 agy 者）</a></li></ul>
+<p class="note">先選一款 CLI 安裝並登入，完成第一個有來源的任務。使用 Antigravity CLI（<code>agy</code>）的人，安裝時改讀 agy 延伸章第 1～3 章。</p></li>
+<li><span class="stage-title">提示與素材</span><span class="stage-meta">學會交代任務、查證結果</span>
+<ul class="path"><li><a href="01_materials.html">單元一 提示詞</a></li><li class="arrow">→</li><li><a href="10_literacy.html">資訊與媒體素養</a></li><li class="arrow">→</li><li><a href="02_images.html">單元二 AI 圖片</a></li><li class="arrow">→</li><li><a href="03_notebooklm.html">單元三 NotebookLM</a></li></ul>
+<p class="note">素養單元放在單元一之後：先知道 AI 會出錯、怎麼查證，再開始大量產生圖文素材。</p></li>
+<li><span class="stage-title">檔案與規則</span><span class="stage-meta">讓 Agent 處理整個資料夾</span>
+<ul class="path"><li><a href="04_workspace.html">單元四 多檔案工作</a></li><li class="arrow">→</li><li class="opt"><a href="04a_workflows.html">單元四補充 工作流程</a></li><li class="arrow">→</li><li><a href="05_instructions.html">單元五 專案指引</a></li></ul>
+<p class="note">單元五深化前導章第 5 章的 AGENTS.md。使用 agy 的人搭配 agy 延伸章第 4 章（AGENTS.md 生成與範例）。</p></li>
+<li><span class="stage-title">實務整合</span><span class="stage-meta">完成一份可交付的教案</span>
+<ul class="path"><li><a href="06_lesson_plans.html">單元六 教案設計</a></li><li class="arrow">→</li><li class="opt"><a href="06a_assessment.html">單元六補充 轉檔與評量</a></li></ul></li>
+<li><span class="stage-title">進階選讀</span><span class="stage-meta">依需求挑選</span>
+<ul class="path"><li class="opt"><a href="09_cli_practice.html">CLI 實戰教學</a></li><li class="opt"><a href="07_agents_cli.html">AI Agent 與 CLI 專題</a></li><li class="opt"><a href="00_intro.html#python-practice">前導章第 10 章 Python 延伸</a></li></ul>
+<p class="note">需要讓 Agent 讀程式、寫程式或執行本機程式時再讀；只整理文件的讀者可以略過。</p></li>
+</ol>
+</section>
 <div class="course-grid">
 <div class="course-card">
 <span class="unit-badge">前導章｜建議先讀</span>
@@ -225,8 +259,8 @@ html{scroll-behavior:smooth}body{box-sizing:border-box}img{max-width:100%;height
 <a class="view-link" href="02_images.html">查看教材 →</a>
 </div><div class="course-card">
 <span class="unit-badge">單元三</span>
-<h3>打造您的專屬知識庫 - 備課神器 NotebookLM</h3>
-<p>學習使用 NotebookLM 建立個人化知識庫，提升備課效率，讓 AI 成為您的智能教學助理。</p>
+<h3>打造你的專屬知識庫 - 備課神器 NotebookLM</h3>
+<p>學習使用 NotebookLM 建立個人化知識庫，提升備課效率，讓 AI 成為你的備課助理。</p>
 <ul>
 <li>建立個人化的 AI 知識庫</li>
 <li>上傳與管理各類教學資料</li>
@@ -259,7 +293,7 @@ html{scroll-behavior:smooth}body{box-sizing:border-box}img{max-width:100%;height
 </div><div class="course-card">
 <span class="unit-badge">單元五</span>
 <h3>個人化你的 AI - 初探 AGENTS.md／CLAUDE.md</h3>
-<p>學習使用 AGENTS.md／CLAUDE.md 客製化您的 AI 助理，讓 AI 更符合您的教學風格與需求。</p>
+<p>學習使用 AGENTS.md／CLAUDE.md 客製化你的 AI 助理，讓 AI 更符合你的教學風格與需求。</p>
 <ul>
 <li>認識 AGENTS.md／CLAUDE.md 的功能與應用</li>
 <li>建立個人化的 AI 設定檔</li>
@@ -270,7 +304,7 @@ html{scroll-behavior:smooth}body{box-sizing:border-box}img{max-width:100%;height
 </div><div class="course-card">
 <span class="unit-badge">單元六</span>
 <h3>實戰演練 - AI 幫我讀檔案、寫教案</h3>
-<p>綜合運用前面學到的技能，讓 AI 協助您處理教學文件、撰寫教案，提升整體教學效率。</p>
+<p>綜合運用前面學到的技能，讓 AI 協助你處理教學文件、撰寫教案，提升整體教學效率。</p>
 <ul>
 <li>使用 AI 分析與整理教學文件</li>
 <li>自動生成結構化教案內容</li>

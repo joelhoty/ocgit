@@ -1,14 +1,18 @@
 <!-- Path: AI_Agent_CLi | Updated: 2026-11-17 | Edition: Codex CLI / Claude Code / agy -->
 # 單元二補充教材：讓教材更生動 - AI 圖片詠唱師
 
-> **閱讀前提：**先完成[前導章：Agent 基本概念與工作環境](00_intro.html)，使用 Codex CLI、Claude Code 或 Antigravity CLI（`agy`）其中一款。本章以備課作為範例情境；不是教師也能把主題換成自己的工作或學習內容。範例請使用虛構或去識別化資料，結果都要回到來源與實際檔案確認。（查核日期：2026-10-31）
-
+> **開始之前**
+>
+> - **前提**：先完成[前導章：Agent 基本概念與工作環境](00_intro.html)，並安裝 Codex CLI、Claude Code 或 Antigravity CLI（`agy`）其中一款。
+> - **情境**：本章以備課為例；不是教師也可以換成自己的工作或學習主題。
+> - **資料**：範例使用虛構或去識別化資料；結果都要回到來源與實際檔案確認。
+> - **查核日期**：2026-10-31
 
 ## 單元目標
 
 - 理解 AI 圖片生成的基本原理
 - 學會撰寫圖片生成提示詞 (Image Prompt)
-- 能夠用雙 CLI 撰寫圖片提示，透過可用的圖片工具生成並核對教學圖片
+- 能夠用 CLI 撰寫圖片提示，透過可用的圖片工具生成並核對教學圖片
 - 掌握不同類型圖片的描述技巧
 
 ---
@@ -17,9 +21,12 @@
 
 ### 1. AI 如何「畫圖」？
 
-**核心比喻**：AI 就像一位「看過數百萬張圖片的畫家」，它學習了各種物體的外觀、風格、構圖方式。當您用文字描述一個畫面，AI 會根據它的「視覺記憶」，產生符合描述的影像；這是生成模型的教學比喻，不代表直接剪貼原圖片。
+**核心比喻**：AI 就像一位「看過數百萬張圖片的畫家」，學習了各種物體的外觀、風格與構圖方式。當你用文字描述一個畫面，AI 會根據它的「視覺記憶」，產生符合描述的影像。
+
+這是說明生成模型的教學比喻，不代表 AI 直接剪貼原圖片。
 
 **重要觀念**：
+
 - AI 圖片生成是「文字 → 圖像」的轉換過程
 - 提示詞越具體，圖片越符合預期
 - AI 擅長具體物件，抽象概念需要更多引導
@@ -34,6 +41,7 @@
 ```
 
 **範例解析**：
+
 ```
 一隻可愛的橘貓 (主體)
 正在睡覺 (動作)
@@ -56,19 +64,35 @@
 
 ### 步驟一：以 CLI 準備提示，再使用圖片生成服務
 
-1. 在 `image_lesson` 專案用 `codex`、`claude` 或 `agy` 開始互動會話，請它將本章五要素整理成 `image_prompt.md`。
-2. 本課共同路線使用有圖片生成功能的 ChatGPT 網頁：開啟 [ChatGPT](https://chatgpt.com/)，將提示貼入並要求生成圖片。帳號與工作區必須開放這項功能；沒有權限時可使用教師提供的圖片完成辨識與修改提示練習。
-3. 檢查主體數量、構圖、科學關係與文字標示，指出具體錯誤後再生成，不預設完成時間。
-4. 下載成 `assets/lesson_image.png`，在 `image_notes.md` 記錄提示、工具、日期與人工修改。
+這一步先在 CLI 寫好圖片提示，再到圖片生成服務產生圖片。
 
-**能力差異**：三款 CLI 都可協助寫提示與管理素材，但不能因此假定它們都可直接產生點陣圖片。目前 Codex 官方提供 imagegen 技能路線；只有當會話實際提供該技能、帳號額度允許時才可在 CLI 內使用。Claude Code 若要生成點陣圖，需要另接圖片服務或工具；Antigravity CLI（`agy`）的圖片生成能力本課未查核，同樣不列為必要；本課不要求安裝這些整合。[官方圖片生成說明](https://learn.chatgpt.com/docs/image-generation)（2026-10-31 查核）。
+1. 在 `image_lesson` 專案用 `codex`、`claude` 或 `agy` 開始互動會話。
+2. 請它將本章五要素整理成 `image_prompt.md`。
+3. 本課共同路線使用有圖片生成功能的 ChatGPT 網頁：開啟 [ChatGPT](https://chatgpt.com/)，將提示貼入並要求生成圖片。
+   - 帳號與工作區必須開放這項功能。
+   - 沒有權限時，可使用教師提供的圖片，完成辨識與修改提示的練習。
+4. 檢查主體數量、構圖、科學關係與文字標示。指出具體錯誤後再生成，不預設完成時間。
+5. 下載成 `assets/lesson_image.png`。
+6. 在 `image_notes.md` 記錄提示、工具、日期與人工修改。
+
+**能力差異**：三款 CLI 都可協助寫提示與管理素材，但不能因此假定它們都能直接產生點陣圖片。
+
+- **Codex**：官方目前提供 imagegen 技能路線。只有會話實際提供該技能、帳號額度也允許時，才可在 CLI 內使用。
+- **Claude Code**：若要生成點陣圖，需要另接圖片服務或工具。
+- **Antigravity CLI（`agy`）**：圖片生成能力本課未查核，同樣不列為必要。
+- 本課不要求安裝這些整合。參考：[官方圖片生成說明](https://learn.chatgpt.com/docs/image-generation)（2026-10-31 查核）。
 
 **共同提示（在任一 CLI 會話輸入）**：
+
 ```text
 請把「國小五年級水循環」轉成圖片生成提示，寫入 image_prompt.md：雲、海洋、蒸發、凝結、降雨、地表逕流必須有正確方向；先產生無文字底圖，再列出需人工加上的繁體中文標籤。不要宣稱已生成圖片。另寫一份檢核清單。
 ```
 
-**驗收**：`image_prompt.md` 是文字；下載的 PNG 是實際可開啟的圖檔。每個流程箭頭與標籤都需教師確認；AI 的「已完成」回覆不能替代這項檢查。
+**驗收**：
+
+- `image_prompt.md` 是文字檔；下載的 PNG 是實際可開啟的圖檔。
+- 每個流程箭頭與標籤都需教師確認。
+- AI 的「已完成」回覆不能替代這項檢查。
 
 ### 步驟二：優化提示詞的流程
 
@@ -90,7 +114,7 @@ graph TD
 
 1. 點選滿意的圖片
 2. 點選下載按鈕
-3. 儲存到您的教材資料夾
+3. 儲存到你的教材資料夾
 4. 插入 Word、PPT 或學習單中
 
 ---
@@ -102,6 +126,7 @@ graph TD
 ### 📐 數學科
 
 #### 範例 1：幾何圖形教學
+
 ```
 A simple, clean diagram of a right-angled triangle on white background.
 Clearly labeled with sides a, b, c and the 90-degree angle marked with a small square.
@@ -113,6 +138,7 @@ Educational style, minimalist, high contrast black lines.
 **使用情境**：教學簡報、學習單插圖
 
 #### 範例 2：數學概念視覺化
+
 ```
 A colorful, cartoon-style illustration showing the concept of fractions.
 A pizza divided into 8 slices, with 3 slices highlighted in red.
@@ -124,6 +150,7 @@ Clean, simple style suitable for elementary school students.
 **使用情境**：課堂投影片、概念說明
 
 #### 範例 3：生活情境應用
+
 ```
 A warm, friendly illustration of a fruit market stall.
 Display shows apples (NT$50 per kg), oranges (NT$40 per kg), and bananas (NT$30 per kg).
@@ -137,6 +164,7 @@ Cartoon style, bright colors, suitable for math word problems.
 ### 🌱 自然科
 
 #### 範例 1：科學過程圖解
+
 ```
 A clear, educational diagram showing the water cycle.
 Include labeled arrows showing evaporation, condensation, precipitation, and collection.
@@ -147,6 +175,7 @@ Pastel colors, easy to understand for grade 4 students.
 ```
 
 #### 範例 2：生物結構圖
+
 ```
 A clean, detailed illustration of a butterfly's body parts.
 Clearly labeled: head, thorax, abdomen, antennae, and wings.
@@ -156,6 +185,7 @@ Side view, bright colors, educational poster style, white background.
 ```
 
 #### 範例 3：自然現象觀察
+
 ```
 A realistic but gentle illustration of plant photosynthesis.
 Show a green leaf with sun rays, water droplets, CO2 bubbles, and O2 bubbles.
@@ -169,6 +199,7 @@ Use arrows to show the process. Soft, natural colors, scientific illustration st
 ### 🌍 社會科
 
 #### 範例 1：歷史場景重現
+
 ```
 A warm, historical illustration of a traditional Taiwanese market in the 1960s.
 Show vendors selling vegetables, fish, and daily goods.
@@ -178,6 +209,7 @@ People wearing clothing from that era. Nostalgic, warm colors, slightly faded lo
 ```
 
 #### 範例 2：地理景觀
+
 ```
 A clean, educational illustration of Taiwan's five major landform types.
 Show mountains, hills, plateaus, basins, and plains in one simple cross-section view.
@@ -187,6 +219,7 @@ Label each type clearly. Textbook style, clear colors, easy to understand.
 ```
 
 #### 範例 3：文化主題圖
+
 ```
 A vibrant, respectful illustration showing traditional festivals around the world.
 Include Chinese New Year lanterns, Japanese cherry blossoms, Indian Diwali lamps.
@@ -200,6 +233,7 @@ Arranged in a circular composition, colorful, celebratory mood.
 ### 📖 國語科
 
 #### 範例 1：情境故事配圖
+
 ```
 A warm, children's book style illustration of a child reading under a big tree.
 Golden afternoon sunlight, peaceful atmosphere, soft watercolor style.
@@ -209,6 +243,7 @@ Suitable for elementary school Chinese textbook.
 ```
 
 #### 範例 2：成語視覺化
+
 ```
 A creative illustration for the idiom "井底之蛙" (frog in a well).
 Show a small frog at the bottom of a deep well, looking up at a tiny circle of sky.
@@ -218,6 +253,7 @@ Metaphorical, thought-provoking, suitable for teaching Chinese idioms.
 ```
 
 #### 範例 3：寫作情境啟發
+
 ```
 An inspiring illustration of "My Dream".
 Show a child looking at a starry night sky with thought bubbles containing various dreams:
@@ -231,6 +267,7 @@ scientist, teacher, artist, astronaut. Dreamy, hopeful mood, soft colors.
 ### 🌐 英語科
 
 #### 範例 1：單字主題圖
+
 ```
 A colorful, educational illustration showing "Family Members".
 Include cartoon-style characters: father, mother, brother, sister, grandfather, grandmother.
@@ -240,6 +277,7 @@ Each character labeled in English. Friendly, clear, suitable for elementary ESL 
 ```
 
 #### 範例 2：情境對話場景
+
 ```
 A friendly illustration of a school cafeteria scene.
 Two students talking at lunch. Speech bubbles showing: "What would you like?" "I'd like a sandwich, please."
@@ -249,6 +287,7 @@ Bright, cheerful, cartoon style, suitable for English conversation practice.
 ```
 
 #### 範例 3：節慶主題
+
 ```
 A festive illustration of Halloween decorations.
 Include pumpkins, ghosts, bats, candy, and a haunted house.
@@ -262,6 +301,7 @@ Fun, not scary, suitable for children. Label each item in English.
 ### 🎨 藝術與綜合活動
 
 #### 範例 1：情緒表達
+
 ```
 A series of 6 cartoon faces showing different emotions:
 happy, sad, angry, surprised, scared, excited.
@@ -271,6 +311,7 @@ Simple, clear expressions, colorful, suitable for emotional education.
 ```
 
 #### 範例 2：環境教育
+
 ```
 A meaningful illustration showing "Reduce, Reuse, Recycle".
 Three sections: reducing waste, reusing items, recycling bins.
@@ -298,12 +339,15 @@ Green and blue tones, eco-friendly style, inspiring and educational.
 ### 技巧 2：避免常見錯誤
 
 #### ❌ 錯誤範例 1：描述太籠統
+
 ```
 一張關於數學的圖
 ```
+
 **問題**：AI 不知道要畫什麼數學概念
 
 #### ✅ 改進版本
+
 ```
 A clear diagram showing the concept of area.
 A rectangle with width and height labeled, and the formula Area = width × height displayed.
@@ -313,12 +357,15 @@ Educational style, simple colors.
 ---
 
 #### ❌ 錯誤範例 2：要求太複雜
+
 ```
 一張圖包含完整的台灣歷史,從史前時代到現代,所有重要事件都要有,還要有人物和地圖
 ```
+
 **問題**：一張圖無法承載這麼多資訊
 
 #### ✅ 改進版本
+
 ```
 A simple timeline illustration showing 5 major periods in Taiwan's history.
 Use icons and simple labels for each period. Horizontal layout, clear and organized.
@@ -328,7 +375,9 @@ Use icons and simple labels for each period. Horizontal layout, clear and organi
 
 ### 技巧 3：中英文提示詞對比
 
-**重要提醒**：中文或英文都可以寫提示詞，結果差異常來自細節多寡，不一定來自語言。想比較時，請用兩種語言寫入相同細節，保留效果較好的版本。圖片中的中文文字仍可能出錯，需要中文標示時請後製加入。
+**重要提醒**：中文或英文都可以寫提示詞。結果差異常來自細節多寡，不一定來自語言。
+
+想比較時，請用兩種語言寫入相同細節，保留效果較好的版本。圖片中的中文文字仍可能出錯，需要中文標示時請後製加入。
 
 **範例對比**：
 
@@ -343,23 +392,24 @@ Use icons and simple labels for each period. Horizontal layout, clear and organi
 
 ### ✅ 圖片生成最佳實踐
 
-1. **從簡單開始**：先生成基本版本,再逐步加入細節
-2. **善用風格關鍵字**：明確指定風格,避免風格混亂
-3. **設定背景**：指定白色或透明背景,方便後續使用
+1. **從簡單開始**：先生成基本版本，再逐步加入細節
+2. **善用風格關鍵字**：明確指定風格，避免風格混亂
+3. **設定背景**：指定白色或透明背景，方便後續使用
 4. **檢查版權**：確認 AI 生成圖片的使用授權
-5. **多次嘗試**：不滿意就重新生成,每次結果都會不同
+5. **多次嘗試**：不滿意就重新生成，每次結果都會不同
 
 ### ⚠️ 使用限制與注意事項
 
-1. **文字內容**：AI 圖片中的文字可能錯誤或亂碼,建議後製加入文字
-2. **精確度**：複雜的圖表或精確的科學圖示,可能需要專業軟體
-3. **人物相似度**：不應生成可辨識的特定真人(如歷史名人的真實樣貌)
-4. **文化敏感度**：注意文化適當性,避免刻板印象
+1. **文字內容**：AI 圖片中的文字可能錯誤或亂碼，建議後製加入文字
+2. **精確度**：複雜的圖表或精確的科學圖示，可能需要專業軟體
+3. **人物相似度**：不應生成可辨識的特定真人（如歷史名人的真實樣貌）
+4. **文化敏感度**：注意文化適當性，避免刻板印象
 5. **學生隱私**：不要生成可辨識特定學生的圖片
 
 ### 🎯 圖片後製建議
 
 生成後可用簡單工具優化：
+
 - **去背景**：使用 remove.bg 等線上工具
 - **加入文字**：用 Canva、PowerPoint 加入標示
 - **調整尺寸**：裁切或縮放至適當大小
@@ -374,12 +424,14 @@ Use icons and simple labels for each period. Horizontal layout, clear and organi
 **情境**：為國小學生製作「認識蔬菜」學習單
 
 **步驟**：
+
 1. 用 AI 分別生成：高麗菜、紅蘿蔔、番茄、青椒等圖片
-2. 每張圖片風格統一(例如:全部用 cartoon style)
-3. 在 Word 中排版,加上名稱與填空欄位
+2. 每張圖片風格統一（例如：全部用 cartoon style）
+3. 在 Word 中排版，加上名稱與填空欄位
 4. 形成完整學習單
 
 **Prompt 範本**：
+
 ```
 A cute, simple illustration of [蔬菜名稱].
 Cartoon style, bright colors, white background, suitable for children's educational materials.
@@ -392,6 +444,7 @@ Cartoon style, bright colors, white background, suitable for children's educatio
 **情境**：製作「海洋保育」主題簡報
 
 **Prompt 範例**：
+
 ```
 A gentle, inspiring background image for ocean conservation presentation.
 Show clean ocean water, marine life silhouettes, and rays of sunlight from above.
@@ -405,6 +458,7 @@ Soft blue and green tones, peaceful mood, suitable as PowerPoint background.
 **情境**：製作校慶活動宣傳海報
 
 **Prompt 範例**：
+
 ```
 A cheerful, festive illustration for school anniversary celebration.
 Include balloons, confetti, students celebrating, school building in background.
@@ -416,37 +470,39 @@ Bright, energetic colors, positive mood, suitable for poster design.
 ## 練習任務
 
 ### 初階任務
-1. 生成一張適合您學科的「概念說明圖」
-2. 生成三張不同風格的「同一主題圖片」,比較差異
-3. 為您的下一份講義生成一張封面圖
+
+1. 生成一張適合你學科的「概念說明圖」
+2. 生成三張不同風格的「同一主題圖片」，比較差異
+3. 為你的下一份講義生成一張封面圖
 
 ### 進階任務
-1. 製作一套「視覺化單字卡」(5-10 張)
+
+1. 製作一套「視覺化單字卡」（5-10 張）
 2. 設計一份完整的「圖文並茂學習單」
-3. 生成一系列風格統一的「課程插圖包」(至少 5 張)
+3. 生成一系列風格統一的「課程插圖包」（至少 5 張）
 
 ---
 
 ## 常見問題 Q&A
 
 **Q1：為什麼生成的圖片跟我想的不一樣？**
-A1：嘗試更具體的描述,加入風格關鍵字,或提供參考範例的描述。
+A1：嘗試更具體的描述、加入風格關鍵字，或提供參考範例的描述。
 
 **Q2：圖片中的文字都是亂碼怎麼辦？**
-A2：這是目前 AI 的限制。建議生成圖片後,用其他工具加入文字標籤。
+A2：這是目前 AI 的限制。建議生成圖片後，用其他工具加入文字標籤。
 
 **Q3：可以生成真實人物的圖片嗎？**
-A3：AI 可生成「一般性的人物」,但不應生成可辨識的特定真人,也不建議生成學生肖像。
+A3：AI 可生成「一般性的人物」，但不應生成可辨識的特定真人，也不建議生成學生肖像。
 
 **Q4：生成的圖片可以商用嗎？**
-A4：需查看各 AI 工具的授權條款。教學用途通常可以,但商業用途需確認。
+A4：需查看各 AI 工具的授權條款。教學用途通常可以，但商業用途需確認。
 
 **Q5：圖片解析度不夠清晰？**
-A5：部分 AI 工具支援高解析度選項。或使用可信的放大工具提升解析度。
+A5：部分 AI 工具支援高解析度選項，也可以使用可信的放大工具提升解析度。
 
 **Q6：如何讓多張圖片風格一致？**
-A6：在每個提示詞中使用相同的風格關鍵字(例如都加上 "cartoon style, pastel colors")。
+A6：在每個提示詞中使用相同的風格關鍵字（例如都加上 "cartoon style, pastel colors"）。
 
 ---
 
-**小結**：AI 圖片生成能大幅提升教材的視覺吸引力。掌握提示詞技巧後,您將能快速產出符合需求的教學插圖,讓課堂更加生動有趣!
+**小結**：AI 圖片生成能大幅提升教材的視覺吸引力。掌握提示詞技巧後，你能快速產出符合需求的教學插圖，讓課堂更加生動有趣！

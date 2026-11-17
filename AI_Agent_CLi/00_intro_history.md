@@ -41,6 +41,7 @@
 | agy 主線化 | 2026-11-17 | Antigravity CLI 由附錄選讀改為主線路線 C：2.4 新增三款 CLI 對照與 agy 介紹；2.5 補 agy 系統條件；新增 3.4 agy 安裝登入（原 3.4、3.5 順延為 3.5、3.6）；5.2 補 agy 規則載入（本機 agy 1.5.10 實測）；7.1 斜線指令表加 agy 欄；修正 Homebrew cask 會停用 agy 自動更新（`brew info --cask antigravity-cli` 1.5.9）；新增延伸章 agy_cli.md。編修：Claude Opus 5.5（claude-opus-5-5），Claude Code |
 | agy 主線化（補齊） | 2026-11-17 | 2.1 工作台表加入 `agy`；2.3 擴充功能說明含 Antigravity；5.1 說明 Codex 與 `agy` 直接載入 AGENTS.md；排錯索引新增 5 列 agy 症狀；附錄 A.1 登入與診斷表加 agy 欄；A.2 盤點指令加 `agy`；A.4 Homebrew 加 `antigravity-cli`；A.5／A.6 補 agy；A.10 實作語言補本機 Go runtime 判讀；本檔新增 agy 補充盤點與驗證紀錄。編修：Claude Opus 5.5（claude-opus-5-5），Claude Code |
 | Agent 會話操作化 | 2026-11-17 | 全課程複審：安裝之後的操作改以 Agent 會話的自然語言與內建指令示範。0.3 改為「一個終端機＋四種輸入（自然語言、`/`、`@`、`!`）」；2.1 移除另開 shell 終端機；2.7 不再要求安裝 PowerShell 7、版本檢查改看 VS Code 介面；2.9 改為看懂工作資料夾與 Agent 會執行的指令；2.10 以 VS Code 開啟資料夾對話框建立專案；4.1 由 Agent 建立 inputs／outputs／scripts、README、.gitignore；4.2、4.4、5.3、5.5、8.1、10.11 的 Git 操作改為自然語言提示並搭配 `/diff`、`!`；7.1 新增 `/diff`、`!`、`@`、`/rewind`、`/review`、`/init` 三款對照；10.2–10.13 的 uv 操作交給 Agent；附錄 A.2、A.3、B.3 改為提示。同步調整 04a、05、06a、07 與 index.html。依據：Codex developer commands、Claude Code interactive mode／checkpointing、Antigravity CLI reference（2026-11-17）。編修：Claude Opus 5.5（claude-opus-5-5），Claude Code |
+| 易讀性改寫 | 2026-11-17 | 全課程版面與文字改寫：新增共用排版 `assets/course.css`（行高 1.85、段距、章節分隔線、表格內距、提示框樣式，每行約 45 字）；前導章、單元 01～06a、agy 延伸章與 07、09、10 頁長句拆短、步驟改編號清單、條件改條列，「您」統一為「你」；各單元開頭改為「開始之前」提示框；課程目錄新增「建議閱讀順序」五階段。標題結構、程式碼區塊與連結逐字保留；官方資料未重新查核，查核日期維持原值。編修：Claude Opus 5.5（claude-opus-5-5），Claude Code |
 
 ## 原 b05 歷史驗證紀錄與本次限制
 
