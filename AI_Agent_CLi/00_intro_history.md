@@ -4,7 +4,7 @@
 
 ## 教師電腦的歷史盤點
 
-以下是原稿查核日 2026-10-29 的教師筆電，保留為判讀案例，不代表讀者電腦或本次重新盤點。
+以下是原稿查核日 2026-10-29 的教師筆電，保留為判讀案例，不代表讀者電腦或本次重新盤點。2026-11-17 的 agy 補充盤點列在本節最後。
 
 | 工具 | 盤點結果 | 判讀與建議 |
 |---|---|---|
@@ -15,6 +15,16 @@
 | Node.js | nvm 22.20.0、`/usr/local` 官方安裝包 22.14.0、Homebrew `node` 24.x（未連結） | 三個來源並存，容易讓 `npm -g` 裝到非預期位置；保留一個管理方式即可 |
 
 同名指令出現多個版本時，先確認目前使用哪一份，再處理舊安裝，避免誤刪正在使用的版本。
+
+### 2026-11-17 agy 補充盤點
+
+同一台教師 macOS 筆電，為 agy 主線化重新盤點 Google 路線的工具。
+
+| 工具 | 盤點結果 | 判讀與建議 |
+|---|---|---|
+| Antigravity CLI 1.5.10 | 原生版 `~/.local/bin/agy`，Mach-O 64-bit arm64，約 225 MB；`strings` 可見 Go runtime 標記（`go1.x`） | 符合官方原生安裝，背景自動更新；不需 Node.js |
+| Antigravity CLI Homebrew cask | `brew info --cask antigravity-cli` 顯示 1.5.9，未安裝；需 macOS 12+；cask 會停用 `agy` 自動更新 | 已有原生版，不要再裝 cask |
+| Gemini CLI | `type -a gemini` 只找到 nvm Node 22.20.0 底下的一份；2026-10-29 盤點時 `/usr/local` 底下的另一份已不在 PATH | 依前導章附錄 B.3 確認 `agy` 可用後移除 |
 
 ## 版本記錄
 
@@ -29,6 +39,7 @@
 | 本次閱讀順序重整 | 2026-10-31 | 主線依概念、環境、專案、CLI、首次任務與會話管理排列；平台步驟前置，Node 與安裝細節、Google 遷移、歷史紀錄集中附錄；保留互動操作與斜線指令教學 |
 | 入門概念版重整 | 2026-10-31 | 受眾改為入門使用者；以 VS Code 工作台為主場；主線改為短版概念 → 工作台 → CLI → 第一個任務 → 專案規則 → 回看系統架構；Python 改為基礎評量後的延伸；排錯集中為索引；附錄 A 依查閱頻率排序；歷史紀錄移至本檔 |
 | agy 主線化 | 2026-11-17 | Antigravity CLI 由附錄選讀改為主線路線 C：2.4 新增三款 CLI 對照與 agy 介紹；2.5 補 agy 系統條件；新增 3.4 agy 安裝登入（原 3.4、3.5 順延為 3.5、3.6）；5.2 補 agy 規則載入（本機 agy 1.5.10 實測）；7.1 斜線指令表加 agy 欄；修正 Homebrew cask 會停用 agy 自動更新（`brew info --cask antigravity-cli` 1.5.9）；新增延伸章 agy_cli.md。編修：Claude Opus 5.5（claude-opus-5-5），Claude Code |
+| agy 主線化（補齊） | 2026-11-17 | 2.1 工作台表加入 `agy`；2.3 擴充功能說明含 Antigravity；5.1 說明 Codex 與 `agy` 直接載入 AGENTS.md；排錯索引新增 5 列 agy 症狀；附錄 A.1 登入與診斷表加 agy 欄；A.2 盤點指令加 `agy`；A.4 Homebrew 加 `antigravity-cli`；A.5／A.6 補 agy；A.10 實作語言補本機 Go runtime 判讀；本檔新增 agy 補充盤點與驗證紀錄。編修：Claude Opus 5.5（claude-opus-5-5），Claude Code |
 
 ## 原 b05 歷史驗證紀錄與本次限制
 
@@ -45,6 +56,20 @@
 - b03：Codex 四個安裝分頁的指令，取自 Codex CLI 官方頁的安裝元件原始碼（`CliInstallMethodSelector`），因為分頁內容由網頁前端動態顯示，一般擷取只看得到 macOS/Linux 分頁；`brew info --cask codex`、`brew info --cask claude-code` 確認 cask 安裝內容為原生執行檔（Binary）。
 - b02：第 5.8 節判讀範例取自教師 macOS 筆電實際盤點結果；未在 Windows 上執行盤點指令，PowerShell 區塊只做語法撰寫。
 - 未執行 Jev 外部 API 檢查；該選用檢查需另取得同意。
+
+## agy 主線化驗證紀錄（2026-11-17）
+
+> **紀錄時間**：2026-11-17 22:09（UTC+8）
+> **使用模型**：Claude Opus 5.5（模型代號 `claude-opus-5-5`）
+> **執行 Agent**：Claude Code
+
+- 官方文件：讀取 Antigravity CLI 入門、登入驗證、CLI 指令參考、Modes、Permissions、Settings、Sandbox、Rules、Customization discovery、Skills、At-mentions、VS Code extension、Troubleshooting、Gemini CLI migration 共 14 頁（網址列於 agy_cli.md 附錄 B）。官方未記載 `/init`、`/compact`、`/memory`、`/ide`、移除指令。
+- 本機指令：`agy --help`、`agy help install／mcp／plugin／models／agents`、`agy changelog`（1.5.5–1.5.9）。確認 1.5.7 起預設 Agent Mode 為 `auto`；1.5.9 修正 Windows PowerShell 下 `!` 指令列的引號處理。
+- Homebrew：`brew info --cask antigravity-cli` 顯示 1.5.9、需 macOS 12+，並註明「automatic updates are disabled so that Homebrew manages them」。據此修正前導章原本「cask 會自行更新」的敘述。
+- 規則載入實測：在 scratch 資料夾以 `agy -p "<問題>" --mode plan` 詢問，要求不讀檔。第一次只放 `AGENTS.md`，正確回答規則內容。第二次另加含 `trigger: always_on` 的 `.agents/rules/output.md`，以及由 `AGENTS.md` 以 `@[寫作風格](docs/style.md)` 引用的檔案，三份規則都正確回答。其中一次因 `--print-timeout 120s` 逾時中斷，改用 260s 重跑成功。
+- 執行檔判讀：`file` 顯示 Mach-O 64-bit arm64；`strings` 找到 `go1.x` 標記，判讀為 Go 編譯的原生程式。官方未公開實作語言，此為本機推斷。
+- 輸出驗證：以 `render_intro.py` 重新產生 00_intro.html，`check_intro.py` 結果為 PASS，216 個舊錨點全部保留。agy_cli.html 以同一頁面外框產生，檢查結果：無重複 id、無斷裂的頁內連結。
+- 未做事項：未在 Windows 實機安裝或執行 `agy`，PowerShell／CMD 指令依官方文件撰寫；未測試企業帳號、API 金鑰與 ADC 登入；未執行 Jev 外部 API 檢查。
 
 ## Jev 合規檢查紀錄（原稿歷史紀錄）
 

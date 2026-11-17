@@ -247,7 +247,7 @@ html{scroll-behavior:smooth}body{box-sizing:border-box}img{max-width:100%;height
 </tr>
 <tr>
 <td>Agent 終端機（下方）</td>
-<td>啟動 <code>codex</code> 或 <code>claude</code>，用自然語言交代任務</td>
+<td>啟動 <code>codex</code>、<code>claude</code> 或 <code>agy</code>，用自然語言交代任務</td>
 <td><code>Terminal → New Terminal</code></td>
 </tr>
 <tr>
@@ -265,7 +265,7 @@ html{scroll-behavior:smooth}body{box-sizing:border-box}img{max-width:100%;height
     D --&gt;|通過| E["提交版本"]
 </div>
 <p><strong>兩個終端機分開用。</strong>Agent 終端機啟動 CLI 後，輸入的文字都交給 AI；shell 終端機輸入的文字由作業系統執行。把 Git 指令貼進 Agent 會話，或把中文任務貼進 shell，都是常見的混淆。</p>
-<p>本課不需要安裝 Codex 或 Claude 的 VS Code 擴充功能，CLI 在整合終端機就能運作。新版 VS Code 已內建 Mermaid 預覽；若只看到圖表原始碼，先更新 VS Code。</p>
+<p>本課不需要安裝 Codex、Claude 或 Antigravity 的 VS Code 擴充功能，CLI 在整合終端機就能運作。新版 VS Code 已內建 Mermaid 預覽；若只看到圖表原始碼，先更新 VS Code。</p>
 <span aria-hidden="true" class="legacy-anchor" id="3"></span><h3 id="minimal-environment">2.2 選擇最小工作環境</h3>
 <p>先決定自己的平台與 CLI 路線，看必備工具與帳號條件；暫時不需要研究每種套件發行方式。</p>
 <span aria-hidden="true" class="legacy-anchor" id="31"></span><h3 id="tool-roles">2.3 每個工具負責什麼</h3>
@@ -848,7 +848,7 @@ git commit -m "加入摘要草稿"
 <p><strong>本章目的：</strong>上一章每次都要重複交代「標示來源」「不改來源檔」。把這些要求寫成規則，再用規則完成一份完整的複習資料。</p>
 <span aria-hidden="true" class="legacy-anchor" id="71"></span><h3 id="project-instructions">5.1 專案規則要能直接執行</h3>
 <p>「請做好一點」沒有說明怎麼判斷好壞。更可操作的規則是「每個重點標示來源段落；來源沒寫的內容列為待查」。</p>
-<p>在專案根目錄新增 <code>AGENTS.md</code>，貼入共用規則；下一節說明 Claude 路線如何載入它：</p>
+<p>在專案根目錄新增 <code>AGENTS.md</code>，貼入共用規則；Codex CLI 與 <code>agy</code> 會直接載入，Claude 路線的做法見下一節：</p>
 <pre><code class="language-markdown"># 學習助理專案指引
 
 ## 目標與語言
@@ -1841,6 +1841,31 @@ deactivate
 <td><code>claude doctor</code> 查安裝來源；依<a href="#update-uninstall">更新與移除表</a>更新並移除多餘的一份</td>
 </tr>
 <tr>
+<td>找不到 <code>agy</code></td>
+<td>新的 PATH 尚未載入</td>
+<td>完全關閉後重開 VS Code；仍找不到時用完整路徑執行 <code>agy install</code>（macOS：<code>~/.local/bin/agy install</code>）</td>
+</tr>
+<tr>
+<td><code>agy</code> 沒有詢問就修改檔案</td>
+<td>1.5.7 起在支援的個人帳號預設為 <code>auto</code> 模式</td>
+<td>會話內 <code>/config</code> 把 Agent Mode 改為 Default；用 <kbd>Shift</kbd>+<kbd>Tab</kbd> 確認目前模式</td>
+</tr>
+<tr>
+<td>在 <code>agy</code> 輸入 <code>/compact</code>、<code>/init</code>、<code>/status</code> 沒有反應</td>
+<td><code>agy</code> 沒有這些指令</td>
+<td>用 <code>/context</code>、<code>/clear</code>、狀態列替代；見<a href="agy_cli.html#agy-slash-commands">agy 延伸章</a></td>
+</tr>
+<tr>
+<td><code>agy</code> 顯示 <code>secret keyring is locked</code></td>
+<td>系統鑰匙圈被鎖定</td>
+<td>解鎖 macOS 鑰匙圈或 Windows 認證管理員後重新啟動 <code>agy</code></td>
+</tr>
+<tr>
+<td>Homebrew 版 <code>agy</code> 一直沒更新</td>
+<td>cask 停用 <code>agy</code> 的自動更新</td>
+<td>用 <code>brew upgrade --cask antigravity-cli</code>，不要用 <code>agy update</code></td>
+</tr>
+<tr>
 <td>更新後仍是舊版</td>
 <td>同一工具有兩種安裝來源</td>
 <td><code>type -a</code>／<code>Get-Command -All</code> 找出排在 PATH 前面的那份</td>
@@ -1962,13 +1987,14 @@ deactivate
 </tr>
 </tbody>
 </table>
-<p>登入狀態與診斷在 shell 終端機執行：</p>
+<p>登入狀態與診斷在 shell 終端機執行（<code>agy</code> 的登出在會話內輸入）：</p>
 <table>
 <thead>
 <tr>
 <th>檢查</th>
 <th>Codex CLI</th>
 <th>Claude Code</th>
+<th>Antigravity CLI（agy）</th>
 </tr>
 </thead>
 <tbody>
@@ -1976,16 +2002,19 @@ deactivate
 <td>登入狀態</td>
 <td><code>codex login status</code></td>
 <td><code>claude auth status --text</code></td>
+<td><code>agy models</code>（能列出模型代表已登入）；會話內 <code>/usage</code></td>
 </tr>
 <tr>
 <td>重新登入</td>
 <td><code>codex login</code></td>
 <td><code>claude auth login</code></td>
+<td>會話內 <code>/logout</code>，再執行 <code>agy</code> 重新登入</td>
 </tr>
 <tr>
 <td>安裝診斷</td>
 <td><code>codex doctor</code></td>
 <td><code>claude doctor</code></td>
+<td><code>agy --version</code>、<code>agy changelog</code>；PATH 問題用 <code>agy install</code>（無 <code>doctor</code> 子指令）</td>
 </tr>
 </tbody>
 </table>
@@ -2001,6 +2030,7 @@ deactivate
 <pre><code class="language-bash">for c in claude codex agy gemini node npm; do echo "== $c"; type -a "$c"; done
 realpath "$(command -v claude)"
 file "$(realpath "$(command -v codex)")"
+file "$(realpath "$(command -v agy)")"
 head -1 "$(realpath "$(command -v gemini)")"
 npm ls -g --depth=0
 </code></pre>
@@ -2166,6 +2196,7 @@ powershell -ExecutionPolicy Bypass -File $codexInstallerPath
 <p><strong>macOS Homebrew 替代：</strong>只選所需工具的一行。</p>
 <pre><code class="language-bash">brew install --cask claude-code
 brew install --cask codex
+brew install --cask antigravity-cli
 </code></pre>
 <table>
 <thead>
@@ -2186,9 +2217,14 @@ brew install --cask codex
 <td><code>brew upgrade --cask codex</code></td>
 <td>與 standalone 版不要並存</td>
 </tr>
+<tr>
+<td><code>antigravity-cli</code></td>
+<td><code>brew upgrade --cask antigravity-cli</code></td>
+<td>需 macOS 12+；cask 會停用 <code>agy</code> 自身的自動更新，不要用 <code>agy update</code>；與原生版不要並存</td>
+</tr>
 </tbody>
 </table>
-<p>Homebrew 升級後可用 <code>brew cleanup</code> 清除舊版。官方腳本與 Homebrew 不要各裝一份同一工具。來源：<a href="https://code.claude.com/docs/en/setup">Claude Setup</a>、<a href="https://learn.chatgpt.com/docs/codex/cli">Codex CLI</a>。</p>
+<p>Homebrew 升級後可用 <code>brew cleanup</code> 清除舊版。官方腳本與 Homebrew 不要各裝一份同一工具。來源：<a href="https://code.claude.com/docs/en/setup">Claude Setup</a>、<a href="https://learn.chatgpt.com/docs/codex/cli">Codex CLI</a>、<a href="https://formulae.brew.sh/cask/antigravity-cli">Antigravity CLI cask</a>。</p>
 <span aria-hidden="true" class="legacy-anchor" id="321"></span><h3 id="installation-methods">A.5 四種安裝方式比較</h3>
 <p><strong>基本資料（2026-10-31 查核官方安裝文件）：</strong></p>
 <table>
@@ -2255,7 +2291,7 @@ brew install --cask codex
 <tr>
 <td>Homebrew</td>
 <td>一個工具統一安裝、更新、移除多套軟體；不需 Node.js；由 Homebrew 驗證下載檔</td>
-<td>要先裝 Homebrew，並依 cask 的支援平台選用；Claude Code cask 不會自動更新，<code>claude-code</code> 跟隨 stable 頻道，約晚一週；和官方腳本各裝一份時容易混淆</td>
+<td>要先裝 Homebrew，並依 cask 的支援平台選用；Claude Code cask 不會自動更新，<code>claude-code</code> 跟隨 stable 頻道，約晚一週；<code>antigravity-cli</code> cask 會停用 <code>agy</code> 自身的自動更新；和官方腳本各裝一份時容易混淆</td>
 </tr>
 <tr>
 <td>WinGet</td>
@@ -2283,7 +2319,7 @@ brew install --cask codex
 <tr>
 <td>學生、初學者（本課主線）</td>
 <td><strong>官方安裝腳本</strong></td>
-<td>不需 Node；Codex 與 Claude 的安裝步驟短，但更新方式不同</td>
+<td>不需 Node；Claude Code、Codex、agy 的安裝步驟都短，但更新方式不同</td>
 </tr>
 <tr>
 <td>macOS 且平常就用 Homebrew 管理軟體</td>
@@ -2587,9 +2623,9 @@ brew install --cask codex
 </tr>
 <tr>
 <td>Antigravity CLI</td>
-<td>官方稱「native build」，未公開實作語言</td>
+<td>官方稱「native build」，未公開實作語言；本機 1.5.10 執行檔為 Mach-O arm64，內含 Go runtime 標記（<code>go1.x</code>），推斷為 Go 編譯的原生程式</td>
 <td>否</td>
-<td>官方路線未列 Node 需求</td>
+<td>官方路線未列 Node 需求，也沒有 npm 版</td>
 </tr>
 </tbody>
 </table>

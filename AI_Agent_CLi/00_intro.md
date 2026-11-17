@@ -107,7 +107,7 @@ Agent CLI 是你操作整套系統的入口，通常整合或連接模型、cont
 | 檔案總管（左側） | 建立、移動、開啟專案檔案 | `File → Open Folder` 開啟專案 |
 | 編輯區（中央） | 閱讀與修改檔案，預覽 Markdown | 點選檔案；預覽按 `Ctrl+Shift+V`（macOS：`Cmd+Shift+V`） |
 | Source Control（左側） | 查看 Agent 改了什麼、暫存與提交 | 活動列的分支圖示，或 `Ctrl+Shift+G` |
-| Agent 終端機（下方） | 啟動 `codex` 或 `claude`，用自然語言交代任務 | `Terminal → New Terminal` |
+| Agent 終端機（下方） | 啟動 `codex`、`claude` 或 `agy`，用自然語言交代任務 | `Terminal → New Terminal` |
 | Shell 終端機（下方） | 執行安裝、Git、uv 等指令 | 終端機面板右上角的 `+` |
 
 ```mermaid
@@ -121,7 +121,7 @@ flowchart LR
 
 **兩個終端機分開用。**Agent 終端機啟動 CLI 後，輸入的文字都交給 AI；shell 終端機輸入的文字由作業系統執行。把 Git 指令貼進 Agent 會話，或把中文任務貼進 shell，都是常見的混淆。
 
-本課不需要安裝 Codex 或 Claude 的 VS Code 擴充功能，CLI 在整合終端機就能運作。新版 VS Code 已內建 Mermaid 預覽；若只看到圖表原始碼，先更新 VS Code。
+本課不需要安裝 Codex、Claude 或 Antigravity 的 VS Code 擴充功能，CLI 在整合終端機就能運作。新版 VS Code 已內建 Mermaid 預覽；若只看到圖表原始碼，先更新 VS Code。
 
 ### 2.2 選擇最小工作環境 {#minimal-environment}
 
@@ -653,7 +653,7 @@ flowchart LR
 
 「請做好一點」沒有說明怎麼判斷好壞。更可操作的規則是「每個重點標示來源段落；來源沒寫的內容列為待查」。
 
-在專案根目錄新增 `AGENTS.md`，貼入共用規則；下一節說明 Claude 路線如何載入它：
+在專案根目錄新增 `AGENTS.md`，貼入共用規則；Codex CLI 與 `agy` 會直接載入，Claude 路線的做法見下一節：
 
 ```markdown
 # 學習助理專案指引
@@ -1421,6 +1421,11 @@ flowchart TD
 | 安裝原生 CLI 後仍要求 Node | 正在執行 npm 入口、外掛或專案工具 | 看錯誤中的實際指令；分清 CLI 與任務依賴 |
 | 移除或切換 Node 後 `codex` 無法啟動 | 裝的是 npm 版，`codex` 由 Node 啟動 | 改用 standalone 安裝，再移除 npm 版 |
 | `claude --version` 版本一直沒變 | 用 WinGet／Homebrew 安裝（不自動更新），或 npm 與原生版並存 | `claude doctor` 查安裝來源；依[更新與移除表](#update-uninstall)更新並移除多餘的一份 |
+| 找不到 `agy` | 新的 PATH 尚未載入 | 完全關閉後重開 VS Code；仍找不到時用完整路徑執行 `agy install`（macOS：`~/.local/bin/agy install`） |
+| `agy` 沒有詢問就修改檔案 | 1.5.7 起在支援的個人帳號預設為 `auto` 模式 | 會話內 `/config` 把 Agent Mode 改為 Default；用 <kbd>Shift</kbd>+<kbd>Tab</kbd> 確認目前模式 |
+| 在 `agy` 輸入 `/compact`、`/init`、`/status` 沒有反應 | `agy` 沒有這些指令 | 用 `/context`、`/clear`、狀態列替代；見[agy 延伸章](agy_cli.html#agy-slash-commands) |
+| `agy` 顯示 `secret keyring is locked` | 系統鑰匙圈被鎖定 | 解鎖 macOS 鑰匙圈或 Windows 認證管理員後重新啟動 `agy` |
+| Homebrew 版 `agy` 一直沒更新 | cask 停用 `agy` 的自動更新 | 用 `brew upgrade --cask antigravity-cli`，不要用 `agy update` |
 | 更新後仍是舊版 | 同一工具有兩種安裝來源 | `type -a`／`Get-Command -All` 找出排在 PATH 前面的那份 |
 | 貼上安裝指令出現 `'&&' is not a valid statement separator` | 把含 `&&` 的 CMD 指令貼到 Windows PowerShell 5.1 | 改用 PowerShell 版指令 |
 | 仍在使用 `gemini` 指令 | 個人方案的 Gemini CLI 服務已轉移至 Antigravity CLI；企業授權與付費 API 金鑰不在此限 | 依[Google 遷移步驟](#gemini-migration)遷移到 `agy`，確認可用後移除 `gemini` |
@@ -1454,13 +1459,13 @@ flowchart TD
 | Antigravity CLI 原生版 | 執行時背景自動更新；手動 `agy update` | 刪除 `agy` 執行檔（位置見 [3.4](#install-agy)） |
 | Antigravity CLI Homebrew | Homebrew 版停用 `agy` 自動更新，用 `brew upgrade --cask antigravity-cli`，不要用 `agy update` | `brew uninstall --cask antigravity-cli` |
 
-登入狀態與診斷在 shell 終端機執行：
+登入狀態與診斷在 shell 終端機執行（`agy` 的登出在會話內輸入）：
 
-| 檢查 | Codex CLI | Claude Code |
-|---|---|---|
-| 登入狀態 | `codex login status` | `claude auth status --text` |
-| 重新登入 | `codex login` | `claude auth login` |
-| 安裝診斷 | `codex doctor` | `claude doctor` |
+| 檢查 | Codex CLI | Claude Code | Antigravity CLI（agy） |
+|---|---|---|---|
+| 登入狀態 | `codex login status` | `claude auth status --text` | `agy models`（能列出模型代表已登入）；會話內 `/usage` |
+| 重新登入 | `codex login` | `claude auth login` | 會話內 `/logout`，再執行 `agy` 重新登入 |
+| 安裝診斷 | `codex doctor` | `claude doctor` | `agy --version`、`agy changelog`；PATH 問題用 `agy install`（無 `doctor` 子指令） |
 
 Windows 上 npm 指令請用 `npm.cmd`。不要對同一個工具用兩種來源各裝一份；兩份並存時，執行的是 PATH 中排在前面的那份，另一份會停在舊版。
 
@@ -1478,6 +1483,7 @@ macOS：
 for c in claude codex agy gemini node npm; do echo "== $c"; type -a "$c"; done
 realpath "$(command -v claude)"
 file "$(realpath "$(command -v codex)")"
+file "$(realpath "$(command -v agy)")"
 head -1 "$(realpath "$(command -v gemini)")"
 npm ls -g --depth=0
 ```
@@ -1572,14 +1578,16 @@ powershell -ExecutionPolicy Bypass -File $codexInstallerPath
 ```bash
 brew install --cask claude-code
 brew install --cask codex
+brew install --cask antigravity-cli
 ```
 
 | cask | 更新方式 | 注意 |
 |---|---|---|
 | `claude-code` | `brew upgrade claude-code` | stable 頻道，約晚一週；若選 `claude-code@latest`，安裝與更新均使用該名稱；預設不自動更新 |
 | `codex` | `brew upgrade --cask codex` | 與 standalone 版不要並存 |
+| `antigravity-cli` | `brew upgrade --cask antigravity-cli` | 需 macOS 12+；cask 會停用 `agy` 自身的自動更新，不要用 `agy update`；與原生版不要並存 |
 
-Homebrew 升級後可用 `brew cleanup` 清除舊版。官方腳本與 Homebrew 不要各裝一份同一工具。來源：[Claude Setup](https://code.claude.com/docs/en/setup)、[Codex CLI](https://learn.chatgpt.com/docs/codex/cli)。
+Homebrew 升級後可用 `brew cleanup` 清除舊版。官方腳本與 Homebrew 不要各裝一份同一工具。來源：[Claude Setup](https://code.claude.com/docs/en/setup)、[Codex CLI](https://learn.chatgpt.com/docs/codex/cli)、[Antigravity CLI cask](https://formulae.brew.sh/cask/antigravity-cli)。
 
 ### A.5 四種安裝方式比較 {#installation-methods}
 
@@ -1597,7 +1605,7 @@ Homebrew 升級後可用 `brew cleanup` 清除舊版。官方腳本與 Homebrew 
 | 安裝方式 | 優點 | 缺點 |
 |---|---|---|
 | 官方安裝腳本 | 本課採用原生安裝；不需 Node.js、不需系統管理員權限；Claude Code 與 agy 會自動更新；三款 CLI 在三種作業系統都能用 | 要執行從網路下載的腳本（`irm ... \| iex`、`curl ... \| sh`），學校電腦可能被資安政策或 PowerShell 執行原則擋下；三款 CLI 的更新方式不一致 |
-| Homebrew | 一個工具統一安裝、更新、移除多套軟體；不需 Node.js；由 Homebrew 驗證下載檔 | 要先裝 Homebrew，並依 cask 的支援平台選用；Claude Code cask 不會自動更新，`claude-code` 跟隨 stable 頻道，約晚一週；和官方腳本各裝一份時容易混淆 |
+| Homebrew | 一個工具統一安裝、更新、移除多套軟體；不需 Node.js；由 Homebrew 驗證下載檔 | 要先裝 Homebrew，並依 cask 的支援平台選用；Claude Code cask 不會自動更新，`claude-code` 跟隨 stable 頻道，約晚一週；`antigravity-cli` cask 會停用 `agy` 自身的自動更新；和官方腳本各裝一份時容易混淆 |
 | WinGet | Windows 10／11 內建；學校 IT 可統一派送；不需 Node.js | 官方文件只列 Claude Code；不會自動更新；Claude Code 執行中升級可能因檔案被鎖住而失敗 |
 | npm | 已有 Node 開發環境的人熟悉；各平台指令相同；可用 `@版本號` 固定版本 | 必須先裝 Node.js；Codex 的 npm 版每次執行都要 Node，換 Node 版本或用 nvm 切換後指令可能消失；全域安裝常遇到權限問題（不可用 `sudo npm`）；Windows 可能卡在 `npm.ps1` 執行原則；官方可用的替代方式，依實際需求選用 |
 
@@ -1607,7 +1615,7 @@ Homebrew 升級後可用 `brew cleanup` 清除舊版。官方腳本與 Homebrew 
 
 | 使用者情境 | 建議的安裝方式 | 理由 |
 |---|---|---|
-| 學生、初學者（本課主線） | **官方安裝腳本** | 不需 Node；Codex 與 Claude 的安裝步驟短，但更新方式不同 |
+| 學生、初學者（本課主線） | **官方安裝腳本** | 不需 Node；Claude Code、Codex、agy 的安裝步驟都短，但更新方式不同 |
 | macOS 且平常就用 Homebrew 管理軟體 | Homebrew cask | 統一管理；記得定期 `brew upgrade` |
 | 學校 IT 統一派送的 Windows 電腦 | Claude Code 用 WinGet；Codex 用官方部署文件的固定版本安裝腳本（見附錄 A.4）；agy 用官方腳本 | 可控制版本並集中管理 |
 | 已有 Node 開發環境的進階使用者 | 仍建議官方安裝腳本；npm 只在需要固定版本時使用 | 避免 Codex 綁定 Node、避免與原生版重複安裝 |
@@ -1724,7 +1732,7 @@ file "$(realpath "$(command -v codex)")"
 |---|---|---|---|
 | Codex CLI | Rust 編譯的原生程式（官方 repo 的 `codex-rs`；執行檔內含 `rustc` 編譯資訊） | 否 | 改用 npm 版時，`codex.js` 啟動腳本要靠 Node 執行 |
 | Claude Code | 不是 Rust；是把 JavaScript 與 Bun runtime 打包成單一執行檔（執行檔內含 `Bun v1.x` 標記） | 否；runtime 已內建，不呼叫系統 Node | npm 只用來下載；安裝時要求 Node 22+ |
-| Antigravity CLI | 官方稱「native build」，未公開實作語言 | 否 | 官方路線未列 Node 需求 |
+| Antigravity CLI | 官方稱「native build」，未公開實作語言；本機 1.5.10 執行檔為 Mach-O arm64，內含 Go runtime 標記（`go1.x`），推斷為 Go 編譯的原生程式 | 否 | 官方路線未列 Node 需求，也沒有 npm 版 |
 
 所以「Rust 寫的 → 不用 Node」只說對一半：
 
