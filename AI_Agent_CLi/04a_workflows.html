@@ -78,15 +78,15 @@
 html{scroll-behavior:smooth}body{box-sizing:border-box}img{max-width:100%;height:auto}pre{max-width:100%;overflow-x:auto}table{display:block;max-width:100%;overflow-x:auto}td,th{min-width:7em}.course-nav{display:flex;flex-wrap:wrap;gap:.65em;align-items:center;padding:1em 0;margin:1em 0;border-bottom:1px solid #3e3e3e;font-size:.95rem}.course-nav a{color:#66b3ff}.course-nav span{color:#aaa}.course-toc{margin:1.5em 0;padding:1em;background:#222831;border-radius:8px}.course-toc a{overflow-wrap:anywhere}h1,h2,h3,p,li{overflow-wrap:break-word}.mermaid svg{max-width:100%;height:auto}@media(max-width:600px){body{padding:14px!important}h1{font-size:1.65em}pre code{padding:1em}.course-nav{line-height:1.8}}
 </style></head>
 <body><nav aria-label="課程導覽" class="course-nav"><a href="index.html">課程目錄</a><a href="04_workspace.html">← 上一章</a><a href="05_instructions.html">下一章 →</a><a href="04a_workflows.md">Markdown 原文</a><span>雙 CLI 教材 · 2026-10-31</span></nav>
-<div class="container"><!-- Path: AI_Agent_CLi | Updated: 2026-10-31 | Edition: Codex CLI / Claude Code -->
+<div class="container"><!-- Path: AI_Agent_CLi | Updated: 2026-11-17 | Edition: Codex CLI / Claude Code / agy -->
 <h1 id="_1">單元四補充內容：進階章節</h1><details class="course-toc"><summary>本頁章節</summary><ul><li><a href="#cli-vscode">CLI + VSCode 整合的五大優勢</a></li><li><a href="#markdown">Markdown 格式輸出的優勢與應用</a></li><li><a href="#mermaid-vs-plantuml">Mermaid vs PlantUML：差異與選擇</a></li><li><a href="#_8">完整實戰案例：從大綱到完整教材設計</a></li><li><a href="#_18">實用對話提示總結</a></li></ul></details>
 <blockquote>
-<p><strong>閱讀前提：</strong>先完成<a href="00_intro.html">前導章：Agent 基本概念與工作環境</a>，使用 Codex CLI 或 Claude Code 其中一款。本章以備課作為範例情境；不是教師也能把主題換成自己的工作或學習內容。範例請使用虛構或去識別化資料，結果都要回到來源與實際檔案確認。（查核日期：2026-10-31）</p>
+<p><strong>閱讀前提：</strong>先完成<a href="00_intro.html">前導章：Agent 基本概念與工作環境</a>，使用 Codex CLI、Claude Code 或 Antigravity CLI（<code>agy</code>）其中一款。本章以備課作為範例情境；不是教師也能把主題換成自己的工作或學習內容。範例請使用虛構或去識別化資料，結果都要回到來源與實際檔案確認。（查核日期：2026-10-31）</p>
 </blockquote>
 <p><strong>銜接</strong>：搭配<a href="04_workspace.html">單元四</a>閱讀，練習多檔案、Markdown 與流程圖。</p>
 <hr/>
 <h3 id="cli">雙 CLI 操作約定</h3>
-<p>先在專案資料夾的終端機輸入 <code>codex</code> 或 <code>claude</code>，啟動其中一款工具。進入 CLI 會話後，直接輸入本章的自然語言提示；同一任務逐輪追問，不必每次重新啟動工具。</p>
+<p>先在專案資料夾的終端機輸入 <code>codex</code>、<code>claude</code> 或 <code>agy</code>，啟動其中一款工具。進入 CLI 會話後，直接輸入本章的自然語言提示；同一任務逐輪追問，不必每次重新啟動工具。</p>
 <table>
 <thead>
 <tr>
@@ -98,8 +98,8 @@ html{scroll-behavior:smooth}body{box-sizing:border-box}img{max-width:100%;height
 <tbody>
 <tr>
 <td>終端機 shell</td>
-<td>啟動一次 CLI，兩款擇一</td>
-<td><code>codex</code> 或 <code>claude</code></td>
+<td>啟動一次 CLI，三款擇一</td>
+<td><code>codex</code>、<code>claude</code> 或 <code>agy</code></td>
 </tr>
 <tr>
 <td>CLI 會話輸入區</td>
@@ -113,8 +113,8 @@ html{scroll-behavior:smooth}body{box-sizing:border-box}img{max-width:100%;height
 </tr>
 </tbody>
 </table>
-<p><strong>專案指引檔</strong>：Codex 使用 <code>AGENTS.md</code>，Claude Code 使用 <code>CLAUDE.md</code>。這些是保存專案慣例的檔案；設定方式及相容條件見<a href="05_instructions.html">單元五</a>。</p>
-<p>需要切換模型、查看用量或管理 context 時，使用 CLI 介面；兩款工具的常用斜線指令與差異見<a href="00_intro.html">前導章</a>。寫檔前說清楚路徑與是否保留原稿，完成後在 VS Code 開啟產物核對。自然語言的「不要修改」是任務要求，不能取代權限設定。</p>
+<p><strong>專案指引檔</strong>：Codex 與 agy 使用 <code>AGENTS.md</code>（agy 也讀 <code>GEMINI.md</code>），Claude Code 使用 <code>CLAUDE.md</code>。這些是保存專案慣例的檔案；設定方式及相容條件見<a href="05_instructions.html">單元五</a>。</p>
+<p>需要切換模型、查看用量或管理 context 時，使用 CLI 介面；三款工具的常用斜線指令與差異見<a href="00_intro.html">前導章</a>。寫檔前說清楚路徑與是否保留原稿，完成後在 VS Code 開啟產物核對。自然語言的「不要修改」是任務要求，不能取代權限設定。</p>
 <h2 id="cli-vscode">CLI + VSCode 整合的五大優勢</h2>
 <h3 id="_2">優勢一：一站式工作環境</h3>
 <p><strong>傳統方式</strong>：<br/>
@@ -130,7 +130,7 @@ html{scroll-behavior:smooth}body{box-sizing:border-box}img{max-width:100%;height
 <p><strong>效益</strong>：工作可減少視窗切換；效益需以自己的任務時間紀錄評估</p>
 <hr/>
 <h3 id="notebooklm">優勢二：批次處理多檔案（類似 NotebookLM）</h3>
-<p><strong>核心能力</strong>：Codex CLI／Claude Code 可依指定路徑逐步讀檔並整合分析；先列出讀取清單，不能假定所有檔案都已進入 context</p>
+<p><strong>核心能力</strong>：Codex CLI／Claude Code／agy 可依指定路徑逐步讀檔並整合分析；先列出讀取清單，不能假定所有檔案都已進入 context</p>
 <p><strong>情境範例</strong>：整週教案統整</p>
 <p><strong>資料夾結構</strong>：</p>
 <pre><code>week5_lessons/
@@ -152,7 +152,7 @@ html{scroll-behavior:smooth}body{box-sizing:border-box}img{max-width:100%;height
 <tr>
 <th>比較項目</th>
 <th>NotebookLM</th>
-<th>Codex CLI／Claude Code + VSCode</th>
+<th>Codex CLI／Claude Code／agy + VSCode</th>
 </tr>
 </thead>
 <tbody>
@@ -465,7 +465,7 @@ class 教師 {
 <hr/>
 <h3 id="_10">階段一：生成教學大綱</h3>
 <p><strong>檔案準備</strong>：<br/>
-在 VS Code 建立並開啟 <code>llm_course/</code>，終端機也切換至此資料夾，再用 <code>codex</code> 或 <code>claude</code> 啟動一次。以下六個階段在同一會話逐步進行，所有檔案採同一層目錄。每階段完成後先開啟產物核對，再送出下一個提示；不要假定對話中顯示的文字已經寫入檔案。</p>
+在 VS Code 建立並開啟 <code>llm_course/</code>，終端機也切換至此資料夾，再用 <code>codex</code>、<code>claude</code> 或 <code>agy</code> 啟動一次。以下六個階段在同一會話逐步進行，所有檔案採同一層目錄。每階段完成後先開啟產物核對，再送出下一個提示；不要假定對話中顯示的文字已經寫入檔案。</p>
 <p><strong>在 CLI 會話輸入</strong>：</p>
 <pre><code class="language-text">我要為高中生設計『大型語言模型入門』課程，共 4 週。
 

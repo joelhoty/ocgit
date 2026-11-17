@@ -1,12 +1,12 @@
-<!-- Path: AI_Agent_CLi | Updated: 2026-10-31 | Edition: Codex CLI / Claude Code -->
+<!-- Path: AI_Agent_CLi | Updated: 2026-11-17 | Edition: Codex CLI / Claude Code / agy -->
 # 單元六補充教材：實戰演練 - AI 幫我讀檔案、寫教案
 
-> **閱讀前提：**先完成[前導章：Agent 基本概念與工作環境](00_intro.html)，使用 Codex CLI 或 Claude Code 其中一款。本章以備課作為範例情境；不是教師也能把主題換成自己的工作或學習內容。範例請使用虛構或去識別化資料，結果都要回到來源與實際檔案確認。（查核日期：2026-10-31）
+> **閱讀前提：**先完成[前導章：Agent 基本概念與工作環境](00_intro.html)，使用 Codex CLI、Claude Code 或 Antigravity CLI（`agy`）其中一款。本章以備課作為範例情境；不是教師也能把主題換成自己的工作或學習內容。範例請使用虛構或去識別化資料，結果都要回到來源與實際檔案確認。（查核日期：2026-10-31）
 
 
 ### 雙 CLI 操作約定
 
-在專案資料夾開啟終端機，輸入 `codex` 或 `claude` 任選一款，啟動一次互動會話。接著把本章的「對話提示」貼入 CLI 的對話輸入區；每輪檢查回覆，再在同一會話追問，不需反覆回到終端機重啟工具。本章提示為了閱讀方便都寫得較簡短，實際使用時請補上來源、輸出位置與驗收條件。
+在專案資料夾開啟終端機，輸入 `codex`、`claude` 或 `agy` 任選一款，啟動一次互動會話。接著把本章的「對話提示」貼入 CLI 的對話輸入區；每輪檢查回覆，再在同一會話追問，不需反覆回到終端機重啟工具。本章提示為了閱讀方便都寫得較簡短，實際使用時請補上來源、輸出位置與驗收條件。
 
 ```text
 請先閱讀 lesson.txt，列出三個教學重點及來源段落。
@@ -16,7 +16,7 @@
 
 **會話管理**：長任務也在 CLI 中進行。模型選擇、用量、context 整理與會話續接的常用指令，見[前導章的 CLI 互動操作與指令速查](00_intro.html)。切換主題或壓縮 context 前，先將已確認的目標、檔案與待辦保存，續接後核對摘要。
 
-**專案指引檔**：Codex 使用 `AGENTS.md`；Claude Code 使用 `CLAUDE.md`。它們是專案內的文字檔，不是需要輸入的操作指令。作用範圍、相容條件與驗證方式見[單元五](05_instructions.html)。
+**專案指引檔**：Codex 與 agy 使用 `AGENTS.md`（agy 也讀 `GEMINI.md`）；Claude Code 使用 `CLAUDE.md`。它們是專案內的文字檔，不是需要輸入的操作指令。作用範圍、相容條件與驗證方式見[單元五](05_instructions.html)。
 
 
 ## 單元目標
@@ -104,7 +104,7 @@ plant_reproduction/
 
 ### 步驟二：設定 AGENTS.md／CLAUDE.md
 
-以下範例存成 `AGENTS.md`，作為共用規則。走 Claude Code 路線時不要改檔名，而是另建 `CLAUDE.md`，內容寫入 `@AGENTS.md` 匯入共用規則。
+以下範例存成 `AGENTS.md`，作為共用規則；Codex 與 agy 會直接載入。走 Claude Code 路線時不要改檔名，而是另建 `CLAUDE.md`，內容寫入 `@AGENTS.md` 匯入共用規則。
 
 **範例內容**：存成 `AGENTS.md`。指引作用範圍與驗證方法見[單元五](05_instructions.html)。
 ```markdown
@@ -194,7 +194,7 @@ plant_reproduction/
 - 引起動機要吸引人
 - 評量方式多元(不只紙筆測驗)
 
-請遵循本專案已載入的指引格式（Codex 為 AGENTS.md；Claude 路線為 CLAUDE.md）。
+請遵循本專案已載入的指引格式（Codex 與 agy 為 AGENTS.md；Claude 路線為 CLAUDE.md）。
 ```
 
 ---
@@ -737,6 +737,6 @@ graph TD
 
 ## 完整案例的交付與驗收
 
-**輸入**：`textbook.txt`、`reference.txt`、專案指引；來源須有使用權，學生資料以虛構內容替代。**操作**：在同一個 `codex` 或 `claude` 會話完成步驟四至七；中途離開就把已確認的結果寫入 `outputs/lesson_plan.md`，下次明確要求重新讀取。
+**輸入**：`textbook.txt`、`reference.txt`、專案指引；來源須有使用權，學生資料以虛構內容替代。**操作**：在同一個 `codex`、`claude` 或 `agy` 會話完成步驟四至七；中途離開就把已確認的結果寫入 `outputs/lesson_plan.md`，下次明確要求重新讀取。
 
 **產物**：`outputs/lesson_plan.md`、`outputs/worksheet.md`、`outputs/review_notes.md`。教師確認時數加總、活動材料、題目答案、來源段落、三個差異化層級；將需人工判定的學生特性留給教師。未核對前標示「草稿」。

@@ -78,10 +78,10 @@
 html{scroll-behavior:smooth}body{box-sizing:border-box}img{max-width:100%;height:auto}pre{max-width:100%;overflow-x:auto}table{display:block;max-width:100%;overflow-x:auto}td,th{min-width:7em}.course-nav{display:flex;flex-wrap:wrap;gap:.65em;align-items:center;padding:1em 0;margin:1em 0;border-bottom:1px solid #3e3e3e;font-size:.95rem}.course-nav a{color:#66b3ff}.course-nav span{color:#aaa}.course-toc{margin:1.5em 0;padding:1em;background:#222831;border-radius:8px}.course-toc a{overflow-wrap:anywhere}h1,h2,h3,p,li{overflow-wrap:break-word}.mermaid svg{max-width:100%;height:auto}@media(max-width:600px){body{padding:14px!important}h1{font-size:1.65em}pre code{padding:1em}.course-nav{line-height:1.8}}
 </style></head>
 <body><nav aria-label="課程導覽" class="course-nav"><a href="index.html">課程目錄</a><a href="02_images.html">← 上一章</a><a href="04_workspace.html">下一章 →</a><a href="03_notebooklm.md">Markdown 原文</a><span>雙 CLI 教材 · 2026-10-31</span></nav>
-<div class="container"><!-- Path: AI_Agent_CLi | Updated: 2026-10-31 | Edition: Codex CLI / Claude Code -->
-<h1 id="-notebooklm">單元三補充教材：打造您的專屬知識庫 - 備課神器 NotebookLM</h1><details class="course-toc"><summary>本頁章節</summary><ul><li><a href="#_1">單元目標</a></li><li><a href="#_2">核心概念詳解</a></li><li><a href="#_3">詳細操作步驟</a></li><li><a href="#_6">跨學科應用範例</a></li><li><a href="#_13">進階技巧</a></li><li><a href="#_22">實用技巧與注意事項</a></li><li><a href="#_25">延伸應用</a></li><li><a href="#_26">練習任務</a></li><li><a href="#qa">常見問題 Q&amp;A</a></li><li><a href="#codex-cliclaude-code">與 Codex CLI／Claude Code 接續的實作</a></li></ul></details>
+<div class="container"><!-- Path: AI_Agent_CLi | Updated: 2026-11-17 | Edition: Codex CLI / Claude Code / agy -->
+<h1 id="-notebooklm">單元三補充教材：打造您的專屬知識庫 - 備課神器 NotebookLM</h1><details class="course-toc"><summary>本頁章節</summary><ul><li><a href="#_1">單元目標</a></li><li><a href="#_2">核心概念詳解</a></li><li><a href="#_3">詳細操作步驟</a></li><li><a href="#_6">跨學科應用範例</a></li><li><a href="#_13">進階技巧</a></li><li><a href="#_22">實用技巧與注意事項</a></li><li><a href="#_25">延伸應用</a></li><li><a href="#_26">練習任務</a></li><li><a href="#qa">常見問題 Q&amp;A</a></li><li><a href="#codex-cliclaude-codeagy">與 Codex CLI／Claude Code／agy 接續的實作</a></li></ul></details>
 <blockquote>
-<p><strong>閱讀前提：</strong>先完成<a href="00_intro.html">前導章：Agent 基本概念與工作環境</a>，使用 Codex CLI 或 Claude Code 其中一款。本章以備課作為範例情境；不是教師也能把主題換成自己的工作或學習內容。範例請使用虛構或去識別化資料，結果都要回到來源與實際檔案確認。（查核日期：2026-10-31）</p>
+<p><strong>閱讀前提：</strong>先完成<a href="00_intro.html">前導章：Agent 基本概念與工作環境</a>，使用 Codex CLI、Claude Code 或 Antigravity CLI（<code>agy</code>）其中一款。本章以備課作為範例情境；不是教師也能把主題換成自己的工作或學習內容。範例請使用虛構或去識別化資料，結果都要回到來源與實際檔案確認。（查核日期：2026-10-31）</p>
 <p><strong>名稱提醒</strong>：Google 已正式將 NotebookLM 更名為 <strong>Gemini Notebook</strong>（<a href="https://blog.google/innovation-and-ai/products/gemini-notebook/notebooklm-gemini-notebook/">官方公告</a>）。本課程為了延續性仍稱 NotebookLM，實際介面以登入後顯示為準。<a href="https://support.google.com/gemininotebook/answer/16164461">官方介紹</a>。</p>
 </blockquote>
 <h2 id="_1">單元目標</h2>
@@ -784,9 +784,9 @@ A5：建議當作「初稿」,教師仍需檢查難度、正確性,並根據班�
 A6：可以。筆記本可用電子郵件分享給指定對象，並設為檢視者或編輯者；帳號權限允許時也可用公開連結分享。Workspace Enterprise／Education 帳號可能受管理員限制。<a href="https://support.google.com/notebooklm/answer/16322204?hl=en">官方說明</a>。</p>
 <hr/>
 <p><strong>小結</strong>：NotebookLM 將「有憑有據」帶入 AI 教學應用,讓您的備課更高效、精準。透過建立專屬知識庫,AI 真正成為懂您教材的智慧助教！</p>
-<h2 id="codex-cliclaude-code">與 Codex CLI／Claude Code 接續的實作</h2>
+<span aria-hidden="true" class="legacy-anchor" id="codex-cliclaude-code"></span><h2 id="codex-cliclaude-codeagy">與 Codex CLI／Claude Code／agy 接續的實作</h2>
 <p><strong>輸入</strong>：您有權使用的來源、人工核對過的三段重點與頁碼。來源若是 Word，依介面支援情況轉 PDF 或貼入文字，核對轉換後內容。</p>
-<p><strong>操作</strong>：先在 NotebookLM 點開引用核對，將摘錄、來源名稱和頁碼存入專案 <code>source_notes.md</code>；再開啟 <code>codex</code> 或 <code>claude</code>，輸入：</p>
+<p><strong>操作</strong>：先在 NotebookLM 點開引用核對，將摘錄、來源名稱和頁碼存入專案 <code>source_notes.md</code>；再開啟 <code>codex</code>、<code>claude</code> 或 <code>agy</code>，輸入：</p>
 <pre><code class="language-text">只根據 source_notes.md 製作 worksheet.md，包含三個學習重點及三道附答案的題目。每題列出對應的來源名稱與頁碼；來源未包含的答案標成「資料不足」。不要自動新增網路來源。
 </code></pre>
 <p><strong>產物與驗收</strong>：<code>source_notes.md</code> 與 <code>worksheet.md</code>；教師逐題核對答案與引文，至少記錄一個資料不足的問題。CLI 不會自動取得您瀏覽器中的筆記本，需明確提供匯出的檔案；本課不假設已有 NotebookLM MCP 整合。</p></div>

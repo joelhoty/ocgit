@@ -78,18 +78,18 @@
 html{scroll-behavior:smooth}body{box-sizing:border-box}img{max-width:100%;height:auto}pre{max-width:100%;overflow-x:auto}table{display:block;max-width:100%;overflow-x:auto}td,th{min-width:7em}.course-nav{display:flex;flex-wrap:wrap;gap:.65em;align-items:center;padding:1em 0;margin:1em 0;border-bottom:1px solid #3e3e3e;font-size:.95rem}.course-nav a{color:#66b3ff}.course-nav span{color:#aaa}.course-toc{margin:1.5em 0;padding:1em;background:#222831;border-radius:8px}.course-toc a{overflow-wrap:anywhere}h1,h2,h3,p,li{overflow-wrap:break-word}.mermaid svg{max-width:100%;height:auto}@media(max-width:600px){body{padding:14px!important}h1{font-size:1.65em}pre code{padding:1em}.course-nav{line-height:1.8}}
 </style></head>
 <body><nav aria-label="課程導覽" class="course-nav"><a href="index.html">課程目錄</a><a href="05_instructions.html">← 上一章</a><a href="06a_assessment.html">下一章 →</a><a href="06_lesson_plans.md">Markdown 原文</a><span>雙 CLI 教材 · 2026-10-31</span></nav>
-<div class="container"><!-- Path: AI_Agent_CLi | Updated: 2026-10-31 | Edition: Codex CLI / Claude Code -->
+<div class="container"><!-- Path: AI_Agent_CLi | Updated: 2026-11-17 | Edition: Codex CLI / Claude Code / agy -->
 <h1 id="-ai">單元六補充教材：實戰演練 - AI 幫我讀檔案、寫教案</h1><details class="course-toc"><summary>本頁章節</summary><ul><li><a href="#_1">單元目標</a></li><li><a href="#_2">核心概念詳解</a></li><li><a href="#_3">詳細操作步驟</a></li><li><a href="#_11">跨學科完整範例</a></li><li><a href="#_24">進階技巧</a></li><li><a href="#_25">實用技巧與注意事項</a></li><li><a href="#_29">延伸應用</a></li><li><a href="#_30">完整案例演示</a></li><li><a href="#_34">練習任務</a></li><li><a href="#qa">常見問題 Q&amp;A</a></li><li><a href="#_36">課程總結</a></li><li><a href="#_41">完整案例的交付與驗收</a></li></ul></details>
 <blockquote>
-<p><strong>閱讀前提：</strong>先完成<a href="00_intro.html">前導章：Agent 基本概念與工作環境</a>，使用 Codex CLI 或 Claude Code 其中一款。本章以備課作為範例情境；不是教師也能把主題換成自己的工作或學習內容。範例請使用虛構或去識別化資料，結果都要回到來源與實際檔案確認。（查核日期：2026-10-31）</p>
+<p><strong>閱讀前提：</strong>先完成<a href="00_intro.html">前導章：Agent 基本概念與工作環境</a>，使用 Codex CLI、Claude Code 或 Antigravity CLI（<code>agy</code>）其中一款。本章以備課作為範例情境；不是教師也能把主題換成自己的工作或學習內容。範例請使用虛構或去識別化資料，結果都要回到來源與實際檔案確認。（查核日期：2026-10-31）</p>
 </blockquote>
 <h3 id="cli">雙 CLI 操作約定</h3>
-<p>在專案資料夾開啟終端機，輸入 <code>codex</code> 或 <code>claude</code> 任選一款，啟動一次互動會話。接著把本章的「對話提示」貼入 CLI 的對話輸入區；每輪檢查回覆，再在同一會話追問，不需反覆回到終端機重啟工具。本章提示為了閱讀方便都寫得較簡短，實際使用時請補上來源、輸出位置與驗收條件。</p>
+<p>在專案資料夾開啟終端機，輸入 <code>codex</code>、<code>claude</code> 或 <code>agy</code> 任選一款，啟動一次互動會話。接著把本章的「對話提示」貼入 CLI 的對話輸入區；每輪檢查回覆，再在同一會話追問，不需反覆回到終端機重啟工具。本章提示為了閱讀方便都寫得較簡短，實際使用時請補上來源、輸出位置與驗收條件。</p>
 <pre><code class="language-text">請先閱讀 lesson.txt，列出三個教學重點及來源段落。
 </code></pre>
 <p>確認內容後繼續說：「把第二點改寫成適合國小五年級的說明。」需要保存時，直接指定檔名並要求回報實際寫入位置；已有同名檔案時先比較差異，再決定更新或另存新版本。檔案寫入與程式執行仍受工具權限控制。</p>
 <p><strong>會話管理</strong>：長任務也在 CLI 中進行。模型選擇、用量、context 整理與會話續接的常用指令，見<a href="00_intro.html">前導章的 CLI 互動操作與指令速查</a>。切換主題或壓縮 context 前，先將已確認的目標、檔案與待辦保存，續接後核對摘要。</p>
-<p><strong>專案指引檔</strong>：Codex 使用 <code>AGENTS.md</code>；Claude Code 使用 <code>CLAUDE.md</code>。它們是專案內的文字檔，不是需要輸入的操作指令。作用範圍、相容條件與驗證方式見<a href="05_instructions.html">單元五</a>。</p>
+<p><strong>專案指引檔</strong>：Codex 與 agy 使用 <code>AGENTS.md</code>（agy 也讀 <code>GEMINI.md</code>）；Claude Code 使用 <code>CLAUDE.md</code>。它們是專案內的文字檔，不是需要輸入的操作指令。作用範圍、相容條件與驗證方式見<a href="05_instructions.html">單元五</a>。</p>
 <h2 id="_1">單元目標</h2>
 <ul>
 <li>整合前五個單元所學技能</li>
@@ -182,7 +182,7 @@ html{scroll-behavior:smooth}body{box-sizing:border-box}img{max-width:100%;height
 </ol>
 <hr/>
 <h3 id="agentsmdclaudemd">步驟二：設定 AGENTS.md／CLAUDE.md</h3>
-<p>以下範例存成 <code>AGENTS.md</code>，作為共用規則。走 Claude Code 路線時不要改檔名，而是另建 <code>CLAUDE.md</code>，內容寫入 <code>@AGENTS.md</code> 匯入共用規則。</p>
+<p>以下範例存成 <code>AGENTS.md</code>，作為共用規則；Codex 與 agy 會直接載入。走 Claude Code 路線時不要改檔名，而是另建 <code>CLAUDE.md</code>，內容寫入 <code>@AGENTS.md</code> 匯入共用規則。</p>
 <p><strong>範例內容</strong>：存成 <code>AGENTS.md</code>。指引作用範圍與驗證方法見<a href="05_instructions.html">單元五</a>。</p>
 <pre><code class="language-markdown"># AI 教學助理設定
 
@@ -254,7 +254,7 @@ html{scroll-behavior:smooth}body{box-sizing:border-box}img{max-width:100%;height
 - 引起動機要吸引人
 - 評量方式多元(不只紙筆測驗)
 
-請遵循本專案已載入的指引格式（Codex 為 AGENTS.md；Claude 路線為 CLAUDE.md）。
+請遵循本專案已載入的指引格式（Codex 與 agy 為 AGENTS.md；Claude 路線為 CLAUDE.md）。
 </code></pre>
 <hr/>
 <h3 id="_9">步驟六：檢視與調整</h3>
@@ -673,7 +673,7 @@ A8：初期需要學習與調整,但熟悉後,可用個人備課紀錄評估是�
 <p><strong>六個單元到此告一段落。</strong></p>
 <p>請用自己的主題再走一次完整流程，每一步都回到來源與實際檔案核對；遇到問題時，回到對應單元調整提示或規則。</p>
 <h2 id="_41">完整案例的交付與驗收</h2>
-<p><strong>輸入</strong>：<code>textbook.txt</code>、<code>reference.txt</code>、專案指引；來源須有使用權，學生資料以虛構內容替代。<strong>操作</strong>：在同一個 <code>codex</code> 或 <code>claude</code> 會話完成步驟四至七；中途離開就把已確認的結果寫入 <code>outputs/lesson_plan.md</code>，下次明確要求重新讀取。</p>
+<p><strong>輸入</strong>：<code>textbook.txt</code>、<code>reference.txt</code>、專案指引；來源須有使用權，學生資料以虛構內容替代。<strong>操作</strong>：在同一個 <code>codex</code>、<code>claude</code> 或 <code>agy</code> 會話完成步驟四至七；中途離開就把已確認的結果寫入 <code>outputs/lesson_plan.md</code>，下次明確要求重新讀取。</p>
 <p><strong>產物</strong>：<code>outputs/lesson_plan.md</code>、<code>outputs/worksheet.md</code>、<code>outputs/review_notes.md</code>。教師確認時數加總、活動材料、題目答案、來源段落、三個差異化層級；將需人工判定的學生特性留給教師。未核對前標示「草稿」。</p></div>
 <!-- Highlight.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>

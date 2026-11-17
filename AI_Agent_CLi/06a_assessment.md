@@ -1,7 +1,7 @@
-<!-- Path: AI_Agent_CLi | Updated: 2026-10-31 | Edition: Codex CLI / Claude Code -->
+<!-- Path: AI_Agent_CLi | Updated: 2026-11-17 | Edition: Codex CLI / Claude Code / agy -->
 # 單元六補充內容：進階應用
 
-> **閱讀前提：**先完成[前導章：Agent 基本概念與工作環境](00_intro.html)，使用 Codex CLI 或 Claude Code 其中一款。本章以備課作為範例情境；不是教師也能把主題換成自己的工作或學習內容。範例請使用虛構或去識別化資料，結果都要回到來源與實際檔案確認。（查核日期：2026-10-31）
+> **閱讀前提：**先完成[前導章：Agent 基本概念與工作環境](00_intro.html)，使用 Codex CLI、Claude Code 或 Antigravity CLI（`agy`）其中一款。本章以備課作為範例情境；不是教師也能把主題換成自己的工作或學習內容。範例請使用虛構或去識別化資料，結果都要回到來源與實際檔案確認。（查核日期：2026-10-31）
 
 
 **銜接**：搭配[單元六](06_lesson_plans.html)閱讀，練習文件轉換與虛構成績資料分析。
@@ -10,7 +10,7 @@
 
 ### 雙 CLI 操作約定
 
-在專案資料夾開啟終端機，輸入 `codex` 或 `claude` 任選一款，啟動一次互動會話。接著把本章的「對話提示」貼入 CLI 的對話輸入區；每輪檢查回覆，再在同一會話追問，不需反覆回到終端機重啟工具。
+在專案資料夾開啟終端機，輸入 `codex`、`claude` 或 `agy` 任選一款，啟動一次互動會話。接著把本章的「對話提示」貼入 CLI 的對話輸入區；每輪檢查回覆，再在同一會話追問，不需反覆回到終端機重啟工具。
 
 ```text
 請先閱讀 lesson.txt，列出三個教學重點及來源段落。
@@ -20,7 +20,7 @@
 
 **會話管理**：長任務也在 CLI 中進行。模型選擇、用量、context 整理與會話續接的常用指令，見[前導章的 CLI 互動操作與指令速查](00_intro.html)。切換主題或壓縮 context 前，先將已確認的目標、檔案與待辦保存，續接後核對摘要。
 
-**專案指引檔**：Codex 使用 `AGENTS.md`；Claude Code 使用 `CLAUDE.md`。它們是專案內的文字檔，不是需要輸入的操作指令。作用範圍、相容條件與驗證方式見[單元五](05_instructions.html)。
+**專案指引檔**：Codex 與 agy 使用 `AGENTS.md`（agy 也讀 `GEMINI.md`）；Claude Code 使用 `CLAUDE.md`。它們是專案內的文字檔，不是需要輸入的操作指令。作用範圍、相容條件與驗證方式見[單元五](05_instructions.html)。
 
 
 ## Markdown 轉換應用：從 AI 輸出到實用文件
@@ -38,7 +38,7 @@
 以下 Pandoc 命令與設定檔是核對 Agent 執行內容的參考；日常操作可繼續在對話中請它完成。安裝命令在終端機執行，或在了解安裝範圍後授權 Agent 執行，不把它們當成對話提示。
 
 **核心優勢**：
-1. **AI 天然輸出格式**：可明確要求 Codex CLI／Claude Code 輸出 Markdown；仍需檢查格式
+1. **AI 天然輸出格式**：可明確要求 Codex CLI／Claude Code／agy 輸出 Markdown；仍需檢查格式
 2. **易於編輯**：純文字，VSCode 直接編輯
 3. **靈活轉換**：可轉成 PDF、Word、PowerPoint、HTML
 
@@ -491,7 +491,7 @@ Agent 會執行類似 `pandoc lesson_plan.md -o lesson_plan.pdf --pdf-engine=xel
 
 ```mermaid
 graph LR
-    A[Codex CLI／Claude Code<br/>生成 Markdown] --> B[VSCode<br/>編輯調整]
+    A[Codex CLI／Claude Code／agy<br/>生成 Markdown] --> B[VSCode<br/>編輯調整]
     B --> C[檢查預覽]
     C --> D{滿意?}
     D -->|否| B

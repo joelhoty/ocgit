@@ -1,7 +1,7 @@
-<!-- Path: AI_Agent_CLi | Updated: 2026-10-31 | Edition: Codex CLI / Claude Code -->
+<!-- Path: AI_Agent_CLi | Updated: 2026-11-17 | Edition: Codex CLI / Claude Code / agy -->
 # 單元二補充教材：讓教材更生動 - AI 圖片詠唱師
 
-> **閱讀前提：**先完成[前導章：Agent 基本概念與工作環境](00_intro.html)，使用 Codex CLI 或 Claude Code 其中一款。本章以備課作為範例情境；不是教師也能把主題換成自己的工作或學習內容。範例請使用虛構或去識別化資料，結果都要回到來源與實際檔案確認。（查核日期：2026-10-31）
+> **閱讀前提：**先完成[前導章：Agent 基本概念與工作環境](00_intro.html)，使用 Codex CLI、Claude Code 或 Antigravity CLI（`agy`）其中一款。本章以備課作為範例情境；不是教師也能把主題換成自己的工作或學習內容。範例請使用虛構或去識別化資料，結果都要回到來源與實際檔案確認。（查核日期：2026-10-31）
 
 
 ## 單元目標
@@ -56,12 +56,12 @@
 
 ### 步驟一：以 CLI 準備提示，再使用圖片生成服務
 
-1. 在 `image_lesson` 專案用 `codex` 或 `claude` 開始互動會話，請它將本章五要素整理成 `image_prompt.md`。
+1. 在 `image_lesson` 專案用 `codex`、`claude` 或 `agy` 開始互動會話，請它將本章五要素整理成 `image_prompt.md`。
 2. 本課共同路線使用有圖片生成功能的 ChatGPT 網頁：開啟 [ChatGPT](https://chatgpt.com/)，將提示貼入並要求生成圖片。帳號與工作區必須開放這項功能；沒有權限時可使用教師提供的圖片完成辨識與修改提示練習。
 3. 檢查主體數量、構圖、科學關係與文字標示，指出具體錯誤後再生成，不預設完成時間。
 4. 下載成 `assets/lesson_image.png`，在 `image_notes.md` 記錄提示、工具、日期與人工修改。
 
-**能力差異**：兩款 CLI 都可協助寫提示與管理素材，但不能因此假定兩者都可直接產生點陣圖片。目前 Codex 官方提供 imagegen 技能路線；只有當會話實際提供該技能、帳號額度允許時才可在 CLI 內使用。Claude Code 若要生成點陣圖，需要另接圖片服務或工具；本課不要求安裝這些整合。[官方圖片生成說明](https://learn.chatgpt.com/docs/image-generation)（2026-10-31 查核）。
+**能力差異**：三款 CLI 都可協助寫提示與管理素材，但不能因此假定它們都可直接產生點陣圖片。目前 Codex 官方提供 imagegen 技能路線；只有當會話實際提供該技能、帳號額度允許時才可在 CLI 內使用。Claude Code 若要生成點陣圖，需要另接圖片服務或工具；Antigravity CLI（`agy`）的圖片生成能力本課未查核，同樣不列為必要；本課不要求安裝這些整合。[官方圖片生成說明](https://learn.chatgpt.com/docs/image-generation)（2026-10-31 查核）。
 
 **共同提示（在任一 CLI 會話輸入）**：
 ```text

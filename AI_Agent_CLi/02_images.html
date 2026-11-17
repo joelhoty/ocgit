@@ -78,10 +78,10 @@
 html{scroll-behavior:smooth}body{box-sizing:border-box}img{max-width:100%;height:auto}pre{max-width:100%;overflow-x:auto}table{display:block;max-width:100%;overflow-x:auto}td,th{min-width:7em}.course-nav{display:flex;flex-wrap:wrap;gap:.65em;align-items:center;padding:1em 0;margin:1em 0;border-bottom:1px solid #3e3e3e;font-size:.95rem}.course-nav a{color:#66b3ff}.course-nav span{color:#aaa}.course-toc{margin:1.5em 0;padding:1em;background:#222831;border-radius:8px}.course-toc a{overflow-wrap:anywhere}h1,h2,h3,p,li{overflow-wrap:break-word}.mermaid svg{max-width:100%;height:auto}@media(max-width:600px){body{padding:14px!important}h1{font-size:1.65em}pre code{padding:1em}.course-nav{line-height:1.8}}
 </style></head>
 <body><nav aria-label="課程導覽" class="course-nav"><a href="index.html">課程目錄</a><a href="01_materials.html">← 上一章</a><a href="03_notebooklm.html">下一章 →</a><a href="02_images.md">Markdown 原文</a><span>雙 CLI 教材 · 2026-10-31</span></nav>
-<div class="container"><!-- Path: AI_Agent_CLi | Updated: 2026-10-31 | Edition: Codex CLI / Claude Code -->
+<div class="container"><!-- Path: AI_Agent_CLi | Updated: 2026-11-17 | Edition: Codex CLI / Claude Code / agy -->
 <h1 id="-ai">單元二補充教材：讓教材更生動 - AI 圖片詠唱師</h1><details class="course-toc"><summary>本頁章節</summary><ul><li><a href="#_1">單元目標</a></li><li><a href="#_2">核心概念詳解</a></li><li><a href="#_4">詳細操作步驟</a></li><li><a href="#prompt">跨學科圖片 Prompt 範例庫</a></li><li><a href="#_13">進階技巧</a></li><li><a href="#_16">實用技巧與注意事項</a></li><li><a href="#_20">延伸應用</a></li><li><a href="#_21">練習任務</a></li><li><a href="#qa">常見問題 Q&amp;A</a></li></ul></details>
 <blockquote>
-<p><strong>閱讀前提：</strong>先完成<a href="00_intro.html">前導章：Agent 基本概念與工作環境</a>，使用 Codex CLI 或 Claude Code 其中一款。本章以備課作為範例情境；不是教師也能把主題換成自己的工作或學習內容。範例請使用虛構或去識別化資料，結果都要回到來源與實際檔案確認。（查核日期：2026-10-31）</p>
+<p><strong>閱讀前提：</strong>先完成<a href="00_intro.html">前導章：Agent 基本概念與工作環境</a>，使用 Codex CLI、Claude Code 或 Antigravity CLI（<code>agy</code>）其中一款。本章以備課作為範例情境；不是教師也能把主題換成自己的工作或學習內容。範例請使用虛構或去識別化資料，結果都要回到來源與實際檔案確認。（查核日期：2026-10-31）</p>
 </blockquote>
 <h2 id="_1">單元目標</h2>
 <ul>
@@ -145,12 +145,12 @@ html{scroll-behavior:smooth}body{box-sizing:border-box}img{max-width:100%;height
 <h2 id="_4">詳細操作步驟</h2>
 <h3 id="cli">步驟一：以 CLI 準備提示，再使用圖片生成服務</h3>
 <ol>
-<li>在 <code>image_lesson</code> 專案用 <code>codex</code> 或 <code>claude</code> 開始互動會話，請它將本章五要素整理成 <code>image_prompt.md</code>。</li>
+<li>在 <code>image_lesson</code> 專案用 <code>codex</code>、<code>claude</code> 或 <code>agy</code> 開始互動會話，請它將本章五要素整理成 <code>image_prompt.md</code>。</li>
 <li>本課共同路線使用有圖片生成功能的 ChatGPT 網頁：開啟 <a href="https://chatgpt.com/">ChatGPT</a>，將提示貼入並要求生成圖片。帳號與工作區必須開放這項功能；沒有權限時可使用教師提供的圖片完成辨識與修改提示練習。</li>
 <li>檢查主體數量、構圖、科學關係與文字標示，指出具體錯誤後再生成，不預設完成時間。</li>
 <li>下載成 <code>assets/lesson_image.png</code>，在 <code>image_notes.md</code> 記錄提示、工具、日期與人工修改。</li>
 </ol>
-<p><strong>能力差異</strong>：兩款 CLI 都可協助寫提示與管理素材，但不能因此假定兩者都可直接產生點陣圖片。目前 Codex 官方提供 imagegen 技能路線；只有當會話實際提供該技能、帳號額度允許時才可在 CLI 內使用。Claude Code 若要生成點陣圖，需要另接圖片服務或工具；本課不要求安裝這些整合。<a href="https://learn.chatgpt.com/docs/image-generation">官方圖片生成說明</a>（2026-10-31 查核）。</p>
+<p><strong>能力差異</strong>：三款 CLI 都可協助寫提示與管理素材，但不能因此假定它們都可直接產生點陣圖片。目前 Codex 官方提供 imagegen 技能路線；只有當會話實際提供該技能、帳號額度允許時才可在 CLI 內使用。Claude Code 若要生成點陣圖，需要另接圖片服務或工具；Antigravity CLI（<code>agy</code>）的圖片生成能力本課未查核，同樣不列為必要；本課不要求安裝這些整合。<a href="https://learn.chatgpt.com/docs/image-generation">官方圖片生成說明</a>（2026-10-31 查核）。</p>
 <p><strong>共同提示（在任一 CLI 會話輸入）</strong>：</p>
 <pre><code class="language-text">請把「國小五年級水循環」轉成圖片生成提示，寫入 image_prompt.md：雲、海洋、蒸發、凝結、降雨、地表逕流必須有正確方向；先產生無文字底圖，再列出需人工加上的繁體中文標籤。不要宣稱已生成圖片。另寫一份檢核清單。
 </code></pre>

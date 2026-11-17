@@ -1,14 +1,14 @@
-<!-- Path: AI_Agent_CLi | Updated: 2026-10-31 | Edition: Codex CLI / Claude Code -->
+<!-- Path: AI_Agent_CLi | Updated: 2026-11-17 | Edition: Codex CLI / Claude Code / agy -->
 # 單元一補充教材：觀念暖身與初體驗 - 我的第一個 AI 生成教材
 
-> **閱讀前提：**先完成[前導章：Agent 基本概念與工作環境](00_intro.html)，使用 Codex CLI 或 Claude Code 其中一款。本章以備課作為範例情境；不是教師也能把主題換成自己的工作或學習內容。範例請使用虛構或去識別化資料，結果都要回到來源與實際檔案確認。（查核日期：2026-10-31）
+> **閱讀前提：**先完成[前導章：Agent 基本概念與工作環境](00_intro.html)，使用 Codex CLI、Claude Code 或 Antigravity CLI（`agy`）其中一款。本章以備課作為範例情境；不是教師也能把主題換成自己的工作或學習內容。範例請使用虛構或去識別化資料，結果都要回到來源與實際檔案確認。（查核日期：2026-10-31）
 
 
 ## 單元目標
 
 - 理解 AI 的基本運作原理與定位
 - 學會撰寫有效的提示詞 (Prompt)
-- 能夠使用 Codex CLI 或 Claude Code 生成並檢查教學素材
+- 能夠使用 Codex CLI、Claude Code 或 agy 生成並檢查教學素材
 - 掌握從模糊問題到精準指令的優化技巧
 - 理解完整教材設計提示詞的結構
 
@@ -52,11 +52,11 @@
 ### 步驟一：啟動第一個教學專案
 
 1. 完成前導章的環境與登入步驟；建立 `first_material` 資料夾，使用 VS Code 開啟。
-2. 在這個資料夾的整合終端機輸入 `codex` 或 `claude`，選一款開始會話。
+2. 在這個資料夾的整合終端機輸入 `codex`、`claude` 或 `agy`，選一款開始會話。
 3. 確認顯示的工作目錄正確，先貼上提示詞讓 AI 回答，不必開啟自動修改所有檔案的權限。
 4. 本章重點是比較不同提示的結果；版本、可用模型與額度依帳號而異，不要求指定模型。
 
-**操作提示**：自然語言提示是在 AI 會話中輸入；`codex`、`claude` 是在 shell 輸入的啟動指令。
+**操作提示**：自然語言提示是在 AI 會話中輸入；`codex`、`claude`、`agy` 是在終端機輸入的啟動指令。
 
 ### 步驟二：撰寫您的第一個提示詞
 
@@ -669,11 +669,11 @@ A7：不一定。簡單任務用「精簡版」即可，複雜任務（如完整
 
 **輸入**：一個教學主題、學生年級與長度限制。**產物**：`prompt.md`、`material_v1.md`、`reflection.md`。
 
-**共同提示（在 codex 或 claude 會話內）**：
+**共同提示（在 codex、claude 或 agy 會話內）**：
 ```text
 請根據 prompt.md 產生 material_v1.md。先列出你理解的對象與限制；內容需有概念、生活例子與一題附答案的練習。最後列出需教師查證的主張，不要杜撰來源。
 ```
 
 **成功判準**：檔案可開啟；對象、長度、題數符合要求；教師以課本核對答案；反思至少指出一處經人工修改的內容。
 
-[Codex CLI 入門](https://learn.chatgpt.com/docs/codex/cli)、[Claude Code 入門](https://code.claude.com/docs/en/quickstart)。
+[Codex CLI 入門](https://learn.chatgpt.com/docs/codex/cli)、[Claude Code 入門](https://code.claude.com/docs/en/quickstart)、[Antigravity CLI 入門](https://antigravity.google/docs/getting-started?tab=cli)。

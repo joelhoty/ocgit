@@ -78,20 +78,20 @@
 html{scroll-behavior:smooth}body{box-sizing:border-box}img{max-width:100%;height:auto}pre{max-width:100%;overflow-x:auto}table{display:block;max-width:100%;overflow-x:auto}td,th{min-width:7em}.course-nav{display:flex;flex-wrap:wrap;gap:.65em;align-items:center;padding:1em 0;margin:1em 0;border-bottom:1px solid #3e3e3e;font-size:.95rem}.course-nav a{color:#66b3ff}.course-nav span{color:#aaa}.course-toc{margin:1.5em 0;padding:1em;background:#222831;border-radius:8px}.course-toc a{overflow-wrap:anywhere}h1,h2,h3,p,li{overflow-wrap:break-word}.mermaid svg{max-width:100%;height:auto}@media(max-width:600px){body{padding:14px!important}h1{font-size:1.65em}pre code{padding:1em}.course-nav{line-height:1.8}}
 </style></head>
 <body><nav aria-label="課程導覽" class="course-nav"><a href="index.html">課程目錄</a><a href="06_lesson_plans.html">← 上一章</a><a href="06a_assessment.md">Markdown 原文</a><span>雙 CLI 教材 · 2026-10-31</span></nav>
-<div class="container"><!-- Path: AI_Agent_CLi | Updated: 2026-10-31 | Edition: Codex CLI / Claude Code -->
-<h1 id="_1">單元六補充內容：進階應用</h1><details class="course-toc"><summary>本頁章節</summary><ul><li><a href="#markdown-ai">Markdown 轉換應用：從 AI 輸出到實用文件</a></li><li><a href="#ai_1">成績處理應用：AI 輔助評分與分析</a></li><li><a href="#_22">綜合實戰：學期末成績處理完整流程</a></li><li><a href="#ai_3">未來展望：AI 在教育評量的可能性</a></li><li><a href="#_30">本補充單元驗收與平台差異</a></li></ul></details>
+<div class="container"><!-- Path: AI_Agent_CLi | Updated: 2026-11-17 | Edition: Codex CLI / Claude Code / agy -->
+<span aria-hidden="true" class="legacy-anchor" id="a-pandoc_1"></span><span aria-hidden="true" class="legacy-anchor" id="cvscode"></span><h1 id="_1">單元六補充內容：進階應用</h1><details class="course-toc"><summary>本頁章節</summary><ul><li><a href="#markdown-ai">Markdown 轉換應用：從 AI 輸出到實用文件</a></li><li><a href="#ai_1">成績處理應用：AI 輔助評分與分析</a></li><li><a href="#_22">綜合實戰：學期末成績處理完整流程</a></li><li><a href="#ai_3">未來展望：AI 在教育評量的可能性</a></li><li><a href="#_30">本補充單元驗收與平台差異</a></li></ul></details>
 <blockquote>
-<p><strong>閱讀前提：</strong>先完成<a href="00_intro.html">前導章：Agent 基本概念與工作環境</a>，使用 Codex CLI 或 Claude Code 其中一款。本章以備課作為範例情境；不是教師也能把主題換成自己的工作或學習內容。範例請使用虛構或去識別化資料，結果都要回到來源與實際檔案確認。（查核日期：2026-10-31）</p>
+<p><strong>閱讀前提：</strong>先完成<a href="00_intro.html">前導章：Agent 基本概念與工作環境</a>，使用 Codex CLI、Claude Code 或 Antigravity CLI（<code>agy</code>）其中一款。本章以備課作為範例情境；不是教師也能把主題換成自己的工作或學習內容。範例請使用虛構或去識別化資料，結果都要回到來源與實際檔案確認。（查核日期：2026-10-31）</p>
 </blockquote>
 <p><strong>銜接</strong>：搭配<a href="06_lesson_plans.html">單元六</a>閱讀，練習文件轉換與虛構成績資料分析。</p>
 <hr/>
 <h3 id="cli">雙 CLI 操作約定</h3>
-<p>在專案資料夾開啟終端機，輸入 <code>codex</code> 或 <code>claude</code> 任選一款，啟動一次互動會話。接著把本章的「對話提示」貼入 CLI 的對話輸入區；每輪檢查回覆，再在同一會話追問，不需反覆回到終端機重啟工具。</p>
+<p>在專案資料夾開啟終端機，輸入 <code>codex</code>、<code>claude</code> 或 <code>agy</code> 任選一款，啟動一次互動會話。接著把本章的「對話提示」貼入 CLI 的對話輸入區；每輪檢查回覆，再在同一會話追問，不需反覆回到終端機重啟工具。</p>
 <pre><code class="language-text">請先閱讀 lesson.txt，列出三個教學重點及來源段落。
 </code></pre>
 <p>確認內容後繼續說：「把第二點改寫成適合國小五年級的說明。」需要保存時，直接指定檔名並要求回報實際寫入位置；已有同名檔案時先比較差異，再決定更新或另存新版本。檔案寫入與程式執行仍受工具權限控制。</p>
 <p><strong>會話管理</strong>：長任務也在 CLI 中進行。模型選擇、用量、context 整理與會話續接的常用指令，見<a href="00_intro.html">前導章的 CLI 互動操作與指令速查</a>。切換主題或壓縮 context 前，先將已確認的目標、檔案與待辦保存，續接後核對摘要。</p>
-<p><strong>專案指引檔</strong>：Codex 使用 <code>AGENTS.md</code>；Claude Code 使用 <code>CLAUDE.md</code>。它們是專案內的文字檔，不是需要輸入的操作指令。作用範圍、相容條件與驗證方式見<a href="05_instructions.html">單元五</a>。</p>
+<p><strong>專案指引檔</strong>：Codex 與 agy 使用 <code>AGENTS.md</code>（agy 也讀 <code>GEMINI.md</code>）；Claude Code 使用 <code>CLAUDE.md</code>。它們是專案內的文字檔，不是需要輸入的操作指令。作用範圍、相容條件與驗證方式見<a href="05_instructions.html">單元五</a>。</p>
 <h2 id="markdown-ai">Markdown 轉換應用：從 AI 輸出到實用文件</h2>
 <h3 id="markdown">為何從 Markdown 開始？</h3>
 <p>先在 CLI 對話交代要轉換的檔案與格式，例如：</p>
@@ -101,7 +101,7 @@ html{scroll-behavior:smooth}body{box-sizing:border-box}img{max-width:100%;height
 </code></pre>
 <p>以下 Pandoc 命令與設定檔是核對 Agent 執行內容的參考；日常操作可繼續在對話中請它完成。安裝命令在終端機執行，或在了解安裝範圍後授權 Agent 執行，不把它們當成對話提示。</p>
 <p><strong>核心優勢</strong>：<br/>
-1. <strong>AI 天然輸出格式</strong>：可明確要求 Codex CLI／Claude Code 輸出 Markdown；仍需檢查格式<br/>
+1. <strong>AI 天然輸出格式</strong>：可明確要求 Codex CLI／Claude Code／agy 輸出 Markdown；仍需檢查格式<br/>
 2. <strong>易於編輯</strong>：純文字，VSCode 直接編輯<br/>
 3. <strong>靈活轉換</strong>：可轉成 PDF、Word、PowerPoint、HTML</p>
 <hr/>
@@ -497,7 +497,7 @@ A：在同一 CLI 會話請 Agent 建立批次轉換流程：</p>
 <hr/>
 <h3 id="ai">完整工作流程：AI 生成 → 編輯 → 轉換 → 分享</h3>
 <div class="mermaid">graph LR
-    A[Codex CLI／Claude Code&lt;br/&gt;生成 Markdown] --&gt; B[VSCode&lt;br/&gt;編輯調整]
+    A[Codex CLI／Claude Code／agy&lt;br/&gt;生成 Markdown] --&gt; B[VSCode&lt;br/&gt;編輯調整]
     B --&gt; C[檢查預覽]
     C --&gt; D{滿意?}
     D --&gt;|否| B
