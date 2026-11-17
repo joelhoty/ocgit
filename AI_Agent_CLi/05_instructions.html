@@ -188,14 +188,12 @@ html{scroll-behavior:smooth}body{box-sizing:border-box}img{max-width:100%;height
 <li>Codex 的共用規則檔名輸入：<code>AGENTS.md</code>（注意大寫）</li>
 <li>按下 Enter</li>
 </ol>
-<h4 id="2">方法 2：在終端機建立</h4>
-<p>macOS／Linux／WSL：</p>
-<pre><code class="language-bash">touch AGENTS.md
+<h4 id="2-agent">方法 2：在 Agent 會話中建立</h4>
+<p>在 CLI 會話用自然語言交代，不必輸入終端機指令：</p>
+<pre><code class="language-text">請在專案根目錄建立空白的 AGENTS.md。若已有同名檔案，先停下來把內容給我看，不要覆蓋。
 </code></pre>
-<p>Windows PowerShell（先確認沒有同名檔案）：</p>
-<pre><code class="language-powershell">New-Item -ItemType File -Path AGENTS.md
-</code></pre>
-<p>Claude Code：在同一層用 VS Code 新增 <code>CLAUDE.md</code>，寫入下列內容。這是檔案內容，不是終端機命令：</p>
+<p>也可以用內建指令產生草稿再修改：Codex CLI 的 <code>/init</code> 會掃描專案產生 <code>AGENTS.md</code>；Claude Code 的 <code>/init</code> 產生 <code>CLAUDE.md</code>；Antigravity CLI（<code>agy</code>）沒有 <code>/init</code>，改用 <code>/grill-me</code> 先訪問你、再用 <code>/plan</code> 起草（見 <a href="agy_cli.html#agy-generate-rules">agy 延伸章</a>）。自動草稿要逐條對照本單元的原則修改。</p>
+<p>Claude Code：在同一層新增 <code>CLAUDE.md</code>（VS Code 新增檔案，或請 Agent 建立），寫入下列內容。這是檔案內容，不是終端機命令：</p>
 <pre><code class="language-markdown">@AGENTS.md
 </code></pre>
 <p>這樣共用範本仍只維護在 AGENTS.md；Claude 專屬補充可寫在匯入行下方。不要同時手動複製兩份長規則而忘記同步。</p>
@@ -223,9 +221,9 @@ html{scroll-behavior:smooth}body{box-sizing:border-box}img{max-width:100%;height
 <hr/>
 <h3 id="agentsmd_2">步驟三：測試 AGENTS.md 是否生效</h3>
 <h4 id="_5">測試指令</h4>
-<p>在專案根目錄啟動其中一款工具：</p>
+<p>規則在啟動時載入，所以先輸入 <code>/exit</code> 結束目前會話，再於專案根目錄重新啟動所用的工具：</p>
 <pre><code class="language-shell">codex
-# 或選用：claude
+# 或選用：claude、agy
 </code></pre>
 <p>在 AI 會話貼上（不是 shell 命令）：</p>
 <pre><code class="language-text">列出本次已載入的專案指引及適用規則。
@@ -456,7 +454,7 @@ html{scroll-behavior:smooth}body{box-sizing:border-box}img{max-width:100%;height
 </code></pre>
 <p>兩款工具共用這份自然語言提示。預期產生三個版本，再人工核對內容、難度與學習目標，不以篇幅判定品質。</p>
 <hr/>
-<h3 id="2_1">技巧 2：設定輸出範本</h3>
+<h3 id="2">技巧 2：設定輸出範本</h3>
 <p><strong>情境</strong>：您需要固定格式的學習單</p>
 <p><strong>AGENTS.md 設定</strong>：</p>
 <pre><code class="language-markdown">## 學習單輸出範本
@@ -595,7 +593,7 @@ html{scroll-behavior:smooth}body{box-sizing:border-box}img{max-width:100%;height
       └── materials/
 </code></pre>
 <hr/>
-<h3 id="2_2">應用 2：團隊協作範本</h3>
+<h3 id="2_1">應用 2：團隊協作範本</h3>
 <p><strong>情境</strong>：與同事共同備課,統一 AI 使用方式</p>
 <p><strong>做法</strong>：<br/>
 1. 團隊共同制定 <code>AGENTS.md</code> 範本<br/>

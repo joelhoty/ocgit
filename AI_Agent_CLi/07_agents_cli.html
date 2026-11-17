@@ -150,20 +150,24 @@ html{scroll-behavior:smooth}body{box-sizing:border-box}img{max-width:100%;height
 <h3 id="_2">核心特色</h3>
 <p>兩者都能協助讀寫檔案、執行專案命令及延續會話；搜尋、MCP 與其他整合依設定與帳號而異。價格與配額會變動，本教材不承諾固定免費額度。先確認登入方式、方案及組織權限，再安排課堂實作。</p>
 <h3 id="0">0. 安裝前置需求：依安裝路線選擇</h3>
-<p>原生安裝路線不要求先裝 Node.js；npm 路線需要 Node.js/npm。Python、C++ 編譯器是執行相應作業所需，不是兩款 CLI 的共同安裝先決條件。Windows 以 PowerShell 為主，macOS 使用 Terminal；命令應與 shell 相符。</p>
+<p>原生安裝路線不要求先裝 Node.js；npm 路線需要 Node.js/npm。Python、C++ 編譯器是執行相應作業所需，不是兩款 CLI 的共同安裝先決條件。只有安裝 CLI 時需要在作業系統終端機貼上官方指令（Windows 用 VS Code 內建的 PowerShell、macOS 用 zsh）；安裝後的操作以 Agent 會話中的自然語言與內建指令為主。</p>
 <h3 id="1-codex-cli-claude-code">1. 安裝 Codex CLI 或 Claude Code</h3>
 <p>安裝指令只維護在一處：請到<a href="00_intro.html#cli-installation">前導章的安裝章節</a>選一款工具，完成安裝與登入後再回到這裡。</p>
 <h3 id="2">2. 設定與驗證</h3>
 <h4 id="a_1">a) 帳號與登入方式</h4>
 <p>Codex 可透過 ChatGPT 登入或 API key；Claude 可使用具資格的 Claude 帳號、Console 或組織提供的服務。訂閱授權與 API 計費不相同；模型清單與功能以登入後實際可用內容為準。<a href="https://learn.chatgpt.com/docs/auth">Codex 認證</a>、<a href="https://code.claude.com/docs/en/quickstart">Claude 入門</a>。</p>
 <h4 id="b">b) 啟動與驗證登入</h4>
-<pre><code class="language-powershell">mkdir teaching-project
-cd teaching-project
-git init
-codex
-# 或在同一專案選用：claude
+<ol>
+<li>在 VS Code 選「檔案 → 開啟資料夾」，在對話框按「新增資料夾」建立 <code>teaching-project</code> 並開啟。</li>
+<li>從「終端機 → 新增終端機」開出終端機（會自動位於專案資料夾），啟動一款 CLI：</li>
+</ol>
+<pre><code class="language-shell">codex
+# 或在同一專案選用：claude、agy
 </code></pre>
-<p>第一次啟動依提示完成瀏覽器登入。需要重新登入時，在 shell 用 <code>codex login</code> 或 <code>claude auth login</code>；不要使用舊教材中的 <code>config set api_key</code>。成功判準：能看見正確專案目錄並完成一個讀檔任務。版本號印出僅代表指令可執行，不代表帳號已授權。</p>
+<p>進入會話後，用自然語言請 Agent 初始化 Git，不必自己輸入 Git 指令：</p>
+<pre><code class="language-text">請回報目前工作資料夾，然後在這裡初始化 Git。若已經是 Git 儲存庫，先停下來告訴我。
+</code></pre>
+<p>第一次啟動依提示完成瀏覽器登入。需要重新登入時，在啟動會話前於終端機輸入 <code>codex login</code> 或 <code>claude auth login</code>（<code>agy</code> 在會話內用 <code>/logout</code> 後重新啟動）；不要使用舊教材中的 <code>config set api_key</code>。成功判準：能看見正確專案目錄並完成一個讀檔任務。版本號印出僅代表指令可執行，不代表帳號已授權。</p>
 <h3 id="3">3. 基本用法</h3>
 <h4 id="a-prompt">a) 直接提問（Prompt）</h4>
 <p>先在專案終端機輸入 <code>codex</code> 或 <code>claude</code>。進入會話後，在對話輸入區貼上自然語言任務；後續追問維持同一會話。</p>
@@ -278,10 +282,11 @@ int main() {
 </code></pre>
 <p>這不是 PowerShell 指令。依實際安裝位置將 <code>C:\msys64\ucrt64\bin</code> 加入使用者 PATH；重開終端機，檢查 <code>g++ --version</code> 與 <code>gdb --version</code>。ARM 或其他平台請選官方對應工具鏈，不照貼 x86_64 套件。</p>
 <p><strong>步驟二：安裝擴充套件。</strong>在 VS Code 安裝 Microsoft C/C++，或需要時使用 C/C++ Extension Pack；擴充套件不會替你安裝 GCC。</p>
-<p><strong>步驟三：建立專案。</strong>建立 <code>cpp_test</code> 資料夾，用 VS Code 開啟，新增上方範例的 <code>main.cpp</code>。先在 PowerShell 編譯與執行：</p>
-<pre><code class="language-powershell">g++ -std=c++17 -g main.cpp -o main.exe
-.\main.exe
+<p><strong>步驟三：建立專案。</strong>建立 <code>cpp_test</code> 資料夾，用 VS Code 開啟，新增上方範例的 <code>main.cpp</code>。在 CLI 會話請 Agent 編譯與執行：</p>
+<pre><code class="language-text">請用 g++ 以 C++17 並加上除錯資訊編譯 main.cpp，輸出 main.exe，然後執行並回報輸出。
+若找不到 g++，先告訴我原因，不要自行安裝。
 </code></pre>
+<p>Agent 會執行 <code>g++ -std=c++17 -g main.cpp -o main.exe</code> 與 <code>.\main.exe</code>；核准前核對指令。</p>
 <p><strong>步驟四：設定偵錯。</strong>於輸出行設中斷點，使用右上角執行／偵錯選單選 <code>C/C++: g++.exe build and debug active file</code>（名稱依版本）。需要時依官方指引建立 <code>.vscode/tasks.json</code>／<code>launch.json</code>，確認 compiler/debugger 的實際路徑；不是每版都會同時自動建立兩個檔案。</p>
 <p><strong>步驟五：選用快速執行。</strong>Code Runner 是另一個擴充套件，不是本課必要條件；若使用它，需自行核對工作目錄、編譯旗標與終端機輸入設定，仍以明確命令作驗收基準。</p>
 <p><strong>步驟六：排錯。</strong>找不到 g++ 時先確認是否安裝工具鏈、PATH 是否正確、是否重開終端機；編譯失敗則閱讀完整錯誤與檔名行號。執行成功後，再讓 CLI 解釋實際結果，不讓 AI 猜測編譯器是否已存在。</p>

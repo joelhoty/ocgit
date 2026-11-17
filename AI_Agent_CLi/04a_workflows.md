@@ -100,14 +100,13 @@ week5_lessons/
 
 ### 優勢四：版本控制與歷程追蹤
 
-**搭配 Git 使用**：以下是 Git 的終端機操作，請另開 shell 執行，不要貼進 AI 對話區。也可在 CLI 會話請 Agent 先說明差異，再協助完成相同的版本紀錄。
-```bash
-git add lesson_plan.md
-git commit -m "AI生成初稿"
-
-# 修改後
-git add lesson_plan.md
-git commit -m "調整難度"
+**搭配 Git 使用**：不必另開終端機，直接在同一個 CLI 會話用自然語言交代，Agent 會先顯示差異、等你核准再提交：
+```text
+請把 lesson_plan.md 加入 Git，先顯示差異讓我確認，再提交，訊息為「AI生成初稿」。
+```
+修改後再交代一次，提交前先用內建的 `/diff` 看本次改了什麼：
+```text
+請提交 lesson_plan.md 的修改，訊息為「調整難度」。提交前先列出差異。
 ```
 
 **優點**：

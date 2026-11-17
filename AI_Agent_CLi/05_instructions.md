@@ -82,21 +82,17 @@ Codex 還有使用者層與子目錄的規則，`AGENTS.override.md` 可覆蓋�
 3. Codex 的共用規則檔名輸入：`AGENTS.md`（注意大寫）
 4. 按下 Enter
 
-#### 方法 2：在終端機建立
+#### 方法 2：在 Agent 會話中建立
 
-macOS／Linux／WSL：
+在 CLI 會話用自然語言交代，不必輸入終端機指令：
 
-```bash
-touch AGENTS.md
+```text
+請在專案根目錄建立空白的 AGENTS.md。若已有同名檔案，先停下來把內容給我看，不要覆蓋。
 ```
 
-Windows PowerShell（先確認沒有同名檔案）：
+也可以用內建指令產生草稿再修改：Codex CLI 的 `/init` 會掃描專案產生 `AGENTS.md`；Claude Code 的 `/init` 產生 `CLAUDE.md`；Antigravity CLI（`agy`）沒有 `/init`，改用 `/grill-me` 先訪問你、再用 `/plan` 起草（見 [agy 延伸章](agy_cli.html#agy-generate-rules)）。自動草稿要逐條對照本單元的原則修改。
 
-```powershell
-New-Item -ItemType File -Path AGENTS.md
-```
-
-Claude Code：在同一層用 VS Code 新增 `CLAUDE.md`，寫入下列內容。這是檔案內容，不是終端機命令：
+Claude Code：在同一層新增 `CLAUDE.md`（VS Code 新增檔案，或請 Agent 建立），寫入下列內容。這是檔案內容，不是終端機命令：
 
 ```markdown
 @AGENTS.md
@@ -137,11 +133,11 @@ Claude Code：在同一層用 VS Code 新增 `CLAUDE.md`，寫入下列內容。
 
 #### 測試指令
 
-在專案根目錄啟動其中一款工具：
+規則在啟動時載入，所以先輸入 `/exit` 結束目前會話，再於專案根目錄重新啟動所用的工具：
 
 ```shell
 codex
-# 或選用：claude
+# 或選用：claude、agy
 ```
 
 在 AI 會話貼上（不是 shell 命令）：

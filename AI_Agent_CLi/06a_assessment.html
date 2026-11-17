@@ -78,7 +78,7 @@
 html{scroll-behavior:smooth}body{box-sizing:border-box}img{max-width:100%;height:auto}pre{max-width:100%;overflow-x:auto}table{display:block;max-width:100%;overflow-x:auto}td,th{min-width:7em}.course-nav{display:flex;flex-wrap:wrap;gap:.65em;align-items:center;padding:1em 0;margin:1em 0;border-bottom:1px solid #3e3e3e;font-size:.95rem}.course-nav a{color:#66b3ff}.course-nav span{color:#aaa}.course-toc{margin:1.5em 0;padding:1em;background:#222831;border-radius:8px}.course-toc a{overflow-wrap:anywhere}h1,h2,h3,p,li{overflow-wrap:break-word}.mermaid svg{max-width:100%;height:auto}@media(max-width:600px){body{padding:14px!important}h1{font-size:1.65em}pre code{padding:1em}.course-nav{line-height:1.8}}
 </style></head>
 <body><nav aria-label="課程導覽" class="course-nav"><a href="index.html">課程目錄</a><a href="06_lesson_plans.html">← 上一章</a><a href="06a_assessment.md">Markdown 原文</a><span>雙 CLI 教材 · 2026-10-31</span></nav>
-<div class="container"><span class="legacy-anchor" id="a-pandoc_1"></span><span class="legacy-anchor" id="cvscode"></span><!-- Path: AI_Agent_CLi | Updated: 2026-10-31 | Edition: Codex CLI / Claude Code -->
+<div class="container"><!-- Path: AI_Agent_CLi | Updated: 2026-10-31 | Edition: Codex CLI / Claude Code -->
 <h1 id="_1">單元六補充內容：進階應用</h1><details class="course-toc"><summary>本頁章節</summary><ul><li><a href="#markdown-ai">Markdown 轉換應用：從 AI 輸出到實用文件</a></li><li><a href="#ai_1">成績處理應用：AI 輔助評分與分析</a></li><li><a href="#_22">綜合實戰：學期末成績處理完整流程</a></li><li><a href="#ai_3">未來展望：AI 在教育評量的可能性</a></li><li><a href="#_30">本補充單元驗收與平台差異</a></li></ul></details>
 <blockquote>
 <p><strong>閱讀前提：</strong>先完成<a href="00_intro.html">前導章：Agent 基本概念與工作環境</a>，使用 Codex CLI 或 Claude Code 其中一款。本章以備課作為範例情境；不是教師也能把主題換成自己的工作或學習內容。範例請使用虛構或去識別化資料，結果都要回到來源與實際檔案確認。（查核日期：2026-10-31）</p>
@@ -107,24 +107,36 @@ html{scroll-behavior:smooth}body{box-sizing:border-box}img{max-width:100%;height
 <hr/>
 <h3 id="markdown-word">轉換方式一：Markdown → Word</h3>
 <h4 id="a-pandoc-word">方法 A：使用 Pandoc（產出 Word 時使用）</h4>
-<p><strong>安裝 Pandoc</strong>：依作業系統選一種安裝方式，完成後執行 <code>pandoc --version</code>。以下安裝命令依 <a href="https://pandoc.org/installing.html">Pandoc 官方文件</a> 查核（2026-10-31）。</p>
-<p>macOS（Homebrew）：</p>
-<pre><code class="language-bash">brew install pandoc
+<p><strong>安裝 Pandoc</strong>：在 CLI 會話請 Agent 檢查並安裝，核准前對照官方指令：</p>
+<pre><code class="language-text">請檢查這台電腦是否已安裝 Pandoc。沒有的話，依 Pandoc 官方文件告訴我適用的安裝指令與影響，等我確認後再安裝，最後回報 pandoc --version。
 </code></pre>
-<p>Windows PowerShell（WinGet）：</p>
-<pre><code class="language-powershell">winget install --source winget --exact --id JohnMacFarlane.Pandoc
-</code></pre>
+<table>
+<thead>
+<tr>
+<th>平台</th>
+<th>官方安裝指令（依 <a href="https://pandoc.org/installing.html">Pandoc 官方文件</a> 查核，2026-10-31）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>macOS（Homebrew）</td>
+<td><code>brew install pandoc</code></td>
+</tr>
+<tr>
+<td>Windows（WinGet）</td>
+<td><code>winget install --source winget --exact --id JohnMacFarlane.Pandoc</code></td>
+</tr>
+</tbody>
+</table>
 <p><strong>基本轉換</strong>：</p>
-<pre><code class="language-bash">pandoc lesson_plan.md -o lesson_plan.docx
+<pre><code class="language-text">請用 Pandoc 把 lesson_plan.md 轉成 lesson_plan.docx。完成後回報輸出檔案大小，並確認原始 Markdown 沒有被修改。
 </code></pre>
+<p>Agent 會執行 <code>pandoc lesson_plan.md -o lesson_plan.docx</code>。</p>
 <p><strong>進階：套用樣式範本</strong>：</p>
-<pre><code class="language-bash"># 先創建參考範本
-pandoc lesson_plan.md -o template.docx
-
-# 在 Word 中調整 template.docx 的樣式（標題字體、間距等）
-
-# 使用範本轉換其他文件
-pandoc new_lesson.md --reference-doc=template.docx -o new_lesson.docx
+<pre><code class="language-text">請先用 Pandoc 把 lesson_plan.md 轉成 template.docx 當參考範本，然後停下來等我。
+</code></pre>
+<p>在 Word 中調整 <code>template.docx</code> 的樣式（標題字體、間距等）後，再交代：</p>
+<pre><code class="language-text">請用 template.docx 當參考範本（--reference-doc），把 new_lesson.md 轉成 new_lesson.docx。
 </code></pre>
 <p><strong>批次轉換的對話提示</strong>：</p>
 <pre><code class="language-text">請列出目前資料夾中的 Markdown 檔案，使用 my_template.docx 作為樣式範本，
@@ -405,10 +417,10 @@ Markdown to HTML 三個任務。請先解釋輸入輸出路徑與參數，不覆
 <hr/>
 <h5 id="_4">🔧 常見問題排解</h5>
 <p><strong>Q1：PDF 中文顯示亂碼？</strong><br/>
-A：使用 Pandoc 時加入中文字型參數：</p>
-<pre><code class="language-bash">pandoc file.md -o file.pdf --pdf-engine=xelatex -V CJKmainfont="Noto Sans CJK TC"
+A：請 Agent 轉檔時指定 PDF 引擎與中文字型：</p>
+<pre><code class="language-text">請用 Pandoc 把 file.md 轉成 file.pdf，使用 xelatex 引擎，CJKmainfont 選這台電腦已安裝的繁體中文字型；先列出可用字型讓我選。
 </code></pre>
-<p>字型請改成本機有的中文字型：Windows 可用 <code>Microsoft JhengHei</code>，macOS 可用 <code>PingFang TC</code>。</p>
+<p>Agent 會加上 <code>--pdf-engine=xelatex -V CJKmainfont="字型名稱"</code> 參數。常見字型：Windows 可用 <code>Microsoft JhengHei</code>，macOS 可用 <code>PingFang TC</code>。</p>
 <p><strong>Q2：Mermaid 圖表無法轉換？</strong><br/>
 A：<br/>
 - 方法 1：使用 Markdown Preview Enhanced（原生支援）<br/>
@@ -470,10 +482,11 @@ A：在同一 CLI 會話請 Agent 建立批次轉換流程：</p>
 <hr/>
 <h3 id="markdown-pdf_1">轉換方式三：Markdown → PDF</h3>
 <h4 id="a-pandoc">方法 A：使用 Pandoc</h4>
-<p>中文 PDF 需要指定 PDF 引擎與中文字型，另需安裝 XeLaTeX 與 xeCJK 套件（精簡版 TeX 可能未內含）：</p>
-<pre><code class="language-bash">pandoc lesson_plan.md -o lesson_plan.pdf --pdf-engine=xelatex -V CJKmainfont="Noto Sans CJK TC"
+<p>中文 PDF 需要指定 PDF 引擎與中文字型，另需安裝 XeLaTeX 與 xeCJK 套件（精簡版 TeX 可能未內含）。在會話中交代：</p>
+<pre><code class="language-text">請用 Pandoc 把 lesson_plan.md 轉成 lesson_plan.pdf，使用 xelatex 引擎與本機的繁體中文字型。
+若缺少 XeLaTeX 或 xeCJK，先告訴我缺什麼與安裝方式，不要自行安裝。
 </code></pre>
-<p>字型請改成本機有的中文字型：Windows 可用 <code>Microsoft JhengHei</code>，macOS 可用 <code>PingFang TC</code>。</p>
+<p>Agent 會執行類似 <code>pandoc lesson_plan.md -o lesson_plan.pdf --pdf-engine=xelatex -V CJKmainfont="Noto Sans CJK TC"</code> 的指令。常見字型：Windows 可用 <code>Microsoft JhengHei</code>，macOS 可用 <code>PingFang TC</code>。</p>
 <h4 id="bvscode-markdown-preview-enhanced">方法 B：VSCode + Markdown Preview Enhanced</h4>
 <p>在預覽視窗：右鍵 → Export → PDF</p>
 <h4 id="c">方法 C：線上工具</h4>

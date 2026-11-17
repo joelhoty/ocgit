@@ -48,34 +48,30 @@
 
 #### 方法 A：使用 Pandoc（產出 Word 時使用）
 
-**安裝 Pandoc**：依作業系統選一種安裝方式，完成後執行 `pandoc --version`。以下安裝命令依 [Pandoc 官方文件](https://pandoc.org/installing.html) 查核（2026-10-31）。
+**安裝 Pandoc**：在 CLI 會話請 Agent 檢查並安裝，核准前對照官方指令：
 
-macOS（Homebrew）：
-
-```bash
-brew install pandoc
+```text
+請檢查這台電腦是否已安裝 Pandoc。沒有的話，依 Pandoc 官方文件告訴我適用的安裝指令與影響，等我確認後再安裝，最後回報 pandoc --version。
 ```
 
-Windows PowerShell（WinGet）：
-
-```powershell
-winget install --source winget --exact --id JohnMacFarlane.Pandoc
-```
+| 平台 | 官方安裝指令（依 [Pandoc 官方文件](https://pandoc.org/installing.html) 查核，2026-10-31） |
+|---|---|
+| macOS（Homebrew） | `brew install pandoc` |
+| Windows（WinGet） | `winget install --source winget --exact --id JohnMacFarlane.Pandoc` |
 
 **基本轉換**：
-```bash
-pandoc lesson_plan.md -o lesson_plan.docx
+```text
+請用 Pandoc 把 lesson_plan.md 轉成 lesson_plan.docx。完成後回報輸出檔案大小，並確認原始 Markdown 沒有被修改。
 ```
+Agent 會執行 `pandoc lesson_plan.md -o lesson_plan.docx`。
 
 **進階：套用樣式範本**：
-```bash
-# 先創建參考範本
-pandoc lesson_plan.md -o template.docx
-
-# 在 Word 中調整 template.docx 的樣式（標題字體、間距等）
-
-# 使用範本轉換其他文件
-pandoc new_lesson.md --reference-doc=template.docx -o new_lesson.docx
+```text
+請先用 Pandoc 把 lesson_plan.md 轉成 template.docx 當參考範本，然後停下來等我。
+```
+在 Word 中調整 `template.docx` 的樣式（標題字體、間距等）後，再交代：
+```text
+請用 template.docx 當參考範本（--reference-doc），把 new_lesson.md 轉成 new_lesson.docx。
 ```
 
 **批次轉換的對話提示**：
@@ -382,11 +378,11 @@ Markdown to HTML 三個任務。請先解釋輸入輸出路徑與參數，不覆
 ##### 🔧 常見問題排解
 
 **Q1：PDF 中文顯示亂碼？**
-A：使用 Pandoc 時加入中文字型參數：
-```bash
-pandoc file.md -o file.pdf --pdf-engine=xelatex -V CJKmainfont="Noto Sans CJK TC"
+A：請 Agent 轉檔時指定 PDF 引擎與中文字型：
+```text
+請用 Pandoc 把 file.md 轉成 file.pdf，使用 xelatex 引擎，CJKmainfont 選這台電腦已安裝的繁體中文字型；先列出可用字型讓我選。
 ```
-字型請改成本機有的中文字型：Windows 可用 `Microsoft JhengHei`，macOS 可用 `PingFang TC`。
+Agent 會加上 `--pdf-engine=xelatex -V CJKmainfont="字型名稱"` 參數。常見字型：Windows 可用 `Microsoft JhengHei`，macOS 可用 `PingFang TC`。
 
 **Q2：Mermaid 圖表無法轉換？**
 A：
@@ -471,13 +467,14 @@ function markdownToGoogleDocs(markdownText, docName) {
 
 #### 方法 A：使用 Pandoc
 
-中文 PDF 需要指定 PDF 引擎與中文字型，另需安裝 XeLaTeX 與 xeCJK 套件（精簡版 TeX 可能未內含）：
+中文 PDF 需要指定 PDF 引擎與中文字型，另需安裝 XeLaTeX 與 xeCJK 套件（精簡版 TeX 可能未內含）。在會話中交代：
 
-```bash
-pandoc lesson_plan.md -o lesson_plan.pdf --pdf-engine=xelatex -V CJKmainfont="Noto Sans CJK TC"
+```text
+請用 Pandoc 把 lesson_plan.md 轉成 lesson_plan.pdf，使用 xelatex 引擎與本機的繁體中文字型。
+若缺少 XeLaTeX 或 xeCJK，先告訴我缺什麼與安裝方式，不要自行安裝。
 ```
 
-字型請改成本機有的中文字型：Windows 可用 `Microsoft JhengHei`，macOS 可用 `PingFang TC`。
+Agent 會執行類似 `pandoc lesson_plan.md -o lesson_plan.pdf --pdf-engine=xelatex -V CJKmainfont="Noto Sans CJK TC"` 的指令。常見字型：Windows 可用 `Microsoft JhengHei`，macOS 可用 `PingFang TC`。
 
 #### 方法 B：VSCode + Markdown Preview Enhanced
 
