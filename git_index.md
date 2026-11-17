@@ -22,19 +22,19 @@
 | 00_intro.html | 2026-11-17 | [00_intro.html](https://joelhoty.github.io/ocgit/AI_Agent_CLi/00_intro.html) |
 | index.html | 2026-11-17 | [index.html](https://joelhoty.github.io/ocgit/AI_Agent_CLi/index.html) |
 | agy_cli.html | 2026-11-17 | [agy_cli.html](https://joelhoty.github.io/ocgit/AI_Agent_CLi/agy_cli.html) |
+| 06a_assessment.html | 2026-11-17 | [06a_assessment.html](https://joelhoty.github.io/ocgit/AI_Agent_CLi/06a_assessment.html) |
+| 04a_workflows.html | 2026-11-17 | [04a_workflows.html](https://joelhoty.github.io/ocgit/AI_Agent_CLi/04a_workflows.html) |
+| 05_instructions.html | 2026-11-17 | [05_instructions.html](https://joelhoty.github.io/ocgit/AI_Agent_CLi/05_instructions.html) |
+| 07_agents_cli.html | 2026-11-17 | [07_agents_cli.html](https://joelhoty.github.io/ocgit/AI_Agent_CLi/07_agents_cli.html) |
 | 01_materials.html | 2026-10-31 | [01_materials.html](https://joelhoty.github.io/ocgit/AI_Agent_CLi/01_materials.html) |
 | 09_cli_practice.html | 2026-10-31 | [09_cli_practice.html](https://joelhoty.github.io/ocgit/AI_Agent_CLi/09_cli_practice.html) |
 | 08_environment.html | 2026-10-31 | [08_environment.html](https://joelhoty.github.io/ocgit/AI_Agent_CLi/08_environment.html) |
 | 10_literacy.html | 2026-10-31 | [10_literacy.html](https://joelhoty.github.io/ocgit/AI_Agent_CLi/10_literacy.html) |
 | 11_literacy_practice.html | 2026-10-31 | [11_literacy_practice.html](https://joelhoty.github.io/ocgit/AI_Agent_CLi/11_literacy_practice.html) |
 | 12_literacy_research.html | 2026-10-31 | [12_literacy_research.html](https://joelhoty.github.io/ocgit/AI_Agent_CLi/12_literacy_research.html) |
-| 06a_assessment.html | 2026-10-31 | [06a_assessment.html](https://joelhoty.github.io/ocgit/AI_Agent_CLi/06a_assessment.html) |
 | 02_images.html | 2026-10-31 | [02_images.html](https://joelhoty.github.io/ocgit/AI_Agent_CLi/02_images.html) |
-| 04a_workflows.html | 2026-10-31 | [04a_workflows.html](https://joelhoty.github.io/ocgit/AI_Agent_CLi/04a_workflows.html) |
-| 05_instructions.html | 2026-10-31 | [05_instructions.html](https://joelhoty.github.io/ocgit/AI_Agent_CLi/05_instructions.html) |
 | 03_notebooklm.html | 2026-10-31 | [03_notebooklm.html](https://joelhoty.github.io/ocgit/AI_Agent_CLi/03_notebooklm.html) |
 | 06_lesson_plans.html | 2026-10-31 | [06_lesson_plans.html](https://joelhoty.github.io/ocgit/AI_Agent_CLi/06_lesson_plans.html) |
-| 07_agents_cli.html | 2026-10-31 | [07_agents_cli.html](https://joelhoty.github.io/ocgit/AI_Agent_CLi/07_agents_cli.html) |
 | 04_workspace.html | 2026-10-31 | [04_workspace.html](https://joelhoty.github.io/ocgit/AI_Agent_CLi/04_workspace.html) |
 
 ## AI_intro
