@@ -76,12 +76,19 @@
     </style>
 <style id="course-navigation-style">
 html{scroll-behavior:smooth}body{box-sizing:border-box}img{max-width:100%;height:auto}pre{max-width:100%;overflow-x:auto}table{display:block;max-width:100%;overflow-x:auto}td,th{min-width:7em}.course-nav{display:flex;flex-wrap:wrap;gap:.65em;align-items:center;padding:1em 0;margin:1em 0;border-bottom:1px solid #3e3e3e;font-size:.95rem}.course-nav a{color:#66b3ff}.course-nav span{color:#aaa}.course-toc{margin:1.5em 0;padding:1em;background:#222831;border-radius:8px}.course-toc a{overflow-wrap:anywhere}h1,h2,h3,p,li{overflow-wrap:break-word}.mermaid svg{max-width:100%;height:auto}@media(max-width:600px){body{padding:14px!important}h1{font-size:1.65em}pre code{padding:1em}.course-nav{line-height:1.8}}
-</style></head>
-<body><nav aria-label="課程導覽" class="course-nav"><a href="index.html">課程目錄</a><a href="00_intro.html">← 上一章</a><a href="02_images.html">下一章 →</a><a href="01_materials.md">Markdown 原文</a><span>雙 CLI 教材 · 2026-10-31</span></nav>
+</style><link href="assets/course.css" rel="stylesheet"/>
+</head>
+<body><nav aria-label="課程導覽" class="course-nav"><a href="index.html">課程目錄</a><a href="00_intro.html">← 上一章</a><a href="02_images.html">下一章 →</a><a href="01_materials.md">Markdown 原文</a><span>三款 CLI 教材 · 更新 2026-11-17</span></nav>
 <div class="container"><!-- Path: AI_Agent_CLi | Updated: 2026-11-17 | Edition: Codex CLI / Claude Code / agy -->
 <span aria-hidden="true" class="legacy-anchor" id="2-context"></span><span aria-hidden="true" class="legacy-anchor" id="7-example"></span><h1 id="-ai">單元一補充教材：觀念暖身與初體驗 - 我的第一個 AI 生成教材</h1><details class="course-toc"><summary>本頁章節</summary><ul><li><a href="#_1">單元目標</a></li><li><a href="#_2">核心概念詳解</a></li><li><a href="#_4">詳細操作步驟</a></li><li><a href="#prompt">跨學科 Prompt 範例庫</a></li><li><a href="#_14">完整教材設計提示詞的結構總結</a></li><li><a href="#_20">實用技巧與注意事項</a></li><li><a href="#_24">延伸應用</a></li><li><a href="#_25">練習任務</a></li><li><a href="#qa">常見問題 Q&amp;A</a></li><li><a href="#_28">本單元交付與驗收</a></li></ul></details>
 <blockquote>
-<p><strong>閱讀前提：</strong>先完成<a href="00_intro.html">前導章：Agent 基本概念與工作環境</a>，使用 Codex CLI、Claude Code 或 Antigravity CLI（<code>agy</code>）其中一款。本章以備課作為範例情境；不是教師也能把主題換成自己的工作或學習內容。範例請使用虛構或去識別化資料，結果都要回到來源與實際檔案確認。（查核日期：2026-10-31）</p>
+<p><strong>開始之前</strong></p>
+<ul>
+<li><strong>前提</strong>：先完成<a href="00_intro.html">前導章：Agent 基本概念與工作環境</a>，並安裝 Codex CLI、Claude Code 或 Antigravity CLI（<code>agy</code>）其中一款。</li>
+<li><strong>情境</strong>：本章以備課為例；不是教師也可以換成自己的工作或學習主題。</li>
+<li><strong>資料</strong>：範例使用虛構或去識別化資料；結果都要回到來源與實際檔案確認。</li>
+<li><strong>查核日期</strong>：2026-10-31</li>
+</ul>
 </blockquote>
 <h2 id="_1">單元目標</h2>
 <ul>
@@ -94,17 +101,22 @@ html{scroll-behavior:smooth}body{box-sizing:border-box}img{max-width:100%;height
 <hr/>
 <h2 id="_2">核心概念詳解</h2>
 <h3 id="1-ai">1. AI 是什麼？</h3>
-<p><strong>核心比喻</strong>：AI 就像一位「讀過萬卷書的超級大腦」，它透過學習海量的文字資料，理解語言的模式和知識的脈絡。這是理解語言模型的比喻；實際輸出受訓練、當前情境與工具回饋影響，不是從資料庫取出一個既有答案。</p>
-<p><strong>重要觀念</strong>：<br/>
-- AI <strong>不是萬能的</strong>：它可能會出錯、產生不存在的資訊（稱為「幻覺」hallucination）<br/>
-- AI <strong>是工具，不是老師</strong>：您才是課程的設計師，AI 是協助您的助理<br/>
-- AI <strong>需要明確指引</strong>：提示詞越精準，結果越理想</p>
+<p><strong>核心比喻</strong>：AI 就像一位「讀過萬卷書的超級大腦」。它透過學習海量的文字資料，理解語言的模式和知識的脈絡。</p>
+<p>這只是幫助理解語言模型的比喻。實際輸出會受訓練、當前情境與工具回饋影響，不是從資料庫取出一個既有答案。</p>
+<p><strong>重要觀念</strong>：</p>
+<ul>
+<li>AI <strong>不是萬能的</strong>：它可能會出錯、產生不存在的資訊（稱為「幻覺」hallucination）</li>
+<li>AI <strong>是工具，不是老師</strong>：你才是課程的設計師，AI 是協助你的助理</li>
+<li>AI <strong>需要明確指引</strong>：提示詞越精準，結果越理想</li>
+</ul>
 <h3 id="2-prompt">2. 什麼是提示詞 (Prompt)？</h3>
-<p><strong>定義</strong>：提示詞是您與 AI 溝通的「指令」或「問題」。就像您對助理下達工作指示一樣，清楚的指令能得到更好的結果。</p>
-<p><strong>好的提示詞三要素</strong>：<br/>
-1. <strong>明確的角色</strong>：告訴 AI 它應扮演什麼角色（例如：小學自然老師、數學家教）<br/>
-2. <strong>具體的任務</strong>：清楚說明您要它做什麼<br/>
-3. <strong>必要的限制</strong>：設定格式、長度、語氣、對象等條件</p>
+<p><strong>定義</strong>：提示詞是你與 AI 溝通的「指令」或「問題」。就像你對助理下達工作指示，指令越清楚，結果越好。</p>
+<p><strong>好的提示詞三要素</strong>：</p>
+<ol>
+<li><strong>明確的角色</strong>：告訴 AI 它應扮演什麼角色（例如：小學自然老師、數學家教）</li>
+<li><strong>具體的任務</strong>：清楚說明你要它做什麼</li>
+<li><strong>必要的限制</strong>：設定格式、長度、語氣、對象等條件</li>
+</ol>
 <h3 id="3">3. 提示詞優化策略</h3>
 <h4 id="_3">從模糊到精準的四個層次</h4>
 <table>
@@ -141,25 +153,32 @@ html{scroll-behavior:smooth}body{box-sizing:border-box}img{max-width:100%;height
 <hr/>
 <h2 id="_4">詳細操作步驟</h2>
 <h3 id="_5">步驟一：啟動第一個教學專案</h3>
+<p>這一步要準備好資料夾，並開始第一個 AI 會話。</p>
 <ol>
-<li>完成前導章的環境與登入步驟；建立 <code>first_material</code> 資料夾，使用 VS Code 開啟。</li>
+<li>完成前導章的環境與登入步驟。</li>
+<li>建立 <code>first_material</code> 資料夾，使用 VS Code 開啟。</li>
 <li>在這個資料夾的整合終端機輸入 <code>codex</code>、<code>claude</code> 或 <code>agy</code>，選一款開始會話。</li>
-<li>確認顯示的工作目錄正確，先貼上提示詞讓 AI 回答，不必開啟自動修改所有檔案的權限。</li>
-<li>本章重點是比較不同提示的結果；版本、可用模型與額度依帳號而異，不要求指定模型。</li>
+<li>確認顯示的工作目錄正確，再貼上提示詞讓 AI 回答。不必開啟自動修改所有檔案的權限。</li>
 </ol>
-<p><strong>操作提示</strong>：自然語言提示是在 AI 會話中輸入；<code>codex</code>、<code>claude</code>、<code>agy</code> 是在終端機輸入的啟動指令。</p>
-<h3 id="_6">步驟二：撰寫您的第一個提示詞</h3>
-<p><strong>建議流程</strong>：<br/>
-1. 先簡單試試看（層次 0-1）<br/>
-2. 觀察 AI 的回應<br/>
-3. 根據結果調整，加入更多限制（層次 2-3）<br/>
-4. 反覆優化直到滿意</p>
-<h3 id="_7">步驟三：儲存與重複使用</h3>
+<p>本章重點是比較不同提示的結果，不要求指定模型。版本、可用模型與額度依帳號而異。</p>
+<p><strong>操作提示</strong>：<code>codex</code>、<code>claude</code>、<code>agy</code> 是在終端機輸入的啟動指令；自然語言提示則在 AI 會話中輸入。</p>
+<h3 id="_6">步驟二：撰寫你的第一個提示詞</h3>
+<p><strong>建議流程</strong>：</p>
 <ol>
-<li>在 VS Code 建立 <code>prompt.md</code>，貼入最後採用的提示；建立 <code>material_v1.md</code> 存放回覆。</li>
+<li>先簡單試試看（層次 0-1）</li>
+<li>觀察 AI 的回應</li>
+<li>根據結果調整，加入更多限制（層次 2-3）</li>
+<li>反覆優化直到滿意</li>
+</ol>
+<h3 id="_7">步驟三：儲存與重複使用</h3>
+<p>這一步把好用的提示和結果存成檔案，之後可以再用。</p>
+<ol>
+<li>在 VS Code 建立 <code>prompt.md</code>，貼入最後採用的提示。</li>
+<li>建立 <code>material_v1.md</code> 存放回覆。</li>
 <li>比較「模糊提示」與「加入角色、資料、輸出格式」後的結果，將改進理由記在 <code>reflection.md</code>。</li>
-<li>請 AI 協助寫檔時，明確指定這三個檔名並核對修改；完成後在檔案總管開啟確認，不能只看完成宣告。</li>
-<li>下一次開啟新會話時，指定讀取 <code>prompt.md</code>；不要假設新會話記得前一次談話。</li>
+<li>請 AI 協助寫檔時，明確指定這三個檔名，並核對修改內容。</li>
+<li>完成後在檔案總管開啟檔案確認，不能只看 AI 的完成宣告。</li>
+<li>下一次開啟新會話時，指定讀取 <code>prompt.md</code>。不要假設新會話記得前一次談話。</li>
 </ol>
 <hr/>
 <h2 id="prompt">跨學科 Prompt 範例庫</h2>
@@ -301,9 +320,11 @@ html{scroll-behavior:smooth}body{box-sizing:border-box}img{max-width:100%;height
 <p><strong>定義 AI 的身份與專業</strong></p>
 <pre><code>你是一位 [專業角色]，擅長 [專長領域]。
 </code></pre>
-<p><strong>範例</strong>：<br/>
-- 你是一位經驗豐富的國小數學老師，擅長用生活化情境教學。<br/>
-- 你是一位充滿創意的自然科教師，專長於實驗設計與探究教學。</p>
+<p><strong>範例</strong>：</p>
+<ul>
+<li>你是一位經驗豐富的國小數學老師，擅長用生活化情境教學。</li>
+<li>你是一位充滿創意的自然科教師，專長於實驗設計與探究教學。</li>
+</ul>
 <hr/>
 <h4 id="2-context-sources">2️⃣ 情境與來源 (Context &amp; Sources)</h4>
 <p><strong>說明教學場景、對象與 AI 應使用的資料</strong></p>
@@ -325,10 +346,12 @@ html{scroll-behavior:smooth}body{box-sizing:border-box}img{max-width:100%;height
 <p><strong>明確說明要 AI 產出什麼</strong></p>
 <pre><code>請設計 [具體產出]。
 </code></pre>
-<p><strong>範例</strong>：<br/>
-- 請設計一份完整的教案（包含教學目標、流程、評量）<br/>
-- 請設計一個 15 分鐘的課堂活動<br/>
-- 請設計一份學習單（包含練習題與延伸思考）</p>
+<p><strong>範例</strong>：</p>
+<ul>
+<li>請設計一份完整的教案（包含教學目標、流程、評量）</li>
+<li>請設計一個 15 分鐘的課堂活動</li>
+<li>請設計一份學習單（包含練習題與延伸思考）</li>
+</ul>
 <hr/>
 <h4 id="4-content">4️⃣ 內容要求 (Content)</h4>
 <p><strong>具體說明應包含哪些元素</strong></p>
@@ -410,10 +433,12 @@ html{scroll-behavior:smooth}body{box-sizing:border-box}img{max-width:100%;height
 <pre><code>參考範例：
 [貼上一小段您期望的輸出風格]
 </code></pre>
-<p><strong>為何需要範例？</strong><br/>
-- 讓 AI 理解您期望的「語氣」與「風格」<br/>
-- 確保格式符合您的需求<br/>
-- 特別適合需要特定排版的情況</p>
+<p><strong>為何需要範例？</strong></p>
+<ul>
+<li>讓 AI 理解你期望的「語氣」與「風格」</li>
+<li>確保格式符合你的需求</li>
+<li>特別適合需要特定排版的情況</li>
+</ul>
 <hr/>
 <h3 id="_17">完整提示詞範例：教學活動設計</h3>
 <pre><code>【1. 角色設定】
@@ -558,7 +583,7 @@ html{scroll-behavior:smooth}body{box-sizing:border-box}img{max-width:100%;height
 <hr/>
 <h2 id="_24">延伸應用</h2>
 <h3 id="1_6">應用 1：快速生成課堂問答題</h3>
-<p><strong>情境</strong>：您教完一個單元，需要幾道檢核題目。</p>
+<p><strong>情境</strong>：你教完一個單元，需要幾道檢核題目。</p>
 <p><strong>結構化 Prompt</strong>：</p>
 <pre><code>【角色】你是一位國小自然老師
 【情境】我剛教完「昆蟲的身體構造」單元（國小四年級）
@@ -574,7 +599,7 @@ html{scroll-behavior:smooth}body{box-sizing:border-box}img{max-width:100%;height
 </code></pre>
 <hr/>
 <h3 id="2_5">應用 2：改寫教材難度</h3>
-<p><strong>情境</strong>：您有一份國中程度的教材，想改寫給國小學生。</p>
+<p><strong>情境</strong>：你有一份國中程度的教材，想改寫給國小學生。</p>
 <p><strong>結構化 Prompt</strong>：</p>
 <pre><code>【角色】你是一位擅長差異化教學的老師
 【任務】請將以下關於「地球自轉」的說明，改寫成國小四年級學生能理解的版本
@@ -590,7 +615,7 @@ html{scroll-behavior:smooth}body{box-sizing:border-box}img{max-width:100%;height
 </code></pre>
 <hr/>
 <h3 id="3_1">應用 3：生成課程開場白</h3>
-<p><strong>情境</strong>：您想要一個吸引學生注意的課堂開場。</p>
+<p><strong>情境</strong>：你想要一個吸引學生注意的課堂開場。</p>
 <p><strong>結構化 Prompt</strong>：</p>
 <pre><code>【角色】你是一位充滿創意的國中數學老師
 【情境】今天要教「一元一次方程式」（國中七年級）
@@ -614,14 +639,14 @@ html{scroll-behavior:smooth}body{box-sizing:border-box}img{max-width:100%;height
 </ol>
 <h3 id="_27">進階任務</h3>
 <ol>
-<li>為您下週要教的單元，撰寫一份完整結構化提示詞，生成教案</li>
+<li>為你下週要教的單元，撰寫一份完整結構化提示詞，生成教案</li>
 <li>使用相同主題，嘗試調整「限制條件」，觀察輸出變化</li>
-<li>建立您的「常用提示詞範本庫」（儲存 3-5 個常用架構）</li>
+<li>建立你的「常用提示詞範本庫」（儲存 3-5 個常用架構）</li>
 </ol>
 <hr/>
 <h2 id="qa">常見問題 Q&amp;A</h2>
 <p><strong>Q1：AI 生成的內容有錯怎麼辦？</strong><br/>
-A1：務必自行檢查！AI 是輔助工具，最終的專業判斷還是要由您來做。如果發現錯誤，可以在提示詞中明確指正，或直接修改結果。</p>
+A1：務必自行檢查！AI 是輔助工具，最終的專業判斷還是要由你來做。發現錯誤時，可以在提示詞中明確指正，或直接修改結果。</p>
 <p><strong>Q2：AI 的回答太長或太短？</strong><br/>
 A2：在提示詞的「限制條件」中加入字數限制，例如「約 200 字」、「不超過 150 字」。</p>
 <p><strong>Q3：AI 的語氣不適合我的學生？</strong><br/>
@@ -629,20 +654,35 @@ A3：在提示詞的「限制條件」中明確設定語氣，例如「親切溫
 <p><strong>Q4：每次問同樣的問題，答案都不一樣？</strong><br/>
 A4：這是 AI 的特性！如果需要穩定的結果，可以在提示詞中加入更多限制，或直接儲存滿意的版本。</p>
 <p><strong>Q5：我可以把 AI 的內容直接用在課堂上嗎？</strong><br/>
-A5：可以，但建議先檢查內容正確性，並根據班級特性微調。AI 是起點,不是終點。</p>
+A5：可以，但建議先檢查內容正確性，並根據班級特性微調。AI 是起點，不是終點。</p>
 <p><strong>Q6：結構化提示詞會不會太複雜？</strong><br/>
-A6：初期可能需要時間適應，但熟悉後反而更快！因為結構清楚，AI 理解更精準，減少反覆修改的時間。建議先從「簡化版 4 元素」開始練習。</p>
+A6：初期可能需要時間適應，但熟悉後反而更快！結構清楚時，AI 理解更精準，可以減少反覆修改的時間。建議先從「簡化版 4 元素」開始練習。</p>
 <p><strong>Q7：是否每次都要用完整的 8 元素？</strong><br/>
 A7：不一定。簡單任務用「精簡版」即可，複雜任務（如完整教案、教學活動）才需要「完整版」。依需求彈性調整。</p>
 <hr/>
-<p><strong>小結</strong>：本單元著重於建立正確的 AI 使用觀念，以及掌握提示詞的基本技巧與完整結構。透過反覆練習與優化，您將能更精準地讓 AI 成為您的教學助理！記住：<strong>好的提示詞 = 明確的結構 + 具體的要求 + 適當的限制</strong></p>
+<p><strong>小結</strong>：本單元著重建立正確的 AI 使用觀念，並掌握提示詞的基本技巧與完整結構。透過反覆練習與優化，你能更精準地讓 AI 成為你的教學助理！</p>
+<p>記住：<strong>好的提示詞 = 明確的結構 + 具體的要求 + 適當的限制</strong></p>
 <h2 id="_28">本單元交付與驗收</h2>
-<p><strong>輸入</strong>：一個教學主題、學生年級與長度限制。<strong>產物</strong>：<code>prompt.md</code>、<code>material_v1.md</code>、<code>reflection.md</code>。</p>
+<ul>
+<li><strong>輸入</strong>：一個教學主題、學生年級與長度限制。</li>
+<li><strong>產物</strong>：<code>prompt.md</code>、<code>material_v1.md</code>、<code>reflection.md</code>。</li>
+</ul>
 <p><strong>共同提示（在 codex、claude 或 agy 會話內）</strong>：</p>
 <pre><code class="language-text">請根據 prompt.md 產生 material_v1.md。先列出你理解的對象與限制；內容需有概念、生活例子與一題附答案的練習。最後列出需教師查證的主張，不要杜撰來源。
 </code></pre>
-<p><strong>成功判準</strong>：檔案可開啟；對象、長度、題數符合要求；教師以課本核對答案；反思至少指出一處經人工修改的內容。</p>
-<p><a href="https://learn.chatgpt.com/docs/codex/cli">Codex CLI 入門</a>、<a href="https://code.claude.com/docs/en/quickstart">Claude Code 入門</a>、<a href="https://antigravity.google/docs/getting-started?tab=cli">Antigravity CLI 入門</a>。</p></div>
+<p><strong>成功判準</strong>：</p>
+<ul>
+<li>檔案可開啟。</li>
+<li>對象、長度、題數符合要求。</li>
+<li>教師以課本核對答案。</li>
+<li>反思至少指出一處經人工修改的內容。</li>
+</ul>
+<p>官方入門文件：</p>
+<ul>
+<li><a href="https://learn.chatgpt.com/docs/codex/cli">Codex CLI 入門</a></li>
+<li><a href="https://code.claude.com/docs/en/quickstart">Claude Code 入門</a></li>
+<li><a href="https://antigravity.google/docs/getting-started?tab=cli">Antigravity CLI 入門</a></li>
+</ul></div>
 <!-- Highlight.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
 <script>hljs.highlightAll();</script>
@@ -655,5 +695,5 @@ A7：不一定。簡單任務用「精簡版」即可，複雜任務（如完整
             "securityLevel": "loose"
 });
     </script>
-<nav aria-label="課程導覽" class="course-nav"><a href="index.html">課程目錄</a><a href="00_intro.html">← 上一章</a><a href="02_images.html">下一章 →</a><a href="01_materials.md">Markdown 原文</a><span>雙 CLI 教材 · 2026-10-31</span></nav></body>
+<nav aria-label="課程導覽" class="course-nav"><a href="index.html">課程目錄</a><a href="00_intro.html">← 上一章</a><a href="02_images.html">下一章 →</a><a href="01_materials.md">Markdown 原文</a><span>三款 CLI 教材 · 更新 2026-11-17</span></nav></body>
 </html>

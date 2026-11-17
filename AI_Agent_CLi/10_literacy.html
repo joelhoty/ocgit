@@ -76,17 +76,24 @@
     </style>
 <style id="course-navigation-style">
 html{scroll-behavior:smooth}body{box-sizing:border-box}img{max-width:100%;height:auto}pre{max-width:100%;overflow-x:auto}table{display:block;max-width:100%;overflow-x:auto}td,th{min-width:7em}.course-nav{display:flex;flex-wrap:wrap;gap:.65em;align-items:center;padding:1em 0;margin:1em 0;border-bottom:1px solid #3e3e3e;font-size:.95rem}.course-nav a{color:#66b3ff}.course-nav span{color:#aaa}.course-toc{margin:1.5em 0;padding:1em;background:#222831;border-radius:8px}.course-toc a{overflow-wrap:anywhere}h1,h2,h3,p,li{overflow-wrap:break-word}.mermaid svg{max-width:100%;height:auto}@media(max-width:600px){body{padding:14px!important}h1{font-size:1.65em}pre code{padding:1em}.course-nav{line-height:1.8}}
-</style></head>
-<body><nav aria-label="課程導覽" class="course-nav"><a href="index.html">課程目錄</a><a href="00_intro.html">前導章</a><span>雙 CLI 教材 · 2026-10-31</span></nav>
+</style><link href="assets/course.css" rel="stylesheet"/>
+</head>
+<body><nav aria-label="課程導覽" class="course-nav"><a href="index.html">課程目錄</a><a href="00_intro.html">前導章</a><span>三款 CLI 教材 · 更新 2026-11-17</span></nav>
 <div class="container">
 <h1 id="page-title">資訊與媒體素養：使用生成式 AI 的入門概念</h1><details class="course-toc"><summary>本頁章節</summary><ul><li><a href="#section-1">前言：學用 AI，也要學會查證</a></li><li><a href="#section-2">兩種素養是什麼</a></li><li><a href="#section-3">生成式 AI 帶來的新挑戰</a></li><li><a href="#section-4">看到可疑影像時：先用 SIFT 查脈絡</a></li><li><a href="#section-5">資料來源與著作權</a></li><li><a href="#section-6">負責任地使用 AI</a></li><li><a href="#section-7">常見問題 (Q&amp;A)</a></li><li><a href="#section-8">概念練習</a></li><li><a href="#section-9">重點回顧</a></li><li><a href="#section-10">參考文獻</a></li></ul></details>
 <h2 id="section-1">前言：學用 AI，也要學會查證</h2>
 <p>生成式 AI 能在幾秒內寫出文章、畫出圖片，也能幫你整理筆記。這很方便，但它給出的內容不一定正確，而且看起來越流暢，越容易讓人忘記查證。</p>
-<p>本頁寫給剛開始學習 AI 應用的入門使用者，不需要程式或教育背景。讀完後，你應該能分辨兩種素養的差別，知道 AI 輸出為什麼要查，也知道遇到可疑內容時第一步該做什麼。</p>
+<p>本頁寫給剛開始學習 AI 應用的入門使用者，不需要程式或教育背景。讀完後，你應該能：</p>
+<ul>
+<li>分辨兩種素養的差別。</li>
+<li>知道 AI 輸出為什麼要查證。</li>
+<li>知道遇到可疑內容時，第一步該做什麼。</li>
+</ul>
 <hr/>
 
 <h2 id="section-2">兩種素養是什麼</h2>
-<p><strong>資訊素養</strong>是知道自己何時需要資訊，並且能找到、評估和有效使用這些資訊<sup><a href="#ref-1">[1]</a></sup>。<strong>媒體素養</strong>是能使用各種傳播形式進行接取、分析、評估、創作和行動<sup><a href="#ref-2">[2]</a></sup>。</p>
+<p><strong>資訊素養</strong>是知道自己何時需要資訊，並且能找到、評估和有效使用這些資訊<sup><a href="#ref-1">[1]</a></sup>。</p>
+<p><strong>媒體素養</strong>是能使用各種傳播形式進行接取、分析、評估、創作和行動<sup><a href="#ref-2">[2]</a></sup>。</p>
 <p>臺灣教育部 2023 年的白皮書把媒體素養整理成五項能力：近用、分析、創造、反思、行動，並以批判性思考為核心<sup><a href="#ref-3">[3]</a></sup>。</p>
 <h3 id="literacy-comparison">核心概念比較</h3>
 <p>兩者常被放在一起談，但重點不同：</p>
@@ -145,11 +152,14 @@ html{scroll-behavior:smooth}body{box-sizing:border-box}img{max-width:100%;height
 <p>使用 AI 時，重點從「如何找到答案」多了一步：「如何問清楚，並驗證 AI 給的答案」。<a href="01_materials.html">單元一</a>介紹的提示詞寫法，就是這項能力的一部分。研究者也把提示詞工程放進資訊素養的討論中<sup><a href="#ref-5">[5]</a></sup>。</p>
 <h3 id="hallucination">幻覺 (Hallucination)：AI 可能說錯，甚至捏造</h3>
 <p>AI 會犯錯，也可能生成捏造或具欺騙性的內容<sup><a href="#ref-6">[6]</a></sup>。因此要把 AI 的回答當成待查證的起點，而不是最終事實。一個實用方法是<strong>橫向閱讀 (lateral reading)</strong>：離開 AI 的回答，用外部來源比對<sup><a href="#ref-6">[6]</a></sup>。</p>
-<p>只知道「AI 會出錯」還不夠。一項以社交機器人進行的實驗中，機器人穿插的錯誤詞彙約 77% 成為受試者的錯誤記憶，單次事先警告也沒有減少這個現象<sup><a href="#ref-7">[7]</a></sup>。這項研究使用受控的機器人和詞彙記憶作業，不能直接推論到所有 AI 對話，但它提醒我們：要靠實際核對，不能只靠「我會小心」。</p>
+<p>只知道「AI 會出錯」還不夠。一項以社交機器人進行的實驗中，機器人穿插的錯誤詞彙，約 77% 成為受試者的錯誤記憶。單次事先警告，也沒有減少這個現象<sup><a href="#ref-7">[7]</a></sup>。</p>
+<p>這項研究使用受控的機器人和詞彙記憶作業，不能直接推論到所有 AI 對話。但它提醒我們：要靠實際核對，不能只靠「我會小心」。</p>
 <h3 id="ai-bias">AI 的偏見</h3>
-<p>演算法偏誤是指機器學習演算法的系統性錯誤造成不公平或歧視性的結果；不具代表性或帶有歷史偏見的資料，可能放大既有偏見<sup><a href="#ref-8">[8]</a></sup>。看到 AI 的回答時，可以多問一句：「這份回答可能缺少誰的觀點？」</p>
+<p>演算法偏誤是指機器學習演算法的系統性錯誤，造成不公平或歧視性的結果。不具代表性或帶有歷史偏見的資料，可能放大既有偏見<sup><a href="#ref-8">[8]</a></sup>。</p>
+<p>看到 AI 的回答時，可以多問一句：「這份回答可能缺少誰的觀點？」</p>
 <h3 id="synthetic-media">合成媒體與內容來源</h3>
-<p>文章和圖片的作者可能是人、AI，或兩者合作，這讓判斷可信度和作者意圖變得更複雜。你在<a href="02_images.html">單元二</a>也會用 AI 生成圖片，所以這不只是看別人的內容：你同時也是創作者，要避免製造誤導他人的內容。</p>
+<p>文章和圖片的作者可能是人、AI，或兩者合作，這讓判斷可信度和作者意圖變得更複雜。</p>
+<p>你在<a href="02_images.html">單元二</a>也會用 AI 生成圖片，所以這不只是看別人的內容。你同時也是創作者，要避免製造誤導他人的內容。</p>
 <hr/>
 
 <h2 id="section-4">看到可疑影像時：先用 SIFT 查脈絡</h2>
@@ -176,8 +186,18 @@ html{scroll-behavior:smooth}body{box-sizing:border-box}img{max-width:100%;height
 <p>用受著作權保護的作品訓練生成式 AI，是否屬於合理使用，仍有爭議。美國加州的 <em>Bartz v. Anthropic</em> 與 <em>Kadrey v. Meta</em> 兩案中，法官表示這種訓練可能構成合理使用，但相關訴訟仍在持續<sup><a href="#ref-14">[14]</a></sup>。</p>
 <h3 id="output-ownership">AI 生成內容歸誰</h3>
 <ul>
-<li><strong>美國</strong>：著作權局 2025 年 1 月的報告認為，以目前一般可用的技術來說，只下提示詞並不足以讓使用者成為輸出內容的作者；若 AI 是工具，且由人類決定內容的表達元素，成果則可能全部或部分受保護<sup><a href="#ref-15">[15]</a></sup>。最高法院 2026 年 3 月 2 日拒絕受理 <em>Thaler v. Perlmutter</em>，維持「須有人類作者」的下級法院判決；至於人類要貢獻多少才夠，仍沒有明確界線<sup><a href="#ref-16">[16]</a></sup>。</li>
-<li><strong>臺灣</strong>：著作權法規定著作人是創作著作之人，著作人於著作完成時享有著作權<sup><a href="#ref-17">[17]</a></sup>。依智慧局見解，人類有實際創意投入、把 AI 當輔助工具的成果仍可受保護；完全由 AI 獨立完成、人類沒有實際創意投入的成果，原則上無法享有著作權<sup><a href="#ref-18">[18]</a></sup>。</li>
+<li><strong>美國</strong>：
+<ul>
+<li>著作權局 2025 年 1 月的報告認為，以目前一般可用的技術來說，只下提示詞並不足以讓使用者成為輸出內容的作者。若 AI 是工具，且由人類決定內容的表達元素，成果則可能全部或部分受保護<sup><a href="#ref-15">[15]</a></sup>。</li>
+<li>最高法院 2026 年 3 月 2 日拒絕受理 <em>Thaler v. Perlmutter</em>，維持「須有人類作者」的下級法院判決。至於人類要貢獻多少才夠，仍沒有明確界線<sup><a href="#ref-16">[16]</a></sup>。</li>
+</ul>
+</li>
+<li><strong>臺灣</strong>：
+<ul>
+<li>著作權法規定著作人是創作著作之人，著作人於著作完成時享有著作權<sup><a href="#ref-17">[17]</a></sup>。</li>
+<li>依智慧局見解，人類有實際創意投入、把 AI 當輔助工具的成果，仍可受保護。完全由 AI 獨立完成、人類沒有實際創意投入的成果，原則上無法享有著作權<sup><a href="#ref-18">[18]</a></sup>。</li>
+</ul>
+</li>
 <li><strong>後續發展</strong>：工商時報 2026 年 8 月報導，智慧局已完成《生成式人工智慧著作權指引》1.0 版<sup><a href="#ref-19">[19]</a></sup>。本教材未取得正式公告全文，實際內容請以智慧局公告為準。</li>
 </ul>
 <h3 id="upload-risk">上傳他人作品前先想一下</h3>
@@ -189,7 +209,7 @@ html{scroll-behavior:smooth}body{box-sizing:border-box}img{max-width:100%;height
 <li><strong>說明 AI 參與了什麼</strong>：學校、公司或活動若有 AI 使用規定，就照規定註明。臺灣行政院的參考指引也要求機關不可完全信任生成資訊，並應適當揭露使用情形<sup><a href="#ref-18">[18]</a></sup>。</li>
 <li><strong>把輸出當草稿</strong>：先核對，再加入自己的判斷和修改。</li>
 <li><strong>保護個人資料</strong>：避免上傳自己或他人的個人資料<sup><a href="#ref-18">[18]</a></sup>。</li>
-<li><strong>使用本機 AI 工具時也一樣</strong>：<a href="04_workspace.html">單元四</a>、<a href="05_instructions.html">單元五</a>介紹的 VS Code 與 Codex CLI／Claude Code／agy，可用 <code>AGENTS.md</code>／<code>CLAUDE.md</code> 引導任務範圍。文字規則不是強制隔離，需搭配實際工具權限；本機 CLI 也不代表資料不會送往雲端模型。</li>
+<li><strong>使用本機 AI 工具時也一樣</strong>：<a href="04_workspace.html">單元四</a>、<a href="05_instructions.html">單元五</a>介紹的 VS Code 與 Codex CLI／Claude Code／agy，可用 <code>AGENTS.md</code>／<code>CLAUDE.md</code> 引導任務範圍。文字規則不是強制隔離，需搭配實際工具權限。本機 CLI 也不代表資料不會送往雲端模型。</li>
 <li><strong>不製造傷害</strong>：不用 AI 製作騷擾、歧視或誤導他人的內容。</li>
 </ul>
 <p>UNESCO 的生成式 AI 教育指引也採人本取向<sup><a href="#ref-20">[20]</a></sup>。對入門使用者來說，這句話可以很實際：工具可以幫忙，判斷和責任仍在你身上。</p>
@@ -220,7 +240,7 @@ html{scroll-behavior:smooth}body{box-sizing:border-box}img{max-width:100%;height
 <h2 id="section-8">概念練習</h2>
 <p>這些練習著重思考，不需要新的安裝或設定。完成後用本節最後的<a href="#practice-rubric">評量規準</a>自我檢查。</p>
 <h3 id="practice-1">練習一：用來源規則核對 AI 摘要</h3>
-<p><strong>規則</strong>：<strong>每個重點標示來源段落；來源沒寫的內容列為待查。</strong></p>
+<p><strong>規則</strong>：每個重點標示來源段落；來源沒寫的內容列為待查。</p>
 <ol>
 <li><strong>準備</strong>：使用前導章 <a href="00_intro.html#read-followup-save">5.6 讀檔、追問與保存摘要草稿</a>的摘要，或任選一份你自己的筆記，請 AI 依上述規則列出三個重點。</li>
 <li><strong>核對</strong>：逐點回到原文，把每個重點分成三類：有依據、來源不支持、待查。</li>
@@ -321,5 +341,5 @@ html{scroll-behavior:smooth}body{box-sizing:border-box}img{max-width:100%;height
             "securityLevel": "loose"
 });
     </script>
-<nav aria-label="課程導覽" class="course-nav"><a href="index.html">課程目錄</a><a href="00_intro.html">前導章</a><span>雙 CLI 教材 · 2026-10-31</span></nav></body>
+<nav aria-label="課程導覽" class="course-nav"><a href="index.html">課程目錄</a><a href="00_intro.html">前導章</a><span>三款 CLI 教材 · 更新 2026-11-17</span></nav></body>
 </html>

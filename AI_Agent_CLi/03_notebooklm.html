@@ -76,13 +76,20 @@
     </style>
 <style id="course-navigation-style">
 html{scroll-behavior:smooth}body{box-sizing:border-box}img{max-width:100%;height:auto}pre{max-width:100%;overflow-x:auto}table{display:block;max-width:100%;overflow-x:auto}td,th{min-width:7em}.course-nav{display:flex;flex-wrap:wrap;gap:.65em;align-items:center;padding:1em 0;margin:1em 0;border-bottom:1px solid #3e3e3e;font-size:.95rem}.course-nav a{color:#66b3ff}.course-nav span{color:#aaa}.course-toc{margin:1.5em 0;padding:1em;background:#222831;border-radius:8px}.course-toc a{overflow-wrap:anywhere}h1,h2,h3,p,li{overflow-wrap:break-word}.mermaid svg{max-width:100%;height:auto}@media(max-width:600px){body{padding:14px!important}h1{font-size:1.65em}pre code{padding:1em}.course-nav{line-height:1.8}}
-</style></head>
-<body><nav aria-label="課程導覽" class="course-nav"><a href="index.html">課程目錄</a><a href="02_images.html">← 上一章</a><a href="04_workspace.html">下一章 →</a><a href="03_notebooklm.md">Markdown 原文</a><span>雙 CLI 教材 · 2026-10-31</span></nav>
+</style><link href="assets/course.css" rel="stylesheet"/>
+</head>
+<body><nav aria-label="課程導覽" class="course-nav"><a href="index.html">課程目錄</a><a href="02_images.html">← 上一章</a><a href="04_workspace.html">下一章 →</a><a href="03_notebooklm.md">Markdown 原文</a><span>三款 CLI 教材 · 更新 2026-11-17</span></nav>
 <div class="container"><!-- Path: AI_Agent_CLi | Updated: 2026-11-17 | Edition: Codex CLI / Claude Code / agy -->
-<h1 id="-notebooklm">單元三補充教材：打造您的專屬知識庫 - 備課神器 NotebookLM</h1><details class="course-toc"><summary>本頁章節</summary><ul><li><a href="#_1">單元目標</a></li><li><a href="#_2">核心概念詳解</a></li><li><a href="#_3">詳細操作步驟</a></li><li><a href="#_6">跨學科應用範例</a></li><li><a href="#_13">進階技巧</a></li><li><a href="#_22">實用技巧與注意事項</a></li><li><a href="#_25">延伸應用</a></li><li><a href="#_26">練習任務</a></li><li><a href="#qa">常見問題 Q&amp;A</a></li><li><a href="#codex-cliclaude-codeagy">與 Codex CLI／Claude Code／agy 接續的實作</a></li></ul></details>
+<h1 id="-notebooklm">單元三補充教材：打造你的專屬知識庫 - 備課神器 NotebookLM</h1><details class="course-toc"><summary>本頁章節</summary><ul><li><a href="#_1">單元目標</a></li><li><a href="#_2">核心概念詳解</a></li><li><a href="#_3">詳細操作步驟</a></li><li><a href="#_6">跨學科應用範例</a></li><li><a href="#_13">進階技巧</a></li><li><a href="#_22">實用技巧與注意事項</a></li><li><a href="#_25">延伸應用</a></li><li><a href="#_26">練習任務</a></li><li><a href="#qa">常見問題 Q&amp;A</a></li><li><a href="#codex-cliclaude-codeagy">與 Codex CLI／Claude Code／agy 接續的實作</a></li></ul></details>
 <blockquote>
-<p><strong>閱讀前提：</strong>先完成<a href="00_intro.html">前導章：Agent 基本概念與工作環境</a>，使用 Codex CLI、Claude Code 或 Antigravity CLI（<code>agy</code>）其中一款。本章以備課作為範例情境；不是教師也能把主題換成自己的工作或學習內容。範例請使用虛構或去識別化資料，結果都要回到來源與實際檔案確認。（查核日期：2026-10-31）</p>
-<p><strong>名稱提醒</strong>：Google 已正式將 NotebookLM 更名為 <strong>Gemini Notebook</strong>（<a href="https://blog.google/innovation-and-ai/products/gemini-notebook/notebooklm-gemini-notebook/">官方公告</a>）。本課程為了延續性仍稱 NotebookLM，實際介面以登入後顯示為準。<a href="https://support.google.com/gemininotebook/answer/16164461">官方介紹</a>。</p>
+<p><strong>開始之前</strong></p>
+<ul>
+<li><strong>前提</strong>：先完成<a href="00_intro.html">前導章：Agent 基本概念與工作環境</a>，並安裝 Codex CLI、Claude Code 或 Antigravity CLI（<code>agy</code>）其中一款。</li>
+<li><strong>情境</strong>：本章以備課為例；不是教師也可以換成自己的工作或學習主題。</li>
+<li><strong>資料</strong>：範例使用虛構或去識別化資料；結果都要回到來源與實際檔案確認。</li>
+<li><strong>查核日期</strong>：2026-10-31</li>
+</ul>
+<p><strong>名稱提醒</strong>：Google 已正式將 NotebookLM 更名為 <strong>Gemini Notebook</strong>。本課程為了延續性仍稱 NotebookLM，實際介面以登入後顯示為準。參考：<a href="https://blog.google/innovation-and-ai/products/gemini-notebook/notebooklm-gemini-notebook/">官方公告</a>、<a href="https://support.google.com/gemininotebook/answer/16164461">官方介紹</a>。</p>
 </blockquote>
 <h2 id="_1">單元目標</h2>
 <ul>
@@ -96,15 +103,15 @@ html{scroll-behavior:smooth}body{box-sizing:border-box}img{max-width:100%;height
 <h3 id="1">1. 從「閉卷考試」到「開卷考試」</h3>
 <h4 id="ai-chatgptgemini">傳統 AI (如 ChatGPT、Gemini)</h4>
 <ul>
-<li><strong>比喻</strong>：像「閉卷考試」,AI 憑記憶作答</li>
+<li><strong>比喻</strong>：像「閉卷考試」，AI 憑記憶作答</li>
 <li><strong>優點</strong>：知識廣博、反應快速</li>
-<li><strong>缺點</strong>：可能產生幻覺(編造不存在的內容)、若未提供來源或搜尋工具，回答可能缺少可核對依據</li>
+<li><strong>缺點</strong>：可能產生幻覺（編造不存在的內容）。若未提供來源或搜尋工具，回答可能缺少可核對的依據</li>
 </ul>
 <h4 id="notebooklm">NotebookLM</h4>
 <ul>
-<li><strong>比喻</strong>：像「開卷考試」,AI 翻開指定資料作答,以您選取的來源作為依據</li>
+<li><strong>比喻</strong>：像「開卷考試」，AI 翻開指定資料作答，以你選取的來源作為依據</li>
 <li><strong>優點</strong>：可點開引用回查來源，但仍可能誤讀或漏掉條件</li>
-<li><strong>缺點</strong>：來源不足時可能無法回答；需補資料，不能用流暢文字替代證據</li>
+<li><strong>缺點</strong>：來源不足時可能無法回答。這時需要補資料，不能用流暢文字替代證據</li>
 </ul>
 <h3 id="2-rag">2. 什麼是 RAG 技術？</h3>
 <p><strong>RAG = Retrieval-Augmented Generation (檢索增強生成)</strong></p>
@@ -116,10 +123,12 @@ html{scroll-behavior:smooth}body{box-sizing:border-box}img{max-width:100%;height
     D --&gt; E[根據段落生成回答]
     E --&gt; F[附上引用來源]
 </div>
-<p><strong>核心價值</strong>：<br/>
-- 讓 AI 回答「有所本」<br/>
-- 降低無來源回答的風險，不能保證零錯誤<br/>
-- 適合教學情境(需要精準、可信的內容)</p>
+<p><strong>核心價值</strong>：</p>
+<ul>
+<li>讓 AI 回答「有所本」</li>
+<li>降低無來源回答的風險，不能保證零錯誤</li>
+<li>適合教學情境（需要精準、可信的內容）</li>
+</ul>
 <h3 id="3-notebooklm">3. NotebookLM 的三大應用場景</h3>
 <table>
 <thead>
@@ -137,7 +146,7 @@ html{scroll-behavior:smooth}body{box-sizing:border-box}img{max-width:100%;height
 </tr>
 <tr>
 <td><strong>題目生成</strong></td>
-<td>根據教材出題,確保符合內容</td>
+<td>根據教材出題，確保符合內容</td>
 <td>準備考卷、學習單</td>
 </tr>
 <tr>
@@ -151,35 +160,45 @@ html{scroll-behavior:smooth}body{box-sizing:border-box}img{max-width:100%;height
 <h2 id="_3">詳細操作步驟</h2>
 <h3 id="notebooklm_1">步驟一：進入 NotebookLM</h3>
 <ol>
-<li>開啟瀏覽器,前往 <a href="https://notebooklm.google.com/">https://notebooklm.google.com/</a></li>
-<li>使用您的 Google 帳號登入</li>
+<li>開啟瀏覽器，前往 <a href="https://notebooklm.google.com/">https://notebooklm.google.com/</a></li>
+<li>使用你的 Google 帳號登入</li>
 <li>點選「+ New notebook」建立新的筆記本</li>
-<li>為筆記本命名(例如：「國小三年級自然科_植物單元」)</li>
+<li>為筆記本命名（例如：「國小三年級自然科_植物單元」）</li>
 </ol>
 <h3 id="_4">步驟二：上傳資料來源</h3>
-<p>NotebookLM 支援多種格式：<br/>
-- 📄 <strong>PDF 檔案</strong>：課本電子檔、講義、論文<br/>
-- 📝 <strong>Google Docs</strong>：教案、教學計畫<br/>
-- 🌐 <strong>網頁連結</strong>：教學網站、資料庫文章<br/>
-- 📊 <strong>Google Slides 等支援來源</strong>：依新增來源選單選取；不是所有 Drive 格式都能直接匯入<br/>
-- ✍️ <strong>純文字</strong>：直接複製貼上</p>
-<p><strong>操作方式</strong>：<br/>
-1. 點選「Add source」或「新增來源」<br/>
-2. 選擇檔案類型<br/>
-3. 上傳或貼上內容<br/>
-4. 等待來源處理完成；所需時間依格式、大小與服務狀態而異<br/>
-5. 處理完成後,介面會顯示來源與摘要；版面位置可能隨版本改變</p>
-<h3 id="_5">步驟三：與您的知識庫對話</h3>
-<p>在下方輸入框中提問,AI 會：<br/>
-1. 搜尋相關段落<br/>
-2. 生成回答<br/>
-3. <strong>附上引用來源</strong>(點選可查看原文段落)</p>
+<p>NotebookLM 支援多種格式：</p>
+<ul>
+<li>📄 <strong>PDF 檔案</strong>：課本電子檔、講義、論文</li>
+<li>📝 <strong>Google Docs</strong>：教案、教學計畫</li>
+<li>🌐 <strong>網頁連結</strong>：教學網站、資料庫文章</li>
+<li>📊 <strong>Google Slides 等支援來源</strong>：依「新增來源」選單選取。不是所有 Drive 格式都能直接匯入</li>
+<li>✍️ <strong>純文字</strong>：直接複製貼上</li>
+</ul>
+<p><strong>操作方式</strong>：</p>
+<ol>
+<li>點選「Add source」或「新增來源」</li>
+<li>選擇檔案類型</li>
+<li>上傳或貼上內容</li>
+<li>等待來源處理完成。所需時間依格式、大小與服務狀態而異</li>
+<li>處理完成後，介面會顯示來源與摘要。版面位置可能隨版本改變</li>
+</ol>
+<h3 id="_5">步驟三：與你的知識庫對話</h3>
+<p>在下方輸入框中提問，AI 會：</p>
+<ol>
+<li>搜尋相關段落</li>
+<li>生成回答</li>
+<li><strong>附上引用來源</strong>（點選可查看原文段落）</li>
+</ol>
 <hr/>
 <h2 id="_6">跨學科應用範例</h2>
 <h3 id="_7">📐 數學科</h3>
 <h4 id="1_1">範例 1：課本內容分析</h4>
 <p><strong>情境</strong>：上傳國小五年級數學課本「分數單元」PDF</p>
-<p><strong>上傳前</strong>：上傳學生作業需先取得同意並遵守所屬機構規定；上傳有著作權的課本也需具備使用權利。</p>
+<p><strong>上傳前</strong>：</p>
+<ul>
+<li>上傳學生作業，需先取得同意並遵守所屬機構規定。</li>
+<li>上傳有著作權的課本，也需具備使用權利。</li>
+</ul>
 <p><strong>Prompt 1 - 內容摘要</strong>：</p>
 <pre><code>請摘要這份教材的主要教學目標與重點概念。
 </code></pre>
@@ -373,12 +392,14 @@ html{scroll-behavior:smooth}body{box-sizing:border-box}img{max-width:100%;height
 <hr/>
 <h2 id="_13">進階技巧</h2>
 <h3 id="1_7">技巧 1：多來源整合</h3>
-<p><strong>應用情境</strong>：整合多份教材,建立完整知識庫</p>
-<p><strong>操作步驟</strong>：<br/>
-1. 上傳課本 PDF<br/>
-2. 上傳教學指引 Word<br/>
-3. 加入相關網頁連結(如教育部資源)<br/>
-4. 上傳學生常見錯誤紀錄</p>
+<p><strong>應用情境</strong>：整合多份教材，建立完整知識庫</p>
+<p><strong>操作步驟</strong>：</p>
+<ol>
+<li>上傳課本 PDF</li>
+<li>上傳教學指引 Word</li>
+<li>加入相關網頁連結（如教育部資源）</li>
+<li>上傳學生常見錯誤紀錄</li>
+</ol>
 <p><strong>Prompt 範例</strong>：</p>
 <pre><code>我上傳了課本、教學指引、網路資源和學生錯誤紀錄。
 
@@ -412,10 +433,12 @@ html{scroll-behavior:smooth}body{box-sizing:border-box}img{max-width:100%;height
 <hr/>
 <h3 id="3">技巧 3：選擇特定來源進行分析</h3>
 <p><strong>應用情境</strong>：當筆記本中有多個來源時，只想針對特定來源提問</p>
-<p><strong>為何需要？</strong><br/>
-- 避免 AI 混合多個來源的資訊<br/>
-- 針對特定章節或文件深入分析<br/>
-- 比較不同來源的觀點</p>
+<p><strong>為何需要？</strong></p>
+<ul>
+<li>避免 AI 混合多個來源的資訊</li>
+<li>針對特定章節或文件深入分析</li>
+<li>比較不同來源的觀點</li>
+</ul>
 <p><strong>操作方式</strong>：</p>
 <h4 id="1_8">方法 1：在提示詞中明確指定來源</h4>
 <pre><code>請「只根據」[來源名稱]，回答以下問題：
@@ -636,7 +659,7 @@ html{scroll-behavior:smooth}body{box-sizing:border-box}img{max-width:100%;height
 </code></pre>
 <hr/>
 <h3 id="6">技巧 6：提問層次化</h3>
-<p>根據布魯姆分類法 (Bloom's Taxonomy),設計不同認知層次的提問：</p>
+<p>根據布魯姆分類法（Bloom's Taxonomy），設計不同認知層次的提問：</p>
 <table>
 <thead>
 <tr>
@@ -669,7 +692,7 @@ html{scroll-behavior:smooth}body{box-sizing:border-box}img{max-width:100%;height
 <tr>
 <td><strong>評鑑</strong></td>
 <td>評估、判斷、辯論</td>
-<td>請評論這個做法是否合理,為什麼？</td>
+<td>請評論這個做法是否合理，為什麼？</td>
 </tr>
 <tr>
 <td><strong>創造</strong></td>
@@ -682,18 +705,18 @@ html{scroll-behavior:smooth}body{box-sizing:border-box}img{max-width:100%;height
 <h2 id="_22">實用技巧與注意事項</h2>
 <h3 id="notebooklm_2">✅ NotebookLM 最佳實踐</h3>
 <ol>
-<li><strong>明確命名筆記本</strong>：用「學科_年級_單元」格式,方便管理</li>
-<li><strong>上傳高品質資料</strong>：清晰的 PDF、完整的文章,AI 才能準確分析</li>
-<li><strong>善用來源引用</strong>：點選引用編號,可查看原文,確認正確性</li>
-<li><strong>分段提問</strong>：複雜任務拆成多個小問題,逐步深入</li>
-<li><strong>儲存有用回答</strong>：點選「儲存」或複製到筆記,方便重複使用</li>
+<li><strong>明確命名筆記本</strong>：用「學科_年級_單元」格式，方便管理</li>
+<li><strong>上傳高品質資料</strong>：清晰的 PDF、完整的文章，AI 才能準確分析</li>
+<li><strong>善用來源引用</strong>：點選引用編號可查看原文，確認正確性</li>
+<li><strong>分段提問</strong>：複雜任務拆成多個小問題，逐步深入</li>
+<li><strong>儲存有用回答</strong>：點選「儲存」或複製到筆記，方便重複使用</li>
 </ol>
 <h3 id="_23">⚠️ 使用限制與注意事項</h3>
 <ol>
-<li><strong>檔案大小限制</strong>：每份來源上限 500,000 字或本機上傳 200 MB；方案與上限以 <a href="https://support.google.com/notebooklm/answer/16213268?hl=en">Google 官方說明</a>為準</li>
-<li><strong>語言限制</strong>：繁體中文支援良好,但複雜排版可能影響辨識</li>
+<li><strong>檔案大小限制</strong>：每份來源上限 500,000 字或本機上傳 200 MB。方案與上限以 <a href="https://support.google.com/notebooklm/answer/16213268?hl=en">Google 官方說明</a>為準</li>
+<li><strong>語言限制</strong>：繁體中文支援良好，但複雜排版可能影響辨識</li>
 <li><strong>只知道上傳的內容</strong>：無法回答資料外的問題</li>
-<li><strong>需檢查正確性</strong>：AI 可能誤讀或誤解,務必確認</li>
+<li><strong>需檢查正確性</strong>：AI 可能誤讀或誤解，務必確認</li>
 <li><strong>隱私考量</strong>：避免上傳包含學生個資的文件</li>
 </ol>
 <h3 id="_24">🎯 常見錯誤與解決方式</h3>
@@ -709,27 +732,27 @@ html{scroll-behavior:smooth}body{box-sizing:border-box}img{max-width:100%;height
 <tr>
 <td>AI 回答「文件中沒有提到」</td>
 <td>提問超出資料範圍</td>
-<td>調整問題,限定在資料內容</td>
+<td>調整問題，限定在資料內容</td>
 </tr>
 <tr>
 <td>答案不夠具體</td>
 <td>提問太籠統</td>
-<td>加入明確要求(字數、格式、項目數)</td>
+<td>加入明確要求（字數、格式、項目數）</td>
 </tr>
 <tr>
 <td>引用來源錯誤</td>
 <td>資料辨識問題</td>
-<td>檢查原文,必要時重新上傳</td>
+<td>檢查原文，必要時重新上傳</td>
 </tr>
 </tbody>
 </table>
 <hr/>
 <h2 id="_25">延伸應用</h2>
 <h3 id="1_9">應用 1：快速備課流程</h3>
-<p>請記錄自己理解教材、設計題目與規劃活動各花多少時間，再判斷流程是否值得；摘要不能取代閱讀原文。</p>
+<p>請記錄自己理解教材、設計題目與規劃活動各花多少時間，再判斷這個流程是否值得。摘要不能取代閱讀原文。</p>
 <hr/>
 <h3 id="2_8">應用 2：差異化教學準備</h3>
-<p><strong>情境</strong>：同一份教材,準備不同難度版本</p>
+<p><strong>情境</strong>：同一份教材，準備不同難度版本</p>
 <p><strong>Prompt</strong>：</p>
 <pre><code>我需要為同一個單元準備三種版本：
 
@@ -741,12 +764,14 @@ C 版(進階)：給學習快速的學生,加入延伸與挑戰
 </code></pre>
 <hr/>
 <h3 id="3_1">應用 3：建立學科題庫</h3>
-<p><strong>長期策略</strong>：<br/>
-1. 為每個單元建立獨立筆記本<br/>
-2. 上傳該單元的所有相關資料<br/>
-3. 定期新增補充資料<br/>
-4. 建立「常用 Prompt 清單」<br/>
-5. 每次需要時,直接調用題庫</p>
+<p><strong>長期策略</strong>：</p>
+<ol>
+<li>為每個單元建立獨立筆記本</li>
+<li>上傳該單元的所有相關資料</li>
+<li>定期新增補充資料</li>
+<li>建立「常用 Prompt 清單」</li>
+<li>每次需要時，直接調用題庫</li>
+</ol>
 <p><strong>範例檔案結構</strong>：</p>
 <pre><code>📁 國小五年級數學
   📓 單元一：因數與倍數
@@ -758,38 +783,55 @@ C 版(進階)：給學習快速的學生,加入延伸與挑戰
 <h2 id="_26">練習任務</h2>
 <h3 id="_27">初階任務</h3>
 <ol>
-<li>上傳一份您的教材,要求 AI 生成摘要</li>
+<li>上傳一份你的教材，要求 AI 生成摘要</li>
 <li>請 AI 根據教材出 5 道測驗題</li>
 <li>請 AI 設計一個課堂活動</li>
 </ol>
 <h3 id="_28">進階任務</h3>
 <ol>
-<li>上傳 3-5 份相關資料,整合分析</li>
-<li>設計一份完整的差異化學習單(三個版本)</li>
-<li>建立您的學科「知識庫系統」</li>
+<li>上傳 3-5 份相關資料，整合分析</li>
+<li>設計一份完整的差異化學習單（三個版本）</li>
+<li>建立你的學科「知識庫系統」</li>
 </ol>
 <hr/>
 <h2 id="qa">常見問題 Q&amp;A</h2>
 <p><strong>Q1：上傳的 PDF 檔案無法辨識怎麼辦？</strong><br/>
-A1：確保 PDF 是文字版(非掃描圖片),或使用 OCR 工具轉換後再上傳。</p>
+A1：確保 PDF 是文字版（非掃描圖片），或使用 OCR 工具轉換後再上傳。</p>
 <p><strong>Q2：AI 的回答有錯誤怎麼辦？</strong><br/>
-A2：點選引用來源,檢查原文。如果是 AI 誤讀,可調整提問方式或重新上傳清晰版本。</p>
+A2：點選引用來源，檢查原文。如果是 AI 誤讀，可調整提問方式或重新上傳清晰版本。</p>
 <p><strong>Q3：我可以上傳學生作業讓 AI 分析嗎？</strong><br/>
-A3：可以,但需先取得同意並遵守所屬機構規定,且務必移除學生姓名等個資。適合分析「錯誤類型」、「學習盲點」。上傳有著作權的課本也需具備使用權利。</p>
+A3：可以，但需先取得同意並遵守所屬機構規定，且務必移除學生姓名等個資。適合分析「錯誤類型」、「學習盲點」。上傳有著作權的課本也需具備使用權利。</p>
 <p><strong>Q4：NotebookLM 和一般 Gemini 有什麼不同？</strong><br/>
-A4：NotebookLM 的核心是來源導向回答與引用；一般對話工具也能搭配來源或搜尋。兩者都需回查原文，不能只靠產品名稱判定可信度。</p>
+A4：NotebookLM 的核心是來源導向回答與引用。一般對話工具也能搭配來源或搜尋。兩者都需回查原文，不能只靠產品名稱判定可信度。</p>
 <p><strong>Q5：生成的題目可以直接使用嗎？</strong><br/>
-A5：建議當作「初稿」,教師仍需檢查難度、正確性,並根據班級特性調整。</p>
+A5：建議當作「初稿」。教師仍需檢查難度與正確性，並根據班級特性調整。</p>
 <p><strong>Q6：可以跟其他老師分享筆記本嗎？</strong><br/>
-A6：可以。筆記本可用電子郵件分享給指定對象，並設為檢視者或編輯者；帳號權限允許時也可用公開連結分享。Workspace Enterprise／Education 帳號可能受管理員限制。<a href="https://support.google.com/notebooklm/answer/16322204?hl=en">官方說明</a>。</p>
+A6：可以。分享方式如下（<a href="https://support.google.com/notebooklm/answer/16322204?hl=en">官方說明</a>）：</p>
+<ul>
+<li>用電子郵件分享給指定對象，並設為檢視者或編輯者。</li>
+<li>帳號權限允許時，也可用公開連結分享。</li>
+<li>Workspace Enterprise／Education 帳號可能受管理員限制。</li>
+</ul>
 <hr/>
-<p><strong>小結</strong>：NotebookLM 將「有憑有據」帶入 AI 教學應用,讓您的備課更高效、精準。透過建立專屬知識庫,AI 真正成為懂您教材的智慧助教！</p>
+<p><strong>小結</strong>：NotebookLM 將「有憑有據」帶入 AI 教學應用，讓你的備課更高效、精準。透過建立專屬知識庫，AI 能成為懂你教材的智慧助教！</p>
 <span aria-hidden="true" class="legacy-anchor" id="codex-cliclaude-code"></span><h2 id="codex-cliclaude-codeagy">與 Codex CLI／Claude Code／agy 接續的實作</h2>
-<p><strong>輸入</strong>：您有權使用的來源、人工核對過的三段重點與頁碼。來源若是 Word，依介面支援情況轉 PDF 或貼入文字，核對轉換後內容。</p>
-<p><strong>操作</strong>：先在 NotebookLM 點開引用核對，將摘錄、來源名稱和頁碼存入專案 <code>source_notes.md</code>；再開啟 <code>codex</code>、<code>claude</code> 或 <code>agy</code>，輸入：</p>
+<p>這節把 NotebookLM 核對過的摘錄交給 CLI，產生學習單。</p>
+<p><strong>輸入</strong>：你有權使用的來源、人工核對過的三段重點與頁碼。來源若是 Word，依介面支援情況轉 PDF 或貼入文字，並核對轉換後的內容。</p>
+<p><strong>操作</strong>：</p>
+<ol>
+<li>在 NotebookLM 點開引用核對。</li>
+<li>將摘錄、來源名稱和頁碼存入專案 <code>source_notes.md</code>。</li>
+<li>開啟 <code>codex</code>、<code>claude</code> 或 <code>agy</code>，輸入：</li>
+</ol>
 <pre><code class="language-text">只根據 source_notes.md 製作 worksheet.md，包含三個學習重點及三道附答案的題目。每題列出對應的來源名稱與頁碼；來源未包含的答案標成「資料不足」。不要自動新增網路來源。
 </code></pre>
-<p><strong>產物與驗收</strong>：<code>source_notes.md</code> 與 <code>worksheet.md</code>；教師逐題核對答案與引文，至少記錄一個資料不足的問題。CLI 不會自動取得您瀏覽器中的筆記本，需明確提供匯出的檔案；本課不假設已有 NotebookLM MCP 整合。</p></div>
+<p><strong>產物與驗收</strong>：</p>
+<ul>
+<li>產物：<code>source_notes.md</code> 與 <code>worksheet.md</code>。</li>
+<li>教師逐題核對答案與引文，至少記錄一個資料不足的問題。</li>
+<li>CLI 不會自動取得你瀏覽器中的筆記本，需明確提供匯出的檔案。</li>
+<li>本課不假設已有 NotebookLM MCP 整合。</li>
+</ul></div>
 <!-- Highlight.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
 <script>hljs.highlightAll();</script>
@@ -802,5 +844,5 @@ A6：可以。筆記本可用電子郵件分享給指定對象，並設為檢視
             "securityLevel": "loose"
 });
     </script>
-<nav aria-label="課程導覽" class="course-nav"><a href="index.html">課程目錄</a><a href="02_images.html">← 上一章</a><a href="04_workspace.html">下一章 →</a><a href="03_notebooklm.md">Markdown 原文</a><span>雙 CLI 教材 · 2026-10-31</span></nav></body>
+<nav aria-label="課程導覽" class="course-nav"><a href="index.html">課程目錄</a><a href="02_images.html">← 上一章</a><a href="04_workspace.html">下一章 →</a><a href="03_notebooklm.md">Markdown 原文</a><span>三款 CLI 教材 · 更新 2026-11-17</span></nav></body>
 </html>

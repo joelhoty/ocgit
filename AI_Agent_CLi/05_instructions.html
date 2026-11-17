@@ -76,12 +76,19 @@
     </style>
 <style>table{display:block;overflow-x:auto;max-width:100%}pre{overflow-x:auto}img,svg{max-width:100%;height:auto}p,li,td{overflow-wrap:anywhere}code{white-space:pre-wrap}</style><style id="course-navigation-style">
 html{scroll-behavior:smooth}body{box-sizing:border-box}img{max-width:100%;height:auto}pre{max-width:100%;overflow-x:auto}table{display:block;max-width:100%;overflow-x:auto}td,th{min-width:7em}.course-nav{display:flex;flex-wrap:wrap;gap:.65em;align-items:center;padding:1em 0;margin:1em 0;border-bottom:1px solid #3e3e3e;font-size:.95rem}.course-nav a{color:#66b3ff}.course-nav span{color:#aaa}.course-toc{margin:1.5em 0;padding:1em;background:#222831;border-radius:8px}.course-toc a{overflow-wrap:anywhere}h1,h2,h3,p,li{overflow-wrap:break-word}.mermaid svg{max-width:100%;height:auto}@media(max-width:600px){body{padding:14px!important}h1{font-size:1.65em}pre code{padding:1em}.course-nav{line-height:1.8}}
-</style></head>
-<body><nav aria-label="課程導覽" class="course-nav"><a href="index.html">課程目錄</a><a href="04a_workflows.html">← 上一章</a><a href="06_lesson_plans.html">下一章 →</a><a href="05_instructions.md">Markdown 原文</a><span>雙 CLI 教材 · 2026-10-31</span></nav>
+</style><link href="assets/course.css" rel="stylesheet"/>
+</head>
+<body><nav aria-label="課程導覽" class="course-nav"><a href="index.html">課程目錄</a><a href="04a_workflows.html">← 上一章</a><a href="06_lesson_plans.html">下一章 →</a><a href="05_instructions.md">Markdown 原文</a><span>三款 CLI 教材 · 更新 2026-11-17</span></nav>
 <div class="container"><!-- Path: AI_Agent_CLi | Checked: 2026-10-31 | Revision: dual-cli -->
 <h1 id="ai-agentsmd-claudemd">單元五補充教材：個人化你的 AI — AGENTS.md 與 CLAUDE.md</h1><details class="course-toc"><summary>本頁章節</summary><ul><li><a href="#_1">單元目標</a></li><li><a href="#_2">核心概念詳解</a></li><li><a href="#_3">詳細操作步驟</a></li><li><a href="#agentsmdclaudemd">跨學科 AGENTS.md／CLAUDE.md 範本</a></li><li><a href="#_13">進階設定技巧</a></li><li><a href="#_14">實用技巧與注意事項</a></li><li><a href="#_17">延伸應用</a></li><li><a href="#_18">練習任務</a></li><li><a href="#qa">常見問題 Q&amp;A</a></li><li><a href="#_21">通用範本</a></li></ul></details>
 <blockquote>
-<p><strong>閱讀前提：</strong>先完成<a href="00_intro.html">前導章：Agent 基本概念與工作環境</a>，使用 Codex CLI、Claude Code 或 Antigravity CLI（<code>agy</code>）其中一款。本章以備課作為範例情境；不是教師也能把主題換成自己的工作或學習內容。範例請使用虛構或去識別化資料，結果都要回到來源與實際檔案確認。（查核日期：2026-10-31）</p>
+<p><strong>開始之前</strong></p>
+<ul>
+<li><strong>前提</strong>：先完成<a href="00_intro.html">前導章：Agent 基本概念與工作環境</a>，並安裝 Codex CLI、Claude Code 或 Antigravity CLI（<code>agy</code>）其中一款。</li>
+<li><strong>情境</strong>：本章以備課為例；不是教師也可以換成自己的工作或學習主題。</li>
+<li><strong>資料</strong>：範例使用虛構或去識別化資料；結果都要回到來源與實際檔案確認。</li>
+<li><strong>查核日期</strong>：2026-10-31</li>
+</ul>
 </blockquote>
 <h2 id="_1">單元目標</h2>
 <ul>
@@ -93,17 +100,17 @@ html{scroll-behavior:smooth}body{box-sizing:border-box}img{max-width:100%;height
 <hr/>
 <h2 id="_2">核心概念詳解</h2>
 <h3 id="1-agentsmdclaudemd">1. AGENTS.md／CLAUDE.md 是什麼？</h3>
-<p><strong>核心比喻</strong>：<code>AGENTS.md</code> 就像是您為 AI 助理撰寫的「員工手冊」或「角色設定卡」。</p>
+<p><strong>核心比喻</strong>：<code>AGENTS.md</code> 就像是你為 AI 助理撰寫的「員工手冊」或「角色設定卡」。</p>
 <h4 id="agentsmd-ai">沒有 AGENTS.md 的 AI</h4>
 <ul>
 <li>像臨時工：每次都要重新說明要做什麼</li>
-<li>不了解您的習慣與需求</li>
+<li>不了解你的習慣與需求</li>
 <li>回答方式可能不符合預期</li>
 </ul>
 <h4 id="agentsmd-ai_1">有 AGENTS.md 的 AI</h4>
 <ul>
-<li>像正職員工：已接受培訓,知道工作流程</li>
-<li>理解您的角色需求與偏好</li>
+<li>像正職員工：已接受培訓，知道工作流程</li>
+<li>理解你的角色需求與偏好</li>
 <li>將已載入規則作為工作依據；仍需驗證是否遵循</li>
 </ul>
 <hr/>
@@ -130,12 +137,12 @@ html{scroll-behavior:smooth}body{box-sizing:border-box}img{max-width:100%;height
 <tr>
 <td><strong>工作流程</strong></td>
 <td>固定的處理步驟</td>
-<td>「收到教材後,先摘要再出題」</td>
+<td>「收到教材後，先摘要再出題」</td>
 </tr>
 <tr>
 <td><strong>輸出格式</strong></td>
 <td>回應的呈現方式</td>
-<td>「用條列式,每點不超過 50 字」</td>
+<td>「用條列式，每點不超過 50 字」</td>
 </tr>
 <tr>
 <td><strong>限制與規則</strong></td>
@@ -179,18 +186,28 @@ html{scroll-behavior:smooth}body{box-sizing:border-box}img{max-width:100%;height
 </tr>
 </tbody>
 </table>
-<p>Codex 還有使用者層與子目錄的規則，<code>AGENTS.override.md</code> 可覆蓋同層預設檔案。Claude Code v2.1.277+ 可直接讀 AGENTS.md，但預設只有在工作目錄及其上層沒有 CLAUDE.md、.claude/CLAUDE.md 或 CLAUDE.local.md 時才採用；內建支援被停用、舊版或部分升級後首次會話也可能不可用。<code>/config</code> 的 Project instructions 可設定同時載入兩者。本課採 CLAUDE.md 匯入 AGENTS.md，兼顧既有版本與 Windows，不依賴 symlink。</p>
-<p>這些文字提供 context，不是系統權限，更不保證模型每次都遵守。<code>/permissions</code>、實際 sandbox、檔案權限與人工驗收分別負責授權、隔離與品質。不要在規則內放 API 金鑰或學生個資。</p>
+<p>各工具還有以下細節：</p>
+<ul>
+<li><strong>Codex</strong>：還有使用者層與子目錄的規則。<code>AGENTS.override.md</code> 可覆蓋同層預設檔案。</li>
+<li><strong>Claude Code v2.1.277+</strong>：可直接讀 AGENTS.md，但預設只有在工作目錄及其上層沒有 CLAUDE.md、.claude/CLAUDE.md 或 CLAUDE.local.md 時才採用。</li>
+<li><strong>Claude Code 的例外</strong>：內建支援被停用、舊版，或部分升級後的首次會話，也可能無法使用。<code>/config</code> 的 Project instructions 可設定同時載入兩者。</li>
+<li><strong>本課做法</strong>：採 CLAUDE.md 匯入 AGENTS.md，兼顧既有版本與 Windows，不依賴 symlink。</li>
+</ul>
+<p>這些文字提供 context，不是系統權限，更不保證模型每次都遵守。</p>
+<ul>
+<li><code>/permissions</code>、實際 sandbox、檔案權限與人工驗收，分別負責授權、隔離與品質。</li>
+<li>不要在規則內放 API 金鑰或學生個資。</li>
+</ul>
 <p>agy 的規則載入範圍、<code>trigger</code> 欄位與拆分方式見 <a href="agy_cli.html#agy-agents-md">agy 延伸章第 4 章</a>。</p>
 <p>來源：<a href="https://learn.chatgpt.com/docs/agent-configuration/agents-md">Codex AGENTS.md</a>、<a href="https://code.claude.com/docs/en/memory">Claude 專案記憶</a>、<a href="https://code.claude.com/docs/en/permissions">Claude 權限</a>、<a href="https://antigravity.google/docs/rules">Antigravity Rules</a>。</p>
 <hr/>
 <h2 id="_3">詳細操作步驟</h2>
-<p>您可能已經依<a href="00_intro.html#project-instructions">前導章的專案指引</a>建立規則檔；本單元在那個基礎上延伸。</p>
+<p>你可能已經依<a href="00_intro.html#project-instructions">前導章的專案指引</a>建立規則檔；本單元在那個基礎上延伸。</p>
 <h3 id="agentsmd">步驟一：建立 AGENTS.md 檔案</h3>
 <h4 id="1-vscode">方法 1：在 VSCode 中建立</h4>
 <ol>
-<li>在 VSCode 左側檔案總管中,點選右鍵</li>
-<li>選擇「新增檔案」(New File)</li>
+<li>在 VSCode 左側檔案總管中，點選右鍵</li>
+<li>選擇「新增檔案」（New File）</li>
 <li>Codex 與 agy 的共用規則檔名輸入：<code>AGENTS.md</code>（注意大寫）</li>
 <li>按下 Enter</li>
 </ol>
@@ -198,11 +215,17 @@ html{scroll-behavior:smooth}body{box-sizing:border-box}img{max-width:100%;height
 <p>在 CLI 會話用自然語言交代，不必輸入終端機指令：</p>
 <pre><code class="language-text">請在專案根目錄建立空白的 AGENTS.md。若已有同名檔案，先停下來把內容給我看，不要覆蓋。
 </code></pre>
-<p>也可以用內建指令產生草稿再修改：Codex CLI 的 <code>/init</code> 會掃描專案產生 <code>AGENTS.md</code>；Claude Code 的 <code>/init</code> 產生 <code>CLAUDE.md</code>；Antigravity CLI（<code>agy</code>）沒有 <code>/init</code>，改用 <code>/grill-me</code> 先訪問你、再用 <code>/plan</code> 起草（見 <a href="agy_cli.html#agy-generate-rules">agy 延伸章</a>）。自動草稿要逐條對照本單元的原則修改。</p>
+<p>也可以用內建指令產生草稿，再修改：</p>
+<ul>
+<li><strong>Codex CLI</strong>：<code>/init</code> 會掃描專案，產生 <code>AGENTS.md</code>。</li>
+<li><strong>Claude Code</strong>：<code>/init</code> 產生 <code>CLAUDE.md</code>。</li>
+<li><strong>Antigravity CLI（<code>agy</code>）</strong>：沒有 <code>/init</code>。改用 <code>/grill-me</code> 先訪問你，再用 <code>/plan</code> 起草（見 <a href="agy_cli.html#agy-generate-rules">agy 延伸章</a>）。</li>
+</ul>
+<p>自動草稿要逐條對照本單元的原則修改。</p>
 <p>Claude Code：在同一層新增 <code>CLAUDE.md</code>（VS Code 新增檔案，或請 Agent 建立），寫入下列內容。這是檔案內容，不是終端機命令：</p>
 <pre><code class="language-markdown">@AGENTS.md
 </code></pre>
-<p>這樣共用範本仍只維護在 AGENTS.md；Claude 專屬補充可寫在匯入行下方。不要同時手動複製兩份長規則而忘記同步。</p>
+<p>這樣共用範本仍只維護在 AGENTS.md，Claude 專屬補充可寫在匯入行下方。不要同時手動複製兩份長規則，以免忘記同步。</p>
 <hr/>
 <h3 id="agentsmd_1">步驟二：撰寫基本的 AGENTS.md</h3>
 <h4 id="_4">最簡範本</h4>
@@ -220,10 +243,12 @@ html{scroll-behavior:smooth}body{box-sizing:border-box}img{max-width:100%;height
 - 使用條列式呈現重點
 - 適時舉例說明
 </code></pre>
-<p><strong>重點說明</strong>：<br/>
-- <code>#</code> 開頭是標題,幫助組織內容<br/>
-- 清楚說明角色、風格、原則<br/>
-- 使用 Markdown 格式(條列、標題等)</p>
+<p><strong>重點說明</strong>：</p>
+<ul>
+<li><code>#</code> 開頭是標題，幫助組織內容</li>
+<li>清楚說明角色、風格、原則</li>
+<li>使用 Markdown 格式（條列、標題等）</li>
+</ul>
 <hr/>
 <h3 id="agentsmd_2">步驟三：測試 AGENTS.md 是否生效</h3>
 <h4 id="_5">測試指令</h4>
@@ -236,25 +261,43 @@ html{scroll-behavior:smooth}body{box-sizing:border-box}img{max-width:100%;height
 用國小五年級能理解的方式說明分數，每段不超過 100 字。
 只回覆，不修改檔案；指出任何互相矛盾或未讀取的規則。
 </code></pre>
-<p>Claude 用 <code>/context</code> 確認實際載入的 Memory files；Codex 在新會話確認工作目錄與適用指引；agy 重新啟動後要求它不讀檔、只依已載入規則回答。三者都要再核對實際產物。<code>/memory</code> 也會列出不存在的檔案，不能當成載入證明；要用它直接確認 AGENTS.md，需要 v2.1.280 以上。</p>
-<p><strong>預期結果</strong>：<br/>
-輸出應符合角色、每段字數與條列格式。核對載入紀錄及實際結果；自我介紹不等於規則已生效，正確回覆一次也不保證所有任務都正確。</p>
-<p><strong>比較</strong>：<br/>
-- 未設定 AGENTS.md：回答可能較正式、通用<br/>
-- 已設定 AGENTS.md：回答符合您的角色設定</p>
+<p>各工具確認載入的方式：</p>
+<ul>
+<li><strong>Claude Code</strong>：用 <code>/context</code> 確認實際載入的 Memory files。</li>
+<li><strong>Codex</strong>：在新會話確認工作目錄與適用指引。</li>
+<li><strong>agy</strong>：重新啟動後，要求它不讀檔、只依已載入規則回答。</li>
+</ul>
+<p>三者都要再核對實際產物。Claude 的 <code>/memory</code> 也會列出不存在的檔案，不能當成載入證明。要用它直接確認 AGENTS.md，需要 v2.1.280 以上。</p>
+<p><strong>預期結果</strong>：輸出應符合角色、每段字數與條列格式。</p>
+<ul>
+<li>核對載入紀錄及實際結果。</li>
+<li>自我介紹不等於規則已生效。</li>
+<li>正確回覆一次，也不保證所有任務都正確。</li>
+</ul>
+<p><strong>比較</strong>：</p>
+<ul>
+<li>未設定 AGENTS.md：回答可能較正式、通用</li>
+<li>已設定 AGENTS.md：回答符合你的角色設定</li>
+</ul>
 <hr/>
 <h3 id="_6">步驟四：修改與調整</h3>
 <ol>
 <li>在 VSCode 中開啟 <code>AGENTS.md</code></li>
-<li>編輯內容(例如:改變角色、調整風格)</li>
-<li>儲存檔案 (Ctrl+S / Cmd+S)</li>
+<li>編輯內容（例如：改變角色、調整風格）</li>
+<li>儲存檔案（Ctrl+S / Cmd+S）</li>
 <li>結束原會話，從同一專案目錄啟動新會話，以相同測試核對變化</li>
 <li>查看 Git 差異，確保只改了指定規則；記錄版本、測試提示與觀察結果</li>
 </ol>
 <hr/>
 <h2 id="agentsmdclaudemd">跨學科 AGENTS.md／CLAUDE.md 範本</h2>
-<p>以下數學、自然、社會、語文等範本可保留原內容放在 AGENTS.md，再由 CLAUDE.md 匯入。規則不會替代實際教材來源，也不會讓 AI 自動取得某個年級的正式課綱；請另提供授課依據。</p>
-<p>請把這些範本當成菜單，挑 3-5 條可以測試的規則使用，並像<a href="00_intro.html#project-instructions">前導章的範例</a>一樣補上來源與驗收規則，例如「來源沒寫的內容列為待查」「完成時列出檔案位置、檢查方式與尚未確認的事項」。</p>
+<p>以下數學、自然、社會、語文等範本，可保留原內容放在 AGENTS.md，再由 CLAUDE.md 匯入。</p>
+<p>規則不會替代實際教材來源，也不會讓 AI 自動取得某個年級的正式課綱。請另外提供授課依據。</p>
+<p>使用範本的方式：</p>
+<ul>
+<li>把這些範本當成菜單，挑 3-5 條可以測試的規則使用。</li>
+<li>像<a href="00_intro.html#project-instructions">前導章的範例</a>一樣，補上來源與驗收規則。</li>
+<li>例如：「來源沒寫的內容列為待查」「完成時列出檔案位置、檢查方式與尚未確認的事項」。</li>
+</ul>
 <h3 id="_7">📐 數學科教師專用</h3>
 <pre><code class="language-markdown"># AI 角色設定
 
@@ -444,7 +487,7 @@ html{scroll-behavior:smooth}body{box-sizing:border-box}img{max-width:100%;height
 <hr/>
 <h2 id="_13">進階設定技巧</h2>
 <h3 id="1">技巧 1：設定預設任務</h3>
-<p><strong>情境</strong>：您經常需要 AI 將教材改寫成不同難度</p>
+<p><strong>情境</strong>：你經常需要 AI 將教材改寫成不同難度</p>
 <p><strong>AGENTS.md 設定</strong>：</p>
 <pre><code class="language-markdown">## 預設任務模式
 
@@ -455,13 +498,13 @@ html{scroll-behavior:smooth}body{box-sizing:border-box}img{max-width:100%;height
 
 每個版本請標示清楚,並說明調整重點。
 </code></pre>
-<p><strong>使用方式：</strong>先啟動所選 CLI，在對話中輸入以下提示，並貼上原文或提供實際檔案位置。</p>
+<p><strong>使用方式</strong>：先啟動所選 CLI，在對話中輸入以下提示，並貼上原文或提供實際檔案位置。</p>
 <pre><code class="language-text">依專案指引的「改寫」規則，將我提供的光合作用說明改寫為三種難度。
 </code></pre>
-<p>三款工具共用這份自然語言提示。預期產生三個版本，再人工核對內容、難度與學習目標，不以篇幅判定品質。</p>
+<p>三款工具共用這份自然語言提示。預期會產生三個版本。請人工核對內容、難度與學習目標，不以篇幅判定品質。</p>
 <hr/>
 <h3 id="2">技巧 2：設定輸出範本</h3>
-<p><strong>情境</strong>：您需要固定格式的學習單</p>
+<p><strong>情境</strong>：你需要固定格式的學習單</p>
 <p><strong>AGENTS.md 設定</strong>：</p>
 <pre><code class="language-markdown">## 學習單輸出範本
 
@@ -500,7 +543,7 @@ html{scroll-behavior:smooth}body{box-sizing:border-box}img{max-width:100%;height
 <hr/>
 <h3 id="4">技巧 4：多情境模式切換</h3>
 <p>這些「模式」是自己約定的提示前綴，不是 CLI 的權限模式；不會改變 sandbox 或工具許可。</p>
-<p><strong>情境</strong>：同一個檔案,想針對不同任務使用不同模式</p>
+<p><strong>情境</strong>：同一個檔案，想針對不同任務使用不同模式</p>
 <p><strong>AGENTS.md 設定</strong>：</p>
 <pre><code class="language-markdown">## 工作模式
 
@@ -521,7 +564,7 @@ html{scroll-behavior:smooth}body{box-sizing:border-box}img{max-width:100%;height
 - 類型:選擇、填空、簡答、討論
 - 格式:題號清楚,附標準答案
 </code></pre>
-<p><strong>使用方式：</strong>在已啟動的 CLI 會話輸入，三款工具皆適用。</p>
+<p><strong>使用方式</strong>：在已啟動的 CLI 會話輸入，三款工具皆適用。</p>
 <pre><code class="language-text">【快速模式】讀 inputs/lesson.md 並摘要；只回覆，不改檔。
 </code></pre>
 <p>這裡的「快速模式」是專案文件自訂的回應格式，不是 CLI 的模型或速度設定。若要換模型，使用會話內的 <code>/model</code>；常用指令見<a href="00_intro.html#510">前導章</a>。</p>
@@ -529,7 +572,7 @@ html{scroll-behavior:smooth}body{box-sizing:border-box}img{max-width:100%;height
 <h2 id="_14">實用技巧與注意事項</h2>
 <h3 id="agentsmd_3">✅ AGENTS.md 撰寫最佳實踐</h3>
 <ol>
-<li><strong>清晰的結構</strong>：使用標題、條列,方便閱讀</li>
+<li><strong>清晰的結構</strong>：使用標題、條列，方便閱讀</li>
 <li><strong>具體的描述</strong>：「親切」比「好」更明確</li>
 <li><strong>舉例說明</strong>：提供範例格式,AI 會模仿</li>
 <li><strong>持續優化</strong>：根據使用經驗調整</li>
@@ -549,16 +592,16 @@ html{scroll-behavior:smooth}body{box-sizing:border-box}img{max-width:100%;height
 <tr>
 <td>設定太籠統</td>
 <td>「請表現專業」</td>
-<td>「使用教育專業術語,語氣正式」</td>
+<td>「使用教育專業術語，語氣正式」</td>
 </tr>
 <tr>
 <td>要求互相矛盾</td>
 <td>「簡潔但詳細」</td>
-<td>明確區分情境:快速摘要用簡潔,深度分析用詳細</td>
+<td>明確區分情境：快速摘要用簡潔，深度分析用詳細</td>
 </tr>
 <tr>
 <td>過度複雜</td>
-<td>設定太多規則,AI 難以遵循</td>
+<td>設定太多規則，AI 難以遵循</td>
 <td>聚焦 3-5 個核心設定即可</td>
 </tr>
 <tr>
@@ -570,22 +613,24 @@ html{scroll-behavior:smooth}body{box-sizing:border-box}img{max-width:100%;height
 </table>
 <hr/>
 <h3 id="_16">🎯 效果檢查清單</h3>
-<p>設定完成後,用以下問題檢驗：</p>
+<p>設定完成後，用以下問題檢驗：</p>
 <ul>
-<li>[ ] 輸出符合角色設定嗎？(用詞、程度與任務範圍符合規則，不看自我介紹)</li>
-<li>[ ] 回應的語氣符合設定嗎？(親切/正式/活潑)</li>
-<li>[ ] 輸出格式符合預期嗎？(條列/段落/表格)</li>
-<li>[ ] AI 遵守限制規則嗎？(不使用術語/給學習者的內容不直接給答案)</li>
-<li>[ ] 整體表現提升了嗎？(比未設定更貼近需求)</li>
+<li>[ ] 輸出符合角色設定嗎？（用詞、程度與任務範圍符合規則，不看自我介紹）</li>
+<li>[ ] 回應的語氣符合設定嗎？（親切/正式/活潑）</li>
+<li>[ ] 輸出格式符合預期嗎？（條列/段落/表格）</li>
+<li>[ ] AI 遵守限制規則嗎？（不使用術語/給學習者的內容不直接給答案）</li>
+<li>[ ] 整體表現提升了嗎？（比未設定更貼近需求）</li>
 </ul>
 <hr/>
 <h2 id="_17">延伸應用</h2>
 <h3 id="1-ai">應用 1：建立學科專屬 AI 助理</h3>
-<p><strong>長期策略</strong>：<br/>
-1. 為每個學科建立獨立資料夾<br/>
-2. 每個資料夾放置專屬的 <code>AGENTS.md</code><br/>
-3. 在各資料夾啟動新會話，確認實際載入的規則；父層規則仍可能一起生效<br/>
-4. Claude 在各學科資料夾使用 CLAUDE.md 匯入該處 AGENTS.md，避免版本支援差異</p>
+<p><strong>長期策略</strong>：</p>
+<ol>
+<li>為每個學科建立獨立資料夾</li>
+<li>每個資料夾放置專屬的 <code>AGENTS.md</code></li>
+<li>在各資料夾啟動新會話，確認實際載入的規則；父層規則仍可能一起生效</li>
+<li>Claude 在各學科資料夾使用 CLAUDE.md 匯入該處 AGENTS.md，避免版本支援差異</li>
+</ol>
 <p><strong>資料夾結構</strong>：</p>
 <pre><code>teaching/
   ├── math/
@@ -600,15 +645,19 @@ html{scroll-behavior:smooth}body{box-sizing:border-box}img{max-width:100%;height
 </code></pre>
 <hr/>
 <span aria-hidden="true" class="legacy-anchor" id="2_2"></span><h3 id="2_1">應用 2：團隊協作範本</h3>
-<p><strong>情境</strong>：與同事共同備課,統一 AI 使用方式</p>
-<p><strong>做法</strong>：<br/>
-1. 團隊共同制定 <code>AGENTS.md</code> 範本<br/>
-2. 用共同測例比較產物風格與來源；有範本仍須驗收<br/>
-3. 定期檢討與更新</p>
-<p><strong>好處</strong>：<br/>
-- 教材風格統一<br/>
-- 避免重複設定<br/>
-- 累積團隊知識</p>
+<p><strong>情境</strong>：與同事共同備課，統一 AI 使用方式</p>
+<p><strong>做法</strong>：</p>
+<ol>
+<li>團隊共同制定 <code>AGENTS.md</code> 範本</li>
+<li>用共同測例比較產物風格與來源；有範本仍須驗收</li>
+<li>定期檢討與更新</li>
+</ol>
+<p><strong>好處</strong>：</p>
+<ul>
+<li>教材風格統一</li>
+<li>避免重複設定</li>
+<li>累積團隊知識</li>
+</ul>
 <hr/>
 <h3 id="3_1">應用 3：學習歷程記錄</h3>
 <p><strong>AGENTS.md 加入時間戳記</strong>：</p>
@@ -625,32 +674,45 @@ html{scroll-behavior:smooth}body{box-sizing:border-box}img{max-width:100%;height
 <h2 id="_18">練習任務</h2>
 <h3 id="_19">初階任務</h3>
 <ol>
-<li>建立您的第一個 <code>AGENTS.md</code>,設定基本的角色與風格</li>
+<li>建立你的第一個 <code>AGENTS.md</code>，設定基本的角色與風格</li>
 <li>測試 AI 是否遵循設定</li>
-<li>根據回應結果,調整設定</li>
+<li>根據回應結果，調整設定</li>
 </ol>
 <h3 id="_20">進階任務</h3>
 <ol>
-<li>為您任教的學科,設計完整的 AGENTS.md(包含角色、流程、格式)</li>
+<li>為你任教的學科，設計完整的 AGENTS.md（包含角色、流程、格式）</li>
 <li>設定至少兩種「工作模式」並測試切換</li>
 <li>建立學科專屬的資料夾系統</li>
 </ol>
 <hr/>
 <h2 id="qa">常見問題 Q&amp;A</h2>
-<p><strong>Q1：指引檔一定要放在哪裡？</strong><br/>
-A1：本課把 AGENTS.md 與 CLAUDE.md 放在專案根目錄，並從該處啟動 CLI。Codex、Claude 與 agy 也有使用者層規則（agy 的全域規則在 <code>~/.gemini/</code>），不能把「VS Code 開啟的資料夾」當成唯一載入依據；先核對終端機工作目錄。</p>
-<p><strong>Q2：我可以有多個指引檔嗎？</strong><br/>
-A2：可以用根目錄共通規則搭配子目錄特定規則；但工具載入與優先順序不同。Codex 的 AGENTS.override.md 不等於 Claude 支援的檔名。先用一個根目錄檔完成練習，再增加層級。</p>
-<p><strong>Q3：規則會影響所有指令嗎？</strong><br/>
-A3：規則只影響讀到它的 AI 會話，不會改變你手動執行的 shell 命令，也不能覆蓋更高層政策或實際檔案權限。Claude 新版可直接支援 AGENTS.md，但受到前述版本、CLAUDE.md 存在與設定條件限制。</p>
-<p><strong>Q4：設定太多會不會讓 AI 混亂？</strong><br/>
-A4：過長、矛盾或無法驗證的規則會增加 context 負擔。先聚焦三到五項核心規則，把細節放到任務資料；以測例結果決定是否調整。</p>
-<p><strong>Q5：我可以臨時調整設定嗎？</strong><br/>
-A5：對可由任務調整的風格，可以明確寫「本次請詳細說明」。這不表示任意提示都能覆蓋系統、組織或安全限制；有衝突先釐清適用規則。</p>
-<p><strong>Q6：AI 沒有遵守設定怎麼辦？</strong><br/>
-A6：先檢查檔名大小寫、儲存、啟動目錄、上層及子層檔案。Claude 使用 <code>/context</code> 核對 Memory files，必要時用 CLAUDE.md 的 <code>@AGENTS.md</code> 匯入；Codex 開新會話再核對適用指引；agy 確認 <code>.agents/rules/*.md</code> 有 <code>trigger</code> 欄位，否則會被忽略。確認規則可測且沒有矛盾，最後檢查實際產物，不只追問「你有讀嗎」。</p>
-<p><strong>Q7：可以參考其他人的指引檔嗎？</strong><br/>
-A7：可以，但要先閱讀每條規則、檢查外部連結與可能執行的工作流程。改成自己的年級、學科、來源與驗收條件；不要把陌生設定直接當成可信任的命令。</p>
+<p><strong>Q1：指引檔一定要放在哪裡？</strong></p>
+<p>A1：本課把 AGENTS.md 與 CLAUDE.md 放在專案根目錄，並從該處啟動 CLI。</p>
+<ul>
+<li>Codex、Claude 與 agy 也有使用者層規則（agy 的全域規則在 <code>~/.gemini/</code>）。</li>
+<li>不能把「VS Code 開啟的資料夾」當成唯一載入依據，先核對終端機工作目錄。</li>
+</ul>
+<p><strong>Q2：我可以有多個指引檔嗎？</strong></p>
+<p>A2：可以用根目錄共通規則，搭配子目錄特定規則；但各工具的載入方式與優先順序不同。Codex 的 AGENTS.override.md 不等於 Claude 支援的檔名。先用一個根目錄檔完成練習，再增加層級。</p>
+<p><strong>Q3：規則會影響所有指令嗎？</strong></p>
+<p>A3：規則只影響讀到它的 AI 會話。它不會改變你手動執行的 shell 命令，也不能覆蓋更高層政策或實際檔案權限。Claude 新版可直接支援 AGENTS.md，但受到前述版本、CLAUDE.md 是否存在與設定條件的限制。</p>
+<p><strong>Q4：設定太多會不會讓 AI 混亂？</strong></p>
+<p>A4：過長、矛盾或無法驗證的規則，會增加 context 負擔。先聚焦三到五項核心規則，把細節放到任務資料。以測例結果決定是否調整。</p>
+<p><strong>Q5：我可以臨時調整設定嗎？</strong></p>
+<p>A5：對可由任務調整的風格，可以明確寫「本次請詳細說明」。這不表示任意提示都能覆蓋系統、組織或安全限制。有衝突時，先釐清適用規則。</p>
+<p><strong>Q6：AI 沒有遵守設定怎麼辦？</strong></p>
+<p>A6：依序檢查：</p>
+<ol>
+<li>檔名大小寫、是否已儲存、啟動目錄、上層及子層檔案。</li>
+<li>依工具核對載入情形：</li>
+<li>Claude：使用 <code>/context</code> 核對 Memory files，必要時用 CLAUDE.md 的 <code>@AGENTS.md</code> 匯入。</li>
+<li>Codex：開新會話，再核對適用指引。</li>
+<li>agy：確認 <code>.agents/rules/*.md</code> 有 <code>trigger</code> 欄位，否則會被忽略。</li>
+<li>確認規則可測，而且沒有矛盾。</li>
+<li>最後檢查實際產物，不只追問「你有讀嗎」。</li>
+</ol>
+<p><strong>Q7：可以參考其他人的指引檔嗎？</strong></p>
+<p>A7：可以，但要先閱讀每條規則，檢查外部連結與可能執行的工作流程。改成自己的年級、學科、來源與驗收條件。不要把陌生設定直接當成可信任的命令。</p>
 <hr/>
 <h2 id="_21">通用範本</h2>
 <h3 id="_22">通用教師範本</h3>
@@ -686,7 +748,18 @@ A7：可以，但要先閱讀每條規則、檢查外部連結與可能執行的
 <hr/>
 <p><strong>小結</strong>：AGENTS.md 與 CLAUDE.md 讓專案規則可以重用與版本管理。可靠的教學助理仍需要正確來源、合適權限與可核對的產物。</p>
 <h3 id="_23">本單元交付與驗收</h3>
-<p>交付 AGENTS.md、CLAUDE.md（如選 Claude）、一段測試提示、實際回覆與檢查紀錄。至少核對角色、字數、來源及輸出位置四項；保留一個規則衝突或未載入的案例與修正方法。使用一款工具即可完成，雙工具比較列為進階練習。</p>
+<p><strong>交付項目</strong>：</p>
+<ul>
+<li>AGENTS.md</li>
+<li>CLAUDE.md（如選 Claude）</li>
+<li>一段測試提示、實際回覆與檢查紀錄</li>
+</ul>
+<p><strong>驗收要求</strong>：</p>
+<ul>
+<li>至少核對角色、字數、來源及輸出位置四項。</li>
+<li>保留一個規則衝突或未載入的案例，以及修正方法。</li>
+<li>使用一款工具即可完成；多工具比較列為進階練習。</li>
+</ul>
 <h3 id="_24">官方來源</h3>
 <ul>
 <li><a href="https://learn.chatgpt.com/docs/agent-configuration/agents-md">Codex 專案指引</a></li>
@@ -707,5 +780,5 @@ A7：可以，但要先閱讀每條規則、檢查外部連結與可能執行的
             "securityLevel": "loose"
 });
     </script>
-<nav aria-label="課程導覽" class="course-nav"><a href="index.html">課程目錄</a><a href="04a_workflows.html">← 上一章</a><a href="06_lesson_plans.html">下一章 →</a><a href="05_instructions.md">Markdown 原文</a><span>雙 CLI 教材 · 2026-10-31</span></nav></body>
+<nav aria-label="課程導覽" class="course-nav"><a href="index.html">課程目錄</a><a href="04a_workflows.html">← 上一章</a><a href="06_lesson_plans.html">下一章 →</a><a href="05_instructions.md">Markdown 原文</a><span>三款 CLI 教材 · 更新 2026-11-17</span></nav></body>
 </html>

@@ -1,0 +1,211 @@
+/* AI Agent CLI 課程共用排版：提升中文長文的可讀性。
+   載入順序在各頁內嵌樣式之後，所以這裡的設定會覆蓋 water.css 與舊的內嵌樣式。 */
+
+:root {
+  --course-text: #e4e6ea;
+  --course-muted: #a7b0bb;
+  --course-accent: #66b3ff;
+  --course-line: #3a4048;
+  --course-panel: #232932;
+  --course-quote: #26303b;
+}
+
+/* 版心與基本字級：每行約 40～45 個中文字，行高 1.85 */
+body {
+  max-width: 920px;
+  font-size: 17px;
+  line-height: 1.85;
+  letter-spacing: 0.02em;
+  color: var(--course-text);
+  padding: 24px 24px 72px;
+}
+
+.container {
+  max-width: 46em;
+  margin: 0 auto;
+}
+
+.container p {
+  margin: 0 0 1.15em;
+}
+
+/* 標題：章與章之間留白並加分隔線，方便掃讀 */
+.container h1 {
+  font-size: 1.85em;
+  line-height: 1.35;
+  margin: 0.4em 0 0.9em;
+}
+
+.container h2 {
+  font-size: 1.45em;
+  line-height: 1.4;
+  margin: 2.8em 0 0.9em;
+  padding-top: 1.1em;
+  border-top: 1px solid var(--course-line);
+}
+
+.container h3 {
+  font-size: 1.2em;
+  line-height: 1.45;
+  margin: 2.1em 0 0.7em;
+}
+
+.container h4 {
+  font-size: 1.05em;
+  line-height: 1.5;
+  margin: 1.7em 0 0.6em;
+}
+
+.container h2 + h3,
+.container h3 + h4 {
+  margin-top: 1em;
+}
+
+/* 清單：項目之間留一點空隙 */
+.container ul,
+.container ol {
+  padding-left: 1.6em;
+  margin: 0.4em 0 1.3em;
+}
+
+.container li {
+  margin: 0.4em 0;
+}
+
+.container li > ul,
+.container li > ol {
+  margin: 0.3em 0 0.4em;
+}
+
+/* 表格：加大儲存格內距，字級略小、行高略緊 */
+.container table {
+  margin: 1.3em 0 1.7em;
+  font-size: 0.93em;
+  line-height: 1.65;
+  border-collapse: collapse;
+}
+
+.container th,
+.container td {
+  padding: 0.6em 0.85em;
+  vertical-align: top;
+  border: 1px solid var(--course-line);
+}
+
+.container th {
+  background: var(--course-panel);
+  text-align: left;
+}
+
+/* 引言：當作「提示框」使用 */
+.container blockquote {
+  margin: 1.5em 0;
+  padding: 0.9em 1.2em;
+  background: var(--course-quote);
+  border-left: 4px solid var(--course-accent);
+  border-radius: 6px;
+  font-style: normal;
+}
+
+.container blockquote > :last-child {
+  margin-bottom: 0;
+}
+
+.container blockquote ul {
+  margin: 0.4em 0;
+}
+
+/* 程式碼 */
+.container code {
+  font-size: 0.88em;
+  padding: 0.12em 0.38em;
+  border-radius: 4px;
+  letter-spacing: 0;
+}
+
+.container pre {
+  margin: 1.1em 0 1.6em;
+}
+
+.container pre code {
+  font-size: 0.86em;
+  line-height: 1.65;
+  padding: 1.2em 1.4em;
+}
+
+.container hr {
+  margin: 2.6em 0;
+  border: 0;
+  border-top: 1px solid var(--course-line);
+}
+
+/* 原文用 --- 分隔章節時，h2 已有分隔線，避免出現兩條線 */
+.container hr + h2,
+.container hr + hr {
+  border-top: 0;
+  padding-top: 0;
+  margin-top: 0;
+}
+
+.container hr:has(+ hr) {
+  display: none;
+}
+
+.container strong {
+  color: #ffffff;
+}
+
+.container img {
+  display: block;
+  margin: 1.2em auto;
+}
+
+/* 本頁章節目錄 */
+.course-toc {
+  margin: 1.4em 0 2.2em;
+  padding: 0.9em 1.3em;
+  background: var(--course-panel);
+  border-radius: 8px;
+  line-height: 1.7;
+}
+
+.course-toc summary {
+  cursor: pointer;
+  font-weight: 600;
+  background: transparent;
+  padding: 0;
+}
+
+.course-toc ul {
+  margin: 0.6em 0 0.2em;
+}
+
+.course-toc li {
+  margin: 0.25em 0;
+}
+
+/* 舊錨點不佔版面 */
+.legacy-anchor {
+  display: block;
+  position: relative;
+  top: -0.5em;
+  visibility: hidden;
+}
+
+/* 手機 */
+@media (max-width: 600px) {
+  body {
+    font-size: 16px;
+    line-height: 1.8;
+    padding: 14px 16px 56px;
+  }
+
+  .container h2 {
+    margin-top: 2.2em;
+  }
+
+  .container th,
+  .container td {
+    padding: 0.5em 0.6em;
+  }
+}
