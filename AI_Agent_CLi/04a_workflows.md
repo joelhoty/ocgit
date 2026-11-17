@@ -1,7 +1,7 @@
-<!-- Path: AI_Agent_CLi | Updated: 2026-10-31 | Edition: Codex CLI / Claude Code -->
+<!-- Path: AI_Agent_CLi | Updated: 2026-11-17 | Edition: Codex CLI / Claude Code / agy -->
 # 單元四補充內容：進階章節
 
-> **閱讀前提：**先完成[前導章：Agent 基本概念與工作環境](00_intro.html)，使用 Codex CLI 或 Claude Code 其中一款。本章以備課作為範例情境；不是教師也能把主題換成自己的工作或學習內容。範例請使用虛構或去識別化資料，結果都要回到來源與實際檔案確認。（查核日期：2026-10-31）
+> **閱讀前提：**先完成[前導章：Agent 基本概念與工作環境](00_intro.html)，使用 Codex CLI、Claude Code 或 Antigravity CLI（`agy`）其中一款。本章以備課作為範例情境；不是教師也能把主題換成自己的工作或學習內容。範例請使用虛構或去識別化資料，結果都要回到來源與實際檔案確認。（查核日期：2026-10-31）
 
 
 **銜接**：搭配[單元四](04_workspace.html)閱讀，練習多檔案、Markdown 與流程圖。
@@ -10,17 +10,17 @@
 
 ### 雙 CLI 操作約定
 
-先在專案資料夾的終端機輸入 `codex` 或 `claude`，啟動其中一款工具。進入 CLI 會話後，直接輸入本章的自然語言提示；同一任務逐輪追問，不必每次重新啟動工具。
+先在專案資料夾的終端機輸入 `codex`、`claude` 或 `agy`，啟動其中一款工具。進入 CLI 會話後，直接輸入本章的自然語言提示；同一任務逐輪追問，不必每次重新啟動工具。
 
 | 輸入位置 | 要做的事 | 範例 |
 |---|---|---|
-| 終端機 shell | 啟動一次 CLI，兩款擇一 | `codex` 或 `claude` |
+| 終端機 shell | 啟動一次 CLI，三款擇一 | `codex`、`claude` 或 `agy` |
 | CLI 會話輸入區 | 說明任務、來源與產物 | 閱讀 lesson.txt，整理三個重點並標示來源。 |
 | 同一會話輸入區 | 依剛才結果追問與修改 | 把第二個重點改寫成適合國小五年級的說明。 |
 
-**專案指引檔**：Codex 使用 `AGENTS.md`，Claude Code 使用 `CLAUDE.md`。這些是保存專案慣例的檔案；設定方式及相容條件見[單元五](05_instructions.html)。
+**專案指引檔**：Codex 與 agy 使用 `AGENTS.md`（agy 也讀 `GEMINI.md`），Claude Code 使用 `CLAUDE.md`。這些是保存專案慣例的檔案；設定方式及相容條件見[單元五](05_instructions.html)。
 
-需要切換模型、查看用量或管理 context 時，使用 CLI 介面；兩款工具的常用斜線指令與差異見[前導章](00_intro.html)。寫檔前說清楚路徑與是否保留原稿，完成後在 VS Code 開啟產物核對。自然語言的「不要修改」是任務要求，不能取代權限設定。
+需要切換模型、查看用量或管理 context 時，使用 CLI 介面；三款工具的常用斜線指令與差異見[前導章](00_intro.html)。寫檔前說清楚路徑與是否保留原稿，完成後在 VS Code 開啟產物核對。自然語言的「不要修改」是任務要求，不能取代權限設定。
 
 ## CLI + VSCode 整合的五大優勢
 
@@ -44,7 +44,7 @@
 
 ### 優勢二：批次處理多檔案（類似 NotebookLM）
 
-**核心能力**：Codex CLI／Claude Code 可依指定路徑逐步讀檔並整合分析；先列出讀取清單，不能假定所有檔案都已進入 context
+**核心能力**：Codex CLI／Claude Code／agy 可依指定路徑逐步讀檔並整合分析；先列出讀取清單，不能假定所有檔案都已進入 context
 
 **情境範例**：整週教案統整
 
@@ -69,7 +69,7 @@ week5_lessons/
 
 **vs NotebookLM 的差異**：
 
-| 比較項目 | NotebookLM | Codex CLI／Claude Code + VSCode |
+| 比較項目 | NotebookLM | Codex CLI／Claude Code／agy + VSCode |
 |---------|-----------|---------------------|
 | **檔案管理** | 網頁上傳，分散 | 本機資料夾，集中 |
 | **修改檔案** | 需重新上傳 | 下一次讀檔取得更新內容；已載入 context 需重讀 |
@@ -401,7 +401,7 @@ class 教師 {
 ### 階段一：生成教學大綱
 
 **檔案準備**：
-在 VS Code 建立並開啟 `llm_course/`，終端機也切換至此資料夾，再用 `codex` 或 `claude` 啟動一次。以下六個階段在同一會話逐步進行，所有檔案採同一層目錄。每階段完成後先開啟產物核對，再送出下一個提示；不要假定對話中顯示的文字已經寫入檔案。
+在 VS Code 建立並開啟 `llm_course/`，終端機也切換至此資料夾，再用 `codex`、`claude` 或 `agy` 啟動一次。以下六個階段在同一會話逐步進行，所有檔案採同一層目錄。每階段完成後先開啟產物核對，再送出下一個提示；不要假定對話中顯示的文字已經寫入檔案。
 
 **在 CLI 會話輸入**：
 ```text

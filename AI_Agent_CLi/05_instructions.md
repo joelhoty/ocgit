@@ -1,7 +1,7 @@
 <!-- Path: AI_Agent_CLi | Checked: 2026-10-31 | Revision: dual-cli -->
 # 單元五補充教材：個人化你的 AI — AGENTS.md 與 CLAUDE.md
 
-> **閱讀前提：**先完成[前導章：Agent 基本概念與工作環境](00_intro.html)，使用 Codex CLI 或 Claude Code 其中一款。本章以備課作為範例情境；不是教師也能把主題換成自己的工作或學習內容。範例請使用虛構或去識別化資料，結果都要回到來源與實際檔案確認。（查核日期：2026-10-31）
+> **閱讀前提：**先完成[前導章：Agent 基本概念與工作環境](00_intro.html)，使用 Codex CLI、Claude Code 或 Antigravity CLI（`agy`）其中一款。本章以備課作為範例情境；不是教師也能把主題換成自己的工作或學習內容。範例請使用虛構或去識別化資料，結果都要回到來源與實際檔案確認。（查核日期：2026-10-31）
 
 ## 單元目標
 
@@ -59,12 +59,15 @@ graph LR
 |---|---|---|
 | Codex CLI | 專案根目錄 `AGENTS.md` | 在該目錄開始新會話，請它列出實際載入的指引與適用規則；再用一個可核對的小任務驗證 |
 | Claude Code | 專案根目錄 `CLAUDE.md` | 用 `/context` 檢查 Memory files，並測試輸出；共用規則時在 CLAUDE.md 寫入 `@AGENTS.md` |
+| Antigravity CLI（`agy`） | 專案根目錄 `AGENTS.md`（也讀 `GEMINI.md` 與 `.agents/rules/*.md`） | 從啟動資料夾往上到 Git 根目錄累加載入；`/exit` 後重新啟動，要求它不讀檔、只依已載入規則回答來核對 |
 
 Codex 還有使用者層與子目錄的規則，`AGENTS.override.md` 可覆蓋同層預設檔案。Claude Code v2.1.277+ 可直接讀 AGENTS.md，但預設只有在工作目錄及其上層沒有 CLAUDE.md、.claude/CLAUDE.md 或 CLAUDE.local.md 時才採用；內建支援被停用、舊版或部分升級後首次會話也可能不可用。`/config` 的 Project instructions 可設定同時載入兩者。本課採 CLAUDE.md 匯入 AGENTS.md，兼顧既有版本與 Windows，不依賴 symlink。
 
 這些文字提供 context，不是系統權限，更不保證模型每次都遵守。`/permissions`、實際 sandbox、檔案權限與人工驗收分別負責授權、隔離與品質。不要在規則內放 API 金鑰或學生個資。
 
-來源：[Codex AGENTS.md](https://learn.chatgpt.com/docs/agent-configuration/agents-md)、[Claude 專案記憶](https://code.claude.com/docs/en/memory)、[Claude 權限](https://code.claude.com/docs/en/permissions)。
+agy 的規則載入範圍、`trigger` 欄位與拆分方式見 [agy 延伸章第 4 章](agy_cli.html#agy-agents-md)。
+
+來源：[Codex AGENTS.md](https://learn.chatgpt.com/docs/agent-configuration/agents-md)、[Claude 專案記憶](https://code.claude.com/docs/en/memory)、[Claude 權限](https://code.claude.com/docs/en/permissions)、[Antigravity Rules](https://antigravity.google/docs/rules)。
 
 
 ---
@@ -79,7 +82,7 @@ Codex 還有使用者層與子目錄的規則，`AGENTS.override.md` 可覆蓋�
 
 1. 在 VSCode 左側檔案總管中,點選右鍵
 2. 選擇「新增檔案」(New File)
-3. Codex 的共用規則檔名輸入：`AGENTS.md`（注意大寫）
+3. Codex 與 agy 的共用規則檔名輸入：`AGENTS.md`（注意大寫）
 4. 按下 Enter
 
 #### 方法 2：在 Agent 會話中建立
@@ -148,7 +151,7 @@ codex
 只回覆，不修改檔案；指出任何互相矛盾或未讀取的規則。
 ```
 
-Claude 用 `/context` 確認實際載入的 Memory files；Codex 在新會話確認工作目錄與適用指引，再核對實際產物。`/memory` 也會列出不存在的檔案，不能當成載入證明；要用它直接確認 AGENTS.md，需要 v2.1.280 以上。
+Claude 用 `/context` 確認實際載入的 Memory files；Codex 在新會話確認工作目錄與適用指引；agy 重新啟動後要求它不讀檔、只依已載入規則回答。三者都要再核對實際產物。`/memory` 也會列出不存在的檔案，不能當成載入證明；要用它直接確認 AGENTS.md，需要 v2.1.280 以上。
 
 **預期結果**：
 輸出應符合角色、每段字數與條列格式。核對載入紀錄及實際結果；自我介紹不等於規則已生效，正確回覆一次也不保證所有任務都正確。
@@ -408,7 +411,7 @@ Claude 用 `/context` 確認實際載入的 Memory files；Codex 在新會話確
 ```text
 依專案指引的「改寫」規則，將我提供的光合作用說明改寫為三種難度。
 ```
-兩款工具共用這份自然語言提示。預期產生三個版本，再人工核對內容、難度與學習目標，不以篇幅判定品質。
+三款工具共用這份自然語言提示。預期產生三個版本，再人工核對內容、難度與學習目標，不以篇幅判定品質。
 
 ---
 
@@ -487,7 +490,7 @@ Claude 用 `/context` 確認實際載入的 Memory files；Codex 在新會話確
 - 格式:題號清楚,附標準答案
 ```
 
-**使用方式：**在已啟動的 CLI 會話輸入，兩款工具皆適用。
+**使用方式：**在已啟動的 CLI 會話輸入，三款工具皆適用。
 ```text
 【快速模式】讀 inputs/lesson.md 並摘要；只回覆，不改檔。
 ```
@@ -605,7 +608,7 @@ teaching/
 ## 常見問題 Q&A
 
 **Q1：指引檔一定要放在哪裡？**
-A1：本課把 AGENTS.md 與 CLAUDE.md 放在專案根目錄，並從該處啟動 CLI。Codex 與 Claude 也有使用者層及子目錄規則，不能把「VS Code 開啟的資料夾」當成唯一載入依據；先核對終端機工作目錄。
+A1：本課把 AGENTS.md 與 CLAUDE.md 放在專案根目錄，並從該處啟動 CLI。Codex、Claude 與 agy 也有使用者層規則（agy 的全域規則在 `~/.gemini/`），不能把「VS Code 開啟的資料夾」當成唯一載入依據；先核對終端機工作目錄。
 
 **Q2：我可以有多個指引檔嗎？**
 A2：可以用根目錄共通規則搭配子目錄特定規則；但工具載入與優先順序不同。Codex 的 AGENTS.override.md 不等於 Claude 支援的檔名。先用一個根目錄檔完成練習，再增加層級。
@@ -620,7 +623,7 @@ A4：過長、矛盾或無法驗證的規則會增加 context 負擔。先聚焦
 A5：對可由任務調整的風格，可以明確寫「本次請詳細說明」。這不表示任意提示都能覆蓋系統、組織或安全限制；有衝突先釐清適用規則。
 
 **Q6：AI 沒有遵守設定怎麼辦？**
-A6：先檢查檔名大小寫、儲存、啟動目錄、上層及子層檔案。Claude 使用 `/context` 核對 Memory files，必要時用 CLAUDE.md 的 `@AGENTS.md` 匯入；Codex 開新會話再核對適用指引。確認規則可測且沒有矛盾，最後檢查實際產物，不只追問「你有讀嗎」。
+A6：先檢查檔名大小寫、儲存、啟動目錄、上層及子層檔案。Claude 使用 `/context` 核對 Memory files，必要時用 CLAUDE.md 的 `@AGENTS.md` 匯入；Codex 開新會話再核對適用指引；agy 確認 `.agents/rules/*.md` 有 `trigger` 欄位，否則會被忽略。確認規則可測且沒有矛盾，最後檢查實際產物，不只追問「你有讀嗎」。
 
 **Q7：可以參考其他人的指引檔嗎？**
 A7：可以，但要先閱讀每條規則、檢查外部連結與可能執行的工作流程。改成自己的年級、學科、來源與驗收條件；不要把陌生設定直接當成可信任的命令。
@@ -675,5 +678,6 @@ A7：可以，但要先閱讀每條規則、檢查外部連結與可能執行的
 - [Codex 專案指引](https://learn.chatgpt.com/docs/agent-configuration/agents-md)
 - [Claude Code 記憶與指引載入](https://code.claude.com/docs/en/memory)
 - [Claude Code 權限設定](https://code.claude.com/docs/en/permissions)
+- [Antigravity CLI 規則（Rules）](https://antigravity.google/docs/rules)
 
 查核日期：2026-10-31；課前請再次確認 CLI 版本。

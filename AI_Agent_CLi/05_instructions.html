@@ -81,7 +81,7 @@ html{scroll-behavior:smooth}body{box-sizing:border-box}img{max-width:100%;height
 <div class="container"><!-- Path: AI_Agent_CLi | Checked: 2026-10-31 | Revision: dual-cli -->
 <h1 id="ai-agentsmd-claudemd">單元五補充教材：個人化你的 AI — AGENTS.md 與 CLAUDE.md</h1><details class="course-toc"><summary>本頁章節</summary><ul><li><a href="#_1">單元目標</a></li><li><a href="#_2">核心概念詳解</a></li><li><a href="#_3">詳細操作步驟</a></li><li><a href="#agentsmdclaudemd">跨學科 AGENTS.md／CLAUDE.md 範本</a></li><li><a href="#_13">進階設定技巧</a></li><li><a href="#_14">實用技巧與注意事項</a></li><li><a href="#_17">延伸應用</a></li><li><a href="#_18">練習任務</a></li><li><a href="#qa">常見問題 Q&amp;A</a></li><li><a href="#_21">通用範本</a></li></ul></details>
 <blockquote>
-<p><strong>閱讀前提：</strong>先完成<a href="00_intro.html">前導章：Agent 基本概念與工作環境</a>，使用 Codex CLI 或 Claude Code 其中一款。本章以備課作為範例情境；不是教師也能把主題換成自己的工作或學習內容。範例請使用虛構或去識別化資料，結果都要回到來源與實際檔案確認。（查核日期：2026-10-31）</p>
+<p><strong>閱讀前提：</strong>先完成<a href="00_intro.html">前導章：Agent 基本概念與工作環境</a>，使用 Codex CLI、Claude Code 或 Antigravity CLI（<code>agy</code>）其中一款。本章以備課作為範例情境；不是教師也能把主題換成自己的工作或學習內容。範例請使用虛構或去識別化資料，結果都要回到來源與實際檔案確認。（查核日期：2026-10-31）</p>
 </blockquote>
 <h2 id="_1">單元目標</h2>
 <ul>
@@ -172,11 +172,17 @@ html{scroll-behavior:smooth}body{box-sizing:border-box}img{max-width:100%;height
 <td>專案根目錄 <code>CLAUDE.md</code></td>
 <td>用 <code>/context</code> 檢查 Memory files，並測試輸出；共用規則時在 CLAUDE.md 寫入 <code>@AGENTS.md</code></td>
 </tr>
+<tr>
+<td>Antigravity CLI（<code>agy</code>）</td>
+<td>專案根目錄 <code>AGENTS.md</code>（也讀 <code>GEMINI.md</code> 與 <code>.agents/rules/*.md</code>）</td>
+<td>從啟動資料夾往上到 Git 根目錄累加載入；<code>/exit</code> 後重新啟動，要求它不讀檔、只依已載入規則回答來核對</td>
+</tr>
 </tbody>
 </table>
 <p>Codex 還有使用者層與子目錄的規則，<code>AGENTS.override.md</code> 可覆蓋同層預設檔案。Claude Code v2.1.277+ 可直接讀 AGENTS.md，但預設只有在工作目錄及其上層沒有 CLAUDE.md、.claude/CLAUDE.md 或 CLAUDE.local.md 時才採用；內建支援被停用、舊版或部分升級後首次會話也可能不可用。<code>/config</code> 的 Project instructions 可設定同時載入兩者。本課採 CLAUDE.md 匯入 AGENTS.md，兼顧既有版本與 Windows，不依賴 symlink。</p>
 <p>這些文字提供 context，不是系統權限，更不保證模型每次都遵守。<code>/permissions</code>、實際 sandbox、檔案權限與人工驗收分別負責授權、隔離與品質。不要在規則內放 API 金鑰或學生個資。</p>
-<p>來源：<a href="https://learn.chatgpt.com/docs/agent-configuration/agents-md">Codex AGENTS.md</a>、<a href="https://code.claude.com/docs/en/memory">Claude 專案記憶</a>、<a href="https://code.claude.com/docs/en/permissions">Claude 權限</a>。</p>
+<p>agy 的規則載入範圍、<code>trigger</code> 欄位與拆分方式見 <a href="agy_cli.html#agy-agents-md">agy 延伸章第 4 章</a>。</p>
+<p>來源：<a href="https://learn.chatgpt.com/docs/agent-configuration/agents-md">Codex AGENTS.md</a>、<a href="https://code.claude.com/docs/en/memory">Claude 專案記憶</a>、<a href="https://code.claude.com/docs/en/permissions">Claude 權限</a>、<a href="https://antigravity.google/docs/rules">Antigravity Rules</a>。</p>
 <hr/>
 <h2 id="_3">詳細操作步驟</h2>
 <p>您可能已經依<a href="00_intro.html#project-instructions">前導章的專案指引</a>建立規則檔；本單元在那個基礎上延伸。</p>
@@ -185,7 +191,7 @@ html{scroll-behavior:smooth}body{box-sizing:border-box}img{max-width:100%;height
 <ol>
 <li>在 VSCode 左側檔案總管中,點選右鍵</li>
 <li>選擇「新增檔案」(New File)</li>
-<li>Codex 的共用規則檔名輸入：<code>AGENTS.md</code>（注意大寫）</li>
+<li>Codex 與 agy 的共用規則檔名輸入：<code>AGENTS.md</code>（注意大寫）</li>
 <li>按下 Enter</li>
 </ol>
 <h4 id="2-agent">方法 2：在 Agent 會話中建立</h4>
@@ -230,7 +236,7 @@ html{scroll-behavior:smooth}body{box-sizing:border-box}img{max-width:100%;height
 用國小五年級能理解的方式說明分數，每段不超過 100 字。
 只回覆，不修改檔案；指出任何互相矛盾或未讀取的規則。
 </code></pre>
-<p>Claude 用 <code>/context</code> 確認實際載入的 Memory files；Codex 在新會話確認工作目錄與適用指引，再核對實際產物。<code>/memory</code> 也會列出不存在的檔案，不能當成載入證明；要用它直接確認 AGENTS.md，需要 v2.1.280 以上。</p>
+<p>Claude 用 <code>/context</code> 確認實際載入的 Memory files；Codex 在新會話確認工作目錄與適用指引；agy 重新啟動後要求它不讀檔、只依已載入規則回答。三者都要再核對實際產物。<code>/memory</code> 也會列出不存在的檔案，不能當成載入證明；要用它直接確認 AGENTS.md，需要 v2.1.280 以上。</p>
 <p><strong>預期結果</strong>：<br/>
 輸出應符合角色、每段字數與條列格式。核對載入紀錄及實際結果；自我介紹不等於規則已生效，正確回覆一次也不保證所有任務都正確。</p>
 <p><strong>比較</strong>：<br/>
@@ -452,7 +458,7 @@ html{scroll-behavior:smooth}body{box-sizing:border-box}img{max-width:100%;height
 <p><strong>使用方式：</strong>先啟動所選 CLI，在對話中輸入以下提示，並貼上原文或提供實際檔案位置。</p>
 <pre><code class="language-text">依專案指引的「改寫」規則，將我提供的光合作用說明改寫為三種難度。
 </code></pre>
-<p>兩款工具共用這份自然語言提示。預期產生三個版本，再人工核對內容、難度與學習目標，不以篇幅判定品質。</p>
+<p>三款工具共用這份自然語言提示。預期產生三個版本，再人工核對內容、難度與學習目標，不以篇幅判定品質。</p>
 <hr/>
 <h3 id="2">技巧 2：設定輸出範本</h3>
 <p><strong>情境</strong>：您需要固定格式的學習單</p>
@@ -515,7 +521,7 @@ html{scroll-behavior:smooth}body{box-sizing:border-box}img{max-width:100%;height
 - 類型:選擇、填空、簡答、討論
 - 格式:題號清楚,附標準答案
 </code></pre>
-<p><strong>使用方式：</strong>在已啟動的 CLI 會話輸入，兩款工具皆適用。</p>
+<p><strong>使用方式：</strong>在已啟動的 CLI 會話輸入，三款工具皆適用。</p>
 <pre><code class="language-text">【快速模式】讀 inputs/lesson.md 並摘要；只回覆，不改檔。
 </code></pre>
 <p>這裡的「快速模式」是專案文件自訂的回應格式，不是 CLI 的模型或速度設定。若要換模型，使用會話內的 <code>/model</code>；常用指令見<a href="00_intro.html#510">前導章</a>。</p>
@@ -593,7 +599,7 @@ html{scroll-behavior:smooth}body{box-sizing:border-box}img{max-width:100%;height
       └── materials/
 </code></pre>
 <hr/>
-<h3 id="2_1">應用 2：團隊協作範本</h3>
+<span aria-hidden="true" class="legacy-anchor" id="2_2"></span><h3 id="2_1">應用 2：團隊協作範本</h3>
 <p><strong>情境</strong>：與同事共同備課,統一 AI 使用方式</p>
 <p><strong>做法</strong>：<br/>
 1. 團隊共同制定 <code>AGENTS.md</code> 範本<br/>
@@ -632,7 +638,7 @@ html{scroll-behavior:smooth}body{box-sizing:border-box}img{max-width:100%;height
 <hr/>
 <h2 id="qa">常見問題 Q&amp;A</h2>
 <p><strong>Q1：指引檔一定要放在哪裡？</strong><br/>
-A1：本課把 AGENTS.md 與 CLAUDE.md 放在專案根目錄，並從該處啟動 CLI。Codex 與 Claude 也有使用者層及子目錄規則，不能把「VS Code 開啟的資料夾」當成唯一載入依據；先核對終端機工作目錄。</p>
+A1：本課把 AGENTS.md 與 CLAUDE.md 放在專案根目錄，並從該處啟動 CLI。Codex、Claude 與 agy 也有使用者層規則（agy 的全域規則在 <code>~/.gemini/</code>），不能把「VS Code 開啟的資料夾」當成唯一載入依據；先核對終端機工作目錄。</p>
 <p><strong>Q2：我可以有多個指引檔嗎？</strong><br/>
 A2：可以用根目錄共通規則搭配子目錄特定規則；但工具載入與優先順序不同。Codex 的 AGENTS.override.md 不等於 Claude 支援的檔名。先用一個根目錄檔完成練習，再增加層級。</p>
 <p><strong>Q3：規則會影響所有指令嗎？</strong><br/>
@@ -642,7 +648,7 @@ A4：過長、矛盾或無法驗證的規則會增加 context 負擔。先聚焦
 <p><strong>Q5：我可以臨時調整設定嗎？</strong><br/>
 A5：對可由任務調整的風格，可以明確寫「本次請詳細說明」。這不表示任意提示都能覆蓋系統、組織或安全限制；有衝突先釐清適用規則。</p>
 <p><strong>Q6：AI 沒有遵守設定怎麼辦？</strong><br/>
-A6：先檢查檔名大小寫、儲存、啟動目錄、上層及子層檔案。Claude 使用 <code>/context</code> 核對 Memory files，必要時用 CLAUDE.md 的 <code>@AGENTS.md</code> 匯入；Codex 開新會話再核對適用指引。確認規則可測且沒有矛盾，最後檢查實際產物，不只追問「你有讀嗎」。</p>
+A6：先檢查檔名大小寫、儲存、啟動目錄、上層及子層檔案。Claude 使用 <code>/context</code> 核對 Memory files，必要時用 CLAUDE.md 的 <code>@AGENTS.md</code> 匯入；Codex 開新會話再核對適用指引；agy 確認 <code>.agents/rules/*.md</code> 有 <code>trigger</code> 欄位，否則會被忽略。確認規則可測且沒有矛盾，最後檢查實際產物，不只追問「你有讀嗎」。</p>
 <p><strong>Q7：可以參考其他人的指引檔嗎？</strong><br/>
 A7：可以，但要先閱讀每條規則、檢查外部連結與可能執行的工作流程。改成自己的年級、學科、來源與驗收條件；不要把陌生設定直接當成可信任的命令。</p>
 <hr/>
@@ -686,6 +692,7 @@ A7：可以，但要先閱讀每條規則、檢查外部連結與可能執行的
 <li><a href="https://learn.chatgpt.com/docs/agent-configuration/agents-md">Codex 專案指引</a></li>
 <li><a href="https://code.claude.com/docs/en/memory">Claude Code 記憶與指引載入</a></li>
 <li><a href="https://code.claude.com/docs/en/permissions">Claude Code 權限設定</a></li>
+<li><a href="https://antigravity.google/docs/rules">Antigravity CLI 規則（Rules）</a></li>
 </ul>
 <p>查核日期：2026-10-31；課前請再次確認 CLI 版本。</p></div>
 <!-- Highlight.js -->

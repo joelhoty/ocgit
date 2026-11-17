@@ -1,7 +1,7 @@
-<!-- Path: AI_Agent_CLi | Updated: 2026-10-31 | Edition: Codex CLI / Claude Code -->
+<!-- Path: AI_Agent_CLi | Updated: 2026-11-17 | Edition: Codex CLI / Claude Code / agy -->
 # 單元三補充教材：打造您的專屬知識庫 - 備課神器 NotebookLM
 
-> **閱讀前提：**先完成[前導章：Agent 基本概念與工作環境](00_intro.html)，使用 Codex CLI 或 Claude Code 其中一款。本章以備課作為範例情境；不是教師也能把主題換成自己的工作或學習內容。範例請使用虛構或去識別化資料，結果都要回到來源與實際檔案確認。（查核日期：2026-10-31）
+> **閱讀前提：**先完成[前導章：Agent 基本概念與工作環境](00_intro.html)，使用 Codex CLI、Claude Code 或 Antigravity CLI（`agy`）其中一款。本章以備課作為範例情境；不是教師也能把主題換成自己的工作或學習內容。範例請使用虛構或去識別化資料，結果都要回到來源與實際檔案確認。（查核日期：2026-10-31）
 
 > **名稱提醒**：Google 已正式將 NotebookLM 更名為 **Gemini Notebook**（[官方公告](https://blog.google/innovation-and-ai/products/gemini-notebook/notebooklm-gemini-notebook/)）。本課程為了延續性仍稱 NotebookLM，實際介面以登入後顯示為準。[官方介紹](https://support.google.com/gemininotebook/answer/16164461)。
 
@@ -829,11 +829,11 @@ A6：可以。筆記本可用電子郵件分享給指定對象，並設為檢視
 
 **小結**：NotebookLM 將「有憑有據」帶入 AI 教學應用,讓您的備課更高效、精準。透過建立專屬知識庫,AI 真正成為懂您教材的智慧助教！
 
-## 與 Codex CLI／Claude Code 接續的實作
+## 與 Codex CLI／Claude Code／agy 接續的實作
 
 **輸入**：您有權使用的來源、人工核對過的三段重點與頁碼。來源若是 Word，依介面支援情況轉 PDF 或貼入文字，核對轉換後內容。
 
-**操作**：先在 NotebookLM 點開引用核對，將摘錄、來源名稱和頁碼存入專案 `source_notes.md`；再開啟 `codex` 或 `claude`，輸入：
+**操作**：先在 NotebookLM 點開引用核對，將摘錄、來源名稱和頁碼存入專案 `source_notes.md`；再開啟 `codex`、`claude` 或 `agy`，輸入：
 
 ```text
 只根據 source_notes.md 製作 worksheet.md，包含三個學習重點及三道附答案的題目。每題列出對應的來源名稱與頁碼；來源未包含的答案標成「資料不足」。不要自動新增網路來源。

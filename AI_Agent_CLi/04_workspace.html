@@ -78,13 +78,13 @@
 html{scroll-behavior:smooth}body{box-sizing:border-box}img{max-width:100%;height:auto}pre{max-width:100%;overflow-x:auto}table{display:block;max-width:100%;overflow-x:auto}td,th{min-width:7em}.course-nav{display:flex;flex-wrap:wrap;gap:.65em;align-items:center;padding:1em 0;margin:1em 0;border-bottom:1px solid #3e3e3e;font-size:.95rem}.course-nav a{color:#66b3ff}.course-nav span{color:#aaa}.course-toc{margin:1.5em 0;padding:1em;background:#222831;border-radius:8px}.course-toc a{overflow-wrap:anywhere}h1,h2,h3,p,li{overflow-wrap:break-word}.mermaid svg{max-width:100%;height:auto}@media(max-width:600px){body{padding:14px!important}h1{font-size:1.65em}pre code{padding:1em}.course-nav{line-height:1.8}}
 </style></head>
 <body><nav aria-label="課程導覽" class="course-nav"><a href="index.html">課程目錄</a><a href="03_notebooklm.html">← 上一章</a><a href="04a_workflows.html">下一章 →</a><a href="04_workspace.md">Markdown 原文</a><span>雙 CLI 教材 · 2026-10-31</span></nav>
-<div class="container"><span class="legacy-anchor" id="-ai"></span><span class="legacy-anchor" id="1-ai"></span><span class="legacy-anchor" id="1_3"></span><span class="legacy-anchor" id="2-ai"></span><span class="legacy-anchor" id="2-ai_1"></span><span class="legacy-anchor" id="3-agent-cli"></span><span class="legacy-anchor" id="3-ai"></span><span class="legacy-anchor" id="_25"></span><span class="legacy-anchor" id="_26"></span><span class="legacy-anchor" id="agent-cli"></span><span class="legacy-anchor" id="agent-cli-codex-cliclaude-code-vscode"></span><span class="legacy-anchor" id="ai"></span><span class="legacy-anchor" id="ai-ainotebooklm"></span><span class="legacy-anchor" id="ai_1"></span><span class="legacy-anchor" id="cli_1"></span><span class="legacy-anchor" id="terminal"></span><span class="legacy-anchor" id="vscode"></span><span class="legacy-anchor" id="vscode_1"></span><!-- Path: AI_Agent_CLi | Updated: 2026-10-31 | Edition: Codex CLI / Claude Code -->
-<h1 id="-agent">單元四補充教材：多檔案工作 - 讓 Agent 讀懂一整個資料夾</h1><details class="course-toc"><summary>本頁章節</summary><ul><li><a href="#_1">單元目標</a></li><li><a href="#_2">核心概念詳解</a></li><li><a href="#_3">詳細操作步驟</a></li><li><a href="#_5">跨學科應用範例</a></li><li><a href="#_16">進階技巧</a></li><li><a href="#_17">實用技巧與注意事項</a></li><li><a href="#_20">延伸應用</a></li><li><a href="#agent_2">網頁對話與終端機 Agent 的比較</a></li><li><a href="#_21">練習任務</a></li><li><a href="#qa">常見問題 Q&amp;A</a></li></ul></details>
+<div class="container"><!-- Path: AI_Agent_CLi | Updated: 2026-11-17 | Edition: Codex CLI / Claude Code / agy -->
+<span aria-hidden="true" class="legacy-anchor" id="-ai"></span><span aria-hidden="true" class="legacy-anchor" id="1-ai"></span><span aria-hidden="true" class="legacy-anchor" id="1_3"></span><span aria-hidden="true" class="legacy-anchor" id="2-ai"></span><span aria-hidden="true" class="legacy-anchor" id="2-ai_1"></span><span aria-hidden="true" class="legacy-anchor" id="3-agent-cli"></span><span aria-hidden="true" class="legacy-anchor" id="3-ai"></span><span aria-hidden="true" class="legacy-anchor" id="_25"></span><span aria-hidden="true" class="legacy-anchor" id="_26"></span><span aria-hidden="true" class="legacy-anchor" id="agent-cli"></span><span aria-hidden="true" class="legacy-anchor" id="agent-cli-codex-cliclaude-code-vscode"></span><span aria-hidden="true" class="legacy-anchor" id="ai"></span><span aria-hidden="true" class="legacy-anchor" id="ai-ainotebooklm"></span><span aria-hidden="true" class="legacy-anchor" id="ai_1"></span><span aria-hidden="true" class="legacy-anchor" id="cli_1"></span><span aria-hidden="true" class="legacy-anchor" id="terminal"></span><span aria-hidden="true" class="legacy-anchor" id="vscode"></span><span aria-hidden="true" class="legacy-anchor" id="vscode_1"></span><h1 id="-agent">單元四補充教材：多檔案工作 - 讓 Agent 讀懂一整個資料夾</h1><details class="course-toc"><summary>本頁章節</summary><ul><li><a href="#_1">單元目標</a></li><li><a href="#_2">核心概念詳解</a></li><li><a href="#_3">詳細操作步驟</a></li><li><a href="#_5">跨學科應用範例</a></li><li><a href="#_16">進階技巧</a></li><li><a href="#_17">實用技巧與注意事項</a></li><li><a href="#_20">延伸應用</a></li><li><a href="#agent_2">網頁對話與終端機 Agent 的比較</a></li><li><a href="#_21">練習任務</a></li><li><a href="#qa">常見問題 Q&amp;A</a></li></ul></details>
 <blockquote>
-<p><strong>閱讀前提：</strong>先完成<a href="00_intro.html">前導章：Agent 基本概念與工作環境</a>，使用 Codex CLI 或 Claude Code 其中一款。本章以備課作為範例情境；不是教師也能把主題換成自己的工作或學習內容。範例請使用虛構或去識別化資料，結果都要回到來源與實際檔案確認。（查核日期：2026-10-31）</p>
+<p><strong>閱讀前提：</strong>先完成<a href="00_intro.html">前導章：Agent 基本概念與工作環境</a>，使用 Codex CLI、Claude Code 或 Antigravity CLI（<code>agy</code>）其中一款。本章以備課作為範例情境；不是教師也能把主題換成自己的工作或學習內容。範例請使用虛構或去識別化資料，結果都要回到來源與實際檔案確認。（查核日期：2026-10-31）</p>
 </blockquote>
 <h3 id="cli">雙 CLI 操作約定</h3>
-<p>先在專案資料夾的終端機輸入 <code>codex</code> 或 <code>claude</code>，啟動其中一款工具。進入 CLI 會話後，直接輸入本章的自然語言提示；同一任務逐輪追問，不必每次重新啟動工具。</p>
+<p>先在專案資料夾的終端機輸入 <code>codex</code>、<code>claude</code> 或 <code>agy</code>，啟動其中一款工具。進入 CLI 會話後，直接輸入本章的自然語言提示；同一任務逐輪追問，不必每次重新啟動工具。</p>
 <table>
 <thead>
 <tr>
@@ -96,8 +96,8 @@ html{scroll-behavior:smooth}body{box-sizing:border-box}img{max-width:100%;height
 <tbody>
 <tr>
 <td>終端機 shell</td>
-<td>啟動一次 CLI，兩款擇一</td>
-<td><code>codex</code> 或 <code>claude</code></td>
+<td>啟動一次 CLI，三款擇一</td>
+<td><code>codex</code>、<code>claude</code> 或 <code>agy</code></td>
 </tr>
 <tr>
 <td>CLI 會話輸入區</td>
@@ -111,8 +111,8 @@ html{scroll-behavior:smooth}body{box-sizing:border-box}img{max-width:100%;height
 </tr>
 </tbody>
 </table>
-<p><strong>專案指引檔</strong>：Codex 使用 <code>AGENTS.md</code>，Claude Code 使用 <code>CLAUDE.md</code>。這些是保存專案慣例的檔案；設定方式及相容條件見<a href="05_instructions.html">單元五</a>。</p>
-<p>需要切換模型、查看用量或管理 context 時，使用 CLI 介面；兩款工具的常用斜線指令與差異見<a href="00_intro.html">前導章</a>。寫檔前說清楚路徑與是否保留原稿，完成後在 VS Code 開啟產物核對。自然語言的「不要修改」是任務要求，不能取代權限設定。</p>
+<p><strong>專案指引檔</strong>：Codex 與 agy 使用 <code>AGENTS.md</code>（agy 也讀 <code>GEMINI.md</code>），Claude Code 使用 <code>CLAUDE.md</code>。這些是保存專案慣例的檔案；設定方式及相容條件見<a href="05_instructions.html">單元五</a>。</p>
+<p>需要切換模型、查看用量或管理 context 時，使用 CLI 介面；三款工具的常用斜線指令與差異見<a href="00_intro.html">前導章</a>。寫檔前說清楚路徑與是否保留原稿，完成後在 VS Code 開啟產物核對。自然語言的「不要修改」是任務要求，不能取代權限設定。</p>
 <h2 id="_1">單元目標</h2>
 <ul>
 <li>區分「網頁介面」、「本機工具執行」與「模型推論位置」</li>
@@ -130,12 +130,12 @@ html{scroll-behavior:smooth}body{box-sizing:border-box}img{max-width:100%;height
 - ✅ 操作簡單,打開瀏覽器就能用<br/>
 - ✅ 通常可用瀏覽器操作，仍有帳號、地區與組織限制<br/>
 - ⚠️ 透過上傳或連接器提供檔案，能力依介面而異</p>
-<h4 id="agent-codex-cliclaude-code-vscode">終端機 Agent (如 Codex CLI／Claude Code + VSCode)</h4>
+<span aria-hidden="true" class="legacy-anchor" id="agent-codex-cliclaude-code-vscode"></span><h4 id="agent-codex-cliclaude-codeagy-vscode">終端機 Agent (如 Codex CLI／Claude Code／agy + VSCode)</h4>
 <p><strong>檔案如何交給模型</strong>：工具在您的電腦上執行，依任務讀取資料夾內的檔案，再把讀到的內容送到雲端模型。</p>
 <p><strong>特點</strong>：<br/>
 - ✅ 可直接讀取資料夾內的檔案<br/>
 - ✅ 整合工作流程,效率更高<br/>
-- ✅ 個人化設定（Codex：AGENTS.md；Claude Code：CLAUDE.md）<br/>
+- ✅ 個人化設定（Codex、agy：AGENTS.md；Claude Code：CLAUDE.md）<br/>
 - ⚠️ 需要安裝設定(初次較複雜)<br/>
 - ⚠️ 需要基本的電腦操作能力</p>
 <p><strong>兩者共通</strong>：都需要網路連線，內容都會經過網路傳到模型服務。工具在本機執行不代表資料留在本機。</p>
@@ -157,13 +157,13 @@ html{scroll-behavior:smooth}body{box-sizing:border-box}img{max-width:100%;height
 - 每次都要重新輸入完整的提示詞<br/>
 - 容易遺忘之前好用的指令</p>
 <p><strong>終端機 Agent</strong>：<br/>
-- 在專案指引（Codex 為 <code>AGENTS.md</code>，Claude 為 <code>CLAUDE.md</code>）中設定好「角色」與「預設指令」<br/>
+- 在專案指引（Codex 與 agy 為 <code>AGENTS.md</code>，Claude 為 <code>CLAUDE.md</code>）中設定好「角色」與「預設指令」<br/>
 - Agent 會依工具規則載入指引；仍需檢查實際輸出與權限</p>
 <hr/>
 <h3 id="3-agent">3. 終端機 Agent 工作環境的三個核心工具</h3>
 <div class="mermaid">graph LR
     A[VSCode&lt;br/&gt;工作環境] --&gt; B[Terminal&lt;br/&gt;終端機]
-    B --&gt; C[Codex CLI／Claude Code&lt;br/&gt;AI 對話工具]
+    B --&gt; C[Codex CLI／Claude Code／agy&lt;br/&gt;AI 對話工具]
     C --&gt; D[讀取本機檔案]
     D --&gt; E[生成結果]
 </div>
@@ -187,7 +187,7 @@ html{scroll-behavior:smooth}body{box-sizing:border-box}img{max-width:100%;height
 <td>對電腦下達命令的「對講機」</td>
 </tr>
 <tr>
-<td><strong>Codex CLI／Claude Code</strong></td>
+<td><strong>Codex CLI／Claude Code／agy</strong></td>
 <td>在終端機中與 AI 對話的工具</td>
 <td>能讀檔、改檔，但要由您核對結果的助手</td>
 </tr>
@@ -195,7 +195,7 @@ html{scroll-behavior:smooth}body{box-sizing:border-box}img{max-width:100%;height
 </table>
 <hr/>
 <h2 id="_3">詳細操作步驟</h2>
-<p>本章假設您已能用 VS Code 開啟資料夾，並在整合終端機啟動 <code>codex</code> 或 <code>claude</code>。還不熟悉時，請先看前導章的 <a href="00_intro.html#vscode-workbench">VS Code 工作台</a>與<a href="00_intro.html#verify-first-session">第一次對話的共同驗證</a>。以下範例都在同一個會話中進行。</p>
+<p>本章假設您已能用 VS Code 開啟資料夾，並在整合終端機啟動 <code>codex</code>、<code>claude</code> 或 <code>agy</code>。還不熟悉時，請先看前導章的 <a href="00_intro.html#vscode-workbench">VS Code 工作台</a>與<a href="00_intro.html#verify-first-session">第一次對話的共同驗證</a>。以下範例都在同一個會話中進行。</p>
 <h3 id="agent">步驟一：先確認 Agent 能讀到檔案</h3>
 <p><strong>前提</strong>：資料夾中有一個 <code>lesson.txt</code> 檔案</p>
 <pre><code class="language-text">請摘要 lesson.txt 這個檔案的內容
@@ -313,7 +313,7 @@ html{scroll-behavior:smooth}body{box-sizing:border-box}img{max-width:100%;height
 <p>送出後檢查工具的寫檔紀錄，再到 VS Code 開啟 <code>output.txt</code>，確認檔案非空且內容與摘要一致。若沒有寫檔權限，先在 CLI 介面檢查授權，或手動複製保存。</p>
 <hr/>
 <h3 id="3">技巧 3：多輪對話</h3>
-<p>在專案資料夾執行 <code>codex</code> 或 <code>claude</code> 啟動一次互動會話，以下三段是依次送出的提示，不是三次 shell 指令：</p>
+<p>在專案資料夾執行 <code>codex</code>、<code>claude</code> 或 <code>agy</code> 啟動一次互動會話，以下三段是依次送出的提示，不是三次 shell 指令：</p>
 <pre><code class="language-text">第一輪：請閱讀 lesson.txt，列出三個重點並引用原句。
 第二輪：根據剛才的三個重點，設計三道附答案的題目。
 第三輪：將剛才題目改為選擇題，列出每個錯誤選項對應的迷思。
@@ -341,7 +341,7 @@ html{scroll-behavior:smooth}body{box-sizing:border-box}img{max-width:100%;height
 </thead>
 <tbody>
 <tr>
-<td>輸入 <code>codex</code> 或 <code>claude</code> 指令無反應</td>
+<td>輸入 <code>codex</code>、<code>claude</code> 或 <code>agy</code> 指令無反應</td>
 <td>CLI 未安裝或未設定</td>
 <td>請檢查安裝步驟,確認指令可用</td>
 </tr>
@@ -368,7 +368,7 @@ html{scroll-behavior:smooth}body{box-sizing:border-box}img{max-width:100%;height
 <li><strong>避免上傳敏感資料</strong>：不要讓 AI 讀取包含學生個資、成績的檔案</li>
 <li><strong>檔案備份</strong>：重要檔案先備份再操作</li>
 <li><strong>檢查輸出內容</strong>：AI 生成的內容仍需人工審核</li>
-<li><strong>了解資料流向</strong>：Codex CLI／Claude Code 通常會把提示與所讀內容送到所選服務商處理；實際資料政策依帳號與服務設定確認</li>
+<li><strong>了解資料流向</strong>：Codex CLI／Claude Code／agy 通常會把提示與所讀內容送到所選服務商處理；實際資料政策依帳號與服務設定確認</li>
 </ol>
 <p>本章範例中的學生檔案（如 <code>student_errors.txt</code>、<code>student_report_1.txt</code>、<code>essay_A.txt</code>）全部是虛構資料。</p>
 <hr/>
@@ -465,7 +465,7 @@ html{scroll-behavior:smooth}body{box-sizing:border-box}img{max-width:100%;height
 <h2 id="_21">練習任務</h2>
 <h3 id="_22">初階任務</h3>
 <ol>
-<li>建立一個含 2-3 個 <code>.txt</code> 檔案的資料夾，用 VS Code 開啟並啟動 <code>codex</code> 或 <code>claude</code></li>
+<li>建立一個含 2-3 個 <code>.txt</code> 檔案的資料夾，用 VS Code 開啟並啟動 <code>codex</code>、<code>claude</code> 或 <code>agy</code></li>
 <li>請 Agent 先列出檔案，不要修改</li>
 <li>指定其中一個檔案請 AI 摘要，再回到原檔核對</li>
 </ol>
@@ -492,7 +492,7 @@ A6：可讀格式取決於會話工具；本課先轉成 <code>.txt</code> 或 <
 <p><strong>Q7：跟單元一的提示詞練習有什麼不同？</strong><br/>
 A7：單元一先學如何交代任務；這裡再學工作目錄、讀檔與輸出驗證。兩者使用同一套提示原則。</p>
 <hr/>
-<p><strong>小結</strong>：讓 Agent 在您指定的資料夾內工作,它就能交叉整理多個檔案並寫回結果。透過 VSCode + Codex CLI／Claude Code,您可以更高效地處理教學資料、分析學生作品、準備教材；模型仍在雲端,所以要清楚指定讀取範圍,並核對實際產物。初期需要一點學習,但熟悉後會發現效率大幅提升！</p>
+<p><strong>小結</strong>：讓 Agent 在您指定的資料夾內工作,它就能交叉整理多個檔案並寫回結果。透過 VSCode + Codex CLI／Claude Code／agy,您可以更高效地處理教學資料、分析學生作品、準備教材；模型仍在雲端,所以要清楚指定讀取範圍,並核對實際產物。初期需要一點學習,但熟悉後會發現效率大幅提升！</p>
 <h3 id="_24">本單元驗收</h3>
 <p>準備 <code>lesson.txt</code>（三段自寫教材）與 <code>criteria.md</code>（三個重點、每點一個來源原句）。在任一 CLI 會話要求產生 <code>summary.md</code>。完成時核對：工作目錄正確、讀檔紀錄成功、三個原句可在來源找到、原始檔未被修改。這些證據比 AI 自稱「已讀取」更可靠。</p></div>
 <!-- Highlight.js -->

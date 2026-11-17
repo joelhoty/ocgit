@@ -78,16 +78,16 @@
 html{scroll-behavior:smooth}body{box-sizing:border-box}img{max-width:100%;height:auto}pre{max-width:100%;overflow-x:auto}table{display:block;max-width:100%;overflow-x:auto}td,th{min-width:7em}.course-nav{display:flex;flex-wrap:wrap;gap:.65em;align-items:center;padding:1em 0;margin:1em 0;border-bottom:1px solid #3e3e3e;font-size:.95rem}.course-nav a{color:#66b3ff}.course-nav span{color:#aaa}.course-toc{margin:1.5em 0;padding:1em;background:#222831;border-radius:8px}.course-toc a{overflow-wrap:anywhere}h1,h2,h3,p,li{overflow-wrap:break-word}.mermaid svg{max-width:100%;height:auto}@media(max-width:600px){body{padding:14px!important}h1{font-size:1.65em}pre code{padding:1em}.course-nav{line-height:1.8}}
 </style></head>
 <body><nav aria-label="課程導覽" class="course-nav"><a href="index.html">課程目錄</a><a href="00_intro.html">← 上一章</a><a href="02_images.html">下一章 →</a><a href="01_materials.md">Markdown 原文</a><span>雙 CLI 教材 · 2026-10-31</span></nav>
-<div class="container"><span class="legacy-anchor" id="2-context"></span><span class="legacy-anchor" id="7-example"></span><!-- Path: AI_Agent_CLi | Updated: 2026-10-31 | Edition: Codex CLI / Claude Code -->
-<h1 id="-ai">單元一補充教材：觀念暖身與初體驗 - 我的第一個 AI 生成教材</h1><details class="course-toc"><summary>本頁章節</summary><ul><li><a href="#_1">單元目標</a></li><li><a href="#_2">核心概念詳解</a></li><li><a href="#_4">詳細操作步驟</a></li><li><a href="#prompt">跨學科 Prompt 範例庫</a></li><li><a href="#_14">完整教材設計提示詞的結構總結</a></li><li><a href="#_20">實用技巧與注意事項</a></li><li><a href="#_24">延伸應用</a></li><li><a href="#_25">練習任務</a></li><li><a href="#qa">常見問題 Q&amp;A</a></li><li><a href="#_28">本單元交付與驗收</a></li></ul></details>
+<div class="container"><!-- Path: AI_Agent_CLi | Updated: 2026-11-17 | Edition: Codex CLI / Claude Code / agy -->
+<span aria-hidden="true" class="legacy-anchor" id="2-context"></span><span aria-hidden="true" class="legacy-anchor" id="7-example"></span><h1 id="-ai">單元一補充教材：觀念暖身與初體驗 - 我的第一個 AI 生成教材</h1><details class="course-toc"><summary>本頁章節</summary><ul><li><a href="#_1">單元目標</a></li><li><a href="#_2">核心概念詳解</a></li><li><a href="#_4">詳細操作步驟</a></li><li><a href="#prompt">跨學科 Prompt 範例庫</a></li><li><a href="#_14">完整教材設計提示詞的結構總結</a></li><li><a href="#_20">實用技巧與注意事項</a></li><li><a href="#_24">延伸應用</a></li><li><a href="#_25">練習任務</a></li><li><a href="#qa">常見問題 Q&amp;A</a></li><li><a href="#_28">本單元交付與驗收</a></li></ul></details>
 <blockquote>
-<p><strong>閱讀前提：</strong>先完成<a href="00_intro.html">前導章：Agent 基本概念與工作環境</a>，使用 Codex CLI 或 Claude Code 其中一款。本章以備課作為範例情境；不是教師也能把主題換成自己的工作或學習內容。範例請使用虛構或去識別化資料，結果都要回到來源與實際檔案確認。（查核日期：2026-10-31）</p>
+<p><strong>閱讀前提：</strong>先完成<a href="00_intro.html">前導章：Agent 基本概念與工作環境</a>，使用 Codex CLI、Claude Code 或 Antigravity CLI（<code>agy</code>）其中一款。本章以備課作為範例情境；不是教師也能把主題換成自己的工作或學習內容。範例請使用虛構或去識別化資料，結果都要回到來源與實際檔案確認。（查核日期：2026-10-31）</p>
 </blockquote>
 <h2 id="_1">單元目標</h2>
 <ul>
 <li>理解 AI 的基本運作原理與定位</li>
 <li>學會撰寫有效的提示詞 (Prompt)</li>
-<li>能夠使用 Codex CLI 或 Claude Code 生成並檢查教學素材</li>
+<li>能夠使用 Codex CLI、Claude Code 或 agy 生成並檢查教學素材</li>
 <li>掌握從模糊問題到精準指令的優化技巧</li>
 <li>理解完整教材設計提示詞的結構</li>
 </ul>
@@ -143,11 +143,11 @@ html{scroll-behavior:smooth}body{box-sizing:border-box}img{max-width:100%;height
 <h3 id="_5">步驟一：啟動第一個教學專案</h3>
 <ol>
 <li>完成前導章的環境與登入步驟；建立 <code>first_material</code> 資料夾，使用 VS Code 開啟。</li>
-<li>在這個資料夾的整合終端機輸入 <code>codex</code> 或 <code>claude</code>，選一款開始會話。</li>
+<li>在這個資料夾的整合終端機輸入 <code>codex</code>、<code>claude</code> 或 <code>agy</code>，選一款開始會話。</li>
 <li>確認顯示的工作目錄正確，先貼上提示詞讓 AI 回答，不必開啟自動修改所有檔案的權限。</li>
 <li>本章重點是比較不同提示的結果；版本、可用模型與額度依帳號而異，不要求指定模型。</li>
 </ol>
-<p><strong>操作提示</strong>：自然語言提示是在 AI 會話中輸入；<code>codex</code>、<code>claude</code> 是在 shell 輸入的啟動指令。</p>
+<p><strong>操作提示</strong>：自然語言提示是在 AI 會話中輸入；<code>codex</code>、<code>claude</code>、<code>agy</code> 是在終端機輸入的啟動指令。</p>
 <h3 id="_6">步驟二：撰寫您的第一個提示詞</h3>
 <p><strong>建議流程</strong>：<br/>
 1. 先簡單試試看（層次 0-1）<br/>
@@ -638,11 +638,11 @@ A7：不一定。簡單任務用「精簡版」即可，複雜任務（如完整
 <p><strong>小結</strong>：本單元著重於建立正確的 AI 使用觀念，以及掌握提示詞的基本技巧與完整結構。透過反覆練習與優化，您將能更精準地讓 AI 成為您的教學助理！記住：<strong>好的提示詞 = 明確的結構 + 具體的要求 + 適當的限制</strong></p>
 <h2 id="_28">本單元交付與驗收</h2>
 <p><strong>輸入</strong>：一個教學主題、學生年級與長度限制。<strong>產物</strong>：<code>prompt.md</code>、<code>material_v1.md</code>、<code>reflection.md</code>。</p>
-<p><strong>共同提示（在 codex 或 claude 會話內）</strong>：</p>
+<p><strong>共同提示（在 codex、claude 或 agy 會話內）</strong>：</p>
 <pre><code class="language-text">請根據 prompt.md 產生 material_v1.md。先列出你理解的對象與限制；內容需有概念、生活例子與一題附答案的練習。最後列出需教師查證的主張，不要杜撰來源。
 </code></pre>
 <p><strong>成功判準</strong>：檔案可開啟；對象、長度、題數符合要求；教師以課本核對答案；反思至少指出一處經人工修改的內容。</p>
-<p><a href="https://learn.chatgpt.com/docs/codex/cli">Codex CLI 入門</a>、<a href="https://code.claude.com/docs/en/quickstart">Claude Code 入門</a>。</p></div>
+<p><a href="https://learn.chatgpt.com/docs/codex/cli">Codex CLI 入門</a>、<a href="https://code.claude.com/docs/en/quickstart">Claude Code 入門</a>、<a href="https://antigravity.google/docs/getting-started?tab=cli">Antigravity CLI 入門</a>。</p></div>
 <!-- Highlight.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
 <script>hljs.highlightAll();</script>

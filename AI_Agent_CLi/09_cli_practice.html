@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Codex CLI 與 Claude Code 實戰教學：讓 AI 駐紮在你的終端機</title>
+<title>Codex CLI、Claude Code 與 agy 實戰教學：讓 AI 駐紮在你的終端機</title>
 <!-- CSS 框架 -->
 <link href="https://cdn.jsdelivr.net/npm/water.css@2/out/dark.min.css" rel="stylesheet"/>
 <!-- 代碼高亮 -->
@@ -129,9 +129,9 @@
 html{scroll-behavior:smooth}body{box-sizing:border-box}img{max-width:100%;height:auto}pre{max-width:100%;overflow-x:auto}table{display:block;max-width:100%;overflow-x:auto}td,th{min-width:7em}.course-nav{display:flex;flex-wrap:wrap;gap:.65em;align-items:center;padding:1em 0;margin:1em 0;border-bottom:1px solid #3e3e3e;font-size:.95rem}.course-nav a{color:#66b3ff}.course-nav span{color:#aaa}.course-toc{margin:1.5em 0;padding:1em;background:#222831;border-radius:8px}.course-toc a{overflow-wrap:anywhere}h1,h2,h3,p,li{overflow-wrap:break-word}.mermaid svg{max-width:100%;height:auto}@media(max-width:600px){body{padding:14px!important}h1{font-size:1.65em}pre code{padding:1em}.course-nav{line-height:1.8}}
 </style></head>
 <body><nav aria-label="課程導覽" class="course-nav"><a href="index.html">課程目錄</a><a href="00_intro.html">前導章</a><span>雙 CLI 教材 · 2026-10-31</span></nav>
-<div class="container"><h1 id="codex-cli-claude-code-ai">Codex CLI 與 Claude Code 實戰教學：讓 AI 駐紮在你的終端機</h1><details class="course-toc"><summary>本頁章節</summary><ul><li><a href="#1-introduction">1. 課程簡介（Introduction）</a></li><li><a href="#2-installation">2. 環境建置（Installation）</a></li><li><a href="#3-basic-operations">3. 基礎操作指南（Basic Operations）</a></li><li><a href="#4-hands-on-examples">4. 實戰應用範例（Hands-on Examples）</a></li><li><a href="#5">5. 進階技巧：專案專屬設定</a></li><li><a href="#6">6. 學習總結</a></li></ul></details>
+<div class="container"><h1 id="codex-cli-claude-code-ai">Codex CLI、Claude Code 與 agy 實戰教學：讓 AI 駐紮在你的終端機</h1><details class="course-toc"><summary>本頁章節</summary><ul><li><a href="#1-introduction">1. 課程簡介（Introduction）</a></li><li><a href="#2-installation">2. 環境建置（Installation）</a></li><li><a href="#3-basic-operations">3. 基礎操作指南（Basic Operations）</a></li><li><a href="#4-hands-on-examples">4. 實戰應用範例（Hands-on Examples）</a></li><li><a href="#5">5. 進階技巧：專案專屬設定</a></li><li><a href="#6">6. 學習總結</a></li></ul></details>
 <blockquote>
-<p>查核日期：2026-10-31｜依序從讀程式、修改、搜尋到小型原型。先完成 <a href="00_intro.html">前導教材</a> 的帳號與環境準備。兩款工具擇一實作，再用另一款比較流程。</p>
+<p>查核日期：2026-10-31｜依序從讀程式、修改、搜尋到小型原型。先完成 <a href="00_intro.html">前導教材</a> 的帳號與環境準備。三款工具（Codex CLI、Claude Code、Antigravity CLI〔<code>agy</code>〕）擇一實作，再用另一款比較流程。</p>
 </blockquote>
 <h2 id="1-introduction">1. 課程簡介（Introduction）</h2>
 <h3 id="agent-cli">為什麼要學習 Agent CLI？</h3>
@@ -170,22 +170,22 @@ html{scroll-behavior:smooth}body{box-sizing:border-box}img{max-width:100%;height
 <h2 id="2-installation">2. 環境建置（Installation）</h2>
 <h3 id="21">2.1. 前置需求：選擇工具與安裝路線</h3>
 <p>終端機、網路與可用帳號是起點。原生安裝不需預先安裝 Node.js；只有選 npm 或執行 JavaScript 專案時才需要 Node。Windows PowerShell 與 macOS shell 命令分開使用，安裝完後記下版本與安裝方式。不要使用另一款產品的 API key 登入。</p>
-<h3 id="22-codex-cli-claude-code">2.2. 安裝 Codex CLI 或 Claude Code</h3>
+<h3 id="22-codex-cli-claude-code">2.2. 安裝 Codex CLI、Claude Code 或 agy</h3>
 <p>安裝指令只維護在一處：請到<a href="00_intro.html#cli-installation">前導章的安裝章節</a>選一款工具，完成後再回到這裡。</p>
 <h3 id="23">2.3. 啟動與登入</h3>
-<p>建立 <code>cli-practice</code> 資料夾，用 VS Code 開啟。整合終端機進入該目錄後執行 <code>git init</code>，再啟動 <code>codex</code> 或 <code>claude</code>，依瀏覽器流程登入。用 <code>codex login status</code> 或 <code>claude auth status --text</code> 確認狀態；帳號方案與 API 額度分開計算，依官方帳號畫面為準。</p>
-<p><strong>第一個任務：</strong>請 AI「只列出這個資料夾有哪些檔案，不修改」。確認工作目錄與結果相同後，再進行後續寫檔練習。遇到權限要求，先看它要執行的操作與路徑，依任務需要核准。<a href="https://learn.chatgpt.com/docs/auth">Codex 認證</a>、<a href="https://code.claude.com/docs/en/quickstart">Claude 入門</a>。</p>
+<p>在 VS Code「檔案 → 開啟資料夾」的對話框中按「新增資料夾」，建立 <code>cli-practice</code> 並開啟。從「終端機 → 新增終端機」開出終端機（會自動位於該資料夾），啟動 <code>codex</code>、<code>claude</code> 或 <code>agy</code>，依瀏覽器流程登入。進入會話後，用自然語言請 Agent「在這裡初始化 Git；若已是 Git 儲存庫先告訴我」，不必自己輸入 Git 指令。登入狀態可在啟動前用 <code>codex login status</code> 或 <code>claude auth status --text</code> 確認；<code>agy</code> 用 <code>agy models</code> 或會話內的 <code>/usage</code> 確認；帳號方案與 API 額度分開計算，依官方帳號畫面為準。</p>
+<p><strong>第一個任務：</strong>請 AI「只列出這個資料夾有哪些檔案，不修改」。確認工作目錄與結果相同後，再進行後續寫檔練習。遇到權限要求，先看它要執行的操作與路徑，依任務需要核准。<a href="https://learn.chatgpt.com/docs/auth">Codex 認證</a>、<a href="https://code.claude.com/docs/en/quickstart">Claude 入門</a>、<a href="https://antigravity.google/docs/getting-started?tab=cli">Antigravity CLI 入門</a>。</p>
 <h2 id="3-basic-operations">3. 基礎操作指南（Basic Operations）</h2>
-<h3 id="31">3.1. 對話與常用會話指令</h3><p>先在專案終端機輸入 <code>codex</code> 或 <code>claude</code>。進入會話後，在對話輸入區貼上自然語言任務；後續追問維持同一會話。</p>
+<h3 id="31">3.1. 對話與常用會話指令</h3><p>先在專案終端機輸入 <code>codex</code>、<code>claude</code> 或 <code>agy</code>。進入會話後，在對話輸入區貼上自然語言任務；後續追問維持同一會話。</p>
 <pre><code class="language-text">閱讀 README.md，列出三個重點，每點註明來源章節。先不要修改檔案。
 </code></pre>
 <p>核對回答後再說：</p>
 <pre><code class="language-text">把剛才的摘要改成適合初學者的版本，保留來源，並列出兩個自我檢核問題。
 </code></pre>
 <p>會話內指令（選模型、查用量、壓縮 context、接續會話等）的對照表只維護在<a href="00_intro.html#slash-commands">前導章：常用會話內指令速查</a>；實際可用指令以目前版本、帳號及組織允許的選單為準。</p>
-<p>專案指引是獨立檔案：Codex 使用 <code>AGENTS.md</code>，Claude 使用 <code>CLAUDE.md</code>；相容條件見<a href="05_instructions.html">單元五</a>。文字要求不等同系統權限，開始前應檢查 <code>/permissions</code>。</p>
-<p><strong>更新與故障排除：</strong>原生 Codex 重跑安裝命令；支援 self-update 的 release 可用 <code>codex update</code>。原生 Claude 會自動更新，手動可用 <code>claude update</code>；若以 Homebrew 或 WinGet 安裝，改用該管理器的 upgrade。找不到指令先重開終端機並檢查 PATH，版本可顯示但不能使用則先查登入與帳號，不要反覆重裝。詳見<a href="00_intro.html#appendix-installation">前導章附錄 A</a>。</p>
-<p><strong>提示的四段式寫法：</strong>「讀什麼 → 要做什麼 → 不可做什麼 → 如何驗收」。在 AI 會話內貼自然語言提示；在 shell 中執行 <code>codex</code>／<code>claude</code>。不要將說明句當 shell 命令，也不要虛構 <code>@shell</code>、<code>@google</code> 或 <code>@web</code> 為通用 CLI 語法。</p>
+<p>專案指引是獨立檔案：Codex 與 agy 使用 <code>AGENTS.md</code>（agy 也讀 <code>GEMINI.md</code>），Claude 使用 <code>CLAUDE.md</code>；相容條件見<a href="05_instructions.html">單元五</a>。文字要求不等同系統權限，開始前應檢查 <code>/permissions</code>。</p>
+<p><strong>更新與故障排除：</strong>原生 Codex 重跑安裝命令；支援 self-update 的 release 可用 <code>codex update</code>。原生 Claude 會自動更新，手動可用 <code>claude update</code>。原生 agy 在背景自動更新，也可用 <code>agy update</code>；Homebrew 版 agy 停用自動更新，改用 <code>brew upgrade --cask antigravity-cli</code>。若以 Homebrew 或 WinGet 安裝，改用該管理器的 upgrade。找不到指令先重開終端機並檢查 PATH，版本可顯示但不能使用則先查登入與帳號，不要反覆重裝。詳見<a href="00_intro.html#appendix-installation">前導章附錄 A</a>。</p>
+<p><strong>提示的四段式寫法：</strong>「讀什麼 → 要做什麼 → 不可做什麼 → 如何驗收」。在 AI 會話內貼自然語言提示；在終端機執行 <code>codex</code>／<code>claude</code>／<code>agy</code> 啟動。不要將說明句當 shell 命令，也不要虛構 <code>@shell</code>、<code>@google</code> 或 <code>@web</code> 為通用 CLI 語法。</p>
 <h2 id="4-hands-on-examples">4. 實戰應用範例（Hands-on Examples）</h2>
 <h3 id="level-1code-explanation">🔰 Level 1：程式碼解釋與學習（Code Explanation）</h3>
 <p><strong>準備：</strong>在專案新增 <code>average.py</code>，內容如下：</p>
@@ -208,7 +208,7 @@ print(average)
 </code></pre>
 <p><strong>預期產物：</strong>函式、測試與執行紀錄。<strong>驗收：</strong>正常為 80.0；單一值 <code>[95]</code> 為 95；空清單得到指定錯誤。查看 <code>git diff</code> 及 <code>git status</code>，確認未修改其他教材。若 AI 宣稱測試成功，要求對應命令、退出碼與實際輸出。不要把「讓錯誤消失」等同「需求正確」。</p>
 <h3 id="level-3web-search-life-hacks">🌐 Level 3：聯網搜尋與生活應用（Web Search &amp; Life Hacks）</h3>
-<p>Codex 可在 shell 使用 <code>codex --search</code>；Claude 依會話可用的 WebSearch／WebFetch 與網路權限處理。兩者若無法連網，請教師提供來源摘錄，保留 URL 與查核日期。以下三種情境保留為資料素養練習，不讓 AI 自行購買或預訂。</p>
+<p>Codex 可在 shell 使用 <code>codex --search</code>；Claude 依會話可用的 WebSearch／WebFetch 與網路權限處理；agy 讀取網頁前會請你核准（權限規則中的 <code>read_url</code>）。三者若無法連網，請教師提供來源摘錄，保留 URL 與查核日期。以下三種情境保留為資料素養練習，不讓 AI 自行購買或預訂。</p>
 <h4 id="atravel-planning">💡 情境 A：旅遊規劃助手（Travel Planning）</h4>
 <pre><code class="language-text">規劃一次兩日校外參訪的草案。先問清楚出發地、日期、人數與交通限制。
 查官方景點開放日與交通資料，表列時間、來源、查核日期與未確認事項。
@@ -239,7 +239,7 @@ print(average)
 <p><strong>產物：</strong>三個檔案及測試紀錄。<strong>驗收：</strong>瀏覽器可開啟、計分正確、重做狀態重置、手機文字沒有被裁切。CLI 能產生檔案不代表已驗證頁面；若工具沒有瀏覽器能力，由你實際開啟核對，紀錄測試者與結果。</p>
 <h2 id="5">5. 進階技巧：專案專屬設定</h2>
 <p>指引檔的載入方式、相容條件與驗證方法集中在<a href="05_instructions.html">單元五</a>，這裡只保留課堂規則範例。</p>
-<p>在 AGENTS.md 放入課程規則，再讓 CLAUDE.md 匯入：</p>
+<p>在 AGENTS.md 放入課程規則（Codex 與 agy 會直接載入），再讓 CLAUDE.md 匯入：</p>
 <pre><code class="language-markdown"># 課堂專案規則
 - 使用繁體中文；先讀指定來源，輸出到 outputs/。
 - 不改 inputs/；不刪除未確認的檔案。
@@ -251,7 +251,7 @@ print(average)
 </code></pre>
 <p>新會話先確認指引載入，再用一個小任務測試。不因模型答出「我會遵守」就認定所有規則有效；輸出位置、來源與禁止修改檔案都要實際核對。完整跨科教師模板見 <a href="05_instructions.html">單元五</a>。</p>
 <h2 id="6">6. 學習總結</h2>
-<p>CLI 讓 Agent 在專案中讀資料、改內容與執行工具；人仍負責目標、權限與驗收。Codex 與 Claude 命令不同，但可靠的工作流程一致：明確輸入 → 最小任務 → 真實工具結果 → 檔案差異 → 人工抽查。</p>
+<p>CLI 讓 Agent 在專案中讀資料、改內容與執行工具；人仍負責目標、權限與驗收。Codex、Claude 與 agy 的指令不同，但可靠的工作流程一致：明確輸入 → 最小任務 → 真實工具結果 → 檔案差異 → 人工抽查。</p>
 <h3 id="_1">建議練習</h3>
 <ol>
 <li>初階：完成 Level 1，提交預測與實際輸出的比較。</li>

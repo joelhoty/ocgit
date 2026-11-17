@@ -1,22 +1,22 @@
-<!-- Path: AI_Agent_CLi | Updated: 2026-10-31 | Edition: Codex CLI / Claude Code -->
+<!-- Path: AI_Agent_CLi | Updated: 2026-11-17 | Edition: Codex CLI / Claude Code / agy -->
 # 單元四補充教材：多檔案工作 - 讓 Agent 讀懂一整個資料夾
 
-> **閱讀前提：**先完成[前導章：Agent 基本概念與工作環境](00_intro.html)，使用 Codex CLI 或 Claude Code 其中一款。本章以備課作為範例情境；不是教師也能把主題換成自己的工作或學習內容。範例請使用虛構或去識別化資料，結果都要回到來源與實際檔案確認。（查核日期：2026-10-31）
+> **閱讀前提：**先完成[前導章：Agent 基本概念與工作環境](00_intro.html)，使用 Codex CLI、Claude Code 或 Antigravity CLI（`agy`）其中一款。本章以備課作為範例情境；不是教師也能把主題換成自己的工作或學習內容。範例請使用虛構或去識別化資料，結果都要回到來源與實際檔案確認。（查核日期：2026-10-31）
 
 
 ### 雙 CLI 操作約定
 
-先在專案資料夾的終端機輸入 `codex` 或 `claude`，啟動其中一款工具。進入 CLI 會話後，直接輸入本章的自然語言提示；同一任務逐輪追問，不必每次重新啟動工具。
+先在專案資料夾的終端機輸入 `codex`、`claude` 或 `agy`，啟動其中一款工具。進入 CLI 會話後，直接輸入本章的自然語言提示；同一任務逐輪追問，不必每次重新啟動工具。
 
 | 輸入位置 | 要做的事 | 範例 |
 |---|---|---|
-| 終端機 shell | 啟動一次 CLI，兩款擇一 | `codex` 或 `claude` |
+| 終端機 shell | 啟動一次 CLI，三款擇一 | `codex`、`claude` 或 `agy` |
 | CLI 會話輸入區 | 說明任務、來源與產物 | 閱讀 lesson.txt，整理三個重點並標示來源。 |
 | 同一會話輸入區 | 依剛才結果追問與修改 | 把第二個重點改寫成適合國小五年級的說明。 |
 
-**專案指引檔**：Codex 使用 `AGENTS.md`，Claude Code 使用 `CLAUDE.md`。這些是保存專案慣例的檔案；設定方式及相容條件見[單元五](05_instructions.html)。
+**專案指引檔**：Codex 與 agy 使用 `AGENTS.md`（agy 也讀 `GEMINI.md`），Claude Code 使用 `CLAUDE.md`。這些是保存專案慣例的檔案；設定方式及相容條件見[單元五](05_instructions.html)。
 
-需要切換模型、查看用量或管理 context 時，使用 CLI 介面；兩款工具的常用斜線指令與差異見[前導章](00_intro.html)。寫檔前說清楚路徑與是否保留原稿，完成後在 VS Code 開啟產物核對。自然語言的「不要修改」是任務要求，不能取代權限設定。
+需要切換模型、查看用量或管理 context 時，使用 CLI 介面；三款工具的常用斜線指令與差異見[前導章](00_intro.html)。寫檔前說清楚路徑與是否保留原稿，完成後在 VS Code 開啟產物核對。自然語言的「不要修改」是任務要求，不能取代權限設定。
 
 ## 單元目標
 
@@ -41,13 +41,13 @@
 - ✅ 通常可用瀏覽器操作，仍有帳號、地區與組織限制
 - ⚠️ 透過上傳或連接器提供檔案，能力依介面而異
 
-#### 終端機 Agent (如 Codex CLI／Claude Code + VSCode)
+#### 終端機 Agent (如 Codex CLI／Claude Code／agy + VSCode)
 **檔案如何交給模型**：工具在您的電腦上執行，依任務讀取資料夾內的檔案，再把讀到的內容送到雲端模型。
 
 **特點**：
 - ✅ 可直接讀取資料夾內的檔案
 - ✅ 整合工作流程,效率更高
-- ✅ 個人化設定（Codex：AGENTS.md；Claude Code：CLAUDE.md）
+- ✅ 個人化設定（Codex、agy：AGENTS.md；Claude Code：CLAUDE.md）
 - ⚠️ 需要安裝設定(初次較複雜)
 - ⚠️ 需要基本的電腦操作能力
 
@@ -77,7 +77,7 @@
 - 容易遺忘之前好用的指令
 
 **終端機 Agent**：
-- 在專案指引（Codex 為 `AGENTS.md`，Claude 為 `CLAUDE.md`）中設定好「角色」與「預設指令」
+- 在專案指引（Codex 與 agy 為 `AGENTS.md`，Claude 為 `CLAUDE.md`）中設定好「角色」與「預設指令」
 - Agent 會依工具規則載入指引；仍需檢查實際輸出與權限
 
 ---
@@ -87,7 +87,7 @@
 ```mermaid
 graph LR
     A[VSCode<br/>工作環境] --> B[Terminal<br/>終端機]
-    B --> C[Codex CLI／Claude Code<br/>AI 對話工具]
+    B --> C[Codex CLI／Claude Code／agy<br/>AI 對話工具]
     C --> D[讀取本機檔案]
     D --> E[生成結果]
 ```
@@ -96,13 +96,13 @@ graph LR
 |------|------|------|
 | **VSCode** | 整合式編輯器,可檢視檔案、執行指令 | 您的工作桌,所有工具都在這裡 |
 | **Terminal (終端機)** | 輸入文字指令的地方 | 對電腦下達命令的「對講機」 |
-| **Codex CLI／Claude Code** | 在終端機中與 AI 對話的工具 | 能讀檔、改檔，但要由您核對結果的助手 |
+| **Codex CLI／Claude Code／agy** | 在終端機中與 AI 對話的工具 | 能讀檔、改檔，但要由您核對結果的助手 |
 
 ---
 
 ## 詳細操作步驟
 
-本章假設您已能用 VS Code 開啟資料夾，並在整合終端機啟動 `codex` 或 `claude`。還不熟悉時，請先看前導章的 [VS Code 工作台](00_intro.html#vscode-workbench)與[第一次對話的共同驗證](00_intro.html#verify-first-session)。以下範例都在同一個會話中進行。
+本章假設您已能用 VS Code 開啟資料夾，並在整合終端機啟動 `codex`、`claude` 或 `agy`。還不熟悉時，請先看前導章的 [VS Code 工作台](00_intro.html#vscode-workbench)與[第一次對話的共同驗證](00_intro.html#verify-first-session)。以下範例都在同一個會話中進行。
 
 ### 步驟一：先確認 Agent 能讀到檔案
 
@@ -289,7 +289,7 @@ english_unit3/
 
 ### 技巧 3：多輪對話
 
-在專案資料夾執行 `codex` 或 `claude` 啟動一次互動會話，以下三段是依次送出的提示，不是三次 shell 指令：
+在專案資料夾執行 `codex`、`claude` 或 `agy` 啟動一次互動會話，以下三段是依次送出的提示，不是三次 shell 指令：
 
 ```text
 第一輪：請閱讀 lesson.txt，列出三個重點並引用原句。
@@ -317,7 +317,7 @@ english_unit3/
 
 | 問題 | 可能原因 | 解決方式 |
 |------|---------|---------|
-| 輸入 `codex` 或 `claude` 指令無反應 | CLI 未安裝或未設定 | 請檢查安裝步驟,確認指令可用 |
+| 輸入 `codex`、`claude` 或 `agy` 指令無反應 | CLI 未安裝或未設定 | 請檢查安裝步驟,確認指令可用 |
 | AI 說找不到檔案 | 檔案不在當前資料夾 | 確認 VSCode 開啟的是正確的資料夾 |
 | 回應速度很慢 | 網路問題或檔案太大 | 檢查網路連線,或拆分檔案 |
 | CLI 會話無法輸入中文 | 輸入法、終端機或貼上設定問題 | 先在 VS Code 編輯區測試中文，再貼到 CLI 對話輸入區；確認輸入法與終端機設定 |
@@ -329,7 +329,7 @@ english_unit3/
 1. **避免上傳敏感資料**：不要讓 AI 讀取包含學生個資、成績的檔案
 2. **檔案備份**：重要檔案先備份再操作
 3. **檢查輸出內容**：AI 生成的內容仍需人工審核
-4. **了解資料流向**：Codex CLI／Claude Code 通常會把提示與所讀內容送到所選服務商處理；實際資料政策依帳號與服務設定確認
+4. **了解資料流向**：Codex CLI／Claude Code／agy 通常會把提示與所讀內容送到所選服務商處理；實際資料政策依帳號與服務設定確認
 
 本章範例中的學生檔案（如 `student_errors.txt`、`student_report_1.txt`、`essay_A.txt`）全部是虛構資料。
 
@@ -408,7 +408,7 @@ teaching_materials/
 ## 練習任務
 
 ### 初階任務
-1. 建立一個含 2-3 個 `.txt` 檔案的資料夾，用 VS Code 開啟並啟動 `codex` 或 `claude`
+1. 建立一個含 2-3 個 `.txt` 檔案的資料夾，用 VS Code 開啟並啟動 `codex`、`claude` 或 `agy`
 2. 請 Agent 先列出檔案，不要修改
 3. 指定其中一個檔案請 AI 摘要，再回到原檔核對
 
@@ -444,7 +444,7 @@ A7：單元一先學如何交代任務；這裡再學工作目錄、讀檔與輸
 
 ---
 
-**小結**：讓 Agent 在您指定的資料夾內工作,它就能交叉整理多個檔案並寫回結果。透過 VSCode + Codex CLI／Claude Code,您可以更高效地處理教學資料、分析學生作品、準備教材；模型仍在雲端,所以要清楚指定讀取範圍,並核對實際產物。初期需要一點學習,但熟悉後會發現效率大幅提升！
+**小結**：讓 Agent 在您指定的資料夾內工作,它就能交叉整理多個檔案並寫回結果。透過 VSCode + Codex CLI／Claude Code／agy,您可以更高效地處理教學資料、分析學生作品、準備教材；模型仍在雲端,所以要清楚指定讀取範圍,並核對實際產物。初期需要一點學習,但熟悉後會發現效率大幅提升！
 
 ### 本單元驗收
 
