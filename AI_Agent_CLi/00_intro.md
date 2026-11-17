@@ -1,11 +1,11 @@
 # 前導章：讓 AI Agent 成為個人工作與學習助理 {#intro}
 
-**VS Code ＋ 終端機 Agent（Codex CLI／Claude Code）入門教材**
+**VS Code ＋ 終端機 Agent（Codex CLI／Claude Code／Antigravity CLI）入門教材**
 
 > 對象：想學習 AI 應用的入門使用者。具備基本電腦操作能力即可，不需要程式背景。
 > 工作方式：用 VS Code 管理檔案，在 VS Code 的整合終端機使用 Agent 產生與管理內容。Windows 使用 PowerShell 7，macOS 使用 zsh。
 > 建議時數：基礎路線 6 節課，每節 50 分鐘；安裝與帳號準備可先完成。Python 延伸另需約 2 節。
-> 官方文件查核日期：2026-10-31。CLI 從 Codex CLI／Claude Code 選一款即可；Antigravity 為附錄選讀。
+> 官方文件查核日期：2026-10-31（Antigravity CLI 部分 2026-11-17）。CLI 從 Codex CLI、Claude Code、Antigravity CLI（`agy`）選一款即可；`agy` 的完整操作與 AGENTS.md 設計見[延伸章：Antigravity CLI](agy_cli.html)。
 
 ## 0. 學習路線與閱讀約定 {#learning-route}
 
@@ -36,7 +36,7 @@
 **基礎路線：**依序完成第 1–9 章；不需要先裝 Python 或 Node.js。
 **Python 延伸：**完成基礎路線後再進入第 10 章，評分規準見第 9 章。
 **卡住時：**查[排錯索引](#troubleshooting)。
-**查閱：**更新、移除、原生／npm 差別與安裝盤點查附錄 A；Google 工具與舊 Gemini 遷移查附錄 B；官方來源查附錄 C。
+**查閱：**更新、移除、原生／npm 差別與安裝盤點查附錄 A；`agy` 的會話操作、VS Code 專題資料夾啟動與 AGENTS.md 設計查[agy 延伸章](agy_cli.html)；舊 Gemini 遷移查附錄 B；官方來源查附錄 C。
 
 每個階段都先完成前置檔案，再輸入任務。主線只安裝一款 CLI，無須同時購買多家服務。
 
@@ -144,7 +144,15 @@ flowchart LR
 
 ### 2.4 先選一款 CLI，暫不安裝 Node.js {#choose-cli}
 
-本課採 Codex CLI 的 standalone 或 Claude Code 的原生安裝路線。兩者都不需要先安裝 Node.js；已有 Node 的電腦也不必移除它。
+本課採 Claude Code、Codex CLI 或 Antigravity CLI（`agy`）的原生安裝路線，三者擇一。三者都不需要先安裝 Node.js；已有 Node 的電腦也不必移除它。
+
+| CLI | 輸入的指令 | 提供者 | 適合的帳號 | 專案規則檔 |
+|---|---|---|---|---|
+| Claude Code | `claude` | Anthropic | Claude 訂閱、Claude Console（API）或學校核准的雲端供應商 | `CLAUDE.md`，可用 `@AGENTS.md` 匯入共用規則 |
+| Codex CLI | `codex` | OpenAI | ChatGPT 方案或 OpenAI API | `AGENTS.md` |
+| Antigravity CLI | `agy` | Google | 個人 Google 帳號（免費、Pro、Ultra）、Google Cloud／Gemini Enterprise 專案或 Gemini API 金鑰 | `AGENTS.md` 或 `GEMINI.md` |
+
+**Antigravity CLI（`agy`）是什麼：**Google 提供的終端機 Agent，取代原本個人方案使用的 Gemini CLI（`gemini`）。它是原生執行檔，不需要 Node.js；個人 Google 帳號就能登入，可用額度以登入後的 `/usage` 為準。它會自動載入工作資料夾的 `AGENTS.md`，舊專案的 `GEMINI.md` 也仍然有效。學校使用 Google Workspace 或手上只有 Google 帳號時，可選這條路線。安裝見 [3.4](#install-agy)；會話指令、在 VS Code 以專題資料夾啟動、AGENTS.md 的生成與範例見[agy 延伸章](agy_cli.html)。
 
 | 現在要做的事 | 需要準備的工具 |
 |---|---|
@@ -152,7 +160,7 @@ flowchart LR
 | 第 10 章 Python 統計 | 之後再安裝 uv，由 uv 管理 Python |
 | npm、JavaScript 或需要 Node 的 MCP 工具 | 真正需要時再查[Node.js 選修安裝](#node-installation) |
 
-若學校已指定安裝方式，依核准方式操作。原生、Homebrew、WinGet、npm 的差異與取捨集中在[附錄 A](#appendix-installation)。本課不要求安裝附錄 B 的 Antigravity。
+若學校已指定安裝方式，依核准方式操作。原生、Homebrew、WinGet、npm 的差異與取捨集中在[附錄 A](#appendix-installation)。已裝過舊 Gemini CLI 的人，遷移方式見附錄 B。
 
 ### 2.5 作業系統、帳號與資源 {#platform-account-requirements}
 
@@ -169,10 +177,10 @@ flowchart LR
 |---|---|
 | Claude Code | macOS 13.0+；Windows 10 1809+ 或 Windows Server 2019+；Ubuntu 20.04+、Debian 10+、Alpine 3.19+；4 GB+ RAM；x64 或 ARM64 |
 | Codex CLI | 安裝腳本支援 macOS（Apple Silicon、Intel）、Linux（x86_64、arm64）與原生 Windows；GitHub 安裝文件列最低 4 GB、建議 8 GB 記憶體 |
+| Antigravity CLI | 官方腳本支援 64 位元 Windows、macOS、Linux；Homebrew cask 標示 macOS 12+；官方未另列 CLI 專用記憶體門檻；`auto` 模式的沙箱在 Windows 需 Windows 11 24H2 以上 |
+[Claude Code 需求](https://code.claude.com/docs/en/setup)、[Codex GitHub README](https://github.com/openai/codex)、[Antigravity 各介面](https://antigravity.google/docs/getting-started?tab=cli)
 
-Google 選讀工具的需求另見附錄 B。[Claude Code 需求](https://code.claude.com/docs/en/setup)、[Codex GitHub README](https://github.com/openai/codex)、[Antigravity 各介面](https://antigravity.google/docs/getting-started?tab=cli)
-
-**年齡與帳號條件：**Claude 消費者方案須年滿 18 歲；OpenAI 服務須年滿 13 歲，未滿 18 歲需家長或監護人同意。未成年學習者，或由機構提供帳號時，依當下條款與機構政策確認。[Anthropic 條款](https://anthropic.com/terms)、[OpenAI 條款](https://openai.com/en-GB/policies/row-terms-of-use/)
+**年齡與帳號條件：**Claude 消費者方案須年滿 18 歲；OpenAI 服務須年滿 13 歲，未滿 18 歲需家長或監護人同意。Google 帳號的年齡限制與 Gemini 使用資格依 Google 條款及學校 Workspace 設定。未成年學習者，或由機構提供帳號時，依當下條款與機構政策確認。[Anthropic 條款](https://anthropic.com/terms)、[OpenAI 條款](https://openai.com/en-GB/policies/row-terms-of-use/)
 
 **沒有可用帳號時：**可先讀第 3–6 章的流程，或觀看他人示範，等有帳號再補做。CLI 不需要同時購買多家服務，使用可用的一種即可。若用於課堂，先在一台與教室相同的電腦測試登入與基本任務。
 
@@ -381,9 +389,9 @@ Thumbs.db
 
 **前提：**上一章的 `study-assistant`、`inputs`、`outputs`、`scripts` 已建立。先在終端機確認自己位於專案根目錄；Windows 使用 `Get-Location`，macOS 使用 `pwd`。
 
-以下只選 Claude Code 或 Codex CLI **其中一款**，在 VS Code 的整合終端機執行對應平台的指令。安裝腳本會下載並執行程式，使用列出的官方網址；受管理電腦依學校核准方式安裝。完成登入後，兩條路線都回到[第一次對話的共同驗證](#verify-first-session)。
+以下從 Claude Code、Codex CLI、Antigravity CLI 選**其中一款**，在 VS Code 的整合終端機執行對應平台的指令。安裝腳本會下載並執行程式，使用列出的官方網址；受管理電腦依學校核准方式安裝。完成登入後，三條路線都回到[第一次對話的共同驗證](#verify-first-session)。
 
-本節只列最短的原生安裝路線；CMD、npm、Homebrew、WinGet 及固定版本部署等替代方式在[附錄 A](#alternative-installation)。Google 路線不在必做範圍。
+本節只列最短的原生安裝路線；CMD、npm、Homebrew、WinGet 及固定版本部署等替代方式在[附錄 A](#alternative-installation)。
 
 ### 3.2 路線 A：Claude Code {#install-claude}
 
@@ -450,7 +458,44 @@ codex
 
 **卡住了？**先查[排錯索引](#troubleshooting)。
 
-### 3.4 第一次對話的共同驗證 {#verify-first-session}
+### 3.4 路線 C：Antigravity CLI（agy） {#install-agy}
+
+**帳號前提：**個人 Google 帳號（免費、Pro、Ultra）即可登入；學校或公司的 Gemini Enterprise／Google Cloud 專案，或 Gemini API 金鑰，依管理員指示選擇驗證方式。能登入 Gemini 網頁版，不代表學校網路允許 CLI 連線，要以實際啟動結果為準。
+
+**Windows PowerShell：**
+
+```powershell
+irm https://antigravity.google/cli/install.ps1 | iex
+```
+
+使用 CMD 時改用 `curl -fsSL https://antigravity.google/cli/install.cmd -o install.cmd && install.cmd && del install.cmd`。預設安裝在 `C:\Users\<使用者名稱>\AppData\Local\agy\bin`，不需系統管理員權限。
+
+**macOS zsh：**
+
+```bash
+curl -fsSL https://antigravity.google/cli/install.sh | bash
+```
+
+執行檔位於 `~/.local/bin/agy`。已用 Homebrew 管理軟體者可改用 `brew install --cask antigravity-cli`；Homebrew 版會停用 `agy` 的自動更新，改用 `brew upgrade --cask antigravity-cli` 更新。兩種來源不要並存。
+
+安裝後完全關閉並重新開啟 VS Code。確認仍在 `study-assistant`（Windows：`Get-Location`；macOS：`pwd`）後，兩平台接著執行：
+
+```shell
+agy --version
+agy
+```
+
+第一行是 **shell 指令**，第二行進入 CLI 會話。首次啟動依序設定配色、顯示模式（Alt-Screen 或 Inline，初學者建議 Inline）、工作區信任與瀏覽器登入。信任前核對路徑是 `study-assistant`，不要信任整個使用者主目錄。登入後在會話內輸入 `/model` 確認可選模型、`/usage` 查看額度。
+
+**成功判準：**版本顯示類似 `1.5.x`；`/model` 能列出模型。找不到 `agy` 時，先重開 VS Code，再以完整路徑執行 `agy install` 修正 PATH。
+
+**注意預設模式：**`agy` 1.5.7 起，在支援的個人帳號上預設為 `auto` 模式，會自動核准部分寫檔與沙箱內的命令。本課要觀察每次核准，先在會話內輸入 `/config`，把 Agent Mode 改為 Default；之後可用 <kbd>Shift</kbd>+<kbd>Tab</kbd> 查看與切換模式。
+
+會話內指令、`@` 檔案提及、`!` 指令列、在 VS Code 以專題資料夾啟動、AGENTS.md 的訪談生成與範例，見[延伸章：Antigravity CLI](agy_cli.html)。[Antigravity CLI 官方入門](https://antigravity.google/docs/getting-started?tab=cli)、[登入驗證](https://antigravity.google/docs/install?tab=cli)、[CLI 指令參考](https://antigravity.google/docs/cli/reference)
+
+**卡住了？**先查[排錯索引](#troubleshooting)。
+
+### 3.5 第一次對話的共同驗證 {#verify-first-session}
 
 在所選 CLI 的對話輸入區貼上：
 
@@ -467,7 +512,7 @@ CLI 自述能力不是完整的權限稽核；再查看產品提供的權限畫�
 
 完成後在 `README.md` 補上 CLI 名稱、版本、安裝方式與查核日期。從下一章開始同時使用兩個終端機：Agent 會話留在原本的終端機，Git 指令在另一個 shell 終端機執行。
 
-### 3.5 看懂權限提示 {#permission-prompts}
+### 3.6 看懂權限提示 {#permission-prompts}
 
 Agent 要寫檔、執行命令或連網時，工具可能先停下來問你。這個提示是實際的控制點，比寫在文字裡的要求更有效，不要習慣性全部同意。
 
@@ -478,7 +523,7 @@ Agent 要寫檔、執行命令或連網時，工具可能先停下來問你。�
 | 執行命令 | 我看得懂它要做什麼嗎？ | 看不懂就拒絕，請它先說明用途與影響 |
 | 安裝套件、連網、刪除、對外發送 | 這次任務真的需要嗎？ | 先拒絕，確認需要才只允許這一次 |
 
-拒絕不會弄壞任務：Agent 會收到拒絕結果，你可以再說明限制。在會話內輸入 `/permissions` 可查看目前的權限設定。兩款工具的預設不同，有些操作可能不會先詢問，所以事後仍要看差異。本課不開啟自動核准。第 6 章會再說明文字規則與權限的差別。[Claude Code 權限](https://code.claude.com/docs/en/permissions)、[Codex CLI 指令](https://learn.chatgpt.com/docs/cli/slash-commands)
+拒絕不會弄壞任務：Agent 會收到拒絕結果，你可以再說明限制。在會話內輸入 `/permissions` 可查看目前的權限設定。各款工具的預設不同，有些操作可能不會先詢問，所以事後仍要看差異；`agy` 的預設模式見 [3.4](#install-agy)。本課不開啟自動核准。第 6 章會再說明文字規則與權限的差別。[Claude Code 權限](https://code.claude.com/docs/en/permissions)、[Codex CLI 指令](https://learn.chatgpt.com/docs/cli/slash-commands)
 
 ## 4. 完成第一個有來源的任務 {#first-task}
 
@@ -638,10 +683,11 @@ flowchart LR
 |---|---|---|
 | Codex CLI | 依全域與專案路徑載入指引，較近的規則可影響適用內容 | 將 AGENTS.md 放在根目錄，重新啟動後查核 |
 | Claude Code | v2.1.277 起可直接讀 AGENTS.md；預設只有工作目錄及上層沒有 CLAUDE.md、.claude/CLAUDE.md 或 CLAUDE.local.md 時才改讀 AGENTS.md | 主線建立 CLAUDE.md，內容可用 `@AGENTS.md` 匯入共用規則；用 `/context` 的 Memory files 核對 |
+| Antigravity CLI | 從啟動資料夾往上到 Git 根目錄，每層的 `AGENTS.md`、`GEMINI.md` 與 `.agents/rules/*.md`（需 `trigger` 欄位）都會累加載入；agy 1.5.10 本機實測確認 | 直接使用 AGENTS.md；重新啟動後要求它不讀檔、只依已載入規則回答來核對 |
 
-Google 選讀工具的指引相容性另見[附錄 B](#antigravity-overview)。
+`agy` 的規則載入範圍、拆分規則檔與生成流程見[agy 延伸章第 4 章](agy_cli.html#agy-agents-md)。
 
-來源：[Codex AGENTS.md](https://learn.chatgpt.com/docs/agent-configuration/agents-md)、[Claude Code 專案記憶](https://code.claude.com/docs/en/memory)、[Antigravity 遷移規則](https://antigravity.google/docs/cli/gcli-migration)。
+來源：[Codex AGENTS.md](https://learn.chatgpt.com/docs/agent-configuration/agents-md)、[Claude Code 專案記憶](https://code.claude.com/docs/en/memory)、[Antigravity Rules](https://antigravity.google/docs/rules)、[Antigravity 遷移規則](https://antigravity.google/docs/cli/gcli-migration)。
 
 Claude Code 的直接支援需要 v2.1.277 或更新版本，以及啟用內建 AGENTS.md 外掛；部分舊版或升級後第一個會話仍可能不載入。可在 `/config` 的 Project instructions 選擇同時載入兩種規則，並以 `/context` 的 Memory files 檢查。`/memory` 也會列出不存在的檔案，且要到 v2.1.280 才能確認直接讀取的 AGENTS.md。本課為了讓不同版本共用內容，Claude 路線在同一資料夾建立 `CLAUDE.md`，內容為：
 
@@ -823,21 +869,21 @@ flowchart TD
 
 以下指令在**已啟動的 CLI 對話輸入區**輸入，不貼到 PowerShell 或 zsh。先輸入 `/` 查看選單，再選需要的指令。功能會隨版本、方案與組織設定而異；沒有出現的指令，先查目前版本的說明，不要直接套用另一款工具的名稱。
 
-| 想做什麼 | Codex CLI | Claude Code | 使用時機 |
-|---|---|---|---|
-| 選模型 | `/model` | `/model` | 開始新階段前選擇帳號可用的模型 |
-| 看目前狀態 | `/status` | `/status` | 確認目前工作設定 |
-| 看用量 | `/usage`；可用 `/statusline` 顯示 token 等資訊 | `/usage`（現行文件的 `/cost`、`/stats` 為其別名） | 一段工作後查看消耗與可用額度資訊 |
-| 看 context 使用情況 | `/status`、畫面下方狀態列 | `/context` | 檔案或對話變多，先確認上下文容量 |
-| 壓縮對話 | `/compact` | `/compact` | 同一任務還要繼續，但上下文已變長 |
-| 接續既有會話 | `/resume` | `/resume` | 回到之前的工作，選對專案與會話 |
-| 開始不同任務 | `/new` | `/clear` | 換主題，避免沿用不相關上下文 |
-| 檢查工具權限 | `/permissions` | `/permissions` | 讀寫檔案或執行工具前 |
-| 找操作說明 | 輸入 `/` 查看選單 | `/help` 或 `/` 選單 | 忘記名稱或確認版本支援 |
+| 想做什麼 | Codex CLI | Claude Code | Antigravity CLI（agy） | 使用時機 |
+|---|---|---|---|---|
+| 選模型 | `/model` | `/model` | `/model` | 開始新階段前選擇帳號可用的模型 |
+| 看目前狀態 | `/status` | `/status` | 畫面下方狀態列；設定看 `/config` | 確認目前工作設定 |
+| 看用量 | `/usage`；可用 `/statusline` 顯示 token 等資訊 | `/usage`（現行文件的 `/cost`、`/stats` 為其別名） | `/usage`（別名 `/quota`）；點數看 `/credits` | 一段工作後查看消耗與可用額度資訊 |
+| 看 context 使用情況 | `/status`、畫面下方狀態列 | `/context` | `/context` | 檔案或對話變多，先確認上下文容量 |
+| 壓縮對話 | `/compact` | `/compact` | 無此指令；先存 `progress.md` 再 `/clear` | 同一任務還要繼續，但上下文已變長 |
+| 接續既有會話 | `/resume` | `/resume` | `/resume`；或啟動時 `agy -c` | 回到之前的工作，選對專案與會話 |
+| 開始不同任務 | `/new` | `/clear` | `/clear`（別名 `/new`） | 換主題，避免沿用不相關上下文 |
+| 檢查工具權限 | `/permissions` | `/permissions` | `/permissions`；<kbd>Shift</kbd>+<kbd>Tab</kbd> 切換模式 | 讀寫檔案或執行工具前 |
+| 找操作說明 | 輸入 `/` 查看選單 | `/help` 或 `/` 選單 | `/help` 或 `/` 選單 | 忘記名稱或確認版本支援 |
 
-兩款都有 `/usage`，但顯示內容不同；Codex 未以其服務帳號登入時，會提示需要登入。模型清單以實際選單為準，無須背誦固定模型名稱。
+三款都有 `/usage`，但顯示內容不同；Codex 未以其服務帳號登入時，會提示需要登入。模型清單以實際選單為準，無須背誦固定模型名稱。
 
-查核日期：2026-10-31。依據：[Codex CLI 斜線指令](https://learn.chatgpt.com/docs/cli/slash-commands)、[Codex CLI 指令](https://learn.chatgpt.com/docs/developer-commands?surface=cli)、[Codex 狀態與設定](https://learn.chatgpt.com/docs/developer-settings)、[Claude Code 指令](https://code.claude.com/docs/en/commands)。
+查核日期：2026-10-31。依據：[Codex CLI 斜線指令](https://learn.chatgpt.com/docs/cli/slash-commands)、[Codex CLI 指令](https://learn.chatgpt.com/docs/developer-commands?surface=cli)、[Codex 狀態與設定](https://learn.chatgpt.com/docs/developer-settings)、[Claude Code 指令](https://code.claude.com/docs/en/commands)、[Antigravity CLI 指令參考](https://antigravity.google/docs/cli/reference)。`agy` 的完整指令速查見[agy 延伸章附錄 A](agy_cli.html#agy-cheatsheet)。
 
 ### 7.2 進階操作：管理 session、context 與用量 {#session-context-usage}
 
@@ -845,9 +891,9 @@ flowchart TD
 
 1. **開始工作：**用 `/model` 選擇模型，再用自然語言說明目標、來源、產物與驗收條件。先做一小段，檢查品質再擴大工作量。
 2. **進行中：**一個階段完成後用 `/usage` 查看用量。檔案很多時，明確指定本輪相關檔案，避免反覆要求讀取整個資料夾。
-3. **對話變長：**先請 Agent 將已確認決策、檔案路徑、未完成事項存入 `progress.md`，確認內容後再使用 `/compact`。摘要可能遺漏細節，重要限制應保留在專案文件，接續時重新核對。
+3. **對話變長：**先請 Agent 將已確認決策、檔案路徑、未完成事項存入 `progress.md`，確認內容後再使用 `/compact`（`agy` 沒有 `/compact`，改用 `/clear` 開新對話後先讀 `progress.md`）。摘要可能遺漏細節，重要限制應保留在專案文件，接續時重新核對。
 4. **下次繼續：**啟動 CLI 後用 `/resume` 選擇會話，請 Agent 檢查 `progress.md` 與目前檔案，再確認下一步。恢復歷史對話不會把檔案還原成當時版本。
-5. **換任務：**先保存必要成果，再用 Codex `/new` 或 Claude `/clear` 開新對話；需要的來源與目標重新交代。
+5. **換任務：**先保存必要成果，再用 Codex `/new`、Claude `/clear` 或 agy `/clear` 開新對話；需要的來源與目標重新交代。
 
 **進階練習：**完成摘要後，在同一會話提出：
 
@@ -1405,8 +1451,8 @@ flowchart TD
 | Codex standalone | 重跑官方安裝指令；支援 self-update 的發行版可用 `codex update` | 官方頁未提供移除指令 |
 | Codex Homebrew | `brew upgrade --cask codex` | `brew uninstall --cask codex` |
 | Codex npm | `npm install -g @openai/codex`（官方頁的更新指令與安裝指令相同） | `npm uninstall -g @openai/codex` |
-| Antigravity CLI 原生版 | 執行時背景自動更新 | 刪除 `agy` 執行檔（位置見附錄 B） |
-| Antigravity CLI Homebrew | 套件標示會自行更新；必要時 `brew upgrade --cask antigravity-cli` | `brew uninstall --cask antigravity-cli` |
+| Antigravity CLI 原生版 | 執行時背景自動更新；手動 `agy update` | 刪除 `agy` 執行檔（位置見 [3.4](#install-agy)） |
+| Antigravity CLI Homebrew | Homebrew 版停用 `agy` 自動更新，用 `brew upgrade --cask antigravity-cli`，不要用 `agy update` | `brew uninstall --cask antigravity-cli` |
 
 登入狀態與診斷在 shell 終端機執行：
 
@@ -1475,13 +1521,13 @@ macOS 使用 `npm --version`。從 [Node.js 官方版本狀態](https://nodejs.o
 
 ### A.4 替代安裝方式與官方指令位置 {#alternative-installation}
 
-主線的官方原生安裝指令已集中於[Claude Code](#install-claude)與[Codex CLI](#install-codex)，Google 選讀指令在[附錄 B](#install-antigravity)。不要把每種方法都執行一遍；同一款工具保留一種安裝來源。
+主線的官方原生安裝指令已集中於[Claude Code](#install-claude)、[Codex CLI](#install-codex)與[Antigravity CLI](#install-agy)。不要把每種方法都執行一遍；同一款工具保留一種安裝來源。
 
 | 工具 | 原生路線 | CMD／套件管理器替代方式 | 更新 |
 |---|---|---|---|
 | Claude Code | [Windows／macOS](#install-claude) | CMD 見下方；WinGet `Anthropic.ClaudeCode`；Homebrew `claude-code`（stable）或 `claude-code@latest`；npm `@anthropic-ai/claude-code` | 原生版背景更新；套件管理器依來源更新 |
 | Codex CLI | [Windows／macOS](#install-codex) | 官方文件未列 CMD／WinGet；Homebrew `codex`；npm `@openai/codex` | standalone 重跑官方安裝；支援的版本可用 `codex update` |
-| Antigravity CLI | [附錄 B](#install-antigravity) | CMD 見附錄 B；Homebrew `antigravity-cli`（macOS 12+）；無官方 npm 路線 | 原生版背景更新 |
+| Antigravity CLI | [3.4](#install-agy) | CMD 見 3.4；Homebrew `antigravity-cli`（macOS 12+）；無官方 npm 路線 | 原生版背景更新 |
 
 若在 Markdown 表格原始碼看到 `\|`，那是表格跳脫寫法；輸入終端機時只有 `|`。可複製的原生指令以連結內的程式碼區塊為準。
 
@@ -1542,7 +1588,7 @@ Homebrew 升級後可用 `brew cleanup` 清除舊版。官方腳本與 Homebrew 
 | 安裝方式 | 適用平台 | 三款 CLI 官方是否提供 | 安裝時需要 Node.js？ | 執行時需要 Node.js？ | 更新方式 |
 |---|---|---|---|---|---|
 | 官方安裝腳本（原生版） | Windows、macOS、Linux | Claude Code、Codex、agy 都有；本課選原生腳本為主要路線 | 否 | 否 | Claude Code、agy 在背景自動更新；Codex 重跑安裝指令或 `codex update` |
-| Homebrew cask | macOS、Linux（依各 cask 平台清單） | Claude Code、Codex、agy 都有 cask | 否 | 否 | 手動 `brew upgrade`（agy 的 cask 標示會自行更新） |
+| Homebrew cask | macOS、Linux（依各 cask 平台清單） | Claude Code、Codex、agy 都有 cask | 否 | 否 | 手動 `brew upgrade`（agy 的 cask 會停用 agy 自身的自動更新，改由 Homebrew 管理） |
 | WinGet | Windows | 官方文件只列 Claude Code（`Anthropic.ClaudeCode`）；WinGet 另有 `OpenAI.Codex`，但 OpenAI 文件未列；agy 官方未列 | 否 | 否 | 手動 `winget upgrade` |
 | npm | 有 Node.js 的任何平台 | Claude Code、Codex 有；agy 未提供 | **是**（Claude Code 要 22+） | Claude Code：否；Codex：**是** | Claude Code 會自動更新；Codex 手動 `npm install -g <套件>` |
 
@@ -1655,7 +1701,7 @@ flowchart LR
 | Codex standalone 版（官方安裝腳本） | 系統內建 shell | 原生執行檔 `codex`（Rust 編譯） | 否 | **採用** |
 | Codex Homebrew cask | Homebrew | 同一份原生執行檔 | 否 | 可替代 |
 | Codex npm 版 | **Node.js**（套件宣告 `node >= 16`）與 npm | 套件入口 `bin/codex.js` 是 Node 腳本，再由它呼叫原生程式 | **是** | 不建議：移除或切換 Node 版本後，`codex` 就無法啟動 |
-| Antigravity CLI 原生版（官方安裝腳本） | 系統內建 shell | 原生執行檔 `agy` | 否 | **選讀，不是課程必裝** |
+| Antigravity CLI 原生版（官方安裝腳本） | 系統內建 shell | 原生執行檔 `agy` | 否 | 主線路線 C（三款擇一） |
 | Antigravity CLI Homebrew cask | Homebrew | 原生執行檔 `agy` | 否 | 可替代 |
 
 查核方式與來源：官方安裝頁——[Claude Code Setup](https://code.claude.com/docs/en/setup)、[Codex CLI](https://learn.chatgpt.com/docs/codex/cli)、[Codex GitHub README](https://github.com/openai/codex)、[Codex Windows 部署](https://learn.chatgpt.com/docs/enterprise/windows-deployment)、[Antigravity CLI 安裝](https://antigravity.google/docs/getting-started?tab=cli)。npm 版「執行時是否需要 Node」以 `npm view <套件> engines bin` 查看：`engines` 是套件宣告的 Node 版本，`bin` 是輸入指令時實際執行的入口檔。入口是 `.js` 就由 Node 執行；入口是 `.exe` 或原生檔就不需要 Node。Homebrew cask 以 `brew info --cask <名稱>` 確認安裝內容為原生執行檔（Binary）。
@@ -1688,13 +1734,13 @@ file "$(realpath "$(command -v codex)")"
 
 ## 附錄 B. Antigravity 與舊 Gemini 遷移 {#appendix-antigravity}
 
-本附錄只供已有 Google 工具或需要遷移的人閱讀；基礎課程使用 Codex CLI／Claude Code，不必安裝第三款。完成查閱後可回[首次任務](#first-task)。
+Antigravity CLI 已列為主線路線 C（[3.4](#install-agy)），完整操作見[agy 延伸章](agy_cli.html)。本附錄保留介面差異、替代安裝細節與舊 Gemini 遷移，供需要時查閱。完成查閱後可回[首次任務](#first-task)。
 
-### B.1 選讀比較：Antigravity CLI（agy） {#antigravity-overview}
+### B.1 補充：Antigravity CLI（agy）的介面與條件 {#antigravity-overview}
 
 Google 的個人方案已由 Gemini CLI（`gemini`）轉移至 Antigravity CLI（`agy`），企業授權與付費 API 金鑰仍可使用 Gemini CLI；本教材的 Google 路線只使用 `agy`。`agy` 是原生 binary，不需要 Node.js。原本為 Gemini CLI 寫的 `GEMINI.md` 在 `agy` 中仍會生效；電腦上還留有舊 `gemini` 指令的人，依[附錄 B 的遷移步驟](#gemini-migration)遷移後移除。[官方遷移說明](https://antigravity.google/docs/cli/gcli-migration)
 
-| 項目 | 選讀工具條件 |
+| 項目 | 條件 |
 |---|---|
 | Antigravity CLI | 官方腳本支援 64 位元 Windows、macOS、Linux；Homebrew cask 標示 macOS 12+；官方未另列 CLI 專用記憶體門檻 |
 | 介面區分 | App、CLI、IDE、SDK 是不同介面，不把 App 的最低 OS 或 SDK 的 Python 需求套到 CLI |
@@ -1702,7 +1748,7 @@ Google 的個人方案已由 Gemini CLI（`gemini`）轉移至 Antigravity CLI�
 
 [Antigravity 各介面](https://antigravity.google/docs/getting-started?tab=cli)、[遷移規則](https://antigravity.google/docs/cli/gcli-migration)
 
-### B.2 選讀路線 C：Antigravity CLI {#install-antigravity}
+### B.2 補充：Antigravity CLI 安裝細節 {#install-antigravity}
 
 在 PowerShell 執行：
 
@@ -1734,7 +1780,7 @@ agy
 curl -fsSL https://antigravity.google/cli/install.sh | bash
 ```
 
-開新終端機，回到 `study-assistant`，執行 `agy --version` 與 `agy`。原生指令通常位於 `~/.local/bin`，找不到時檢查 PATH。若原本用 Homebrew 管理軟體，可改用 `brew install --cask antigravity-cli`；cask 標示會自行更新，必要時用 `brew upgrade --cask antigravity-cli`，不要與原生來源並存。
+開新終端機，回到 `study-assistant`，執行 `agy --version` 與 `agy`。原生指令通常位於 `~/.local/bin`，找不到時檢查 PATH。若原本用 Homebrew 管理軟體，可改用 `brew install --cask antigravity-cli`；Homebrew 版會停用 `agy` 的自動更新，改用 `brew upgrade --cask antigravity-cli` 更新，不要與原生來源並存。
 
 ### B.3 選讀：舊 gemini 指令遷移到 agy {#gemini-migration}
 
@@ -1776,7 +1822,7 @@ macOS 用 `npm uninstall -g @google/gemini-cli`；以 Homebrew 安裝者改用 `
 | Git | [Windows 安裝](https://git-scm.com/install/windows)、[restore](https://git-scm.com/docs/git-restore)、[gitignore](https://git-scm.com/docs/gitignore) | 版本管理與回復界線 |
 | Claude Code | [Setup](https://code.claude.com/docs/en/setup)、[Quickstart](https://code.claude.com/docs/en/quickstart)、[Memory](https://code.claude.com/docs/en/memory) | 原生／WinGet／Homebrew／npm 安裝、更新、移除與規則載入 |
 | Codex CLI | [CLI 入門](https://learn.chatgpt.com/docs/codex/cli)、[GitHub README](https://github.com/openai/codex)、[Windows 部署](https://learn.chatgpt.com/docs/enterprise/windows-deployment)、[AGENTS.md](https://learn.chatgpt.com/docs/agent-configuration/agents-md) | standalone／Homebrew／npm 安裝與專案指引 |
-| Antigravity CLI | [入門](https://antigravity.google/docs/getting-started?tab=cli)、[遷移](https://antigravity.google/docs/cli/gcli-migration) | agy 安裝、驗證方式與 Gemini CLI 遷移 |
+| Antigravity CLI | [入門](https://antigravity.google/docs/getting-started?tab=cli)、[CLI 指令參考](https://antigravity.google/docs/cli/reference)、[Rules](https://antigravity.google/docs/rules)、[遷移](https://antigravity.google/docs/cli/gcli-migration)、[agy 延伸章](agy_cli.html) | agy 安裝、驗證方式、會話指令、規則載入與 Gemini CLI 遷移 |
 | Node.js | [官方下載](https://nodejs.org/en/download)、[發行清單](https://nodejs.org/dist/index.json) | 選用支援中的 LTS |
 | uv | [安裝](https://docs.astral.sh/uv/getting-started/installation/)、[Python 管理](https://docs.astral.sh/uv/guides/install-python/)、[專案初始化](https://docs.astral.sh/uv/concepts/projects/init/)、[專案操作](https://docs.astral.sh/uv/guides/projects/) | Python 環境主線 |
 | Python | [csv 模組](https://docs.python.org/3/library/csv.html) | 統計範例的資料讀取 |

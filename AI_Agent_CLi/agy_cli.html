@@ -1,0 +1,1390 @@
+<!DOCTYPE html>
+
+<html lang="zh-TW">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>延伸章：Antigravity CLI（agy）｜AI Agent CLI</title>
+<!-- CSS 框架 -->
+<link href="https://cdn.jsdelivr.net/npm/water.css@2/out/dark.min.css" rel="stylesheet"/>
+<!-- 代碼高亮 -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/base16/darcula.min.css" rel="stylesheet"/>
+<!-- 自定義樣式 -->
+<style>
+        
+                body {
+                    max-width: 900px;
+                    margin: 0 auto;
+                    padding: 20px;
+                }
+                /* 提升代码块对比度 */
+                pre {
+                    background: #1e1e1e !important;
+                    border: 1px solid #3e3e3e;
+                }
+                pre code {
+                    background: #1e1e1e !important;
+                }
+                code {
+                    background: #2d2d2d !important;
+                }
+                /* 引用块对比度 */
+                blockquote {
+                    background: #2d2d2d;
+                    border-left: 4px solid #4a9eff;
+                }
+            
+        
+        /* 通用代碼塊樣式 */
+        pre code {
+            display: block;
+            padding: 1.5em;
+            border-radius: 8px;
+            overflow-x: auto;
+            line-height: 1.6;
+        }
+
+        /* Mermaid 圖表樣式 */
+        
+        .mermaid {
+            margin: 2em 0;
+            padding: 1.5em;
+            text-align: center;
+            border-radius: 8px;
+        }
+        
+        .mermaid {
+            background: #2c3034;
+            border: 1px solid #444;
+        }
+            
+        
+        /* 響應式調整 */
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            .container, .markdown-body, .latex-body, .window-body, .nes-container {
+                padding: 15px;
+            }
+            pre code {
+                padding: 1em;
+            }
+        }
+        
+        img {max-width:100%;height:auto;} table {display:block;overflow-x:auto;} pre {overflow-x:auto;}
+    </style>
+<style id="course-navigation-style">
+html{scroll-behavior:smooth}body{box-sizing:border-box}img{max-width:100%;height:auto}pre{max-width:100%;overflow-x:auto}table{display:block;max-width:100%;overflow-x:auto}td,th{min-width:7em}.course-nav{display:flex;flex-wrap:wrap;gap:.65em;align-items:center;padding:1em 0;margin:1em 0;border-bottom:1px solid #3e3e3e;font-size:.95rem}.course-nav a{color:#66b3ff}.course-nav span{color:#aaa}.course-toc{margin:1.5em 0;padding:1em;background:#222831;border-radius:8px}.course-toc a{overflow-wrap:anywhere}h1,h2,h3,p,li{overflow-wrap:break-word}.mermaid svg{max-width:100%;height:auto}@media(max-width:600px){body{padding:14px!important}h1{font-size:1.65em}pre code{padding:1em}.course-nav{line-height:1.8}}
+</style></head>
+<body><nav aria-label="課程導覽" class="course-nav"><a href="index.html">課程目錄</a><a href="00_intro.html">← 前導章</a><a href="agy_cli.md">Markdown 原文</a><span>agy 延伸章 · 2026-11-17</span></nav>
+<div class="container"><h1 id="agy-cli">延伸章：Antigravity CLI（agy）安裝、啟動與 AGENTS.md 實作</h1><details class="course-toc"><summary>本頁章節</summary><ul><li><a href="#agy-route">0. 學習路線與閱讀約定</a></li><li><a href="#agy-install">1. 安裝與登入</a></li><li><a href="#agy-launch">2. 啟動 agy：工作區由啟動位置決定</a></li><li><a href="#agy-session">3. 在 agy 會話內工作</a></li><li><a href="#agy-agents-md">4. 用 agy 設計並生成 AGENTS.md</a></li><li><a href="#agy-practice">5. 練習、問答與總結</a></li><li><a href="#agy-cheatsheet">附錄 A. agy 指令速查</a></li><li><a href="#agy-sources">附錄 B. 查詢資料列表</a></li><li><a href="#agy-file-info">附錄 C. 檔案資訊</a></li></ul></details>
+<p><strong>VS Code ＋ Antigravity CLI（agy）專題工作流程教材</strong></p>
+<blockquote>
+<p>對象：已讀過<a href="00_intro.html">前導章</a>第 1–3 章，知道「終端機 Agent」與「工作資料夾」的意思；不需要程式背景。<br/>
+工作方式：用 VS Code 管理專題資料夾，在整合終端機啟動 <code>agy</code>，所有檔案與 Git 操作都交給 <code>agy</code> 完成。<br/>
+建議時數：3 節課，每節 50 分鐘（安裝登入 1 節、啟動與會話操作 1 節、AGENTS.md 1 節）。<br/>
+查核依據：Antigravity 官方文件（查核日期 2026-11-17）、本機 <code>agy</code> 1.5.10 的 <code>--help</code> 與 <code>agy changelog</code>、本機實測。來源列表見<a href="#agy-sources">附錄 B</a>。</p>
+</blockquote>
+<h2 id="agy-route">0. 學習路線與閱讀約定</h2>
+<h3 id="why-agy">0.1 為什麼要單獨學 agy</h3>
+<p>前導章以 Codex CLI／Claude Code 為主線，把 Antigravity 放在附錄選讀。若你的學校或個人帳號是 Google 方案（Google 帳號、Gemini 付費方案、Google Cloud 專案），<code>agy</code> 是 Google 目前提供給個人使用的終端機 Agent；原本的 Gemini CLI（<code>gemini</code>）個人方案服務已轉移到 <code>agy</code>。</p>
+<p>本章用一個「專題資料夾」貫穿全部操作：建立資料夾、啟動 <code>agy</code>、讓 <code>agy</code> 建立專題結構，最後為專題設計一份 <code>AGENTS.md</code>，讓之後每次啟動都依同一套規則工作。</p>
+<h3 id="agy-outcomes">0.2 完成後能做到什麼</h3>
+<ol>
+<li>在 Windows 或 macOS 安裝 <code>agy</code>，完成登入，並用 <code>agy</code> 自己的指令確認版本、模型與用量。</li>
+<li>分辨「在獨立終端機啟動」與「在 VS Code 以專題資料夾啟動」，並說明工作區（workspace）由啟動位置決定。</li>
+<li>在 <code>agy</code> 會話內使用斜線指令、<code>@</code> 檔案提及、<code>!</code> 指令列與模式切換，看懂權限提示。</li>
+<li>用 <code>agy</code> 訪談、規劃、產生並驗證專案的 <code>AGENTS.md</code>，必要時拆成 <code>.agents/rules/</code> 規則檔。</li>
+<li>分析一份實際使用中的 <code>AGENTS.md</code>，找出可沿用的設計與需要修正的地方。</li>
+</ol>
+<h3 id="agy-plan">0.3 課程安排與交付物</h3>
+<table>
+<thead>
+<tr>
+<th>節次</th>
+<th>主題與對應章節</th>
+<th>學習者交付物</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>安裝與登入（1）</td>
+<td><code>agy --version</code> 結果、登入成功畫面、<code>/usage</code> 截圖</td>
+</tr>
+<tr>
+<td>2</td>
+<td>啟動方式與會話操作（2–3）</td>
+<td>專題資料夾結構、README、第一個 Git 檢查點</td>
+</tr>
+<tr>
+<td>3</td>
+<td>AGENTS.md 設計與驗證（4–5）</td>
+<td>專題 <code>AGENTS.md</code>、規則生效驗證紀錄、練習答案</td>
+</tr>
+</tbody>
+</table>
+<h3 id="agy-conventions">0.4 指令閱讀約定：一律以 agy 操作</h3>
+<p>本章的原則是<strong>所有操作都以 <code>agy</code> 的指令示範</strong>，不直接在終端機打 <code>mkdir</code>、<code>git</code> 等指令。操作分成四種輸入，區塊標籤如下：</p>
+<table>
+<thead>
+<tr>
+<th>區塊標籤</th>
+<th>在哪裡輸入</th>
+<th>內容</th>
+<th>範例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>shell</code></td>
+<td>終端機提示字元（PowerShell 或 zsh）</td>
+<td>只有 <code>agy</code> 開頭的啟動指令與子指令</td>
+<td><code>agy --version</code></td>
+</tr>
+<tr>
+<td><code>text</code>（標示「會話內」）</td>
+<td>已啟動的 <code>agy</code> 輸入區</td>
+<td>斜線指令、<code>@</code> 提及、<code>!</code> 指令列</td>
+<td><code>/model</code></td>
+</tr>
+<tr>
+<td><code>transcript</code></td>
+<td>已啟動的 <code>agy</code> 輸入區</td>
+<td>用自然語言交代的任務</td>
+<td>「請建立 outputs 資料夾……」</td>
+</tr>
+<tr>
+<td><code>markdown</code></td>
+<td>VS Code 編輯器</td>
+<td>檔案內容範例</td>
+<td><code>AGENTS.md</code> 內容</td>
+</tr>
+</tbody>
+</table>
+<p>只有兩個例外：</p>
+<ul>
+<li><strong>安裝</strong>：安裝前電腦上還沒有 <code>agy</code>，只能用作業系統的 PowerShell、CMD 或 zsh 執行官方安裝指令（第 1 章）。</li>
+<li><strong>VS Code 與檔案總管的圖形介面</strong>：開啟資料夾、開新終端機等用滑鼠操作。</li>
+</ul>
+<p>其他動作，例如建立資料夾、寫 README、看 Git 狀態、提交檔案，都在 <code>agy</code> 會話內用自然語言交代，由 <code>agy</code> 提出指令、你核准後執行。這樣每一步都會經過 <code>agy</code> 的權限提示，你可以看到 Agent 實際做了什麼。</p>
+<blockquote>
+<p>每次只輸入一小段，確認結果後再往下做。斜線指令與功能會隨版本更新；畫面與本章不同時，先在會話內輸入 <code>/help</code> 查看目前版本的說明。</p>
+</blockquote>
+<h2 id="agy-install">1. 安裝與登入</h2>
+<p><strong>本章目的：</strong>在自己的電腦裝好 <code>agy</code>，登入帳號，並用 <code>agy</code> 的指令確認「程式能執行」「帳號能用」「模型能選」。</p>
+<h3 id="agy-prerequisites">1.1 安裝前確認</h3>
+<table>
+<thead>
+<tr>
+<th>項目</th>
+<th>條件</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>作業系統</td>
+<td>官方安裝腳本支援 64 位元 Windows、macOS、Linux；Homebrew cask 標示 macOS 12 以上</td>
+</tr>
+<tr>
+<td>Node.js</td>
+<td><strong>不需要</strong>。<code>agy</code> 是原生執行檔，不經 npm 安裝</td>
+</tr>
+<tr>
+<td>帳號</td>
+<td>個人 Google 帳號（免費、Pro、Ultra）、Google Cloud／Gemini Enterprise 專案，或 Gemini API 金鑰擇一</td>
+</tr>
+<tr>
+<td>權限</td>
+<td>原生安裝放在使用者目錄，不需要系統管理員權限</td>
+</tr>
+<tr>
+<td>學校電腦</td>
+<td>若資訊組限制執行下載的腳本，依學校核准方式安裝，不要自行繞過</td>
+</tr>
+</tbody>
+</table>
+<p>同一台電腦只保留<strong>一種</strong>安裝來源（原生腳本或 Homebrew 擇一），避免兩個 <code>agy</code> 互相搶 PATH。</p>
+<h3 id="agy-install-windows">1.2 Windows 安裝</h3>
+<p>在 VS Code 開一個整合終端機（PowerShell），執行官方安裝指令：</p>
+<pre><code class="language-powershell">irm https://antigravity.google/cli/install.ps1 | iex
+</code></pre>
+<p><code>irm</code> 下載安裝腳本，<code>iex</code> 執行它。若你使用的是「命令提示字元」（CMD），改用：</p>
+<pre><code class="language-batch">curl -fsSL https://antigravity.google/cli/install.cmd -o install.cmd &amp;&amp; install.cmd &amp;&amp; del install.cmd
+</code></pre>
+<p>預設安裝位置是 <code>C:\Users\&lt;使用者名稱&gt;\AppData\Local\agy\bin</code>。安裝完成後<strong>完全關閉並重新開啟 VS Code</strong>，讓終端機讀到新的 PATH。</p>
+<h3 id="agy-install-macos">1.3 macOS 安裝</h3>
+<p><strong>原生安裝（本章主線）：</strong>在 VS Code 整合終端機（zsh）執行：</p>
+<pre><code class="language-bash">curl -fsSL https://antigravity.google/cli/install.sh | bash
+</code></pre>
+<p>執行檔會放在 <code>~/.local/bin/agy</code>。完成後完全關閉並重新開啟 VS Code。</p>
+<p><strong>Homebrew（替代方式）：</strong>已經用 Homebrew 管理軟體的人可以改用：</p>
+<pre><code class="language-bash">brew install --cask antigravity-cli
+</code></pre>
+<p>注意 Homebrew 版會<strong>關閉 <code>agy</code> 的自動更新</strong>，改由 Homebrew 管理；更新時用 <code>brew upgrade --cask antigravity-cli</code>，不要用 <code>agy update</code>。</p>
+<h3 id="agy-verify">1.4 用 agy 指令驗證安裝</h3>
+<p>從這一節開始，只輸入 <code>agy</code> 開頭的指令。重開 VS Code 後，在整合終端機執行：</p>
+<pre><code class="language-shell">agy --version
+agy changelog
+</code></pre>
+<p><strong>成功判準：</strong>第一行顯示版本號（本章查核時為 <code>1.5.10</code>）；第二行顯示各版更新說明，按 <code>q</code> 或捲到底即可離開。</p>
+<p>若出現 <code>agy: command not found</code>（Windows 為「無法辨識 agy」），表示終端機找不到執行檔，依序檢查：</p>
+<ol>
+<li>是否已完全關閉 VS Code 再重開（只關終端機分頁不夠）。</li>
+<li>用完整路徑執行 <code>agy</code> 內建的 PATH 設定子指令，讓它把安裝目錄加回 shell 設定：</li>
+</ol>
+<pre><code class="language-bash">~/.local/bin/agy install
+</code></pre>
+<pre><code class="language-powershell">&amp; "$env:LOCALAPPDATA\agy\bin\agy.exe" install
+</code></pre>
+<p><code>agy install</code> 會設定 PATH 並清理舊的 <code>agy</code>／<code>antigravity</code> 別名；執行後再重開 VS Code。</p>
+<h3 id="agy-first-run">1.5 第一次啟動與登入</h3>
+<p>先決定專題資料夾的位置，第 2 章會正式建立；第一次啟動<strong>不要</strong>在使用者主目錄（<code>C:\Users\&lt;名稱&gt;</code> 或 <code>~</code>）啟動，因為 <code>agy</code> 會詢問是否信任目前資料夾，信任整個主目錄等於讓 Agent 能讀取你所有個人檔案。</p>
+<p>建議先用 VS Code「檔案 → 開啟資料夾」，在對話框中按「新增資料夾」，建立 <code>文件/AI-Lab/agy-project</code>（Windows 可放在 <code>C:\Users\&lt;名稱&gt;\AI-Lab\agy-project</code>），開啟後從「終端機 → 新增終端機」開一個終端機，再執行：</p>
+<pre><code class="language-shell">agy
+</code></pre>
+<p>第一次啟動會依序出現：</p>
+<table>
+<thead>
+<tr>
+<th>步驟</th>
+<th>畫面內容</th>
+<th>建議選擇</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1. 配色</td>
+<td>Dark、Solarized Dark、Solarized Light、終端機預設</td>
+<td>選看得清楚的即可，之後可在 <code>/config</code> 修改</td>
+</tr>
+<tr>
+<td>2. 顯示模式</td>
+<td>Alt-Screen（全螢幕）或 Inline（接在終端機輸出後面）</td>
+<td>初學者選 Inline，捲動與複製較直覺</td>
+</tr>
+<tr>
+<td>3. 工作區信任</td>
+<td>確認是否信任目前資料夾，信任後才開始建立檔案索引</td>
+<td>確認路徑是 <code>agy-project</code> 才信任</td>
+</tr>
+<tr>
+<td>4. 登入</td>
+<td>自動開啟瀏覽器進行 Google 登入</td>
+<td>依帳號類型選擇，見下表</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>帳號類型</th>
+<th>登入方式</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>個人 Google 帳號（免費、Pro、Ultra）</td>
+<td>瀏覽器中選 Google 帳號完成 OAuth 登入</td>
+</tr>
+<tr>
+<td>學校或公司的 Gemini Enterprise／Google Cloud</td>
+<td>選「Use a Google Cloud project」，再依管理員指示選 Continue with Google Cloud 或 SSO 設定</td>
+</tr>
+<tr>
+<td>Gemini API 金鑰</td>
+<td>由教師或管理員設定，需在 <code>agy</code> 設定檔指定 <code>modelProvider</code> 並提供 <code>GEMINI_API_KEY</code> 環境變數；只設環境變數不會生效</td>
+</tr>
+</tbody>
+</table>
+<p>登入憑證存在作業系統的鑰匙圈（macOS 鑰匙圈、Windows 認證管理員），不會寫進專題資料夾。用 SSH 連到遠端電腦時，<code>agy</code> 會改為顯示一個網址，貼到本機瀏覽器登入後再把代碼貼回終端機。</p>
+<h3 id="agy-check-account">1.6 登入後用會話指令確認帳號</h3>
+<p>進入 <code>agy</code> 後，在輸入區依序輸入：</p>
+<pre><code class="language-text">/model
+/usage
+/credits
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>指令</th>
+<th>確認什麼</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>/model</code></td>
+<td>帳號能用哪些模型；選定後會記住，下次啟動沿用</td>
+</tr>
+<tr>
+<td><code>/usage</code>（別名 <code>/quota</code>）</td>
+<td>目前模型額度用了多少</td>
+</tr>
+<tr>
+<td><code>/credits</code></td>
+<td>AI 點數與購買連結；免費帳號可確認是否有額度限制</td>
+</tr>
+</tbody>
+</table>
+<p>也可以不進會話，直接在終端機列出可用模型：</p>
+<pre><code class="language-shell">agy models
+</code></pre>
+<p><strong>成功判準：</strong><code>/model</code> 能列出模型，<code>/usage</code> 能顯示額度。只看到版本號不代表能工作；能列出模型才代表登入與帳號權限都正常。</p>
+<h3 id="agy-maintenance">1.7 更新、切換帳號與移除</h3>
+<table>
+<thead>
+<tr>
+<th>想做什麼</th>
+<th>agy 的做法</th>
+<th>說明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>更新</td>
+<td>自動；需要時執行 <code>agy update</code></td>
+<td>原生版在背景每 15 分鐘內檢查一次更新；Homebrew 版改用 <code>brew upgrade --cask antigravity-cli</code></td>
+</tr>
+<tr>
+<td>看更新內容</td>
+<td><code>agy changelog</code> 或會話內 <code>/changelog</code></td>
+<td>遇到行為改變時先查這裡</td>
+</tr>
+<tr>
+<td>換帳號</td>
+<td>會話內 <code>/logout</code>，結束後重新執行 <code>agy</code> 登入</td>
+<td><code>/logout</code> 會清除鑰匙圈中保存的登入資料；使用 API 金鑰時無效</td>
+</tr>
+<tr>
+<td>從舊 Gemini CLI 遷移</td>
+<td><code>agy plugin import gemini</code></td>
+<td>第一次啟動偵測到舊設定時也會出現遷移清單；詳見<a href="00_intro.html#gemini-migration">前導章附錄 B.3</a></td>
+</tr>
+<tr>
+<td>移除</td>
+<td>刪除 <code>agy</code> 執行檔</td>
+<td>官方文件未提供移除指令；位置見 1.2、1.3</td>
+</tr>
+</tbody>
+</table>
+<h2 id="agy-launch">2. 啟動 agy：工作區由啟動位置決定</h2>
+<p><strong>本章目的：</strong>理解「在哪裡啟動，<code>agy</code> 就在哪裡工作」，並練習兩種啟動方式。</p>
+<h3 id="agy-workspace">2.1 工作區是什麼</h3>
+<p><code>agy</code> 的工作區（workspace）是<strong>你執行 <code>agy</code> 時所在的資料夾</strong>，加上用 <code>--add-dir</code> 或 <code>/add-dir</code> 額外加入的資料夾。Agent 預設只讀寫工作區內的檔案，專案規則（<code>AGENTS.md</code>）也從這個資料夾往上找。</p>
+<pre><code class="language-text">啟動位置錯了 → 讀不到你的資料、寫到錯的地方、載入不到你的 AGENTS.md
+啟動位置對了 → 只看得到這個專題，規則自動生效
+</code></pre>
+<p>所以每次啟動前先確認：<strong>終端機目前的位置就是專題資料夾</strong>。</p>
+<h3 id="agy-launch-terminal">2.2 方式 A：在獨立終端機啟動</h3>
+<p>不開 VS Code、只想快速問問題或處理單一資料夾時使用。重點是「讓終端機直接開在專題資料夾」，不必手打切換目錄的指令：</p>
+<table>
+<thead>
+<tr>
+<th>平台</th>
+<th>操作</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Windows 11</td>
+<td>在檔案總管對 <code>agy-project</code> 資料夾按右鍵 → 「在終端機中開啟」</td>
+</tr>
+<tr>
+<td>macOS</td>
+<td>把 Finder 中的 <code>agy-project</code> 資料夾拖到 Dock 上的「終端機」圖示；或在「系統設定 → 鍵盤 → 鍵盤快速鍵 → 服務」啟用「新增位於檔案夾位置的終端機視窗」，之後在資料夾按右鍵 → 服務</td>
+</tr>
+</tbody>
+</table>
+<p>終端機開好後執行：</p>
+<pre><code class="language-shell">agy
+</code></pre>
+<p>進入會話後先請 <code>agy</code> 回報位置，確認啟動在正確資料夾：</p>
+<pre><code class="language-transcript">請只回報目前的工作區路徑與裡面的檔案清單，不要建立或修改任何檔案。
+</code></pre>
+<h3 id="agy-launch-vscode">2.3 方式 B：在 VS Code 以專題資料夾啟動（本章主線）</h3>
+<p>做專題時用這個方式：左邊看檔案、中間看內容、下方讓 <code>agy</code> 工作。</p>
+<ol>
+<li>VS Code 選「檔案 → 開啟資料夾」，選 <code>agy-project</code>。視窗標題列與檔案總管最上方會顯示 <code>AGY-PROJECT</code>。</li>
+<li>若跳出「是否信任此資料夾的作者」，確認是自己的資料夾後選信任。</li>
+<li>選「終端機 → 新增終端機」（Windows／macOS 皆可用 <kbd>Ctrl</kbd>+<kbd>`</kbd>）。VS Code 會把新終端機開在<strong>目前開啟的資料夾</strong>，這就是能用專題資料夾啟動的原因。</li>
+<li>在終端機執行：</li>
+</ol>
+<pre><code class="language-shell">agy
+</code></pre>
+<ol>
+<li>建議再按終端機面板右上角的「分割」按鈕，開第二個終端機。左邊留給 <code>agy</code> 會話，右邊留著備用（例如再開一個 <code>agy -p</code> 單次查詢）。</li>
+</ol>
+<pre><code class="language-text">┌──────────────┬────────────────────────────┐
+│ 檔案總管      │ 編輯器：README.md / AGENTS.md │
+│ agy-project  │                            │
+│  ├ inputs    ├──────────────┬─────────────┤
+│  ├ outputs   │ 終端機 1：agy │ 終端機 2：備用 │
+│  └ AGENTS.md │ 會話          │              │
+└──────────────┴──────────────┴─────────────┘
+</code></pre>
+<blockquote>
+<p><strong>VS Code 擴充功能是另一個介面。</strong> Marketplace 上的「Antigravity for Visual Studio Code」（<code>Google.google-antigravity</code>，需 VS Code 1.90 以上）提供編輯器內的聊天面板，與本章在終端機使用的 <code>agy</code> CLI 是不同介面。本章不需要安裝它；若已安裝，兩者的專案規則（<code>AGENTS.md</code>）可共用。</p>
+</blockquote>
+<h3 id="agy-scaffold">2.4 讓 agy 建立專題骨架</h3>
+<p>在 VS Code 中啟動的 <code>agy</code> 會話輸入：</p>
+<pre><code class="language-transcript">這是一個新的專題資料夾。請幫我建立以下結構，每一步先說明要做什麼：
+1. 建立 inputs、outputs、docs 三個資料夾。
+2. 建立 README.md，包含：專題名稱（先寫「待定專題」）、目的、資料位置、操作方式四個段落。
+3. 建立 .gitignore，排除作業系統暫存檔（.DS_Store、Thumbs.db）與 .env。
+4. 初始化 Git，並把以上檔案做第一次提交，訊息為「建立專題骨架」。
+完成後列出實際建立的檔案，以及 git status 的結果。
+</code></pre>
+<p>這時 <code>agy</code> 會在建立檔案、執行 <code>git init</code>、<code>git commit</code> 前停下來請你核准（見 3.3）。每次核准前看清楚它要執行的指令與路徑。</p>
+<p><strong>成功判準：</strong>VS Code 左側出現 <code>inputs</code>、<code>outputs</code>、<code>docs</code>、<code>README.md</code>、<code>.gitignore</code>；<code>agy</code> 回報的 <code>git status</code> 顯示工作區乾淨（nothing to commit）。</p>
+<h3 id="agy-launch-flags">2.5 常用啟動參數</h3>
+<p>以下都在終端機提示字元輸入，作用只限這一次啟動，不會改到設定檔：</p>
+<table>
+<thead>
+<tr>
+<th>指令</th>
+<th>用途</th>
+<th>使用時機</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>agy</code></td>
+<td>開新會話</td>
+<td>一般情況</td>
+</tr>
+<tr>
+<td><code>agy -c</code></td>
+<td>接續這個資料夾最近一次的會話</td>
+<td>昨天沒做完，今天繼續</td>
+</tr>
+<tr>
+<td><code>agy --mode plan</code></td>
+<td>以規劃模式啟動，先產生計畫再動手</td>
+<td>大改動之前</td>
+</tr>
+<tr>
+<td><code>agy -i "請先讀 README.md 並摘要專題目標"</code></td>
+<td>帶著第一句話啟動，之後繼續對話</td>
+<td>固定的開場檢查</td>
+</tr>
+<tr>
+<td><code>agy --add-dir ../共用資料</code></td>
+<td>把另一個資料夾也加入工作區</td>
+<td>專題需要讀取資料夾外的資料</td>
+</tr>
+<tr>
+<td><code>agy --sandbox</code></td>
+<td>讓終端機指令在沙箱內執行</td>
+<td>讓 Agent 執行不熟悉的指令時</td>
+</tr>
+<tr>
+<td><code>agy -p "列出 outputs 內的檔案"</code></td>
+<td>單次執行，印出結果就結束</td>
+<td>快速查詢、寫進腳本</td>
+</tr>
+<tr>
+<td><code>agy --model "&lt;模型名稱&gt;"</code></td>
+<td>這次啟動改用指定模型</td>
+<td>名稱以 <code>agy models</code> 列出的為準</td>
+</tr>
+</tbody>
+</table>
+<h2 id="agy-session">3. 在 agy 會話內工作</h2>
+<p><strong>本章目的：</strong>熟悉 <code>agy</code> 輸入區的四種輸入，並學會在核准前判斷、在完成後檢查。</p>
+<h3 id="agy-input-types">3.1 輸入區的四種輸入</h3>
+<table>
+<thead>
+<tr>
+<th>開頭</th>
+<th>意義</th>
+<th>範例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>一般文字</td>
+<td>交代任務，<code>agy</code> 會規劃並使用工具完成</td>
+<td>「請把 inputs/notes.md 摘要成三點」</td>
+</tr>
+<tr>
+<td><code>/</code></td>
+<td>斜線指令，操作 <code>agy</code> 本身（模型、會話、權限……）</td>
+<td><code>/model</code></td>
+</tr>
+<tr>
+<td><code>@</code></td>
+<td>提及檔案或資料夾路徑，支援模糊比對</td>
+<td><code>@notes</code>（會找到 <code>inputs/notes.md</code>）</td>
+</tr>
+<tr>
+<td><code>!</code></td>
+<td>讓 <code>agy</code> 直接執行一行指令並顯示結果</td>
+<td><code>! git status</code></td>
+</tr>
+</tbody>
+</table>
+<p><code>@</code> 只是把<strong>路徑</strong>交給 Agent，不會自動貼上內容，也不會額外給它讀取權限。<code>!</code> 適合快速看一眼狀態；要修改檔案或提交時，仍建議用自然語言交代，讓 <code>agy</code> 說明每一步。</p>
+<h3 id="agy-slash-commands">3.2 常用斜線指令速查</h3>
+<p>在輸入區打 <code>/</code> 會出現選單，可用方向鍵選擇；按 <kbd>Tab</kbd> 補完反白的選項。</p>
+<table>
+<thead>
+<tr>
+<th>想做什麼</th>
+<th>指令</th>
+<th>說明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>看所有指令與快捷鍵</td>
+<td><code>/help</code></td>
+<td>忘記指令名稱時先用這個</td>
+</tr>
+<tr>
+<td>選模型</td>
+<td><code>/model</code></td>
+<td>選定後跨會話保存</td>
+</tr>
+<tr>
+<td>調整推理強度</td>
+<td><code>/effort</code></td>
+<td><code>low</code> 到 <code>max</code>；越高越慢、越耗額度</td>
+</tr>
+<tr>
+<td>看額度</td>
+<td><code>/usage</code></td>
+<td>每完成一個階段看一次</td>
+</tr>
+<tr>
+<td>看 context 使用量</td>
+<td><code>/context</code></td>
+<td>對話或讀入檔案變多時檢查</td>
+</tr>
+<tr>
+<td>開新對話</td>
+<td><code>/clear</code>（別名 <code>/new</code>）</td>
+<td>換主題時使用，避免沿用不相關內容</td>
+</tr>
+<tr>
+<td>接續舊對話</td>
+<td><code>/resume</code></td>
+<td>從清單選擇；也可接 ID 前綴</td>
+</tr>
+<tr>
+<td>回到之前的對話點</td>
+<td><code>/rewind</code>（別名 <code>/undo</code>）</td>
+<td>回復對話歷史；檔案是否回復依畫面選項確認</td>
+</tr>
+<tr>
+<td>看這輪改了什麼</td>
+<td><code>/diff</code></td>
+<td>互動式差異檢視</td>
+</tr>
+<tr>
+<td>先規劃再執行</td>
+<td><code>/plan &lt;任務&gt;</code></td>
+<td>產生實作計畫，確認後再動手</td>
+</tr>
+<tr>
+<td>讓 agy 先訪問你</td>
+<td><code>/grill-me &lt;任務&gt;</code></td>
+<td>開始前由 Agent 提問，釐清需求（第 4 章使用）</td>
+</tr>
+<tr>
+<td>把修正記成規則</td>
+<td><code>/learn &lt;說明&gt;</code></td>
+<td>把你的糾正寫入規則檔或技能</td>
+</tr>
+<tr>
+<td>管理權限</td>
+<td><code>/permissions</code></td>
+<td>查看、修改允許／詢問／拒絕規則</td>
+</tr>
+<tr>
+<td>修改設定</td>
+<td><code>/config</code>（別名 <code>/settings</code>）</td>
+<td>配色、顯示模式、預設 Agent 模式等</td>
+</tr>
+<tr>
+<td>加入資料夾</td>
+<td><code>/add-dir &lt;路徑&gt;</code></td>
+<td>會話中途擴大工作區</td>
+</tr>
+<tr>
+<td>用編輯器開檔</td>
+<td><code>/open &lt;路徑&gt;</code></td>
+<td>用系統預設編輯器開啟</td>
+</tr>
+<tr>
+<td>看技能</td>
+<td><code>/skills</code></td>
+<td>列出已載入的技能；修改後用 <code>/skills reload</code></td>
+</tr>
+<tr>
+<td>問 agy 本身的用法</td>
+<td><code>/antigravity-guide &lt;問題&gt;</code></td>
+<td>依官方文件回答</td>
+</tr>
+<tr>
+<td>登出</td>
+<td><code>/logout</code></td>
+<td>換帳號時使用</td>
+</tr>
+<tr>
+<td>結束</td>
+<td><code>/exit</code>（別名 <code>/quit</code>）</td>
+<td>也可在輸入區為空時按 <kbd>Ctrl</kbd>+<kbd>D</kbd></td>
+</tr>
+</tbody>
+</table>
+<p>前導章介紹的 <code>/compact</code>、<code>/memory</code>、<code>/init</code>、<code>/ide</code> 是其他 CLI 的指令，<code>agy</code> 目前<strong>沒有</strong>這些指令。不要把別款工具的指令名稱直接套用到 <code>agy</code>。</p>
+<h3 id="agy-permissions">3.3 權限提示與 Agent 模式</h3>
+<p><code>agy</code> 要寫檔或執行指令時會停下來詢問：</p>
+<table>
+<thead>
+<tr>
+<th>提示</th>
+<th>選項</th>
+<th>判斷方式</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Accept this file edit?</code>／<code>Allow creation of this file?</code></td>
+<td><code>1</code> 接受、<code>2</code> 拒絕、<code>f</code> 看完整差異</td>
+<td>路徑是你交代的位置才接受；不確定就按 <code>f</code></td>
+</tr>
+<tr>
+<td><code>Do you want to proceed?</code>（執行指令）</td>
+<td>Yes／Yes, and always allow…／No</td>
+<td>看不懂指令就選 No，請它先解釋</td>
+</tr>
+</tbody>
+</table>
+<p>拒絕不會弄壞任務，<code>agy</code> 會收到拒絕結果，你可以補充限制後再讓它繼續。</p>
+<p>按 <kbd>Shift</kbd>+<kbd>Tab</kbd> 可以在四種模式間切換，畫面下方會顯示目前模式：</p>
+<table>
+<thead>
+<tr>
+<th>模式</th>
+<th>寫檔</th>
+<th>執行指令</th>
+<th>適合誰</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>default</code></td>
+<td>先讓你看差異</td>
+<td>先詢問</td>
+<td><strong>初學者建議使用</strong></td>
+</tr>
+<tr>
+<td><code>accept-edits</code></td>
+<td>自動接受工作區內的修改</td>
+<td>先詢問</td>
+<td>已熟悉任務，只想審核指令</td>
+</tr>
+<tr>
+<td><code>auto</code></td>
+<td>自動</td>
+<td>在沙箱內自動執行，離開沙箱前由審查機制判斷</td>
+<td>個人帳號且系統支援沙箱時才出現</td>
+</tr>
+<tr>
+<td><code>plan</code></td>
+<td>不直接修改，先產生計畫</td>
+<td>不直接執行</td>
+<td>大改動、還在想做法時</td>
+</tr>
+</tbody>
+</table>
+<p>自 1.5.7 版起，沒有保存模式的會話預設為 <code>auto</code>（在支援的帳號與系統上）。本課希望你看到每一步，所以先進入 <code>/config</code>，把 <code>Agent Mode</code> 改為 <code>Default</code>。請勿在課堂中使用 <code>--dangerously-skip-permissions</code>，它會自動核准所有工具請求。</p>
+<h3 id="agy-first-task">3.4 第一次有來源的小任務</h3>
+<p>在 VS Code 中把一份課堂筆記存成 <code>inputs/notes.md</code>（內容可沿用<a href="00_intro.html#source-notes">前導章 4.1</a> 的範例），然後在 <code>agy</code> 輸入：</p>
+<pre><code class="language-transcript">請讀取 @inputs/notes.md，整理成三個重點，每點標示來源段落（例如 P1）。
+結果寫入 outputs/summary_b01.md，不要修改 inputs 內的檔案。
+完成後告訴我：產出的檔案、你實際讀了哪些檔案、還有哪些內容來源沒有提供。
+</code></pre>
+<p>完成後檢查：</p>
+<pre><code class="language-text">/diff
+! git status --short
+</code></pre>
+<p><strong>成功判準：</strong><code>/diff</code> 只顯示 <code>outputs/summary_b01.md</code> 的新增；<code>git status</code> 中 <code>inputs/notes.md</code> 若是新加入的檔案顯示為未追蹤（<code>??</code>），而不是被修改（<code>M</code>）。</p>
+<p>確認無誤後，請 <code>agy</code> 建立檢查點：</p>
+<pre><code class="language-transcript">請把 inputs/notes.md 與 outputs/summary_b01.md 加入 Git 並提交，訊息為「新增第一份摘要」。
+提交後顯示最近一筆紀錄。
+</code></pre>
+<h3 id="agy-session-control">3.5 會話管理：接續、換題與單次執行</h3>
+<ol>
+<li><strong>今天做完，明天接著做：</strong>在同一個專題資料夾執行 <code>agy -c</code>，或啟動後輸入 <code>/resume</code> 選擇會話。接續後先請 <code>agy</code> 讀 README 與最近的提交紀錄，再確認下一步。</li>
+<li><strong>換一個不相關的任務：</strong>先確認成果已提交，再輸入 <code>/clear</code> 開新對話。</li>
+<li><strong>對話很長：</strong>輸入 <code>/context</code> 看使用量。<code>agy</code> 沒有 <code>/compact</code>，比較穩定的做法是請它把已確認的決策與待辦寫進 <code>docs/progress.md</code>，提交後再 <code>/clear</code>，新對話開頭請它先讀 <code>docs/progress.md</code>。</li>
+<li><strong>只想問一件事：</strong>在備用終端機使用單次執行，結果印出就結束，不進入互動畫面：</li>
+</ol>
+<pre><code class="language-shell">agy -p "依 README.md，用一句話說明這個專題的目的。不要修改任何檔案。" --mode plan
+</code></pre>
+<p><code>--mode plan</code> 讓這次執行只規劃、不修改檔案，適合查詢類問題。單次執行預設會等到回答完成；回答很長時可加 <code>--print-timeout 300s</code> 設定上限。</p>
+<h2 id="agy-agents-md">4. 用 agy 設計並生成 AGENTS.md</h2>
+<p><strong>本章目的：</strong>把每次都要重複交代的要求寫成專案規則，並用 <code>agy</code> 自己來訪談、起草、驗證這份規則。</p>
+<h3 id="agy-why-rules">4.1 為什麼需要 AGENTS.md</h3>
+<p>第 3 章每次都要說「標示來源」「不要改 inputs」「用 _b01 版本號」。這些要求寫進 <code>AGENTS.md</code> 後，<code>agy</code> 每次啟動都會自動帶入，不必重講，換成其他支援 <code>AGENTS.md</code> 的 CLI（如 Codex CLI）也能沿用。</p>
+<p><code>AGENTS.md</code> 是<strong>文字規則</strong>：它影響 Agent 的判斷，但不是安全機制。真正禁止某些操作要靠 3.3 的權限設定（<code>/permissions</code>）與沙箱。</p>
+<h3 id="agy-rule-loading">4.2 agy 會載入哪些規則檔</h3>
+<p><code>agy</code> 從<strong>啟動資料夾往上找到 Git 儲存庫根目錄</strong>，每一層都會檢查下列檔案；全域檔案則對所有專案生效：</p>
+<table>
+<thead>
+<tr>
+<th>範圍</th>
+<th>檔案位置</th>
+<th>是否需要前置設定（frontmatter）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>專案（每一層資料夾）</td>
+<td><code>AGENTS.md</code> 或 <code>GEMINI.md</code></td>
+<td>不需要，永遠生效</td>
+</tr>
+<tr>
+<td>專案（每一層資料夾）</td>
+<td><code>.agents/AGENTS.md</code> 或 <code>.agents/GEMINI.md</code></td>
+<td>不需要，永遠生效</td>
+</tr>
+<tr>
+<td>專案（每一層資料夾）</td>
+<td><code>.agents/rules/*.md</code></td>
+<td><strong>需要</strong> <code>trigger</code> 欄位，否則會被忽略</td>
+</tr>
+<tr>
+<td>全域</td>
+<td><code>~/.gemini/AGENTS.md</code>、<code>~/.gemini/GEMINI.md</code>、<code>~/.gemini/config/rules/*.md</code> 等</td>
+<td>同上</td>
+</tr>
+</tbody>
+</table>
+<p>幾個要注意的規則：</p>
+<ul>
+<li><strong>累加，不是取代</strong>：找到的規則全部合併使用，沒有「近的蓋掉遠的」。同一件事不要在兩個檔案寫出互相矛盾的規定。</li>
+<li><strong>只往上，不往下</strong>：子資料夾裡的 <code>AGENTS.md</code> 不會因為你在上層啟動而載入。</li>
+<li><strong>大小限制</strong>：單一規則檔上限 24,000 bytes；全域與 <code>always_on</code> 規則合計約 20,000 tokens，超過的部分會被改成只留指標。規則要精簡。</li>
+<li><strong><code>AGENTS.md</code> 與 <code>GEMINI.md</code> 擇一</strong>：兩者都會載入。新專題建議統一用 <code>AGENTS.md</code>，方便與其他 CLI 共用。</li>
+<li><strong>引用其他檔案</strong>：在規則中寫 <code>@[說明文字](路徑)</code> 會把該檔內容一起帶入；只寫 <code>@檔名</code> 則只是提到路徑。</li>
+<li><code>.agents/rules/*.md</code> 的 <code>trigger</code> 可為 <code>always_on</code>（永遠生效）、<code>model_decision</code>（由模型判斷何時套用）、<code>glob</code>（依檔案路徑套用）；CLI 不支援 <code>manual</code>。</li>
+</ul>
+<blockquote>
+<p><strong>本機實測（agy 1.5.10，2026-11-17）：</strong>在測試資料夾放入 <code>AGENTS.md</code>、含 <code>trigger: always_on</code> 的 <code>.agents/rules/output.md</code>，以及由 <code>AGENTS.md</code> 用 <code>@[寫作風格](docs/style.md)</code> 引用的檔案，三份檔案中的規則在 <code>agy -p</code> 不讀檔的情況下都能正確回答，表示啟動時已自動載入。</p>
+</blockquote>
+<h3 id="agy-rule-design">4.3 好規則的五個條件</h3>
+<table>
+<thead>
+<tr>
+<th>條件</th>
+<th>不好的寫法</th>
+<th>可操作的寫法</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>可檢查</td>
+<td>「內容要詳細」</td>
+<td>「每個重點標示來源段落（P1、P2…）；來源沒有的內容列入『待查』」</td>
+</tr>
+<tr>
+<td>有位置</td>
+<td>「好好管理檔案」</td>
+<td>「inputs 是來源，不修改；成果寫入 outputs，檔名加 _b01、_b02」</td>
+</tr>
+<tr>
+<td>有順序</td>
+<td>「記得驗收」</td>
+<td>「完成時依序回報：產出檔案、檢查方式、實際結果、未確認事項」</td>
+</tr>
+<tr>
+<td>有邊界</td>
+<td>「注意安全」</td>
+<td>「刪除檔案、對外發送、安裝套件前先取得我的同意」</td>
+</tr>
+<tr>
+<td>不重複工具本身的設定</td>
+<td>寫「不准執行 rm」</td>
+<td>用 <code>/permissions</code> 設定拒絕規則；<code>AGENTS.md</code> 只說明原因</td>
+</tr>
+</tbody>
+</table>
+<h3 id="agy-generate-rules">4.4 生成流程：訪談 → 規劃 → 寫入 → 驗證</h3>
+<p><code>agy</code> 沒有自動產生規則檔的 <code>/init</code> 指令。我們用它現有的指令完成同樣的事，而且更能貼合你的專題。</p>
+<p><strong>步驟 1：讓 agy 訪問你。</strong>在專題資料夾的 <code>agy</code> 會話輸入：</p>
+<pre><code class="language-text">/grill-me 為這個專題資料夾設計一份 AGENTS.md
+</code></pre>
+<p><code>agy</code> 會先提問，例如專題主題、讀者是誰、資料放哪裡、輸出格式、哪些事情一定要先問你。逐題回答；不確定的就說「先列為待定」。</p>
+<p><strong>步驟 2：先規劃，不寫入。</strong></p>
+<pre><code class="language-transcript">/plan 根據剛才的訪談，起草 AGENTS.md。
+要求：
+1. 先讀 README.md 與目前的資料夾結構，規則要和實際資料夾一致。
+2. 分成：專題目標、資料夾與檔名、工作流程、寫作規範、驗收回報、需要先詢問的事項。
+3. 每條規則都要能檢查；寫不出檢查方式的規則先列在「待定」。
+4. 全文控制在 80 行以內，使用繁體中文。
+先把草稿顯示給我，不要寫入檔案。
+</code></pre>
+<p><strong>步驟 3：修改後寫入。</strong>對草稿提出修改意見，例如「把檔名規則改成 主題_日期_b01.md」。滿意後：</p>
+<pre><code class="language-transcript">請把確認後的草稿寫入專題根目錄的 AGENTS.md。
+如果 AGENTS.md 已存在，先顯示差異讓我確認，不要直接覆蓋。
+</code></pre>
+<p><strong>步驟 4：重新啟動並驗證。</strong>規則檔在啟動時載入，所以先輸入 <code>/exit</code> 結束會話，再於同一資料夾執行 <code>agy</code>，然後輸入：</p>
+<pre><code class="language-transcript">不要使用任何工具讀檔，只根據你啟動時已載入的規則回答：
+1. 這次自動載入了哪些規則檔（列出路徑）？
+2. 成果檔要放在哪裡、檔名規則是什麼？
+3. 哪些事情你必須先問我？
+</code></pre>
+<p>把回答與 <code>AGENTS.md</code> 對照。要求「不使用工具讀檔」是為了確認規則是<strong>啟動時自動載入</strong>，而不是它臨時去讀檔。</p>
+<p><strong>步驟 5：提交規則。</strong></p>
+<pre><code class="language-transcript">請把 AGENTS.md 加入 Git 並提交，訊息為「加入專題規則 AGENTS.md」。
+</code></pre>
+<h3 id="agy-example-project">4.5 範例一：專題用 AGENTS.md</h3>
+<p>以下是一份「主題探究專題」的規則範例，可直接放在專題根目錄後依需求修改：</p>
+<pre><code class="language-markdown"># 專題工作規則
+
+## 專題目標
+- 本專題探究「＿＿＿」，產出可給同學閱讀的研究摘要與簡報大綱。
+- 讀者是同班同學；使用繁體中文，專有名詞第一次出現附英文。
+
+## 資料夾與檔名
+- inputs/：來源資料（訪談、文章、筆記），只讀不改。
+- outputs/：成果，檔名為「主題_YYYYMMDD_b01.md」，修改時遞增為 b02、b03，不覆蓋舊版。
+- docs/progress.md：已確認的決策與待辦，每次工作結束前更新。
+
+## 工作流程
+1. 開始任務前，先說明你要讀哪些檔案、要產出什麼。
+2. 超過三個檔案的修改，先用條列提出計畫，等我同意再做。
+3. 執行失敗時保留錯誤訊息，先說明原因再修改。
+
+## 寫作規範
+- 每個論點標示來源，格式為（來源：inputs/檔名 段落）。
+- 來源沒有提供的事實，不寫成結論，列在文末「待查」。
+- 數字、日期、人名要和來源一致；無法確認時標註「待確認」。
+
+## 驗收回報
+完成時依序回報：
+1. 產出或修改的檔案路徑。
+2. 你做了哪些檢查（例如逐條核對來源）。
+3. 實際結果與還沒確認的事項。
+
+## 需要先詢問的事項
+- 刪除或搬移任何檔案。
+- 安裝套件、連網查詢、對外發送內容。
+- 修改本檔（AGENTS.md）。
+</code></pre>
+<h3 id="agy-example-split">4.6 範例二：把規則拆成主檔與規則資料夾</h3>
+<p>規則變多時，把「每次都要遵守的」留在 <code>AGENTS.md</code>，把「特定情境才需要的」拆出去，讓主檔保持精簡：</p>
+<pre><code class="language-text">agy-project/
+├── AGENTS.md                  ← 目標、資料夾、流程（每次都載入）
+├── docs/
+│   └── style.md               ← 寫作風格細節（由 AGENTS.md 引用）
+└── .agents/
+    └── rules/
+        └── slides.md          ← 製作簡報時才需要的規則
+</code></pre>
+<p><code>AGENTS.md</code> 中用引用語法帶入寫作風格：</p>
+<pre><code class="language-markdown">## 寫作規範
+- 詳細寫作風格見 @[寫作風格](docs/style.md)
+</code></pre>
+<p><code>.agents/rules/slides.md</code> 必須有 <code>trigger</code>，這裡用 <code>model_decision</code> 讓模型在處理簡報任務時套用：</p>
+<pre><code class="language-markdown">---
+trigger: model_decision
+description: 製作或修改簡報大綱時套用
+---
+
+# 簡報規則
+- 每張投影片標題不超過 15 字，內容不超過 5 行。
+- 每張投影片附講者備註，說明要講的重點。
+- 圖表需註明資料來源。
+</code></pre>
+<blockquote>
+<p>若某條規則一定要每次生效，<code>trigger</code> 改為 <code>always_on</code>。拆檔後同樣依 4.4 步驟 4 重新啟動並驗證。</p>
+</blockquote>
+<h3 id="agy-example-onclass">4.7 範例三：分析一份實際使用中的 AGENTS.md</h3>
+<p><a href="https://joelhoty.github.io/onclassbyJoel/AGENTS.md">onclassbyJoel 的 AGENTS.md</a> 是一份實際用於課堂筆記工作區、讓多個 Agent 共用的規則（約 3,900 bytes，在 <code>agy</code> 的 24,000 bytes 單檔上限內）。以下摘錄其結構並分析：</p>
+<table>
+<thead>
+<tr>
+<th>段落</th>
+<th>規定內容</th>
+<th>值得沿用的設計</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1. Metadata Header</td>
+<td>每份文件標題下方記錄「最後更新時間（UTC+8）」「使用模型」「執行 Agent」</td>
+<td>讓讀者知道內容由哪個模型、何時產生，方便追查</td>
+</tr>
+<tr>
+<td>2. 關鍵字自動擴充</td>
+<td>遇到核心關鍵字，展開為核心概念、實作範例、延伸思考三層</td>
+<td>把「寫詳細一點」變成可檢查的三層結構</td>
+</tr>
+<tr>
+<td>3. Prompt Archive</td>
+<td>文件底部用「增補」方式記錄每次的提示詞原文與變更摘要；索引檔例外</td>
+<td>保留產生過程，且明確寫出例外</td>
+</tr>
+<tr>
+<td>4–5. 儲存格式與內容</td>
+<td>同時存 md 與 html；html 加匯出 PDF 按鈕；程式碼要有註解與流程圖</td>
+<td>輸出格式寫成可勾選的清單</td>
+</tr>
+<tr>
+<td>6. 索引自動更新</td>
+<td>索引由 <code>tools/build_index.py</code> 產生，不得手改；提交前後各執行一次</td>
+<td>指定「用哪支腳本做」而不是「記得更新索引」</td>
+</tr>
+<tr>
+<td>目錄分類</td>
+<td><code>AI/</code>、<code>ec/</code>、<code>ev3/</code>、<code>math/</code>… 依主題歸檔，不放根目錄</td>
+<td>用明確清單避免 Agent 自創資料夾</td>
+</tr>
+</tbody>
+</table>
+<p>其中第 1 段的 Metadata 格式如下：</p>
+<pre><code class="language-markdown">&gt; **最後更新時間**: YYYY-MM-DD HH:mm:ss (UTC+8)
+&gt; **使用模型**: [Model Name]
+&gt; **執行 Agent**: [Agent/Subagent Name]
+</code></pre>
+<p><strong>改寫給 agy 使用時，建議修正四處：</strong></p>
+<ol>
+<li><strong>程式碼區塊沒有關閉。</strong>原檔第 3 段的 Prompt Archive 範例以 <code>```markdown</code> 開頭，結尾的 <code>```</code> 直到第 5 段後才出現，結果第 4、5 段在顯示時被當成程式碼內容。規則檔裡要放含程式碼區塊的範例時，外層改用四個反引號（<code>````</code>）或 <code>~~~</code>，並在 VS Code 預覽中確認段落標題有正常顯示。</li>
+<li><strong>路徑寫死在特定電腦。</strong>原檔寫明 <code>D:\CLASS_NOTE</code>。<code>agy</code> 的工作區就是啟動資料夾，規則中改寫為「本工作區」即可，同一份規則在 macOS 與其他電腦也適用。</li>
+<li><strong>模型名稱要有來源。</strong>要求記錄「使用模型」時，模型不一定能正確說出自己的名稱。可在規則補一句：「使用模型一欄填寫 <code>/model</code> 目前選定的名稱；無法確認時寫『未確認』」，或由使用者在提示中直接告訴它。</li>
+<li><strong>累加內容會讓檔案變大。</strong>Prompt Archive 會越來越長；<code>agy</code> 讀檔時會消耗 context。可規定每份文件只保留最近 N 筆，其餘移到 <code>docs/prompt_archive.md</code>。同理，用 <code>/learn</code> 增補規則時，注意不要超過單檔大小限制。</li>
+</ol>
+<p>用 <code>agy</code> 實際套用這份範例：</p>
+<pre><code class="language-transcript">請參考 https://joelhoty.github.io/onclassbyJoel/AGENTS.md 的設計，
+為本專題草擬 AGENTS.md，保留「Metadata Header」與「Prompt Archive」兩項規範，
+並依下列要求調整：
+1. 不寫死磁碟路徑，以本工作區為範圍。
+2. 目錄分類改為本專題實際的 inputs、outputs、docs。
+3. 檔案中的範例程式碼區塊外層用四個反引號，確保不會吃掉後面的段落。
+4. 「使用模型」填寫 /model 目前選定的名稱，無法確認時寫「未確認」。
+先顯示草稿與你的修改理由，不要寫入檔案。
+</code></pre>
+<p>這個任務需要連網讀取網頁，<code>agy</code> 會請你核准；確認網址正確再同意。</p>
+<h3 id="agy-learn">4.8 用 /learn 持續維護規則</h3>
+<p>工作中發現 <code>agy</code> 反覆犯同一個錯，例如忘了加版本號，可以直接把糾正寫回規則：</p>
+<pre><code class="language-text">/learn 成果檔一律加 _bNN 版本號，不可覆蓋舊檔
+</code></pre>
+<p><code>/learn</code> 會提議要寫入哪個規則檔或技能；接近大小上限時，它會建議精簡現有內容或拆成分範圍的規則。<strong>寫入前先看它提議的位置與內容</strong>，接受後一樣用 4.4 步驟 4 的方式驗證，再請 <code>agy</code> 提交。</p>
+<h3 id="agy-rules-checklist">4.9 AGENTS.md 驗收清單</h3>
+<ul>
+<li>[ ] 放在專題根目錄，且在專題根目錄啟動 <code>agy</code>。</li>
+<li>[ ] 每條規則都能說出檢查方式。</li>
+<li>[ ] 資料夾名稱、檔名規則和實際結構一致。</li>
+<li>[ ] 沒有和全域規則（<code>~/.gemini/AGENTS.md</code> 等）互相矛盾。</li>
+<li>[ ] 範例程式碼區塊有正確關閉，VS Code 預覽中段落標題正常。</li>
+<li>[ ] 重新啟動後，<code>agy</code> 能在不讀檔的情況下正確說出規則。</li>
+<li>[ ] 已提交到 Git，修改時看得到差異。</li>
+</ul>
+<h2 id="agy-practice">5. 練習、問答與總結</h2>
+<h3 id="agy-exercises">5.1 練習</h3>
+<p><strong>練習 A：找出啟動位置錯誤。</strong>同學在使用者主目錄執行 <code>agy</code>，再要求「整理 agy-project/inputs 的筆記」。請說明會發生什麼問題，以及正確做法。</p>
+<p><strong>練習 B：為規則寫檢查方式。</strong>把下列三條改寫成可檢查的規則：「內容要正確」「格式要整齊」「不要亂改檔案」。</p>
+<p><strong>練習 C：設計規則分層。</strong>你的專題有「研究報告」與「簡報」兩種產出。請規劃哪些規則放 <code>AGENTS.md</code>、哪些放 <code>.agents/rules/</code>，並寫出 <code>trigger</code>。</p>
+<p><strong>練習 D：完整流程。</strong>依 4.4 完成自己專題的 <code>AGENTS.md</code>，交付：規則檔、步驟 4 的驗證回答截圖、Git 提交紀錄（請 <code>agy</code> 顯示）。</p>
+<h3 id="agy-rubric">5.2 評分規準</h3>
+<table>
+<thead>
+<tr>
+<th>項目</th>
+<th>達成</th>
+<th>部分達成</th>
+<th>未達成</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>安裝與登入</td>
+<td>版本、模型清單、額度都能顯示</td>
+<td>只能顯示版本</td>
+<td>無法啟動</td>
+</tr>
+<tr>
+<td>啟動位置</td>
+<td>能說明工作區由啟動位置決定，並在 VS Code 正確啟動</td>
+<td>能啟動但說不出原因</td>
+<td>在主目錄啟動</td>
+</tr>
+<tr>
+<td>會話操作</td>
+<td>能用 <code>/diff</code>、<code>!</code>、<code>/resume</code> 檢查與接續</td>
+<td>只會輸入自然語言</td>
+<td>未檢查即接受所有修改</td>
+</tr>
+<tr>
+<td>AGENTS.md</td>
+<td>規則可檢查、結構一致、有重啟驗證證據</td>
+<td>有規則但無驗證</td>
+<td>沒有規則檔</td>
+</tr>
+</tbody>
+</table>
+<h3 id="agy-faq">5.3 常見問題與排錯</h3>
+<table>
+<thead>
+<tr>
+<th>症狀</th>
+<th>可能原因</th>
+<th>處理方式</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>agy: command not found</code></td>
+<td>PATH 尚未更新</td>
+<td>完全重開 VS Code；仍不行則以完整路徑執行 <code>agy install</code>（1.4）</td>
+</tr>
+<tr>
+<td>瀏覽器沒有跳出登入頁</td>
+<td>預設瀏覽器設定或遠端連線</td>
+<td>複製終端機顯示的網址到瀏覽器開啟</td>
+</tr>
+<tr>
+<td><code>secret keyring is locked</code></td>
+<td>系統鑰匙圈被鎖定</td>
+<td>解鎖系統鑰匙圈後重新啟動 <code>agy</code></td>
+</tr>
+<tr>
+<td>規則好像沒生效</td>
+<td>啟動位置不對、規則在子資料夾、<code>rules/*.md</code> 缺 <code>trigger</code></td>
+<td>確認啟動資料夾；檢查 frontmatter；<code>/exit</code> 後重新啟動驗證</td>
+</tr>
+<tr>
+<td><code>/compact</code>、<code>/init</code> 找不到</td>
+<td>那是其他 CLI 的指令</td>
+<td><code>agy</code> 用 <code>/clear</code>＋<code>docs/progress.md</code> 接續；規則用 4.4 流程產生</td>
+</tr>
+<tr>
+<td>沒有出現 <code>auto</code> 模式</td>
+<td>企業帳號、或系統不支援沙箱（如 Windows 10）</td>
+<td>本課使用 <code>default</code> 模式即可</td>
+</tr>
+<tr>
+<td>Agent 不經詢問就改檔</td>
+<td>目前是 <code>auto</code> 或 <code>accept-edits</code> 模式</td>
+<td>按 <kbd>Shift</kbd>+<kbd>Tab</kbd> 切回 <code>default</code>，或在 <code>/config</code> 修改預設</td>
+</tr>
+<tr>
+<td>更新卡住，提示 <code>update.lock</code></td>
+<td>另一個更新程序執行中</td>
+<td>等待完成；參考官方排錯頁處理</td>
+</tr>
+<tr>
+<td>用了 Homebrew 卻執行 <code>agy update</code></td>
+<td>Homebrew 版停用自動更新</td>
+<td>改用 <code>brew upgrade --cask antigravity-cli</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="agy-summary">5.4 總結</h3>
+<ul>
+<li><code>agy</code> 是原生執行檔，安裝不需 Node.js；裝完後用 <code>agy --version</code>、<code>/model</code>、<code>/usage</code> 確認「能執行、能登入、能用模型」。</li>
+<li><strong>在哪裡啟動，就在哪裡工作。</strong>在 VS Code 開啟專題資料夾再開終端機，是最不容易出錯的啟動方式。</li>
+<li>會話內有四種輸入：自然語言、<code>/</code>、<code>@</code>、<code>!</code>。修改前看權限提示，修改後用 <code>/diff</code> 與 Git 檢查。</li>
+<li><code>AGENTS.md</code> 從啟動資料夾往上載入、累加生效；<code>.agents/rules/*.md</code> 必須有 <code>trigger</code>。</li>
+<li>沒有 <code>/init</code>，就用 <code>/grill-me</code> → <code>/plan</code> → 寫入 → 重啟驗證，產生更貼合專題的規則，再用 <code>/learn</code> 持續維護。</li>
+</ul>
+<h3 id="agy-extension">5.5 延伸探索</h3>
+<ul>
+<li><strong>技能（Skills）：</strong>把重複的多步驟流程寫成 <code>.agents/skills/&lt;名稱&gt;/SKILL.md</code>，它會自動變成斜線指令。規則說「要遵守什麼」，技能說「某件事怎麼做」。</li>
+<li><strong>MCP 伺服器：</strong>用 <code>agy mcp list</code>、<code>agy mcp add</code> 管理外部工具連線；會話內用 <code>/mcp</code> 檢查狀態。</li>
+<li><strong>權限規則：</strong>在 <code>/permissions</code> 為專題加入拒絕規則（例如禁止刪除 <code>inputs/</code>），體會「文字規則」與「實際權限」的差別。</li>
+<li><strong>與其他 CLI 共用規則：</strong>同一份 <code>AGENTS.md</code> 交給 Codex CLI 使用，比較兩者對規則的理解差異；Claude Code 的載入方式見<a href="00_intro.html#instruction-loading">前導章 5.2</a>。</li>
+</ul>
+<h2 id="agy-cheatsheet">附錄 A. agy 指令速查</h2>
+<p><strong>終端機提示字元（只用 <code>agy</code> 開頭）：</strong></p>
+<table>
+<thead>
+<tr>
+<th>指令</th>
+<th>用途</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>agy</code></td>
+<td>啟動互動會話</td>
+</tr>
+<tr>
+<td><code>agy -c</code></td>
+<td>接續最近一次會話</td>
+</tr>
+<tr>
+<td><code>agy -i "&lt;提示&gt;"</code></td>
+<td>帶著第一句話啟動互動會話</td>
+</tr>
+<tr>
+<td><code>agy -p "&lt;提示&gt;"</code></td>
+<td>單次執行後結束</td>
+</tr>
+<tr>
+<td><code>agy --mode &lt;模式&gt;</code></td>
+<td>指定本次 Agent 模式：<code>default</code>、<code>accept-edits</code>、<code>auto</code>、<code>plan</code></td>
+</tr>
+<tr>
+<td><code>agy --add-dir &lt;路徑&gt;</code></td>
+<td>加入額外資料夾到工作區</td>
+</tr>
+<tr>
+<td><code>agy --sandbox</code></td>
+<td>在沙箱中執行終端機指令</td>
+</tr>
+<tr>
+<td><code>agy --model "&lt;名稱&gt;"</code>、<code>agy --effort &lt;等級&gt;</code></td>
+<td>本次使用的模型與推理強度</td>
+</tr>
+<tr>
+<td><code>agy --version</code>、<code>agy changelog</code>、<code>agy update</code></td>
+<td>版本、更新說明、手動更新</td>
+</tr>
+<tr>
+<td><code>agy models</code>、<code>agy agents</code></td>
+<td>列出可用模型、可用 Agent</td>
+</tr>
+<tr>
+<td><code>agy install</code></td>
+<td>設定 PATH 與 shell 環境</td>
+</tr>
+<tr>
+<td><code>agy mcp &lt;子指令&gt;</code></td>
+<td>管理 MCP 伺服器：<code>list</code>、<code>add</code>、<code>remove</code>、<code>enable</code>、<code>disable</code></td>
+</tr>
+<tr>
+<td><code>agy plugin &lt;子指令&gt;</code></td>
+<td>管理外掛：<code>list</code>、<code>install</code>、<code>import</code>、<code>enable</code>、<code>disable</code>；<code>agy plugin import gemini</code> 匯入舊 Gemini CLI 擴充</td>
+</tr>
+</tbody>
+</table>
+<p><strong>會話內快捷鍵：</strong></p>
+<table>
+<thead>
+<tr>
+<th>按鍵</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><kbd>Shift</kbd>+<kbd>Tab</kbd></td>
+<td>切換 <code>default</code> → <code>accept-edits</code> → <code>auto</code> → <code>plan</code></td>
+</tr>
+<tr>
+<td><kbd>Esc</kbd></td>
+<td>關閉面板、停止輸出，或清除空白提示</td>
+</tr>
+<tr>
+<td><kbd>Ctrl</kbd>+<kbd>C</kbd></td>
+<td>中斷目前回合；閒置時連按兩次離開</td>
+</tr>
+<tr>
+<td><kbd>Shift</kbd>+<kbd>Enter</kbd> 或 <kbd>Ctrl</kbd>+<kbd>J</kbd></td>
+<td>換行但不送出</td>
+</tr>
+<tr>
+<td><kbd>Ctrl</kbd>+<kbd>O</kbd></td>
+<td>展開或收合工具執行細節</td>
+</tr>
+<tr>
+<td><kbd>Ctrl</kbd>+<kbd>G</kbd></td>
+<td>用外部編輯器撰寫較長的提示</td>
+</tr>
+<tr>
+<td><kbd>Ctrl</kbd>+<kbd>L</kbd></td>
+<td>清除畫面</td>
+</tr>
+<tr>
+<td><code>y</code>／<code>n</code></td>
+<td>核准或拒絕工具請求</td>
+</tr>
+</tbody>
+</table>
+<h2 id="agy-sources">附錄 B. 查詢資料列表</h2>
+<p>撰寫本章時查閱的資料如下，依用途分類。官方頁面查核日期均為 2026-11-17。</p>
+<p><strong>Antigravity 官方文件</strong></p>
+<table>
+<thead>
+<tr>
+<th>主題</th>
+<th>來源</th>
+<th>本章用途</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>CLI 入門</td>
+<td><a href="https://antigravity.google/docs/getting-started?tab=cli">Getting started（CLI）</a></td>
+<td>安裝指令、安裝位置、首次啟動設定</td>
+</tr>
+<tr>
+<td>登入驗證</td>
+<td><a href="https://antigravity.google/docs/install?tab=cli">Install &amp; Authenticate（CLI）</a></td>
+<td>帳號類型、鑰匙圈、API 金鑰、<code>/logout</code>、安裝旗標</td>
+</tr>
+<tr>
+<td>指令參考</td>
+<td><a href="https://antigravity.google/docs/cli/reference">CLI reference</a></td>
+<td>斜線指令、快捷鍵、啟動參數、設定鍵</td>
+</tr>
+<tr>
+<td>執行模式</td>
+<td><a href="https://antigravity.google/docs/cli/modes">Modes</a></td>
+<td><code>default</code>／<code>accept-edits</code>／<code>auto</code>／<code>plan</code></td>
+</tr>
+<tr>
+<td>權限</td>
+<td><a href="https://antigravity.google/docs/permissions">Permissions</a></td>
+<td>權限提示、規則語法、優先順序</td>
+</tr>
+<tr>
+<td>設定</td>
+<td><a href="https://antigravity.google/docs/settings?tab=cli">Settings（CLI）</a></td>
+<td><code>settings.json</code> 位置與鍵值</td>
+</tr>
+<tr>
+<td>沙箱</td>
+<td><a href="https://antigravity.google/docs/sandbox?tab=cli">Sandbox（CLI）</a></td>
+<td><code>--sandbox</code> 與各平台機制</td>
+</tr>
+<tr>
+<td>規則</td>
+<td><a href="https://antigravity.google/docs/rules">Rules</a></td>
+<td>AGENTS.md／GEMINI.md 載入位置、<code>trigger</code>、引用語法、大小限制</td>
+</tr>
+<tr>
+<td>自訂項目探索</td>
+<td><a href="https://antigravity.google/docs/customization-discovery">Customization discovery</a></td>
+<td>規則、技能、外掛的搜尋路徑</td>
+</tr>
+<tr>
+<td>技能</td>
+<td><a href="https://antigravity.google/docs/skills">Skills</a></td>
+<td><code>.agents/skills/</code> 結構</td>
+</tr>
+<tr>
+<td>提及</td>
+<td><a href="https://antigravity.google/docs/at-mentions">At-mentions</a></td>
+<td><code>@</code> 檔案提及行為</td>
+</tr>
+<tr>
+<td>VS Code 擴充</td>
+<td><a href="https://antigravity.google/docs/ide/extensions/vscode">VS Code extension</a></td>
+<td>擴充功能 ID 與版本需求</td>
+</tr>
+<tr>
+<td>排錯</td>
+<td><a href="https://antigravity.google/docs/cli/troubleshooting">CLI troubleshooting</a></td>
+<td>PATH、鑰匙圈、自動更新鎖定</td>
+</tr>
+<tr>
+<td>遷移</td>
+<td><a href="https://antigravity.google/docs/cli/gcli-migration">Gemini CLI migration</a></td>
+<td><code>agy plugin import gemini</code>、GEMINI.md 相容</td>
+</tr>
+</tbody>
+</table>
+<p><strong>本機查核（macOS，agy 1.5.10）</strong></p>
+<table>
+<thead>
+<tr>
+<th>查核項目</th>
+<th>方法</th>
+<th>結果摘要</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>啟動參數與子指令</td>
+<td><code>agy --help</code>、<code>agy help install／mcp／plugin／models</code></td>
+<td>附錄 A 的指令與說明</td>
+</tr>
+<tr>
+<td>版本變更</td>
+<td><code>agy changelog</code>（1.5.5–1.5.9）</td>
+<td>1.5.7 起預設模式為 <code>auto</code>；<code>!</code> 指令列於 Windows PowerShell 的修正（1.5.9）；<code>/learn</code> 大小限制檢查（1.5.8）</td>
+</tr>
+<tr>
+<td>Homebrew</td>
+<td><code>brew info --cask antigravity-cli</code></td>
+<td>cask 版本 1.5.9，需 macOS 12 以上；Homebrew 版停用自動更新</td>
+</tr>
+<tr>
+<td>規則自動載入</td>
+<td>在測試資料夾以 <code>agy -p ... --mode plan</code> 詢問規則內容</td>
+<td><code>AGENTS.md</code>、<code>.agents/rules/*.md</code>（<code>trigger: always_on</code>）、<code>@[說明](路徑)</code> 引用的檔案皆自動載入</td>
+</tr>
+</tbody>
+</table>
+<p><strong>範例與相關教材</strong></p>
+<table>
+<thead>
+<tr>
+<th>主題</th>
+<th>來源</th>
+<th>本章用途</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>實例 AGENTS.md</td>
+<td><a href="https://joelhoty.github.io/onclassbyJoel/AGENTS.md">onclassbyJoel AGENTS.md</a>（檔內最後更新 2026-10-30）</td>
+<td>4.7 範例分析</td>
+</tr>
+<tr>
+<td>前導章</td>
+<td><a href="00_intro.html">00_intro.html</a></td>
+<td>工作台、Git 觀念、其他 CLI 對照、Gemini 遷移</td>
+</tr>
+<tr>
+<td>專案指引單元</td>
+<td><a href="05_instructions.html">05_instructions.html</a></td>
+<td>規則撰寫的延伸閱讀</td>
+</tr>
+</tbody>
+</table>
+<p><strong>未能在官方文件確認的項目：</strong><code>agy</code> 的移除指令、<code>/rewind</code> 對檔案的回復範圍、<code>.agents/rules/*.md</code> 中 <code>glob</code> 觸發的欄位名稱、可列出已載入規則的專用指令。本章對這些項目只寫已確認的部分，授課前請以 <code>/help</code> 與最新文件再確認。</p>
+<h2 id="agy-file-info">附錄 C. 檔案資訊</h2>
+<blockquote>
+<p><strong>最後更新時間</strong>：2026-11-17 21:51:46 (UTC+8)<br/>
+<strong>使用模型</strong>：Claude Opus 5.5（模型代號 <code>claude-opus-5-5</code>）<br/>
+<strong>執行 Agent</strong>：Claude Code<br/>
+<strong>查核環境</strong>：macOS（Darwin 27.2.0）、agy 1.5.10、Homebrew cask antigravity-cli 1.5.9</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>版本</th>
+<th>日期</th>
+<th>變更摘要</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>b01</td>
+<td>2026-11-17</td>
+<td>初版：agy 安裝（Windows、macOS）與登入、終端機與 VS Code 專題資料夾啟動、會話內操作、AGENTS.md 生成流程與三個範例（含 onclassbyJoel AGENTS.md 分析）、查詢資料列表</td>
+</tr>
+</tbody>
+</table></div>
+<!-- Highlight.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+<script>hljs.highlightAll();</script>
+<!-- Mermaid -->
+<script type="module">
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+        mermaid.initialize({
+            "startOnLoad": true,
+            "theme": "dark",
+            "securityLevel": "loose"
+});
+    </script>
+<nav aria-label="課程導覽" class="course-nav"><a href="index.html">課程目錄</a><a href="00_intro.html">← 前導章</a><a href="agy_cli.md">Markdown 原文</a><span>agy 延伸章 · 2026-11-17</span></nav></body>
+</html>

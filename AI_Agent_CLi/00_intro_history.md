@@ -28,6 +28,7 @@
 | b05 課程改版 | 2026-10-31 | 前置為課程基礎章，採 Codex CLI／Claude Code 雙主線；保留 Antigravity 選讀；明列 CLAUDE.md 與 AGENTS.md 的版本／載入條件；補互動及單次操作，複核 Homebrew 平台與修正 PowerShell 版本差異；保留原稿歷史測試並標明本次未重跑 |
 | 本次閱讀順序重整 | 2026-10-31 | 主線依概念、環境、專案、CLI、首次任務與會話管理排列；平台步驟前置，Node 與安裝細節、Google 遷移、歷史紀錄集中附錄；保留互動操作與斜線指令教學 |
 | 入門概念版重整 | 2026-10-31 | 受眾改為入門使用者；以 VS Code 工作台為主場；主線改為短版概念 → 工作台 → CLI → 第一個任務 → 專案規則 → 回看系統架構；Python 改為基礎評量後的延伸；排錯集中為索引；附錄 A 依查閱頻率排序；歷史紀錄移至本檔 |
+| agy 主線化 | 2026-11-17 | Antigravity CLI 由附錄選讀改為主線路線 C：2.4 新增三款 CLI 對照與 agy 介紹；2.5 補 agy 系統條件；新增 3.4 agy 安裝登入（原 3.4、3.5 順延為 3.5、3.6）；5.2 補 agy 規則載入（本機 agy 1.5.10 實測）；7.1 斜線指令表加 agy 欄；修正 Homebrew cask 會停用 agy 自動更新（`brew info --cask antigravity-cli` 1.5.9）；新增延伸章 agy_cli.md。編修：Claude Opus 5.5（claude-opus-5-5），Claude Code |
 
 ## 原 b05 歷史驗證紀錄與本次限制
 
