@@ -19,8 +19,9 @@
 
 | File Name | Last Updated | Link |
 |---|---|---|
-| 00_intro.html | 2026-10-31 | [00_intro.html](https://joelhoty.github.io/ocgit/AI_Agent_CLi/00_intro.html) |
-| index.html | 2026-10-31 | [index.html](https://joelhoty.github.io/ocgit/AI_Agent_CLi/index.html) |
+| 00_intro.html | 2026-11-17 | [00_intro.html](https://joelhoty.github.io/ocgit/AI_Agent_CLi/00_intro.html) |
+| index.html | 2026-11-17 | [index.html](https://joelhoty.github.io/ocgit/AI_Agent_CLi/index.html) |
+| agy_cli.html | 2026-11-17 | [agy_cli.html](https://joelhoty.github.io/ocgit/AI_Agent_CLi/agy_cli.html) |
 | 01_materials.html | 2026-10-31 | [01_materials.html](https://joelhoty.github.io/ocgit/AI_Agent_CLi/01_materials.html) |
 | 09_cli_practice.html | 2026-10-31 | [09_cli_practice.html](https://joelhoty.github.io/ocgit/AI_Agent_CLi/09_cli_practice.html) |
 | 08_environment.html | 2026-10-31 | [08_environment.html](https://joelhoty.github.io/ocgit/AI_Agent_CLi/08_environment.html) |
@@ -227,6 +228,7 @@
 | File Name | Last Updated | Link |
 |---|---|---|
 | 00_intro.before.html | 2026-10-31 | [00_intro.before.html](https://joelhoty.github.io/ocgit/openspec/changes/2026-10-31-beginner-concept-revision/inputs/00_intro.before.html) |
+| 00_intro.before 2.html | 2026-10-31 | [00_intro.before 2.html](https://joelhoty.github.io/ocgit/openspec/changes/2026-10-31-beginner-concept-revision/inputs/00_intro.before 2.html) |
 
 ## openspec/changes/archive/2026-10-31-reorder-agent-introduction/inputs
 
